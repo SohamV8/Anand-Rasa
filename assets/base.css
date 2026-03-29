@@ -1990,6 +1990,7 @@ input[type='checkbox'] {
 }
 
 .quantity__input[type='number'] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 

@@ -43,20 +43,110 @@
   .ar-trust__lbl { font-size:14px; line-height:1.5; color:#4b5563; max-width:200px; }
 
   /* ── CATEGORY GRID ── */
-  .ar-cat { background:#fff; padding:48px 32px; font-family:var(--fb); }
-  .ar-cat__grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:1280px; margin:0 auto; }
-  @media(min-width:768px){ .ar-cat__grid { grid-template-columns:repeat(3,1fr); } }
-  @media(min-width:1024px){ .ar-cat__grid { grid-template-columns:repeat(4,1fr); } }
-  .ar-cat__item { display:block; overflow:hidden; }
-  .ar-cat__wrap { position:relative; aspect-ratio:3/2; overflow:hidden; }
-  .ar-cat__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-  .ar-cat__item:hover .ar-cat__img { transform:scale(1.1); }
-  .ar-cat__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:12px; font-family:var(--fb); }
-  .ar-cat__ov { position:absolute; inset:0; background:rgba(0,0,0,.35); transition:background .5s; }
-  .ar-cat__item:hover .ar-cat__ov { background:rgba(0,0,0,.5); }
-  .ar-cat__txt { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px; color:#fff; }
-  .ar-cat__title { font-size:clamp(12px,2vw,18px); font-weight:600; letter-spacing:.12em; text-shadow:0 1px 4px rgba(0,0,0,.3); }
-  .ar-cat__cta { margin-top:8px; font-size:12px; border-bottom:1px solid rgba(255,255,255,.7); padding-bottom:2px; }
+  .ar-cat { background:#fff; padding:clamp(36px,5vw,64px) clamp(18px,3.5vw,40px); font-family:var(--fb); }
+  .ar-cat__grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+  @media(min-width:1024px){
+    .ar-cat__grid { grid-template-columns:repeat(4,1fr); gap:12px; }
+  }
+  .ar-cat__item {
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    overflow:hidden;
+    border-radius:0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ar-cat__item:focus-visible {
+    outline:2px solid #1e2023;
+    outline-offset:3px;
+  }
+  .ar-cat__wrap {
+    position:relative;
+    aspect-ratio:4/3;
+    overflow:hidden;
+    background:#1c1c1c;
+    isolation:isolate;
+  }
+  .ar-cat__wrap::after {
+    content:'';
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:1;
+    pointer-events:none;
+    transition:background .45s ease;
+  }
+  .ar-cat__item:hover .ar-cat__wrap::after,
+  .ar-cat__item:focus-visible .ar-cat__wrap::after {
+    background:rgba(0,0,0,.48);
+  }
+  .ar-cat__img {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    transition:transform .55s cubic-bezier(0.25,0.1,0.25,1);
+    z-index:0;
+  }
+  .ar-cat__item:hover .ar-cat__img,
+  .ar-cat__item:focus-visible .ar-cat__img {
+    transform:scale(1.05);
+  }
+  .ar-cat__ph {
+    position:absolute;
+    inset:0;
+    z-index:0;
+    background:#2d2d2d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#9ca3af;
+    font-size:12px;
+    font-family:var(--fb);
+  }
+  .ar-cat__txt {
+    position:absolute;
+    inset:0;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:clamp(14px,3vw,24px);
+    color:#fff;
+    pointer-events:none;
+  }
+  .ar-cat__title {
+    font-family:var(--font-heading-family);
+    font-size:clamp(14px,2.2vw,22px);
+    font-weight:700;
+    letter-spacing:-0.02em;
+    line-height:1.2;
+    margin:0;
+    max-width:18ch;
+    text-shadow:0 2px 20px rgba(0,0,0,.35);
+  }
+  .ar-cat__cta {
+    margin-top:14px;
+    font-family:var(--font-body-family);
+    font-size:clamp(12px,1.5vw,15px);
+    font-weight:400;
+    letter-spacing:0.03em;
+    color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.95);
+    padding-bottom:4px;
+    transition:border-color .3s ease, opacity .3s ease;
+  }
+  .ar-cat__item:hover .ar-cat__cta { border-bottom-color:#fff; }
 
   /* ── SHOWCASE ── */
   .ar-sc { background:#fff; padding:64px 0; border-bottom:2px solid #1e2023; font-family:var(--fb); }
@@ -129,14 +219,46 @@
   @media(min-width:768px){ .ar-trio__left { height:600px; } }
   .ar-trio__right { display:grid; grid-template-rows:1fr 1fr; height:420px; }
   @media(min-width:768px){ .ar-trio__right { height:600px; } }
-  .ar-trio__card { display:block; position:relative; width:100%; height:100%; overflow:hidden; border:2px solid #1e2023; }
-  .ar-trio__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-  .ar-trio__card:hover .ar-trio__img { transform:scale(1.05); }
-  .ar-trio__ov { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .5s; }
-  .ar-trio__card:hover .ar-trio__ov { background:rgba(0,0,0,.1); }
-  .ar-trio__cta-wrap { position:absolute; bottom:24px; left:24px; }
-  .ar-trio__cta { display:inline-block; border:2px solid #1e2023; padding:8px 24px; font-size:12px; letter-spacing:.18em; color:#1e2023; background:#fff; transition:background .3s,color .3s; }
-  .ar-trio__card:hover .ar-trio__cta { background:#1e2023; color:#fff; }
+  .ar-trio__card { display:block; position:relative; width:100%; height:100%; overflow:hidden; border:2px solid #1e2023; -webkit-tap-highlight-color:transparent; }
+  .ar-trio__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .65s cubic-bezier(0.25,0.1,0.25,1); }
+  .ar-trio__card:hover .ar-trio__img,
+  .ar-trio__card:focus-visible .ar-trio__img { transform:scale(1.05); }
+  .ar-trio__ov { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .45s ease, opacity .45s ease; pointer-events:none; }
+  .ar-trio__card:hover .ar-trio__ov,
+  .ar-trio__card:focus-visible .ar-trio__ov {
+    background:linear-gradient(to top, rgba(0,0,0,.42) 0%, rgba(0,0,0,.12) 45%, transparent 72%);
+  }
+  .ar-trio__cta-wrap { position:absolute; bottom:clamp(18px,4vw,32px); left:clamp(18px,4vw,32px); z-index:2; pointer-events:none; }
+  .ar-trio__cta {
+    display:inline-block;
+    position:relative;
+    border-radius:0;
+    border:1px solid rgba(255,255,255,.52);
+    padding:14px 28px;
+    font-family:var(--font-heading-family);
+    font-size:clamp(14px,2.5vw,22px);
+    font-weight:600;
+    letter-spacing:.06em;
+    color:#fff;
+    text-shadow:0 1px 12px rgba(0,0,0,.35);
+    background:rgba(255,255,255,.1);
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    box-shadow:0 4px 28px rgba(0,0,0,.15), inset 0 1px 0 rgba(255,255,255,.28);
+    transition:background .4s cubic-bezier(0.25,0.1,0.25,1),
+      border-color .4s cubic-bezier(0.25,0.1,0.25,1),
+      transform .4s cubic-bezier(0.25,0.1,0.25,1),
+      box-shadow .4s cubic-bezier(0.25,0.1,0.25,1);
+  }
+  .ar-trio__card:hover .ar-trio__cta,
+  .ar-trio__card:focus-visible .ar-trio__cta {
+    background:rgba(255,255,255,.2);
+    border-color:rgba(255,255,255,.92);
+    transform:translateY(-3px);
+    box-shadow:0 10px 40px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.45);
+  }
+  .ar-trio__card:focus-visible { outline:2px solid rgba(255,255,255,.9); outline-offset:4px; }
+  .ar-trio__card:focus:not(:focus-visible) { outline:none; }
   .ar-trio__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:12px; font-family:var(--fb); }
 
   /* ── PURE ATTAR ── */
@@ -214,21 +336,22 @@
   .ar-best__price { font-size:14px; font-weight:600; color:#1e2023; }
 
   /* ── PHILOSOPHY ── */
-  .ar-bp { background:#fff; width:100%; padding:64px 0 80px; font-family: var(--font-body-family); }
+  .ar-bp { background:#F9F6EF; width:100%; padding:64px 0 80px; font-family: var(--font-body-family); }
   .ar-bp__in { max-width:1300px; margin:0 auto; padding:0 20px; }
-  .ar-bp__h { font-family: var(--font-heading-family); font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-.025em; line-height:1.15; color:#141414; text-align:center; max-width:28ch; margin:0 auto 48px; opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease; }
+  .ar-bp__h { font-family: var(--font-heading-family); font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-.025em; line-height:1.15; color:#000; text-align:center; max-width:28ch; margin:0 auto 48px; opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease; }
   .ar-bp__h.ar-vis { opacity:1; transform:translateY(0); }
   .ar-bp__grid { display:grid; grid-template-columns:1fr; gap:24px; }
   @media(min-width:640px){ .ar-bp__grid { grid-template-columns:1fr 1fr; } }
   @media(min-width:1024px){ .ar-bp__grid { grid-template-columns:repeat(4,1fr); } }
   .ar-bp__root { position:relative; opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
   .ar-bp__root.ar-vis { opacity:1; transform:translateY(0); }
-  .ar-bp__shadow { position:absolute; inset:0; border-radius:22px; background:#e8a0bd; transform:translate(7px,8px); transition:transform .38s ease; pointer-events:none; z-index:0; }
-  .ar-bp__root:hover .ar-bp__shadow { transform:translate(10px,11px); }
-  .ar-bp__card { position:relative; z-index:1; display:flex; flex-direction:column; gap:16px; background:#fff; border:1.5px solid #252525; border-radius:22px; padding:22px 22px 26px; transition:transform .38s ease; }
-  .ar-bp__root:hover .ar-bp__card { transform:translateY(-4px); }
-  .ar-bp__pill { display:inline-block; background:#e8a0bd; border:1.5px solid #252525; border-radius:999px; padding:7px 16px; font-size:12.5px; font-weight:600; line-height:1.4; color:#141414; text-align:center; max-width:100%; word-break:break-word; }
-  .ar-bp__body { font-size:14px; font-weight:400; line-height:1.78; color:#3c3c3c; }
+  .ar-bp__shadow { position:absolute; inset:0; border-radius:20px; background:#EBA0B4; transform:translate(8px,8px); transition:transform .4s cubic-bezier(0.25,0.1,0.25,1); pointer-events:none; z-index:0; }
+  .ar-bp__root:hover .ar-bp__shadow { transform:translate(4px,4px); }
+  .ar-bp__card { position:relative; z-index:1; display:flex; flex-direction:column; gap:16px; background:#fff; border:1px solid #000; border-radius:20px; padding:22px 22px 26px; transition:transform .4s cubic-bezier(0.25,0.1,0.25,1); }
+  .ar-bp__root:hover .ar-bp__card { transform:translate(4px,4px); }
+  .ar-bp__pill { display:inline-block; background:#EBA0B4; border:1px solid #000; border-radius:999px; padding:7px 16px; font-family:var(--font-heading-family); font-size:12.5px; font-weight:600; line-height:1.4; color:#000; text-align:center; max-width:100%; word-break:break-word; }
+  .ar-bp__body { font-size:14px; font-weight:400; line-height:1.78; color:#141414; }
+  .ar-bp__body strong { font-weight:700; }
 
   /* ── FIND ── */
   .ar-find { position:relative; width:100%; height:70vh; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center; font-family:var(--fb); }
@@ -265,28 +388,53 @@
   .ar-incense-ph { width:100%; padding:60px 24px; background:#fce4ec; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-family:var(--fb); text-align:center; }
 
   /* ── INCENSE PRODUCTS ── */
-  .ar-inc { background:#f5f0e8; padding:60px 0 72px; font-family:var(--fb); }
+  .ar-inc { background:#FAF7F2; padding:60px 0 88px; font-family:var(--fb); }
   .ar-inc__inner { max-width:1400px; margin:0 auto; padding:0 48px; }
   @media(max-width:768px){ .ar-inc__inner { padding:0 20px; } }
-  .ar-inc__h { font-family: var(--font-heading-family); font-size:clamp(24px,3vw,40px); font-weight:700; color:#1e2023; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
+  .ar-inc__h { font-family: var(--font-heading-family); font-size:clamp(24px,3vw,40px); font-weight:700; color:#000; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
   .ar-inc__wrap { position:relative; }
-  .ar-inc__arrow { position:absolute; top:40%; z-index:20; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:1px solid rgba(30,32,35,.2); background:rgba(255,255,255,.9); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background .3s,color .3s; }
-  .ar-inc__arrow:hover { background:#1e2023; color:#fff; }
-  .ar-inc__arrow-l { left:8px; } .ar-inc__arrow-r { right:8px; }
-  .ar-inc__track { display:flex; gap:32px; overflow-x:auto; padding:0 24px; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .ar-inc__fade { pointer-events:none; position:absolute; top:0; height:100%; width:32px; z-index:10; }
+  .ar-inc__fade-l { left:0; background:linear-gradient(to right,#FAF7F2,transparent); }
+  .ar-inc__fade-r { right:0; background:linear-gradient(to left,#FAF7F2,transparent); }
+  .ar-inc__arrow { position:absolute; top:42%; z-index:20; transform:translateY(-50%); width:40px; height:40px; border-radius:50%; border:1px solid rgba(30,32,35,.08); background:#fff; cursor:pointer; font-size:20px; line-height:1; color:#1e2023; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 12px rgba(30,32,35,.08); transition:background .3s ease, color .3s ease, box-shadow .3s ease, transform .2s ease; }
+  .ar-inc__arrow:hover { background:#fff; color:#000; box-shadow:0 4px 20px rgba(30,32,35,.12); transform:translateY(-50%) scale(1.05); }
+  .ar-inc__arrow-l { left:4px; }
+  .ar-inc__arrow-r { right:4px; }
+  @media(max-width:640px){ .ar-inc__arrow-l { left:0; } .ar-inc__arrow-r { right:0; } }
+  .ar-inc__track { display:flex; align-items:stretch; gap:20px; overflow-x:auto; padding:8px 52px 28px; scroll-snap-type:x mandatory; scroll-behavior:smooth; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .ar-inc__track::-webkit-scrollbar { display:none; }
-  .ar-inc__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
-  .ar-inc__link { display:block; text-decoration:none; }
-  .ar-inc__imgw { position:relative; aspect-ratio:3/4; width:160px; margin:0 auto; overflow:hidden; }
-  @media(min-width:640px){ .ar-inc__imgw { width:180px; } }
-  .ar-inc__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .5s; }
-  .ar-inc__link:hover .ar-inc__img { transform:scale(1.05); }
-  .ar-inc__badge { position:absolute; top:8px; left:0; font-size:10px; font-weight:700; letter-spacing:.06em; padding:4px 10px; border-radius:3px; background:#1e2023; color:#fff; z-index:5; }
-  .ar-inc__name  { margin-top:16px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
-  .ar-inc__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
-  .ar-inc__price-row { margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .ar-inc__price-old { font-size:12px; color:#9ca3af; text-decoration:line-through; }
-  .ar-inc__price { font-size:14px; font-weight:600; color:#1e2023; }
+  .ar-inc__card { flex:0 0 min(280px, 82vw); scroll-snap-align:start; scroll-margin-inline:8px; position:relative; display:flex; }
+  @media(min-width:640px){ .ar-inc__card { flex:0 0 calc(50% - 10px); } }
+  @media(min-width:1024px){ .ar-inc__card { flex:0 0 calc(25% - 15px); max-width:320px; } }
+  .ar-inc__card-inner { background:#fff; border-radius:14px; box-shadow:0 4px 24px rgba(30,32,35,.06); padding:0 0 20px; flex:1; width:100%; display:flex; flex-direction:column; transition:box-shadow .4s cubic-bezier(0.25,0.1,0.25,1), transform .4s cubic-bezier(0.25,0.1,0.25,1); }
+  .ar-inc__card-inner:hover { box-shadow:0 12px 40px rgba(30,32,35,.1); transform:translateY(-3px); }
+  .ar-inc__media-link { display:block; text-decoration:none; color:inherit; border-radius:14px 14px 0 0; overflow:hidden; }
+  .ar-inc__imgw { position:relative; aspect-ratio:1; width:100%; margin:0; overflow:hidden; background:#fafafa; }
+  .ar-inc__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .55s cubic-bezier(0.25,0.1,0.25,1); }
+  .ar-inc__media-link:hover .ar-inc__img { transform:scale(1.04); }
+  .ar-inc__badge { position:absolute; top:10px; left:10px; font-size:9px; font-weight:700; letter-spacing:.08em; padding:5px 10px; border-radius:2px; background:#000; color:#fff; z-index:5; line-height:1.2; }
+  .ar-inc__body { padding:16px 16px 0; text-align:left; display:flex; flex-direction:column; flex:1; gap:6px; }
+  .ar-inc__ing { font-family:var(--font-body-family); font-size:12px; line-height:1.45; color:#9ca3af; margin:0; }
+  .ar-inc__title-link { text-decoration:none; color:inherit; }
+  .ar-inc__name { font-family:var(--font-heading-family); font-size:clamp(15px,1.35vw,17px); font-weight:700; color:#000; margin:0; line-height:1.25; letter-spacing:-.01em; transition:opacity .2s; }
+  .ar-inc__title-link:hover .ar-inc__name { opacity:.85; }
+  .ar-inc__tag { font-family:var(--font-body-family); font-size:13px; line-height:1.5; color:#6b7280; margin:0; }
+  .ar-inc__price-row { margin-top:4px; display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 10px; font-family:var(--font-body-family); }
+  .ar-inc__price-old { font-size:13px; color:#9ca3af; text-decoration:line-through; }
+  .ar-inc__price { font-size:15px; font-weight:700; color:#000; }
+  .ar-inc__form { margin:0; padding:0; width:100%; }
+  .ar-inc__btn-wrap { margin-top:auto; padding:14px 16px 0; width:100%; }
+  .ar-inc__product-form { display:block; width:100%; }
+  .ar-inc__btn { width:100%; appearance:none; border:0; border-radius:999px; background:#F1A7C1; color:#000; font-family:var(--font-heading-family); font-size:12px; font-weight:600; letter-spacing:.04em; padding:12px 18px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 18px rgba(241,167,193,.55), 0 2px 6px rgba(241,167,193,.35); transition:background .3s ease, box-shadow .3s ease, transform .2s ease, opacity .2s ease; position:relative; }
+  .ar-inc__btn:hover:not([disabled]):not(.loading) { background:#eab0c4; box-shadow:0 6px 22px rgba(241,167,193,.65); transform:translateY(-1px); }
+  .ar-inc__btn:active:not([disabled]):not(.loading) { transform:translateY(0); }
+  .ar-inc__btn[disabled], .ar-inc__btn[aria-disabled="true"] { opacity:.55; cursor:not-allowed; transform:none; }
+  .ar-inc__btn.loading { pointer-events:none; }
+  .ar-inc__btn .loading__spinner { position:absolute; }
+  .ar-inc modal-opener { display:block; width:100%; }
+  .ar-inc__dots { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px; padding:0; }
+  .ar-inc__dot { width:8px; height:8px; border-radius:50%; border:0; padding:0; background:#d1d5db; cursor:pointer; transition:background .25s ease, transform .25s ease; }
+  .ar-inc__dot.is-active { background:#1e2023; transform:scale(1.15); }
 
   /* ── VIDEO TESTIMONIALS ── */
   .ar-vtm { background:#fff; padding:80px 0; font-family:var(--fb); border-top:1px solid rgba(30,32,35,.08); }
@@ -374,14 +522,28 @@
               endif
             endif
           -%}
-          <a href="{{ ar_cat_href }}" class="ar-cat__item" {{ block.shopify_attributes }}>
+          <a
+            href="{{ ar_cat_href }}"
+            class="ar-cat__item"
+            aria-label="{{ block.settings.title | escape }} — Explore"
+            {{ block.shopify_attributes }}
+          >
             <div class="ar-cat__wrap">
               {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}" width="800" height="533" loading="lazy" class="ar-cat__img">
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                  sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                  alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+                  width="1200"
+                  height="900"
+                  loading="lazy"
+                  class="ar-cat__img"
+                  decoding="async"
+                >
               {%- else -%}
                 <div class="ar-cat__ph">Upload image</div>
               {%- endif -%}
-              <div class="ar-cat__ov"></div>
               <div class="ar-cat__txt">
                 <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
                 <span class="ar-cat__cta">Explore</span>
@@ -619,39 +781,176 @@
   {%- comment -%} 10. INCENSE PRODUCTS {%- endcomment -%}
   <section class="ar-inc">
     <div class="ar-inc__inner">
-      <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Shop Incense Sticks' }}</h2>
+      <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Best Seller Agarbatti' }}</h2>
       <div class="ar-inc__wrap">
-        <div class="ar-sc__fade ar-sc__fade-l"></div>
-        <div class="ar-sc__fade ar-sc__fade-r"></div>
-        <button class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="Previous">&#8249;</button>
-        <button class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="Next">&#8250;</button>
+        <div class="ar-inc__fade ar-inc__fade-l"></div>
+        <div class="ar-inc__fade ar-inc__fade-r"></div>
+        <button type="button" class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
+        <button type="button" class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="{{ 'general.slider.next_slide' | t }}">&#8250;</button>
         <div class="ar-inc__track js-inc-track">
           {%- assign inc = collections[section.settings.inc_collection] -%}
           {%- if inc != blank -%}
             {%- for p in inc.products limit: 12 -%}
+              {%- liquid
+                assign inc_form_id = 'inc-form-' | append: section.id | append: '-' | append: p.id
+                assign inc_variant = p.selected_or_first_available_variant
+                assign inc_ing = p.metafields.custom.ingredients | metafield_text
+                if inc_ing == blank
+                  assign inc_ing = p.type
+                endif
+                assign inc_tag = p.metafields.custom.tagline | metafield_text
+                if inc_tag == blank and p.description != blank
+                  assign inc_tag = p.description | strip_html | truncate: 80
+                endif
+              -%}
               <article class="ar-inc__card">
-                <a href="{{ p.url }}" class="ar-inc__link">
-                  <div class="ar-inc__imgw">
-                    {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}<span class="ar-inc__badge">BESTSELLER</span>
-                    {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-inc__badge">NEW</span>
-                    {%- elsif p.compare_at_price > p.price -%}<span class="ar-inc__badge">SALE</span>{%- endif -%}
-                    {%- if p.featured_image -%}
-                      <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-inc__img">
+                <div class="ar-inc__card-inner">
+                  <a href="{{ p.url }}" class="ar-inc__media-link" aria-label="{{ p.title | escape }}">
+                    <div class="ar-inc__imgw">
+                      {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}
+                        <span class="ar-inc__badge">BESTSELLER</span>
+                      {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}
+                        <span class="ar-inc__badge">NEW</span>
+                      {%- elsif p.tags contains 'limited' or p.tags contains 'Limited' -%}
+                        <span class="ar-inc__badge">LIMITED</span>
+                      {%- elsif p.compare_at_price > p.price -%}
+                        <span class="ar-inc__badge">SALE</span>
+                      {%- endif -%}
+                      {%- if p.featured_image -%}
+                        <img
+                          src="{{ p.featured_image | image_url: width: 600 }}"
+                          alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                          width="600"
+                          height="600"
+                          loading="lazy"
+                          class="ar-inc__img"
+                        >
+                      {%- endif -%}
+                    </div>
+                  </a>
+                  <div class="ar-inc__body">
+                    {%- if inc_ing != blank -%}
+                      <p class="ar-inc__ing">{{ inc_ing }}</p>
+                    {%- endif -%}
+                    <a href="{{ p.url }}" class="ar-inc__title-link">
+                      <h3 class="ar-inc__name">{{ p.title }}</h3>
+                    </a>
+                    {%- if inc_tag != blank -%}
+                      <p class="ar-inc__tag">{{ inc_tag }}</p>
+                    {%- endif -%}
+                    <div class="ar-inc__price-row">
+                      {%- if p.compare_at_price > p.price -%}
+                        <span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>
+                      {%- endif -%}
+                      <span class="ar-inc__price">{{ p.price | money }}</span>
+                    </div>
+                  </div>
+                  <div class="ar-inc__btn-wrap">
+                    {%- if p.available -%}
+                      {%- if p.has_only_default_variant -%}
+                        <product-form class="product-form ar-inc__product-form" data-section-id="{{ section.id }}">
+                          {%- form 'product',
+                            p,
+                            id: inc_form_id,
+                            class: 'ar-inc__form',
+                            novalidate: 'novalidate',
+                            data-type: 'add-to-cart-form'
+                          -%}
+                            <input
+                              type="hidden"
+                              name="id"
+                              value="{{ inc_variant.id }}"
+                              class="product-variant-id"
+                              {% if inc_variant.available == false %}
+                                disabled
+                              {% endif %}
+                            >
+                            <button
+                              type="submit"
+                              name="add"
+                              class="ar-inc__btn product-form__submit"
+                              aria-label="{{ 'products.product.add_to_cart' | t }} — {{ p.title | escape }}"
+                              data-sold-out-message="true"
+                              {% if inc_variant.available == false %}
+                                disabled
+                              {% endif %}
+                            >
+                              <span>
+                                {%- if inc_variant.available -%}
+                                  {{ 'products.product.add_to_cart' | t }} 🛒
+                                {%- else -%}
+                                  {{ 'products.product.sold_out' | t }}
+                                {%- endif -%}
+                              </span>
+                              <span class="sold-out-message hidden">{{ 'products.product.sold_out' | t }}</span>
+                              {%- render 'loading-spinner' -%}
+                            </button>
+                          {%- endform -%}
+                        </product-form>
+                      {%- else -%}
+                        <modal-opener data-modal="#QuickAdd-inc-{{ section.id }}-{{ p.id }}">
+                          <button
+                            type="button"
+                            class="ar-inc__btn quick-add__submit"
+                            aria-haspopup="dialog"
+                            aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
+                            data-product-url="{{ p.url }}"
+                          >
+                            {{ 'products.product.add_to_cart' | t }} 🛒
+                            {%- render 'loading-spinner' -%}
+                          </button>
+                        </modal-opener>
+                        <quick-add-modal id="QuickAdd-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal">
+                          <div
+                            role="dialog"
+                            aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
+                            aria-modal="true"
+                            class="quick-add-modal__content global-settings-popup"
+                            tabindex="-1"
+                          >
+                            <button
+                              type="button"
+                              class="quick-add-modal__toggle"
+                              aria-label="{{ 'accessibility.close' | t }}"
+                            >
+                              {{- 'icon-close.svg' | inline_asset_content -}}
+                            </button>
+                            <div id="QuickAddInfo-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal__content-info"></div>
+                          </div>
+                        </quick-add-modal>
+                      {%- endif -%}
+                    {%- else -%}
+                      <button type="button" class="ar-inc__btn" disabled>{{ 'products.product.sold_out' | t }}</button>
                     {%- endif -%}
                   </div>
-                  <h3 class="ar-inc__name">{{ p.title }}</h3>
-                  <p class="ar-inc__type">{{ p.type | default: 'Incense' }}</p>
-                  <div class="ar-inc__price-row">
-                    {%- if p.compare_at_price > p.price -%}<span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
-                    <span class="ar-inc__price">{{ p.price | money }}</span>
-                  </div>
-                </a>
+                </div>
               </article>
             {%- endfor -%}
           {%- else -%}
             <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select incense collection in Theme Editor.</p>
           {%- endif -%}
         </div>
+        <div class="ar-inc__dots js-inc-dots" role="tablist" aria-label="{{ 'general.slider.name' | t }}"></div>
+      </div>
+    </div>
+  </section>
+
+    {%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
+  <section class="ar-bp js-ar-bp">
+    <div class="ar-bp__in">
+      <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results & No BS' }}</h2>
+      <div class="ar-bp__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'philosophy_card' -%}
+            <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
+              <div class="ar-bp__shadow"></div>
+              <article class="ar-bp__card">
+                <span class="ar-bp__pill">{{ block.settings.title }}</span>
+                <p class="ar-bp__body">{{ block.settings.text }}</p>
+              </article>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
   </section>
@@ -714,26 +1013,6 @@
     </div>
   </section>
 
-  {%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
-  <section class="ar-bp js-ar-bp">
-    <div class="ar-bp__in">
-      <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results and No BS' }}</h2>
-      <div class="ar-bp__grid">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'philosophy_card' -%}
-            <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
-              <div class="ar-bp__shadow"></div>
-              <article class="ar-bp__card">
-                <span class="ar-bp__pill">{{ block.settings.title }}</span>
-                <p class="ar-bp__body">{{ block.settings.text }}</p>
-              </article>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    </div>
-  </section>
-
   {%- comment -%} 15. TRUST BAR {%- endcomment -%}
   <section class="ar-trust">
     <ul class="ar-trust__grid js-ar-trust">
@@ -783,6 +1062,11 @@
 
 </div>
 
+{%- if section.settings.inc_collection != blank -%}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
 <script>
 (function(){
   'use strict';
@@ -797,9 +1081,70 @@
     if(right) right.addEventListener('click', function(){ sc(1); });
   }
 
+  function carouselIncSlides(track, left, right){
+    if(!track) return;
+    function step(){
+      var c = track.querySelector('.ar-inc__card');
+      if(!c) return track.clientWidth * 0.75;
+      var gap = parseFloat(getComputedStyle(track).gap);
+      if(isNaN(gap)) gap = 20;
+      return c.getBoundingClientRect().width + gap;
+    }
+    function sc(d){ track.scrollBy({ left: d * step(), behavior: 'smooth' }); }
+    if(left) left.addEventListener('click', function(){ sc(-1); });
+    if(right) right.addEventListener('click', function(){ sc(1); });
+  }
+
   carousel(document.querySelector('.js-best-track'), document.querySelector('.js-best-l'), document.querySelector('.js-best-r'));
   carousel(document.querySelector('.js-zc-track'), document.querySelector('.js-zc-l'), document.querySelector('.js-zc-r'));
-  carousel(document.querySelector('.js-inc-track'), document.querySelector('.js-inc-l'), document.querySelector('.js-inc-r'));
+  carouselIncSlides(document.querySelector('.js-inc-track'), document.querySelector('.js-inc-l'), document.querySelector('.js-inc-r'));
+
+  (function incDots(){
+    var track = document.querySelector('.js-inc-track');
+    var dotsRoot = document.querySelector('.js-inc-dots');
+    if(!track || !dotsRoot) return;
+    var cards = track.querySelectorAll('.ar-inc__card');
+    if(!cards.length){
+      dotsRoot.setAttribute('hidden', '');
+      return;
+    }
+    dotsRoot.removeAttribute('hidden');
+    dotsRoot.innerHTML = '';
+    cards.forEach(function(card, i){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ar-inc__dot' + (i === 0 ? ' is-active' : '');
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+      btn.addEventListener('click', function(){
+        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      });
+      dotsRoot.appendChild(btn);
+    });
+    var dots = dotsRoot.querySelectorAll('.ar-inc__dot');
+    var ticking = false;
+    function sync(){
+      var rect = track.getBoundingClientRect();
+      var edge = rect.left + Math.min(120, rect.width * 0.2);
+      var best = 0;
+      cards.forEach(function(card, i){
+        var cr = card.getBoundingClientRect();
+        if(cr.left <= edge + 2) best = i;
+      });
+      dots.forEach(function(d, i){ d.classList.toggle('is-active', i === best); });
+    }
+    track.addEventListener('scroll', function(){
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(function(){
+          sync();
+          ticking = false;
+        });
+      }
+    });
+    window.addEventListener('resize', sync);
+    sync();
+  })();
 
   document.querySelectorAll('.ar-nav9').forEach(function(nav9){
     var pbtns = nav9.querySelectorAll('.ar-nav9__btn');
@@ -1222,7 +1567,7 @@
       "type": "textarea",
       "id": "bp_heading",
       "label": "Heading",
-      "default": "We believe in Truth, Results and No BS"
+      "default": "We believe in Truth, Results & No BS"
     },
     {
       "type": "header",
@@ -1275,7 +1620,7 @@
       "type": "text",
       "id": "inc_heading",
       "label": "Heading",
-      "default": "Shop Incense Sticks"
+      "default": "Best Seller Agarbatti"
     }
   ],
   "blocks": [
