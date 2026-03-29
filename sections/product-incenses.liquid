@@ -5,11 +5,9 @@
 {% endcomment %}
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
-
   /* ── RESET ── */
   .lux *, .lux *::before, .lux *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  .lux { --serif: 'Playfair Display', Georgia, serif; --sans: 'Inter', Helvetica, Arial, sans-serif; --black: #000; --white: #fff; --g1: #0a0a0a; --g2: #111; --g3: #1a1a1a; --g4: #2a2a2a; --g5: #3a3a3a; --g6: #666; --g7: #999; --g8: #ccc; --g9: #e8e8e8; --g10: #f5f5f5; --border: rgba(255,255,255,.1); --border-dark: rgba(0,0,0,.1); font-family: var(--sans); background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
+  .lux { --serif: var(--font-heading-family); --sans: var(--font-body-family); --black: #000; --white: #fff; --g1: #0a0a0a; --g2: #111; --g3: #1a1a1a; --g4: #2a2a2a; --g5: #3a3a3a; --g6: #666; --g7: #999; --g8: #ccc; --g9: #e8e8e8; --g10: #f5f5f5; --border: rgba(255,255,255,.1); --border-dark: rgba(0,0,0,.1); font-family: var(--sans); background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
   .lux a { text-decoration: none; color: inherit; }
   .lux img { display: block; max-width: 100%; }
   .lux button { cursor: pointer; font-family: var(--sans); border: none; background: none; }
@@ -711,6 +709,12 @@
 
 })();
 </script>
+
+{%- if product != blank -%}
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

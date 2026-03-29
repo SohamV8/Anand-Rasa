@@ -5,7 +5,7 @@
 <style>
   .arf *, .arf *::before, .arf *::after { box-sizing:border-box; }
 
-  .arf { background:#fff; font-family:'Jost',sans-serif; border-top:1px solid rgba(30,32,35,.08); }
+  .arf { background:#fff; font-family:var(--font-body-family); border-top:1px solid rgba(30,32,35,.08); }
   .arf a,
   .arf a:hover,
   .arf a:visited,
@@ -17,7 +17,7 @@
 
   .arf__logo-img  { height:80px; width:auto; display:block; margin-bottom:6px; object-fit:contain; }
   .arf__logo-sub  { font-size:12px; font-weight:300; letter-spacing:.22em; color:#9ca3af; display:block; margin-bottom:20px; text-transform:lowercase; }
-  .arf__logo-text { font-family:'Cormorant Garamond',Georgia,serif; font-size:28px; font-weight:600; color:#1e2023; display:block; line-height:1; margin-bottom:4px; }
+  .arf__logo-text { font-family:var(--font-heading-family); font-size:28px; font-weight:600; color:#1e2023; display:block; line-height:1; margin-bottom:4px; }
   .arf__tagline   { font-size:14px; line-height:1.75; color:#4b5563; max-width:280px; font-weight:300; margin-bottom:24px; }
   .arf__address   { display:flex; flex-direction:column; gap:4px; }
   .arf__addr-line { font-size:13px; color:#4b5563; line-height:1.6; font-weight:300; }
@@ -43,7 +43,7 @@
 
   .arf__brand-img-wrap { width:100%; overflow:hidden; padding:0 clamp(16px, 4vw, 48px); text-align:center; }
   .arf__brand-img { width:100%; max-width:min(1200px, 100%); margin:0 auto; display:block; height:auto; max-height:min(240px, 28vw); object-fit:contain; object-position:center 48%; }
-  .arf__brand-img-ph { width:100%; min-height:220px; background:#faf9f7; display:flex; align-items:center; justify-content:center; font-size:13px; color:#9ca3af; letter-spacing:.05em; border-top:1px solid rgba(30,32,35,.06); text-align:center; padding:24px; font-family:'Jost',sans-serif; }
+  .arf__brand-img-ph { width:100%; min-height:220px; background:#faf9f7; display:flex; align-items:center; justify-content:center; font-size:13px; color:#9ca3af; letter-spacing:.05em; border-top:1px solid rgba(30,32,35,.06); text-align:center; padding:24px; font-family:var(--font-body-family); }
 
   .arf__bottom { max-width:1440px; margin:0 auto; padding:16px 48px; display:flex; align-items:center; justify-content:center; }
   .arf__copy { font-size:12px; color:#9ca3af; text-align:center; }
@@ -83,14 +83,14 @@
     <div>
       <span class="arf__col-title">Collections</span>
       <div class="arf__links">
-        <a href="{{ routes.collections_url }}/planet-attars"      class="arf__link">Planets Attar</a>
-        <a href="{{ routes.collections_url }}/zodiac-attars"       class="arf__link">Zodiac Attar</a>
-        <a href="{{ routes.collections_url }}/nakshatra-attars"    class="arf__link">Nakshatra Attar</a>
-        <a href="{{ routes.collections_url }}/chakra-attars" class="arf__link">Chakra Attar</a>
-        <a href="{{ routes.collections_url }}/stressrelief"       class="arf__link">Stress Relief Attar</a>
-        <a href="{{ routes.collections_url }}/love-attars"   class="arf__link">Love Attar</a>
-        <a href="{{ routes.collections_url }}/incense-sticks"      class="arf__link">Incense Sticks</a>
-        <a href="{{ routes.collections_url }}/gift-sets"    class="arf__link">Gift Sets</a>
+        <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="arf__link">Planets Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="arf__link">Zodiac Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="arf__link">Nakshatra Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="arf__link">Chakra Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="arf__link">Stress Relief Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="arf__link">Love Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="arf__link">Incense Sticks</a>
+        <a href="{% render 'ar-collection-url', handle: 'gift-sets' %}" class="arf__link">Gift Sets</a>
       </div>
     </div>
 

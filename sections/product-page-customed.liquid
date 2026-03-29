@@ -4,8 +4,6 @@
 {% endcomment %}
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600&display=swap');
-
   .aip *, .aip *::before, .aip *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .aip {
     --bg: #ffffff;
@@ -17,8 +15,8 @@
     --line: rgba(30, 32, 35, 0.1);
     --line-strong: rgba(30, 32, 35, 0.16);
     --surface: #ffffff;
-    --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-    --sans: 'Jost', system-ui, sans-serif;
+    --serif: var(--font-heading-family);
+    --sans: var(--font-body-family);
     font-family: var(--sans);
     font-weight: 400;
     color: var(--text);
@@ -786,6 +784,12 @@
   }
 })();
 </script>
+
+{%- if product != blank -%}
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

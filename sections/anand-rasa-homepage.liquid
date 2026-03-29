@@ -4,10 +4,8 @@
 {% endcomment %}
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&family=Poppins:wght@300;400;500;600;700&family=Codec+Pro:wght@300;400&display=swap');
-
   .ar-hp *, .ar-hp *::before, .ar-hp *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  .ar-hp { --ink: #1e2023; --fh: 'Cormorant Garamond', Georgia, serif; --fb: 'Jost', sans-serif; }
+  .ar-hp { --ink: #1e2023; --fh: var(--font-heading-family); --fb: var(--font-body-family); }
   .ar-hp img, .ar-hp video { max-width: 100%; display: block; }
   .ar-hp a { color: inherit; text-decoration: none; }
 
@@ -20,8 +18,8 @@
   .ar-hero__in { max-width:1440px; width:100%; margin:0 auto; padding:60px 48px 60px; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:0; min-height:100vh; }
   .ar-hero__left { animation:arUp .7s ease both; padding-right:40px; }
   .ar-hero__ey { font-size:11px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:#6b7280; margin-bottom:20px; font-family:var(--fb); }
-  .ar-hero__h1 { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(28px,4vw,56px); font-weight:400; line-height:1.08; color:#1a1a18; margin-bottom:24px; letter-spacing:-.01em; white-space:nowrap; }
-  .ar-hero__p  { font-family:'Jost', sans-serif; font-size:15px; line-height:1.75; color:#4b5563; margin-bottom:40px; max-width:440px; font-weight:300; }
+  .ar-hero__h1 { font-family: var(--font-heading-family); font-size:clamp(28px,4vw,56px); font-weight:400; line-height:1.08; color:#1a1a18; margin-bottom:24px; letter-spacing:-.01em; white-space:nowrap; }
+  .ar-hero__p  { font-family: var(--font-body-family); font-size:15px; line-height:1.75; color:#4b5563; margin-bottom:40px; max-width:440px; font-weight:300; }
   .ar-hero__cta { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
   .ar-hero__btn1 { display:inline-flex; align-items:center; justify-content:center; padding:13px 32px; background:#ffffff; color:#1a1a18; font-family:var(--fb); font-size:13px; font-weight:600; letter-spacing:.04em; border:1.8px solid #1a1a18; border-radius:100px; transition:background .25s,color .25s; }
   .ar-hero__btn1:hover { background:#1a1a18; color:#ffffff; }
@@ -114,7 +112,7 @@
   @media(max-width:900px){ .ar-zh__in { grid-template-columns:1fr; } }
   .ar-zh__left { padding:80px 64px; }
   @media(max-width:900px){ .ar-zh__left { padding:60px 24px 32px; } }
-  .ar-zh__h { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(42px,5vw,76px); font-weight:400; line-height:1.12; color:#ffffff; margin-bottom:28px; letter-spacing:-.01em; }
+  .ar-zh__h { font-family: var(--font-heading-family); font-size:clamp(42px,5vw,76px); font-weight:400; line-height:1.12; color:#ffffff; margin-bottom:28px; letter-spacing:-.01em; }
   .ar-zh__p { font-size:15px; line-height:1.8; color:rgba(255,255,255,.75); max-width:480px; margin-bottom:44px; font-weight:300; }
   .ar-zh__btn { display:inline-block; border:1.5px solid rgba(255,255,255,.85); padding:16px 36px; font-family:var(--fb); font-size:11px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:#ffffff !important; background:transparent; transition:background .3s,color .3s; }
   .ar-zh__btn:hover { background:#ffffff; color:#0a0a0a !important; }
@@ -144,7 +142,7 @@
   /* ── PURE ATTAR ── */
   .ar-pure { position:relative; width:100%; min-height:460px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-family:var(--fb); background:#050010; background-image:radial-gradient(ellipse at 20% 50%,rgba(140,0,255,0.35) 0%,transparent 55%),radial-gradient(ellipse at 80% 30%,rgba(225,0,255,0.25) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(80,0,180,0.3) 0%,transparent 45%); padding:100px 24px; }
   .ar-pure__con { position:relative; z-index:10; max-width:680px; text-align:center; }
-  .ar-pure__h { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(32px,4.5vw,60px); font-weight:300; color:#fff; margin-bottom:20px; letter-spacing:-.01em; }
+  .ar-pure__h { font-family: var(--font-heading-family); font-size:clamp(32px,4.5vw,60px); font-weight:300; color:#fff; margin-bottom:20px; letter-spacing:-.01em; }
   .ar-pure__p { font-size:15px; line-height:1.8; color:rgba(255,255,255,.75); margin-bottom:36px; font-weight:300; max-width:520px; margin-left:auto; margin-right:auto; }
 
   /* ── COMBO ── */
@@ -166,7 +164,7 @@
   .ar-tst { background:#faf9f7; padding:80px 0; font-family:var(--fb); border-top:1px solid rgba(30,32,35,.08); }
   .ar-tst__inner { max-width:1200px; margin:0 auto; padding:0 32px; }
   .ar-tst__hdr { text-align:center; margin-bottom:52px; }
-  .ar-tst__h { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(28px,3.5vw,46px); font-weight:400; color:#1e2023; margin-bottom:12px; letter-spacing:-.01em; }
+  .ar-tst__h { font-family: var(--font-heading-family); font-size:clamp(28px,3.5vw,46px); font-weight:400; color:#1e2023; margin-bottom:12px; letter-spacing:-.01em; }
   .ar-tst__div { width:40px; height:2px; background:#1e2023; margin:0 auto 14px; }
   .ar-tst__sub { font-size:14px; color:#6b7280; font-weight:300; }
   .ar-tst__track { display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; padding:4px 2px 20px; }
@@ -176,7 +174,7 @@
   .ar-tst__stars { display:flex; gap:3px; }
   .ar-tst__star { font-size:16px; color:#e5e7eb; }
   .ar-tst__star.on { color:#f59e0b; }
-  .ar-tst__quote { font-family:'Cormorant Garamond',Georgia,serif; font-size:17px; line-height:1.7; color:#374151; font-style:italic; flex:1; }
+  .ar-tst__quote { font-family: var(--font-heading-family); font-size:17px; line-height:1.7; color:#374151; font-style:italic; flex:1; }
   .ar-tst__author { border-top:1px solid rgba(30,32,35,.06); padding-top:14px; }
   .ar-tst__name { font-size:13px; font-weight:600; color:#1e2023; }
   .ar-tst__loc { font-size:13px; color:#9ca3af; }
@@ -216,9 +214,9 @@
   .ar-best__price { font-size:14px; font-weight:600; color:#1e2023; }
 
   /* ── PHILOSOPHY ── */
-  .ar-bp { background:#fff; width:100%; padding:64px 0 80px; font-family:'Poppins',sans-serif; }
+  .ar-bp { background:#fff; width:100%; padding:64px 0 80px; font-family: var(--font-body-family); }
   .ar-bp__in { max-width:1300px; margin:0 auto; padding:0 20px; }
-  .ar-bp__h { font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-.025em; line-height:1.15; color:#141414; text-align:center; max-width:28ch; margin:0 auto 48px; opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease; }
+  .ar-bp__h { font-family: var(--font-heading-family); font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-.025em; line-height:1.15; color:#141414; text-align:center; max-width:28ch; margin:0 auto 48px; opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease; }
   .ar-bp__h.ar-vis { opacity:1; transform:translateY(0); }
   .ar-bp__grid { display:grid; grid-template-columns:1fr; gap:24px; }
   @media(min-width:640px){ .ar-bp__grid { grid-template-columns:1fr 1fr; } }
@@ -270,7 +268,7 @@
   .ar-inc { background:#f5f0e8; padding:60px 0 72px; font-family:var(--fb); }
   .ar-inc__inner { max-width:1400px; margin:0 auto; padding:0 48px; }
   @media(max-width:768px){ .ar-inc__inner { padding:0 20px; } }
-  .ar-inc__h { font-family:'Poppins',sans-serif; font-size:clamp(24px,3vw,40px); font-weight:700; color:#1e2023; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
+  .ar-inc__h { font-family: var(--font-heading-family); font-size:clamp(24px,3vw,40px); font-weight:700; color:#1e2023; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
   .ar-inc__wrap { position:relative; }
   .ar-inc__arrow { position:absolute; top:40%; z-index:20; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:1px solid rgba(30,32,35,.2); background:rgba(255,255,255,.9); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background .3s,color .3s; }
   .ar-inc__arrow:hover { background:#1e2023; color:#fff; }
@@ -294,7 +292,7 @@
   .ar-vtm { background:#fff; padding:80px 0; font-family:var(--fb); border-top:1px solid rgba(30,32,35,.08); }
   .ar-vtm__inner { max-width:1280px; margin:0 auto; padding:0 32px; }
   .ar-vtm__header { text-align:center; margin-bottom:52px; }
-  .ar-vtm__h { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(28px,3.5vw,48px); font-weight:400; color:#1e2023; margin-bottom:14px; letter-spacing:-.01em; }
+  .ar-vtm__h { font-family: var(--font-heading-family); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:#1e2023; margin-bottom:14px; letter-spacing:-.01em; }
   .ar-vtm__divider { width:40px; height:2px; background:#1e2023; margin:0 auto 14px; }
   .ar-vtm__sub { font-size:14px; color:#6b7280; font-weight:300; }
   .ar-vtm__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
@@ -311,7 +309,7 @@
   .ar-vtm__stars { display:flex; gap:3px; margin-bottom:10px; }
   .ar-vtm__star { font-size:14px; color:#d1d5db; }
   .ar-vtm__star.on { color:#f59e0b; }
-  .ar-vtm__quote { font-family:'Cormorant Garamond',Georgia,serif; font-size:16px; line-height:1.65; color:#374151; margin-bottom:14px; font-style:italic; }
+  .ar-vtm__quote { font-family: var(--font-heading-family); font-size:16px; line-height:1.65; color:#374151; margin-bottom:14px; font-style:italic; }
   .ar-vtm__name { font-size:13px; font-weight:600; color:#1e2023; letter-spacing:.02em; margin:0; }
   .ar-vtm__loc { font-size:12px; color:#9ca3af; margin:3px 0 0; }
 </style>
@@ -332,7 +330,7 @@
       </div>
       <div class="ar-hero__right">
         {%- if section.settings.hero_image != blank -%}
-          <img src="{{ section.settings.hero_image | image_url: width: 1200 }}" alt="{{ section.settings.hero_image.alt | default: 'Anand Rasa' }}" width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}" loading="eager" class="ar-hero__img">
+          <img src="{{ section.settings.hero_image | image_url: width: 1200 }}" alt="{{ section.settings.hero_image.alt | default: section.settings.hero_headline | default: shop.name | escape }}" width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}" loading="eager" fetchpriority="high" class="ar-hero__img">
         {%- else -%}
           <div class="ar-hero__ph">Upload hero image in Theme Editor</div>
         {%- endif -%}
@@ -345,10 +343,41 @@
     <div class="ar-cat__grid">
       {%- for block in section.blocks -%}
         {%- if block.type == 'category' -%}
-          <a href="{{ block.settings.link }}" class="ar-cat__item" {{ block.shopify_attributes }}>
+          {%- liquid
+            assign ar_cat_href = block.settings.link | strip
+            if ar_cat_href == blank
+              assign ar_cat_handle = ''
+              case block.settings.title
+                when 'Planet Attar'
+                  assign ar_cat_handle = 'planet-attars'
+                when 'Zodiac Attar'
+                  assign ar_cat_handle = 'zodiac-attars'
+                when 'Nakshatra Attar'
+                  assign ar_cat_handle = 'nakshatra-attars'
+                when 'Chakra Attar'
+                  assign ar_cat_handle = 'chakra-attars'
+                when 'Stress Relief Attar'
+                  assign ar_cat_handle = 'stressrelief'
+                when 'Love Attar'
+                  assign ar_cat_handle = 'love-attars'
+                when 'Incense Sticks'
+                  assign ar_cat_handle = 'incense-sticks'
+                when 'Discovery Kit'
+                  assign ar_cat_handle = 'gift-sets'
+              endcase
+              if ar_cat_handle != blank and collections[ar_cat_handle] != empty
+                assign ar_cat_href = collections[ar_cat_handle].url
+              elsif ar_cat_handle != blank
+                assign ar_cat_href = routes.collections_url | append: '/' | append: ar_cat_handle
+              else
+                assign ar_cat_href = routes.collections_url
+              endif
+            endif
+          -%}
+          <a href="{{ ar_cat_href }}" class="ar-cat__item" {{ block.shopify_attributes }}>
             <div class="ar-cat__wrap">
               {%- if block.settings.image != blank -%}
-                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title }}" width="800" height="533" loading="lazy" class="ar-cat__img">
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}" width="800" height="533" loading="lazy" class="ar-cat__img">
               {%- else -%}
                 <div class="ar-cat__ph">Upload image</div>
               {%- endif -%}
@@ -410,19 +439,19 @@
   <section class="ar-trio">
     <div class="ar-trio__grid">
       <div class="ar-trio__left">
-        <a href="{{ section.settings.t1_url | default: '/collections/incense' }}" class="ar-trio__card">
+        <a href="{{ section.settings.t1_url | default: '/collections/incense-sticks' }}" class="ar-trio__card">
           {%- if section.settings.t1_image != blank -%}<img src="{{ section.settings.t1_image | image_url: width: 1200 }}" alt="{{ section.settings.t1_image.alt | default: 'Incense Sticks' }}" width="1200" height="800" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
           <div class="ar-trio__ov"></div>
           <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t1_label | default: 'Shop Now' }}</span></div>
         </a>
       </div>
       <div class="ar-trio__right">
-        <a href="{{ section.settings.t2_url | default: '/collections/stress' }}" class="ar-trio__card">
+        <a href="{{ section.settings.t2_url | default: '/collections/stressrelief' }}" class="ar-trio__card">
           {%- if section.settings.t2_image != blank -%}<img src="{{ section.settings.t2_image | image_url: width: 800 }}" alt="{{ section.settings.t2_image.alt | default: 'Stress Relief' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
           <div class="ar-trio__ov"></div>
           <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t2_label | default: 'Shop Now' }}</span></div>
         </a>
-        <a href="{{ section.settings.t3_url | default: '/collections/love-attar' }}" class="ar-trio__card">
+        <a href="{{ section.settings.t3_url | default: '/collections/love-attars' }}" class="ar-trio__card">
           {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Love Attars' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
           <div class="ar-trio__ov"></div>
           <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t3_label | default: 'Shop Now' }}</span></div>
@@ -443,11 +472,18 @@
 
   {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
   <section class="ar-nav9">
+    {%- liquid
+      if collections['planet-attars'] != empty
+        assign ar_nav9_fallback = collections['planet-attars'].url
+      else
+        assign ar_nav9_fallback = routes.collections_url | append: '/planet-attars'
+      endif
+    -%}
     <div class="ar-nav9__intro">
       <div class="ar-nav9__intro-in">
         <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
         <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
-        <a href="{{ section.settings.nav9_url | default: '/collections/planets' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
+        <a href="{{ section.settings.nav9_url | default: '/collections/planet-attars' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
       </div>
     </div>
     <div class="ar-nav9__main">
@@ -498,7 +534,7 @@
           {%- endif %}
         >
         <p class="ar-nav9__pdesc js-ar-nav9-pdesc" id="ar-pdesc-{{ section.id }}">{{ ar_nav9_init_desc | escape }}</p>
-        <a href="{% if ar_nav9_init_url != blank %}{{ ar_nav9_init_url }}{% else %}#{% endif %}" class="ar-nav9__pbtn js-ar-nav9-plink" id="ar-plink-{{ section.id }}" {% if ar_nav9_init_url == blank %}aria-disabled="true"{% endif %}>VIEW PRODUCT</a>
+        <a href="{% if ar_nav9_init_url != blank %}{{ ar_nav9_init_url }}{% else %}{{ ar_nav9_fallback }}{% endif %}" class="ar-nav9__pbtn js-ar-nav9-plink" id="ar-plink-{{ section.id }}" data-fallback-url="{{ ar_nav9_fallback | escape }}">VIEW PRODUCT</a>
       </div>
     </div>
   </section>
@@ -509,7 +545,7 @@
       <div class="ar-zh__left">
         <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
         <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
-        <a href="{{ section.settings.zh_url | default: '/collections/nakshatra' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
+        <a href="{{ section.settings.zh_url | default: '/collections/nakshatra-attars' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
       </div>
       <div class="ar-zh__right">
         {%- if section.settings.zh_video != blank -%}
@@ -562,7 +598,7 @@
 
   {%- comment -%} 9. INCENSE BANNER {%- endcomment -%}
   {%- if section.settings.incense_image != blank -%}
-    <a href="{{ section.settings.incense_url | default: '/collections/incense' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+    <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
       <img
         src="{{ section.settings.incense_image | image_url: width: 1600 }}"
         srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
@@ -789,8 +825,9 @@
       }
       if (pDesc) pDesc.textContent = desc;
       if (pLink) {
-        pLink.href = url || '#';
-        if (url) pLink.removeAttribute('aria-disabled');
+        var fallbackUrl = pLink.getAttribute('data-fallback-url') || '';
+        pLink.href = url || fallbackUrl || '#';
+        if (url || fallbackUrl) pLink.removeAttribute('aria-disabled');
         else pLink.setAttribute('aria-disabled', 'true');
       }
     }

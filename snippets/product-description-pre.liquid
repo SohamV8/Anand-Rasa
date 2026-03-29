@@ -95,7 +95,6 @@
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap');
   [data-pdprem="{{ scope_id }}"] {
     --pdprem-bg: #ffffff;
     --pdprem-ink: #000000;
@@ -107,8 +106,8 @@
     --pdprem-glass: rgba(255, 255, 255, 0.72);
     --pdprem-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     --pdprem-shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
-    --pdprem-serif: 'Playfair Display', 'Cinzel', Georgia, 'Times New Roman', serif;
-    --pdprem-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --pdprem-serif: var(--font-heading-family);
+    --pdprem-sans: var(--font-body-family);
     color: var(--pdprem-ink);
     background: var(--pdprem-bg);
     font-family: var(--pdprem-sans);

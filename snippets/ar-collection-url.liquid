@@ -1,0 +1,11 @@
+{% comment %}
+  Collection URL for handle, or /collections/{handle} fallback.
+  Usage: {% render 'ar-collection-url', handle: 'planet-attars' %}
+{% endcomment %}
+{%- if handle == blank -%}
+  {{ routes.collections_url }}
+{%- elsif collections[handle] != empty -%}
+  {{- collections[handle].url -}}
+{%- else -%}
+  {{- routes.collections_url }}/{{- handle -}}
+{%- endif -%}

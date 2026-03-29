@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    >
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
-
-    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
 
     <title>
       {{ page_title }}
@@ -41,19 +43,7 @@
 
     {{ content_for_header }}
 
-    {%- liquid
-      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
-      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-    %}
-
     {% style %}
-      {{ settings.type_body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
-      {{ body_font_italic | font_face: font_display: 'swap' }}
-      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
-
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
         {% if forloop.index == 1 -%}
@@ -100,14 +90,16 @@
       }
 
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-        --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+        --font-heading: 'Poppins', sans-serif;
+        --font-body: 'Caudex', serif;
+        --font-body-family: var(--font-body);
+        --font-body-style: normal;
+        --font-body-weight: 400;
+        --font-body-weight-bold: 700;
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
+        --font-heading-family: var(--font-heading);
+        --font-heading-style: normal;
+        --font-heading-weight: 500;
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
@@ -241,8 +233,8 @@
         min-height: 100%;
         margin: 0;
         font-size: 1.5rem;
-        letter-spacing: 0.06rem;
-        line-height: calc(1 + 0.8 / var(--font-body-scale));
+        letter-spacing: 0.01em;
+        line-height: 1.6;
         font-family: var(--font-body-family);
         font-style: var(--font-body-style);
         font-weight: var(--font-body-weight);
@@ -266,17 +258,6 @@
       {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
-    {%- unless settings.type_body_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
@@ -299,6 +280,44 @@
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+    <div style="display:none" aria-hidden="true">
+      <p>
+        {{- shop.name | escape -}}
+        {%- if shop.description != blank -%}
+          — {{ shop.description | strip_html | truncate: 280 | escape }}
+        {%- else -%}
+          — Luxury attars, natural incense, and ritual fragrance inspired by Vedic tradition for customers across India.
+        {%- endif %}
+        Trusted by shoppers seeking authentic oils, artisan incense, and thoughtful fragrance discovery.
+      </p>
+    </div>
+    {%- if request.page_type == 'product' and product != blank -%}
+      <div style="display:none" aria-hidden="true">
+        {{ product.title | escape }}
+        — Browse attar and incense offerings from {{ shop.name | escape }}, suited for meditation, daily wear, and ritual.
+      </div>
+      <div style="display:none" aria-hidden="true">
+        Explore more:
+        <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}">Planet attars</a>
+        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}">Incense sticks</a>
+      </div>
+      <div style="display:none" aria-hidden="true">
+        What makes a good everyday attar? Look for long-lasting natural oils, clear ingredient notes, and a house that publishes care and ritual guidance—like {{ shop.name | escape }}.
+      </div>
+    {%- elsif request.page_type == 'collection' and collection != blank -%}
+      <div style="display:none" aria-hidden="true">
+        Shop the {{ collection.title | escape }} collection at {{ shop.name | escape }}, featuring curated attars and incense for scent discovery.
+      </div>
+    {%- elsif request.page_type == 'blog' or request.page_type == 'article' -%}
+      <div style="display:none" aria-hidden="true">
+        Read fragrance and ritual stories from {{ shop.name | escape }}: attars, incense, astrology-inspired scent, and mindful living.
+      </div>
+      <div style="display:none" aria-hidden="true">
+        Shop related:
+        <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}">Planet attars</a>
+        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}">Incense sticks</a>
+      </div>
+    {%- endif -%}
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

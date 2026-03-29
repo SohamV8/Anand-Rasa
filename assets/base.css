@@ -3595,3 +3595,45 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* Global typography — Poppins (headings), Caudex (body). Reinforces theme variables without changing scale tokens. */
+:root {
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Caudex', serif;
+}
+
+*,
+*::before,
+*::after {
+  font-family: inherit;
+}
+
+body {
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h0,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  font-family: var(--font-heading-family);
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  font-style: normal;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body-family);
+}

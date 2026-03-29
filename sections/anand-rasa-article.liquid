@@ -11,10 +11,8 @@
 {% endcomment %}
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
-
   .ar-art *, .ar-art *::before, .ar-art *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  .ar-art { font-family: 'Jost', sans-serif; background: linear-gradient(180deg, #f5f1ea 0%, #faf9f7 32%, #faf9f7 100%); color: #1e2023; min-height: 100vh; }
+  .ar-art { font-family: var(--font-body-family); background: linear-gradient(180deg, #f5f1ea 0%, #faf9f7 32%, #faf9f7 100%); color: #1e2023; min-height: 100vh; }
   .ar-art a { color: inherit; }
   .ar-art img { display: block; max-width: 100%; }
 
@@ -68,7 +66,7 @@
   .aa-feature__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
   .aa-feature__tag { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #e8d5a8; }
   .aa-feature__tag + .aa-feature__tag::before { content: '·'; margin-right: 8px; color: rgba(255, 255, 255, 0.35); }
-  .aa-feature__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(1.85rem, 5vw, 3.15rem); font-weight: 400; line-height: 1.12; color: #fff; letter-spacing: -0.02em; margin-bottom: 16px; max-width: 920px; text-shadow: 0 2px 28px rgba(0, 0, 0, 0.4); }
+  .aa-feature__title { font-family: var(--font-heading-family); font-size: clamp(1.85rem, 5vw, 3.15rem); font-weight: 400; line-height: 1.12; color: #fff; letter-spacing: -0.02em; margin-bottom: 16px; max-width: 920px; text-shadow: 0 2px 28px rgba(0, 0, 0, 0.4); }
   .aa-feature__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 18px; color: rgba(255, 255, 255, 0.88); font-size: 13px; }
   .aa-feature__author { display: flex; align-items: center; gap: 10px; }
   .aa-feature__author-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.35); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; overflow: hidden; flex-shrink: 0; }
@@ -85,7 +83,7 @@
   .aa-hero__tags { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
   .aa-hero__tag { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #c9a96e; }
   .aa-hero__tag + .aa-hero__tag::before { content: '·'; margin-right: 8px; color: #d1d5db; }
-  .aa-hero__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 400; line-height: 1.12; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .aa-hero__title { font-family: var(--font-heading-family); font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 400; line-height: 1.12; color: #1a1a18; letter-spacing: -0.02em; margin-bottom: 24px; }
   .aa-hero__meta { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; padding-bottom: 8px; }
   .aa-hero__author { display: flex; align-items: center; gap: 10px; }
   .aa-hero__author-avatar { width: 40px; height: 40px; border-radius: 50%; background: #1e2023; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; overflow: hidden; flex-shrink: 0; }
@@ -111,7 +109,7 @@
   .aa-content__text { font-size: 18px; line-height: 1.92; color: #3d4349; font-weight: 300; }
   @media (min-width: 700px) {
     .aa-content__text > p:first-of-type:first-child::first-letter {
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-family: var(--font-heading-family);
       font-size: 3.25rem;
       line-height: 1;
       float: left;
@@ -120,13 +118,13 @@
       font-weight: 400;
     }
   }
-  .aa-content__text h2 { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(24px,3vw,36px); font-weight:400; color:#1a1a18; margin:48px 0 20px; letter-spacing:-.01em; line-height:1.2; }
-  .aa-content__text h3 { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(20px,2.5vw,28px); font-weight:400; color:#1a1a18; margin:36px 0 16px; line-height:1.3; }
+  .aa-content__text h2 { font-family:var(--font-heading-family); font-size:clamp(24px,3vw,36px); font-weight:400; color:#1a1a18; margin:48px 0 20px; letter-spacing:-.01em; line-height:1.2; }
+  .aa-content__text h3 { font-family:var(--font-heading-family); font-size:clamp(20px,2.5vw,28px); font-weight:400; color:#1a1a18; margin:36px 0 16px; line-height:1.3; }
   .aa-content__text p { margin-bottom:24px; }
   .aa-content__text strong { font-weight:600; color:#1e2023; }
   .aa-content__text em { font-style:italic; }
   .aa-content__text a { color:#c9a96e; text-decoration:underline; text-underline-offset:3px; }
-  .aa-content__text blockquote { border-left:3px solid #c9a96e; padding:8px 0 8px 24px; margin:32px 0; font-family:'Cormorant Garamond',Georgia,serif; font-size:22px; font-style:italic; color:#1a1a18; line-height:1.5; font-weight:400; }
+  .aa-content__text blockquote { border-left:3px solid #c9a96e; padding:8px 0 8px 24px; margin:32px 0; font-family:var(--font-heading-family); font-size:22px; font-style:italic; color:#1a1a18; line-height:1.5; font-weight:400; }
   .aa-content__text ul, .aa-content__text ol { padding-left:24px; margin-bottom:24px; }
   .aa-content__text li { margin-bottom:8px; line-height:1.75; }
   .aa-content__text img { width:100%; border-radius:4px; margin:32px 0; }
@@ -160,7 +158,7 @@
   .aa-related-thumb { width:64px; height:48px; flex-shrink:0; overflow:hidden; position:relative; background:#e5e7eb; }
   .aa-related-thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s; }
   .aa-related-item:hover .aa-related-thumb img { transform:scale(1.06); }
-  .aa-related-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:14px; line-height:1.35; color:#1a1a18; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; transition:opacity .2s; }
+  .aa-related-title { font-family:var(--font-heading-family); font-size:14px; line-height:1.35; color:#1a1a18; margin-bottom:5px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; transition:opacity .2s; }
   .aa-related-item:hover .aa-related-title { opacity:.7; }
   .aa-related-date { font-size:11px; color:#9ca3af; }
 
@@ -171,7 +169,7 @@
     border: 1px solid rgba(201, 169, 110, 0.25);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
-  .aa-newsletter__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.35rem; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.3; }
+  .aa-newsletter__title { font-family: var(--font-heading-family); font-size: 1.35rem; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.3; }
   .aa-newsletter__text { font-size: 12px; color: rgba(255, 255, 255, 0.55); margin-bottom: 18px; line-height: 1.65; font-weight: 300; }
   .aa-newsletter__input { width: 100%; padding: 11px 14px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.14); color: #fff; font-size: 13px; margin-bottom: 10px; outline: none; border-radius: 8px; }
   .aa-newsletter__input::placeholder { color: rgba(255, 255, 255, 0.35); }
@@ -210,7 +208,7 @@
   .aa-prevnext__item--next { text-align: right; }
   .aa-prevnext__dir { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #9ca3af; display: flex; align-items: center; gap: 6px; }
   .aa-prevnext__item--next .aa-prevnext__dir { justify-content: flex-end; }
-  .aa-prevnext__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.15rem; font-weight: 400; color: #1a1a18; line-height: 1.35; transition: color 0.2s; }
+  .aa-prevnext__title { font-family: var(--font-heading-family); font-size: 1.15rem; font-weight: 400; color: #1a1a18; line-height: 1.35; transition: color 0.2s; }
   .aa-prevnext__item:hover .aa-prevnext__title { color: #c9a96e; }
 </style>
 
@@ -494,6 +492,12 @@
   }
 })();
 </script>
+
+{%- if article != blank -%}
+  <script type="application/ld+json">
+    {{ article | structured_data }}
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
