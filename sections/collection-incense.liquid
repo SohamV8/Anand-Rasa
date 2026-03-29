@@ -9,6 +9,7 @@
     .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
+    .ar-incense img { transform:none; transition:none; }
   
     /* Hero */
     .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#1a0800; }
@@ -21,56 +22,6 @@
     .arc-hero__p { font-size:15px; line-height:1.75; color:rgba(255,255,255,.78); font-weight:300; max-width:480px; margin-bottom:32px; }
     .arc-hero__btn { display:inline-flex; align-items:center; gap:10px; border:1.5px solid rgba(255,255,255,.7); padding:13px 32px; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#fff; background:transparent; transition:all .3s; }
     .arc-hero__btn:hover { background:#fff; color:#1a0800; border-color:#fff; }
-  
-    /* USP strip — simple + native emoji (Apple Color Emoji on iOS / macOS) */
-    .arc-usp {
-      background:#fff;
-      border-top:1px solid rgba(30,32,35,.1);
-      border-bottom:1px solid rgba(30,32,35,.1);
-    }
-    .arc-usp__row {
-      max-width:1120px;
-      margin:0 auto;
-      padding:44px 32px;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:28px 32px;
-      align-items:start;
-    }
-    @media(max-width:900px){
-      .arc-usp__row { grid-template-columns:repeat(2,1fr); padding:36px 24px; gap:28px 24px; }
-    }
-    @media(max-width:480px){
-      .arc-usp__row { grid-template-columns:1fr; padding:32px 24px; gap:24px; }
-    }
-    .arc-usp__item { text-align:center; padding:0 8px; }
-    .arc-usp__emoji {
-      display:block;
-      font-size:clamp(22px,2.4vw,28px);
-      line-height:1;
-      margin-bottom:14px;
-      font-family:"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji",sans-serif;
-      letter-spacing:0;
-      -webkit-font-smoothing:antialiased;
-    }
-    .arc-usp__title {
-      font-family:var(--fh);
-      font-size:clamp(16px,1.5vw,19px);
-      font-weight:400;
-      color:var(--ink);
-      letter-spacing:.01em;
-      line-height:1.35;
-    }
-    .arc-usp__sub {
-      margin-top:10px;
-      font-size:12px;
-      font-weight:300;
-      color:#6b7280;
-      line-height:1.55;
-      max-width:28ch;
-      margin-left:auto;
-      margin-right:auto;
-    }
   
     /* Toolbar */
     .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
@@ -136,51 +87,73 @@
     .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s,transform .2s; position:relative; }
     .arc-cta__btn:hover { background:#b8943a; transform:translateY(-1px); }
   
+    /* Bulk wholesale */
+    .bulk-order-section { width:100%; background:#fff; border-top:1px solid rgba(0,0,0,.08); font-family:var(--fb); }
+    .bulk-container { max-width:1200px; margin:0 auto; padding:80px 24px; }
+    .bulk-grid { display:grid; grid-template-columns:1fr; gap:60px; }
+    @media(min-width:1024px){ .bulk-grid { grid-template-columns:1fr 1fr; } }
+    .bulk-eyebrow { font-size:11px; letter-spacing:.28em; color:#6b7280; font-weight:600; text-transform:uppercase; }
+    .bulk-heading { margin-top:10px; font-family:var(--fh); font-size:34px; font-weight:500; color:#1e2023; line-height:1.2; }
+    .bulk-description { margin-top:20px; font-size:14px; line-height:1.7; color:#4b5563; max-width:420px; }
+    .bulk-contact { margin-top:40px; display:flex; flex-direction:column; gap:18px; }
+    .bulk-label { font-size:11px; letter-spacing:.2em; color:#6b7280; margin-bottom:4px; font-weight:600; text-transform:uppercase; }
+    .bulk-contact a { color:#1e2023; font-weight:500; text-decoration:none; transition:color .2s; }
+    .bulk-contact a:hover { color:#000; text-decoration:underline; }
+    .bulk-button-outline {
+      display:inline-block; border:1px solid #1e2023; padding:10px 22px; font-size:12px; letter-spacing:.18em;
+      font-family:var(--fh); font-weight:600; text-transform:uppercase; color:#1e2023; background:transparent;
+      transition:background .3s ease,color .3s ease;
+    }
+    .bulk-button-outline:hover { background:#1e2023; color:#fff; }
+    .bulk-form { display:flex; flex-direction:column; gap:22px; margin:0; }
+    .bulk-field label { display:block; font-size:11px; letter-spacing:.2em; color:#6b7280; margin-bottom:6px; font-weight:600; text-transform:uppercase; }
+    .bulk-field input,
+    .bulk-field textarea {
+      width:100%; border:1px solid rgba(0,0,0,.2); padding:12px 14px; font-size:14px; font-family:var(--fb);
+      outline:none; transition:border-color .2s ease; border-radius:0; background:#fff; color:#1e2023;
+    }
+    .bulk-field textarea { min-height:120px; resize:vertical; line-height:1.5; }
+    .bulk-field input:focus,
+    .bulk-field textarea:focus { border-color:#1e2023; }
+    .bulk-submit {
+      width:100%; border:1px solid #1e2023; padding:14px; font-size:13px; letter-spacing:.18em; font-family:var(--fh);
+      font-weight:600; text-transform:uppercase; transition:background .3s ease,color .3s ease; background:transparent; color:#1e2023; cursor:pointer;
+    }
+    .bulk-submit:hover { background:#1e2023; color:#fff; }
+    .bulk-submit:disabled { opacity:.6; cursor:not-allowed; }
+    .bulk-success {
+      padding:20px; text-align:center; font-size:15px; line-height:1.6; color:#4b5563; background:#f0fdf4; border:1px solid #bbf7d0;
+    }
+    .bulk-errors { color:#b91c1c; font-size:14px; line-height:1.5; }
+    .bulk-errors ul { margin:8px 0 0 1.2em; padding:0; }
+    .bulk-left, .bulk-right { animation:fadeUp .55s ease both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  
     @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   
   </style>
   
   <div class="arc">
   
-    {%- comment -%} HERO {% endcomment %}
-    <div class="arc-hero">
-      {%- if section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ collection.title }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
-      {%- endif -%}
-      <div class="arc-hero__ov"></div>
-      <div class="arc-hero__con">
-        <span class="arc-hero__label">{{ section.settings.hero_label | default: 'Sacred Fragrance' }}</span>
-        <h1 class="arc-hero__h">{{ collection.title | default: 'Incense Sticks' }}</h1>
-        <p class="arc-hero__p">{{ section.settings.hero_subtitle | default: 'Pure, natural incense crafted from sacred botanicals. Each stick carries the essence of ancient Indian rituals.' }}</p>
-        <a href="#arc-products" class="arc-hero__btn">{{ section.settings.hero_btn | default: 'Explore Collection' }}</a>
-      </div>
+    {%- if section.settings.incense_image != blank -%}
+    <div class="ar-incense" role="img" aria-label="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}">
+      <img
+        src="{{ section.settings.incense_image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
+        width="{{ section.settings.incense_image.width | default: 2000 }}"
+        height="{{ section.settings.incense_image.height | default: 800 }}"
+        loading="lazy"
+      >
     </div>
+  {%- else -%}
+    <div class="ar-incense-ph">
+      <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
+      <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
+    </div>
+  {%- endif -%}
   
-    {%- comment -%} USP STRIP {% endcomment %}
-    <div class="arc-usp">
-      <div class="arc-usp__row">
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">🌿</span>
-          <p class="arc-usp__title">100% Natural</p>
-          <p class="arc-usp__sub">No synthetic chemicals</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">⏱️</span>
-          <p class="arc-usp__title">2–3 hr burn</p>
-          <p class="arc-usp__sub">Long-lasting aroma</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">🙏</span>
-          <p class="arc-usp__title">Handcrafted</p>
-          <p class="arc-usp__sub">Traditional techniques</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">✨</span>
-          <p class="arc-usp__title">Spiritual grade</p>
-          <p class="arc-usp__sub">Temple-quality purity</p>
-        </div>
-      </div>
-    </div>
   
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
@@ -306,14 +279,116 @@
     </section>
     {%- endif -%}
   
-    {%- comment -%} CTA SECTION {% endcomment %}
-    <section class="arc-cta">
-      <div class="arc-cta__ov"></div>
-      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
-      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Transform Your Space into a Sacred Sanctuary' }}</h2>
-      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet.' }}</p>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
+    {%- if section.settings.bulk_enable != false -%}
+    {%- liquid
+      assign bulk_pid = 'BulkOrder-' | append: section.id
+      assign bulk_tel_href = section.settings.bulk_phone | default: '+919311336643' | strip | replace: ' ', '' | replace: '-', ''
+      unless bulk_tel_href contains '+'
+        assign bulk_tel_href = bulk_tel_href | prepend: '+'
+      endunless
+    -%}
+    <section class="bulk-order-section" aria-labelledby="{{ bulk_pid }}-heading">
+      <div class="bulk-container">
+        <div class="bulk-grid">
+          <div class="bulk-left">
+            <p class="bulk-eyebrow">{{ section.settings.bulk_eyebrow | escape }}</p>
+            <h2 class="bulk-heading" id="{{ bulk_pid }}-heading">{{ section.settings.bulk_heading | escape }}</h2>
+            <div class="bulk-description">{{ section.settings.bulk_description | newline_to_br }}</div>
+            <div class="bulk-contact">
+              <div>
+                <p class="bulk-label">{{ section.settings.bulk_call_label | escape }}</p>
+                <a href="tel:{{ bulk_tel_href }}">{{ section.settings.bulk_phone_display | escape }}</a>
+              </div>
+              <div>
+                <p class="bulk-label">{{ section.settings.bulk_email_label | escape }}</p>
+                <a href="mailto:{{ section.settings.bulk_email }}">{{ section.settings.bulk_email | escape }}</a>
+              </div>
+              <div class="bulk-cta">
+                <a href="tel:{{ bulk_tel_href }}" class="bulk-button-outline">{{ section.settings.bulk_call_btn | escape }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="bulk-right">
+            {%- form 'contact', id: bulk_pid, class: 'bulk-form' -%}
+              {%- if form.posted_successfully? -%}
+                <div class="bulk-success" tabindex="-1" role="status">
+                  {{ section.settings.bulk_success | default: "Thank you. Our team will contact you within 24 hours." }}
+                </div>
+              {%- else -%}
+                {%- if form.errors -%}
+                  <div class="bulk-errors" role="alert">
+                    <h3 class="visually-hidden">{{ 'templates.contact.form.error_heading' | t }}</h3>
+                    {{ form.errors | default_errors }}
+                  </div>
+                {%- endif -%}
+
+                <div class="bulk-field">
+                  <label for="{{ bulk_pid }}-name">{{ 'templates.contact.form.name' | t }} <span aria-hidden="true">*</span></label>
+                  <input
+                    type="text"
+                    id="{{ bulk_pid }}-name"
+                    name="contact[{{ 'templates.contact.form.name' | t }}]"
+                    autocomplete="name"
+                    value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                    placeholder="{{ 'templates.contact.form.name' | t }}"
+                    required
+                  >
+                </div>
+
+                <div class="bulk-field">
+                  <label for="{{ bulk_pid }}-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+                  <input
+                    type="email"
+                    id="{{ bulk_pid }}-email"
+                    name="contact[email]"
+                    autocomplete="email"
+                    spellcheck="false"
+                    autocapitalize="off"
+                    value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                    placeholder="{{ 'templates.contact.form.email' | t }}"
+                    required
+                    aria-required="true"
+                    {% if form.errors contains 'email' %}
+                      aria-invalid="true"
+                    {% endif %}
+                  >
+                </div>
+
+                <div class="bulk-field">
+                  <label for="{{ bulk_pid }}-phone">{{ 'templates.contact.form.phone' | t }} <span aria-hidden="true">*</span></label>
+                  <input
+                    type="tel"
+                    id="{{ bulk_pid }}-phone"
+                    name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    value="{% if form.phone %}{{ form.phone }}{% elsif customer != blank and customer.phone != blank %}{{ customer.phone }}{% endif %}"
+                    placeholder="{{ 'templates.contact.form.phone' | t }}"
+                    required
+                  >
+                </div>
+
+                <div class="bulk-field">
+                  <label for="{{ bulk_pid }}-body">{{ section.settings.bulk_message_label | escape }} <span aria-hidden="true">*</span></label>
+                  <textarea
+                    id="{{ bulk_pid }}-body"
+                    name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                    rows="5"
+                    required
+                    placeholder="{{ section.settings.bulk_message_placeholder | escape }}"
+                  >{{ form.body | strip }}</textarea>
+                </div>
+
+                <button type="submit" class="bulk-submit">
+                  {{ section.settings.bulk_submit | escape }}
+                </button>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        </div>
+      </div>
     </section>
+    {%- endif -%}
   
   </div>
   
@@ -363,6 +438,21 @@
       {"type":"textarea","id":"cta_subtitle","label":"CTA subtitle","default":"Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet."},
       {"type":"text","id":"cta_btn","label":"Button text","default":"Shop Now"},
       {"type":"url","id":"cta_url","label":"Button URL"},
+      {"type":"header","content":"Bulk / wholesale inquiry"},
+      {"type":"checkbox","id":"bulk_enable","label":"Show bulk order form","default":true},
+      {"type":"text","id":"bulk_eyebrow","label":"Bulk eyebrow","default":"Wholesale"},
+      {"type":"text","id":"bulk_heading","label":"Bulk heading","default":"Bulk Incense Orders"},
+      {"type":"textarea","id":"bulk_description","label":"Bulk description","default":"Partner with us for bulk incense supply for temples, retailers, events, or corporate gifting. Premium quality, direct sourcing, and consistent fragrance batches."},
+      {"type":"text","id":"bulk_call_label","label":"Phone label","default":"Call us"},
+      {"type":"text","id":"bulk_phone","label":"Phone (for tel: link, E.164)","default":"+919311336643","info":"Include country code, e.g. +919311336643"},
+      {"type":"text","id":"bulk_phone_display","label":"Phone display text","default":"+91 93113 36643"},
+      {"type":"text","id":"bulk_email_label","label":"Email label","default":"Email"},
+      {"type":"text","id":"bulk_email","label":"Wholesale email","default":"anandrasafragnance@gmail.com"},
+      {"type":"text","id":"bulk_call_btn","label":"Call button text","default":"Call now"},
+      {"type":"text","id":"bulk_message_label","label":"Form message label","default":"Your inquiry"},
+      {"type":"text","id":"bulk_message_placeholder","label":"Message placeholder","default":"Quantity, timeline, delivery city, GST details…"},
+      {"type":"text","id":"bulk_submit","label":"Submit button","default":"Submit"},
+      {"type":"textarea","id":"bulk_success","label":"Success message","default":"Thank you. Our team will contact you within 24 hours."},
       {"type":"header","content":"Products"},
       {"type":"range","id":"products_per_page","label":"Products per page","min":8,"max":48,"step":4,"default":16}
     ],
