@@ -1,0 +1,333 @@
+{% comment %}
+  Premium specs + comparison (B&W). Requires: scope_id, section (parent settings + blocks).
+  Settings: premium_heading | heading, premium_subheading | subheading, compare_brand_name | brand_name, compare_feature_col_label, compare_others_label
+{% endcomment %}
+{%- liquid
+  assign p_title = section.settings.premium_heading | default: section.settings.heading
+  assign p_sub = section.settings.premium_subheading | default: section.settings.subheading
+  assign p_brand = section.settings.compare_brand_name | default: section.settings.brand_name | default: 'Anand Rasa'
+  assign p_feat = section.settings.compare_feature_col_label | default: 'Feature'
+  assign p_oth = section.settings.compare_others_label | default: 'Others'
+  assign spec_blocks = section.blocks | where: 'type', 'spec_row'
+  assign cmp_blocks = section.blocks | where: 'type', 'compare_row'
+-%}
+
+<div class="pdprem" data-pdprem="{{ scope_id }}">
+  <div class="pdprem__shell pdprem-fade">
+    <header class="pdprem__header">
+      {%- if p_title != blank -%}
+        <h2 class="pdprem__title">{{ p_title }}</h2>
+      {%- endif -%}
+      {%- if p_sub != blank -%}
+        <p class="pdprem__sub">{{ p_sub }}</p>
+      {%- endif -%}
+      <div class="pdprem__divider" aria-hidden="true"></div>
+    </header>
+
+    <div class="pdprem__grid">
+      <div class="pdprem__col pdprem__col--spec">
+        <div class="pdprem__glass">
+          {%- if spec_blocks.size > 0 -%}
+            <ul class="pdprem__spec-list" role="list">
+              {%- for block in spec_blocks -%}
+                <li class="pdprem__spec-row" {{ block.shopify_attributes }}>
+                  <span class="pdprem__spec-label">{{ block.settings.label }}</span>
+                  <span class="pdprem__spec-value">{{ block.settings.value }}</span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <p class="pdprem__empty">Add specification rows in the theme editor.</p>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="pdprem__col pdprem__col--compare">
+        <div class="pdprem__table-wrap pdprem-fade pdprem-fade--delay">
+          {%- if cmp_blocks.size > 0 -%}
+            <div class="pdprem__table-scroll">
+              <table class="pdprem__table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ p_feat }}</th>
+                    <th class="pdprem__th-brand" scope="col">{{ p_brand }}</th>
+                    <th scope="col">{{ p_oth }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- for block in cmp_blocks -%}
+                    {%- assign oa = block.settings.our_answer | default: '✓' | strip -%}
+                    {%- assign ta = block.settings.others_answer | default: '✕' | strip -%}
+                    {%- assign our_is_neg = false -%}
+                    {%- if oa == '✕' or oa == 'x' or oa == 'X' -%}{%- assign our_is_neg = true -%}{%- endif -%}
+                    {%- assign ot_is_pos = false -%}
+                    {%- if ta == '✓' or ta == 'v' or ta == 'V' -%}{%- assign ot_is_pos = true -%}{%- endif -%}
+                    <tr {{ block.shopify_attributes }}>
+                      <td class="pdprem__td-feat">{{ block.settings.feature }}</td>
+                      <td class="pdprem__td-brand">
+                        <span class="visually-hidden">{{ oa }}</span>
+                        {%- if our_is_neg -%}
+                          <span class="pdprem__ic" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+                        {%- else -%}
+                          <span class="pdprem__ic" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7"/></svg></span>
+                        {%- endif -%}
+                      </td>
+                      <td class="pdprem__td-oth">
+                        <span class="visually-hidden">{{ ta }}</span>
+                        {%- if ot_is_pos -%}
+                          <span class="pdprem__ic" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 13l4 4L19 7"/></svg></span>
+                        {%- else -%}
+                          <span class="pdprem__ic" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+                        {%- endif -%}
+                      </td>
+                    </tr>
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          {%- else -%}
+            <p class="pdprem__empty">Add comparison rows in the theme editor.</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap');
+  [data-pdprem="{{ scope_id }}"] {
+    --pdprem-bg: #ffffff;
+    --pdprem-ink: #000000;
+    --pdprem-muted: #6b6b6b;
+    --pdprem-line: #e5e5e5;
+    --pdprem-line-hair: rgba(0, 0, 0, 0.08);
+    --pdprem-shade: rgba(0, 0, 0, 0.04);
+    --pdprem-shade-alt: rgba(0, 0, 0, 0.02);
+    --pdprem-glass: rgba(255, 255, 255, 0.72);
+    --pdprem-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --pdprem-shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+    --pdprem-serif: 'Playfair Display', 'Cinzel', Georgia, 'Times New Roman', serif;
+    --pdprem-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--pdprem-ink);
+    background: var(--pdprem-bg);
+    font-family: var(--pdprem-sans);
+    padding: clamp(3rem, 6vw, 5.5rem) clamp(1.25rem, 4vw, 2.5rem);
+  }
+  [data-pdprem="{{ scope_id }}"] * { box-sizing: border-box; }
+  [data-pdprem="{{ scope_id }}"] .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0);
+    white-space: nowrap; border: 0;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__shell {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__header {
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__title {
+    font-family: var(--pdprem-serif);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    color: var(--pdprem-ink);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__sub {
+    font-family: var(--pdprem-sans);
+    font-weight: 400;
+    font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    line-height: 1.65;
+    color: var(--pdprem-muted);
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__divider {
+    height: 1px;
+    max-width: 120px;
+    margin: clamp(1.25rem, 3vw, 2rem) auto 0;
+    background: linear-gradient(90deg, transparent, var(--pdprem-line), transparent);
+    opacity: 0.9;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: start;
+  }
+  @media (max-width: 899px) {
+    [data-pdprem="{{ scope_id }}"] .pdprem__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__glass {
+    border-radius: 12px;
+    border: 1px solid var(--pdprem-line-hair);
+    background: var(--pdprem-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--pdprem-shadow-soft);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__glass:hover {
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-row {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 1rem 1.25rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--pdprem-line-hair);
+    align-items: baseline;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-row:last-child { border-bottom: none; }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-row:nth-child(even) {
+    background: var(--pdprem-shade-alt);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-row:hover {
+    background: rgba(0, 0, 0, 0.035);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pdprem-muted);
+    line-height: 1.4;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__spec-value {
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--pdprem-ink);
+    line-height: 1.5;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table-wrap {
+    border-radius: 12px;
+    border: 1px solid var(--pdprem-line-hair);
+    box-shadow: var(--pdprem-shadow);
+    overflow: hidden;
+    background: var(--pdprem-bg);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table-wrap:hover {
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.18);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 280px;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table thead th {
+    font-family: var(--pdprem-sans);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pdprem-muted);
+    padding: 1rem 1.1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--pdprem-line-hair);
+    background: rgba(0, 0, 0, 0.02);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table .pdprem__th-brand {
+    background: var(--pdprem-shade);
+    color: var(--pdprem-ink);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    position: relative;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table tbody tr:nth-child(even) td {
+    background: rgba(0, 0, 0, 0.015);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table td {
+    padding: 1.05rem 1.1rem;
+    border-bottom: 1px solid var(--pdprem-line-hair);
+    vertical-align: middle;
+    transition: background 0.3s ease;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__table tbody tr:last-child td { border-bottom: none; }
+  [data-pdprem="{{ scope_id }}"] .pdprem__td-feat {
+    font-weight: 500;
+    color: var(--pdprem-ink);
+    line-height: 1.5;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__td-brand {
+    text-align: center;
+    background: rgba(0, 0, 0, 0.035);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__td-oth {
+    text-align: center;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__ic svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--pdprem-ink);
+    fill: none;
+    stroke-width: 1.35;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem__empty {
+    margin: 0;
+    padding: 1.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: var(--pdprem-muted);
+    text-align: center;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem-fade {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem-fade.is-inview {
+    opacity: 1;
+    transform: none;
+  }
+  [data-pdprem="{{ scope_id }}"] .pdprem-fade--delay { transition-delay: 0.12s; }
+</style>
+
+<script>
+  (function () {
+    var root = document.querySelector('[data-pdprem="{{ scope_id }}"]');
+    if (!root || !('IntersectionObserver' in window)) {
+      if (root) root.querySelectorAll('.pdprem-fade').forEach(function (el) { el.classList.add('is-inview'); });
+      return;
+    }
+    var els = root.querySelectorAll('.pdprem-fade');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-inview');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>

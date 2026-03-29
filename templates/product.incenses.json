@@ -1,0 +1,158 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-incenses",
+      "settings": {
+        "product_label": "Incense Sticks",
+        "rating": 5,
+        "review_count": "0",
+        "cta_primary": "Begin Your Ritual",
+        "cta_secondary": "Buy It Now",
+        "show_buy_now": true,
+        "trust_1": "Limited batch crafted",
+        "trust_2": "Ships within 24 hours",
+        "trust_3": "100% natural, chemical free",
+        "story_pre": "Our Story",
+        "story_heading": "Born from Ancient Ritual",
+        "story_text": "<p>For centuries, the art of incense-making has been a sacred tradition in India — a bridge between the earthly and the divine. Each Anand Rasa incense stick carries that lineage forward.<\/p><p>We work with artisans who have inherited this craft through generations, using only botanicals that nature intended to be burned in devotion.<\/p>",
+        "scent_pre": "Scent Profile",
+        "scent_top": "Rose, Jasmine, Mogra",
+        "scent_heart": "Sandalwood, Havan Samagri",
+        "scent_base": "Pure Resin, Amber, Earth",
+        "scent_desc_pre": "The Experience",
+        "scent_desc": "<h3>A Fragrance That Stills the Mind<\/h3><p>Close your eyes. The first curl of smoke rises — soft, warm, botanical. The room shifts. What was ordinary becomes sacred.<\/p><p>This is what Anand Rasa incense does. It doesn't just scent a space. It changes the quality of the air. The quality of thought. The quality of being.<\/p>",
+        "ritual_pre": "The Ritual",
+        "ritual_heading": "A Practice of Presence",
+        "compare_pre": "Why Choose Us",
+        "compare_heading": "The Difference Is Felt",
+        "compare_col_ours": "Anand Rasa",
+        "compare_col_others": "Others",
+        "specs_pre": "Product Details",
+        "specs_heading": "Crafted with Intention",
+        "reviews_pre": "Testimonials",
+        "reviews_heading": "Words from Those Who Know",
+        "final_pre": "Begin",
+        "final_heading": "Transform Your Space",
+        "final_sub": "One stick. One moment. One shift in the quality of your presence."
+      },
+      "blocks": {
+        "usp-1": {
+          "type": "usp",
+          "settings": { "name": "PURE BOTANICALS", "desc": "No synthetics, ever" }
+        },
+        "usp-2": {
+          "type": "usp",
+          "settings": { "name": "LONG BURN", "desc": "2–3 hours per stick" }
+        },
+        "usp-3": {
+          "type": "usp",
+          "settings": { "name": "HANDCRAFTED", "desc": "Traditional techniques" }
+        },
+        "usp-4": {
+          "type": "usp",
+          "settings": { "name": "SPIRITUAL GRADE", "desc": "Temple quality purity" }
+        },
+        "ritual-1": {
+          "type": "ritual_step",
+          "settings": {
+            "title": "Light",
+            "desc": "Hold the uncoated end and bring a flame to the tip until it glows softly amber. No harsh burning — just a gentle catch."
+          }
+        },
+        "ritual-2": {
+          "type": "ritual_step",
+          "settings": {
+            "title": "Place",
+            "desc": "Set the stick in your holder on a stable surface. Let the thin thread of smoke rise freely. Step back. Give it space."
+          }
+        },
+        "ritual-3": {
+          "type": "ritual_step",
+          "settings": {
+            "title": "Breathe",
+            "desc": "Close your eyes. Inhale slowly. Allow the fragrance to fill the room and your awareness. This is your moment."
+          }
+        },
+        "compare-1": {
+          "type": "compare_row",
+          "settings": { "feature": "Charcoal Free", "ours_check": true, "others_check": false }
+        },
+        "compare-2": {
+          "type": "compare_row",
+          "settings": { "feature": "100% Natural Ingredients", "ours_check": true, "others_check": false }
+        },
+        "compare-3": {
+          "type": "compare_row",
+          "settings": { "feature": "2–3 Hour Burn Time", "ours_check": true, "ours_text": "Consistent", "others_check": false, "others_text": "Varies" }
+        },
+        "compare-4": {
+          "type": "compare_row",
+          "settings": { "feature": "No Synthetic Fragrance", "ours_check": true, "others_check": false }
+        },
+        "compare-5": {
+          "type": "compare_row",
+          "settings": { "feature": "Handrolled", "ours_check": true, "others_check": false }
+        },
+        "spec-1": {
+          "type": "spec",
+          "settings": { "label": "Sticks Per Pack", "value": "40 Sticks" }
+        },
+        "spec-2": {
+          "type": "spec",
+          "settings": { "label": "Burn Time", "value": "2–3 Hours" }
+        },
+        "spec-3": {
+          "type": "spec",
+          "settings": { "label": "Stick Length", "value": "20 cm" }
+        },
+        "spec-4": {
+          "type": "spec",
+          "settings": { "label": "Ingredients", "value": "Natural resins, essential oils, bamboo core" }
+        },
+        "spec-5": {
+          "type": "spec",
+          "settings": { "label": "Made In", "value": "India" }
+        },
+        "spec-6": {
+          "type": "spec",
+          "settings": { "label": "Suitable For", "value": "Meditation, Prayer, Home Fragrance" }
+        },
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "The fragrance is unlike anything I have experienced. It transforms the entire room into a place of calm and devotion.",
+            "author": "Priya S.",
+            "location": "Mumbai"
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "I have tried many incense brands. None come close to Anand Rasa. The burn is clean, long, and the scent is deeply authentic.",
+            "author": "Arjun M.",
+            "location": "Delhi"
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "text": "My morning meditation has changed completely since I started using these. The fragrance centres me in a way nothing else does.",
+            "author": "Kavya R.",
+            "location": "Bangalore"
+          }
+        }
+      },
+      "block_order": [
+        "usp-1", "usp-2", "usp-3", "usp-4",
+        "ritual-1", "ritual-2", "ritual-3",
+        "compare-1", "compare-2", "compare-3", "compare-4", "compare-5",
+        "spec-1", "spec-2", "spec-3", "spec-4", "spec-5", "spec-6",
+        "review-1", "review-2", "review-3"
+      ]
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "anand-rasa-article",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

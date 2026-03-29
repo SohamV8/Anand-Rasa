@@ -1,0 +1,1545 @@
+{% comment %}
+  ANAND RASA - Homepage
+  sections/anand-rasa-homepage.liquid
+{% endcomment %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&family=Poppins:wght@300;400;500;600;700&family=Codec+Pro:wght@300;400&display=swap');
+
+  .ar-hp *, .ar-hp *::before, .ar-hp *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .ar-hp { --ink: #1e2023; --fh: 'Cormorant Garamond', Georgia, serif; --fb: 'Jost', sans-serif; }
+  .ar-hp img, .ar-hp video { max-width: 100%; display: block; }
+  .ar-hp a { color: inherit; text-decoration: none; }
+
+  @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes arIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes arGlow { from { transform:scale(1); } to { transform:scale(1.08) rotate(2deg); } }
+
+  /* ── HERO ── */
+  .ar-hero { background:#faf9f7; overflow:hidden; font-family:var(--fb); min-height:100vh; display:flex; align-items:center; }
+  .ar-hero__in { max-width:1440px; width:100%; margin:0 auto; padding:60px 48px 60px; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:0; min-height:100vh; }
+  .ar-hero__left { animation:arUp .7s ease both; padding-right:40px; }
+  .ar-hero__ey { font-size:11px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:#6b7280; margin-bottom:20px; font-family:var(--fb); }
+  .ar-hero__h1 { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(28px,4vw,56px); font-weight:400; line-height:1.08; color:#1a1a18; margin-bottom:24px; letter-spacing:-.01em; white-space:nowrap; }
+  .ar-hero__p  { font-family:'Jost', sans-serif; font-size:15px; line-height:1.75; color:#4b5563; margin-bottom:40px; max-width:440px; font-weight:300; }
+  .ar-hero__cta { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  .ar-hero__btn1 { display:inline-flex; align-items:center; justify-content:center; padding:13px 32px; background:#ffffff; color:#1a1a18; font-family:var(--fb); font-size:13px; font-weight:600; letter-spacing:.04em; border:1.8px solid #1a1a18; border-radius:100px; transition:background .25s,color .25s; }
+  .ar-hero__btn1:hover { background:#1a1a18; color:#ffffff; }
+  .ar-hero__btn2 { display:inline-flex; align-items:center; font-family:var(--fb); font-size:14px; font-weight:400; color:#1a1a18; background:transparent; border:none; padding:0; letter-spacing:.01em; transition:opacity .2s; }
+  .ar-hero__btn2:hover { opacity:.6; }
+  .ar-hero__right { animation:arIn .9s ease .15s both; position:relative; display:flex; align-items:flex-end; justify-content:flex-end; height:100%; min-height:500px; }
+  .ar-hero__img { position:absolute; right:-48px; bottom:0; height:100%; width:auto; max-height:100vh; object-fit:contain; object-position:right bottom; }
+  .ar-hero__ph { width:100%; height:500px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.04); color:#9ca3af; font-size:13px; border:1.5px dashed #d1d5db; font-family:var(--fb); border-radius:8px; }
+  @media(max-width:1023px){ .ar-hero__in { grid-template-columns:1fr; min-height:auto; padding:60px 24px 40px; } .ar-hero__left { padding-right:0; } .ar-hero__right { min-height:320px; } .ar-hero__img { position:relative; right:auto; height:320px; width:100%; object-position:center bottom; } }
+  @media(max-width:640px){ .ar-hero__in { padding:40px 20px 0; } }
+
+  /* ── TRUST BAR ── */
+  .ar-trust { background:#fff; padding:56px 24px; font-family:var(--fb); }
+  .ar-trust__grid { list-style:none; display:grid; grid-template-columns:repeat(2,1fr); gap:48px 24px; text-align:center; max-width:1280px; margin:0 auto; }
+  @media(min-width:1024px){ .ar-trust__grid { grid-template-columns:repeat(4,1fr); } }
+  .ar-trust__item { display:flex; flex-direction:column; align-items:center; opacity:0; transform:translateY(20px); transition:opacity .7s ease,transform .7s ease; }
+  .ar-trust__grid.ar-vis .ar-trust__item { opacity:1; transform:translateY(0); }
+  .ar-trust__icon { width:64px; height:64px; object-fit:contain; filter:grayscale(1); margin-bottom:16px; transition:transform .5s; }
+  .ar-trust__item:hover .ar-trust__icon { transform:scale(1.05); }
+  .ar-trust__ph { width:64px; height:64px; background:#f3f4f6; border-radius:50%; margin-bottom:16px; }
+  .ar-trust__lbl { font-size:14px; line-height:1.5; color:#4b5563; max-width:200px; }
+
+  /* ── CATEGORY GRID ── */
+  .ar-cat { background:#fff; padding:48px 32px; font-family:var(--fb); }
+  .ar-cat__grid { display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:1280px; margin:0 auto; }
+  @media(min-width:768px){ .ar-cat__grid { grid-template-columns:repeat(3,1fr); } }
+  @media(min-width:1024px){ .ar-cat__grid { grid-template-columns:repeat(4,1fr); } }
+  .ar-cat__item { display:block; overflow:hidden; }
+  .ar-cat__wrap { position:relative; aspect-ratio:3/2; overflow:hidden; }
+  .ar-cat__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+  .ar-cat__item:hover .ar-cat__img { transform:scale(1.1); }
+  .ar-cat__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:12px; font-family:var(--fb); }
+  .ar-cat__ov { position:absolute; inset:0; background:rgba(0,0,0,.35); transition:background .5s; }
+  .ar-cat__item:hover .ar-cat__ov { background:rgba(0,0,0,.5); }
+  .ar-cat__txt { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:16px; color:#fff; }
+  .ar-cat__title { font-size:clamp(12px,2vw,18px); font-weight:600; letter-spacing:.12em; text-shadow:0 1px 4px rgba(0,0,0,.3); }
+  .ar-cat__cta { margin-top:8px; font-size:12px; border-bottom:1px solid rgba(255,255,255,.7); padding-bottom:2px; }
+
+  /* ── SHOWCASE ── */
+  .ar-sc { background:#fff; padding:64px 0; border-bottom:2px solid #1e2023; font-family:var(--fb); }
+  .ar-sc__hdr { max-width:896px; margin:0 auto 48px; padding:0 24px; text-align:center; }
+  .ar-sc__h { font-family:var(--fh); font-size:clamp(22px,3vw,36px); letter-spacing:.05em; color:#1e2023; }
+  .ar-sc__sub { font-size:14px; color:#6b7280; margin-top:12px; }
+  .ar-sc__wrap { position:relative; }
+  .ar-sc__fade { pointer-events:none; position:absolute; top:0; height:100%; width:24px; z-index:10; }
+  .ar-sc__fade-l { left:0; background:linear-gradient(to right,#fff,transparent); }
+  .ar-sc__fade-r { right:0; background:linear-gradient(to left,#fff,transparent); }
+  .ar-sc__arrow { position:absolute; top:50%; z-index:20; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:1px solid rgba(30,32,35,.2); background:rgba(255,255,255,.9); cursor:pointer; font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; transition:background .3s,color .3s; }
+  .ar-sc__arrow:hover { background:#1e2023; color:#fff; }
+  .ar-sc__arrow-l { left:8px; } .ar-sc__arrow-r { right:8px; }
+  .ar-sc__track { display:flex; gap:32px; overflow-x:auto; padding:0 24px; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .ar-sc__track::-webkit-scrollbar { display:none; }
+  .ar-sc__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; }
+  .ar-sc__link { display:block; }
+  .ar-sc__imgw { position:relative; aspect-ratio:3/4; width:160px; margin:0 auto; overflow:hidden; }
+  @media(min-width:640px){ .ar-sc__imgw { width:180px; } }
+  .ar-sc__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .5s ease; }
+  .ar-sc__link:hover .ar-sc__img { transform:scale(1.05); }
+  .ar-sc__name  { margin-top:20px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
+  .ar-sc__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
+  .ar-sc__desc  { margin-top:8px; font-size:13px; line-height:1.6; color:#4b5563; }
+  .ar-sc__price { margin-top:12px; font-size:13px; font-weight:500; color:#1e2023; }
+
+  /* ── NAVAGRAHA ── */
+  .ar-nav9 { background:#fff; border:2px solid #1e2023; font-family:var(--fb); }
+  .ar-nav9__intro { display:flex; align-items:center; justify-content:center; min-height:40vh; border-bottom:2px solid #1e2023; padding:48px 24px; }
+  .ar-nav9__intro-in { max-width:672px; text-align:center; }
+  .ar-nav9__intro-h { font-family:var(--fh); font-size:clamp(24px,3vw,36px); color:#1e2023; margin-bottom:16px; }
+  .ar-nav9__intro-p { font-size:14px; line-height:1.75; color:#4b5563; margin-bottom:24px; }
+  .ar-nav9__intro-btn { display:inline-block; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.18em; color:#1e2023; font-family:var(--fb); transition:background .3s,color .3s; }
+  .ar-nav9__intro-btn:hover { background:#1e2023; color:#fff; }
+  .ar-nav9__main { display:grid; grid-template-columns:1fr; min-height:90vh; }
+  @media(min-width:1024px){ .ar-nav9__main { grid-template-columns:minmax(0,1fr) minmax(300px,380px); align-items:stretch; } }
+  .ar-nav9__grid { display:grid; grid-template-columns:repeat(2,1fr); border:2px solid #1e2023; order:2; min-width:0; }
+  @media(min-width:640px){ .ar-nav9__grid { grid-template-columns:repeat(3,1fr); } }
+  @media(min-width:1024px){ .ar-nav9__grid { grid-template-columns:repeat(4,1fr); order:1; } }
+  .ar-nav9__btn { border:2px solid #1e2023; background:#fff; cursor:pointer; position:relative; min-height:160px; overflow:hidden; transition:background .2s; padding:0; width:100%; }
+  .ar-nav9__btn.is-active, .ar-nav9__btn:hover { background:rgba(0,0,0,.04); }
+  .ar-nav9__bimg { width:100%; height:100%; object-fit:contain; display:block; pointer-events:none; }
+  .ar-nav9__panel { border:2px solid #1e2023; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 16px; order:1; min-width:0; box-sizing:border-box; }
+  @media(min-width:1024px){ .ar-nav9__panel { order:2; } }
+  .ar-nav9__pimg { width:100%; max-width:280px; aspect-ratio:2/3; object-fit:contain; display:block; background:#fafafa; }
+  .ar-nav9__pdesc { margin-top:24px; max-width:280px; text-align:center; font-size:13px; color:#374151; line-height:1.6; }
+  .ar-nav9__pbtn { margin-top:24px; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.12em; color:#1e2023; display:inline-block; transition:background .3s,color .3s; }
+  .ar-nav9__pbtn:hover { background:#1e2023; color:#fff; }
+
+  /* ── ZODIAC HERO ── */
+  .ar-zh { background:#0a0a0a; overflow:hidden; font-family:var(--fb); }
+  .ar-zh__in { max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; align-items:center; min-height:600px; }
+  @media(max-width:900px){ .ar-zh__in { grid-template-columns:1fr; } }
+  .ar-zh__left { padding:80px 64px; }
+  @media(max-width:900px){ .ar-zh__left { padding:60px 24px 32px; } }
+  .ar-zh__h { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(42px,5vw,76px); font-weight:400; line-height:1.12; color:#ffffff; margin-bottom:28px; letter-spacing:-.01em; }
+  .ar-zh__p { font-size:15px; line-height:1.8; color:rgba(255,255,255,.75); max-width:480px; margin-bottom:44px; font-weight:300; }
+  .ar-zh__btn { display:inline-block; border:1.5px solid rgba(255,255,255,.85); padding:16px 36px; font-family:var(--fb); font-size:11px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:#ffffff !important; background:transparent; transition:background .3s,color .3s; }
+  .ar-zh__btn:hover { background:#ffffff; color:#0a0a0a !important; }
+  .ar-zh__right { position:relative; width:100%; height:100%; min-height:500px; overflow:hidden; }
+  @media(max-width:900px){ .ar-zh__right { min-height:360px; } }
+  .ar-zh__media { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
+  .ar-zh__ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.3); font-size:13px; font-family:var(--fb); text-align:center; padding:24px; }
+
+  /* ── SHOP TRIO ── */
+  .ar-trio { background:#fff; font-family:var(--fb); }
+  .ar-trio__grid { display:grid; grid-template-columns:1fr; }
+  @media(min-width:768px){ .ar-trio__grid { grid-template-columns:1fr 1fr; } }
+  .ar-trio__left { height:420px; }
+  @media(min-width:768px){ .ar-trio__left { height:600px; } }
+  .ar-trio__right { display:grid; grid-template-rows:1fr 1fr; height:420px; }
+  @media(min-width:768px){ .ar-trio__right { height:600px; } }
+  .ar-trio__card { display:block; position:relative; width:100%; height:100%; overflow:hidden; border:2px solid #1e2023; }
+  .ar-trio__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+  .ar-trio__card:hover .ar-trio__img { transform:scale(1.05); }
+  .ar-trio__ov { position:absolute; inset:0; background:rgba(0,0,0,0); transition:background .5s; }
+  .ar-trio__card:hover .ar-trio__ov { background:rgba(0,0,0,.1); }
+  .ar-trio__cta-wrap { position:absolute; bottom:24px; left:24px; }
+  .ar-trio__cta { display:inline-block; border:2px solid #1e2023; padding:8px 24px; font-size:12px; letter-spacing:.18em; color:#1e2023; background:#fff; transition:background .3s,color .3s; }
+  .ar-trio__card:hover .ar-trio__cta { background:#1e2023; color:#fff; }
+  .ar-trio__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:12px; font-family:var(--fb); }
+
+  /* ── PURE ATTAR ── */
+  .ar-pure { position:relative; width:100%; min-height:460px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-family:var(--fb); background:#050010; background-image:radial-gradient(ellipse at 20% 50%,rgba(140,0,255,0.35) 0%,transparent 55%),radial-gradient(ellipse at 80% 30%,rgba(225,0,255,0.25) 0%,transparent 50%),radial-gradient(ellipse at 60% 80%,rgba(80,0,180,0.3) 0%,transparent 45%); padding:100px 24px; }
+  .ar-pure__con { position:relative; z-index:10; max-width:680px; text-align:center; }
+  .ar-pure__h { font-family:'Cormorant Garamond', Georgia, serif; font-size:clamp(32px,4.5vw,60px); font-weight:300; color:#fff; margin-bottom:20px; letter-spacing:-.01em; }
+  .ar-pure__p { font-size:15px; line-height:1.8; color:rgba(255,255,255,.75); margin-bottom:36px; font-weight:300; max-width:520px; margin-left:auto; margin-right:auto; }
+
+  /* ── COMBO ── */
+  .ar-combo { background:#fff; border-bottom:2px solid rgba(30,32,35,.1); font-family:var(--fb); }
+  .ar-combo__in { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1fr; align-items:center; gap:40px; padding:64px 24px; }
+  @media(min-width:768px){ .ar-combo__in { grid-template-columns:1fr 1fr; gap:64px; } }
+  .ar-combo__imgw { position:relative; aspect-ratio:4/3; max-width:560px; margin:0 auto; background:#f3f4f6; overflow:hidden; }
+  .ar-combo__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; }
+  .ar-combo__ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:#9ca3af; font-size:13px; font-family:var(--fb); text-align:center; padding:24px; }
+  .ar-combo__con { text-align:center; }
+  @media(min-width:768px){ .ar-combo__con { text-align:left; } }
+  .ar-combo__h { font-family:var(--fh); font-size:clamp(24px,3vw,36px); letter-spacing:.04em; color:#1e2023; margin-bottom:20px; }
+  .ar-combo__p { font-size:14px; line-height:1.75; color:#4b5563; max-width:448px; margin:0 auto 32px; }
+  @media(min-width:768px){ .ar-combo__p { margin:0 0 32px; } }
+  .ar-combo__btn { display:inline-block; border:1px solid #1e2023; padding:12px 32px; font-size:11px; letter-spacing:.2em; color:#1e2023; transition:background .3s,color .3s; }
+  .ar-combo__btn:hover { background:#1e2023; color:#fff; }
+
+  /* ── TEXT TESTIMONIALS ── */
+  .ar-tst { background:#faf9f7; padding:80px 0; font-family:var(--fb); border-top:1px solid rgba(30,32,35,.08); }
+  .ar-tst__inner { max-width:1200px; margin:0 auto; padding:0 32px; }
+  .ar-tst__hdr { text-align:center; margin-bottom:52px; }
+  .ar-tst__h { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(28px,3.5vw,46px); font-weight:400; color:#1e2023; margin-bottom:12px; letter-spacing:-.01em; }
+  .ar-tst__div { width:40px; height:2px; background:#1e2023; margin:0 auto 14px; }
+  .ar-tst__sub { font-size:14px; color:#6b7280; font-weight:300; }
+  .ar-tst__track { display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; padding:4px 2px 20px; }
+  .ar-tst__track::-webkit-scrollbar { display:none; }
+  .ar-tst__card { min-width:300px; max-width:360px; flex-shrink:0; scroll-snap-align:start; background:#fff; border:1px solid rgba(30,32,35,.08); border-radius:16px; padding:32px 28px; display:flex; flex-direction:column; gap:16px; transition:box-shadow .3s,transform .3s; }
+  .ar-tst__card:hover { box-shadow:0 12px 40px rgba(0,0,0,.08); transform:translateY(-3px); }
+  .ar-tst__stars { display:flex; gap:3px; }
+  .ar-tst__star { font-size:16px; color:#e5e7eb; }
+  .ar-tst__star.on { color:#f59e0b; }
+  .ar-tst__quote { font-family:'Cormorant Garamond',Georgia,serif; font-size:17px; line-height:1.7; color:#374151; font-style:italic; flex:1; }
+  .ar-tst__author { border-top:1px solid rgba(30,32,35,.06); padding-top:14px; }
+  .ar-tst__name { font-size:13px; font-weight:600; color:#1e2023; }
+  .ar-tst__loc { font-size:13px; color:#9ca3af; }
+  .ar-tst__dots { display:flex; justify-content:center; gap:8px; margin-top:24px; }
+  .ar-tst__dot { width:8px; height:8px; border-radius:50%; background:rgba(30,32,35,.15); cursor:pointer; transition:background .2s,transform .2s; border:none; padding:0; }
+  .ar-tst__dot.is-active { background:#1e2023; transform:scale(1.25); }
+
+  /* ── PURE ATTAR BUTTON ── */
+  .ar-pure__btn { display:inline-block; border:1.5px solid rgba(255,255,255,.85); padding:14px 36px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#fff !important; background:transparent; transition:all .3s ease; font-family:var(--fb); }
+  .ar-pure__btn:hover { background:rgba(255,255,255,.15) !important; color:#fff !important; border-color:#fff; transform:translateY(-1px); }
+
+  /* ── BESTSELLERS ── */
+  .ar-best { background:#fff; padding:64px 0; border-bottom:2px solid #1e2023; font-family:var(--fb); }
+  .ar-best__hdr { max-width:896px; margin:0 auto 48px; padding:0 24px; text-align:center; }
+  .ar-best__h { font-family:var(--fh); font-size:clamp(22px,3vw,36px); letter-spacing:.05em; color:#1e2023; }
+  .ar-best__sub { font-size:14px; color:#6b7280; margin-top:12px; }
+  .ar-best__wrap { position:relative; }
+  .ar-best__fade { pointer-events:none; position:absolute; top:0; height:100%; width:24px; z-index:10; }
+  .ar-best__fade-l { left:0; background:linear-gradient(to right,#fff,transparent); }
+  .ar-best__fade-r { right:0; background:linear-gradient(to left,#fff,transparent); }
+  .ar-best__arrow { position:absolute; top:40%; z-index:20; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:1px solid rgba(30,32,35,.2); background:rgba(255,255,255,.9); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background .3s,color .3s; }
+  .ar-best__arrow:hover { background:#1e2023; color:#fff; }
+  .ar-best__arrow-l { left:8px; } .ar-best__arrow-r { right:8px; }
+  .ar-best__track { display:flex; gap:32px; overflow-x:auto; padding:0 24px; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .ar-best__track::-webkit-scrollbar { display:none; }
+  .ar-best__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
+  .ar-best__link { display:block; text-decoration:none; }
+  .ar-best__imgw { position:relative; aspect-ratio:3/4; width:160px; margin:0 auto; overflow:hidden; }
+  @media(min-width:640px){ .ar-best__imgw { width:180px; } }
+  .ar-best__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .5s; }
+  .ar-best__link:hover .ar-best__img { transform:scale(1.05); }
+  .ar-best__badge { position:absolute; top:8px; left:0; font-size:10px; font-weight:700; letter-spacing:.06em; padding:4px 10px; border-radius:3px; background:#1e2023; color:#fff; z-index:5; }
+  .ar-best__name  { margin-top:20px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
+  .ar-best__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
+  .ar-best__price-row { margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .ar-best__price-old { font-size:12px; color:#9ca3af; text-decoration:line-through; }
+  .ar-best__price { font-size:14px; font-weight:600; color:#1e2023; }
+
+  /* ── PHILOSOPHY ── */
+  .ar-bp { background:#fff; width:100%; padding:64px 0 80px; font-family:'Poppins',sans-serif; }
+  .ar-bp__in { max-width:1300px; margin:0 auto; padding:0 20px; }
+  .ar-bp__h { font-size:clamp(36px,5vw,64px); font-weight:700; letter-spacing:-.025em; line-height:1.15; color:#141414; text-align:center; max-width:28ch; margin:0 auto 48px; opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease; }
+  .ar-bp__h.ar-vis { opacity:1; transform:translateY(0); }
+  .ar-bp__grid { display:grid; grid-template-columns:1fr; gap:24px; }
+  @media(min-width:640px){ .ar-bp__grid { grid-template-columns:1fr 1fr; } }
+  @media(min-width:1024px){ .ar-bp__grid { grid-template-columns:repeat(4,1fr); } }
+  .ar-bp__root { position:relative; opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
+  .ar-bp__root.ar-vis { opacity:1; transform:translateY(0); }
+  .ar-bp__shadow { position:absolute; inset:0; border-radius:22px; background:#e8a0bd; transform:translate(7px,8px); transition:transform .38s ease; pointer-events:none; z-index:0; }
+  .ar-bp__root:hover .ar-bp__shadow { transform:translate(10px,11px); }
+  .ar-bp__card { position:relative; z-index:1; display:flex; flex-direction:column; gap:16px; background:#fff; border:1.5px solid #252525; border-radius:22px; padding:22px 22px 26px; transition:transform .38s ease; }
+  .ar-bp__root:hover .ar-bp__card { transform:translateY(-4px); }
+  .ar-bp__pill { display:inline-block; background:#e8a0bd; border:1.5px solid #252525; border-radius:999px; padding:7px 16px; font-size:12.5px; font-weight:600; line-height:1.4; color:#141414; text-align:center; max-width:100%; word-break:break-word; }
+  .ar-bp__body { font-size:14px; font-weight:400; line-height:1.78; color:#3c3c3c; }
+
+  /* ── FIND ── */
+  .ar-find { position:relative; width:100%; height:70vh; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center; font-family:var(--fb); }
+  .ar-find__bg { position:absolute; inset:0; background:radial-gradient(ellipse at 60% 50%,rgba(225,0,255,.25) 0%,transparent 70%),radial-gradient(ellipse at 30% 60%,rgba(247,247,247,.1) 0%,transparent 60%); animation:arGlow 8s ease-in-out infinite alternate; }
+  .ar-find__con { position:relative; z-index:10; text-align:center; padding:0 24px; max-width:768px; }
+  .ar-find__h { font-size:clamp(24px,4vw,48px); font-weight:600; line-height:1.2; color:#fff; margin-bottom:20px; }
+  .ar-find__p { font-size:14px; line-height:1.75; color:rgba(255,255,255,.85); margin-bottom:32px; }
+  .ar-find__btn { display:inline-block; border:1.5px solid rgba(255,255,255,.85); padding:14px 36px; font-family:var(--fb); font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#ffffff !important; background:transparent; transition:background .3s,color .3s; }
+  .ar-find__btn:hover { background:#ffffff; color:#000000 !important; }
+
+  /* ── BLOG ── */
+  .ar-blog { background:#fff; padding:64px 0 80px; border-top:2px solid #1e2023; font-family:var(--fb); }
+  .ar-blog__hdr { max-width:768px; margin:0 auto 48px; padding:0 24px; text-align:center; }
+  .ar-blog__h { font-family:var(--fh); font-size:clamp(22px,3vw,36px); letter-spacing:.04em; color:#1e2023; margin-bottom:12px; }
+  .ar-blog__div { width:48px; height:2px; background:rgba(0,0,0,.6); margin:0 auto; }
+  .ar-blog__track { max-width:1280px; margin:0 auto; padding:0 24px; display:grid; grid-template-columns:1fr; gap:40px; }
+  @media(min-width:640px){ .ar-blog__track { grid-template-columns:repeat(2,1fr); } }
+  @media(min-width:1024px){ .ar-blog__track { grid-template-columns:repeat(3,1fr); } }
+  .ar-blog__link { display:block; }
+  .ar-blog__imgw { position:relative; aspect-ratio:4/3; overflow:hidden; background:#f3f4f6; }
+  .ar-blog__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+  .ar-blog__link:hover .ar-blog__img { transform:scale(1.03); }
+  .ar-blog__ph { position:absolute; inset:0; background:#e5e7eb; }
+  .ar-blog__date { margin-top:16px; font-size:11px; text-transform:uppercase; letter-spacing:.16em; color:#6b7280; }
+  .ar-blog__title { margin-top:8px; font-family:var(--fh); font-size:18px; color:#1e2023; transition:opacity .2s; }
+  .ar-blog__link:hover .ar-blog__title { opacity:.8; }
+  .ar-blog__exc { margin-top:8px; font-size:13px; line-height:1.6; color:#4b5563; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .ar-blog__cta { display:inline-block; margin-top:16px; font-size:11px; letter-spacing:.12em; border-bottom:1px solid #1e2023; padding-bottom:2px; color:#1e2023; }
+
+  /* ── INCENSE BANNER ── */
+  .ar-incense { display:block; width:100%; overflow:hidden; cursor:pointer; line-height:0; position:relative; }
+  .ar-incense img { width:100%; height:auto; display:block; transition:transform .6s ease; object-fit:cover; }
+  .ar-incense:hover img { transform:scale(1.02); }
+  .ar-incense-ph { width:100%; padding:60px 24px; background:#fce4ec; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-family:var(--fb); text-align:center; }
+
+  /* ── INCENSE PRODUCTS ── */
+  .ar-inc { background:#f5f0e8; padding:60px 0 72px; font-family:var(--fb); }
+  .ar-inc__inner { max-width:1400px; margin:0 auto; padding:0 48px; }
+  @media(max-width:768px){ .ar-inc__inner { padding:0 20px; } }
+  .ar-inc__h { font-family:'Poppins',sans-serif; font-size:clamp(24px,3vw,40px); font-weight:700; color:#1e2023; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
+  .ar-inc__wrap { position:relative; }
+  .ar-inc__arrow { position:absolute; top:40%; z-index:20; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; border:1px solid rgba(30,32,35,.2); background:rgba(255,255,255,.9); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; transition:background .3s,color .3s; }
+  .ar-inc__arrow:hover { background:#1e2023; color:#fff; }
+  .ar-inc__arrow-l { left:8px; } .ar-inc__arrow-r { right:8px; }
+  .ar-inc__track { display:flex; gap:32px; overflow-x:auto; padding:0 24px; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .ar-inc__track::-webkit-scrollbar { display:none; }
+  .ar-inc__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
+  .ar-inc__link { display:block; text-decoration:none; }
+  .ar-inc__imgw { position:relative; aspect-ratio:3/4; width:160px; margin:0 auto; overflow:hidden; }
+  @media(min-width:640px){ .ar-inc__imgw { width:180px; } }
+  .ar-inc__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .5s; }
+  .ar-inc__link:hover .ar-inc__img { transform:scale(1.05); }
+  .ar-inc__badge { position:absolute; top:8px; left:0; font-size:10px; font-weight:700; letter-spacing:.06em; padding:4px 10px; border-radius:3px; background:#1e2023; color:#fff; z-index:5; }
+  .ar-inc__name  { margin-top:16px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
+  .ar-inc__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
+  .ar-inc__price-row { margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .ar-inc__price-old { font-size:12px; color:#9ca3af; text-decoration:line-through; }
+  .ar-inc__price { font-size:14px; font-weight:600; color:#1e2023; }
+
+  /* ── VIDEO TESTIMONIALS ── */
+  .ar-vtm { background:#fff; padding:80px 0; font-family:var(--fb); border-top:1px solid rgba(30,32,35,.08); }
+  .ar-vtm__inner { max-width:1280px; margin:0 auto; padding:0 32px; }
+  .ar-vtm__header { text-align:center; margin-bottom:52px; }
+  .ar-vtm__h { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(28px,3.5vw,48px); font-weight:400; color:#1e2023; margin-bottom:14px; letter-spacing:-.01em; }
+  .ar-vtm__divider { width:40px; height:2px; background:#1e2023; margin:0 auto 14px; }
+  .ar-vtm__sub { font-size:14px; color:#6b7280; font-weight:300; }
+  .ar-vtm__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  @media(max-width:900px){ .ar-vtm__grid { grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:580px){ .ar-vtm__grid { grid-template-columns:1fr; } }
+  .ar-vtm__card { background:#faf9f7; border:1px solid rgba(30,32,35,.08); border-radius:12px; overflow:hidden; transition:transform .3s ease,box-shadow .3s ease; }
+  .ar-vtm__card:hover { transform:translateY(-4px); box-shadow:0 20px 48px rgba(0,0,0,.09); }
+  .ar-vtm__video-wrap { position:relative; aspect-ratio:9/16; max-height:380px; overflow:hidden; background:#0a0a0a; cursor:pointer; }
+  .ar-vtm__video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .ar-vtm__ph { display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.4); font-size:13px; }
+  .ar-vtm__play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.28); transition:background .3s; }
+  .ar-vtm__video-wrap:hover .ar-vtm__play { background:rgba(0,0,0,.45); }
+  .ar-vtm__info { padding:20px 20px 24px; }
+  .ar-vtm__stars { display:flex; gap:3px; margin-bottom:10px; }
+  .ar-vtm__star { font-size:14px; color:#d1d5db; }
+  .ar-vtm__star.on { color:#f59e0b; }
+  .ar-vtm__quote { font-family:'Cormorant Garamond',Georgia,serif; font-size:16px; line-height:1.65; color:#374151; margin-bottom:14px; font-style:italic; }
+  .ar-vtm__name { font-size:13px; font-weight:600; color:#1e2023; letter-spacing:.02em; margin:0; }
+  .ar-vtm__loc { font-size:12px; color:#9ca3af; margin:3px 0 0; }
+</style>
+
+<div class="ar-hp">
+
+  {%- comment -%} 1. HERO {%- endcomment -%}
+  <section class="ar-hero">
+    <div class="ar-hero__in">
+      <div class="ar-hero__left">
+        <p class="ar-hero__ey">{{ section.settings.hero_eyebrow | default: 'ANAND RAS' }}</p>
+        <h1 class="ar-hero__h1">{{ section.settings.hero_headline | default: 'Perfume for your soul' }}</h1>
+        <p class="ar-hero__p">{{ section.settings.hero_body | default: 'Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.' }}</p>
+        <div class="ar-hero__cta">
+          <a href="{{ section.settings.hero_btn1_url | default: '/collections/all' }}" class="ar-hero__btn1">{{ section.settings.hero_btn1_label | default: 'Shop Now' }}</a>
+          <a href="{{ section.settings.hero_btn2_url | default: '/collections' }}" class="ar-hero__btn2">{{ section.settings.hero_btn2_label | default: 'Explore Collections' }}</a>
+        </div>
+      </div>
+      <div class="ar-hero__right">
+        {%- if section.settings.hero_image != blank -%}
+          <img src="{{ section.settings.hero_image | image_url: width: 1200 }}" alt="{{ section.settings.hero_image.alt | default: 'Anand Rasa' }}" width="{{ section.settings.hero_image.width }}" height="{{ section.settings.hero_image.height }}" loading="eager" class="ar-hero__img">
+        {%- else -%}
+          <div class="ar-hero__ph">Upload hero image in Theme Editor</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 2. CATEGORY GRID {%- endcomment -%}
+  <section class="ar-cat">
+    <div class="ar-cat__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'category' -%}
+          <a href="{{ block.settings.link }}" class="ar-cat__item" {{ block.shopify_attributes }}>
+            <div class="ar-cat__wrap">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title }}" width="800" height="533" loading="lazy" class="ar-cat__img">
+              {%- else -%}
+                <div class="ar-cat__ph">Upload image</div>
+              {%- endif -%}
+              <div class="ar-cat__ov"></div>
+              <div class="ar-cat__txt">
+                <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
+                <span class="ar-cat__cta">Explore</span>
+              </div>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  {%- comment -%} 3. BESTSELLERS {%- endcomment -%}
+  <section class="ar-best">
+    <header class="ar-best__hdr">
+      <h2 class="ar-best__h">{{ section.settings.bs_heading | default: 'Bestsellers' }}</h2>
+      <p class="ar-best__sub">{{ section.settings.bs_sub | default: 'Our most loved attars.' }}</p>
+    </header>
+    <div class="ar-best__wrap">
+      <div class="ar-best__fade ar-best__fade-l"></div>
+      <div class="ar-best__fade ar-best__fade-r"></div>
+      <button class="ar-best__arrow ar-best__arrow-l js-best-l" aria-label="Previous">&#8249;</button>
+      <button class="ar-best__arrow ar-best__arrow-r js-best-r" aria-label="Next">&#8250;</button>
+      <div class="ar-best__track js-best-track">
+        {%- assign bs = collections[section.settings.bs_collection] -%}
+        {%- if bs != blank -%}
+          {%- for p in bs.products limit: section.settings.bs_limit -%}
+            <article class="ar-best__card">
+              <a href="{{ p.url }}" class="ar-best__link">
+                <div class="ar-best__imgw">
+                  {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}<span class="ar-best__badge">BESTSELLER</span>
+                  {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-best__badge">NEW</span>
+                  {%- elsif p.tags contains 'limited' -%}<span class="ar-best__badge">LIMITED</span>
+                  {%- elsif p.compare_at_price > p.price -%}<span class="ar-best__badge">SALE</span>{%- endif -%}
+                  {%- if p.featured_image -%}
+                    <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-best__img">
+                  {%- endif -%}
+                </div>
+                <h3 class="ar-best__name">{{ p.title }}</h3>
+                <p class="ar-best__type">{{ p.type | default: 'Attar' }}</p>
+                <div class="ar-best__price-row">
+                  {%- if p.compare_at_price > p.price -%}<span class="ar-best__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
+                  <span class="ar-best__price">{{ p.price | money }}</span>
+                </div>
+              </a>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a collection in Theme Editor &rarr; Bestsellers.</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 4. SHOP TRIO {%- endcomment -%}
+  <section class="ar-trio">
+    <div class="ar-trio__grid">
+      <div class="ar-trio__left">
+        <a href="{{ section.settings.t1_url | default: '/collections/incense' }}" class="ar-trio__card">
+          {%- if section.settings.t1_image != blank -%}<img src="{{ section.settings.t1_image | image_url: width: 1200 }}" alt="{{ section.settings.t1_image.alt | default: 'Incense Sticks' }}" width="1200" height="800" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+          <div class="ar-trio__ov"></div>
+          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t1_label | default: 'Shop Now' }}</span></div>
+        </a>
+      </div>
+      <div class="ar-trio__right">
+        <a href="{{ section.settings.t2_url | default: '/collections/stress' }}" class="ar-trio__card">
+          {%- if section.settings.t2_image != blank -%}<img src="{{ section.settings.t2_image | image_url: width: 800 }}" alt="{{ section.settings.t2_image.alt | default: 'Stress Relief' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+          <div class="ar-trio__ov"></div>
+          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t2_label | default: 'Shop Now' }}</span></div>
+        </a>
+        <a href="{{ section.settings.t3_url | default: '/collections/love-attar' }}" class="ar-trio__card">
+          {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Love Attars' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+          <div class="ar-trio__ov"></div>
+          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t3_label | default: 'Shop Now' }}</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 5. DISCOVER THE FRAGRANCE {%- endcomment -%}
+  <section class="ar-find">
+    <div class="ar-find__bg"></div>
+    <div class="ar-find__con">
+      <h2 class="ar-find__h">{{ section.settings.find_heading | default: 'Discover the fragrance written in your stars.' }}</h2>
+      <p class="ar-find__p">{{ section.settings.find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.' }}</p>
+      <a href="{{ section.settings.find_url | default: '/pages/find-fragrance' }}" class="ar-find__btn">{{ section.settings.find_btn | default: 'Find Your Fragrance' }}</a>
+    </div>
+  </section>
+
+  {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
+  <section class="ar-nav9">
+    <div class="ar-nav9__intro">
+      <div class="ar-nav9__intro-in">
+        <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
+        <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
+        <a href="{{ section.settings.nav9_url | default: '/collections/planets' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
+      </div>
+    </div>
+    <div class="ar-nav9__main">
+      {%- assign ar_nav9_has_init = false -%}
+      {%- assign ar_nav9_init_perfume = nil -%}
+      {%- assign ar_nav9_init_desc = '' -%}
+      {%- assign ar_nav9_init_url = '' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'planet' -%}
+          {%- unless ar_nav9_has_init -%}
+            {%- assign ar_nav9_init_perfume = block.settings.perfume_image -%}
+            {%- assign ar_nav9_init_desc = block.settings.description -%}
+            {%- assign ar_nav9_init_url = block.settings.url -%}
+            {%- assign ar_nav9_has_init = true -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="ar-nav9__grid">
+        {%- assign ar_nav9_btn_first = true -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'planet' -%}
+            <button
+              type="button"
+              class="ar-nav9__btn{% if ar_nav9_btn_first %} is-active{% endif %}"
+              data-img="{%- if block.settings.perfume_image != blank -%}{{ block.settings.perfume_image | image_url: width: 600 }}{%- endif -%}"
+              data-desc="{{ block.settings.description | default: '' | strip_newlines | escape }}"
+              data-url="{% if block.settings.url != blank %}{{ block.settings.url | escape }}{% endif %}"
+              aria-label="{{ block.settings.name | default: 'Planet' | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.planet_image != blank -%}
+                <img src="{{ block.settings.planet_image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
+              {%- endif -%}
+            </button>
+            {%- assign ar_nav9_btn_first = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="ar-nav9__panel">
+        <img
+          class="ar-nav9__pimg js-ar-nav9-pimg"
+          id="ar-pimg-{{ section.id }}"
+          width="280"
+          height="420"
+          alt="{% if ar_nav9_init_perfume != blank %}{{ section.settings.nav9_heading | default: 'Navagraha' | escape }} — selected attar{% else %}Selected planet attar{% endif %}"
+          {% if ar_nav9_init_perfume != blank -%}
+            src="{{ ar_nav9_init_perfume | image_url: width: 600 }}"
+          {%- endif %}
+        >
+        <p class="ar-nav9__pdesc js-ar-nav9-pdesc" id="ar-pdesc-{{ section.id }}">{{ ar_nav9_init_desc | escape }}</p>
+        <a href="{% if ar_nav9_init_url != blank %}{{ ar_nav9_init_url }}{% else %}#{% endif %}" class="ar-nav9__pbtn js-ar-nav9-plink" id="ar-plink-{{ section.id }}" {% if ar_nav9_init_url == blank %}aria-disabled="true"{% endif %}>VIEW PRODUCT</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
+  <section class="ar-zh">
+    <div class="ar-zh__in">
+      <div class="ar-zh__left">
+        <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
+        <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
+        <a href="{{ section.settings.zh_url | default: '/collections/nakshatra' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
+      </div>
+      <div class="ar-zh__right">
+        {%- if section.settings.zh_video != blank -%}
+          <video src="{{ section.settings.zh_video }}" class="ar-zh__media" autoplay loop muted playsinline preload="auto"></video>
+        {%- elsif section.settings.zh_gif != blank -%}
+          <img src="{{ section.settings.zh_gif | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="1200" loading="lazy" class="ar-zh__media">
+        {%- elsif section.settings.zh_image != blank -%}
+          <img src="{{ section.settings.zh_image | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="800" loading="lazy" class="ar-zh__media">
+        {%- else -%}
+          <div class="ar-zh__ph">Upload your video, GIF or image in Theme Editor</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 8. ZODIAC {%- endcomment -%}
+  <section class="ar-sc" style="border-top:2px solid #1e2023;">
+    <header class="ar-sc__hdr">
+      <h2 class="ar-sc__h">{{ section.settings.zc_heading | default: 'ZODIAC' }}</h2>
+      <p class="ar-sc__sub">{{ section.settings.zc_sub | default: 'Choose your zodiac fragrance.' }}</p>
+    </header>
+    <div class="ar-sc__wrap">
+      <div class="ar-sc__fade ar-sc__fade-l"></div>
+      <div class="ar-sc__fade ar-sc__fade-r"></div>
+      <button class="ar-sc__arrow ar-sc__arrow-l js-zc-l" aria-label="Previous">&#8249;</button>
+      <button class="ar-sc__arrow ar-sc__arrow-r js-zc-r" aria-label="Next">&#8250;</button>
+      <div class="ar-sc__track js-zc-track">
+        {%- assign zc = collections[section.settings.zc_collection] -%}
+        {%- if zc != blank -%}
+          {%- for p in zc.products limit: 12 -%}
+            <article class="ar-sc__card">
+              <a href="{{ p.url }}" class="ar-sc__link">
+                <div class="ar-sc__imgw">
+                  {%- if p.featured_image -%}
+                    <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-sc__img">
+                  {%- endif -%}
+                </div>
+                <h3 class="ar-sc__name">{{ p.title }}</h3>
+                <p class="ar-sc__type">{{ p.type | default: 'Rashi Rasa' }}</p>
+                <p class="ar-sc__price">{{ p.price | money }}</p>
+              </a>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select zodiac collection in Theme Editor.</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 9. INCENSE BANNER {%- endcomment -%}
+  {%- if section.settings.incense_image != blank -%}
+    <a href="{{ section.settings.incense_url | default: '/collections/incense' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+      <img
+        src="{{ section.settings.incense_image | image_url: width: 1600 }}"
+        srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
+        width="{{ section.settings.incense_image.width | default: 2000 }}"
+        height="{{ section.settings.incense_image.height | default: 800 }}"
+        loading="lazy"
+      >
+    </a>
+  {%- else -%}
+    <div class="ar-incense-ph">
+      <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
+      <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} 10. INCENSE PRODUCTS {%- endcomment -%}
+  <section class="ar-inc">
+    <div class="ar-inc__inner">
+      <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Shop Incense Sticks' }}</h2>
+      <div class="ar-inc__wrap">
+        <div class="ar-sc__fade ar-sc__fade-l"></div>
+        <div class="ar-sc__fade ar-sc__fade-r"></div>
+        <button class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="Previous">&#8249;</button>
+        <button class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="Next">&#8250;</button>
+        <div class="ar-inc__track js-inc-track">
+          {%- assign inc = collections[section.settings.inc_collection] -%}
+          {%- if inc != blank -%}
+            {%- for p in inc.products limit: 12 -%}
+              <article class="ar-inc__card">
+                <a href="{{ p.url }}" class="ar-inc__link">
+                  <div class="ar-inc__imgw">
+                    {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}<span class="ar-inc__badge">BESTSELLER</span>
+                    {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-inc__badge">NEW</span>
+                    {%- elsif p.compare_at_price > p.price -%}<span class="ar-inc__badge">SALE</span>{%- endif -%}
+                    {%- if p.featured_image -%}
+                      <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-inc__img">
+                    {%- endif -%}
+                  </div>
+                  <h3 class="ar-inc__name">{{ p.title }}</h3>
+                  <p class="ar-inc__type">{{ p.type | default: 'Incense' }}</p>
+                  <div class="ar-inc__price-row">
+                    {%- if p.compare_at_price > p.price -%}<span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
+                    <span class="ar-inc__price">{{ p.price | money }}</span>
+                  </div>
+                </a>
+              </article>
+            {%- endfor -%}
+          {%- else -%}
+            <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select incense collection in Theme Editor.</p>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 11. BRAND STORY {%- endcomment -%}
+  <section class="ar-pure">
+    <div class="ar-pure__con">
+      <h2 class="ar-pure__h">{{ section.settings.pure_heading | default: 'More than fragrance' }}</h2>
+      <p class="ar-pure__p">{{ section.settings.pure_text | default: 'Crafted with intention and tradition, each attar is designed to become a quiet part of your presence — subtle, timeless, and deeply personal.' }}</p>
+      <a href="{{ section.settings.pure_url | default: '/pages/about' }}" class="ar-pure__btn">{{ section.settings.pure_btn | default: 'OUR STORY' }}</a>
+    </div>
+  </section>
+
+  {%- comment -%} 12. DISCOVERY KIT {%- endcomment -%}
+  <section class="ar-combo">
+    <div class="ar-combo__in">
+      <div class="ar-combo__imgw">
+        {%- if section.settings.combo_image != blank -%}
+          <img src="{{ section.settings.combo_image | image_url: width: 1200 }}" alt="{{ section.settings.combo_image.alt | default: 'Discovery Kit' }}" width="{{ section.settings.combo_image.width | default: 1200 }}" height="{{ section.settings.combo_image.height | default: 900 }}" loading="lazy" class="ar-combo__img">
+        {%- elsif section.settings.combo_image_url != blank -%}
+          <img src="{{ section.settings.combo_image_url }}" alt="Discovery Kit" width="1200" height="900" loading="lazy" class="ar-combo__img">
+        {%- else -%}
+          <div class="ar-combo__ph">Upload Discovery Kit image in Theme Editor</div>
+        {%- endif -%}
+      </div>
+      <div class="ar-combo__con">
+        <h2 class="ar-combo__h">{{ section.settings.combo_heading | default: 'Discovery Kit' }}</h2>
+        <p class="ar-combo__p">{{ section.settings.combo_text | default: 'The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.' }}</p>
+        <a href="{{ section.settings.combo_url | default: '/products/discovery-kit' }}" class="ar-combo__btn">{{ section.settings.combo_btn | default: 'SHOP NOW' }}</a>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 13. TESTIMONIALS {%- endcomment -%}
+  <section class="ar-tst">
+    <div class="ar-tst__inner">
+      <header class="ar-tst__hdr">
+        <h2 class="ar-tst__h">{{ section.settings.vtm_heading | default: 'What Our Customers Say' }}</h2>
+        <div class="ar-tst__div"></div>
+        <p class="ar-tst__sub">{{ section.settings.vtm_sub | default: 'Real people. Real experiences.' }}</p>
+      </header>
+      <div class="ar-tst__track js-tst-track">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'testimonial' -%}
+            <div class="ar-tst__card" {{ block.shopify_attributes }}>
+              <div class="ar-tst__stars">
+                {%- assign r = block.settings.rating | default: 5 -%}
+                {%- for i in (1..5) -%}<span class="ar-tst__star{% if i <= r %} on{% endif %}">&#9733;</span>{%- endfor -%}
+              </div>
+              <p class="ar-tst__quote">&ldquo;{{ block.settings.quote | default: 'Absolutely divine. This attar lasts all day.' }}&rdquo;</p>
+              <div class="ar-tst__author">
+                <span class="ar-tst__name">{{ block.settings.name | default: 'Happy Customer' }}</span>
+                {%- if block.settings.location != blank -%}<span class="ar-tst__loc"> &mdash; {{ block.settings.location }}</span>{%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="ar-tst__dots" id="ar-tst-dots"></div>
+    </div>
+  </section>
+
+  {%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
+  <section class="ar-bp js-ar-bp">
+    <div class="ar-bp__in">
+      <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results and No BS' }}</h2>
+      <div class="ar-bp__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'philosophy_card' -%}
+            <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
+              <div class="ar-bp__shadow"></div>
+              <article class="ar-bp__card">
+                <span class="ar-bp__pill">{{ block.settings.title }}</span>
+                <p class="ar-bp__body">{{ block.settings.text }}</p>
+              </article>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 15. TRUST BAR {%- endcomment -%}
+  <section class="ar-trust">
+    <ul class="ar-trust__grid js-ar-trust">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'trust_item' -%}
+          <li class="ar-trust__item" {{ block.shopify_attributes }} style="transition-delay:{{ forloop.index0 | times: 120 }}ms">
+            {%- if block.settings.icon != blank -%}
+              <img src="{{ block.settings.icon | image_url: width: 144 }}" alt="{{ block.settings.title }}" width="64" height="64" loading="lazy" class="ar-trust__icon">
+            {%- else -%}
+              <div class="ar-trust__ph"></div>
+            {%- endif -%}
+            <p class="ar-trust__lbl">{{ block.settings.title }}</p>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </section>
+
+  {%- comment -%} 16. BLOG {%- endcomment -%}
+  <section class="ar-blog">
+    <header class="ar-blog__hdr">
+      <h2 class="ar-blog__h">{{ section.settings.blog_heading | default: 'OUR JOURNAL' }}</h2>
+      <div class="ar-blog__div"></div>
+    </header>
+    <div class="ar-blog__track">
+      {%- for article in blogs[section.settings.blog].articles limit: section.settings.blog_limit -%}
+        <article>
+          <a href="{{ article.url }}" class="ar-blog__link">
+            <div class="ar-blog__imgw">
+              {%- if article.image -%}
+                <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | default: article.title }}" width="800" height="600" loading="lazy" class="ar-blog__img">
+              {%- else -%}
+                <div class="ar-blog__ph"></div>
+              {%- endif -%}
+            </div>
+            <p class="ar-blog__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+            <h3 class="ar-blog__title">{{ article.title }}</h3>
+            <p class="ar-blog__exc">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+            <span class="ar-blog__cta">READ MORE</span>
+          </a>
+        </article>
+      {%- else -%}
+        <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a blog in Theme Editor.</p>
+      {%- endfor -%}
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var tg = document.querySelector('.js-ar-trust');
+  if(tg) new IntersectionObserver(function(e){ if(e[0].isIntersecting) tg.classList.add('ar-vis'); },{threshold:.15}).observe(tg);
+
+  function carousel(track, left, right){
+    if(!track) return;
+    function sc(d){ track.scrollBy({left:d*(track.clientWidth*(window.innerWidth<640?.7:.8)),behavior:'smooth'}); }
+    if(left)  left.addEventListener('click',  function(){ sc(-1); });
+    if(right) right.addEventListener('click', function(){ sc(1); });
+  }
+
+  carousel(document.querySelector('.js-best-track'), document.querySelector('.js-best-l'), document.querySelector('.js-best-r'));
+  carousel(document.querySelector('.js-zc-track'), document.querySelector('.js-zc-l'), document.querySelector('.js-zc-r'));
+  carousel(document.querySelector('.js-inc-track'), document.querySelector('.js-inc-l'), document.querySelector('.js-inc-r'));
+
+  document.querySelectorAll('.ar-nav9').forEach(function(nav9){
+    var pbtns = nav9.querySelectorAll('.ar-nav9__btn');
+    var pImg  = nav9.querySelector('.js-ar-nav9-pimg');
+    var pDesc = nav9.querySelector('.js-ar-nav9-pdesc');
+    var pLink = nav9.querySelector('.js-ar-nav9-plink');
+    if (!pbtns.length) return;
+
+    function activate(btn){
+      pbtns.forEach(function(b){ b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      var img = btn.getAttribute('data-img') || '';
+      var desc = btn.getAttribute('data-desc') || '';
+      var url = btn.getAttribute('data-url') || '';
+      if (pImg) {
+        if (img) {
+          pImg.src = img;
+          pImg.alt = btn.getAttribute('aria-label') || 'Selected planet attar';
+        } else {
+          pImg.removeAttribute('src');
+          pImg.alt = '';
+        }
+      }
+      if (pDesc) pDesc.textContent = desc;
+      if (pLink) {
+        pLink.href = url || '#';
+        if (url) pLink.removeAttribute('aria-disabled');
+        else pLink.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    activate(pbtns[0]);
+    pbtns.forEach(function(b){
+      b.addEventListener('click', function(){ activate(b); });
+    });
+  });
+
+  var bp = document.querySelector('.js-ar-bp');
+  if(bp) new IntersectionObserver(function(e){
+    if(e[0].isIntersecting){
+      var h = bp.querySelector('.js-ar-bp-h');
+      if(h) h.classList.add('ar-vis');
+      bp.querySelectorAll('.js-ar-bp-card').forEach(function(c){ c.classList.add('ar-vis'); });
+    }
+  },{threshold:.12}).observe(bp);
+
+  document.querySelectorAll('.js-vtm-wrap').forEach(function(wrap){
+    wrap.addEventListener('click', function(){
+      var video = wrap.querySelector('video');
+      var play  = wrap.querySelector('.js-vtm-play');
+      if(!video) return;
+      if(video.paused){ video.muted=false; video.play(); if(play) play.style.display='none'; }
+      else { video.pause(); if(play) play.style.display='flex'; }
+    });
+  });
+
+  // Testimonial dot navigation
+  (function(){
+    var track = document.querySelector('.js-tst-track');
+    var dotsEl = document.getElementById('ar-tst-dots');
+    if (!track || !dotsEl) return;
+    var cards = Array.from(track.querySelectorAll('.ar-tst__card'));
+    if (!cards.length) return;
+    var dots = cards.map(function(_, i) {
+      var d = document.createElement('button');
+      d.className = 'ar-tst__dot' + (i === 0 ? ' is-active' : '');
+      d.setAttribute('aria-label', 'Review ' + (i+1));
+      d.addEventListener('click', function() {
+        track.scrollTo({ left: cards[i].offsetLeft - 32, behavior: 'smooth' });
+      });
+      dotsEl.appendChild(d);
+      return d;
+    });
+    track.addEventListener('scroll', function() {
+      var mid = track.scrollLeft + track.clientWidth / 2;
+      var closest = 0, minD = Infinity;
+      cards.forEach(function(card, i) {
+        var d = Math.abs(card.offsetLeft + card.offsetWidth / 2 - mid);
+        if (d < minD) { minD = d; closest = i; }
+      });
+      dots.forEach(function(d, i) { d.classList.toggle('is-active', i === closest); });
+    }, { passive: true });
+  })();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Homepage",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow text",
+      "default": "ANAND RAS"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_headline",
+      "label": "Headline",
+      "default": "Perfume for your soul"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_body",
+      "label": "Subtext",
+      "default": "Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual."
+    },
+    {
+      "type": "text",
+      "id": "hero_btn1_label",
+      "label": "Primary button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn1_url",
+      "label": "Primary button URL"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn2_label",
+      "label": "Secondary button text",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn2_url",
+      "label": "Secondary button URL"
+    },
+    {
+      "type": "header",
+      "content": "Bestsellers Section"
+    },
+    {
+      "type": "collection",
+      "id": "bs_collection",
+      "label": "Bestsellers collection"
+    },
+    {
+      "type": "range",
+      "id": "bs_limit",
+      "label": "Products to show",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "text",
+      "id": "bs_heading",
+      "label": "Heading",
+      "default": "BestSellers"
+    },
+    {
+      "type": "text",
+      "id": "bs_sub",
+      "label": "Subtext",
+      "default": "Explore our best sellers."
+    },
+    {
+      "type": "header",
+      "content": "Navagraha Section"
+    },
+    {
+      "type": "text",
+      "id": "nav9_heading",
+      "label": "Heading",
+      "default": "Navagraha Attars"
+    },
+    {
+      "type": "textarea",
+      "id": "nav9_text",
+      "label": "Subtext",
+      "default": "Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy."
+    },
+    {
+      "type": "url",
+      "id": "nav9_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Zodiac Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "zh_image",
+      "label": "Right side image"
+    },
+    {
+      "type": "image_picker",
+      "id": "zh_gif",
+      "label": "GIF image (shown if no video)"
+    },
+    {
+      "type": "text",
+      "id": "zh_video",
+      "label": "Video URL (paste from Content > Files)"
+    },
+    {
+      "type": "textarea",
+      "id": "zh_heading",
+      "label": "Heading",
+      "default": "Nakshatra Attar for your soul."
+    },
+    {
+      "type": "textarea",
+      "id": "zh_text",
+      "label": "Subtext",
+      "default": "Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion."
+    },
+    {
+      "type": "text",
+      "id": "zh_btn",
+      "label": "Button text",
+      "default": "EXPLORE NAKSHATRA ATTARS"
+    },
+    {
+      "type": "url",
+      "id": "zh_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Zodiac Showcase Section"
+    },
+    {
+      "type": "collection",
+      "id": "zc_collection",
+      "label": "Zodiac collection"
+    },
+    {
+      "type": "text",
+      "id": "zc_heading",
+      "label": "Heading",
+      "default": "ZODIAC"
+    },
+    {
+      "type": "text",
+      "id": "zc_sub",
+      "label": "Subtext",
+      "default": "Choose your zodiac fragrance."
+    },
+    {
+      "type": "header",
+      "content": "Shop Trio Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "t1_image",
+      "label": "Left card image"
+    },
+    {
+      "type": "url",
+      "id": "t1_url",
+      "label": "Left card link"
+    },
+    {
+      "type": "text",
+      "id": "t1_label",
+      "label": "Left button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "image_picker",
+      "id": "t2_image",
+      "label": "Top right card image"
+    },
+    {
+      "type": "url",
+      "id": "t2_url",
+      "label": "Top right link"
+    },
+    {
+      "type": "text",
+      "id": "t2_label",
+      "label": "Top right button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "image_picker",
+      "id": "t3_image",
+      "label": "Bottom right card image"
+    },
+    {
+      "type": "url",
+      "id": "t3_url",
+      "label": "Bottom right link"
+    },
+    {
+      "type": "text",
+      "id": "t3_label",
+      "label": "Bottom right button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Brand Story Section"
+    },
+    {
+      "type": "text",
+      "id": "pure_heading",
+      "label": "Heading",
+      "default": "More than fragrance"
+    },
+    {
+      "type": "textarea",
+      "id": "pure_text",
+      "label": "Subtext",
+      "default": "Crafted with intention and tradition, each attar is designed to become a quiet part of your presence."
+    },
+    {
+      "type": "text",
+      "id": "pure_btn",
+      "label": "Button text",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "url",
+      "id": "pure_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Find Your Fragrance Section"
+    },
+    {
+      "type": "textarea",
+      "id": "find_heading",
+      "label": "Heading",
+      "default": "Discover the fragrance written in your stars."
+    },
+    {
+      "type": "textarea",
+      "id": "find_text",
+      "label": "Subtext",
+      "default": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy."
+    },
+    {
+      "type": "text",
+      "id": "find_btn",
+      "label": "Button text",
+      "default": "Find Your Fragrance"
+    },
+    {
+      "type": "url",
+      "id": "find_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Discovery Kit Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "combo_image",
+      "label": "Product image"
+    },
+    {
+      "type": "url",
+      "id": "combo_image_url",
+      "label": "Product image URL fallback"
+    },
+    {
+      "type": "text",
+      "id": "combo_heading",
+      "label": "Heading",
+      "default": "Discovery Kit"
+    },
+    {
+      "type": "textarea",
+      "id": "combo_text",
+      "label": "Description",
+      "default": "The Discovery Kit is your personal journey through scent."
+    },
+    {
+      "type": "text",
+      "id": "combo_btn",
+      "label": "Button text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "combo_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Video Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "vtm_heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "vtm_sub",
+      "label": "Subtext",
+      "default": "Real people. Real experiences."
+    },
+    {
+      "type": "header",
+      "content": "Brand Philosophy Section"
+    },
+    {
+      "type": "textarea",
+      "id": "bp_heading",
+      "label": "Heading",
+      "default": "We believe in Truth, Results and No BS"
+    },
+    {
+      "type": "header",
+      "content": "Blog Section"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog to display"
+    },
+    {
+      "type": "range",
+      "id": "blog_limit",
+      "label": "Posts to show",
+      "min": 3,
+      "max": 9,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "blog_heading",
+      "label": "Heading",
+      "default": "OUR JOURNAL"
+    },
+    {
+      "type": "header",
+      "content": "Incense Banner Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "incense_image",
+      "label": "Incense banner image"
+    },
+    {
+      "type": "url",
+      "id": "incense_url",
+      "label": "Banner click URL"
+    },
+    {
+      "type": "header",
+      "content": "Incense Products Section"
+    },
+    {
+      "type": "collection",
+      "id": "inc_collection",
+      "label": "Incense products collection"
+    },
+    {
+      "type": "text",
+      "id": "inc_heading",
+      "label": "Heading",
+      "default": "Shop Incense Sticks"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "Free Shipping"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Planet Attar"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "planet",
+      "name": "Planet",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "planet_image",
+          "label": "Planet card image"
+        },
+        {
+          "type": "image_picker",
+          "id": "perfume_image",
+          "label": "Perfume bottle image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Planet name",
+          "default": "Sun"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Golden warmth in every note."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Product URL"
+        }
+      ]
+    },
+    {
+      "type": "philosophy_card",
+      "name": "Philosophy Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Pill label",
+          "default": "We Deliver Experience."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Body text",
+          "default": "Every note is crafted for depth, emotion and lasting presence."
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Review text",
+          "default": "This attar is absolutely divine. The fragrance lasts all day and I get compliments everywhere."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Priya S."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "City",
+          "default": "Mumbai"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage",
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Promoting Local Businesses"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Not tested on animals"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "No Alcohol or Chemicals"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "title": "Free Shipping"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Planet Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Zodiac Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Nakshatra Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Chakra Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Stress Relief Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Love Attar"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Incense Sticks"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Discovery Kit"
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Sun",
+            "description": "Golden warmth in every note."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Moon",
+            "description": "Calm whispers in silver light."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Mars",
+            "description": "Flame of courage, scent of victory."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Mercury",
+            "description": "Quick thoughts, cool citrus."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Jupiter",
+            "description": "Grandeur laced in calm sandalwood."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Venus",
+            "description": "Love reborn in rose and velvet."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Saturn",
+            "description": "The scent of timeless strength."
+          }
+        },
+        {
+          "type": "planet",
+          "settings": {
+            "name": "Rahu",
+            "description": "Shadows fire, smoky mystery."
+          }
+        },
+        {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "We Deliver Experience.",
+            "text": "Every note in our Anand Rasa attars is crafted for depth, emotion and lasting presence."
+          }
+        },
+        {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "Craft Before Claims",
+            "text": "No hype. Only performance. Traditional methods, real ingredients."
+          }
+        },
+        {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "Luxury Is Not Packaging",
+            "text": "What matters is how long it lasts and how it makes you feel."
+          }
+        },
+        {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "One Standard. Always.",
+            "text": "No compromise. No shortcuts. That is the Anand Rasa promise."
+          }
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

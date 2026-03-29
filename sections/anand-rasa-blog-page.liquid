@@ -1,0 +1,473 @@
+{% comment %}
+  ANAND RASA — Blog listing (card grid, no global header/footer)
+{% endcomment %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+
+  .ar-blog-page *, .ar-blog-page *::before, .ar-blog-page *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .ar-blog-page { font-family: 'Jost', sans-serif; background: linear-gradient(180deg, #f5f1ea 0%, #faf9f7 40%, #faf9f7 100%); color: #1e2023; min-height: 100vh; }
+  .ar-blog-page a { text-decoration: none; color: inherit; }
+  .ar-blog-page img { display: block; max-width: 100%; }
+
+  @keyframes abFadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes abFadeIn { from { opacity:0; } to { opacity:1; } }
+
+  /* ── HERO HEADER ── */
+  .ab-hero {
+    background: transparent;
+    border-bottom: 1px solid rgba(30,32,35,.08);
+    padding: clamp(40px, 6vw, 64px) 24px 40px;
+    text-align: center;
+    animation: abFadeIn .6s ease both;
+  }
+  .ab-hero__label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 18px;
+    display: block;
+  }
+  .ab-hero__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(44px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: #1a1a18;
+    letter-spacing: -.02em;
+    margin-bottom: 20px;
+  }
+  .ab-hero__desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #6b7280;
+    max-width: 520px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* ── FILTER TAGS ── */
+  .ab-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 32px 24px;
+    border-bottom: 1px solid rgba(30,32,35,.08);
+  }
+  .ab-filter {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: 1px solid rgba(30,32,35,.2);
+    color: #6b7280;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: all .2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .ab-filter:hover, .ab-filter.is-active {
+    background: #1e2023;
+    color: #fff;
+    border-color: #1e2023;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .ab-main {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    align-items: start;
+  }
+  @media(max-width:1024px){ .ab-main { grid-template-columns: 1fr; gap: 40px; padding-bottom: 64px; } }
+
+  /* ── CARD GRID ── */
+  .ab-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  @media(max-width:1100px){ .ab-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media(max-width:560px){ .ab-cards { grid-template-columns: 1fr; } }
+
+  .ab-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(30,32,35,.07);
+    overflow: hidden;
+    transition: transform .28s ease, box-shadow .28s ease;
+    opacity: 0;
+    animation: abFadeUp .55s ease forwards;
+    box-shadow: 0 2px 16px rgba(30,32,35,.04);
+    height: 100%;
+  }
+  .ab-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(30,32,35,.1);
+  }
+  .ab-card--highlight {
+    grid-column: span 2;
+  }
+  @media(max-width:1100px){
+    .ab-card--highlight { grid-column: span 2; }
+  }
+  @media(max-width:560px){
+    .ab-card--highlight { grid-column: span 1; }
+  }
+  .ab-card--highlight .ab-card__img-wrap { aspect-ratio: 21 / 10; }
+  @media(max-width:560px){
+    .ab-card--highlight .ab-card__img-wrap { aspect-ratio: 16 / 10; }
+  }
+  .ab-card__img-wrap { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #e8e4dc; }
+  .ab-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .65s ease; }
+  .ab-card:hover .ab-card__img { transform: scale(1.06); }
+  .ab-card__img-ph { position: absolute; inset: 0; background: linear-gradient(145deg, #f3f4f6, #e5e7eb); }
+  .ab-card__badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #1e2023;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 6px;
+    z-index: 1;
+  }
+  .ab-card__body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+  .ab-card__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 12px; }
+  .ab-card__cat { font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #c9a96e; }
+  .ab-card__date { font-size: 11px; color: #9ca3af; }
+  .ab-card__title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.28;
+    color: #1a1a18;
+    margin-bottom: 10px;
+    letter-spacing: -.01em;
+    transition: color .2s;
+  }
+  .ab-card--highlight .ab-card__title { font-size: clamp(1.35rem, 3vw, 1.75rem); }
+  .ab-card:hover .ab-card__title { color: #c9a96e; }
+  .ab-card__exc { font-size: 13px; line-height: 1.65; color: #6b7280; margin-bottom: 16px; font-weight: 300; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .ab-card__footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; margin-top: auto; border-top: 1px solid rgba(30,32,35,.07); }
+  .ab-card__read { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #1e2023; display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+  .ab-card:hover .ab-card__read { gap: 10px; }
+  .ab-card__time { font-size: 11px; color: #9ca3af; }
+
+  .ab-primary { min-width: 0; }
+
+  /* ── PAGINATION ── */
+  .ab-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 40px 0 0;
+  }
+  .ab-page-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(30,32,35,.2);
+    font-size: 13px;
+    color: #6b7280;
+    background: transparent;
+    transition: all .2s;
+    text-decoration: none;
+  }
+  .ab-page-btn:hover, .ab-page-btn.is-active {
+    background: #1e2023;
+    color: #fff;
+    border-color: #1e2023;
+  }
+  .ab-page-btn.is-disabled { opacity: .3; pointer-events: none; }
+
+  /* ── SIDEBAR ── */
+  .ab-sidebar { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 24px; }
+
+  /* Search */
+  .ab-search { background: #fff; border: 1px solid rgba(30,32,35,.08); padding: 24px; border-radius: 14px; box-shadow: 0 2px 16px rgba(30,32,35,.04); }
+  .ab-search__label { font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #9ca3af; display: block; margin-bottom: 14px; }
+  .ab-search__wrap { position: relative; }
+  .ab-search__input { width: 100%; padding: 11px 44px 11px 16px; border: 1px solid rgba(30,32,35,.15); background: #faf9f7; font-family: 'Jost', sans-serif; font-size: 13px; color: #1e2023; outline: none; transition: border-color .2s; }
+  .ab-search__input:focus { border-color: #1e2023; }
+  .ab-search__input::placeholder { color: #9ca3af; }
+  .ab-search__btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; display: flex; }
+  .ab-search__btn svg { width: 16px; height: 16px; }
+
+  /* Categories widget */
+  .ab-widget { background: #fff; border: 1px solid rgba(30,32,35,.08); padding: 24px; border-radius: 14px; box-shadow: 0 2px 16px rgba(30,32,35,.04); }
+  .ab-widget__title { font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #9ca3af; margin-bottom: 20px; display: block; }
+  .ab-widget__list { display: flex; flex-direction: column; gap: 0; }
+  .ab-widget__item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(30,32,35,.06); font-size: 13px; color: #374151; transition: color .2s; cursor: pointer; }
+  .ab-widget__item:last-child { border-bottom: none; }
+  .ab-widget__item:hover { color: #1e2023; }
+  .ab-widget__count { font-size: 11px; color: #9ca3af; background: #f3f4f6; padding: 2px 8px; border-radius: 100px; }
+
+  /* Recent posts widget */
+  .ab-recent__item { display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid rgba(30,32,35,.06); }
+  .ab-recent__item:first-child { padding-top: 0; }
+  .ab-recent__item:last-child { border-bottom: none; }
+  .ab-recent__img-wrap { width: 68px; height: 52px; flex-shrink: 0; overflow: hidden; position: relative; }
+  .ab-recent__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .ab-recent__item:hover .ab-recent__img { transform: scale(1.06); }
+  .ab-recent__img-ph { position: absolute; inset: 0; background: #e5e7eb; }
+  .ab-recent__info { flex: 1; min-width: 0; }
+  .ab-recent__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 14px; line-height: 1.35; color: #1a1a18; margin-bottom: 5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: opacity .2s; }
+  .ab-recent__item:hover .ab-recent__title { opacity: .7; }
+  .ab-recent__date { font-size: 11px; color: #9ca3af; }
+
+  /* Newsletter widget */
+  .ab-newsletter { background: linear-gradient(145deg, #1a1814 0%, #252018 100%); padding: 26px 22px; border-radius: 14px; border: 1px solid rgba(201, 169, 110, 0.2); }
+  .ab-newsletter__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.3; }
+  .ab-newsletter__desc { font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 20px; line-height: 1.6; font-weight: 300; }
+  .ab-newsletter__form { display: flex; flex-direction: column; gap: 10px; }
+  .ab-newsletter__input { padding: 12px 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: #fff; font-family: 'Jost', sans-serif; font-size: 13px; outline: none; transition: border-color .2s; }
+  .ab-newsletter__input::placeholder { color: rgba(255,255,255,.35); }
+  .ab-newsletter__input:focus { border-color: rgba(255,255,255,.5); }
+  .ab-newsletter__btn { padding: 12px; background: #fff; color: #1a1a18; font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; border: none; cursor: pointer; transition: background .2s, color .2s; }
+  .ab-newsletter__btn:hover { background: #c9a96e; color: #fff; }
+
+  /* ── EMPTY STATE ── */
+  .ab-empty { text-align: center; padding: 80px 24px; grid-column: 1 / -1; }
+  .ab-empty__icon { width: 64px; height: 64px; margin: 0 auto 24px; opacity: .2; }
+  .ab-empty__title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; color: #1a1a18; margin-bottom: 12px; }
+  .ab-empty__text { font-size: 14px; color: #9ca3af; }
+
+</style>
+
+<div class="ar-blog-page">
+
+  {%- comment -%} HERO HEADER {%- endcomment -%}
+  <div class="ab-hero">
+    <span class="ab-hero__label">Anand Rasa</span>
+    <h1 class="ab-hero__title">{{ blog.title | default: 'Our Journal' }}</h1>
+    <p class="ab-hero__desc">{{ section.settings.blog_desc | default: 'Stories of scent, ritual, and the art of slow living. Explore the world of attar through our eyes.' }}</p>
+  </div>
+
+  {%- paginate blog.articles by 12 -%}
+
+  {%- comment -%} FILTER TAGS {%- endcomment -%}
+  <div class="ab-filters">
+    <a href="{{ blog.url }}" class="ab-filter {% unless current_tags %}is-active{% endunless %}">All</a>
+    {%- for tag in blog.all_tags -%}
+      {%- if blog.all_tags.size <= 8 -%}
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="ab-filter {% if current_tags contains tag %}is-active{% endif %}">{{ tag }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} MAIN: card grid + sidebar {%- endcomment -%}
+  <div class="ab-main">
+
+    <div class="ab-primary">
+      {%- if blog.articles.size > 0 -%}
+        <div class="ab-cards">
+          {%- for article in blog.articles -%}
+            <a href="{{ article.url }}" class="ab-card{% if forloop.first and paginate.current_page == 1 %} ab-card--highlight{% endif %}" style="animation-delay: {{ forloop.index0 | times: 45 }}ms;">
+              <div class="ab-card__img-wrap">
+                {%- if article.image -%}
+                  <img src="{{ article.image | image_url: width: 1000 }}" alt="{{ article.image.alt | default: article.title }}" width="1000" height="750" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" class="ab-card__img">
+                {%- else -%}
+                  <div class="ab-card__img-ph" aria-hidden="true"></div>
+                {%- endif -%}
+                {%- if forloop.first and paginate.current_page == 1 -%}
+                  <span class="ab-card__badge">Latest</span>
+                {%- endif -%}
+              </div>
+              <div class="ab-card__body">
+                <div class="ab-card__meta">
+                  {%- if article.tags.size > 0 -%}
+                    <span class="ab-card__cat">{{ article.tags.first }}</span>
+                  {%- endif -%}
+                  <span class="ab-card__date">{{ article.published_at | date: '%b %d, %Y' }}</span>
+                </div>
+                <h2 class="ab-card__title">{{ article.title }}</h2>
+                <p class="ab-card__exc">{{ article.excerpt | default: article.content | strip_html | truncate: 130 }}</p>
+                <div class="ab-card__footer">
+                  <span class="ab-card__read">
+                    Read
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                  </span>
+                  <span class="ab-card__time">{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min</span>
+                </div>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <div class="ab-pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="ab-page-btn" aria-label="Previous page">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              </a>
+            {%- else -%}
+              <span class="ab-page-btn is-disabled" aria-hidden="true">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              </span>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="ab-page-btn">{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="ab-page-btn is-active">{{ part.title }}</span>
+              {%- else -%}
+                <span class="ab-page-btn">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="ab-page-btn" aria-label="Next page">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </a>
+            {%- else -%}
+              <span class="ab-page-btn is-disabled" aria-hidden="true">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      {%- else -%}
+        <div class="ab-empty">
+          <svg class="ab-empty__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <h2 class="ab-empty__title">No articles yet</h2>
+          <p class="ab-empty__text">Check back soon for stories from our journal.</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} SIDEBAR {%- endcomment -%}
+    <aside class="ab-sidebar">
+
+      {%- comment -%} Search {%- endcomment -%}
+      <div class="ab-search">
+        <span class="ab-search__label">Search</span>
+        <div class="ab-search__wrap">
+          <form action="{{ routes.search_url }}" method="get">
+            <input type="hidden" name="type" value="article">
+            <input type="text" name="q" placeholder="Search articles..." class="ab-search__input" aria-label="Search articles">
+            <button type="submit" class="ab-search__btn" aria-label="Search">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {%- comment -%} Categories {%- endcomment -%}
+      {%- if blog.all_tags.size > 0 -%}
+        <div class="ab-widget">
+          <span class="ab-widget__title">Topics</span>
+          <div class="ab-widget__list">
+            <a href="{{ blog.url }}" class="ab-widget__item">
+              All Articles
+              <span class="ab-widget__count">{{ blog.articles_count }}</span>
+            </a>
+            {%- for tag in blog.all_tags -%}
+              <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="ab-widget__item">
+                {{ tag }}
+                <span class="ab-widget__count">
+                  {%- assign tag_count = 0 -%}
+                  {%- for article in blog.articles -%}
+                    {%- if article.tags contains tag -%}{%- assign tag_count = tag_count | plus: 1 -%}{%- endif -%}
+                  {%- endfor -%}
+                  {{ tag_count }}
+                </span>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Recent Posts {%- endcomment -%}
+      {%- if blog.articles.size > 0 -%}
+        <div class="ab-widget">
+          <span class="ab-widget__title">Recent Posts</span>
+          {%- for article in blog.articles limit: 4 -%}
+            <a href="{{ article.url }}" class="ab-recent__item">
+              <div class="ab-recent__img-wrap">
+                {%- if article.image -%}
+                  <img src="{{ article.image | image_url: width: 200 }}" alt="{{ article.title }}" width="68" height="52" loading="lazy" class="ab-recent__img">
+                {%- else -%}
+                  <div class="ab-recent__img-ph"></div>
+                {%- endif -%}
+              </div>
+              <div class="ab-recent__info">
+                <p class="ab-recent__title">{{ article.title }}</p>
+                <span class="ab-recent__date">{{ article.published_at | date: '%b %d, %Y' }}</span>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Newsletter {%- endcomment -%}
+      <div class="ab-newsletter">
+        <h3 class="ab-newsletter__title">{{ section.settings.newsletter_title | default: 'The Scent Letter' }}</h3>
+        <p class="ab-newsletter__desc">{{ section.settings.newsletter_desc | default: 'Monthly stories on fragrance, ritual, and the art of presence. No spam, ever.' }}</p>
+        <div class="ab-newsletter__form">
+          <input type="email" placeholder="Your email address" class="ab-newsletter__input" aria-label="Email address">
+          <button class="ab-newsletter__btn">Subscribe</button>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  {%- endpaginate -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Blog Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Blog page"
+    },
+    {
+      "type": "textarea",
+      "id": "blog_desc",
+      "label": "Blog description",
+      "default": "Stories of scent, ritual, and the art of slow living. Explore the world of attar through our eyes."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter widget title",
+      "default": "The Scent Letter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_desc",
+      "label": "Newsletter description",
+      "default": "Monthly stories on fragrance, ritual, and the art of presence. No spam, ever."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Page"
+    }
+  ]
+}
+{% endschema %}

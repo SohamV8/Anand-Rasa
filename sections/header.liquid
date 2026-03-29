@@ -1,0 +1,313 @@
+{%- comment -%}
+  ANAND RASA - Header (replaces Dawn header)
+{%- endcomment -%}
+
+<style>
+  .ar-nav *, .ar-nav *::before, .ar-nav *::after { box-sizing:border-box; }
+
+  .ar-nav { position:sticky; top:0; z-index:200; background:#fff; border-bottom:1px solid rgba(30,32,35,.1); font-family: 'Jost', sans-serif; }
+  .ar-nav__inner { max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 48px; height:76px; gap:24px; }
+  .ar-nav__left  { display:flex; align-items:center; gap:36px; }
+  .ar-nav__right { display:flex; align-items:center; gap:28px; justify-content:flex-end; }
+  .ar-nav__link  { font-size:14px; font-weight:400; letter-spacing:.01em; color:#1e2023; text-decoration:none; transition:opacity .2s; white-space:nowrap; }
+  .ar-nav__link:hover { opacity:.55; }
+  .ar-nav__logo { text-decoration:none; display:flex; flex-direction:column; align-items:center; line-height:1; justify-self:center; }
+  .ar-nav__logo-img { height:72px; width:auto; display:block; object-fit:contain; }
+  .ar-nav__logo-text { font-family:'Cormorant Garamond', Georgia, serif; font-size:30px; font-weight:700; color:#1e2023; display:block; line-height:1; letter-spacing:-.01em; }
+  .ar-nav__logo-sub { font-size:11px; font-weight:300; letter-spacing:.22em; color:#6b7280; display:block; margin-top:3px; text-transform:lowercase; }
+  .ar-nav__icon { display:flex; align-items:center; color:#1e2023; text-decoration:none; transition:opacity .2s; position:relative; }
+  .ar-nav__icon:hover { opacity:.55; }
+  .ar-nav__icon svg { width:22px; height:22px; }
+  .ar-nav__cart-count { position:absolute; top:-6px; right:-6px; background:#1e2023; color:#fff; font-size:9px; width:15px; height:15px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+  .ar-nav__burger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+  .ar-nav__burger span { display:block; width:22px; height:1.5px; background:#1e2023; transition:all .3s; }
+
+  .ar-nav__drawer { display:none; position:fixed; inset:0; background:#fff; z-index:300; padding:28px 24px; flex-direction:column; gap:20px; overflow-y:auto; }
+  .ar-nav__drawer.is-open { display:flex; }
+  .ar-nav__drawer-close { align-self:flex-end; background:none; border:none; font-size:30px; cursor:pointer; color:#1e2023; line-height:1; }
+  .ar-nav__drawer-link { font-family:'Jost', sans-serif; font-size:20px; font-weight:400; color:#1e2023; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.08); padding-bottom:16px; }
+  .ar-nav__drawer-toggle { font-family:'Jost', sans-serif; font-size:20px; font-weight:400; color:#1e2023; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.08); padding-bottom:16px; background:none; border:none; cursor:pointer; text-align:left; width:100%; display:flex; align-items:center; justify-content:space-between; }
+  .ar-nav__drawer-toggle svg { transition:transform .3s; }
+  .ar-nav__drawer-toggle.is-open svg { transform:rotate(180deg); }
+  .ar-nav__drawer-sub-menu { display:none; flex-direction:column; gap:12px; padding:8px 0 8px 20px; }
+  .ar-nav__drawer-sub-menu.is-open { display:flex; }
+
+  .ar-mega__trigger { position:relative; display:flex; align-items:center; }
+  .ar-mega__label { display:flex; align-items:center; gap:4px; cursor:pointer; }
+  .ar-mega__chevron { transition:transform .25s ease; flex-shrink:0; }
+  .ar-mega__trigger.is-open .ar-mega__chevron { transform:rotate(180deg); }
+  .ar-mega__dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 16px); right:-40px; background:#fff; border:1px solid rgba(30,32,35,.08); box-shadow:0 20px 60px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.05); border-radius:16px; min-width:640px; z-index:400; transform:translateY(-8px); transition:opacity .3s ease,transform .3s ease,visibility .3s; overflow:hidden; }
+  .ar-mega__trigger.is-open .ar-mega__dropdown { visibility:visible; opacity:1; transform:translateY(0); }
+  .ar-mega__inner { display:grid; grid-template-columns:1fr 1fr; min-height:380px; }
+  .ar-mega__links { padding:32px 36px; display:flex; flex-direction:column; gap:2px; }
+  .ar-mega__col-title { font-size:10px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#9ca3af; margin-bottom:16px; display:block; }
+  .ar-mega__link { display:block; font-size:15px; color:#374151; padding:9px 0; transition:color .2s,padding-left .25s; font-weight:400; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.04); }
+  .ar-mega__link:last-child { border-bottom:none; }
+  .ar-mega__link:hover { color:#1e2023; padding-left:8px; }
+  .ar-mega__feature { background:linear-gradient(135deg,#faf9f7 0%,#f5f0eb 100%); display:flex; align-items:center; justify-content:center; padding:24px; border-left:1px solid rgba(30,32,35,.06); border-radius:0 16px 16px 0; }
+  .ar-mega__feature-img { max-width:100%; max-height:340px; object-fit:contain; display:block; border-radius:8px; }
+  .ar-mega__feature-ph { width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; font-family:'Jost', sans-serif; }
+
+  @media(max-width:900px){
+    .ar-nav__inner { grid-template-columns:1fr auto 1fr; padding:0 20px; }
+    .ar-nav__left  { display:none; }
+    .ar-nav__right .ar-nav__link { display:none; }
+    .ar-nav__burger { display:flex; }
+    .ar-nav__logo-img { height:56px; }
+    .ar-mega__dropdown { display:none !important; }
+  }
+</style>
+
+<nav class="ar-nav" aria-label="Main navigation">
+  <div class="ar-nav__inner">
+    <div class="ar-nav__left">
+      <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
+      <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
+      <a href="{{ section.settings.nav_l3_url | default: '/collections/gift-sets' }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo != blank -%}
+        <img
+          src="{{ section.settings.logo | image_url: width: 600 }}"
+          srcset="{{ section.settings.logo | image_url: width: 200 }} 200w, {{ section.settings.logo | image_url: width: 400 }} 400w, {{ section.settings.logo | image_url: width: 600 }} 600w"
+          sizes="(max-width: 900px) 120px, 180px"
+          alt="{{ section.settings.logo.alt | default: shop.name }}"
+          width="{{ section.settings.logo_width | default: 180 }}"
+          height="auto"
+          loading="eager"
+          class="ar-nav__logo-img"
+        >
+      {%- else -%}
+        <span class="ar-nav__logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+        {%- if section.settings.logo_subtext != blank -%}<span class="ar-nav__logo-sub">{{ section.settings.logo_subtext }}</span>{%- endif -%}
+      {%- endif -%}
+    </a>
+
+    <div class="ar-nav__right">
+      <div class="ar-mega__trigger" id="ar-mega-trigger">
+        <a href="{{ section.settings.nav_r1_url | default: '/collections' }}" class="ar-nav__link ar-mega__label">
+          {{ section.settings.nav_r1 | default: 'Collections' }}
+          <svg class="ar-mega__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="ar-mega__dropdown" id="ar-mega-dropdown">
+          <div class="ar-mega__inner">
+            <div class="ar-mega__links">
+              <span class="ar-mega__col-title">Collections</span>
+              <a href="{{ routes.collections_url }}/planet-attars"      class="ar-mega__link">Planet Attars</a>
+              <a href="{{ routes.collections_url }}/zodiac-attars"       class="ar-mega__link">Zodiac Attars</a>
+              <a href="{{ routes.collections_url }}/nakshatra-attars"    class="ar-mega__link">Nakshatra Attars</a>
+              <a href="{{ routes.collections_url }}/stress"       class="ar-mega__link">Stress Relief Attars</a>
+              <a href="{{ routes.collections_url }}/chakra-attars" class="ar-mega__link">Chakra Attars</a>
+              <a href="{{ routes.collections_url }}/love-attars"   class="ar-mega__link">Love Attars</a>
+              <a href="{{ routes.collections_url }}/incense-sticks"      class="ar-mega__link">Incense Sticks</a>
+            </div>
+            <div class="ar-mega__feature">
+              {%- if section.settings.mega_menu_image != blank -%}
+                <img
+                  src="{{ section.settings.mega_menu_image | image_url: width: 600 }}"
+                  srcset="{{ section.settings.mega_menu_image | image_url: width: 300 }} 300w, {{ section.settings.mega_menu_image | image_url: width: 600 }} 600w, {{ section.settings.mega_menu_image | image_url: width: 900 }} 900w"
+                  sizes="300px"
+                  alt="Featured Collection"
+                  width="{{ section.settings.mega_menu_image.width }}"
+                  height="{{ section.settings.mega_menu_image.height }}"
+                  loading="lazy"
+                  class="ar-mega__feature-img"
+                >
+              {%- else -%}
+                <div class="ar-mega__feature-ph">Upload featured image in Theme Editor</div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="{{ section.settings.nav_r2_url | default: '/pages/about' }}" class="ar-nav__link">{{ section.settings.nav_r2 | default: 'About' }}</a>
+
+      <a href="{{ routes.cart_url }}" class="ar-nav__icon" aria-label="Cart">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.847-7.148a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.273"/></svg>
+        {%- if cart.item_count > 0 -%}<span class="ar-nav__cart-count">{{ cart.item_count }}</span>{%- endif -%}
+      </a>
+
+      <a href="{{ routes.account_url }}" class="ar-nav__icon" aria-label="Account">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
+      </a>
+
+      <button class="ar-nav__burger js-ar-burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="ar-nav__drawer js-ar-drawer" aria-hidden="true">
+  <button class="ar-nav__drawer-close js-ar-close" aria-label="Close menu">&times;</button>
+  <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
+  <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
+  <a href="{{ section.settings.nav_l3_url | default: '/collections/gift-sets' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+  <button class="ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false">
+    {{ section.settings.nav_r1 | default: 'Collections' }}
+    <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub">
+    <a href="{{ routes.collections_url }}/planet-attars"      class="ar-nav__drawer-link ar-nav__drawer-sub">Planets Attars</a>
+    <a href="{{ routes.collections_url }}/zodiac-attars"       class="ar-nav__drawer-link ar-nav__drawer-sub">Zodiac Attars</a>
+    <a href="{{ routes.collections_url }}/nakshatra-attars"    class="ar-nav__drawer-link ar-nav__drawer-sub">Nakshatra Attars</a>
+    <a href="{{ routes.collections_url }}/stress"       class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
+    <a href="{{ routes.collections_url }}/chakra-attars" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
+    <a href="{{ routes.collections_url }}/love-attar"   class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
+    <a href="{{ routes.collections_url }}/incense-sticks"      class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
+  </div>
+  <a href="{{ section.settings.nav_r2_url | default: '/pages/about' }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>
+  <a href="{{ routes.cart_url }}" class="ar-nav__drawer-link">Cart ({{ cart.item_count }})</a>
+  <a href="{{ routes.account_url }}" class="ar-nav__drawer-link">Account</a>
+</div>
+
+<script>
+  (function () {
+    'use strict';
+    var burger = document.querySelector('.js-ar-burger');
+    var drawer = document.querySelector('.js-ar-drawer');
+    var close = document.querySelector('.js-ar-close');
+
+    function openDrawer() {
+      if (!drawer) return;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      if (!drawer) return;
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    if (burger) burger.addEventListener('click', openDrawer);
+    if (close) close.addEventListener('click', closeDrawer);
+    if (drawer) drawer.addEventListener('click', function (e) { if (e.target === drawer) closeDrawer(); });
+    window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
+
+    var drawerToggle = document.querySelector('.js-ar-drawer-toggle');
+    var drawerSub = document.querySelector('.js-ar-drawer-sub');
+    if (drawerToggle && drawerSub) {
+      drawerToggle.addEventListener('click', function () {
+        var isOpen = drawerSub.classList.contains('is-open');
+        drawerSub.classList.toggle('is-open', !isOpen);
+        drawerToggle.classList.toggle('is-open', !isOpen);
+        drawerToggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+    }
+
+    (function () {
+      var trigger = document.getElementById('ar-mega-trigger');
+      var dropdown = document.getElementById('ar-mega-dropdown');
+      if (!trigger || !dropdown) return;
+      var closeTimer;
+      function open() { clearTimeout(closeTimer); trigger.classList.add('is-open'); }
+      function scheduleClose() { closeTimer = setTimeout(function () { trigger.classList.remove('is-open'); }, 280); }
+      trigger.addEventListener('mouseenter', open);
+      trigger.addEventListener('mouseleave', scheduleClose);
+      dropdown.addEventListener('mouseenter', function () { clearTimeout(closeTimer); });
+      dropdown.addEventListener('mouseleave', scheduleClose);
+      trigger.addEventListener('focusin', open);
+      trigger.addEventListener('focusout', function (e) { if (!trigger.contains(e.relatedTarget)) scheduleClose(); });
+    })();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Anand Rasa Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width (px)",
+      "min": 120,
+      "max": 260,
+      "step": 10,
+      "default": 180
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text (fallback)"
+    },
+    {
+      "type": "text",
+      "id": "logo_subtext",
+      "label": "Logo subtext"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "text",
+      "id": "nav_l1",
+      "label": "Left link 1 label",
+      "default": "Shop"
+    },
+    {
+      "type": "url",
+      "id": "nav_l1_url",
+      "label": "Left link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_l2",
+      "label": "Left link 2 label",
+      "default": "Blogs"
+    },
+    {
+      "type": "url",
+      "id": "nav_l2_url",
+      "label": "Left link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_l3",
+      "label": "Left link 3 label",
+      "default": "Gift Sets"
+    },
+    {
+      "type": "url",
+      "id": "nav_l3_url",
+      "label": "Left link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "nav_r1",
+      "label": "Right dropdown label",
+      "default": "Collections"
+    },
+    {
+      "type": "url",
+      "id": "nav_r1_url",
+      "label": "Right dropdown URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "mega_menu_image",
+      "label": "Mega menu featured image"
+    },
+    {
+      "type": "text",
+      "id": "nav_r2",
+      "label": "Right link label",
+      "default": "About"
+    },
+    {
+      "type": "url",
+      "id": "nav_r2_url",
+      "label": "Right link URL"
+    }
+  ]
+}
+{% endschema %}

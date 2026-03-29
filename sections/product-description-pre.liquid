@@ -1,0 +1,81 @@
+{% comment %}
+  Standalone premium product specs + comparison (luxury B&W). Add to product templates.
+{% endcomment %}
+{%- unless product -%}
+  <div class="page-width" style="padding:2rem;text-align:center;opacity:.7;">Assign this template to a product page.</div>
+{%- else -%}
+  {% render 'product-description-premium-inner', scope_id: section.id %}
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Premium product specs",
+  "tag": "section",
+  "class": "section-product-description-premium",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose Our Incense"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Crafted for purity, fragrance and spiritual practice"
+    },
+    { "type": "header", "content": "Comparison table labels" },
+    {
+      "type": "text",
+      "id": "compare_feature_col_label",
+      "label": "Feature column",
+      "default": "Feature"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Our brand column title",
+      "default": "Anand Rasa",
+      "info": "Highlighted column"
+    },
+    {
+      "type": "text",
+      "id": "compare_others_label",
+      "label": "Others column",
+      "default": "Others"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec_row",
+      "name": "Specification row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Country of Origin" },
+        { "type": "text", "id": "value", "label": "Value", "default": "India" }
+      ]
+    },
+    {
+      "type": "compare_row",
+      "name": "Comparison row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "Natural ingredients" },
+        { "type": "text", "id": "our_answer", "label": "Our column (✓ check / ✕ cross)", "default": "✓", "info": "Use ✓ for check icon, ✕ for X" },
+        { "type": "text", "id": "others_answer", "label": "Others column", "default": "✕" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium product specs",
+      "blocks": [
+        { "type": "spec_row", "settings": { "label": "Country of Origin", "value": "India" } },
+        { "type": "spec_row", "settings": { "label": "Item Form", "value": "Incense" } },
+        { "type": "compare_row", "settings": { "feature": "Pure ingredients", "our_answer": "✓", "others_answer": "✕" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

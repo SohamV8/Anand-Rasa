@@ -1,0 +1,334 @@
+{% comment %}
+  ANAND RASA — Zodiac Attars Collection
+  sections/anand-rasa-collection-zodiac-attar.liquid
+{% endcomment %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&family=Poppins:wght@300;400;500;600;700&display=swap');
+  
+    /* ── COLLECTION PAGE ── */
+    .arc * { box-sizing:border-box; margin:0; padding:0; }
+    .arc { --fh:'Cormorant Garamond',Georgia,serif; --fb:'Jost',sans-serif; --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
+    .arc a { text-decoration:none; color:inherit; }
+    .arc img { display:block; max-width:100%; }
+  
+    /* Hero */
+    .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#0e0a1a; }
+    .arc-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; }
+    .arc-hero__ov { position:absolute; inset:0; background:linear-gradient(120deg,#0e0a1aee 0%,#0e0a1a88 60%,transparent 100%); }
+    .arc-hero__con { position:relative; z-index:10; max-width:700px; padding:80px 48px 80px; animation:arUp .7s ease both; }
+    @media(max-width:768px){ .arc-hero__con { padding:60px 24px; } }
+    .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
+    .arc-hero__h { font-family:var(--fh); font-size:clamp(36px,5vw,72px); font-weight:400; color:#fff; line-height:1.08; letter-spacing:-.02em; margin-bottom:20px; }
+    .arc-hero__p { font-size:15px; line-height:1.75; color:rgba(255,255,255,.78); font-weight:300; max-width:480px; margin-bottom:32px; }
+    .arc-hero__btn { display:inline-flex; align-items:center; gap:10px; border:1.5px solid rgba(255,255,255,.7); padding:13px 32px; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#fff; background:transparent; transition:all .3s; }
+    .arc-hero__btn:hover { background:#fff; color:#0e0a1a; border-color:#fff; }
+  
+    /* USP strip — simple + native emoji */
+    .arc-usp { background:#fff; border-top:1px solid rgba(30,32,35,.1); border-bottom:1px solid rgba(30,32,35,.1); }
+    .arc-usp__row { max-width:1120px; margin:0 auto; padding:44px 32px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px 32px; align-items:start; }
+    @media(max-width:900px){ .arc-usp__row { grid-template-columns:repeat(2,1fr); padding:36px 24px; gap:28px 24px; } }
+    @media(max-width:480px){ .arc-usp__row { grid-template-columns:1fr; padding:32px 24px; gap:24px; } }
+    .arc-usp__item { text-align:center; padding:0 8px; }
+    .arc-usp__emoji { display:block; font-size:clamp(22px,2.4vw,28px); line-height:1; margin-bottom:14px; font-family:"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji",sans-serif; letter-spacing:0; -webkit-font-smoothing:antialiased; }
+    .arc-usp__title { font-family:var(--fh); font-size:clamp(16px,1.5vw,19px); font-weight:400; color:var(--ink); letter-spacing:.01em; line-height:1.35; }
+    .arc-usp__sub { margin-top:10px; font-size:12px; font-weight:300; color:#6b7280; line-height:1.55; max-width:28ch; margin-left:auto; margin-right:auto; }
+  
+    /* Toolbar */
+    .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    @media(max-width:768px){ .arc-toolbar { padding:20px 20px 0; } }
+    .arc-toolbar__count { font-size:13px; color:#6b7280; }
+    .arc-toolbar__sort { display:flex; align-items:center; gap:10px; }
+    .arc-toolbar__sort label { font-size:12px; color:#9ca3af; font-weight:400; }
+    .arc-toolbar__select { font-family:var(--fb); font-size:13px; color:var(--ink); background:#fff; border:1px solid rgba(30,32,35,.15); padding:8px 32px 8px 14px; appearance:none; cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231e2023' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; }
+  
+    /* Product Grid */
+    .arc-grid { max-width:1400px; margin:0 auto; padding:32px 48px 80px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+    @media(max-width:1200px){ .arc-grid { grid-template-columns:repeat(3,1fr); } }
+    @media(max-width:900px){ .arc-grid { grid-template-columns:repeat(2,1fr); padding:24px 20px 60px; gap:16px; } }
+    @media(max-width:480px){ .arc-grid { grid-template-columns:1fr; } }
+  
+    /* Product Card */
+    .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; position:relative; }
+    .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
+    .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#f5f0e8; }
+    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
+    .arc-card:hover .arc-card__img { transform:scale(1.06); }
+    .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
+    .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
+    .arc-card__badge--new  { background:#1e2023; color:#fff; }
+    .arc-card__badge--sale { background:var(--gold); color:#fff; }
+    .arc-card__badge--bs   { background:#c9a96e; color:#fff; }
+    .arc-card__quick { position:relative; bottom:auto; left:auto; right:auto; background:#1e2023; color:#fff; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:11px 16px; text-align:center; transform:none; transition:background .25s; cursor:pointer; border:none; font-family:var(--fb); width:100%; border-radius:4px; margin-top:10px; display:block; }
+    .arc-card__quick:hover { background:#e8a0bd; color:#1e2023; }
+    .arc-card__body { padding:18px 18px 20px; flex:1; display:flex; flex-direction:column; gap:6px; }
+    .arc-card__type { font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#9ca3af; }
+    .arc-card__name { font-family:var(--fh); font-size:18px; font-weight:400; color:var(--ink); line-height:1.3; }
+    .arc-card__desc { font-size:12px; color:#6b7280; font-weight:300; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .arc-card__foot { margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(30,32,35,.06); }
+    .arc-card__price-wrap { display:flex; align-items:center; gap:8px; }
+    .arc-card__price { font-size:15px; font-weight:600; color:var(--ink); }
+    .arc-card__compare { font-size:13px; color:#9ca3af; text-decoration:line-through; }
+    .arc-card__buy { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); border-bottom:1.5px solid var(--ink); padding-bottom:2px; transition:color .2s,border-color .2s; }
+    .arc-card__buy:hover { color:var(--gold); border-color:var(--gold); }
+  
+    /* Empty */
+    .arc-empty { max-width:1400px; margin:0 auto; padding:80px 48px; text-align:center; grid-column:1/-1; }
+    .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
+    .arc-empty__p { font-size:14px; color:#6b7280; }
+  
+    /* Content Block */
+    .arc-content { max-width:1440px; margin:0 auto; padding:80px 48px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    @media(max-width:900px){ .arc-content { grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
+    .arc-content__img-wrap { position:relative; aspect-ratio:4/3; overflow:hidden; }
+    .arc-content__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .arc-content__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; }
+    .arc-content__label { font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
+    .arc-content__h { font-family:var(--fh); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:var(--ink); line-height:1.15; margin-bottom:20px; letter-spacing:-.01em; }
+    .arc-content__p { font-size:15px; line-height:1.8; color:#4b5563; font-weight:300; }
+  
+    /* CTA */
+    .arc-cta { background:#0e0a1a; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
+    @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
+    .arc-cta__ov { position:absolute; inset:0; opacity:.12; background:radial-gradient(ellipse at 50% 0%,#c9a96e 0%,transparent 65%); pointer-events:none; }
+    .arc-cta__label { font-size:10px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; position:relative; }
+    .arc-cta__h { font-family:var(--fh); font-size:clamp(28px,4vw,56px); font-weight:400; color:#fff; margin-bottom:16px; letter-spacing:-.01em; line-height:1.15; position:relative; }
+    .arc-cta__p { font-size:15px; color:rgba(255,255,255,.7); font-weight:300; margin-bottom:36px; position:relative; max-width:520px; margin-left:auto; margin-right:auto; }
+    .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s,transform .2s; position:relative; }
+    .arc-cta__btn:hover { background:#b8943a; transform:translateY(-1px); }
+  
+    @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  
+  </style>
+  
+  <div class="arc">
+  
+    {%- comment -%} HERO {% endcomment %}
+    <div class="arc-hero">
+      {%- if section.settings.hero_image != blank -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ collection.title }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
+      {%- endif -%}
+      <div class="arc-hero__ov"></div>
+      <div class="arc-hero__con">
+        <span class="arc-hero__label">{{ section.settings.hero_label | default: 'Rashi Rasa Series' }}</span>
+        <h1 class="arc-hero__h">{{ collection.title | default: 'Zodiac Attars' }}</h1>
+        <p class="arc-hero__p">{{ section.settings.hero_subtitle | default: 'Twelve attars, one for every rashi. Wear your zodiac energy as a fragrance.' }}</p>
+        <a href="#arc-products" class="arc-hero__btn">{{ section.settings.hero_btn | default: 'Explore Collection' }}</a>
+      </div>
+    </div>
+  
+    {%- comment -%} USP STRIP {% endcomment %}
+    <div class="arc-usp">
+      <div class="arc-usp__row">
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">♈️</span>
+          <p class="arc-usp__title">Twelve rashi attars</p>
+          <p class="arc-usp__sub">From Mesha to Meena, by sign</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🌺</span>
+          <p class="arc-usp__title">Floral & wood chords</p>
+          <p class="arc-usp__sub">Botanical depth, no synthetics</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">⭐</span>
+          <p class="arc-usp__title">Wears your chart softly</p>
+          <p class="arc-usp__sub">Blended for zodiac temperament</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🌙</span>
+          <p class="arc-usp__title">Oil-on-skin ritual</p>
+          <p class="arc-usp__sub">Gentle, intimate sillage</p>
+        </div>
+      </div>
+    </div>
+  
+    {%- comment -%} TOOLBAR {% endcomment %}
+    <div class="arc-toolbar">
+      <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
+      <div class="arc-toolbar__sort">
+        <label for="arc-sort">Sort by</label>
+        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+        <select id="arc-sort" class="arc-toolbar__select" onchange="window.location.href=window.location.pathname+'?sort_by='+this.value">
+          <option value="manual"            {%- if sort_by == 'manual' -%} selected{%- endif -%}>Featured</option>
+          <option value="best-selling"      {%- if sort_by == 'best-selling' -%} selected{%- endif -%}>Best Selling</option>
+          <option value="title-ascending"   {%- if sort_by == 'title-ascending' -%} selected{%- endif -%}>A–Z</option>
+          <option value="title-descending"  {%- if sort_by == 'title-descending' -%} selected{%- endif -%}>Z–A</option>
+          <option value="price-ascending"   {%- if sort_by == 'price-ascending' -%} selected{%- endif -%}>Price: Low–High</option>
+          <option value="price-descending"  {%- if sort_by == 'price-descending' -%} selected{%- endif -%}>Price: High–Low</option>
+          <option value="created-descending"{%- if sort_by == 'created-descending' -%} selected{%- endif -%}>Newest</option>
+        </select>
+      </div>
+    </div>
+  
+    {%- comment -%} PRODUCT GRID {% endcomment %}
+    <div class="arc-grid" id="arc-products">
+      {%- if collection.products.size > 0 -%}
+        {%- paginate collection.products by section.settings.products_per_page -%}
+          {%- for product in collection.products -%}
+            <div class="arc-card">
+              <a href="{{ product.url }}" class="arc-card__img-wrap">
+                {%- if product.images.size > 0 -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 800 }}"
+                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    width="800"
+                    height="1067"
+                    loading="lazy"
+                    class="arc-card__img"
+                  >
+                  {%- if product.images.size > 1 -%}
+                    <img
+                      src="{{ product.images[1] | image_url: width: 800 }}"
+                      alt="{{ product.title }} - alternate view"
+                      width="800"
+                      height="1067"
+                      loading="lazy"
+                      class="arc-card__img-hover"
+                    >
+                  {%- endif -%}
+                {%- endif -%}
+                {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
+                  <span class="arc-card__badge arc-card__badge--bs">Bestseller</span>
+                {%- elsif product.tags contains 'new' or product.tags contains 'New' -%}
+                  <span class="arc-card__badge arc-card__badge--new">New</span>
+                {%- elsif product.compare_at_price > product.price -%}
+                  <span class="arc-card__badge arc-card__badge--sale">Sale</span>
+                {%- endif -%}
+                </a>
+              <div class="arc-card__body">
+                <p class="arc-card__type">{{ product.type | default: 'Attar' }}</p>
+                <a href="{{ product.url }}"><h3 class="arc-card__name">{{ product.title }}</h3></a>
+                {%- if product.description != blank -%}
+                  <p class="arc-card__desc">{{ product.description | strip_html | truncate: 80 }}</p>
+                {%- endif -%}
+                <div class="arc-card__foot">
+                  <div class="arc-card__price-wrap">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="arc-card__compare">{{ product.compare_at_price | money }}</span>
+                    {%- endif -%}
+                    <span class="arc-card__price">{{ product.price | money }}</span>
+                  </div>
+                  <a href="{{ product.url }}" class="arc-card__buy">View</a>
+                </div>
+                <button class="arc-card__quick js-arc-atc"
+                  data-id="{{ product.variants.first.id }}"
+                  data-name="{{ product.title | escape }}"
+                  aria-label="Add {{ product.title | escape }} to cart">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          {%- endfor -%}
+  
+          {%- if paginate.pages > 1 -%}
+            <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8249;</a>
+              {%- endif -%}
+              {%- for part in paginate.parts -%}
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e2023;text-decoration:none;">{{ part.title }}</a>
+                {%- else -%}
+                  <span style="width:40px;height:40px;{%- if part.title == paginate.current_page -%}background:#1e2023;color:#fff;{%- else -%}color:#9ca3af;{%- endif -%}border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;">{{ part.title }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8250;</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- else -%}
+        <div class="arc-empty">
+          <h2 class="arc-empty__h">No products yet</h2>
+          <p class="arc-empty__p">Check back soon — new products are being added.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  
+    {%- comment -%} CONTENT BLOCK {% endcomment %}
+    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
+    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
+      <div class="arc-content">
+        <div class="arc-content__img-wrap">
+          {%- if section.settings.content_image != blank -%}
+            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
+          {%- else -%}
+            <div class="arc-content__ph">Upload image in Theme Editor</div>
+          {%- endif -%}
+        </div>
+        <div>
+          <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
+          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Your Zodiac, Your Scent' }}</h2>
+          <p class="arc-content__p">{{ section.settings.content_body | default: 'Each of the twelve rashis carries a unique energetic signature. Our Zodiac Attar series translates these signatures into fragrance — so you can wear your cosmic identity as a quiet, powerful presence.' }}</p>
+        </div>
+      </div>
+    </section>
+    {%- endif -%}
+  
+    {%- comment -%} CTA SECTION {% endcomment %}
+    <section class="arc-cta">
+      <div class="arc-cta__ov"></div>
+      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
+      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Wear Your Zodiac as Your Aura' }}</h2>
+      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'The right fragrance does more than smell beautiful — it aligns you with your own energy.' }}</p>
+      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
+    </section>
+  
+  </div>
+  
+  <script>
+  (function(){
+    // Add to cart
+    document.querySelectorAll('.js-arc-atc').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        var id = btn.dataset.id;
+        if(!id) return;
+        btn.textContent = 'Adding...';
+        btn.style.pointerEvents = 'none';
+        fetch('/cart/add.js',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({id:parseInt(id),quantity:1})
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(){
+          btn.textContent = '✓ Added';
+          setTimeout(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; }, 1800);
+        })
+        .catch(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; });
+      });
+    });
+  })();
+  </script>
+  
+  {%- schema -%}
+  {
+    "name": "Zodiac Attars Collection",
+    "settings": [
+      {"type":"header","content":"Hero Section"},
+      {"type":"image_picker","id":"hero_image","label":"Hero background image"},
+      {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Rashi Rasa Series"},
+      {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Twelve attars, one for every rashi. Wear your zodiac energy as a fragrance."},
+      {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},
+      {"type":"header","content":"Content Block"},
+      {"type":"image_picker","id":"content_image","label":"Content image"},
+      {"type":"text","id":"content_label","label":"Label","default":"Our Craft"},
+      {"type":"text","id":"content_title","label":"Title","default":"Your Zodiac, Your Scent"},
+      {"type":"textarea","id":"content_body","label":"Body text","default":"Each of the twelve rashis carries a unique energetic signature. Our Zodiac Attar series translates these signatures into fragrance — so you can wear your cosmic identity as a quiet, powerful presence."},
+      {"type":"header","content":"CTA Section"},
+      {"type":"text","id":"cta_label","label":"CTA label","default":"Anand Rasa"},
+      {"type":"text","id":"cta_title","label":"CTA heading","default":"Wear Your Zodiac as Your Aura"},
+      {"type":"textarea","id":"cta_subtitle","label":"CTA subtitle","default":"The right fragrance does more than smell beautiful — it aligns you with your own energy."},
+      {"type":"text","id":"cta_btn","label":"Button text","default":"Shop Now"},
+      {"type":"url","id":"cta_url","label":"Button URL"},
+      {"type":"header","content":"Products"},
+      {"type":"range","id":"products_per_page","label":"Products per page","min":8,"max":48,"step":4,"default":16}
+    ],
+    "presets": [{"name":"Zodiac Attars Collection"}]
+  }
+  {%- endschema -%}
+  

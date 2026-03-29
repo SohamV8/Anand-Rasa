@@ -1,0 +1,1108 @@
+{% comment %}
+  ANAND RASA — Luxury Incense Product Page
+  sections/product-incenses.liquid
+  Universal template — assign to any incense product via templates/product.incenses.json
+{% endcomment %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
+
+  /* ── RESET ── */
+  .lux *, .lux *::before, .lux *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .lux { --serif: 'Playfair Display', Georgia, serif; --sans: 'Inter', Helvetica, Arial, sans-serif; --black: #000; --white: #fff; --g1: #0a0a0a; --g2: #111; --g3: #1a1a1a; --g4: #2a2a2a; --g5: #3a3a3a; --g6: #666; --g7: #999; --g8: #ccc; --g9: #e8e8e8; --g10: #f5f5f5; --border: rgba(255,255,255,.1); --border-dark: rgba(0,0,0,.1); font-family: var(--sans); background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
+  .lux a { text-decoration: none; color: inherit; }
+  .lux img { display: block; max-width: 100%; }
+  .lux button { cursor: pointer; font-family: var(--sans); border: none; background: none; }
+
+  @keyframes luxUp    { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes luxFade  { from { opacity:0; } to { opacity:1; } }
+  @keyframes luxScale { from { transform:scale(1.08); } to { transform:scale(1); } }
+
+  /* ── HERO WRAPPER ── */
+  .lux-hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; background: var(--white); }
+  @media(max-width:960px) { .lux-hero { grid-template-columns: 1fr; min-height: auto; } }
+
+  /* ── GALLERY ── */
+  .lux-gallery { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--g10); }
+  @media(max-width:960px) { .lux-gallery { position: static; height: auto; aspect-ratio: 1/1; } }
+
+  .lux-gallery__main { position: relative; width: 100%; height: 100%; overflow: hidden; cursor: zoom-in; }
+  @media(max-width:960px) { .lux-gallery__main { height: 100%; } }
+
+  .lux-gallery__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s ease; transform: scale(1); }
+  .lux-gallery__img.is-active { opacity: 1; animation: luxScale .8s ease both; }
+
+  /* Zoom effect */
+  .lux-gallery__main:hover .lux-gallery__img.is-active { transform: scale(1.04); transition: opacity .5s ease, transform 6s ease; }
+
+  .lux-gallery__thumbs { position: absolute; bottom: 24px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 10; padding: 0 24px; }
+  .lux-gallery__dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.25); border: none; cursor: pointer; transition: all .3s; padding: 0; }
+  .lux-gallery__dot.is-active { background: var(--black); width: 24px; border-radius: 3px; }
+
+  .lux-gallery__thumbstrip { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 10; }
+  .lux-gallery__thumb { width: 56px; height: 56px; overflow: hidden; border: 1.5px solid transparent; cursor: pointer; transition: border-color .3s; flex-shrink: 0; }
+  .lux-gallery__thumb.is-active { border-color: var(--black); }
+  .lux-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .lux-gallery__badge { position: absolute; top: 24px; left: 24px; z-index: 10; display: flex; flex-direction: column; gap: 6px; }
+  .lux-gallery__tag { font-family: var(--sans); font-size: 9px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; }
+  .lux-gallery__tag--sale { background: var(--black); color: var(--white); }
+  .lux-gallery__tag--new  { background: var(--white); color: var(--black); border: 1px solid var(--black); }
+
+  /* ── PRODUCT INFO ── */
+  .lux-info { padding: 80px 64px 80px 56px; display: flex; flex-direction: column; justify-content: center; background: var(--white); }
+  @media(max-width:1200px) { .lux-info { padding: 64px 40px; } }
+  @media(max-width:960px)  { .lux-info { padding: 48px 24px 60px; } }
+
+  .lux-info__pre { font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: var(--g7); margin-bottom: 16px; display: block; animation: luxUp .6s ease .1s both; }
+  .lux-info__title { font-family: var(--serif); font-size: clamp(32px, 4.5vw, 58px); font-weight: 400; color: var(--black); line-height: 1.08; letter-spacing: -.02em; margin-bottom: 16px; animation: luxUp .6s ease .15s both; }
+  .lux-info__tagline { font-family: var(--serif); font-size: clamp(14px, 1.8vw, 17px); font-weight: 400; font-style: italic; color: var(--g6); line-height: 1.6; margin-bottom: 32px; animation: luxUp .6s ease .2s both; }
+
+  /* Divider */
+  .lux-divider { width: 40px; height: 1px; background: var(--black); margin-bottom: 32px; animation: luxUp .6s ease .25s both; }
+
+  /* Rating */
+  .lux-rating { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; animation: luxUp .6s ease .27s both; }
+  .lux-rating__stars { display: flex; gap: 2px; }
+  .lux-rating__star { font-size: 13px; color: var(--black); }
+  .lux-rating__star--off { color: var(--g9); }
+  .lux-rating__count { font-size: 12px; color: var(--g6); letter-spacing: .04em; }
+
+  /* Price */
+  .lux-price { display: flex; align-items: baseline; gap: 14px; margin-bottom: 36px; animation: luxUp .6s ease .3s both; }
+  .lux-price__now { font-family: var(--serif); font-size: 32px; font-weight: 500; color: var(--black); letter-spacing: -.02em; }
+  .lux-price__was { font-family: var(--sans); font-size: 18px; color: var(--g7); text-decoration: line-through; }
+  .lux-price__save { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--g10); color: var(--g5); padding: 4px 10px; }
+
+  /* Variants */
+  .lux-variants { margin-bottom: 32px; animation: luxUp .6s ease .32s both; }
+  .lux-variants__label { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--g6); margin-bottom: 12px; display: block; }
+  .lux-variants__label em { font-style: normal; color: var(--black); letter-spacing: 0; text-transform: none; }
+  .lux-variants__opts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lux-variant-btn { padding: 10px 22px; font-family: var(--sans); font-size: 12px; font-weight: 400; letter-spacing: .06em; border: 1px solid var(--g9); color: var(--g4); background: var(--white); transition: all .25s; }
+  .lux-variant-btn:hover { border-color: var(--black); color: var(--black); }
+  .lux-variant-btn.is-active { border-color: var(--black); background: var(--black); color: var(--white); }
+  .lux-variant-btn.is-unavailable { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
+
+  /* Quantity */
+  .lux-qty { display: flex; align-items: center; gap: 0; margin-bottom: 28px; width: fit-content; border: 1px solid var(--g9); animation: luxUp .6s ease .34s both; }
+  .lux-qty__btn { width: 44px; height: 44px; font-size: 18px; color: var(--black); display: flex; align-items: center; justify-content: center; transition: background .2s; background: none; border: none; font-weight: 300; }
+  .lux-qty__btn:hover { background: var(--g10); }
+  .lux-qty__val { width: 52px; height: 44px; text-align: center; border: none; border-left: 1px solid var(--g9); border-right: 1px solid var(--g9); font-family: var(--sans); font-size: 14px; color: var(--black); background: var(--white); -moz-appearance: textfield; }
+  .lux-qty__val::-webkit-inner-spin-button, .lux-qty__val::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+  /* CTA */
+  .lux-cta { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; animation: luxUp .6s ease .36s both; }
+  .lux-btn-primary { width: 100%; padding: 18px 32px; background: var(--black); color: var(--white); font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; transition: background .3s, transform .2s; }
+  .lux-btn-primary:hover { background: var(--g3); transform: translateY(-1px); }
+  .lux-btn-primary:active { transform: scale(.99); }
+  .lux-btn-primary:disabled { background: var(--g8); cursor: not-allowed; transform: none; }
+  .lux-btn-secondary { width: 100%; padding: 17px 32px; background: var(--white); color: var(--black); font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; border: 1px solid var(--black); transition: background .3s, color .3s, transform .2s; }
+  .lux-btn-secondary:hover { background: var(--black); color: var(--white); transform: translateY(-1px); }
+
+  /* ATC feedback */
+  .lux-msg { font-size: 12px; font-weight: 400; letter-spacing: .06em; padding: 12px 16px; text-align: center; display: none; margin-bottom: 8px; }
+  .lux-msg.ok  { display: block; background: var(--g10); color: var(--g4); border: 1px solid var(--g9); }
+  .lux-msg.err { display: block; background: #fff0f0; color: #800; border: 1px solid #fcc; }
+
+  /* Trust lines */
+  .lux-trust { display: flex; flex-direction: column; gap: 8px; animation: luxUp .6s ease .4s both; }
+  .lux-trust__line { font-size: 11px; font-weight: 400; letter-spacing: .1em; color: var(--g6); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+  .lux-trust__line::before { content: '—'; color: var(--g8); }
+
+  /* ── USP STRIP ── */
+  .lux-usp { background: var(--black); padding: 48px 48px; border-top: 1px solid var(--g3); border-bottom: 1px solid var(--g3); }
+  .lux-usp__grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--g4); }
+  @media(max-width:768px) { .lux-usp__grid { grid-template-columns: repeat(2, 1fr); } }
+  .lux-usp__item { background: var(--black); padding: 36px 32px; text-align: center; }
+  .lux-usp__name { font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: var(--white); display: block; margin-bottom: 8px; }
+  .lux-usp__desc { font-family: var(--serif); font-size: 13px; font-style: italic; color: var(--g7); line-height: 1.5; }
+
+  /* ── STORY SECTION ── */
+  .lux-story { background: var(--white); padding: 120px 48px; text-align: center; border-bottom: 1px solid var(--g9); }
+  .lux-story__inner { max-width: 680px; margin: 0 auto; }
+  .lux-story__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g7); display: block; margin-bottom: 28px; }
+  .lux-story__h { font-family: var(--serif); font-size: clamp(28px, 4vw, 48px); font-weight: 400; color: var(--black); line-height: 1.2; letter-spacing: -.02em; margin-bottom: 32px; }
+  .lux-story__body { font-family: var(--sans); font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--g5); }
+  .lux-story__body p { margin-bottom: 16px; }
+  .lux-story__body p:last-child { margin-bottom: 0; }
+
+  /* ── SCENT SECTION ── */
+  .lux-scent { background: var(--g1); padding: 100px 48px; }
+  @media(max-width:768px) { .lux-scent { padding: 72px 24px; } }
+  .lux-scent__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  @media(max-width:768px) { .lux-scent__inner { grid-template-columns: 1fr; gap: 48px; } }
+  .lux-scent__pre { font-size: 10px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: var(--g6); display: block; margin-bottom: 24px; }
+  .lux-scent__notes { display: flex; flex-direction: column; gap: 0; }
+  .lux-scent__row { display: flex; align-items: baseline; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--g3); }
+  .lux-scent__row:first-child { border-top: 1px solid var(--g3); }
+  .lux-scent__tier { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--g5); min-width: 72px; flex-shrink: 0; }
+  .lux-scent__val { font-family: var(--serif); font-size: 15px; font-style: italic; color: var(--g8); line-height: 1.5; }
+  .lux-scent__desc-pre { font-size: 10px; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: var(--g6); display: block; margin-bottom: 24px; }
+  .lux-scent__desc h3 { font-family: var(--serif); font-size: clamp(22px, 3vw, 34px); font-weight: 400; color: var(--white); line-height: 1.3; letter-spacing: -.01em; margin-bottom: 20px; }
+  .lux-scent__desc p { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--g6); line-height: 1.85; margin-bottom: 14px; }
+
+  /* ── RITUAL SECTION ── */
+  .lux-ritual { background: var(--white); padding: 100px 48px; border-top: 1px solid var(--g9); border-bottom: 1px solid var(--g9); }
+  @media(max-width:768px) { .lux-ritual { padding: 72px 24px; } }
+  .lux-ritual__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g7); display: block; text-align: center; margin-bottom: 16px; }
+  .lux-ritual__h { font-family: var(--serif); font-size: clamp(28px, 3.5vw, 44px); font-weight: 400; color: var(--black); text-align: center; margin-bottom: 72px; letter-spacing: -.02em; }
+  .lux-ritual__grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--g9); }
+  @media(max-width:640px) { .lux-ritual__grid { grid-template-columns: 1fr; } }
+  .lux-ritual__step { background: var(--white); padding: 48px 40px; position: relative; transition: background .3s; }
+  .lux-ritual__step:hover { background: var(--g10); }
+  .lux-ritual__num { font-family: var(--serif); font-size: 64px; font-weight: 400; color: var(--g9); line-height: 1; display: block; margin-bottom: 20px; letter-spacing: -.04em; }
+  .lux-ritual__title { font-family: var(--serif); font-size: 22px; font-weight: 400; color: var(--black); margin-bottom: 14px; letter-spacing: -.01em; }
+  .lux-ritual__desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--g6); line-height: 1.8; }
+
+  /* ── COMPARISON TABLE ── */
+  .lux-compare { background: var(--g1); padding: 100px 48px; }
+  @media(max-width:768px) { .lux-compare { padding: 72px 24px; } }
+  .lux-compare__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g6); display: block; text-align: center; margin-bottom: 16px; }
+  .lux-compare__h { font-family: var(--serif); font-size: clamp(26px, 3vw, 40px); font-weight: 400; color: var(--white); text-align: center; margin-bottom: 56px; letter-spacing: -.02em; }
+  .lux-compare__wrap { max-width: 900px; margin: 0 auto; overflow-x: auto; }
+  .lux-compare__table { width: 100%; border-collapse: collapse; font-family: var(--sans); }
+  .lux-compare__table thead th { font-size: 9px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; padding: 16px 24px; text-align: center; border-bottom: 1px solid var(--g4); color: var(--g6); }
+  .lux-compare__table thead th:nth-child(2) { color: var(--white); background: var(--g3); font-size: 10px; letter-spacing: .2em; }
+  .lux-compare__table thead th:first-child { text-align: left; }
+  .lux-compare__table tbody tr { border-bottom: 1px solid var(--g4); transition: background .2s; }
+  .lux-compare__table tbody tr:hover { background: rgba(255,255,255,.02); }
+  .lux-compare__table tbody td { padding: 18px 24px; font-size: 13px; text-align: center; color: var(--g7); font-weight: 300; vertical-align: middle; }
+  .lux-compare__table tbody td:first-child { text-align: left; color: var(--g8); letter-spacing: .04em; }
+  .lux-compare__table tbody td:nth-child(2) { color: var(--white); background: rgba(255,255,255,.03); font-weight: 400; }
+  .lux-compare__check { font-size: 14px; }
+  .lux-compare__check--yes { color: var(--white); }
+  .lux-compare__check--no  { color: var(--g4); }
+
+  /* ── SPECIFICATIONS ── */
+  .lux-specs { background: var(--white); padding: 100px 48px; border-top: 1px solid var(--g9); }
+  @media(max-width:768px) { .lux-specs { padding: 72px 24px; } }
+  .lux-specs__inner { max-width: 800px; margin: 0 auto; }
+  .lux-specs__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g7); display: block; margin-bottom: 16px; }
+  .lux-specs__h { font-family: var(--serif); font-size: clamp(26px, 3vw, 40px); font-weight: 400; color: var(--black); margin-bottom: 48px; letter-spacing: -.02em; }
+  .lux-specs__row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--g9); align-items: start; }
+  .lux-specs__row:first-of-type { border-top: 1px solid var(--g9); }
+  .lux-specs__label { font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--g6); padding-top: 2px; }
+  .lux-specs__value { font-family: var(--serif); font-size: 15px; font-style: italic; color: var(--black); line-height: 1.5; }
+
+  /* ── TESTIMONIALS ── */
+  .lux-reviews { background: var(--g10); padding: 100px 48px; border-top: 1px solid var(--g9); }
+  @media(max-width:768px) { .lux-reviews { padding: 72px 24px; } }
+  .lux-reviews__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g7); display: block; text-align: center; margin-bottom: 16px; }
+  .lux-reviews__h { font-family: var(--serif); font-size: clamp(26px, 3vw, 40px); font-weight: 400; color: var(--black); text-align: center; margin-bottom: 64px; letter-spacing: -.02em; }
+  .lux-reviews__grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--g9); }
+  @media(max-width:768px) { .lux-reviews__grid { grid-template-columns: 1fr; } }
+  .lux-review { background: var(--white); padding: 40px 36px; transition: box-shadow .3s; }
+  .lux-review:hover { box-shadow: 0 20px 60px rgba(0,0,0,.07); }
+  .lux-review__stars { display: flex; gap: 2px; margin-bottom: 20px; }
+  .lux-review__star { font-size: 12px; color: var(--black); }
+  .lux-review__text { font-family: var(--serif); font-size: 16px; font-style: italic; font-weight: 400; color: var(--black); line-height: 1.7; margin-bottom: 24px; }
+  .lux-review__author { font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--g7); }
+  .lux-review__loc { font-size: 11px; font-weight: 300; color: var(--g8); letter-spacing: .06em; margin-top: 3px; }
+
+  /* ── FINAL CTA ── */
+  .lux-final { background: var(--black); padding: 120px 48px; text-align: center; }
+  @media(max-width:768px) { .lux-final { padding: 80px 24px; } }
+  .lux-final__pre { font-size: 10px; font-weight: 500; letter-spacing: .36em; text-transform: uppercase; color: var(--g6); display: block; margin-bottom: 24px; }
+  .lux-final__h { font-family: var(--serif); font-size: clamp(28px, 4vw, 52px); font-weight: 400; color: var(--white); margin-bottom: 16px; letter-spacing: -.02em; line-height: 1.15; }
+  .lux-final__sub { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--g6); margin-bottom: 48px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+  .lux-final__btn { display: inline-block; padding: 18px 56px; background: var(--white); color: var(--black); font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; transition: background .3s, color .3s, transform .2s; border: 1px solid var(--white); }
+  .lux-final__btn:hover { background: transparent; color: var(--white); transform: translateY(-1px); }
+
+  /* ── MOBILE STICKY ── */
+  .lux-sticky { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--g9); padding: 12px 20px; z-index: 100; box-shadow: 0 -4px 24px rgba(0,0,0,.08); align-items: center; gap: 16px; }
+  @media(max-width:768px) { .lux-sticky { display: flex; } }
+  .lux-sticky__info { flex: 1; min-width: 0; }
+  .lux-sticky__name { font-family: var(--serif); font-size: 13px; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lux-sticky__price { font-size: 12px; color: var(--g6); margin-top: 2px; }
+  .lux-sticky__btn { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; padding: 13px 24px; border: none; white-space: nowrap; flex-shrink: 0; }
+</style>
+
+<div class="lux">
+
+  {%- comment -%} ══ 1. HERO ══ {%- endcomment -%}
+  <div class="lux-hero">
+
+    {%- comment -%} GALLERY {%- endcomment -%}
+    <div class="lux-gallery">
+      <div class="lux-gallery__main" id="lux-gallery-main">
+        {%- for image in product.images -%}
+          <img
+            src="{{ image | image_url: width: 1600 }}"
+            alt="{{ image.alt | default: product.title }}"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            class="lux-gallery__img{% if forloop.first %} is-active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+          >
+        {%- else -%}
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#999;font-family:var(--sans);font-size:13px;letter-spacing:.08em;">No image uploaded</div>
+        {%- endfor -%}
+
+        {%- comment -%} Badges {%- endcomment -%}
+        <div class="lux-gallery__badge">
+          {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+            <span class="lux-gallery__tag lux-gallery__tag--new">New</span>
+          {%- endif -%}
+          {%- if product.compare_at_price > product.price -%}
+            {%- assign pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+            <span class="lux-gallery__tag lux-gallery__tag--sale">{{ pct }}% Off</span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Dot nav {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div class="lux-gallery__thumbs">
+            {%- for image in product.images limit: 8 -%}
+              <button class="lux-gallery__dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}"></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Thumb strip {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div class="lux-gallery__thumbstrip">
+            {%- for image in product.images limit: 6 -%}
+              <div class="lux-gallery__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+                <img src="{{ image | image_url: width: 120 }}" alt="{{ image.alt | default: product.title }}" width="56" height="56" loading="lazy">
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} PRODUCT INFO {%- endcomment -%}
+    <div class="lux-info">
+      <span class="lux-info__pre">{{ section.settings.product_label | default: product.type | default: 'Incense Sticks' }}</span>
+      <h1 class="lux-info__title">{{ product.title }}</h1>
+      <p class="lux-info__tagline">{{ section.settings.tagline | default: product.description | strip_html | truncate: 110 }}</p>
+
+      <div class="lux-divider"></div>
+
+      {%- comment -%} Rating {%- endcomment -%}
+      {%- assign rating_val = section.settings.rating | default: 5 -%}
+      <div class="lux-rating">
+        <div class="lux-rating__stars">
+          {%- for i in (1..5) -%}
+            <span class="lux-rating__star{% if i > rating_val %}--off{% endif %}">&#9733;</span>
+          {%- endfor -%}
+        </div>
+        <span class="lux-rating__count">{{ section.settings.review_count | default: '0' }} Reviews</span>
+      </div>
+
+      {%- comment -%} Price {%- endcomment -%}
+      <div class="lux-price" id="lux-price-block">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="lux-price__was">{{ product.compare_at_price | money }}</span>
+        {%- endif -%}
+        <span class="lux-price__now" id="lux-price">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          {%- assign save_money = product.compare_at_price | minus: product.price | money -%}
+          <span class="lux-price__save">Save {{ save_money }}</span>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Variants {%- endcomment -%}
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="lux-variants" data-option-pos="{{ forloop.index0 }}">
+            <span class="lux-variants__label">{{ option.name }}: <em id="lux-opt-{{ forloop.index0 }}">{{ option.selected_value }}</em></span>
+            <div class="lux-variants__opts">
+              {%- for value in option.values -%}
+                <button class="lux-variant-btn{% if value == option.selected_value %} is-active{% endif %}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ value | escape }}">{{ value }}</button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      {%- comment -%} Quantity {%- endcomment -%}
+      <div class="lux-qty">
+        <button class="lux-qty__btn" id="lux-qty-m" type="button" aria-label="Decrease">&#8722;</button>
+        <input class="lux-qty__val" id="lux-qty" type="number" value="1" min="1" max="99" aria-label="Quantity">
+        <button class="lux-qty__btn" id="lux-qty-p" type="button" aria-label="Increase">&#43;</button>
+      </div>
+
+      {%- comment -%} CTA {%- endcomment -%}
+      <div class="lux-msg" id="lux-msg" role="status" aria-live="polite"></div>
+      <div class="lux-cta">
+        <button class="lux-btn-primary" id="lux-atc"
+          data-variant="{{ product.selected_or_first_available_variant.id }}"
+          data-available="{{ product.selected_or_first_available_variant.available }}"
+          {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+          type="button">
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ section.settings.cta_primary | default: 'Begin Your Ritual' }}
+          {%- else -%}
+            Sold Out
+          {%- endif -%}
+        </button>
+        {%- if section.settings.show_buy_now -%}
+          <a href="{{ routes.cart_url }}/{{ product.selected_or_first_available_variant.id }}:1?checkout" class="lux-btn-secondary" id="lux-buy">
+            {{ section.settings.cta_secondary | default: 'Buy It Now' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Trust lines {%- endcomment -%}
+      <div class="lux-trust">
+        {%- if section.settings.trust_1 != blank -%}
+          <span class="lux-trust__line">{{ section.settings.trust_1 }}</span>
+        {%- endif -%}
+        {%- if section.settings.trust_2 != blank -%}
+          <span class="lux-trust__line">{{ section.settings.trust_2 }}</span>
+        {%- endif -%}
+        {%- if section.settings.trust_3 != blank -%}
+          <span class="lux-trust__line">{{ section.settings.trust_3 }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+
+  {%- comment -%} ══ 2. USP STRIP ══ {%- endcomment -%}
+  {%- if section.blocks.size > 0 -%}
+    {%- assign usp_blocks = section.blocks | where: 'type', 'usp' -%}
+    {%- if usp_blocks.size > 0 -%}
+      <div class="lux-usp">
+        <div class="lux-usp__grid">
+          {%- for block in usp_blocks -%}
+            <div class="lux-usp__item" {{ block.shopify_attributes }}>
+              <span class="lux-usp__name">{{ block.settings.name }}</span>
+              {%- if block.settings.desc != blank -%}
+                <p class="lux-usp__desc">{{ block.settings.desc }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} ══ 3. STORY SECTION ══ {%- endcomment -%}
+  {%- if section.settings.story_text != blank -%}
+    <section class="lux-story">
+      <div class="lux-story__inner">
+        {%- if section.settings.story_pre != blank -%}
+          <span class="lux-story__pre">{{ section.settings.story_pre }}</span>
+        {%- endif -%}
+        {%- if section.settings.story_heading != blank -%}
+          <h2 class="lux-story__h">{{ section.settings.story_heading }}</h2>
+        {%- endif -%}
+        <div class="lux-story__body">{{ section.settings.story_text }}</div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 4. SCENT EXPERIENCE ══ {%- endcomment -%}
+  {%- if section.settings.scent_top != blank or section.settings.scent_desc != blank -%}
+    <section class="lux-scent">
+      <div class="lux-scent__inner">
+        <div>
+          <span class="lux-scent__pre">{{ section.settings.scent_pre | default: 'Scent Profile' }}</span>
+          <div class="lux-scent__notes">
+            {%- if section.settings.scent_top != blank -%}
+              <div class="lux-scent__row">
+                <span class="lux-scent__tier">Top Notes</span>
+                <span class="lux-scent__val">{{ section.settings.scent_top }}</span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.scent_heart != blank -%}
+              <div class="lux-scent__row">
+                <span class="lux-scent__tier">Heart Notes</span>
+                <span class="lux-scent__val">{{ section.settings.scent_heart }}</span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.scent_base != blank -%}
+              <div class="lux-scent__row">
+                <span class="lux-scent__tier">Base Notes</span>
+                <span class="lux-scent__val">{{ section.settings.scent_base }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+        <div>
+          <span class="lux-scent__desc-pre">{{ section.settings.scent_desc_pre | default: 'The Experience' }}</span>
+          <div class="lux-scent__desc">{{ section.settings.scent_desc }}</div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 5. RITUAL STEPS ══ {%- endcomment -%}
+  {%- assign ritual_blocks = section.blocks | where: 'type', 'ritual_step' -%}
+  {%- if ritual_blocks.size > 0 -%}
+    <section class="lux-ritual">
+      <span class="lux-ritual__pre">{{ section.settings.ritual_pre | default: 'The Ritual' }}</span>
+      <h2 class="lux-ritual__h">{{ section.settings.ritual_heading | default: 'A Practice of Presence' }}</h2>
+      <div class="lux-ritual__grid">
+        {%- for block in ritual_blocks -%}
+          <div class="lux-ritual__step" {{ block.shopify_attributes }}>
+            <span class="lux-ritual__num">0{{ forloop.index }}</span>
+            <h3 class="lux-ritual__title">{{ block.settings.title }}</h3>
+            <p class="lux-ritual__desc">{{ block.settings.desc }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 6. COMPARISON TABLE ══ {%- endcomment -%}
+  {%- assign compare_blocks = section.blocks | where: 'type', 'compare_row' -%}
+  {%- if compare_blocks.size > 0 -%}
+    <section class="lux-compare">
+      <span class="lux-compare__pre">{{ section.settings.compare_pre | default: 'Why Choose Us' }}</span>
+      <h2 class="lux-compare__h">{{ section.settings.compare_heading | default: 'The Difference Is Felt' }}</h2>
+      <div class="lux-compare__wrap">
+        <table class="lux-compare__table">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Feature</th>
+              <th>{{ section.settings.compare_col_ours | default: 'Anand Rasa' }}</th>
+              <th>{{ section.settings.compare_col_others | default: 'Others' }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in compare_blocks -%}
+              <tr {{ block.shopify_attributes }}>
+                <td>{{ block.settings.feature }}</td>
+                <td>
+                  {%- if block.settings.ours_check -%}
+                    <span class="lux-compare__check lux-compare__check--yes">&#10003;</span>
+                    {%- if block.settings.ours_text != blank -%} {{ block.settings.ours_text }}{%- endif -%}
+                  {%- else -%}
+                    {{ block.settings.ours_text | default: '—' }}
+                  {%- endif -%}
+                </td>
+                <td>
+                  {%- if block.settings.others_check == false -%}
+                    <span class="lux-compare__check lux-compare__check--no">&#10007;</span>
+                    {%- if block.settings.others_text != blank -%} {{ block.settings.others_text }}{%- endif -%}
+                  {%- else -%}
+                    {{ block.settings.others_text | default: '—' }}
+                  {%- endif -%}
+                </td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 7. SPECIFICATIONS ══ {%- endcomment -%}
+  {%- assign spec_blocks = section.blocks | where: 'type', 'spec' -%}
+  {%- if spec_blocks.size > 0 -%}
+    <section class="lux-specs">
+      <div class="lux-specs__inner">
+        <span class="lux-specs__pre">{{ section.settings.specs_pre | default: 'Product Details' }}</span>
+        <h2 class="lux-specs__h">{{ section.settings.specs_heading | default: 'Crafted with Intention' }}</h2>
+        {%- for block in spec_blocks -%}
+          <div class="lux-specs__row" {{ block.shopify_attributes }}>
+            <span class="lux-specs__label">{{ block.settings.label }}</span>
+            <span class="lux-specs__value">{{ block.settings.value }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 8. TESTIMONIALS ══ {%- endcomment -%}
+  {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
+  {%- if review_blocks.size > 0 -%}
+    <section class="lux-reviews">
+      <span class="lux-reviews__pre">{{ section.settings.reviews_pre | default: 'Testimonials' }}</span>
+      <h2 class="lux-reviews__h">{{ section.settings.reviews_heading | default: 'Words from Those Who Know' }}</h2>
+      <div class="lux-reviews__grid">
+        {%- for block in review_blocks -%}
+          <div class="lux-review" {{ block.shopify_attributes }}>
+            <div class="lux-review__stars">
+              {%- assign r = block.settings.rating | default: 5 -%}
+              {%- for i in (1..r) -%}<span class="lux-review__star">&#9733;</span>{%- endfor -%}
+            </div>
+            <p class="lux-review__text">&ldquo;{{ block.settings.text }}&rdquo;</p>
+            <p class="lux-review__author">{{ block.settings.author }}</p>
+            {%- if block.settings.location != blank -%}
+              <p class="lux-review__loc">{{ block.settings.location }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ══ 9. FINAL CTA ══ {%- endcomment -%}
+  <section class="lux-final">
+    {%- if section.settings.final_pre != blank -%}
+      <span class="lux-final__pre">{{ section.settings.final_pre }}</span>
+    {%- endif -%}
+    <h2 class="lux-final__h">{{ section.settings.final_heading | default: product.title }}</h2>
+    {%- if section.settings.final_sub != blank -%}
+      <p class="lux-final__sub">{{ section.settings.final_sub }}</p>
+    {%- endif -%}
+    <a href="#" class="lux-final__btn" id="lux-final-btn">{{ section.settings.cta_primary | default: 'Begin Your Ritual' }}</a>
+  </section>
+
+</div>
+
+{%- comment -%} MOBILE STICKY ATC {%- endcomment -%}
+<div class="lux-sticky" id="lux-sticky">
+  <div class="lux-sticky__info">
+    <p class="lux-sticky__name">{{ product.title }}</p>
+    <p class="lux-sticky__price" id="lux-sticky-price">{{ product.price | money }}</p>
+  </div>
+  <button class="lux-sticky__btn" id="lux-sticky-atc">{{ section.settings.cta_primary | default: 'Begin Your Ritual' }}</button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var LUX_CART = {{ routes.cart_url | json }};
+  var LUX_CART_ADD = {{ routes.cart_add_url | json }};
+
+  /* ── Gallery ── */
+  var imgs   = document.querySelectorAll('.lux-gallery__img');
+  var dots   = document.querySelectorAll('.lux-gallery__dot');
+  var thumbs = document.querySelectorAll('.lux-gallery__thumb');
+
+  function showSlide(i) {
+    imgs.forEach(function (el)   { el.classList.remove('is-active'); });
+    dots.forEach(function (el)   { el.classList.remove('is-active'); });
+    thumbs.forEach(function (el) { el.classList.remove('is-active'); });
+    if (imgs[i])   imgs[i].classList.add('is-active');
+    if (dots[i])   dots[i].classList.add('is-active');
+    if (thumbs[i]) thumbs[i].classList.add('is-active');
+  }
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () { showSlide(parseInt(dot.dataset.index)); });
+  });
+  thumbs.forEach(function (thumb) {
+    thumb.addEventListener('click', function () { showSlide(parseInt(thumb.dataset.index)); });
+  });
+
+  /* ── Variants ── */
+  var variantData  = {{ product.variants | json }};
+  var selOpts = [
+    {%- for option in product.options_with_values -%}
+      "{{ option.selected_value | escape }}"{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ];
+
+  function findVariant(opts) {
+    return variantData.find(function (v) {
+      return opts.every(function (o, i) { return v['option' + (i + 1)] === o; });
+    });
+  }
+
+  function updateUI(v) {
+    if (!v) return;
+    var priceEl = document.getElementById('lux-price');
+    var atcBtn  = document.getElementById('lux-atc');
+    var buyBtn  = document.getElementById('lux-buy');
+    var stickyP = document.getElementById('lux-sticky-price');
+
+    if (priceEl) {
+      var fmt = v.price_formatted || ('₹' + (v.price / 100).toFixed(2));
+      priceEl.textContent = fmt;
+      if (stickyP) stickyP.textContent = fmt;
+    }
+    if (atcBtn) {
+      atcBtn.disabled    = !v.available;
+      atcBtn.textContent = v.available ? (atcBtn.dataset.label || '{{ section.settings.cta_primary | default: "Begin Your Ritual" }}') : 'Sold Out';
+      atcBtn.dataset.variant = v.id;
+    }
+    if (buyBtn) {
+      buyBtn.href = LUX_CART + '/' + v.id + ':1?checkout';
+    }
+    if (v.featured_image) showSlide(v.featured_image.position - 1);
+    if (window.history && history.replaceState) {
+      history.replaceState({}, '', '?variant=' + v.id);
+    }
+  }
+
+  document.querySelectorAll('.lux-variant-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var opt = parseInt(btn.dataset.opt);
+      document.querySelectorAll('.lux-variant-btn[data-opt="' + opt + '"]').forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      selOpts[opt] = btn.dataset.val;
+      var lbl = document.getElementById('lux-opt-' + opt);
+      if (lbl) lbl.textContent = btn.dataset.val;
+      updateUI(findVariant(selOpts));
+    });
+  });
+
+  /* Store primary label */
+  var atcEl = document.getElementById('lux-atc');
+  if (atcEl && atcEl.textContent.trim()) atcEl.dataset.label = atcEl.textContent.trim();
+
+  /* ── Quantity ── */
+  var qtyEl = document.getElementById('lux-qty');
+  document.getElementById('lux-qty-m').addEventListener('click', function () {
+    var v = parseInt(qtyEl.value) || 1;
+    if (v > 1) qtyEl.value = v - 1;
+  });
+  document.getElementById('lux-qty-p').addEventListener('click', function () {
+    var v = parseInt(qtyEl.value) || 1;
+    if (v < 99) qtyEl.value = v + 1;
+  });
+
+  /* ── Add to Cart ── */
+  function doATC(variantId) {
+    var qty    = parseInt(qtyEl.value) || 1;
+    var msg    = document.getElementById('lux-msg');
+    var btn    = document.getElementById('lux-atc');
+    var origTx = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = '—'; btn.disabled = true; }
+
+    fetch(LUX_CART_ADD, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId), quantity: qty })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (msg) { msg.className = 'lux-msg ok'; msg.textContent = 'Added to your order.'; setTimeout(function () { msg.className = 'lux-msg'; }, 3200); }
+      if (btn) { btn.textContent = origTx; btn.disabled = false; }
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+    })
+    .catch(function () {
+      if (msg) { msg.className = 'lux-msg err'; msg.textContent = 'Could not add. Please try again.'; setTimeout(function () { msg.className = 'lux-msg'; }, 3200); }
+      if (btn) { btn.textContent = origTx; btn.disabled = false; }
+    });
+  }
+
+  if (atcEl) {
+    atcEl.addEventListener('click', function () {
+      if (!atcEl.disabled) doATC(atcEl.dataset.variant);
+    });
+  }
+
+  var stickyAtc = document.getElementById('lux-sticky-atc');
+  if (stickyAtc) {
+    stickyAtc.addEventListener('click', function () {
+      var vid = atcEl ? atcEl.dataset.variant : '{{ product.selected_or_first_available_variant.id }}';
+      doATC(vid);
+    });
+  }
+
+  /* Final CTA scrolls to ATC */
+  var finalBtn = document.getElementById('lux-final-btn');
+  if (finalBtn) {
+    finalBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var target = document.getElementById('lux-atc');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  /* ── Sticky bar visibility ── */
+  var stickyBar = document.getElementById('lux-sticky');
+  if (stickyBar && atcEl) {
+    var io = new IntersectionObserver(function (entries) {
+      stickyBar.style.display = entries[0].isIntersecting ? 'none' : '';
+    }, { threshold: 0.5 });
+    io.observe(atcEl);
+    stickyBar.style.display = 'none';
+  }
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Incense Product Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Identity"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Label above title",
+      "default": "Incense Sticks"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (italic, below title)",
+      "info": "Clear to use the first lines of the product description.",
+      "default": "A composed ritual for the senses."
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "label": "Star rating (1–5)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Number of reviews (display only)",
+      "default": "0"
+    },
+    {
+      "type": "header",
+      "content": "CTA Buttons"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary",
+      "label": "Primary button text",
+      "default": "Begin Your Ritual"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary",
+      "label": "Secondary button text",
+      "default": "Buy It Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show Buy It Now button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Trust Lines"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust line 1",
+      "default": "Limited batch crafted"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust line 2",
+      "default": "Ships within 24 hours"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust line 3",
+      "default": "100% natural, chemical free"
+    },
+    {
+      "type": "header",
+      "content": "Mini Story Section"
+    },
+    {
+      "type": "text",
+      "id": "story_pre",
+      "label": "Pre-heading label",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "story_heading",
+      "label": "Heading",
+      "default": "Born from Ancient Ritual"
+    },
+    {
+      "type": "richtext",
+      "id": "story_text",
+      "label": "Story text (rich text)",
+      "default": "<p>For centuries, the art of incense-making has been a sacred tradition in India — a bridge between the earthly and the divine. Each Anand Rasa incense stick carries that lineage forward.</p><p>We work with artisans who have inherited this craft through generations, using only botanicals that nature intended to be burned in devotion.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Scent Experience"
+    },
+    {
+      "type": "text",
+      "id": "scent_pre",
+      "label": "Left column label",
+      "default": "Scent Profile"
+    },
+    {
+      "type": "text",
+      "id": "scent_top",
+      "label": "Top notes",
+      "default": "Rose, Jasmine, Mogra"
+    },
+    {
+      "type": "text",
+      "id": "scent_heart",
+      "label": "Heart notes",
+      "default": "Sandalwood, Havan Samagri"
+    },
+    {
+      "type": "text",
+      "id": "scent_base",
+      "label": "Base notes",
+      "default": "Pure Resin, Amber, Earth"
+    },
+    {
+      "type": "text",
+      "id": "scent_desc_pre",
+      "label": "Right column label",
+      "default": "The Experience"
+    },
+    {
+      "type": "richtext",
+      "id": "scent_desc",
+      "label": "Scent description (right column)",
+      "default": "<h3>A Fragrance That Stills the Mind</h3><p>Close your eyes. The first curl of smoke rises — soft, warm, botanical. The room shifts. What was ordinary becomes sacred.</p><p>This is what Anand Rasa incense does. It doesn't just scent a space. It changes the quality of the air. The quality of thought. The quality of being.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Ritual Section Labels"
+    },
+    {
+      "type": "text",
+      "id": "ritual_pre",
+      "label": "Pre-heading",
+      "default": "The Ritual"
+    },
+    {
+      "type": "text",
+      "id": "ritual_heading",
+      "label": "Heading",
+      "default": "A Practice of Presence"
+    },
+    {
+      "type": "header",
+      "content": "Comparison Table Labels"
+    },
+    {
+      "type": "text",
+      "id": "compare_pre",
+      "label": "Pre-heading",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "text",
+      "id": "compare_heading",
+      "label": "Heading",
+      "default": "The Difference Is Felt"
+    },
+    {
+      "type": "text",
+      "id": "compare_col_ours",
+      "label": "Our brand column header",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "compare_col_others",
+      "label": "Others column header",
+      "default": "Others"
+    },
+    {
+      "type": "header",
+      "content": "Specifications Labels"
+    },
+    {
+      "type": "text",
+      "id": "specs_pre",
+      "label": "Pre-heading",
+      "default": "Product Details"
+    },
+    {
+      "type": "text",
+      "id": "specs_heading",
+      "label": "Heading",
+      "default": "Crafted with Intention"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials Labels"
+    },
+    {
+      "type": "text",
+      "id": "reviews_pre",
+      "label": "Pre-heading",
+      "default": "Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "reviews_heading",
+      "label": "Heading",
+      "default": "Words from Those Who Know"
+    },
+    {
+      "type": "header",
+      "content": "Final CTA Section"
+    },
+    {
+      "type": "text",
+      "id": "final_pre",
+      "label": "Pre-heading label",
+      "default": "Begin"
+    },
+    {
+      "type": "text",
+      "id": "final_heading",
+      "label": "Heading",
+      "default": "Transform Your Space"
+    },
+    {
+      "type": "textarea",
+      "id": "final_sub",
+      "label": "Subtext",
+      "default": "One stick. One moment. One shift in the quality of your presence."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "USP label (uppercase)",
+          "default": "PURE BOTANICALS"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Short description (optional)",
+          "default": "No synthetics, ever"
+        }
+      ]
+    },
+    {
+      "type": "ritual_step",
+      "name": "Ritual Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step title",
+          "default": "Light"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "Step description",
+          "default": "Hold the incense stick at its uncoated end. Bring a flame to the tip until it catches and glows softly amber."
+        }
+      ]
+    },
+    {
+      "type": "compare_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature",
+          "label": "Feature name",
+          "default": "Charcoal Free"
+        },
+        {
+          "type": "checkbox",
+          "id": "ours_check",
+          "label": "Show checkmark for our brand",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "ours_text",
+          "label": "Our brand value (optional text)"
+        },
+        {
+          "type": "checkbox",
+          "id": "others_check",
+          "label": "Others have this too",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "others_text",
+          "label": "Others value (optional text)"
+        }
+      ]
+    },
+    {
+      "type": "spec",
+      "name": "Specification",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Sticks per Pack"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "40 Sticks"
+        }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review text",
+          "default": "The fragrance is unlike anything I have experienced. It transforms the entire room into a place of calm and devotion."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer name",
+          "default": "Priya S."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "City (optional)",
+          "default": "Mumbai"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Incense Product Page",
+      "blocks": [
+        { "type": "usp", "settings": { "name": "PURE BOTANICALS", "desc": "No synthetics, ever" } },
+        { "type": "usp", "settings": { "name": "LONG BURN", "desc": "2–3 hours per stick" } },
+        { "type": "usp", "settings": { "name": "HANDCRAFTED", "desc": "Traditional techniques" } },
+        { "type": "usp", "settings": { "name": "SPIRITUAL GRADE", "desc": "Temple quality purity" } },
+        { "type": "ritual_step", "settings": { "title": "Light", "desc": "Hold the uncoated end and bring a flame to the tip until it glows softly amber. No harsh burning — just a gentle catch." } },
+        { "type": "ritual_step", "settings": { "title": "Place", "desc": "Set the stick in your holder on a stable surface. Let the thin thread of smoke rise freely. Step back. Give it space." } },
+        { "type": "ritual_step", "settings": { "title": "Breathe", "desc": "Close your eyes. Inhale slowly. Allow the fragrance to fill the room and your awareness. This is your moment." } },
+        { "type": "compare_row", "settings": { "feature": "Charcoal Free", "ours_check": true, "others_check": false } },
+        { "type": "compare_row", "settings": { "feature": "100% Natural Ingredients", "ours_check": true, "others_check": false } },
+        { "type": "compare_row", "settings": { "feature": "2–3 Hour Burn Time", "ours_check": true, "ours_text": "Consistent", "others_check": false, "others_text": "Varies" } },
+        { "type": "compare_row", "settings": { "feature": "No Synthetic Fragrance", "ours_check": true, "others_check": false } },
+        { "type": "compare_row", "settings": { "feature": "Handrolled", "ours_check": true, "others_check": false } },
+        { "type": "spec", "settings": { "label": "Sticks Per Pack", "value": "40 Sticks" } },
+        { "type": "spec", "settings": { "label": "Burn Time", "value": "2–3 Hours" } },
+        { "type": "spec", "settings": { "label": "Stick Length", "value": "20 cm" } },
+        { "type": "spec", "settings": { "label": "Ingredients", "value": "Natural resins, essential oils, bamboo core" } },
+        { "type": "spec", "settings": { "label": "Made In", "value": "India" } },
+        { "type": "spec", "settings": { "label": "Suitable For", "value": "Meditation, Prayer, Home Fragrance" } },
+        { "type": "review", "settings": { "rating": 5, "text": "The fragrance is unlike anything I have experienced. It transforms the entire room into a place of calm and devotion.", "author": "Priya S.", "location": "Mumbai" } },
+        { "type": "review", "settings": { "rating": 5, "text": "I have tried many incense brands. None come close to Anand Rasa. The burn is clean, long, and the scent is deeply authentic.", "author": "Arjun M.", "location": "Delhi" } },
+        { "type": "review", "settings": { "rating": 5, "text": "My morning meditation has changed completely since I started using these. The fragrance centres me in a way nothing else does.", "author": "Kavya R.", "location": "Bangalore" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

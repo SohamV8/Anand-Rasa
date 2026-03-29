@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-zodiac",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
