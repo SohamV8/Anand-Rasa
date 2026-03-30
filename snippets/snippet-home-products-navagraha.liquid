@@ -1,0 +1,68 @@
+{%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
+<section class="ar-nav9">
+  {%- liquid
+    if collections['planet-attars'] != empty
+      assign ar_nav9_fallback = collections['planet-attars'].url
+    else
+      assign ar_nav9_fallback = routes.collections_url | append: '/planet-attars'
+    endif
+  -%}
+  <div class="ar-nav9__intro">
+    <div class="ar-nav9__intro-in">
+      <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
+      <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
+      <a href="{{ section.settings.nav9_url | default: '/collections/planet-attars' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
+    </div>
+  </div>
+  <div class="ar-nav9__main">
+    {%- assign ar_nav9_has_init = false -%}
+    {%- assign ar_nav9_init_perfume = nil -%}
+    {%- assign ar_nav9_init_desc = '' -%}
+    {%- assign ar_nav9_init_url = '' -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'planet' -%}
+        {%- unless ar_nav9_has_init -%}
+          {%- assign ar_nav9_init_perfume = block.settings.perfume_image -%}
+          {%- assign ar_nav9_init_desc = block.settings.description -%}
+          {%- assign ar_nav9_init_url = block.settings.url -%}
+          {%- assign ar_nav9_has_init = true -%}
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+    <div class="ar-nav9__grid">
+      {%- assign ar_nav9_btn_first = true -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'planet' -%}
+          <button
+            type="button"
+            class="ar-nav9__btn{% if ar_nav9_btn_first %} is-active{% endif %}"
+            data-img="{%- if block.settings.perfume_image != blank -%}{{ block.settings.perfume_image | image_url: width: 600 }}{%- endif -%}"
+            data-desc="{{ block.settings.description | default: '' | strip_newlines | escape }}"
+            data-url="{% if block.settings.url != blank %}{{ block.settings.url | escape }}{% endif %}"
+            aria-label="{{ block.settings.name | default: 'Planet' | escape }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.planet_image != blank -%}
+              <img src="{{ block.settings.planet_image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
+            {%- endif -%}
+          </button>
+          {%- assign ar_nav9_btn_first = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="ar-nav9__panel">
+      <img
+        class="ar-nav9__pimg js-ar-nav9-pimg"
+        id="ar-pimg-{{ section.id }}"
+        width="280"
+        height="420"
+        alt="{% if ar_nav9_init_perfume != blank %}{{ section.settings.nav9_heading | default: 'Navagraha' | escape }} — selected attar{% else %}Selected planet attar{% endif %}"
+        {% if ar_nav9_init_perfume != blank -%}
+          src="{{ ar_nav9_init_perfume | image_url: width: 600 }}"
+        {%- endif %}
+      >
+      <p class="ar-nav9__pdesc js-ar-nav9-pdesc" id="ar-pdesc-{{ section.id }}">{{ ar_nav9_init_desc | escape }}</p>
+      <a href="{% if ar_nav9_init_url != blank %}{{ ar_nav9_init_url }}{% else %}{{ ar_nav9_fallback }}{% endif %}" class="ar-nav9__pbtn js-ar-nav9-plink" id="ar-plink-{{ section.id }}" data-fallback-url="{{ ar_nav9_fallback | escape }}">VIEW PRODUCT</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+{%- comment -%} 5. DISCOVER THE FRAGRANCE {%- endcomment -%}
+<section class="ar-find">
+  <div class="ar-find__bg"></div>
+  <div class="ar-find__con">
+    <h2 class="ar-find__h">{{ section.settings.find_heading | default: 'Discover the fragrance written in your stars.' }}</h2>
+    <p class="ar-find__p">{{ section.settings.find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.' }}</p>
+    <a href="{{ section.settings.find_url | default: '/pages/find-fragrance' }}" class="ar-find__btn">{{ section.settings.find_btn | default: 'Find Your Fragrance' }}</a>
+  </div>
+</section>

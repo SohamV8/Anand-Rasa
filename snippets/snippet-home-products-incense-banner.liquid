@@ -1,0 +1,19 @@
+{%- comment -%} 9. INCENSE BANNER {%- endcomment -%}
+{%- if section.settings.incense_image != blank -%}
+  <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+    <img
+      src="{{ section.settings.incense_image | image_url: width: 1600 }}"
+      srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
+      sizes="100vw"
+      alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
+      width="{{ section.settings.incense_image.width | default: 2000 }}"
+      height="{{ section.settings.incense_image.height | default: 800 }}"
+      loading="lazy"
+    >
+  </a>
+{%- else -%}
+  <div class="ar-incense-ph">
+    <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
+    <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
+  </div>
+{%- endif -%}

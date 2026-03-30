@@ -1,0 +1,41 @@
+{%- comment -%} 3. BESTSELLERS {%- endcomment -%}
+<section class="ar-best">
+  <header class="ar-best__hdr">
+    <h2 class="ar-best__h">{{ section.settings.bs_heading | default: 'Bestsellers' }}</h2>
+    <p class="ar-best__sub">{{ section.settings.bs_sub | default: 'Our most loved attars.' }}</p>
+  </header>
+  <div class="ar-best__wrap">
+    <div class="ar-best__fade ar-best__fade-l"></div>
+    <div class="ar-best__fade ar-best__fade-r"></div>
+    <button class="ar-best__arrow ar-best__arrow-l js-best-l" aria-label="Previous">&#8249;</button>
+    <button class="ar-best__arrow ar-best__arrow-r js-best-r" aria-label="Next">&#8250;</button>
+    <div class="ar-best__track js-best-track">
+      {%- assign bs = collections[section.settings.bs_collection] -%}
+      {%- if bs != blank -%}
+        {%- for p in bs.products limit: section.settings.bs_limit -%}
+          <article class="ar-best__card">
+            <a href="{{ p.url }}" class="ar-best__link">
+              <div class="ar-best__imgw">
+                {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}<span class="ar-best__badge">BESTSELLER</span>
+                {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-best__badge">NEW</span>
+                {%- elsif p.tags contains 'limited' -%}<span class="ar-best__badge">LIMITED</span>
+                {%- elsif p.compare_at_price > p.price -%}<span class="ar-best__badge">SALE</span>{%- endif -%}
+                {%- if p.featured_image -%}
+                  <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-best__img">
+                {%- endif -%}
+              </div>
+              <h3 class="ar-best__name">{{ p.title }}</h3>
+              <p class="ar-best__type">{{ p.type | default: 'Attar' }}</p>
+              <div class="ar-best__price-row">
+                {%- if p.compare_at_price > p.price -%}<span class="ar-best__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
+                <span class="ar-best__price">{{ p.price | money }}</span>
+              </div>
+            </a>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a collection in Theme Editor &rarr; Bestsellers.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

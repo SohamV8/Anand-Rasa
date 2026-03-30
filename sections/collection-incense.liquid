@@ -9,7 +9,38 @@
     .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
-    .ar-incense img { transform:none; transition:none; }
+    .ar-incense {
+      width:100%;
+      background:#fff;
+      overflow:hidden;
+      line-height:0;
+    }
+    .ar-incense__img {
+      width:100%;
+      height:auto;
+      max-height:none;
+      object-fit:contain;
+      object-position:center center;
+      display:block;
+      opacity:1; /* no-JS fallback */
+    }
+    .arc.is-ready .ar-incense__img {
+      opacity:0;
+      animation:arcBannerFadeIn .8s ease-out .08s forwards;
+    }
+    @media(max-width:768px){
+      .ar-incense__img { height:auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .arc.is-ready .ar-incense__img {
+        animation:none;
+        opacity:1;
+      }
+    }
+    @keyframes arcBannerFadeIn {
+      from { opacity:0; transform:translateY(8px); }
+      to { opacity:1; transform:translateY(0); }
+    }
   
     /* Hero */
     .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#1a0800; }
@@ -136,15 +167,17 @@
   <div class="arc">
   
     {%- if section.settings.incense_image != blank -%}
-    <div class="ar-incense" role="img" aria-label="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}">
+    <div class="ar-incense">
       <img
-        src="{{ section.settings.incense_image | image_url: width: 1600 }}"
-        srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
+        src="{{ section.settings.incense_image | image_url: width: 2400 }}"
+        srcset="{{ section.settings.incense_image | image_url: width: 900 }} 900w, {{ section.settings.incense_image | image_url: width: 1400 }} 1400w, {{ section.settings.incense_image | image_url: width: 1800 }} 1800w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
         sizes="100vw"
         alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
         width="{{ section.settings.incense_image.width | default: 2000 }}"
         height="{{ section.settings.incense_image.height | default: 800 }}"
         loading="lazy"
+        decoding="async"
+        class="ar-incense__img"
       >
     </div>
   {%- else -%}
@@ -394,6 +427,9 @@
   
   <script>
   (function(){
+    var arcRoot = document.querySelector('.arc');
+    if (arcRoot) arcRoot.classList.add('is-ready');
+
     // Add to cart
     document.querySelectorAll('.js-arc-atc').forEach(function(btn){
       btn.addEventListener('click', function(e){
@@ -423,6 +459,7 @@
     "name": "Incense Sticks Collection",
     "settings": [
       {"type":"header","content":"Hero Section"},
+      {"type":"image_picker","id":"incense_image","label":"Top banner image"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Sacred Fragrance"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Pure, natural incense crafted from sacred botanicals. Each stick carries the essence of ancient Indian rituals."},

@@ -1,0 +1,38 @@
+{%- comment -%} 1. HERO {%- endcomment -%}
+<section class="ar-hero">
+  <div class="ar-hero__in">
+    <div class="ar-hero__left">
+      <p class="ar-hero__ey">{{ section.settings.hero_eyebrow | default: 'ANAND RAS' }}</p>
+      <h1 class="ar-hero__h1">
+        {%- if section.settings.hero_headline != blank -%}
+          {{ section.settings.hero_headline | newline_to_br }}
+        {%- else -%}
+          Perfume for your<br>soul
+        {%- endif -%}
+      </h1>
+      <p class="ar-hero__p">{{ section.settings.hero_body | default: 'Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.' }}</p>
+      <div class="ar-hero__cta">
+        <a href="{{ section.settings.hero_btn1_url | default: routes.all_products_collection_url }}" class="ar-hero__btn1">{{ section.settings.hero_btn1_label | default: 'Shop Now' }}</a>
+        <a href="{{ section.settings.hero_btn2_url | default: routes.collections_url }}" class="ar-hero__btn2">{{ section.settings.hero_btn2_label | default: 'Explore Collections' }}</a>
+      </div>
+    </div>
+    <div class="ar-hero__right">
+      {%- if section.settings.hero_image != blank -%}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 2000 }}"
+          srcset="{{ section.settings.hero_image | image_url: width: 1000 }} 1000w, {{ section.settings.hero_image | image_url: width: 1600 }} 1600w, {{ section.settings.hero_image | image_url: width: 2000 }} 2000w"
+          sizes="(min-width:1024px) 50vw, 100vw"
+          alt="{{ section.settings.hero_image.alt | default: section.settings.hero_headline | default: shop.name | escape }}"
+          width="{{ section.settings.hero_image.width }}"
+          height="{{ section.settings.hero_image.height }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="ar-hero__img"
+        >
+      {%- else -%}
+        <div class="ar-hero__ph">Upload hero image in Theme Editor</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

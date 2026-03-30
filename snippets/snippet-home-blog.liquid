@@ -1,0 +1,46 @@
+{%- comment -%} 15. TRUST BAR {%- endcomment -%}
+<section class="ar-trust">
+  <ul class="ar-trust__grid js-ar-trust">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'trust_item' -%}
+        <li class="ar-trust__item" {{ block.shopify_attributes }} style="transition-delay:{{ forloop.index0 | times: 120 }}ms">
+          {%- if block.settings.icon != blank -%}
+            <img src="{{ block.settings.icon | image_url: width: 144 }}" alt="{{ block.settings.title }}" width="64" height="64" loading="lazy" class="ar-trust__icon">
+          {%- else -%}
+            <div class="ar-trust__ph"></div>
+          {%- endif -%}
+          <p class="ar-trust__lbl">{{ block.settings.title }}</p>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</section>
+
+{%- comment -%} 16. BLOG {%- endcomment -%}
+<section class="ar-blog">
+  <header class="ar-blog__hdr">
+    <h2 class="ar-blog__h">{{ section.settings.blog_heading | default: 'OUR JOURNAL' }}</h2>
+    <div class="ar-blog__div"></div>
+  </header>
+  <div class="ar-blog__track">
+    {%- for article in blogs[section.settings.blog].articles limit: section.settings.blog_limit -%}
+      <article>
+        <a href="{{ article.url }}" class="ar-blog__link">
+          <div class="ar-blog__imgw">
+            {%- if article.image -%}
+              <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | default: article.title }}" width="800" height="600" loading="lazy" class="ar-blog__img">
+            {%- else -%}
+              <div class="ar-blog__ph"></div>
+            {%- endif -%}
+          </div>
+          <p class="ar-blog__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+          <h3 class="ar-blog__title">{{ article.title }}</h3>
+          <p class="ar-blog__exc">{{ article.excerpt | strip_html | truncate: 140 }}</p>
+          <span class="ar-blog__cta">READ MORE</span>
+        </a>
+      </article>
+    {%- else -%}
+      <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a blog in Theme Editor.</p>
+    {%- endfor -%}
+  </div>
+</section>

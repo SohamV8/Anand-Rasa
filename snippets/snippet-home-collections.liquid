@@ -1,0 +1,68 @@
+{%- comment -%} 2. CATEGORY GRID {%- endcomment -%}
+<section class="ar-cat">
+  <div class="ar-cat__grid">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'category' -%}
+        {%- liquid
+          assign ar_cat_href = block.settings.link | strip
+          if ar_cat_href == blank
+            assign ar_cat_handle = ''
+            case block.settings.title
+              when 'Planet Attar'
+                assign ar_cat_handle = 'planet-attars'
+              when 'Zodiac Attar'
+                assign ar_cat_handle = 'zodiac-attars'
+              when 'Nakshatra Attar'
+                assign ar_cat_handle = 'nakshatra-attars'
+              when 'Chakra Attar'
+                assign ar_cat_handle = 'chakra-attars'
+              when 'Stress Relief Attar'
+                assign ar_cat_handle = 'stressrelief'
+              when 'Love Attar'
+                assign ar_cat_handle = 'love-attars'
+              when 'Incense Sticks'
+                assign ar_cat_handle = 'incense-sticks'
+              when 'Discovery Kit'
+                assign ar_cat_handle = 'gift-sets'
+            endcase
+            if ar_cat_handle != blank and collections[ar_cat_handle] != empty
+              assign ar_cat_href = collections[ar_cat_handle].url
+            elsif ar_cat_handle != blank
+              assign ar_cat_href = routes.collections_url | append: '/' | append: ar_cat_handle
+            else
+              assign ar_cat_href = routes.collections_url
+            endif
+          endif
+        -%}
+        <a
+          href="{{ ar_cat_href }}"
+          class="ar-cat__item"
+          aria-label="{{ block.settings.title | escape }} — Explore"
+          {{ block.shopify_attributes }}
+        >
+          <div class="ar-cat__wrap">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 1200 }}"
+                srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+                width="1200"
+                height="900"
+                loading="lazy"
+                class="ar-cat__img"
+                decoding="async"
+              >
+            {%- else -%}
+              <div class="ar-cat__ph">Upload image</div>
+            {%- endif -%}
+            <div class="ar-cat__txt">
+              <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
+              <span class="ar-cat__cta">Explore</span>
+            </div>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>

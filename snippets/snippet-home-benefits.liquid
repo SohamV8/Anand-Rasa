@@ -1,0 +1,48 @@
+{%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
+<section class="ar-bp js-ar-bp">
+  <div class="ar-bp__in">
+    <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results & No BS' }}</h2>
+    <div class="ar-bp__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'philosophy_card' -%}
+          <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
+            <div class="ar-bp__shadow"></div>
+            <article class="ar-bp__card">
+              <span class="ar-bp__pill">{{ block.settings.title }}</span>
+              <p class="ar-bp__body">{{ block.settings.text }}</p>
+            </article>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 11. BRAND STORY {%- endcomment -%}
+<section class="ar-pure">
+  <div class="ar-pure__con">
+    <h2 class="ar-pure__h">{{ section.settings.pure_heading | default: 'More than fragrance' }}</h2>
+    <p class="ar-pure__p">{{ section.settings.pure_text | default: 'Crafted with intention and tradition, each attar is designed to become a quiet part of your presence — subtle, timeless, and deeply personal.' }}</p>
+    <a href="{{ section.settings.pure_url | default: '/pages/about' }}" class="ar-pure__btn">{{ section.settings.pure_btn | default: 'OUR STORY' }}</a>
+  </div>
+</section>
+
+{%- comment -%} 12. DISCOVERY KIT {%- endcomment -%}
+<section class="ar-combo">
+  <div class="ar-combo__in">
+    <div class="ar-combo__imgw">
+      {%- if section.settings.combo_image != blank -%}
+        <img src="{{ section.settings.combo_image | image_url: width: 1200 }}" alt="{{ section.settings.combo_image.alt | default: 'Discovery Kit' }}" width="{{ section.settings.combo_image.width | default: 1200 }}" height="{{ section.settings.combo_image.height | default: 900 }}" loading="lazy" class="ar-combo__img">
+      {%- elsif section.settings.combo_image_url != blank -%}
+        <img src="{{ section.settings.combo_image_url }}" alt="Discovery Kit" width="1200" height="900" loading="lazy" class="ar-combo__img">
+      {%- else -%}
+        <div class="ar-combo__ph">Upload Discovery Kit image in Theme Editor</div>
+      {%- endif -%}
+    </div>
+    <div class="ar-combo__con">
+      <h2 class="ar-combo__h">{{ section.settings.combo_heading | default: 'Discovery Kit' }}</h2>
+      <p class="ar-combo__p">{{ section.settings.combo_text | default: 'The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.' }}</p>
+      <a href="{{ section.settings.combo_url | default: '/products/discovery-kit' }}" class="ar-combo__btn">{{ section.settings.combo_btn | default: 'SHOP NOW' }}</a>
+    </div>
+  </div>
+</section>

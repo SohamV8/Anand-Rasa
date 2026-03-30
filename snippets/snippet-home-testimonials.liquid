@@ -1,0 +1,28 @@
+{%- comment -%} 13. TESTIMONIALS {%- endcomment -%}
+<section class="ar-tst">
+  <div class="ar-tst__inner">
+    <header class="ar-tst__hdr">
+      <h2 class="ar-tst__h">{{ section.settings.vtm_heading | default: 'What Our Customers Say' }}</h2>
+      <div class="ar-tst__div"></div>
+      <p class="ar-tst__sub">{{ section.settings.vtm_sub | default: 'Real people. Real experiences.' }}</p>
+    </header>
+    <div class="ar-tst__track js-tst-track">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'testimonial' -%}
+          <div class="ar-tst__card" {{ block.shopify_attributes }}>
+            <div class="ar-tst__stars">
+              {%- assign r = block.settings.rating | default: 5 -%}
+              {%- for i in (1..5) -%}<span class="ar-tst__star{% if i <= r %} on{% endif %}">&#9733;</span>{%- endfor -%}
+            </div>
+            <p class="ar-tst__quote">&ldquo;{{ block.settings.quote | default: 'Absolutely divine. This attar lasts all day.' }}&rdquo;</p>
+            <div class="ar-tst__author">
+              <span class="ar-tst__name">{{ block.settings.name | default: 'Happy Customer' }}</span>
+              {%- if block.settings.location != blank -%}<span class="ar-tst__loc"> &mdash; {{ block.settings.location }}</span>{%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="ar-tst__dots" id="ar-tst-dots"></div>
+  </div>
+</section>

@@ -25,51 +25,51 @@
     max-width:1520px;
     width:100%;
     margin:0 auto;
-    padding:clamp(48px,7vw,88px) clamp(24px,10vw,140px) clamp(40px,6vw,72px);
+    padding:clamp(60px,8vw,110px) clamp(28px,10vw,160px) clamp(56px,7vw,96px);
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr);
     align-items:center;
-    gap:clamp(32px,5vw,72px);
-    min-height:min(92vh,920px);
+    gap:clamp(48px,6vw,96px);
+    min-height:min(96vh,980px);
   }
-  .ar-hero__left { animation:arUp .75s cubic-bezier(0.25,0.1,0.25,1) both; max-width:36rem; }
+  .ar-hero__left { animation:arUp .75s cubic-bezier(0.25,0.1,0.25,1) both; max-width:42rem; }
   .ar-hero__ey {
     font-family:var(--font-heading-family);
-    font-size:11px;
+    font-size:12px;
     font-weight:600;
-    letter-spacing:.32em;
+    letter-spacing:.34em;
     text-transform:uppercase;
     color:#888;
-    margin:0 0 22px;
+    margin:0 0 28px;
   }
   .ar-hero__h1 {
     font-family:var(--font-heading-family);
-    font-size:clamp(2.25rem,4.8vw,4rem);
+    font-size:clamp(2.7rem,5.6vw,5.25rem);
     font-weight:700;
-    line-height:1.05;
+    line-height:1.04;
     color:#111;
-    margin:0 0 26px;
-    letter-spacing:-0.035em;
+    margin:0 0 34px;
+    letter-spacing:0.04em;
   }
   .ar-hero__p {
     font-family:var(--font-body-family);
-    font-size:clamp(1rem,1.15vw,1.125rem);
-    line-height:1.65;
+    font-size:clamp(1.12rem,1.45vw,1.38rem);
+    line-height:1.78;
     color:#555;
-    margin:0 0 40px;
-    max-width:28rem;
+    margin:0 0 52px;
+    max-width:38rem;
     font-weight:400;
   }
-  .ar-hero__cta { display:flex; align-items:center; gap:clamp(18px,3vw,32px); flex-wrap:wrap; }
+  .ar-hero__cta { display:flex; align-items:center; gap:clamp(24px,3.4vw,38px); flex-wrap:wrap; }
   .ar-hero__btn1 {
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:12px 24px;
+    padding:14px 30px;
     background:#fff;
     color:#111;
     font-family:var(--font-heading-family);
-    font-size:13px;
+    font-size:14px;
     font-weight:600;
     letter-spacing:.02em;
     border:1px solid #e0e0e0;
@@ -88,12 +88,12 @@
     display:inline-flex;
     align-items:center;
     font-family:var(--font-body-family);
-    font-size:15px;
+    font-size:17px;
     font-weight:400;
     color:#555;
     background:transparent;
     border:none;
-    padding:12px 0;
+    padding:14px 0;
     letter-spacing:.01em;
     text-decoration:none;
     transition:color .25s ease, opacity .25s ease;
@@ -105,14 +105,14 @@
     display:flex;
     align-items:flex-end;
     justify-content:center;
-    min-height:clamp(360px,62vh,820px);
+    min-height:clamp(460px,74vh,980px);
   }
   .ar-hero__img {
     display:block;
     width:100%;
-    max-width:960px;
+    max-width:1180px;
     height:auto;
-    max-height:min(88vh,920px);
+    max-height:min(94vh,1060px);
     margin:0 auto 0 0;
     object-fit:contain;
     object-position:left bottom;
@@ -134,20 +134,21 @@
     .ar-hero__in {
       grid-template-columns:1fr;
       min-height:auto;
-      gap:28px;
-      padding:clamp(40px,8vw,64px) clamp(20px,6vw,40px) clamp(32px,6vw,56px);
+      gap:40px;
+      padding:clamp(48px,9vw,72px) clamp(20px,6vw,42px) clamp(40px,7vw,62px);
     }
     .ar-hero__left { max-width:none; }
     .ar-hero__right { min-height:auto; align-items:center; justify-content:center; }
     .ar-hero__img {
       max-width:100%;
-      max-height:min(70vh,560px);
+      max-height:min(78vh,700px);
       margin:0 auto;
       object-position:center bottom;
     }
   }
   @media(max-width:640px){
-    .ar-hero__h1 { font-size:clamp(1.85rem,9vw,2.75rem); }
+    .ar-hero__h1 { font-size:clamp(2.15rem,10vw,3.35rem); }
+    .ar-hero__p { font-size:clamp(1rem,4.6vw,1.14rem); margin-bottom:40px; }
   }
 
   /* ── TRUST BAR ── */
@@ -196,14 +197,14 @@
     content:'';
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,.18);
+    background:rgba(0,0,0,.08);
     z-index:1;
     pointer-events:none;
-    transition:background .5s cubic-bezier(0.25,0.1,0.25,1);
+    transition:background .5s cubic-bezier(0.25,0.1,0.25,1), opacity .5s cubic-bezier(0.25,0.1,0.25,1);
   }
   .ar-cat__item:hover .ar-cat__wrap::after,
   .ar-cat__item:focus-visible .ar-cat__wrap::after {
-    background:rgba(0,0,0,.28);
+    background:rgba(0,0,0,.12);
   }
   .ar-cat__img {
     position:absolute;
@@ -217,7 +218,7 @@
   }
   .ar-cat__item:hover .ar-cat__img,
   .ar-cat__item:focus-visible .ar-cat__img {
-    transform:scale(1.05);
+    transform:scale(1.06);
   }
   .ar-cat__ph {
     position:absolute;
@@ -355,12 +356,12 @@
   .ar-trio__cta-wrap { position:absolute; bottom:24px; left:24px; z-index:2; }
   .ar-trio__cta {
     display:inline-block;
-    border:2px solid rgba(255,255,255,.55);
+    border:2px solid #000;
     border-radius:0;
     padding:8px 24px;
     font-size:12px;
     letter-spacing:.18em;
-    color:#fff;
+    color:#000;
     background:rgba(255,255,255,.14);
     backdrop-filter:blur(14px) saturate(160%);
     -webkit-backdrop-filter:blur(14px) saturate(160%);
@@ -373,8 +374,8 @@
   .ar-trio__card:hover .ar-trio__cta,
   .ar-trio__card:focus-visible .ar-trio__cta {
     background:rgba(255,255,255,.26);
-    border-color:rgba(255,255,255,.9);
-    color:#fff;
+    border-color:#000;
+    color:#000;
     box-shadow:0 8px 28px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.55);
   }
   .ar-trio__card:has(.ar-trio__ph) .ar-trio__cta {
@@ -594,619 +595,13 @@
 </style>
 
 <div class="ar-hp">
-
-  {%- comment -%} 1. HERO {%- endcomment -%}
-  <section class="ar-hero">
-    <div class="ar-hero__in">
-      <div class="ar-hero__left">
-        <p class="ar-hero__ey">{{ section.settings.hero_eyebrow | default: 'ANAND RAS' }}</p>
-        <h1 class="ar-hero__h1">
-          {%- if section.settings.hero_headline != blank -%}
-            {{ section.settings.hero_headline | newline_to_br }}
-          {%- else -%}
-            Perfume for your<br>soul
-          {%- endif -%}
-        </h1>
-        <p class="ar-hero__p">{{ section.settings.hero_body | default: 'Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.' }}</p>
-        <div class="ar-hero__cta">
-          <a href="{{ section.settings.hero_btn1_url | default: routes.all_products_collection_url }}" class="ar-hero__btn1">{{ section.settings.hero_btn1_label | default: 'Shop Now' }}</a>
-          <a href="{{ section.settings.hero_btn2_url | default: routes.collections_url }}" class="ar-hero__btn2">{{ section.settings.hero_btn2_label | default: 'Explore Collections' }}</a>
-        </div>
-      </div>
-      <div class="ar-hero__right">
-        {%- if section.settings.hero_image != blank -%}
-          <img
-            src="{{ section.settings.hero_image | image_url: width: 2000 }}"
-            srcset="{{ section.settings.hero_image | image_url: width: 1000 }} 1000w, {{ section.settings.hero_image | image_url: width: 1600 }} 1600w, {{ section.settings.hero_image | image_url: width: 2000 }} 2000w"
-            sizes="(min-width:1024px) 50vw, 100vw"
-            alt="{{ section.settings.hero_image.alt | default: section.settings.hero_headline | default: shop.name | escape }}"
-            width="{{ section.settings.hero_image.width }}"
-            height="{{ section.settings.hero_image.height }}"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            class="ar-hero__img"
-          >
-        {%- else -%}
-          <div class="ar-hero__ph">Upload hero image in Theme Editor</div>
-        {%- endif -%}
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 2. CATEGORY GRID {%- endcomment -%}
-  <section class="ar-cat">
-    <div class="ar-cat__grid">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'category' -%}
-          {%- liquid
-            assign ar_cat_href = block.settings.link | strip
-            if ar_cat_href == blank
-              assign ar_cat_handle = ''
-              case block.settings.title
-                when 'Planet Attar'
-                  assign ar_cat_handle = 'planet-attars'
-                when 'Zodiac Attar'
-                  assign ar_cat_handle = 'zodiac-attars'
-                when 'Nakshatra Attar'
-                  assign ar_cat_handle = 'nakshatra-attars'
-                when 'Chakra Attar'
-                  assign ar_cat_handle = 'chakra-attars'
-                when 'Stress Relief Attar'
-                  assign ar_cat_handle = 'stressrelief'
-                when 'Love Attar'
-                  assign ar_cat_handle = 'love-attars'
-                when 'Incense Sticks'
-                  assign ar_cat_handle = 'incense-sticks'
-                when 'Discovery Kit'
-                  assign ar_cat_handle = 'gift-sets'
-              endcase
-              if ar_cat_handle != blank and collections[ar_cat_handle] != empty
-                assign ar_cat_href = collections[ar_cat_handle].url
-              elsif ar_cat_handle != blank
-                assign ar_cat_href = routes.collections_url | append: '/' | append: ar_cat_handle
-              else
-                assign ar_cat_href = routes.collections_url
-              endif
-            endif
-          -%}
-          <a
-            href="{{ ar_cat_href }}"
-            class="ar-cat__item"
-            aria-label="{{ block.settings.title | escape }} — Explore"
-            {{ block.shopify_attributes }}
-          >
-            <div class="ar-cat__wrap">
-              {%- if block.settings.image != blank -%}
-                <img
-                  src="{{ block.settings.image | image_url: width: 1200 }}"
-                  srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
-                  sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
-                  alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
-                  width="1200"
-                  height="900"
-                  loading="lazy"
-                  class="ar-cat__img"
-                  decoding="async"
-                >
-              {%- else -%}
-                <div class="ar-cat__ph">Upload image</div>
-              {%- endif -%}
-              <div class="ar-cat__txt">
-                <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
-                <span class="ar-cat__cta">Explore</span>
-              </div>
-            </div>
-          </a>
-        {%- endif -%}
-      {%- endfor -%}
-    </div>
-  </section>
-
-  {%- comment -%} 3. BESTSELLERS {%- endcomment -%}
-  <section class="ar-best">
-    <header class="ar-best__hdr">
-      <h2 class="ar-best__h">{{ section.settings.bs_heading | default: 'Bestsellers' }}</h2>
-      <p class="ar-best__sub">{{ section.settings.bs_sub | default: 'Our most loved attars.' }}</p>
-    </header>
-    <div class="ar-best__wrap">
-      <div class="ar-best__fade ar-best__fade-l"></div>
-      <div class="ar-best__fade ar-best__fade-r"></div>
-      <button class="ar-best__arrow ar-best__arrow-l js-best-l" aria-label="Previous">&#8249;</button>
-      <button class="ar-best__arrow ar-best__arrow-r js-best-r" aria-label="Next">&#8250;</button>
-      <div class="ar-best__track js-best-track">
-        {%- assign bs = collections[section.settings.bs_collection] -%}
-        {%- if bs != blank -%}
-          {%- for p in bs.products limit: section.settings.bs_limit -%}
-            <article class="ar-best__card">
-              <a href="{{ p.url }}" class="ar-best__link">
-                <div class="ar-best__imgw">
-                  {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}<span class="ar-best__badge">BESTSELLER</span>
-                  {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-best__badge">NEW</span>
-                  {%- elsif p.tags contains 'limited' -%}<span class="ar-best__badge">LIMITED</span>
-                  {%- elsif p.compare_at_price > p.price -%}<span class="ar-best__badge">SALE</span>{%- endif -%}
-                  {%- if p.featured_image -%}
-                    <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-best__img">
-                  {%- endif -%}
-                </div>
-                <h3 class="ar-best__name">{{ p.title }}</h3>
-                <p class="ar-best__type">{{ p.type | default: 'Attar' }}</p>
-                <div class="ar-best__price-row">
-                  {%- if p.compare_at_price > p.price -%}<span class="ar-best__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
-                  <span class="ar-best__price">{{ p.price | money }}</span>
-                </div>
-              </a>
-            </article>
-          {%- endfor -%}
-        {%- else -%}
-          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a collection in Theme Editor &rarr; Bestsellers.</p>
-        {%- endif -%}
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 4. SHOP TRIO {%- endcomment -%}
-  <section class="ar-trio">
-    <div class="ar-trio__grid">
-      <div class="ar-trio__left">
-        <a href="{{ section.settings.t1_url | default: '/collections/incense-sticks' }}" class="ar-trio__card">
-          {%- if section.settings.t1_image != blank -%}<img src="{{ section.settings.t1_image | image_url: width: 1200 }}" alt="{{ section.settings.t1_image.alt | default: 'Incense Sticks' }}" width="1200" height="800" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
-          <div class="ar-trio__ov"></div>
-          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t1_label | default: 'Shop Now' }}</span></div>
-        </a>
-      </div>
-      <div class="ar-trio__right">
-        <a href="{{ section.settings.t2_url | default: '/collections/stressrelief' }}" class="ar-trio__card">
-          {%- if section.settings.t2_image != blank -%}<img src="{{ section.settings.t2_image | image_url: width: 800 }}" alt="{{ section.settings.t2_image.alt | default: 'Stress Relief' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
-          <div class="ar-trio__ov"></div>
-          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t2_label | default: 'Shop Now' }}</span></div>
-        </a>
-        <a href="{{ section.settings.t3_url | default: '/collections/love-attars' }}" class="ar-trio__card">
-          {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Love Attars' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
-          <div class="ar-trio__ov"></div>
-          <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t3_label | default: 'Shop Now' }}</span></div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 5. DISCOVER THE FRAGRANCE {%- endcomment -%}
-  <section class="ar-find">
-    <div class="ar-find__bg"></div>
-    <div class="ar-find__con">
-      <h2 class="ar-find__h">{{ section.settings.find_heading | default: 'Discover the fragrance written in your stars.' }}</h2>
-      <p class="ar-find__p">{{ section.settings.find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.' }}</p>
-      <a href="{{ section.settings.find_url | default: '/pages/find-fragrance' }}" class="ar-find__btn">{{ section.settings.find_btn | default: 'Find Your Fragrance' }}</a>
-    </div>
-  </section>
-
-  {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
-  <section class="ar-nav9">
-    {%- liquid
-      if collections['planet-attars'] != empty
-        assign ar_nav9_fallback = collections['planet-attars'].url
-      else
-        assign ar_nav9_fallback = routes.collections_url | append: '/planet-attars'
-      endif
-    -%}
-    <div class="ar-nav9__intro">
-      <div class="ar-nav9__intro-in">
-        <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
-        <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
-        <a href="{{ section.settings.nav9_url | default: '/collections/planet-attars' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
-      </div>
-    </div>
-    <div class="ar-nav9__main">
-      {%- assign ar_nav9_has_init = false -%}
-      {%- assign ar_nav9_init_perfume = nil -%}
-      {%- assign ar_nav9_init_desc = '' -%}
-      {%- assign ar_nav9_init_url = '' -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'planet' -%}
-          {%- unless ar_nav9_has_init -%}
-            {%- assign ar_nav9_init_perfume = block.settings.perfume_image -%}
-            {%- assign ar_nav9_init_desc = block.settings.description -%}
-            {%- assign ar_nav9_init_url = block.settings.url -%}
-            {%- assign ar_nav9_has_init = true -%}
-          {%- endunless -%}
-        {%- endif -%}
-      {%- endfor -%}
-      <div class="ar-nav9__grid">
-        {%- assign ar_nav9_btn_first = true -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'planet' -%}
-            <button
-              type="button"
-              class="ar-nav9__btn{% if ar_nav9_btn_first %} is-active{% endif %}"
-              data-img="{%- if block.settings.perfume_image != blank -%}{{ block.settings.perfume_image | image_url: width: 600 }}{%- endif -%}"
-              data-desc="{{ block.settings.description | default: '' | strip_newlines | escape }}"
-              data-url="{% if block.settings.url != blank %}{{ block.settings.url | escape }}{% endif %}"
-              aria-label="{{ block.settings.name | default: 'Planet' | escape }}"
-              {{ block.shopify_attributes }}
-            >
-              {%- if block.settings.planet_image != blank -%}
-                <img src="{{ block.settings.planet_image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
-              {%- endif -%}
-            </button>
-            {%- assign ar_nav9_btn_first = false -%}
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-      <div class="ar-nav9__panel">
-        <img
-          class="ar-nav9__pimg js-ar-nav9-pimg"
-          id="ar-pimg-{{ section.id }}"
-          width="280"
-          height="420"
-          alt="{% if ar_nav9_init_perfume != blank %}{{ section.settings.nav9_heading | default: 'Navagraha' | escape }} — selected attar{% else %}Selected planet attar{% endif %}"
-          {% if ar_nav9_init_perfume != blank -%}
-            src="{{ ar_nav9_init_perfume | image_url: width: 600 }}"
-          {%- endif %}
-        >
-        <p class="ar-nav9__pdesc js-ar-nav9-pdesc" id="ar-pdesc-{{ section.id }}">{{ ar_nav9_init_desc | escape }}</p>
-        <a href="{% if ar_nav9_init_url != blank %}{{ ar_nav9_init_url }}{% else %}{{ ar_nav9_fallback }}{% endif %}" class="ar-nav9__pbtn js-ar-nav9-plink" id="ar-plink-{{ section.id }}" data-fallback-url="{{ ar_nav9_fallback | escape }}">VIEW PRODUCT</a>
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
-  <section class="ar-zh">
-    <div class="ar-zh__in">
-      <div class="ar-zh__left">
-        <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
-        <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
-        <a href="{{ section.settings.zh_url | default: '/collections/nakshatra-attars' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
-      </div>
-      <div class="ar-zh__right">
-        {%- if section.settings.zh_video != blank -%}
-          <video src="{{ section.settings.zh_video }}" class="ar-zh__media" autoplay loop muted playsinline preload="auto"></video>
-        {%- elsif section.settings.zh_gif != blank -%}
-          <img src="{{ section.settings.zh_gif | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="1200" loading="lazy" class="ar-zh__media">
-        {%- elsif section.settings.zh_image != blank -%}
-          <img src="{{ section.settings.zh_image | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="800" loading="lazy" class="ar-zh__media">
-        {%- else -%}
-          <div class="ar-zh__ph">Upload your video, GIF or image in Theme Editor</div>
-        {%- endif -%}
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 8. ZODIAC {%- endcomment -%}
-  <section class="ar-sc" style="border-top:2px solid #1e2023;">
-    <header class="ar-sc__hdr">
-      <h2 class="ar-sc__h">{{ section.settings.zc_heading | default: 'ZODIAC' }}</h2>
-      <p class="ar-sc__sub">{{ section.settings.zc_sub | default: 'Choose your zodiac fragrance.' }}</p>
-    </header>
-    <div class="ar-sc__wrap">
-      <div class="ar-sc__fade ar-sc__fade-l"></div>
-      <div class="ar-sc__fade ar-sc__fade-r"></div>
-      <button class="ar-sc__arrow ar-sc__arrow-l js-zc-l" aria-label="Previous">&#8249;</button>
-      <button class="ar-sc__arrow ar-sc__arrow-r js-zc-r" aria-label="Next">&#8250;</button>
-      <div class="ar-sc__track js-zc-track">
-        {%- assign zc = collections[section.settings.zc_collection] -%}
-        {%- if zc != blank -%}
-          {%- for p in zc.products limit: 12 -%}
-            <article class="ar-sc__card">
-              <a href="{{ p.url }}" class="ar-sc__link">
-                <div class="ar-sc__imgw">
-                  {%- if p.featured_image -%}
-                    <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-sc__img">
-                  {%- endif -%}
-                </div>
-                <h3 class="ar-sc__name">{{ p.title }}</h3>
-                <p class="ar-sc__type">{{ p.type | default: 'Rashi Rasa' }}</p>
-                <p class="ar-sc__price">{{ p.price | money }}</p>
-              </a>
-            </article>
-          {%- endfor -%}
-        {%- else -%}
-          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select zodiac collection in Theme Editor.</p>
-        {%- endif -%}
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 9. INCENSE BANNER {%- endcomment -%}
-  {%- if section.settings.incense_image != blank -%}
-    <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
-      <img
-        src="{{ section.settings.incense_image | image_url: width: 1600 }}"
-        srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
-        sizes="100vw"
-        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
-        width="{{ section.settings.incense_image.width | default: 2000 }}"
-        height="{{ section.settings.incense_image.height | default: 800 }}"
-        loading="lazy"
-      >
-    </a>
-  {%- else -%}
-    <div class="ar-incense-ph">
-      <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
-      <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} 10. INCENSE PRODUCTS {%- endcomment -%}
-  <section class="ar-inc">
-    <div class="ar-inc__inner">
-      <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Best Seller Agarbatti' }}</h2>
-      <div class="ar-inc__wrap">
-        <div class="ar-inc__fade ar-inc__fade-l"></div>
-        <div class="ar-inc__fade ar-inc__fade-r"></div>
-        <button type="button" class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
-        <button type="button" class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="{{ 'general.slider.next_slide' | t }}">&#8250;</button>
-        <div class="ar-inc__track js-inc-track">
-          {%- assign inc = collections[section.settings.inc_collection] -%}
-          {%- if inc != blank -%}
-            {%- for p in inc.products limit: 12 -%}
-              {%- liquid
-                assign inc_form_id = 'inc-form-' | append: section.id | append: '-' | append: p.id
-                assign inc_variant = p.selected_or_first_available_variant
-                assign inc_ing = p.metafields.custom.ingredients | metafield_text
-                if inc_ing == blank
-                  assign inc_ing = p.type
-                endif
-                assign inc_tag = p.metafields.custom.tagline | metafield_text
-                if inc_tag == blank and p.description != blank
-                  assign inc_tag = p.description | strip_html | truncate: 80
-                endif
-              -%}
-              <article class="ar-inc__card">
-                <div class="ar-inc__card-inner">
-                  <a href="{{ p.url }}" class="ar-inc__media-link" aria-label="{{ p.title | escape }}">
-                    <div class="ar-inc__imgw">
-                      {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}
-                        <span class="ar-inc__badge">BESTSELLER</span>
-                      {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}
-                        <span class="ar-inc__badge">NEW</span>
-                      {%- elsif p.tags contains 'limited' or p.tags contains 'Limited' -%}
-                        <span class="ar-inc__badge">LIMITED</span>
-                      {%- elsif p.compare_at_price > p.price -%}
-                        <span class="ar-inc__badge">SALE</span>
-                      {%- endif -%}
-                      {%- if p.featured_image -%}
-                        <img
-                          src="{{ p.featured_image | image_url: width: 600 }}"
-                          alt="{{ p.featured_image.alt | default: p.title | escape }}"
-                          width="600"
-                          height="600"
-                          loading="lazy"
-                          class="ar-inc__img"
-                        >
-                      {%- endif -%}
-                    </div>
-                  </a>
-                  <div class="ar-inc__body">
-                    {%- if inc_ing != blank -%}
-                      <p class="ar-inc__ing">{{ inc_ing }}</p>
-                    {%- endif -%}
-                    <a href="{{ p.url }}" class="ar-inc__title-link">
-                      <h3 class="ar-inc__name">{{ p.title }}</h3>
-                    </a>
-                    {%- if inc_tag != blank -%}
-                      <p class="ar-inc__tag">{{ inc_tag }}</p>
-                    {%- endif -%}
-                    <div class="ar-inc__price-row">
-                      {%- if p.compare_at_price > p.price -%}
-                        <span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>
-                      {%- endif -%}
-                      <span class="ar-inc__price">{{ p.price | money }}</span>
-                    </div>
-                  </div>
-                  <div class="ar-inc__btn-wrap">
-                    {%- if p.available -%}
-                      {%- if p.has_only_default_variant -%}
-                        <product-form class="product-form ar-inc__product-form" data-section-id="{{ section.id }}">
-                          {%- form 'product',
-                            p,
-                            id: inc_form_id,
-                            class: 'ar-inc__form',
-                            novalidate: 'novalidate',
-                            data-type: 'add-to-cart-form'
-                          -%}
-                            <input
-                              type="hidden"
-                              name="id"
-                              value="{{ inc_variant.id }}"
-                              class="product-variant-id"
-                              {% if inc_variant.available == false %}
-                                disabled
-                              {% endif %}
-                            >
-                            <button
-                              type="submit"
-                              name="add"
-                              class="ar-inc__btn product-form__submit"
-                              aria-label="{{ 'products.product.add_to_cart' | t }} — {{ p.title | escape }}"
-                              data-sold-out-message="true"
-                              {% if inc_variant.available == false %}
-                                disabled
-                              {% endif %}
-                            >
-                              <span>
-                                {%- if inc_variant.available -%}
-                                  {{ 'products.product.add_to_cart' | t }} 🛒
-                                {%- else -%}
-                                  {{ 'products.product.sold_out' | t }}
-                                {%- endif -%}
-                              </span>
-                              <span class="sold-out-message hidden">{{ 'products.product.sold_out' | t }}</span>
-                              {%- render 'loading-spinner' -%}
-                            </button>
-                          {%- endform -%}
-                        </product-form>
-                      {%- else -%}
-                        <modal-opener data-modal="#QuickAdd-inc-{{ section.id }}-{{ p.id }}">
-                          <button
-                            type="button"
-                            class="ar-inc__btn quick-add__submit"
-                            aria-haspopup="dialog"
-                            aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
-                            data-product-url="{{ p.url }}"
-                          >
-                            {{ 'products.product.add_to_cart' | t }} 🛒
-                            {%- render 'loading-spinner' -%}
-                          </button>
-                        </modal-opener>
-                        <quick-add-modal id="QuickAdd-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal">
-                          <div
-                            role="dialog"
-                            aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
-                            aria-modal="true"
-                            class="quick-add-modal__content global-settings-popup"
-                            tabindex="-1"
-                          >
-                            <button
-                              type="button"
-                              class="quick-add-modal__toggle"
-                              aria-label="{{ 'accessibility.close' | t }}"
-                            >
-                              {{- 'icon-close.svg' | inline_asset_content -}}
-                            </button>
-                            <div id="QuickAddInfo-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal__content-info"></div>
-                          </div>
-                        </quick-add-modal>
-                      {%- endif -%}
-                    {%- else -%}
-                      <button type="button" class="ar-inc__btn" disabled>{{ 'products.product.sold_out' | t }}</button>
-                    {%- endif -%}
-                  </div>
-                </div>
-              </article>
-            {%- endfor -%}
-          {%- else -%}
-            <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select incense collection in Theme Editor.</p>
-          {%- endif -%}
-        </div>
-        <div class="ar-inc__dots js-inc-dots" role="tablist" aria-label="{{ 'general.slider.name' | t }}"></div>
-      </div>
-    </div>
-  </section>
-
-    {%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
-  <section class="ar-bp js-ar-bp">
-    <div class="ar-bp__in">
-      <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results & No BS' }}</h2>
-      <div class="ar-bp__grid">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'philosophy_card' -%}
-            <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
-              <div class="ar-bp__shadow"></div>
-              <article class="ar-bp__card">
-                <span class="ar-bp__pill">{{ block.settings.title }}</span>
-                <p class="ar-bp__body">{{ block.settings.text }}</p>
-              </article>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 11. BRAND STORY {%- endcomment -%}
-  <section class="ar-pure">
-    <div class="ar-pure__con">
-      <h2 class="ar-pure__h">{{ section.settings.pure_heading | default: 'More than fragrance' }}</h2>
-      <p class="ar-pure__p">{{ section.settings.pure_text | default: 'Crafted with intention and tradition, each attar is designed to become a quiet part of your presence — subtle, timeless, and deeply personal.' }}</p>
-      <a href="{{ section.settings.pure_url | default: '/pages/about' }}" class="ar-pure__btn">{{ section.settings.pure_btn | default: 'OUR STORY' }}</a>
-    </div>
-  </section>
-
-  {%- comment -%} 12. DISCOVERY KIT {%- endcomment -%}
-  <section class="ar-combo">
-    <div class="ar-combo__in">
-      <div class="ar-combo__imgw">
-        {%- if section.settings.combo_image != blank -%}
-          <img src="{{ section.settings.combo_image | image_url: width: 1200 }}" alt="{{ section.settings.combo_image.alt | default: 'Discovery Kit' }}" width="{{ section.settings.combo_image.width | default: 1200 }}" height="{{ section.settings.combo_image.height | default: 900 }}" loading="lazy" class="ar-combo__img">
-        {%- elsif section.settings.combo_image_url != blank -%}
-          <img src="{{ section.settings.combo_image_url }}" alt="Discovery Kit" width="1200" height="900" loading="lazy" class="ar-combo__img">
-        {%- else -%}
-          <div class="ar-combo__ph">Upload Discovery Kit image in Theme Editor</div>
-        {%- endif -%}
-      </div>
-      <div class="ar-combo__con">
-        <h2 class="ar-combo__h">{{ section.settings.combo_heading | default: 'Discovery Kit' }}</h2>
-        <p class="ar-combo__p">{{ section.settings.combo_text | default: 'The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.' }}</p>
-        <a href="{{ section.settings.combo_url | default: '/products/discovery-kit' }}" class="ar-combo__btn">{{ section.settings.combo_btn | default: 'SHOP NOW' }}</a>
-      </div>
-    </div>
-  </section>
-
-  {%- comment -%} 13. TESTIMONIALS {%- endcomment -%}
-  <section class="ar-tst">
-    <div class="ar-tst__inner">
-      <header class="ar-tst__hdr">
-        <h2 class="ar-tst__h">{{ section.settings.vtm_heading | default: 'What Our Customers Say' }}</h2>
-        <div class="ar-tst__div"></div>
-        <p class="ar-tst__sub">{{ section.settings.vtm_sub | default: 'Real people. Real experiences.' }}</p>
-      </header>
-      <div class="ar-tst__track js-tst-track">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'testimonial' -%}
-            <div class="ar-tst__card" {{ block.shopify_attributes }}>
-              <div class="ar-tst__stars">
-                {%- assign r = block.settings.rating | default: 5 -%}
-                {%- for i in (1..5) -%}<span class="ar-tst__star{% if i <= r %} on{% endif %}">&#9733;</span>{%- endfor -%}
-              </div>
-              <p class="ar-tst__quote">&ldquo;{{ block.settings.quote | default: 'Absolutely divine. This attar lasts all day.' }}&rdquo;</p>
-              <div class="ar-tst__author">
-                <span class="ar-tst__name">{{ block.settings.name | default: 'Happy Customer' }}</span>
-                {%- if block.settings.location != blank -%}<span class="ar-tst__loc"> &mdash; {{ block.settings.location }}</span>{%- endif -%}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-      <div class="ar-tst__dots" id="ar-tst-dots"></div>
-    </div>
-  </section>
-
-  {%- comment -%} 15. TRUST BAR {%- endcomment -%}
-  <section class="ar-trust">
-    <ul class="ar-trust__grid js-ar-trust">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'trust_item' -%}
-          <li class="ar-trust__item" {{ block.shopify_attributes }} style="transition-delay:{{ forloop.index0 | times: 120 }}ms">
-            {%- if block.settings.icon != blank -%}
-              <img src="{{ block.settings.icon | image_url: width: 144 }}" alt="{{ block.settings.title }}" width="64" height="64" loading="lazy" class="ar-trust__icon">
-            {%- else -%}
-              <div class="ar-trust__ph"></div>
-            {%- endif -%}
-            <p class="ar-trust__lbl">{{ block.settings.title }}</p>
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
-  </section>
-
-  {%- comment -%} 16. BLOG {%- endcomment -%}
-  <section class="ar-blog">
-    <header class="ar-blog__hdr">
-      <h2 class="ar-blog__h">{{ section.settings.blog_heading | default: 'OUR JOURNAL' }}</h2>
-      <div class="ar-blog__div"></div>
-    </header>
-    <div class="ar-blog__track">
-      {%- for article in blogs[section.settings.blog].articles limit: section.settings.blog_limit -%}
-        <article>
-          <a href="{{ article.url }}" class="ar-blog__link">
-            <div class="ar-blog__imgw">
-              {%- if article.image -%}
-                <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | default: article.title }}" width="800" height="600" loading="lazy" class="ar-blog__img">
-              {%- else -%}
-                <div class="ar-blog__ph"></div>
-              {%- endif -%}
-            </div>
-            <p class="ar-blog__date">{{ article.published_at | date: '%B %d, %Y' }}</p>
-            <h3 class="ar-blog__title">{{ article.title }}</h3>
-            <p class="ar-blog__exc">{{ article.excerpt | strip_html | truncate: 140 }}</p>
-            <span class="ar-blog__cta">READ MORE</span>
-          </a>
-        </article>
-      {%- else -%}
-        <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select a blog in Theme Editor.</p>
-      {%- endfor -%}
-    </div>
-  </section>
+  {% render 'snippet-home-hero', section: section %}
+  {% render 'snippet-home-collections', section: section %}
+  {% render 'snippet-home-products', section: section %}
+  {% render 'snippet-home-benefits', section: section %}
+  {% render 'snippet-home-testimonials', section: section %}
+  {% render 'snippet-home-blog', section: section %}
+  {% render 'snippet-home-cta', section: section %}
 
 </div>
 

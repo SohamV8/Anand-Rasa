@@ -1,0 +1,156 @@
+{%- comment -%} 10. INCENSE PRODUCTS {%- endcomment -%}
+<section class="ar-inc">
+  <div class="ar-inc__inner">
+    <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Best Seller Agarbatti' }}</h2>
+    <div class="ar-inc__wrap">
+      <div class="ar-inc__fade ar-inc__fade-l"></div>
+      <div class="ar-inc__fade ar-inc__fade-r"></div>
+      <button type="button" class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
+      <button type="button" class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="{{ 'general.slider.next_slide' | t }}">&#8250;</button>
+      <div class="ar-inc__track js-inc-track">
+        {%- assign inc = collections[section.settings.inc_collection] -%}
+        {%- if inc != blank -%}
+          {%- for p in inc.products limit: 12 -%}
+            {%- liquid
+              assign inc_form_id = 'inc-form-' | append: section.id | append: '-' | append: p.id
+              assign inc_variant = p.selected_or_first_available_variant
+              assign inc_ing = p.metafields.custom.ingredients | metafield_text
+              if inc_ing == blank
+                assign inc_ing = p.type
+              endif
+              assign inc_tag = p.metafields.custom.tagline | metafield_text
+              if inc_tag == blank and p.description != blank
+                assign inc_tag = p.description | strip_html | truncate: 80
+              endif
+            -%}
+            <article class="ar-inc__card">
+              <div class="ar-inc__card-inner">
+                <a href="{{ p.url }}" class="ar-inc__media-link" aria-label="{{ p.title | escape }}">
+                  <div class="ar-inc__imgw">
+                    {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}
+                      <span class="ar-inc__badge">BESTSELLER</span>
+                    {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}
+                      <span class="ar-inc__badge">NEW</span>
+                    {%- elsif p.tags contains 'limited' or p.tags contains 'Limited' -%}
+                      <span class="ar-inc__badge">LIMITED</span>
+                    {%- elsif p.compare_at_price > p.price -%}
+                      <span class="ar-inc__badge">SALE</span>
+                    {%- endif -%}
+                    {%- if p.featured_image -%}
+                      <img
+                        src="{{ p.featured_image | image_url: width: 600 }}"
+                        alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                        width="600"
+                        height="600"
+                        loading="lazy"
+                        class="ar-inc__img"
+                      >
+                    {%- endif -%}
+                  </div>
+                </a>
+                <div class="ar-inc__body">
+                  {%- if inc_ing != blank -%}
+                    <p class="ar-inc__ing">{{ inc_ing }}</p>
+                  {%- endif -%}
+                  <a href="{{ p.url }}" class="ar-inc__title-link">
+                    <h3 class="ar-inc__name">{{ p.title }}</h3>
+                  </a>
+                  {%- if inc_tag != blank -%}
+                    <p class="ar-inc__tag">{{ inc_tag }}</p>
+                  {%- endif -%}
+                  <div class="ar-inc__price-row">
+                    {%- if p.compare_at_price > p.price -%}
+                      <span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>
+                    {%- endif -%}
+                    <span class="ar-inc__price">{{ p.price | money }}</span>
+                  </div>
+                </div>
+                <div class="ar-inc__btn-wrap">
+                  {%- if p.available -%}
+                    {%- if p.has_only_default_variant -%}
+                      <product-form class="product-form ar-inc__product-form" data-section-id="{{ section.id }}">
+                        {%- form 'product',
+                          p,
+                          id: inc_form_id,
+                          class: 'ar-inc__form',
+                          novalidate: 'novalidate',
+                          data-type: 'add-to-cart-form'
+                        -%}
+                          <input
+                            type="hidden"
+                            name="id"
+                            value="{{ inc_variant.id }}"
+                            class="product-variant-id"
+                            {% if inc_variant.available == false %}
+                              disabled
+                            {% endif %}
+                          >
+                          <button
+                            type="submit"
+                            name="add"
+                            class="ar-inc__btn product-form__submit"
+                            aria-label="{{ 'products.product.add_to_cart' | t }} — {{ p.title | escape }}"
+                            data-sold-out-message="true"
+                            {% if inc_variant.available == false %}
+                              disabled
+                            {% endif %}
+                          >
+                            <span>
+                              {%- if inc_variant.available -%}
+                                {{ 'products.product.add_to_cart' | t }} 🛒
+                              {%- else -%}
+                                {{ 'products.product.sold_out' | t }}
+                              {%- endif -%}
+                            </span>
+                            <span class="sold-out-message hidden">{{ 'products.product.sold_out' | t }}</span>
+                            {%- render 'loading-spinner' -%}
+                          </button>
+                        {%- endform -%}
+                      </product-form>
+                    {%- else -%}
+                      <modal-opener data-modal="#QuickAdd-inc-{{ section.id }}-{{ p.id }}">
+                        <button
+                          type="button"
+                          class="ar-inc__btn quick-add__submit"
+                          aria-haspopup="dialog"
+                          aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
+                          data-product-url="{{ p.url }}"
+                        >
+                          {{ 'products.product.add_to_cart' | t }} 🛒
+                          {%- render 'loading-spinner' -%}
+                        </button>
+                      </modal-opener>
+                      <quick-add-modal id="QuickAdd-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal">
+                        <div
+                          role="dialog"
+                          aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
+                          aria-modal="true"
+                          class="quick-add-modal__content global-settings-popup"
+                          tabindex="-1"
+                        >
+                          <button
+                            type="button"
+                            class="quick-add-modal__toggle"
+                            aria-label="{{ 'accessibility.close' | t }}"
+                          >
+                            {{- 'icon-close.svg' | inline_asset_content -}}
+                          </button>
+                          <div id="QuickAddInfo-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal__content-info"></div>
+                        </div>
+                      </quick-add-modal>
+                    {%- endif -%}
+                  {%- else -%}
+                    <button type="button" class="ar-inc__btn" disabled>{{ 'products.product.sold_out' | t }}</button>
+                  {%- endif -%}
+                </div>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select incense collection in Theme Editor.</p>
+        {%- endif -%}
+      </div>
+      <div class="ar-inc__dots js-inc-dots" role="tablist" aria-label="{{ 'general.slider.name' | t }}"></div>
+    </div>
+  </div>
+</section>

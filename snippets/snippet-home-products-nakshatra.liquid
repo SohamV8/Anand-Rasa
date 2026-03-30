@@ -1,0 +1,21 @@
+{%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
+<section class="ar-zh">
+  <div class="ar-zh__in">
+    <div class="ar-zh__left">
+      <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
+      <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
+      <a href="{{ section.settings.zh_url | default: '/collections/nakshatra-attars' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
+    </div>
+    <div class="ar-zh__right">
+      {%- if section.settings.zh_video != blank -%}
+        <video src="{{ section.settings.zh_video }}" class="ar-zh__media" autoplay loop muted playsinline preload="auto"></video>
+      {%- elsif section.settings.zh_gif != blank -%}
+        <img src="{{ section.settings.zh_gif | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="1200" loading="lazy" class="ar-zh__media">
+      {%- elsif section.settings.zh_image != blank -%}
+        <img src="{{ section.settings.zh_image | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="800" loading="lazy" class="ar-zh__media">
+      {%- else -%}
+        <div class="ar-zh__ph">Upload your video, GIF or image in Theme Editor</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

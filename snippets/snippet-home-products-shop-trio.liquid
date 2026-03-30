@@ -1,0 +1,24 @@
+{%- comment -%} 4. SHOP TRIO {%- endcomment -%}
+<section class="ar-trio">
+  <div class="ar-trio__grid">
+    <div class="ar-trio__left">
+      <a href="{{ section.settings.t1_url | default: '/collections/incense-sticks' }}" class="ar-trio__card">
+        {%- if section.settings.t1_image != blank -%}<img src="{{ section.settings.t1_image | image_url: width: 1200 }}" alt="{{ section.settings.t1_image.alt | default: 'Incense Sticks' }}" width="1200" height="800" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+        <div class="ar-trio__ov"></div>
+        <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t1_label | default: 'Shop Now' }}</span></div>
+      </a>
+    </div>
+    <div class="ar-trio__right">
+      <a href="{{ section.settings.t2_url | default: '/collections/stressrelief' }}" class="ar-trio__card">
+        {%- if section.settings.t2_image != blank -%}<img src="{{ section.settings.t2_image | image_url: width: 800 }}" alt="{{ section.settings.t2_image.alt | default: 'Stress Relief' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+        <div class="ar-trio__ov"></div>
+        <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t2_label | default: 'Shop Now' }}</span></div>
+      </a>
+      <a href="{{ section.settings.t3_url | default: '/collections/love-attars' }}" class="ar-trio__card">
+        {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Love Attars' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<div class="ar-trio__ph">Upload image</div>{%- endif -%}
+        <div class="ar-trio__ov"></div>
+        <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t3_label | default: 'Shop Now' }}</span></div>
+      </a>
+    </div>
+  </div>
+</section>

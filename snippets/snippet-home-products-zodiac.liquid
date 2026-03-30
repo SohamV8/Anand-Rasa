@@ -1,0 +1,34 @@
+{%- comment -%} 8. ZODIAC {%- endcomment -%}
+<section class="ar-sc" style="border-top:2px solid #1e2023;">
+  <header class="ar-sc__hdr">
+    <h2 class="ar-sc__h">{{ section.settings.zc_heading | default: 'ZODIAC' }}</h2>
+    <p class="ar-sc__sub">{{ section.settings.zc_sub | default: 'Choose your zodiac fragrance.' }}</p>
+  </header>
+  <div class="ar-sc__wrap">
+    <div class="ar-sc__fade ar-sc__fade-l"></div>
+    <div class="ar-sc__fade ar-sc__fade-r"></div>
+    <button class="ar-sc__arrow ar-sc__arrow-l js-zc-l" aria-label="Previous">&#8249;</button>
+    <button class="ar-sc__arrow ar-sc__arrow-r js-zc-r" aria-label="Next">&#8250;</button>
+    <div class="ar-sc__track js-zc-track">
+      {%- assign zc = collections[section.settings.zc_collection] -%}
+      {%- if zc != blank -%}
+        {%- for p in zc.products limit: 12 -%}
+          <article class="ar-sc__card">
+            <a href="{{ p.url }}" class="ar-sc__link">
+              <div class="ar-sc__imgw">
+                {%- if p.featured_image -%}
+                  <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-sc__img">
+                {%- endif -%}
+              </div>
+              <h3 class="ar-sc__name">{{ p.title }}</h3>
+              <p class="ar-sc__type">{{ p.type | default: 'Rashi Rasa' }}</p>
+              <p class="ar-sc__price">{{ p.price | money }}</p>
+            </a>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select zodiac collection in Theme Editor.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
