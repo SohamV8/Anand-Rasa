@@ -1,1 +1,300 @@
-{"sections":{"anand-rasa-homepage":{"type":"anand-rasa-homepage","blocks":{"trust-1":{"type":"trust_item","settings":{"icon":"shopify:\/\/shop_images\/Shop.png","title":"Promoting Local Businesses"}},"trust-2":{"type":"trust_item","settings":{"icon":"shopify:\/\/shop_images\/NoAnimal.png","title":"Not tested on animals"}},"trust-3":{"type":"trust_item","settings":{"icon":"shopify:\/\/shop_images\/NoChem.png","title":"No Alcohol or Chemicals"}},"trust-4":{"type":"trust_item","settings":{"icon":"shopify:\/\/shop_images\/FreeShipping.png","title":"Free Shipping"}},"cat-1":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/PlanetHero.png","title":"Planet Attar","link":"/collections/planet-attars"}},"cat-2":{"type":"category","settings":{"image":"shopify:\/\/shop_images\/PlanetHero.png","title":"Zodiac Attar","link":"/collections/zodiac-attars"}},"cat-3":{"type":"category","settings":{"title":"Nakshatra Attar","link":"/collections/nakshatra-attars"}},"cat-4":{"type":"category","settings":{"title":"Chakra Attar","link":"/collections/chakra-attars"}},"cat-5":{"type":"category","settings":{"title":"Stress Relief Attar","link":"/collections/stressrelief"}},"cat-6":{"type":"category","settings":{"title":"Love Attar","link":"/collections/love-attars"}},"planet-1":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/surya_card.webp","perfume_image":"shopify:\/\/shop_images\/sun.webp","name":"Sun","description":"Golden warmth in every note.","url":"/collections/planet-attars"}},"planet-2":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/moon_card.webp","perfume_image":"shopify:\/\/shop_images\/moon.webp","name":"Moon","description":"Calm whispers in silver light.","url":"/collections/planet-attars"}},"planet-3":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/mangal_card.webp","perfume_image":"shopify:\/\/shop_images\/mars.webp","name":"Mars","description":"Flame of courage, scent of victory.","url":"/collections/planet-attars"}},"planet-4":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/budh_card.webp","perfume_image":"shopify:\/\/shop_images\/mercury.webp","name":"Mercury","description":"Quick thoughts, cool citrus.","url":"/collections/planet-attars"}},"planet-5":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/guru_card.webp","perfume_image":"shopify:\/\/shop_images\/jupiter.webp","name":"Jupiter","description":"Grandeur laced in calm sandalwood.","url":"/collections/planet-attars"}},"planet-6":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/shukra_card.webp","perfume_image":"shopify:\/\/shop_images\/Venus.webp","name":"Venus","description":"Love reborn in rose and velvet.","url":"/collections/planet-attars"}},"planet-7":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/shani_card.webp","perfume_image":"shopify:\/\/shop_images\/saturn.webp","name":"Saturn","description":"The scent of timeless strength.","url":"/collections/planet-attars"}},"cat-7":{"type":"category","settings":{"title":"Incense Sticks","link":"/collections/incense-sticks"}},"planet-8":{"type":"planet","settings":{"planet_image":"shopify:\/\/shop_images\/rahu_card.webp","perfume_image":"shopify:\/\/shop_images\/rahu.webp","name":"Rahu","description":"Shadows fire, smoky mystery.","url":"/collections/planet-attars"}},"phil-1":{"type":"philosophy_card","settings":{"title":"We Deliver Experience.","text":"Every note in our Anand Rasa attars is crafted for depth, emotion and lasting presence."}},"phil-2":{"type":"philosophy_card","settings":{"title":"Craft Before Claims","text":"No hype. Only performance. Traditional methods, real ingredients."}},"phil-3":{"type":"philosophy_card","settings":{"title":"Luxury Is Not Packaging","text":"What matters is how long it lasts and how it makes you feel."}},"phil-4":{"type":"philosophy_card","settings":{"title":"One Standard. Always.","text":"No compromise. No shortcuts. That is the Anand Rasa promise."}},"cat-8":{"type":"category","settings":{"title":"Discovery Kit","link":"/collections/gift-sets"}}},"block_order":["trust-1","trust-2","trust-3","trust-4","cat-1","cat-2","cat-3","cat-4","cat-5","cat-6","planet-1","planet-2","planet-3","planet-4","planet-5","planet-6","planet-7","cat-7","planet-8","phil-1","phil-2","phil-3","phil-4","cat-8"],"settings":{"hero_image":"shopify:\/\/shop_images\/KV_Hero.webp","hero_eyebrow":"ANAND RAS","hero_headline":"Perfume for your soul","hero_body":"Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.","hero_btn1_label":"Shop Now","hero_btn1_url":"/collections/planet-attars","hero_btn2_label":"Explore Collections","hero_btn2_url":"/collections","bs_collection":"planet-attars","bs_limit":10,"bs_heading":"BestSellers","bs_sub":"Explore our best sellers.","nav9_heading":"Navagraha Attars","nav9_text":"Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.","nav9_url":"/collections/planet-attars","zh_video":"","zh_heading":"Nakshatra Attar for your soul.","zh_text":"Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion.","zh_btn":"EXPLORE NAKSHATRA ATTARS","zh_url":"/collections/nakshatra-attars","zc_collection":"zodiac-attars","zc_heading":"ZODIAC","zc_sub":"Choose your zodiac fragrance.","t1_image":"shopify:\/\/shop_images\/Incensehero.webp","t1_url":"/collections/incense-sticks","t1_label":"Shop Now","t2_image":"shopify:\/\/shop_images\/stress_calm.webp","t2_url":"/collections/stressrelief","t2_label":"Shop Now","t3_image":"shopify:\/\/shop_images\/love.webp","t3_url":"/collections/love-attars","t3_label":"Shop Now","pure_heading":"More than fragrance","pure_text":"Crafted with intention and tradition, each attar is designed to become a quiet part of your presence.","pure_btn":"OUR STORY","pure_url":"/pages/about","find_heading":"Discover the fragrance written in your stars.","find_text":"Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.","find_btn":"Find Your Fragrance","find_url":"/pages/find-fragrance","combo_image":"shopify:\/\/shop_images\/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png","combo_image_url":"","combo_heading":"Discovery Kit","combo_text":"The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.","combo_btn":"SHOP NOW","combo_url":"/collections/gift-sets","vtm_heading":"What Our Customers Say","vtm_sub":"Real people. Real experiences.","bp_heading":"We believe in Truth, Results and No BS","blog":"news","blog_limit":3,"blog_heading":"OUR BLOGS","incense_image":"shopify:\/\/shop_images\/incense_3c1395fd-341d-41d0-9a6f-8e0278e60546.jpg","incense_url":"/collections/incense-sticks","inc_collection":"incense-sticks","inc_heading":"Shop Incense Sticks"}}},"order":["anand-rasa-homepage"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "anand-rasa-homepage": {
+      "type": "anand-rasa-homepage",
+      "blocks": {
+        "trust-1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shopify://shop_images/Shop.png",
+            "title": "Promoting Local Businesses"
+          }
+        },
+        "trust-2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shopify://shop_images/NoAnimal.png",
+            "title": "Not tested on animals"
+          }
+        },
+        "trust-3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shopify://shop_images/NoChem.png",
+            "title": "No Alcohol or Chemicals"
+          }
+        },
+        "trust-4": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shopify://shop_images/FreeShipping.png",
+            "title": "Free Shipping"
+          }
+        },
+        "cat-1": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/PlanetHero.png",
+            "title": "Planet Attar",
+            "link": "/collections/planet-attars"
+          }
+        },
+        "cat-2": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/PlanetHero.png",
+            "title": "Zodiac Attar",
+            "link": "/collections/zodiac-attars"
+          }
+        },
+        "cat-3": {
+          "type": "category",
+          "settings": {
+            "title": "Nakshatra Attar",
+            "link": "/collections/nakshatra-attars"
+          }
+        },
+        "cat-4": {
+          "type": "category",
+          "settings": {
+            "title": "Chakra Attar",
+            "link": "/collections/chakra-attars"
+          }
+        },
+        "cat-5": {
+          "type": "category",
+          "settings": {
+            "title": "Stress Relief Attar",
+            "link": "/collections/stressrelief"
+          }
+        },
+        "cat-6": {
+          "type": "category",
+          "settings": {
+            "title": "Love Attar",
+            "link": "/collections/love-attars"
+          }
+        },
+        "planet-1": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/surya_card.webp",
+            "perfume_image": "shopify://shop_images/sun.webp",
+            "name": "Sun",
+            "description": "Golden warmth in every note.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-2": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/moon_card.webp",
+            "perfume_image": "shopify://shop_images/moon.webp",
+            "name": "Moon",
+            "description": "Calm whispers in silver light.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-3": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/mangal_card.webp",
+            "perfume_image": "shopify://shop_images/mars.webp",
+            "name": "Mars",
+            "description": "Flame of courage, scent of victory.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-4": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/budh_card.webp",
+            "perfume_image": "shopify://shop_images/mercury.webp",
+            "name": "Mercury",
+            "description": "Quick thoughts, cool citrus.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-5": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/guru_card.webp",
+            "perfume_image": "shopify://shop_images/jupiter.webp",
+            "name": "Jupiter",
+            "description": "Grandeur laced in calm sandalwood.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-6": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/shukra_card.webp",
+            "perfume_image": "shopify://shop_images/Venus.webp",
+            "name": "Venus",
+            "description": "Love reborn in rose and velvet.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "planet-7": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/shani_card.webp",
+            "perfume_image": "shopify://shop_images/saturn.webp",
+            "name": "Saturn",
+            "description": "The scent of timeless strength.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "cat-7": {
+          "type": "category",
+          "settings": {
+            "title": "Incense Sticks",
+            "link": "/collections/incense-sticks"
+          }
+        },
+        "planet-8": {
+          "type": "planet",
+          "settings": {
+            "planet_image": "shopify://shop_images/rahu_card.webp",
+            "perfume_image": "shopify://shop_images/rahu.webp",
+            "name": "Rahu",
+            "description": "Shadows fire, smoky mystery.",
+            "url": "/collections/planet-attars"
+          }
+        },
+        "phil-1": {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "We Deliver Experience.",
+            "text": "Every note in our Anand Rasa attars is crafted for depth, emotion and lasting presence."
+          }
+        },
+        "phil-2": {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "Craft Before Claims",
+            "text": "No hype. Only performance. Traditional methods, real ingredients."
+          }
+        },
+        "phil-3": {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "Luxury Is Not Packaging",
+            "text": "What matters is how long it lasts and how it makes you feel."
+          }
+        },
+        "phil-4": {
+          "type": "philosophy_card",
+          "settings": {
+            "title": "One Standard. Always.",
+            "text": "No compromise. No shortcuts. That is the Anand Rasa promise."
+          }
+        },
+        "cat-8": {
+          "type": "category",
+          "settings": {
+            "title": "Discovery Kit",
+            "link": "/collections/gift-sets"
+          }
+        }
+      },
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3",
+        "trust-4",
+        "cat-1",
+        "cat-2",
+        "cat-3",
+        "cat-4",
+        "cat-5",
+        "cat-6",
+        "planet-1",
+        "planet-2",
+        "planet-3",
+        "planet-4",
+        "planet-5",
+        "planet-6",
+        "planet-7",
+        "cat-7",
+        "planet-8",
+        "phil-1",
+        "phil-2",
+        "phil-3",
+        "phil-4",
+        "cat-8"
+      ],
+      "settings": {
+        "hero_image": "shopify://shop_images/KV_Hero.webp",
+        "hero_eyebrow": "ANAND RAS",
+        "hero_headline": "Perfume for your soul",
+        "hero_body": "Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.",
+        "hero_btn1_label": "Shop Now",
+        "hero_btn1_url": "/collections/planet-attars",
+        "hero_btn2_label": "Explore Collections",
+        "hero_btn2_url": "/collections",
+        "bs_collection": "planet-attars",
+        "bs_limit": 10,
+        "bs_heading": "BestSellers",
+        "bs_sub": "Explore our best sellers.",
+        "nav9_heading": "Navagraha Attars",
+        "nav9_text": "Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.",
+        "nav9_url": "/collections/planet-attars",
+        "zh_gif": "shopify://shop_images/NakshatraGif1.gif",
+        "zh_video": "",
+        "zh_heading": "Nakshatra Attar for your soul.",
+        "zh_text": "Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion.",
+        "zh_btn": "EXPLORE NAKSHATRA ATTARS",
+        "zh_url": "/collections/nakshatra-attars",
+        "zc_collection": "zodiac-attars",
+        "zc_heading": "ZODIAC",
+        "zc_sub": "Choose your zodiac fragrance.",
+        "t1_image": "shopify://shop_images/Incensehero.webp",
+        "t1_url": "/collections/incense-sticks",
+        "t1_label": "Shop Now",
+        "t2_image": "shopify://shop_images/stress_calm.webp",
+        "t2_url": "/collections/stressrelief",
+        "t2_label": "Shop Now",
+        "t3_image": "shopify://shop_images/love.webp",
+        "t3_url": "/collections/love-attars",
+        "t3_label": "Shop Now",
+        "pure_heading": "More than fragrance",
+        "pure_text": "Crafted with intention and tradition, each attar is designed to become a quiet part of your presence.",
+        "pure_btn": "OUR STORY",
+        "pure_url": "/pages/about",
+        "find_heading": "Discover the fragrance written in your stars.",
+        "find_text": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.",
+        "find_btn": "Find Your Fragrance",
+        "find_url": "/pages/find-fragrance",
+        "combo_image": "shopify://shop_images/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png",
+        "combo_image_url": "",
+        "combo_heading": "Discovery Kit",
+        "combo_text": "The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.",
+        "combo_btn": "SHOP NOW",
+        "combo_url": "/collections/gift-sets",
+        "vtm_heading": "What Our Customers Say",
+        "vtm_sub": "Real people. Real experiences.",
+        "bp_heading": "We believe in Truth, Results and No BS",
+        "blog": "news",
+        "blog_limit": 3,
+        "blog_heading": "OUR BLOGS",
+        "incense_image": "shopify://shop_images/incense_3c1395fd-341d-41d0-9a6f-8e0278e60546.jpg",
+        "incense_url": "/collections/incense-sticks",
+        "inc_collection": "incense-sticks",
+        "inc_heading": "Shop Incense Sticks"
+      }
+    }
+  },
+  "order": [
+    "anand-rasa-homepage"
+  ]
+}
