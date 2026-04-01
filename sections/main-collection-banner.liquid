@@ -1,47 +1,156 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
-{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+{{ 'section-collection-banner.css' | asset_url | stylesheet_tag }}
 
-{%- style -%}
-  @media screen and (max-width: 749px) {
-    .collection-hero--with-image .collection-hero__inner {
-      padding-bottom: calc({{ settings.media_shadow_vertical_offset | at_least: 0 }}px + 2rem);
-    }
-  }
-{%- endstyle -%}
-
-<div class="collection-hero{% if section.settings.show_collection_image and collection.image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient">
-  <div class="collection-hero__inner page-width {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    <div class="collection-hero__text-wrapper">
-      <h1 class="collection-hero__title">
-        <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
-        {{- collection.title | escape -}}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="ar-banner">
+    {%- comment -%} ── HEADING BLOCK ── {%- endcomment -%}
+    <div class="ar-banner__head">
+      <h1 class="ar-banner__title">
+        {%- if collection.title == 'All' or collection.title == 'all' -%}
+          Shop All Fragrances
+        {%- else -%}
+          {{ collection.title }}
+        {%- endif -%}
       </h1>
 
-      {%- if section.settings.show_collection_description -%}
-        <div class="collection-hero__description rte">{{ collection.description }}</div>
+      {%- if collection.description != blank -%}
+        <p class="ar-banner__desc">{{ collection.description }}</p>
+      {%- else -%}
+        <p class="ar-banner__desc">
+          Discover premium attars and spiritual fragrances — crafted with traditional wisdom and modern elegance.
+        </p>
       {%- endif -%}
+
+      <span class="ar-banner__rule" aria-hidden="true"></span>
     </div>
 
-    {%- if section.settings.show_collection_image and collection.image -%}
-      <div class="collection-hero__image-container media gradient">
-        <img
-          srcset="
-            {%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
-            {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
-            {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
-            {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
-            {%- if collection.image.width >= 1070 -%}{{ collection.image | image_url: width: 1070 }} 1070w,{%- endif -%}
-            {%- if collection.image.width >= 1500 -%}{{ collection.image | image_url: width: 1500 }} 1500w,{%- endif -%}
-            {{ collection.image | image_url }} {{ collection.image.width }}w
-          "
-          src="{{ collection.image | image_url: width: 750 }}"
-          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px)"
-          alt="{{ collection.image.alt | escape }}"
-          width="{{ collection.image.width }}"
-          height="{{ collection.image.height }}"
+    {%- comment -%} ── SEARCH BAR ── {%- endcomment -%}
+    <div class="ar-banner__search-wrap">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="ar-banner__search-form">
+        <input type="hidden" name="type" value="product">
+        <input
+          type="search"
+          name="q"
+          class="ar-banner__search-input"
+          placeholder="Search fragrances..."
+          aria-label="Search fragrances"
+          autocomplete="off"
+          spellcheck="false"
         >
+        <button type="submit" class="ar-banner__search-btn" aria-label="Submit search">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    {%- comment -%} ── CATEGORY TABS ── {%- endcomment -%}
+    <nav class="ar-banner__tabs" role="navigation" aria-label="Browse by category">
+      <div class="ar-banner__tabs-inner">
+        <a
+          href="{{ routes.collections_url }}/all"
+          class="ar-banner__tab{% if collection.handle == 'all' %} is-active{% endif %}"
+        >
+          ALL
+        </a>
+
+        {%- comment -%}
+          Main sub-collections — edit handles to match Shopify Admin → Collections.
+        {%- endcomment -%}
+        {%- assign tab_handles = 'attar,chakra-attar,nakshatra-attar,planet-attar,stress-relief-attar,gift-sets,incense-sticks'
+          | split: ','
+        -%}
+        {%- for handle in tab_handles -%}
+          {%- assign tab_col = collections[handle] -%}
+          {%- if tab_col != blank -%}
+            <a
+              href="{{ tab_col.url }}"
+              class="ar-banner__tab{% if collection.handle == handle %} is-active{% endif %}"
+            >
+              {{ tab_col.title | upcase }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
-    {%- endif -%}
+
+      {%- comment -%} ── SORT + COUNT (right side, desktop) ── {%- endcomment -%}
+      {%- if collection.sort_options.size > 1 -%}
+        <facet-filters-form class="facets facets-vertical-sort">
+          <div class="ar-banner__meta">
+            <span class="ar-banner__count" id="ProductCountDesktop">
+              {%- if collection.products_count == collection.all_products_count -%}
+                {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+              {%- else -%}
+                {{
+                  'products.facets.product_count'
+                  | t: product_count: collection.products_count, count: collection.all_products_count
+                }}
+              {%- endif -%}
+            </span>
+            {%- render 'loading-spinner' -%}
+            <div class="ar-banner__sort">
+              <form class="facets-vertical-form" id="FacetSortForm">
+                <div class="facet-filters sorting caption">
+                  <div class="facet-filters__field">
+                    <h2 class="facet-filters__label caption-large text-body visually-hidden">
+                      <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
+                    </h2>
+                    <div class="select">
+                      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                      <select
+                        name="sort_by"
+                        class="facet-filters__sort select__select caption-large"
+                        id="SortBy"
+                        aria-describedby="a11y-refresh-page-message"
+                      >
+                        {%- for option in collection.sort_options -%}
+                          <option
+                            value="{{ option.value | escape }}"
+                            {% if option.value == sort_by %}
+                              selected="selected"
+                            {% endif %}
+                          >
+                            {{ option.name | escape }}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                      <span class="svg-wrapper">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </facet-filters-form>
+      {%- else -%}
+        <div class="ar-banner__meta">
+          <span class="ar-banner__count" id="ProductCountDesktop">
+            {%- if collection.products_count == collection.all_products_count -%}
+              {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+            {%- else -%}
+              {{
+                'products.facets.product_count'
+                | t: product_count: collection.products_count, count: collection.all_products_count
+              }}
+            {%- endif -%}
+          </span>
+          {%- render 'loading-spinner' -%}
+        </div>
+      {%- endif -%}
+    </nav>
   </div>
 </div>
 

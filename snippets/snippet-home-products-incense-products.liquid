@@ -1,12 +1,23 @@
 {%- comment -%} 10. INCENSE PRODUCTS {%- endcomment -%}
+
 <section class="ar-inc">
   <div class="ar-inc__inner">
-    <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Best Seller Agarbatti' }}</h2>
+
+    <div class="ar-inc__header">
+      <h2 class="ar-inc__h">{{ section.settings.inc_heading | default: 'Best Seller Agarbatti' }}</h2>
+    </div>
+
     <div class="ar-inc__wrap">
       <div class="ar-inc__fade ar-inc__fade-l"></div>
       <div class="ar-inc__fade ar-inc__fade-r"></div>
-      <button type="button" class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="{{ 'general.slider.previous_slide' | t }}">&#8249;</button>
-      <button type="button" class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="{{ 'general.slider.next_slide' | t }}">&#8250;</button>
+
+      <button type="button" class="ar-inc__arrow ar-inc__arrow-l js-inc-l" aria-label="{{ 'general.slider.previous_slide' | t }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button type="button" class="ar-inc__arrow ar-inc__arrow-r js-inc-r" aria-label="{{ 'general.slider.next_slide' | t }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
       <div class="ar-inc__track js-inc-track">
         {%- assign inc = collections[section.settings.inc_collection] -%}
         {%- if inc != blank -%}
@@ -23,19 +34,23 @@
                 assign inc_tag = p.description | strip_html | truncate: 80
               endif
             -%}
-            <article class="ar-inc__card">
+
+            <article class="ar-inc__card" style="--card-i: {{ forloop.index0 }}">
               <div class="ar-inc__card-inner">
+
+                {%- comment -%} IMAGE BLOCK {%- endcomment -%}
                 <a href="{{ p.url }}" class="ar-inc__media-link" aria-label="{{ p.title | escape }}">
                   <div class="ar-inc__imgw">
                     {%- if p.tags contains 'bestseller' or p.tags contains 'Bestseller' -%}
-                      <span class="ar-inc__badge">BESTSELLER</span>
+                      <span class="ar-inc__badge ar-inc__badge--bs">BESTSELLER</span>
                     {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}
-                      <span class="ar-inc__badge">NEW</span>
+                      <span class="ar-inc__badge ar-inc__badge--new">NEW</span>
                     {%- elsif p.tags contains 'limited' or p.tags contains 'Limited' -%}
-                      <span class="ar-inc__badge">LIMITED</span>
+                      <span class="ar-inc__badge ar-inc__badge--ltd">LIMITED</span>
                     {%- elsif p.compare_at_price > p.price -%}
-                      <span class="ar-inc__badge">SALE</span>
+                      <span class="ar-inc__badge ar-inc__badge--sale">SALE</span>
                     {%- endif -%}
+
                     {%- if p.featured_image -%}
                       <img
                         src="{{ p.featured_image | image_url: width: 600 }}"
@@ -45,26 +60,39 @@
                         loading="lazy"
                         class="ar-inc__img"
                       >
+                    {%- else -%}
+                      <div class="ar-inc__img-placeholder"></div>
                     {%- endif -%}
                   </div>
                 </a>
+
+                {%- comment -%} BODY BLOCK {%- endcomment -%}
                 <div class="ar-inc__body">
                   {%- if inc_ing != blank -%}
                     <p class="ar-inc__ing">{{ inc_ing }}</p>
                   {%- endif -%}
+
                   <a href="{{ p.url }}" class="ar-inc__title-link">
                     <h3 class="ar-inc__name">{{ p.title }}</h3>
                   </a>
+
                   {%- if inc_tag != blank -%}
                     <p class="ar-inc__tag">{{ inc_tag }}</p>
                   {%- endif -%}
+
                   <div class="ar-inc__price-row">
                     {%- if p.compare_at_price > p.price -%}
                       <span class="ar-inc__price-old">{{ p.compare_at_price | money }}</span>
                     {%- endif -%}
                     <span class="ar-inc__price">{{ p.price | money }}</span>
+                    {%- if p.compare_at_price > p.price -%}
+                      {%- assign saving = p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price -%}
+                      <span class="ar-inc__save">{{ saving }}% off</span>
+                    {%- endif -%}
                   </div>
                 </div>
+
+                {%- comment -%} CTA BLOCK {%- endcomment -%}
                 <div class="ar-inc__btn-wrap">
                   {%- if p.available -%}
                     {%- if p.has_only_default_variant -%}
@@ -81,9 +109,7 @@
                             name="id"
                             value="{{ inc_variant.id }}"
                             class="product-variant-id"
-                            {% if inc_variant.available == false %}
-                              disabled
-                            {% endif %}
+                            {% if inc_variant.available == false %}disabled{% endif %}
                           >
                           <button
                             type="submit"
@@ -91,13 +117,12 @@
                             class="ar-inc__btn product-form__submit"
                             aria-label="{{ 'products.product.add_to_cart' | t }} — {{ p.title | escape }}"
                             data-sold-out-message="true"
-                            {% if inc_variant.available == false %}
-                              disabled
-                            {% endif %}
+                            {% if inc_variant.available == false %}disabled{% endif %}
                           >
-                            <span>
+                            <span class="ar-inc__btn-text">
                               {%- if inc_variant.available -%}
-                                {{ 'products.product.add_to_cart' | t }} 🛒
+                                <svg class="ar-inc__cart-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                                {{ 'products.product.add_to_cart' | t }}
                               {%- else -%}
                                 {{ 'products.product.sold_out' | t }}
                               {%- endif -%}
@@ -107,6 +132,7 @@
                           </button>
                         {%- endform -%}
                       </product-form>
+
                     {%- else -%}
                       <modal-opener data-modal="#QuickAdd-inc-{{ section.id }}-{{ p.id }}">
                         <button
@@ -116,10 +142,12 @@
                           aria-label="{{ 'products.product.choose_product_options' | t: product_name: p.title | escape }}"
                           data-product-url="{{ p.url }}"
                         >
-                          {{ 'products.product.add_to_cart' | t }} 🛒
+                          <svg class="ar-inc__cart-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                          {{ 'products.product.add_to_cart' | t }}
                           {%- render 'loading-spinner' -%}
                         </button>
                       </modal-opener>
+
                       <quick-add-modal id="QuickAdd-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal">
                         <div
                           role="dialog"
@@ -128,29 +156,572 @@
                           class="quick-add-modal__content global-settings-popup"
                           tabindex="-1"
                         >
-                          <button
-                            type="button"
-                            class="quick-add-modal__toggle"
-                            aria-label="{{ 'accessibility.close' | t }}"
-                          >
+                          <button type="button" class="quick-add-modal__toggle" aria-label="{{ 'accessibility.close' | t }}">
                             {{- 'icon-close.svg' | inline_asset_content -}}
                           </button>
                           <div id="QuickAddInfo-inc-{{ section.id }}-{{ p.id }}" class="quick-add-modal__content-info"></div>
                         </div>
                       </quick-add-modal>
                     {%- endif -%}
+
                   {%- else -%}
-                    <button type="button" class="ar-inc__btn" disabled>{{ 'products.product.sold_out' | t }}</button>
+                    <button type="button" class="ar-inc__btn ar-inc__btn--sold" disabled>
+                      {{ 'products.product.sold_out' | t }}
+                    </button>
                   {%- endif -%}
                 </div>
+
               </div>
             </article>
           {%- endfor -%}
         {%- else -%}
-          <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select incense collection in Theme Editor.</p>
+          <p class="ar-inc__empty">Select an incense collection in Theme Editor.</p>
         {%- endif -%}
       </div>
+
       <div class="ar-inc__dots js-inc-dots" role="tablist" aria-label="{{ 'general.slider.name' | t }}"></div>
     </div>
   </div>
 </section>
+
+
+<style>
+
+/* ==============================
+   ROOT / TOKENS
+   ============================== */
+.ar-inc {
+  --inc-bg:        #F6F1E7;
+  --inc-card-bg:   #FFFFFF;
+  --inc-border:    #EBEBEB;
+  --inc-text:      #1A1A1A;
+  --inc-muted:     #7A7A7A;
+  --inc-pink:      #E8799A;
+  --inc-pink-bg:   #FDE8EE;
+  --inc-pink-dark: #C55A78;
+  --inc-radius:    18px;
+  --inc-gap:       20px;
+  --inc-card-w:    300px;
+  --inc-trans:     0.32s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ==============================
+   SECTION SHELL
+   ============================== */
+.ar-inc {
+  background: var(--inc-bg);
+  padding: 80px 0 72px;
+  overflow: hidden;
+}
+
+.ar-inc__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ==============================
+   HEADING
+   ============================== */
+.ar-inc__header {
+  text-align: center;
+  margin-bottom: 52px;
+  opacity: 0;
+  transform: translateY(24px);
+  animation: ar-fadeUp 0.7s cubic-bezier(0.25,1,0.5,1) 0.05s forwards;
+}
+
+.ar-inc__h {
+  font-size: clamp(26px, 3.5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--inc-text);
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* ==============================
+   SLIDER WRAPPER
+   ============================== */
+.ar-inc__wrap {
+  position: relative;
+}
+
+/* Fade edges */
+.ar-inc__fade {
+  position: absolute;
+  top: 0;
+  bottom: 40px;
+  width: 72px;
+  z-index: 2;
+  pointer-events: none;
+}
+.ar-inc__fade-l {
+  left: 0;
+  background: linear-gradient(to right, var(--inc-bg), transparent);
+}
+.ar-inc__fade-r {
+  right: 0;
+  background: linear-gradient(to left, var(--inc-bg), transparent);
+}
+
+/* ==============================
+   TRACK
+   ============================== */
+.ar-inc__track {
+  display: flex;
+  gap: var(--inc-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 12px 4px 8px;
+  cursor: grab;
+  will-change: scroll-position;
+}
+.ar-inc__track::-webkit-scrollbar { display: none; }
+.ar-inc__track.is-dragging { cursor: grabbing; }
+
+/* ==============================
+   CARD
+   ============================== */
+.ar-inc__card {
+  flex: 0 0 var(--inc-card-w);
+  scroll-snap-align: start;
+  border-radius: var(--inc-radius);
+  background: var(--inc-card-bg);
+  border: 1px solid var(--inc-border);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: box-shadow var(--inc-trans), transform var(--inc-trans);
+
+  /* Staggered entrance */
+  opacity: 0;
+  transform: translateY(32px);
+  animation: ar-fadeUp 0.6s cubic-bezier(0.25,1,0.5,1) calc(var(--card-i) * 90ms + 0.2s) forwards;
+}
+
+.ar-inc__card:hover {
+  box-shadow: 0 12px 36px rgba(0,0,0,0.10);
+  transform: translateY(-4px);
+}
+
+.ar-inc__card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ==============================
+   IMAGE
+   ============================== */
+.ar-inc__media-link { display: block; }
+
+.ar-inc__imgw {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #F7F3EC;
+}
+
+.ar-inc__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.25,1,0.5,1);
+}
+
+.ar-inc__card:hover .ar-inc__img {
+  transform: scale(1.04);
+}
+
+.ar-inc__img-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #EEE8DC;
+}
+
+/* ==============================
+   BADGE
+   ============================== */
+.ar-inc__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 1;
+  padding: 5px 11px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+.ar-inc__badge--bs   { background: #1A1A1A; }
+.ar-inc__badge--new  { background: #2E7D32; }
+.ar-inc__badge--ltd  { background: #7B5EA7; }
+.ar-inc__badge--sale { background: #C62828; }
+
+/* ==============================
+   BODY
+   ============================== */
+.ar-inc__body {
+  padding: 20px 20px 4px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ar-inc__ing {
+  font-size: 11px;
+  color: var(--inc-muted);
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.ar-inc__title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ar-inc__name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--inc-text);
+  margin: 4px 0 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.ar-inc__title-link:hover .ar-inc__name {
+  color: var(--inc-pink-dark);
+}
+
+.ar-inc__tag {
+  font-size: 13px;
+  color: var(--inc-muted);
+  margin: 6px 0 0;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.ar-inc__price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.ar-inc__price-old {
+  font-size: 13px;
+  color: #ADADAD;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+.ar-inc__price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--inc-text);
+  letter-spacing: -0.01em;
+}
+
+.ar-inc__save {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--inc-pink-bg);
+  color: var(--inc-pink-dark);
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+/* ==============================
+   CTA BUTTON
+   ============================== */
+.ar-inc__btn-wrap {
+  padding: 16px 20px 20px;
+}
+
+.ar-inc__form { margin: 0; }
+
+.ar-inc__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: none;
+  background: var(--inc-pink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background var(--inc-trans), transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.ar-inc__btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s ease;
+}
+
+.ar-inc__btn:hover:not(:disabled) {
+  background: var(--inc-pink-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232,121,154,0.35);
+}
+
+.ar-inc__btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.ar-inc__btn:disabled,
+.ar-inc__btn--sold {
+  background: #DDD;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ar-inc__btn-text {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ar-inc__cart-ico {
+  flex-shrink: 0;
+}
+
+/* ==============================
+   ARROWS
+   ============================== */
+.ar-inc__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(calc(-50% - 20px));
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--inc-border);
+  background: #fff;
+  color: var(--inc-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  transition: background var(--inc-trans), border-color var(--inc-trans), box-shadow var(--inc-trans);
+}
+.ar-inc__arrow-l { left: -22px; }
+.ar-inc__arrow-r { right: -22px; }
+
+.ar-inc__arrow:hover {
+  background: var(--inc-text);
+  color: #fff;
+  border-color: var(--inc-text);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.ar-inc__arrow svg { display: block; }
+
+/* ==============================
+   DOTS
+   ============================== */
+.ar-inc__dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 28px;
+}
+
+.ar-inc__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #D5CEC5;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.25s ease, transform 0.25s ease, width 0.25s ease;
+}
+
+.ar-inc__dot.is-active {
+  background: var(--inc-pink);
+  width: 22px;
+  border-radius: 4px;
+  transform: none;
+}
+
+/* ==============================
+   EMPTY STATE
+   ============================== */
+.ar-inc__empty {
+  padding: 40px 24px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* ==============================
+   KEYFRAME
+   ============================== */
+@keyframes ar-fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 1024px) {
+  .ar-inc__inner { padding: 0 32px; }
+  .ar-inc { --inc-card-w: 270px; }
+  .ar-inc__arrow-l { left: -16px; }
+  .ar-inc__arrow-r { right: -16px; }
+}
+
+@media (max-width: 768px) {
+  .ar-inc { padding: 60px 0 56px; }
+  .ar-inc__inner { padding: 0 20px; }
+  .ar-inc { --inc-card-w: 240px; }
+  .ar-inc__h { font-size: 28px; }
+  .ar-inc__arrow { display: none; }
+  .ar-inc__fade { width: 36px; }
+}
+
+@media (max-width: 480px) {
+  .ar-inc { --inc-card-w: 76vw; }
+  .ar-inc__inner { padding: 0 16px; }
+  .ar-inc__track { padding: 10px 2px 8px; }
+}
+
+</style>
+
+
+<script>
+(function () {
+  'use strict';
+
+  document.querySelectorAll('.ar-inc__wrap').forEach(function (wrap) {
+    var track   = wrap.querySelector('.js-inc-track');
+    var btnL    = wrap.querySelector('.js-inc-l');
+    var btnR    = wrap.querySelector('.js-inc-r');
+    var dotsEl  = wrap.querySelector('.js-inc-dots');
+    var cards   = track ? Array.from(track.querySelectorAll('.ar-inc__card')) : [];
+
+    if (!track || !cards.length) return;
+
+    /* ── DOTS ── */
+    var dots = [];
+    var pages = Math.ceil(cards.length / getPerPage());
+
+    function getPerPage() {
+      var w = wrap.offsetWidth;
+      var cardW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--inc-card-w') || '300');
+      return Math.max(1, Math.floor(w / (cardW + 20)));
+    }
+
+    function buildDots() {
+      if (!dotsEl) return;
+      dotsEl.innerHTML = '';
+      dots = [];
+      pages = Math.ceil(cards.length / getPerPage());
+      for (var i = 0; i < pages; i++) {
+        var btn = document.createElement('button');
+        btn.className = 'ar-inc__dot' + (i === 0 ? ' is-active' : '');
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-label', 'Slide group ' + (i + 1));
+        btn.dataset.idx = i;
+        btn.addEventListener('click', function () { goToPage(+this.dataset.idx); });
+        dotsEl.appendChild(btn);
+        dots.push(btn);
+      }
+    }
+
+    function updateDots() {
+      if (!dots.length) return;
+      var scrollLeft = track.scrollLeft;
+      var cardW = cards[0] ? cards[0].offsetWidth + 20 : 300;
+      var current = Math.round(scrollLeft / (cardW * getPerPage()));
+      current = Math.max(0, Math.min(current, dots.length - 1));
+      dots.forEach(function (d, i) {
+        d.classList.toggle('is-active', i === current);
+      });
+    }
+
+    function goToPage(idx) {
+      var cardW = cards[0] ? cards[0].offsetWidth + 20 : 300;
+      track.scrollTo({ left: idx * cardW * getPerPage(), behavior: 'smooth' });
+    }
+
+    buildDots();
+
+    /* ── ARROWS ── */
+    function scrollByCards(dir) {
+      var cardW = cards[0] ? cards[0].offsetWidth + 20 : 300;
+      track.scrollBy({ left: dir * cardW * getPerPage(), behavior: 'smooth' });
+    }
+
+    if (btnL) btnL.addEventListener('click', function () { scrollByCards(-1); });
+    if (btnR) btnR.addEventListener('click', function () { scrollByCards(1); });
+
+    /* ── SCROLL LISTENER ── */
+    var scrollTimer;
+    track.addEventListener('scroll', function () {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(updateDots, 80);
+    }, { passive: true });
+
+    /* ── DRAG (mouse) ── */
+    var isDragging = false, startX = 0, startScroll = 0;
+
+    track.addEventListener('mousedown', function (e) {
+      isDragging = true;
+      startX = e.pageX;
+      startScroll = track.scrollLeft;
+      track.classList.add('is-dragging');
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      track.scrollLeft = startScroll - (e.pageX - startX);
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('is-dragging');
+    });
+
+    /* ── RESIZE ── */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildDots, 200);
+    });
+  });
+})();
+</script>

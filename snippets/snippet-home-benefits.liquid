@@ -1,48 +1,396 @@
-{%- comment -%} 14. BRAND PHILOSOPHY {%- endcomment -%}
-<section class="ar-bp js-ar-bp">
-  <div class="ar-bp__in">
-    <h2 class="ar-bp__h js-ar-bp-h">{{ section.settings.bp_heading | default: 'We believe in Truth, Results & No BS' }}</h2>
+<section class="ar-bp">
+  <div class="ar-bp__container">
+
+    <h2 class="ar-bp__heading">
+      {{ heading }}
+    </h2>
+
     <div class="ar-bp__grid">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'philosophy_card' -%}
-          <div class="ar-bp__root js-ar-bp-card" style="transition-delay:{{ forloop.index0 | times: 115 | plus: 80 }}ms" {{ block.shopify_attributes }}>
-            <div class="ar-bp__shadow"></div>
-            <article class="ar-bp__card">
-              <span class="ar-bp__pill">{{ block.settings.title }}</span>
-              <p class="ar-bp__body">{{ block.settings.text }}</p>
-            </article>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
+
+      {% if card_title_1 != blank %}
+      <div class="ar-bp__item">
+        <div class="ar-bp__shadow"></div>
+        <div class="ar-bp__card">
+          <div class="ar-bp__pill">{{ card_title_1 }}</div>
+          <p class="ar-bp__text">{{ card_text_1 }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if card_title_2 != blank %}
+      <div class="ar-bp__item">
+        <div class="ar-bp__shadow"></div>
+        <div class="ar-bp__card">
+          <div class="ar-bp__pill">{{ card_title_2 }}</div>
+          <p class="ar-bp__text">{{ card_text_2 }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if card_title_3 != blank %}
+      <div class="ar-bp__item">
+        <div class="ar-bp__shadow"></div>
+        <div class="ar-bp__card">
+          <div class="ar-bp__pill">{{ card_title_3 }}</div>
+          <p class="ar-bp__text">{{ card_text_3 }}</p>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if card_title_4 != blank %}
+      <div class="ar-bp__item">
+        <div class="ar-bp__shadow"></div>
+        <div class="ar-bp__card">
+          <div class="ar-bp__pill">{{ card_title_4 }}</div>
+          <p class="ar-bp__text">{{ card_text_4 }}</p>
+        </div>
+      </div>
+      {% endif %}
+
     </div>
   </div>
 </section>
 
-{%- comment -%} 11. BRAND STORY {%- endcomment -%}
-<section class="ar-pure">
-  <div class="ar-pure__con">
-    <h2 class="ar-pure__h">{{ section.settings.pure_heading | default: 'More than fragrance' }}</h2>
-    <p class="ar-pure__p">{{ section.settings.pure_text | default: 'Crafted with intention and tradition, each attar is designed to become a quiet part of your presence — subtle, timeless, and deeply personal.' }}</p>
-    <a href="{{ section.settings.pure_url | default: '/pages/about' }}" class="ar-pure__btn">{{ section.settings.pure_btn | default: 'OUR STORY' }}</a>
+
+<section class="ar-dk">
+  <div class="ar-dk__container">
+
+    <div class="ar-dk__imageWrap">
+      {% if combo_image != blank %}
+        <img src="{{ combo_image }}" class="ar-dk__image" loading="lazy" alt="{{ combo_heading }}">
+      {% endif %}
+    </div>
+
+    <div class="ar-dk__content">
+      <h2 class="ar-dk__heading">{{ combo_heading }}</h2>
+      <p class="ar-dk__text">{{ combo_text }}</p>
+
+      {% if combo_url != blank %}
+        <a href="{{ combo_url }}" class="ar-dk__btn">
+          {{ combo_btn }}
+        </a>
+      {% endif %}
+    </div>
+
   </div>
 </section>
 
-{%- comment -%} 12. DISCOVERY KIT {%- endcomment -%}
-<section class="ar-combo">
-  <div class="ar-combo__in">
-    <div class="ar-combo__imgw">
-      {%- if section.settings.combo_image != blank -%}
-        <img src="{{ section.settings.combo_image | image_url: width: 1200 }}" alt="{{ section.settings.combo_image.alt | default: 'Discovery Kit' }}" width="{{ section.settings.combo_image.width | default: 1200 }}" height="{{ section.settings.combo_image.height | default: 900 }}" loading="lazy" class="ar-combo__img">
-      {%- elsif section.settings.combo_image_url != blank -%}
-        <img src="{{ section.settings.combo_image_url }}" alt="Discovery Kit" width="1200" height="900" loading="lazy" class="ar-combo__img">
-      {%- else -%}
-        <div class="ar-combo__ph">Upload Discovery Kit image in Theme Editor</div>
-      {%- endif -%}
-    </div>
-    <div class="ar-combo__con">
-      <h2 class="ar-combo__h">{{ section.settings.combo_heading | default: 'Discovery Kit' }}</h2>
-      <p class="ar-combo__p">{{ section.settings.combo_text | default: 'The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.' }}</p>
-      <a href="{{ section.settings.combo_url | default: '/products/discovery-kit' }}" class="ar-combo__btn">{{ section.settings.combo_btn | default: 'SHOP NOW' }}</a>
-    </div>
+
+<section class="ar-story">
+  <div class="ar-story__container">
+
+    <h2 class="ar-story__heading">
+      {{ story_heading }}
+    </h2>
+
+    <p class="ar-story__text">
+      {{ story_text }}
+    </p>
+
+    {% if story_url != blank %}
+      <a href="{{ story_url }}" class="ar-story__btn">
+        {{ story_btn }}
+      </a>
+    {% endif %}
+
   </div>
 </section>
+
+
+<style>
+
+/* =====================
+   ANIMATION
+   ===================== */
+.ar-bp__item,
+.ar-story__container,
+.ar-dk__container {
+  opacity: 0;
+  transform: translateY(36px) scale(0.98);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar-animate {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* =====================
+   BRAND PHILOSOPHY
+   ===================== */
+.ar-bp {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background: #F6F1E7;
+}
+
+.ar-bp__container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 90px 32px;
+}
+
+.ar-bp__heading {
+  font-size: clamp(32px, 4.5vw, 58px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-align: center;
+  color: #111;
+  margin-bottom: 64px;
+}
+
+.ar-bp__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Card wrapper — creates the offset shadow illusion */
+.ar-bp__item {
+  position: relative;
+}
+
+/* Hard pink shadow — no blur, pure offset block */
+.ar-bp__shadow {
+  position: absolute;
+  inset: 0;
+  transform: translate(10px, 10px);
+  background: #d4607e;          /* deep, saturated pink — matches image */
+  border-radius: 20px;
+  z-index: 0;
+}
+
+.ar-bp__card {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 24px 32px;
+  border: 1.5px solid #111;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.ar-bp__pill {
+  display: inline-block;
+  padding: 9px 18px;
+  background: #e88ba4;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #111;
+  margin-bottom: 18px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.ar-bp__text {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #333;
+  margin: 0;
+}
+
+/* =====================
+   DISCOVERY KIT
+   ===================== */
+.ar-dk {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  background: #F6F1E7;
+}
+
+.ar-dk__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+/* Image — sharp edges, constrained size */
+.ar-dk__imageWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ar-dk__image {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  display: block;
+  border-radius: 0;              /* sharp edges */
+  object-fit: cover;
+}
+
+.ar-dk__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.ar-dk__heading {
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #111;
+  margin: 0 0 16px;
+  line-height: 1.15;
+}
+
+.ar-dk__text {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #555;
+  margin: 0 0 32px;
+}
+
+/* Discovery Kit CTA button */
+.ar-dk__btn {
+  display: inline-block;
+  padding: 13px 32px;
+  border: 1.5px solid #111;
+  background: transparent;
+  color: #111;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0;
+  transition: background 0.22s ease, color 0.22s ease;
+  cursor: pointer;
+}
+
+.ar-dk__btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+/* =====================
+   STORY (More than fragrance)
+   ===================== */
+.ar-story {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  background: #F6F1E7;
+}
+
+.ar-story__container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.ar-story__heading {
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #111;
+  margin: 0 0 18px;
+  line-height: 1.15;
+}
+
+.ar-story__text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #555;
+  margin: 0 0 28px;
+}
+
+/* Smaller, refined story button */
+.ar-story__btn {
+  display: inline-block;
+  padding: 9px 22px;
+  border: 1.5px solid #111;
+  color: #111;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.22s ease, color 0.22s ease;
+  cursor: pointer;
+}
+
+.ar-story__btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 1100px) {
+  .ar-bp__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .ar-dk__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .ar-dk__content {
+    align-items: center;
+  }
+
+  .ar-dk__imageWrap {
+    justify-content: center;
+  }
+
+  .ar-dk__image {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ar-bp__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ar-bp__heading {
+    font-size: 32px;
+  }
+
+  .ar-dk__container {
+    padding: 60px 20px;
+  }
+}
+
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const els = document.querySelectorAll(".ar-bp__item, .ar-story__container, .ar-dk__container");
+  if (!els.length) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add("ar-animate");
+        }, i * 110);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  els.forEach(el => obs.observe(el));
+});
+</script>

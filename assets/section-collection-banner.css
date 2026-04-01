@@ -1,0 +1,277 @@
+/* ============================================================
+   COLLECTION BANNER
+   ============================================================ */
+
+/* ── Entrance animations ── */
+@keyframes ar-bn-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ar-bn-line {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Banner shell ── */
+.ar-banner {
+  text-align: center;
+  padding: 60px 48px 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+/* ── Head block ── */
+.ar-banner__head {
+  animation: ar-bn-up 0.65s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.ar-banner__title {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1a1a1a;
+  line-height: 1.05;
+  margin: 0 0 18px;
+}
+
+.ar-banner__desc {
+  font-size: clamp(14px, 1.5vw, 17px);
+  color: #777;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto 24px;
+  font-weight: 400;
+}
+
+/* Gold rule */
+.ar-banner__rule {
+  display: block;
+  width: 56px;
+  height: 2px;
+  background: #c8a96e;
+  margin: 0 auto 36px;
+  transform-origin: center;
+  animation: ar-bn-line 0.7s cubic-bezier(0.25, 1, 0.5, 1) 0.3s both;
+}
+
+/* ── Search ── */
+.ar-banner__search-wrap {
+  animation: ar-bn-up 0.65s cubic-bezier(0.25, 1, 0.5, 1) 0.15s both;
+  margin-bottom: 44px;
+}
+
+.ar-banner__search-form {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.ar-banner__search-input {
+  width: 100%;
+  padding: 14px 48px 14px 20px;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  font-size: 14px;
+  color: #1a1a1a;
+  background: #fff;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ar-banner__search-input::placeholder {
+  color: #bbb;
+}
+
+.ar-banner__search-input:focus {
+  border-color: #1a1a1a;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
+}
+
+.ar-banner__search-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.ar-banner__search-btn:hover {
+  color: #1a1a1a;
+}
+
+/* ── Tab bar ── */
+.ar-banner__tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  padding: 0;
+  gap: 0;
+  animation: ar-bn-up 0.65s cubic-bezier(0.25, 1, 0.5, 1) 0.25s both;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ar-banner__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.ar-banner__tabs-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+/* Individual tab */
+.ar-banner__tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  top: 1px;
+}
+
+.ar-banner__tab:hover {
+  color: #1a1a1a;
+}
+
+.ar-banner__tab.is-active {
+  color: #1a1a1a;
+  border-bottom-color: #1a1a1a;
+}
+
+/* ── Meta: count + sort ── */
+.ar-banner__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+  padding-left: 20px;
+}
+
+.ar-banner__meta .loading__spinner {
+  position: relative;
+  margin: 0;
+}
+
+.ar-banner__count {
+  font-size: 13px;
+  color: #aaa;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+/* Sort select — keep Dawn's existing select classes, just restyle */
+.ar-banner__sort select,
+.ar-banner__sort .select__select {
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
+  padding: 9px 36px 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #1a1a1a;
+  background: #fff;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.ar-banner__sort select:focus,
+.ar-banner__sort .select__select:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.ar-banner__sort .facet-filters__label {
+  margin: 0;
+}
+
+/* Prevent Dawn wrapper border from creating a double-border select */
+.ar-banner__sort .facet-filters__field {
+  display: flex;
+  align-items: center;
+}
+
+.ar-banner__sort .facet-filters__field .select {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .ar-banner {
+    padding: 48px 32px 0;
+  }
+
+  .ar-banner__tab {
+    padding: 14px 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ar-banner {
+    padding: 40px 20px 0;
+    text-align: center;
+  }
+
+  .ar-banner__tabs {
+    justify-content: flex-start;
+  }
+
+  .ar-banner__meta {
+    display: none;
+  }
+
+  .ar-banner__tab {
+    padding: 14px 12px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ar-banner {
+    padding: 32px 16px 0;
+  }
+
+  .ar-banner__search-input {
+    padding: 12px 44px 12px 16px;
+  }
+}

@@ -6,6 +6,15 @@
   --focused-base-outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
   --focused-base-outline-offset: 0.3rem;
   --focused-base-box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+  --col-bg: #fafaf7;
+  --col-card: #ffffff;
+  --col-border: #ebebeb;
+  --col-text: #1a1a1a;
+  --col-muted: #7a7a7a;
+  --col-accent: #c8873a;
+  --col-pink: #e8799a;
+  --col-radius: 12px;
+  --col-trans: 0.28s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .product-card-wrapper .card,

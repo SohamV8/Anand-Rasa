@@ -13,143 +13,7 @@
   @keyframes arIn { from { opacity:0; } to { opacity:1; } }
   @keyframes arGlow { from { transform:scale(1); } to { transform:scale(1.08) rotate(2deg); } }
 
-  /* ── HERO ── */
-  .ar-hero {
-    background:#fff;
-    overflow:hidden;
-    font-family:var(--font-body-family);
-    display:flex;
-    align-items:center;
-  }
-  .ar-hero__in {
-    max-width:1520px;
-    width:100%;
-    margin:0 auto;
-    padding:clamp(60px,8vw,110px) clamp(28px,10vw,160px) clamp(56px,7vw,96px);
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    align-items:center;
-    gap:clamp(48px,6vw,96px);
-    min-height:min(96vh,980px);
-  }
-  .ar-hero__left { animation:arUp .75s cubic-bezier(0.25,0.1,0.25,1) both; max-width:42rem; }
-  .ar-hero__ey {
-    font-family:var(--font-heading-family);
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:.34em;
-    text-transform:uppercase;
-    color:#888;
-    margin:0 0 28px;
-  }
-  .ar-hero__h1 {
-    font-family:var(--font-heading-family);
-    font-size:clamp(2.7rem,5.6vw,5.25rem);
-    font-weight:700;
-    line-height:1.04;
-    color:#111;
-    margin:0 0 34px;
-    letter-spacing:0.04em;
-  }
-  .ar-hero__p {
-    font-family:var(--font-body-family);
-    font-size:clamp(1.12rem,1.45vw,1.38rem);
-    line-height:1.78;
-    color:#555;
-    margin:0 0 52px;
-    max-width:38rem;
-    font-weight:400;
-  }
-  .ar-hero__cta { display:flex; align-items:center; gap:clamp(24px,3.4vw,38px); flex-wrap:wrap; }
-  .ar-hero__btn1 {
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    padding:14px 30px;
-    background:#fff;
-    color:#111;
-    font-family:var(--font-heading-family);
-    font-size:14px;
-    font-weight:600;
-    letter-spacing:.02em;
-    border:1px solid #e0e0e0;
-    border-radius:999px;
-    text-decoration:none;
-    transition:background .3s ease, border-color .3s ease, box-shadow .3s ease, transform .25s ease;
-    box-shadow:0 1px 2px rgba(0,0,0,.04);
-  }
-  .ar-hero__btn1:hover {
-    background:#fafafa;
-    border-color:#d0d0d0;
-    box-shadow:0 4px 20px rgba(0,0,0,.06);
-    transform:translateY(-1px);
-  }
-  .ar-hero__btn2 {
-    display:inline-flex;
-    align-items:center;
-    font-family:var(--font-body-family);
-    font-size:17px;
-    font-weight:400;
-    color:#555;
-    background:transparent;
-    border:none;
-    padding:14px 0;
-    letter-spacing:.01em;
-    text-decoration:none;
-    transition:color .25s ease, opacity .25s ease;
-  }
-  .ar-hero__btn2:hover { color:#111; opacity:1; }
-  .ar-hero__right {
-    animation:arIn .85s cubic-bezier(0.25,0.1,0.25,1) .12s both;
-    position:relative;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    min-height:clamp(460px,74vh,980px);
-  }
-  .ar-hero__img {
-    display:block;
-    width:100%;
-    max-width:1180px;
-    height:auto;
-    max-height:min(94vh,1060px);
-    margin:0 auto 0 0;
-    object-fit:contain;
-    object-position:left bottom;
-  }
-  .ar-hero__ph {
-    width:100%;
-    min-height:clamp(320px,50vh,560px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.03);
-    color:#9ca3af;
-    font-size:13px;
-    border:1px dashed #e5e5e5;
-    font-family:var(--font-body-family);
-    border-radius:4px;
-  }
-  @media(max-width:1023px){
-    .ar-hero__in {
-      grid-template-columns:1fr;
-      min-height:auto;
-      gap:40px;
-      padding:clamp(48px,9vw,72px) clamp(20px,6vw,42px) clamp(40px,7vw,62px);
-    }
-    .ar-hero__left { max-width:none; }
-    .ar-hero__right { min-height:auto; align-items:center; justify-content:center; }
-    .ar-hero__img {
-      max-width:100%;
-      max-height:min(78vh,700px);
-      margin:0 auto;
-      object-position:center bottom;
-    }
-  }
-  @media(max-width:640px){
-    .ar-hero__h1 { font-size:clamp(2.15rem,10vw,3.35rem); }
-    .ar-hero__p { font-size:clamp(1rem,4.6vw,1.14rem); margin-bottom:40px; }
-  }
+  /* ── HERO ── (styles in snippets/snippet-home-hero.liquid) */
 
   /* ── TRUST BAR ── */
   .ar-trust { background:#fff; padding:56px 24px; font-family:var(--fb); }
@@ -520,14 +384,14 @@
   .ar-incense-ph { width:100%; padding:60px 24px; background:#fce4ec; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; font-family:var(--fb); text-align:center; }
 
   /* ── INCENSE PRODUCTS ── */
-  .ar-inc { background:#FAF7F2; padding:60px 0 88px; font-family:var(--fb); }
+  .ar-inc { background:#F6F1E7; padding:60px 0 88px; font-family:var(--fb); }
   .ar-inc__inner { max-width:1400px; margin:0 auto; padding:0 48px; }
   @media(max-width:768px){ .ar-inc__inner { padding:0 20px; } }
   .ar-inc__h { font-family: var(--font-heading-family); font-size:clamp(24px,3vw,40px); font-weight:700; color:#000; text-align:center; margin-bottom:40px; letter-spacing:-.02em; }
   .ar-inc__wrap { position:relative; }
   .ar-inc__fade { pointer-events:none; position:absolute; top:0; height:100%; width:32px; z-index:10; }
-  .ar-inc__fade-l { left:0; background:linear-gradient(to right,#FAF7F2,transparent); }
-  .ar-inc__fade-r { right:0; background:linear-gradient(to left,#FAF7F2,transparent); }
+  .ar-inc__fade-l { left:0; background:linear-gradient(to right,#F6F1E7,transparent); }
+  .ar-inc__fade-r { right:0; background:linear-gradient(to left,#F6F1E7,transparent); }
   .ar-inc__arrow { position:absolute; top:42%; z-index:20; transform:translateY(-50%); width:40px; height:40px; border-radius:50%; border:1px solid rgba(30,32,35,.08); background:#fff; cursor:pointer; font-size:20px; line-height:1; color:#1e2023; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 12px rgba(30,32,35,.08); transition:background .3s ease, color .3s ease, box-shadow .3s ease, transform .2s ease; }
   .ar-inc__arrow:hover { background:#fff; color:#000; box-shadow:0 4px 20px rgba(30,32,35,.12); transform:translateY(-50%) scale(1.05); }
   .ar-inc__arrow-l { left:4px; }
@@ -598,8 +462,63 @@
   {% render 'snippet-home-hero', section: section %}
   {% render 'snippet-home-collections', section: section %}
   {% render 'snippet-home-products', section: section %}
-  {% render 'snippet-home-benefits', section: section %}
-  {% render 'snippet-home-testimonials', section: section %}
+  {%- liquid
+    assign heading = section.settings.bp_heading
+    assign idx = 0
+    for ar_bp_block in section.blocks
+      if ar_bp_block.type == 'philosophy_card'
+        if idx == 0
+          assign card_title_1 = ar_bp_block.settings.title
+          assign card_text_1 = ar_bp_block.settings.text
+        elsif idx == 1
+          assign card_title_2 = ar_bp_block.settings.title
+          assign card_text_2 = ar_bp_block.settings.text
+        elsif idx == 2
+          assign card_title_3 = ar_bp_block.settings.title
+          assign card_text_3 = ar_bp_block.settings.text
+        elsif idx == 3
+          assign card_title_4 = ar_bp_block.settings.title
+          assign card_text_4 = ar_bp_block.settings.text
+        endif
+        assign idx = idx | plus: 1
+      endif
+    endfor
+    assign combo_image = ''
+    if section.settings.combo_image != blank
+      assign combo_image = section.settings.combo_image | image_url: width: 1400
+    elsif section.settings.combo_image_url != blank
+      assign combo_image = section.settings.combo_image_url
+    endif
+    assign combo_heading = section.settings.combo_heading
+    assign combo_text = section.settings.combo_text
+    assign combo_url = section.settings.combo_url
+    assign combo_btn = section.settings.combo_btn
+    assign story_heading = section.settings.pure_heading
+    assign story_text = section.settings.pure_text
+    assign story_url = section.settings.pure_url
+    assign story_btn = section.settings.pure_btn
+  -%}
+  {% render 'snippet-home-benefits',
+    heading: heading,
+    card_title_1: card_title_1,
+    card_text_1: card_text_1,
+    card_title_2: card_title_2,
+    card_text_2: card_text_2,
+    card_title_3: card_title_3,
+    card_text_3: card_text_3,
+    card_title_4: card_title_4,
+    card_text_4: card_text_4,
+    combo_image: combo_image,
+    combo_heading: combo_heading,
+    combo_text: combo_text,
+    combo_url: combo_url,
+    combo_btn: combo_btn,
+    story_heading: story_heading,
+    story_text: story_text,
+    story_url: story_url,
+    story_btn: story_btn
+  %}
+  {% render 'snippet-home-testimonials' %}
   {% render 'snippet-home-blog', section: section %}
   {% render 'snippet-home-cta', section: section %}
 

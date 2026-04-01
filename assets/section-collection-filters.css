@@ -1,0 +1,544 @@
+/* ============================================================
+   COLLECTION PAGE — Layout, Sidebar, Pills
+   ============================================================ */
+
+/* ── Page shell ── */
+.ar-col-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+}
+
+/* Mobile-only sort (desktop sort is in main-collection-banner) */
+.ar-col-sort-mobile-only {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .ar-col-sort-mobile-only {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .ar-col-sort-mobile-only .facets-vertical-form {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ── Top bar ── */
+.ar-col-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.ar-col-topbar .facets-vertical-form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: 20px;
+  width: 100%;
+  margin: 0;
+}
+
+.ar-col-count {
+  position: relative;
+  font-size: 13px;
+  color: #999;
+  font-weight: 400;
+  margin-right: auto;
+}
+
+/* Sort dropdown reset */
+.ar-col-sort select,
+.ar-col-sort .select__select {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 9px 36px 9px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+  background: #fff;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* ── Active filter pills ── */
+.ar-col-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  min-height: 0;
+}
+
+/* Target Dawn's active filter chips */
+.ar-col-pills .active-facets,
+.active-facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.ar-col-pills .active-facets__button,
+.active-facets__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.ar-col-pills .active-facets__button:hover,
+.active-facets__button:hover {
+  background: #333;
+}
+
+.ar-col-pills .active-facets__button svg,
+.active-facets__button svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Dawn `.button--tertiary` inner would add its own frame; chips are styled on the <a> */
+.ar-col-pills .active-facets__button .active-facets__button-inner {
+  box-shadow: none !important;
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-height: 0;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.ar-col-pills .active-facets__button:hover .active-facets__button-inner,
+.ar-col-pills a.active-facets__button:focus-visible .active-facets__button-inner,
+.ar-col-pills a.active-facets__button.focused .active-facets__button-inner {
+  box-shadow: none !important;
+}
+
+.ar-col-pills .active-facets__button .svg-wrapper {
+  margin: 0;
+  width: 12px;
+}
+
+/* Clear all link */
+.ar-col-pills .active-facets__button-remove,
+.ar-col-pills .active-facets__button-remove span,
+.ar-col-pills .active-facets__clear,
+.active-facets__clear-all {
+  font-size: 13px;
+  color: #888;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-weight: 400;
+}
+
+/* ── Body: sidebar + grid ── */
+.ar-col-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.ar-col-body--full {
+  grid-template-columns: 1fr;
+}
+
+/* ── Sidebar ── */
+.ar-col-sidebar {
+  position: sticky;
+  top: 24px;
+  background: transparent;
+}
+
+.ar-col-sidebar .facets-wrapper {
+  width: auto;
+  min-width: 0;
+  padding-right: 0;
+}
+
+/* Sidebar header */
+.ar-col-sidebar .facets__heading,
+.facets__heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  margin: 0 0 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+/* Filter group wrapper */
+.facets__form .facets-wrap,
+.facets__form > details,
+.js-filter {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 18px 0;
+}
+
+/* Group label / summary */
+.facets__form summary,
+.facets__summary,
+.js-filter summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.facets__form summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Chevron icon in summary */
+.facets__summary .icon-caret,
+summary .icon-caret {
+  transition: transform 0.25s ease;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+details[open] > summary .icon-caret {
+  transform: rotate(180deg);
+}
+
+/* Filter content */
+.facets__display,
+.facet-filters__body {
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Custom Checkboxes ── */
+.facet-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.facet-checkbox__input,
+.facets__form input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+  flex-shrink: 0;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  background: #fff;
+}
+
+.facet-checkbox__input:checked,
+.facets__form input[type='checkbox']:checked {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+.facet-checkbox__input:checked::after,
+.facets__form input[type='checkbox']:checked::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  width: 5px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(40deg);
+}
+
+.facet-checkbox__text,
+.facets__form label span:not(.count) {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+  transition: color 0.15s ease;
+}
+
+.facet-checkbox:hover .facet-checkbox__text,
+.facets__form label:hover span:not(.count) {
+  color: #000;
+}
+
+/* Count next to label */
+.facet-checkbox .count,
+.facets__form .count {
+  font-size: 12px;
+  color: #aaa;
+  margin-left: 2px;
+}
+
+/* Show more/less */
+.facets__show-more {
+  font-size: 12px;
+  color: #888;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 4px 0 0;
+  font-weight: 400;
+}
+
+/* ── Price Range ── */
+.facets__price-range {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 14px;
+}
+
+.price-range__inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-range__field {
+  position: relative;
+  flex: 1;
+}
+
+.price-range__currency {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #888;
+  pointer-events: none;
+}
+
+.price-range__field input,
+.facets__form input[type='number'] {
+  width: 100%;
+  padding: 9px 10px 9px 22px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #1a1a1a;
+  background: #fff;
+  box-sizing: border-box;
+  -moz-appearance: textfield;
+  appearance: textfield;
+  transition: border-color 0.2s ease;
+}
+
+.price-range__field input:focus,
+.facets__form input[type='number']:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.price-range__field input::-webkit-outer-spin-button,
+.price-range__field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.price-range__separator {
+  font-size: 13px;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+/* Range slider */
+.facets__form input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.facets__form input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1.5px #1a1a1a;
+  cursor: pointer;
+}
+
+/* ── Product Grid (Dawn ul.product-grid) ── */
+.ar-col-grid {
+  display: block;
+  min-width: 0;
+}
+
+.ar-col-grid #ProductGridContainer .product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 0;
+}
+
+.ar-col-grid #ProductGridContainer .grid__item {
+  width: 100%;
+  max-width: none;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+/* ── Pagination (Dawn: .pagination-wrapper + .pagination__list) ── */
+.ar-col-grid .pagination-wrapper {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid #ebebeb;
+}
+
+.ar-col-grid .pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.ar-col-grid .pagination__item,
+.pagination__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #ebebeb;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.ar-col-grid a.pagination__item:not(.pagination__item--current):hover {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+
+.ar-col-grid .pagination__item--current {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+
+/* Mobile: Dawn shows active-facets-mobile; hide duplicate desktop pills row */
+@media screen and (max-width: 749px) {
+  .ar-col-pills {
+    display: none;
+  }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .ar-col-page {
+    padding: 32px 32px 64px;
+  }
+
+  .ar-col-body {
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+  }
+
+  .ar-col-grid #ProductGridContainer .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ar-col-page {
+    padding: 24px 20px 60px;
+  }
+
+  .ar-col-body {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ar-col-sidebar {
+    position: relative;
+    top: 0;
+    margin-bottom: 24px;
+  }
+
+  .ar-col-grid #ProductGridContainer .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .ar-col-topbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ar-col-grid #ProductGridContainer .product-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ar-col-page {
+    padding: 20px 16px 48px;
+  }
+}
