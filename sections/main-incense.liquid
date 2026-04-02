@@ -4,6 +4,8 @@
 {% endcomment %}
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600&display=swap');
+
   .aip *, .aip *::before, .aip *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .aip {
     --bg: #ffffff;
@@ -15,8 +17,8 @@
     --line: rgba(30, 32, 35, 0.1);
     --line-strong: rgba(30, 32, 35, 0.16);
     --surface: #ffffff;
-    --serif: var(--font-heading-family);
-    --sans: var(--font-body-family);
+    --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans: 'Jost', system-ui, sans-serif;
     font-family: var(--sans);
     font-weight: 400;
     color: var(--text);
@@ -43,8 +45,12 @@
   @media (max-width: 1024px) { .aip-hero__grid { grid-template-columns: 1fr; gap: 48px; } }
 
   /* Gallery */
-  .aip-gallery { display: flex; flex-direction: row; gap: 24px; align-items: flex-start; }
-  @media (max-width: 600px) { .aip-gallery { flex-direction: column-reverse; gap: 20px; } }
+  .aip-gallery { display: flex; flex-direction: row; gap: 24px; align-items: flex-start; width: 100%; }
+  @media (max-width: 600px) {
+    .aip-gallery { flex-direction: column; gap: 16px; }
+    .aip-gallery__stage { order: -1; width: 100%; max-width: 100%; }
+    .aip-gallery__thumbs-scroll { order: 1; }
+  }
 
   .aip-gallery__thumbs-scroll {
     display: flex; flex-direction: column; gap: 12px; width: 80px; flex-shrink: 0;
@@ -65,13 +71,20 @@
   .aip-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
   .aip-gallery__stage {
-    flex: 1; min-width: 0; background: var(--surface); border-radius: 0; overflow: hidden;
+    flex: 1; min-width: 0; width: 100%; background: var(--surface); border-radius: 0; overflow: hidden;
     border: 1px solid var(--line); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
   }
-  .aip-gallery__main { position: relative; aspect-ratio: 1; overflow: hidden; }
+  .aip-gallery__main {
+    position: relative; aspect-ratio: 1; width: 100%; overflow: hidden;
+    min-height: 280px;
+  }
+  @media (max-width: 600px) {
+    .aip-gallery__main { min-height: min(92vw, 480px); }
+  }
   .aip-gallery__main-img {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
     transition: opacity 0.45s ease, transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
   }
   .aip-gallery__main-img.is-hidden { opacity: 0; pointer-events: none; }
   .aip-gallery__stage:hover .aip-gallery__main-img:not(.is-hidden) { transform: scale(1.05); }
@@ -96,7 +109,7 @@
     font-family: var(--serif); font-size: clamp(36px, 5.2vw, 56px); font-weight: 400; line-height: 1.06;
     letter-spacing: -0.03em; margin-bottom: 20px; color: var(--ink);
   }
-  .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 38ch; margin-bottom: 32px; }
+  .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 40ch; margin-bottom: 20px; }
 
   .aip-info__rating { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
   .aip-info__stars { display: flex; gap: 4px; }
@@ -120,9 +133,17 @@
   .aip-variant-btn:hover { border-color: var(--ink); }
   .aip-variant-btn.is-active { background: var(--ink); color: #ffffff; border-color: var(--ink); }
 
-  .aip-qty-row { margin-bottom: 32px; }
+  .aip-qty-row { margin-bottom: 24px; margin-top: 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .aip-qty-row[hidden] { display: none !important; }
-  .aip-qty { display: inline-flex; align-items: center; border: 1px solid var(--line-strong); border-radius: 0; overflow: hidden; background: var(--surface); }
+  .aip-qty-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-faint);
+  }
+  .aip-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--line-strong); border-radius: 0; overflow: hidden; background: var(--surface); width: auto; max-width: 100%; }
+  @media (max-width: 600px) {
+    .aip-qty-row { width: 100%; }
+    .aip-qty { width: 100%; max-width: 280px; }
+    .aip-qty__input { flex: 1; min-width: 0; }
+  }
   .aip-qty__btn { width: 44px; height: 44px; background: none; border: none; font-size: 18px; color: var(--ink); transition: background 0.2s; }
   .aip-qty__btn:hover:not(:disabled) { background: rgba(30, 32, 35, 0.05); }
   .aip-qty__btn:disabled { opacity: 0.35; cursor: not-allowed; }
@@ -142,9 +163,9 @@
   .aip-buy-wrap[hidden], .aip-buy-wrap.is-unavailable { display: none !important; }
   .aip-btn-buy {
     width: 100%; padding: 16px 22px; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-    background: var(--ink); color: #ffffff; border: 1.5px solid var(--ink); border-radius: 0; text-align: center; display: block; transition: background 0.25s, border-color 0.25s; min-height: 52px; line-height: 1.4;
+    background: var(--ink) !important; color: #ffffff !important; border: 1.5px solid var(--ink) !important; border-radius: 0; text-align: center; display: block; transition: background 0.25s, border-color 0.25s; min-height: 52px; line-height: 1.4;
   }
-  .aip-btn-buy:hover { background: #000000; border-color: #000000; color: #ffffff; }
+  .aip-btn-buy:hover { background: #ffffff !important; border-color: #ffffff !important; color: var(--ink) !important; }
 
   .aip-atc-msg { font-family: var(--sans); font-size: 13px; padding: 14px 18px; border-radius: 0; text-align: center; display: none; max-width: 440px; margin-bottom: 28px; border: 1px solid var(--line); }
   .aip-atc-msg.success { display: block; background: var(--bg-subtle); color: var(--ink); border-color: var(--line-strong); }
@@ -231,9 +252,9 @@
   .aip-card__atc:hover:not(:disabled) { background: var(--ink); color: #ffffff; }
   .aip-card__buy {
     padding: 12px 14px; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    background: var(--ink); color: #ffffff; border: 1.5px solid var(--ink); border-radius: 0; text-align: center; transition: background 0.2s, border-color 0.2s;
+    background: var(--ink); color: #ffffff !important; border: 1.5px solid var(--ink); border-radius: 0; text-align: center; transition: background 0.2s, border-color 0.2s;
   }
-  .aip-card__buy:hover { background: #000000; border-color: #000000; color: #ffffff; }
+  .aip-card__buy:hover { background: #ffffff; border-color: #ffffff; color: var(--ink) !important; }
 
   /* Zoom modal */
   .aip-zoom-modal { display: none; position: fixed; inset: 0; background: rgba(10, 10, 10, 0.92); z-index: 1000; align-items: center; justify-content: center; }
@@ -292,10 +313,10 @@
               <img
                 src="{{ image | image_url: width: 1800 }}"
                 srcset="{{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w, {{ image | image_url: width: 1800 }} 1800w, {{ image | image_url: width: 2400 }} 2400w"
-                sizes="(max-width: 1024px) 100vw, min(560px, 45vw)"
+                sizes="(max-width: 1024px) 100vw, min(660px, 45vw)"
                 alt="{{ image.alt | default: product.title }}"
-                width="{{ image.width }}"
-                height="{{ image.height }}"
+                width="{{ image.width | default: 1200 }}"
+                height="{{ image.height | default: 1200 }}"
                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
                 class="aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
                 data-index="{{ forloop.index0 }}"
@@ -329,7 +350,21 @@
         <p class="aip-brand">{{ section.settings.brand_text | default: 'ANAND RAS' }}</p>
         <span class="aip-info__label">{{ section.settings.product_label | default: product.type }}</span>
         <h1 class="aip-info__title">{{ product.title }}</h1>
-        <p class="aip-info__tagline">{{ section.settings.product_tagline | default: product.metafields.custom.tagline | default: product.description | strip_html | truncate: 140 }}</p>
+        {%- liquid
+          assign aip_short = section.settings.short_description | strip
+          if aip_short == blank
+            assign aip_short = section.settings.product_tagline | strip
+          endif
+          if aip_short == blank
+            assign aip_short = product.metafields.custom.tagline.value | default: '' | strip
+          endif
+          if aip_short == blank and product.description != blank
+            assign aip_short = product.description | strip_html | truncate: 180
+          endif
+        -%}
+        {%- if aip_short != blank -%}
+          <p class="aip-info__tagline">{{ aip_short }}</p>
+        {%- endif -%}
 
         {%- assign rating = section.settings.rating | default: 5 -%}
         <div class="aip-info__rating">
@@ -366,9 +401,10 @@
         {%- endunless -%}
 
         <div class="aip-qty-row" id="aip-qty-row" {% unless product.selected_or_first_available_variant.available %}hidden{% endunless %}>
-          <div class="aip-qty" role="group" aria-label="Quantity">
+          <span class="aip-qty-label" id="aip-qty-label">Quantity</span>
+          <div class="aip-qty" role="group" aria-labelledby="aip-qty-label">
             <button type="button" class="aip-qty__btn" id="aip-qty-minus" aria-label="Decrease quantity">&#8722;</button>
-            <input class="aip-qty__input" id="aip-qty" type="number" value="1" min="1" max="99" aria-label="Quantity" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+            <input class="aip-qty__input" id="aip-qty" type="number" name="quantity" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
             <button type="button" class="aip-qty__btn" id="aip-qty-plus" aria-label="Increase quantity">&#43;</button>
           </div>
         </div>
@@ -556,6 +592,7 @@
 
   var AIP_MONEY_FORMAT = {{ shop.money_format | json }};
   var AIP_CART_URL = {{ routes.cart_url | json }};
+  var AIP_CART_ADD_URL = {{ routes.cart_add_url | json }};
 
   function formatMoney(cents) {
     var c = typeof cents === 'number' ? cents : parseInt(cents, 10);
@@ -700,7 +737,10 @@
       buyWrap.classList.toggle('is-unavailable', !avail);
       buyWrap.hidden = !avail;
     }
-    if (buyBtn && avail) buyBtn.href = AIP_CART_URL + '/' + vid + ':1?checkout';
+    if (buyBtn && avail) {
+      var qAdd = qtyInputEl ? (parseInt(qtyInputEl.value, 10) || 1) : 1;
+      buyBtn.href = AIP_CART_URL + '/' + vid + ':' + Math.min(99, Math.max(1, qAdd)) + '?checkout';
+    }
     if (qtyRow) qtyRow.hidden = !avail;
     if (qtyInputEl) qtyInputEl.disabled = !avail;
     if (qMinEl) qMinEl.disabled = !avail;
@@ -735,17 +775,33 @@
   var qtyInput = document.getElementById('aip-qty');
   var qMin = document.getElementById('aip-qty-minus');
   var qPlus = document.getElementById('aip-qty-plus');
+  function syncBuyNowQty() {
+    var buyBtn = document.getElementById('aip-buy-btn');
+    var atc = document.getElementById('aip-atc-btn');
+    var qEl = document.getElementById('aip-qty');
+    if (!buyBtn || !atc || atc.dataset.available === 'false') return;
+    var q = qEl ? (parseInt(qEl.value, 10) || 1) : 1;
+    q = Math.min(99, Math.max(1, q));
+    buyBtn.href = AIP_CART_URL + '/' + atc.dataset.variant + ':' + q + '?checkout';
+  }
+
   if (qtyInput && qMin) {
     qMin.addEventListener('click', function () {
       var v = parseInt(qtyInput.value, 10) || 1;
       if (v > 1) qtyInput.value = String(v - 1);
+      syncBuyNowQty();
     });
   }
   if (qtyInput && qPlus) {
     qPlus.addEventListener('click', function () {
       var v = parseInt(qtyInput.value, 10) || 1;
       if (v < 99) qtyInput.value = String(v + 1);
+      syncBuyNowQty();
     });
+  }
+  if (qtyInput) {
+    qtyInput.addEventListener('change', syncBuyNowQty);
+    qtyInput.addEventListener('input', syncBuyNowQty);
   }
 
   function restoreAtcAfterAdd() {
@@ -774,7 +830,7 @@
     if (mainBtn) { mainBtn.textContent = 'Adding…'; mainBtn.disabled = true; }
     if (stickyB) stickyB.disabled = true;
 
-    fetch('/cart/add.js', {
+    fetch(AIP_CART_ADD_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ id: id, quantity: qty })
@@ -833,7 +889,7 @@
       if (!id) return;
       var label = btn.textContent;
       btn.disabled = true;
-      fetch('/cart/add.js', {
+      fetch(AIP_CART_ADD_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ id: id, quantity: 1 })
@@ -862,12 +918,6 @@
 })();
 </script>
 
-{%- if product != blank -%}
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
-{%- endif -%}
-
 {% schema %}
 {
   "name": "Incense Product — Luxury",
@@ -875,7 +925,8 @@
     { "type": "header", "content": "Brand & hero" },
     { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
     { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Incense" },
-    { "type": "text", "id": "product_tagline", "label": "Short description", "info": "Leave blank to use metafield or product excerpt" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt." },
     { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
     { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
     { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
@@ -884,8 +935,8 @@
     { "type": "text", "id": "trust_3", "label": "Trust line 3", "default": "Pooja & meditation" },
     { "type": "header", "content": "Info strip (3 columns)" },
     { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Classic spiritual aroma" },
-    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "Premium sandalwood incense for pooja and meditation" },
-    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Luxury Attar" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "Hand-rolled bamboo-less incense sticks for pooja, meditation, and daily ritual." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Premium incense sticks" },
     { "type": "header", "content": "Why choose section" },
     { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Our Incense" },
     { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted for purity, fragrance and spiritual practice" },
@@ -903,6 +954,7 @@
     { "type": "text", "id": "related_heading", "label": "Heading", "default": "Recommended" },
     { "type": "text", "id": "related_sub", "label": "Subheading", "default": "Curated for your ritual" }
   ],
-  "presets": [{ "name": "Incense Product — Luxury" }]
+  "presets": [{ "name": "Incense Product — Luxury" }],
+  "enabled_on": { "templates": ["product"] }
 }
 {% endschema %}
