@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-kesachandan",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Incense",
+        "short_description": "A rich blend of kesar and chandan that creates a warm, sacred aroma for a deeply calming experience.",
+        "product_tagline": "",
+        "rating": 5,
+        "review_count": "25",
+        "show_buy_now": true,
+        "trust_1": "Saffron & sandalwood",
+        "trust_2": "Ceremonial incense sticks",
+        "trust_3": "Pooja & auspicious use",
+        "strip_col1": "Kesar meets chandan",
+        "strip_col2": "Bamboo-less sticks pairing kesar (saffron) with sandalwood—rich, warm, and devotional.",
+        "strip_col3": "Kesar chandan sticks",
+        "why_heading": "Kesar chandan incense sticks",
+        "why_sub": "A regal pairing—precious saffron accent over a creamy sandalwood heart, ideal for special rituals.",
+        "spec_origin": "India",
+        "spec_item_form": "Bamboo-less Incense",
+        "spec_item_type": "Eco-friendly, Organic, Meditation, Vedic",
+        "spec_sticks": "40",
+        "spec_burn": "30+ minutes",
+        "spec_length": "3.5 inches",
+        "spec_fragrance": "Saffron (kesar), sandalwood (chandan)",
+        "spec_ingredients": "Sandalwood powder, natural gums, kesar accord",
+        "related_collection": "incense-sticks",
+        "related_heading": "Recommended",
+        "related_sub": "Curated for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
