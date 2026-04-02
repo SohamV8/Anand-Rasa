@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-nagchampa",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Incense",
+        "short_description": "A timeless Nag Champa aroma that creates a calm, grounding, and deeply spiritual atmosphere.",
+        "product_tagline": "",
+        "rating": 4,
+        "review_count": "14",
+        "show_buy_now": true,
+        "trust_1": "Classic nag champa",
+        "trust_2": "Meditation & pooja",
+        "trust_3": "Earthy floral wood",
+        "strip_col1": "Iconic nag champa",
+        "strip_col2": "Beloved incense sticks—earthy florals and soft wood—for meditation and daily pooja.",
+        "strip_col3": "Nag champa incense sticks",
+        "why_heading": "Nag champa incense sticks",
+        "why_sub": "The familiar golden warmth of nag champa—crafted for clean-burning ritual and steady fragrance.",
+        "spec_origin": "India",
+        "spec_item_form": "Bamboo-less Incense",
+        "spec_item_type": "Eco-friendly, Organic, Meditation, Vedic",
+        "spec_sticks": "40",
+        "spec_burn": "30+ minutes",
+        "spec_length": "3.5 inches",
+        "spec_fragrance": "Nag champa, sandalwood, champaca",
+        "spec_ingredients": "Floral resins, traditional bases, wood powders",
+        "related_collection": "incense-sticks",
+        "related_heading": "Recommended",
+        "related_sub": "Curated for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
