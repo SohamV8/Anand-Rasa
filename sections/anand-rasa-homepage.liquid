@@ -189,19 +189,19 @@
   .ar-nav9__pbtn { margin-top:24px; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.12em; color:#1e2023; display:inline-block; transition:background .3s,color .3s; }
   .ar-nav9__pbtn:hover { background:#1e2023; color:#fff; }
 
-  /* ── ZODIAC HERO (Nakshatra / video+image) — contain so nothing crops ── */
+  /* ── ZODIAC HERO ── */
   .ar-zh { background:#0a0a0a; overflow:hidden; font-family:var(--fb); }
-  .ar-zh__in { max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:min(72vh, 820px); }
-  @media(max-width:900px){ .ar-zh__in { grid-template-columns:1fr; min-height:0; } }
-  .ar-zh__left { padding:80px 64px; display:flex; flex-direction:column; justify-content:center; }
+  .ar-zh__in { max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; align-items:center; min-height:600px; }
+  @media(max-width:900px){ .ar-zh__in { grid-template-columns:1fr; } }
+  .ar-zh__left { padding:80px 64px; }
   @media(max-width:900px){ .ar-zh__left { padding:60px 24px 32px; } }
   .ar-zh__h { font-family: var(--font-heading-family); font-size:clamp(42px,5vw,76px); font-weight:400; line-height:1.12; color:#ffffff; margin-bottom:28px; letter-spacing:-.01em; }
   .ar-zh__p { font-size:15px; line-height:1.8; color:rgba(255,255,255,.75); max-width:480px; margin-bottom:44px; font-weight:300; }
   .ar-zh__btn { display:inline-block; border:1.5px solid rgba(255,255,255,.85); padding:16px 36px; font-family:var(--fb); font-size:11px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:#ffffff !important; background:transparent; transition:background .3s,color .3s; }
   .ar-zh__btn:hover { background:#ffffff; color:#0a0a0a !important; }
-  .ar-zh__right { position:relative; width:100%; align-self:stretch; min-height:clamp(320px, 48vw, 680px); overflow:hidden; background:#0a0a0a; }
-  @media(max-width:900px){ .ar-zh__right { min-height:clamp(260px, 62vw, 560px); } }
-  .ar-zh__right .ar-zh__media { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center center; display:block; max-width:100%; max-height:100%; }
+  .ar-zh__right { position:relative; width:100%; height:100%; min-height:500px; overflow:hidden; }
+  @media(max-width:900px){ .ar-zh__right { min-height:360px; } }
+  .ar-zh__media { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center center; display:block; }
   .ar-zh__ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.3); font-size:13px; font-family:var(--fb); text-align:center; padding:24px; }
 
   /* ── SHOP TRIO ── */
@@ -461,36 +461,7 @@
 <div class="ar-hp">
   {% render 'snippet-home-hero', section: section %}
   {% render 'snippet-home-collections', section: section %}
-  {% render 'snippet-home-products-bestsellers', section: section %}
-  {% render 'snippet-home-products-shop-trio', section: section %}
-  {% render 'snippet-home-products-find', section: section %}
-  {% render 'snippet-home-products-navagraha', section: section %}
-
-  {%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
-  <section class="ar-zh">
-    <div class="ar-zh__in">
-      <div class="ar-zh__left">
-        <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
-        <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
-        <a href="{{ section.settings.zh_url | default: '/collections/nakshatra' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
-      </div>
-      <div class="ar-zh__right">
-        {%- if section.settings.zh_video != blank -%}
-          <video src="{{ section.settings.zh_video }}" class="ar-zh__media" autoplay loop muted playsinline preload="auto"></video>
-        {%- elsif section.settings.zh_gif != blank -%}
-          <img src="{{ section.settings.zh_gif | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="1200" loading="lazy" class="ar-zh__media">
-        {%- elsif section.settings.zh_image != blank -%}
-          <img src="{{ section.settings.zh_image | image_url: width: 1200 }}" alt="{{ section.settings.zh_heading | default: 'Nakshatra Attar' }}" width="1200" height="800" loading="lazy" class="ar-zh__media">
-        {%- else -%}
-          <div class="ar-zh__ph">Upload your video, GIF or image in Theme Editor</div>
-        {%- endif -%}
-      </div>
-    </div>
-  </section>
-
-  {% render 'snippet-home-products-zodiac', section: section %}
-  {% render 'snippet-home-products-incense-banner', section: section %}
-  {% render 'snippet-home-products-incense-products', section: section %}
+  {% render 'snippet-home-products', section: section %}
   {%- liquid
     assign heading = section.settings.bp_heading
     assign idx = 0
