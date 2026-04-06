@@ -212,9 +212,11 @@
 <script>
   (function () {
     'use strict';
-    var burger = document.querySelector('.js-ar-burger');
-    var drawer = document.querySelector('.js-ar-drawer');
-    var close = document.querySelector('.js-ar-close');
+    var sectionId = '{{ section.id }}';
+    var sectionRoot = document.getElementById('shopify-section-{{ section.id }}') || document;
+    var burger = sectionRoot.querySelector('.js-ar-burger');
+    var drawer = sectionRoot.querySelector('.js-ar-drawer');
+    var close = sectionRoot.querySelector('.js-ar-close');
 
     function openDrawer() {
       if (!drawer) return;
@@ -234,8 +236,8 @@
     if (drawer) drawer.addEventListener('click', function (e) { if (e.target === drawer) closeDrawer(); });
     window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
-    var drawerToggle = document.querySelector('.js-ar-drawer-toggle');
-    var drawerSub = document.querySelector('.js-ar-drawer-sub');
+    var drawerToggle = sectionRoot.querySelector('.js-ar-drawer-toggle');
+    var drawerSub = sectionRoot.querySelector('.js-ar-drawer-sub');
     if (drawerToggle && drawerSub) {
       drawerToggle.addEventListener('click', function () {
         var isOpen = drawerSub.classList.contains('is-open');
@@ -245,10 +247,14 @@
       });
     }
 
-    (function () {
-      var trigger = document.getElementById('ar-mega-trigger-{{ section.id }}');
-      var dropdown = document.getElementById('ar-mega-dropdown-{{ section.id }}');
+    function initMegaMenuHover(root) {
+      if (!root || root.dataset.arMegaInited === 'true') return;
+      root.dataset.arMegaInited = 'true';
+
+      var trigger = root.querySelector('#ar-mega-trigger-' + sectionId);
+      var dropdown = root.querySelector('#ar-mega-dropdown-' + sectionId);
       if (!trigger || !dropdown) return;
+
       var closeTimer;
       function open() { clearTimeout(closeTimer); trigger.classList.add('is-open'); }
       function scheduleClose() { closeTimer = setTimeout(function () { trigger.classList.remove('is-open'); }, 280); }
@@ -259,8 +265,8 @@
       trigger.addEventListener('focusin', open);
       trigger.addEventListener('focusout', function (e) { if (!trigger.contains(e.relatedTarget)) scheduleClose(); });
 
-      var primaryImage = document.getElementById('ar-mega-feature-primary-{{ section.id }}');
-      var secondaryImage = document.getElementById('ar-mega-feature-secondary-{{ section.id }}');
+      var primaryImage = root.querySelector('#ar-mega-feature-primary-' + sectionId);
+      var secondaryImage = root.querySelector('#ar-mega-feature-secondary-' + sectionId);
       if (!primaryImage || !secondaryImage) return;
 
       var fallbackSrc = primaryImage.getAttribute('src');
@@ -305,7 +311,14 @@
       dropdown.addEventListener('mouseleave', function () {
         swapTo(fallbackSrc, fallbackAlt);
       });
-    })();
+    }
+
+    initMegaMenuHover(sectionRoot);
+
+    document.addEventListener('shopify:section:load', function (event) {
+      if (!event.target || event.target.id !== ('shopify-section-' + sectionId)) return;
+      initMegaMenuHover(event.target);
+    });
   })();
 </script>
 
