@@ -46,7 +46,9 @@
   .ar-mega__link:last-child { border-bottom:none; }
   .ar-mega__link:hover { color:#1e2023; padding-left:8px; }
   .ar-mega__feature { background:linear-gradient(135deg,#faf9f7 0%,#f5f0eb 100%); display:flex; align-items:center; justify-content:center; padding:24px; border-left:1px solid rgba(30,32,35,.06); border-radius:0 16px 16px 0; }
-  .ar-mega__feature-img { max-width:100%; max-height:340px; object-fit:contain; display:block; border-radius:8px; }
+  .ar-mega__feature-media { position:relative; width:100%; min-height:300px; display:flex; align-items:center; justify-content:center; }
+  .ar-mega__feature-img { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:block; border-radius:8px; opacity:0; transition:opacity .3s ease; will-change:opacity; pointer-events:none; }
+  .ar-mega__feature-img.is-active { opacity:1; }
   .ar-mega__feature-ph { width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; font-family:var(--font-body-family); }
 
   @media(max-width:900px){
@@ -86,35 +88,62 @@
     </a>
 
     <div class="ar-nav__right">
-      <div class="ar-mega__trigger" id="ar-mega-trigger">
+      <div class="ar-mega__trigger" id="ar-mega-trigger-{{ section.id }}">
         <a href="{{ section.settings.nav_r1_url | default: '/collections' }}" class="ar-nav__link ar-mega__label">
           {{ section.settings.nav_r1 | default: 'Collections' }}
           <svg class="ar-mega__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <div class="ar-mega__dropdown" id="ar-mega-dropdown">
+        <div class="ar-mega__dropdown" id="ar-mega-dropdown-{{ section.id }}">
           <div class="ar-mega__inner">
             <div class="ar-mega__links">
               <span class="ar-mega__col-title">Collections</span>
-              <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link">Planet Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link">Zodiac Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link">Nakshatra Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-mega__link">Stress Relief Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link">Chakra Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-mega__link">Love Attars</a>
-              <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link">Incense Sticks</a>
+              {%- assign mega_blocks = section.blocks | where: 'type', 'mega_item' -%}
+              {%- if mega_blocks.size > 0 -%}
+                {%- for block in mega_blocks -%}
+                  <a
+                    href="{{ block.settings.link | default: '/collections/all' }}"
+                    class="ar-mega__link"
+                    data-mega-image="{{ block.settings.image | image_url: width: 900 }}"
+                    data-mega-alt="{{ block.settings.title | escape }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block.settings.title | default: 'Collection' }}
+                  </a>
+                {%- endfor -%}
+              {%- else -%}
+                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link">Planet Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link">Zodiac Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link">Nakshatra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-mega__link">Stress Relief Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link">Chakra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-mega__link">Love Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link">Incense Sticks</a>
+              {%- endif -%}
             </div>
             <div class="ar-mega__feature">
               {%- if section.settings.mega_menu_image != blank -%}
-                <img
-                  src="{{ section.settings.mega_menu_image | image_url: width: 600 }}"
-                  srcset="{{ section.settings.mega_menu_image | image_url: width: 300 }} 300w, {{ section.settings.mega_menu_image | image_url: width: 600 }} 600w, {{ section.settings.mega_menu_image | image_url: width: 900 }} 900w"
-                  sizes="300px"
-                  alt="Featured Collection"
-                  width="{{ section.settings.mega_menu_image.width }}"
-                  height="{{ section.settings.mega_menu_image.height }}"
-                  loading="lazy"
-                  class="ar-mega__feature-img"
-                >
+                <div class="ar-mega__feature-media">
+                  <img
+                    src="{{ section.settings.mega_menu_image | image_url: width: 900 }}"
+                    srcset="{{ section.settings.mega_menu_image | image_url: width: 300 }} 300w, {{ section.settings.mega_menu_image | image_url: width: 600 }} 600w, {{ section.settings.mega_menu_image | image_url: width: 900 }} 900w"
+                    sizes="300px"
+                    alt="Featured Collection"
+                    width="{{ section.settings.mega_menu_image.width }}"
+                    height="{{ section.settings.mega_menu_image.height }}"
+                    loading="lazy"
+                    class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
+                    id="ar-mega-feature-primary-{{ section.id }}"
+                  >
+                  <img
+                    src="{{ section.settings.mega_menu_image | image_url: width: 900 }}"
+                    alt="Featured Collection"
+                    width="{{ section.settings.mega_menu_image.width }}"
+                    height="{{ section.settings.mega_menu_image.height }}"
+                    loading="lazy"
+                    class="ar-mega__feature-img js-ar-mega-feature-secondary"
+                    id="ar-mega-feature-secondary-{{ section.id }}"
+                  >
+                </div>
               {%- else -%}
                 <div class="ar-mega__feature-ph">Upload featured image in Theme Editor</div>
               {%- endif -%}
@@ -149,13 +178,19 @@
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
   <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub">
-    <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Planets Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Zodiac Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Nakshatra Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
-    <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
+    {%- if mega_blocks.size > 0 -%}
+      {%- for block in mega_blocks -%}
+        <a href="{{ block.settings.link | default: '/collections/all' }}" class="ar-nav__drawer-link ar-nav__drawer-sub">{{ block.settings.title | default: 'Collection' }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Planets Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Zodiac Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Nakshatra Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
+    {%- endif -%}
   </div>
   <a href="{{ section.settings.nav_r2_url | default: '/pages/about' }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>
   <a href="{{ routes.cart_url }}" class="ar-nav__drawer-link">Cart ({{ cart.item_count }})</a>
@@ -199,8 +234,8 @@
     }
 
     (function () {
-      var trigger = document.getElementById('ar-mega-trigger');
-      var dropdown = document.getElementById('ar-mega-dropdown');
+      var trigger = document.getElementById('ar-mega-trigger-{{ section.id }}');
+      var dropdown = document.getElementById('ar-mega-dropdown-{{ section.id }}');
       if (!trigger || !dropdown) return;
       var closeTimer;
       function open() { clearTimeout(closeTimer); trigger.classList.add('is-open'); }
@@ -211,6 +246,53 @@
       dropdown.addEventListener('mouseleave', scheduleClose);
       trigger.addEventListener('focusin', open);
       trigger.addEventListener('focusout', function (e) { if (!trigger.contains(e.relatedTarget)) scheduleClose(); });
+
+      var primaryImage = document.getElementById('ar-mega-feature-primary-{{ section.id }}');
+      var secondaryImage = document.getElementById('ar-mega-feature-secondary-{{ section.id }}');
+      if (!primaryImage || !secondaryImage) return;
+
+      var fallbackSrc = primaryImage.getAttribute('src');
+      var fallbackAlt = primaryImage.getAttribute('alt') || 'Featured Collection';
+      var activeImage = primaryImage;
+      var inactiveImage = secondaryImage;
+      var imageCache = {};
+
+      function preload(src) {
+        if (!src || imageCache[src]) return;
+        var preImg = new Image();
+        preImg.src = src;
+        imageCache[src] = true;
+      }
+
+      function swapTo(src, altText) {
+        var nextSrc = src || fallbackSrc;
+        var nextAlt = altText || fallbackAlt;
+        if (!nextSrc || activeImage.getAttribute('src') === nextSrc) return;
+        preload(nextSrc);
+        inactiveImage.src = nextSrc;
+        inactiveImage.alt = nextAlt;
+        inactiveImage.classList.add('is-active');
+        activeImage.classList.remove('is-active');
+        var temp = activeImage;
+        activeImage = inactiveImage;
+        inactiveImage = temp;
+      }
+
+      var menuLinks = dropdown.querySelectorAll('.ar-mega__link');
+      menuLinks.forEach(function (link) {
+        var hoverSrc = link.getAttribute('data-mega-image');
+        if (hoverSrc) preload(hoverSrc);
+        link.addEventListener('mouseenter', function () {
+          swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+        });
+        link.addEventListener('focus', function () {
+          swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+        });
+      });
+
+      dropdown.addEventListener('mouseleave', function () {
+        swapTo(fallbackSrc, fallbackAlt);
+      });
     })();
   })();
 </script>
@@ -295,7 +377,7 @@
     {
       "type": "image_picker",
       "id": "mega_menu_image",
-      "label": "Mega menu featured image"
+      "label": "Mega menu fallback image"
     },
     {
       "type": "text",
@@ -307,6 +389,36 @@
       "type": "url",
       "id": "nav_r2_url",
       "label": "Right link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_item",
+      "name": "Mega menu item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu title",
+          "default": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Menu link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Hover preview image"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Anand Rasa Header"
     }
   ]
 }
