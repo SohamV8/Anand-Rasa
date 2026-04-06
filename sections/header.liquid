@@ -61,6 +61,17 @@
   }
 </style>
 
+{%- assign mega_blocks = section.blocks | where: 'type', 'mega_item' -%}
+{%- assign mega_fallback_image = section.settings.mega_menu_image -%}
+{%- if mega_fallback_image == blank and mega_blocks.size > 0 -%}
+  {%- for block in mega_blocks -%}
+    {%- if block.settings.image != blank -%}
+      {%- assign mega_fallback_image = block.settings.image -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
 <nav class="ar-nav" aria-label="Main navigation">
   <div class="ar-nav__inner">
     <div class="ar-nav__left">
@@ -97,15 +108,16 @@
           <div class="ar-mega__inner">
             <div class="ar-mega__links">
               <span class="ar-mega__col-title">Collections</span>
-              {%- assign mega_blocks = section.blocks | where: 'type', 'mega_item' -%}
               {%- if mega_blocks.size > 0 -%}
                 {%- for block in mega_blocks -%}
                   <a
                     href="{{ block.settings.link | default: '/collections/all' }}"
                     class="ar-mega__link"
-                    data-mega-image="{{ block.settings.image | image_url: width: 900 }}"
                     data-mega-alt="{{ block.settings.title | escape }}"
                     {{ block.shopify_attributes }}
+                    {%- if block.settings.image != blank -%}
+                      data-mega-image="{{ block.settings.image | image_url: width: 900 }}"
+                    {%- endif -%}
                   >
                     {{ block.settings.title | default: 'Collection' }}
                   </a>
@@ -121,24 +133,24 @@
               {%- endif -%}
             </div>
             <div class="ar-mega__feature">
-              {%- if section.settings.mega_menu_image != blank -%}
+              {%- if mega_fallback_image != blank -%}
                 <div class="ar-mega__feature-media">
                   <img
-                    src="{{ section.settings.mega_menu_image | image_url: width: 900 }}"
-                    srcset="{{ section.settings.mega_menu_image | image_url: width: 300 }} 300w, {{ section.settings.mega_menu_image | image_url: width: 600 }} 600w, {{ section.settings.mega_menu_image | image_url: width: 900 }} 900w"
+                    src="{{ mega_fallback_image | image_url: width: 900 }}"
+                    srcset="{{ mega_fallback_image | image_url: width: 300 }} 300w, {{ mega_fallback_image | image_url: width: 600 }} 600w, {{ mega_fallback_image | image_url: width: 900 }} 900w"
                     sizes="300px"
                     alt="Featured Collection"
-                    width="{{ section.settings.mega_menu_image.width }}"
-                    height="{{ section.settings.mega_menu_image.height }}"
+                    width="{{ mega_fallback_image.width }}"
+                    height="{{ mega_fallback_image.height }}"
                     loading="lazy"
                     class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
                     id="ar-mega-feature-primary-{{ section.id }}"
                   >
                   <img
-                    src="{{ section.settings.mega_menu_image | image_url: width: 900 }}"
+                    src="{{ mega_fallback_image | image_url: width: 900 }}"
                     alt="Featured Collection"
-                    width="{{ section.settings.mega_menu_image.width }}"
-                    height="{{ section.settings.mega_menu_image.height }}"
+                    width="{{ mega_fallback_image.width }}"
+                    height="{{ mega_fallback_image.height }}"
                     loading="lazy"
                     class="ar-mega__feature-img js-ar-mega-feature-secondary"
                     id="ar-mega-feature-secondary-{{ section.id }}"
@@ -416,10 +428,8 @@
     }
   ],
   "max_blocks": 20,
-  "presets": [
-    {
-      "name": "Anand Rasa Header"
-    }
-  ]
+  "enabled_on": {
+    "groups": ["header"]
+  }
 }
 {% endschema %}
