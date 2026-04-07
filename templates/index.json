@@ -166,6 +166,7 @@
         "cat-8": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png",
             "title": "Discovery Kit",
             "link": "/collections/gift-sets"
           }
