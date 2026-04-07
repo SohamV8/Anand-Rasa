@@ -6,31 +6,19 @@
 <style>
     /* ── COLLECTION PAGE ── */
     .arc * { box-sizing:border-box; margin:0; padding:0; }
-    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
+    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#fff; color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
   
     /* Hero */
-    .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#0a0a1a; }
-    .arc-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; }
-    .arc-hero__ov { position:absolute; inset:0; background:linear-gradient(120deg,#0a0a1aee 0%,#0a0a1a88 60%,transparent 100%); }
-    .arc-hero__con { position:relative; z-index:10; max-width:700px; padding:80px 48px 80px; animation:arUp .7s ease both; }
-    @media(max-width:768px){ .arc-hero__con { padding:60px 24px; } }
-    .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-hero__h { font-family:var(--fh); font-size:clamp(36px,5vw,72px); font-weight:400; color:#fff; line-height:1.08; letter-spacing:-.02em; margin-bottom:20px; }
-    .arc-hero__p { font-size:15px; line-height:1.75; color:rgba(255,255,255,.78); font-weight:300; max-width:480px; margin-bottom:32px; }
-    .arc-hero__btn { display:inline-flex; align-items:center; gap:10px; border:1.5px solid rgba(255,255,255,.7); padding:13px 32px; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#fff; background:transparent; transition:all .3s; }
-    .arc-hero__btn:hover { background:#fff; color:#0a0a1a; border-color:#fff; }
-  
-    /* USP strip — simple + native emoji */
-    .arc-usp { background:#fff; border-top:1px solid rgba(30,32,35,.1); border-bottom:1px solid rgba(30,32,35,.1); }
-    .arc-usp__row { max-width:1120px; margin:0 auto; padding:44px 32px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px 32px; align-items:start; }
-    @media(max-width:900px){ .arc-usp__row { grid-template-columns:repeat(2,1fr); padding:36px 24px; gap:28px 24px; } }
-    @media(max-width:480px){ .arc-usp__row { grid-template-columns:1fr; padding:32px 24px; gap:24px; } }
-    .arc-usp__item { text-align:center; padding:0 8px; }
-    .arc-usp__emoji { display:block; font-size:clamp(22px,2.4vw,28px); line-height:1; margin-bottom:14px; font-family:"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji",sans-serif; letter-spacing:0; -webkit-font-smoothing:antialiased; }
-    .arc-usp__title { font-family:var(--fh); font-size:clamp(16px,1.5vw,19px); font-weight:400; color:var(--ink); letter-spacing:.01em; line-height:1.35; }
-    .arc-usp__sub { margin-top:10px; font-size:12px; font-weight:300; color:#6b7280; line-height:1.55; max-width:28ch; margin-left:auto; margin-right:auto; }
+    .arc-hero { position:relative; width:100%; min-height:500px; display:flex; align-items:center; overflow:hidden; background:#f2f2f4; }
+    .arc-hero__bg { position:absolute; top:50%; right:4%; transform:translateY(-50%); width:min(44vw,520px); height:auto; object-fit:contain; opacity:1; animation:arcHeroFloat 4.5s ease-in-out infinite; }
+    .arc-hero__ov { display:none; }
+    .arc-hero__con { position:relative; z-index:10; max-width:560px; padding:80px 48px; animation:arUp .7s ease both; }
+    @media(max-width:768px){ .arc-hero__con { padding:56px 24px; max-width:none; } .arc-hero__bg { position:relative; inset:auto; transform:none; width:min(80vw,380px); margin:0 auto 24px; order:-1; right:auto; top:auto; } .arc-hero { flex-direction:column; justify-content:center; text-align:left; min-height:auto; padding-top:24px; } }
+    .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:#1e2023; margin-bottom:14px; display:block; opacity:.72; }
+    .arc-hero__h { font-family:var(--fh); font-size:clamp(40px,5vw,62px); font-weight:500; color:#111827; line-height:1.06; letter-spacing:-.02em; margin-bottom:18px; }
+    .arc-hero__p { font-size:15px; line-height:1.75; color:#374151; font-weight:300; max-width:520px; margin-bottom:0; }
   
     /* Toolbar */
     .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
@@ -76,27 +64,8 @@
     .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
     .arc-empty__p { font-size:14px; color:#6b7280; }
   
-    /* Content Block */
-    .arc-content { max-width:1440px; margin:0 auto; padding:80px 48px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    @media(max-width:900px){ .arc-content { grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
-    .arc-content__img-wrap { position:relative; aspect-ratio:4/3; overflow:hidden; }
-    .arc-content__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-    .arc-content__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; }
-    .arc-content__label { font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-content__h { font-family:var(--fh); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:var(--ink); line-height:1.15; margin-bottom:20px; letter-spacing:-.01em; }
-    .arc-content__p { font-size:15px; line-height:1.8; color:#4b5563; font-weight:300; }
-  
-    /* CTA */
-    .arc-cta { background:#0a0a1a; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
-    @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
-    .arc-cta__ov { position:absolute; inset:0; opacity:.12; background:radial-gradient(ellipse at 50% 0%,#c9a96e 0%,transparent 65%); pointer-events:none; }
-    .arc-cta__label { font-size:10px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; position:relative; }
-    .arc-cta__h { font-family:var(--fh); font-size:clamp(28px,4vw,56px); font-weight:400; color:#fff; margin-bottom:16px; letter-spacing:-.01em; line-height:1.15; position:relative; }
-    .arc-cta__p { font-size:15px; color:rgba(255,255,255,.7); font-weight:300; margin-bottom:36px; position:relative; max-width:520px; margin-left:auto; margin-right:auto; }
-    .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s,transform .2s; position:relative; }
-    .arc-cta__btn:hover { background:#b8943a; transform:translateY(-1px); }
-  
     @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes arcHeroFloat { 0%,100% { transform:translateY(-50%); } 50% { transform:translateY(calc(-50% - 8px)); } }
   
   </style>
   
@@ -112,34 +81,10 @@
         <span class="arc-hero__label">{{ section.settings.hero_label | default: 'Navagraha Series' }}</span>
         <h1 class="arc-hero__h">{{ collection.title | default: 'Planet Attars' }}</h1>
         <p class="arc-hero__p">{{ section.settings.hero_subtitle | default: 'Nine celestial attars, each resonating with the energy of a Vedic planet. Find the fragrance aligned with your cosmic blueprint.' }}</p>
-        <a href="#arc-products" class="arc-hero__btn">{{ section.settings.hero_btn | default: 'Explore Collection' }}</a>
       </div>
     </div>
-    {%- comment -%} USP STRIP {% endcomment %}
-    <div class="arc-usp">
-      <div class="arc-usp__row">
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">🪐</span>
-          <p class="arc-usp__title">Nine celestial attars</p>
-          <p class="arc-usp__sub">One fragrance for each Navagraha</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">🌸</span>
-          <p class="arc-usp__title">Pure botanical oils</p>
-          <p class="arc-usp__sub">No alcohol, no synthetics</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">🔮</span>
-          <p class="arc-usp__title">Vedic inspiration</p>
-          <p class="arc-usp__sub">Composed for planetary energy</p>
-        </div>
-        <div class="arc-usp__item">
-          <span class="arc-usp__emoji" aria-hidden="true">✨</span>
-          <p class="arc-usp__title">Skin-close wear</p>
-          <p class="arc-usp__sub">A quiet, lasting aura</p>
-        </div>
-      </div>
-    </div>
+
+
   
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
@@ -244,36 +189,13 @@
         </div>
       {%- endif -%}
     </div>
-  
-    {%- comment -%} CONTENT BLOCK {% endcomment %}
-    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
-    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
-      <div class="arc-content">
-        <div class="arc-content__img-wrap">
-          {%- if section.settings.content_image != blank -%}
-            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
-          {%- else -%}
-            <div class="arc-content__ph">Upload image in Theme Editor</div>
-          {%- endif -%}
-        </div>
-        <div>
-          <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
-          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Align Your Fragrance with the Cosmos' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: 'The Navagraha — nine celestial forces — each govern a dimension of your being. Our Planet Attar series captures the essence of each planetary energy in a single, pure oil, crafted to harmonize your aura with the cosmos.' }}</p>
-        </div>
-      </div>
-    </section>
-    {%- endif -%}
-  
-    {%- comment -%} CTA SECTION {% endcomment %}
-    <section class="arc-cta">
-      <div class="arc-cta__ov"></div>
-      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
-      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Discover Your Planetary Fragrance' }}</h2>
-      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Each Planet Attar is a bridge between you and the cosmic forces that shape your destiny.' }}</p>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
-    </section>
-  
+
+    {% render 'ask-mehak',
+      uid: 'ask-mehak-home',
+      left_image: section.settings.hero_image,
+      left_image_alt: 'Astro fragrance finder'
+    %}
+      {% render 'navagraha-attar-explorer', section: section %}
   </div>
   
   <script>

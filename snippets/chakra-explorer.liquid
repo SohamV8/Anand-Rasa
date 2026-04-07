@@ -1,0 +1,911 @@
+{% comment %}
+  ANAND RASA — Interactive Chakra Explorer
+  sections/anand-rasa-chakra-explorer.liquid
+  Click a chakra card → reveals full detail panel with product + info
+{% endcomment %}
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+.ack {
+  --fh: var(--font-heading-family, 'Georgia', serif);
+  --fb: var(--font-body-family, system-ui, -apple-system, sans-serif);
+  --bg:      #FAFAF8;
+  --white:   #FFFFFF;
+  --ink:     #0F0F0F;
+  --ink-2:   #3A3A3A;
+  --ink-3:   #7A7A7A;
+  --border:  rgba(0,0,0,0.08);
+  --trans:   0.32s cubic-bezier(0.25,1,0.5,1);
+  font-family: var(--fb);
+  -webkit-font-smoothing: antialiased;
+}
+.ack *, .ack *::before, .ack *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.ack a { text-decoration: none; color: inherit; }
+.ack img { display: block; max-width: 100%; }
+.ack button { font-family: var(--fb); cursor: pointer; border: none; background: none; }
+
+/* ============================================================
+   CHAKRA COLORS (pastel bg + vivid accent)
+   ============================================================ */
+:root {
+  --ck-c-muladhara:     #FFBDBD; --ck-a-muladhara:     #C0392B; --ck-t-muladhara:     #4A0E0E;
+  --ck-c-svadhisthana:  #FFD9B0; --ck-a-svadhisthana:  #E17D2A; --ck-t-svadhisthana:  #4A2000;
+  --ck-c-manipura:      #FFF3B0; --ck-a-manipura:      #D4A100; --ck-t-manipura:      #3A2800;
+  --ck-c-anahata:       #C8E6C9; --ck-a-anahata:       #2E7D52; --ck-t-anahata:       #0D2E1B;
+  --ck-c-vishuddha:     #C5E8F0; --ck-a-vishuddha:     #0077A8; --ck-t-vishuddha:     #002D40;
+  --ck-c-ajna:          #D4CCF0; --ck-a-ajna:          #5B4DD4; --ck-t-ajna:          #1A1060;
+  --ck-c-sahasrara:     #EDD5F5; --ck-a-sahasrara:     #8B3DAF; --ck-t-sahasrara:     #2E0052;
+}
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+.ack__header {
+  text-align: center;
+  padding: 80px 48px 52px;
+  background: var(--bg);
+}
+.ack__eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #8B3DAF;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: ack-up 0.6s ease 0.1s forwards;
+}
+.ack__title {
+  font-family: var(--fh);
+  font-size: clamp(30px,4.5vw,56px);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: ack-up 0.6s ease 0.2s forwards;
+}
+.ack__sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  opacity: 0;
+  animation: ack-up 0.6s ease 0.3s forwards;
+}
+.ack__rainbow {
+  width: 80px;
+  height: 3px;
+  border-radius: 99px;
+  background: linear-gradient(to right,#C0392B,#E17D2A,#D4A100,#2E7D52,#0077A8,#5B4DD4,#8B3DAF);
+  margin: 0 auto;
+  opacity: 0;
+  animation: ack-up 0.6s ease 0.4s forwards;
+}
+
+/* ============================================================
+   CHAKRA SELECTOR STRIP
+   ============================================================ */
+.ack__strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  max-width: 1200px;
+  margin: 18px auto 0;
+  padding: 0 32px 0;
+  opacity: 0;
+  animation: ack-up 0.65s ease 0.45s forwards;
+}
+@media (max-width: 860px) {
+  .ack__strip { grid-template-columns: repeat(4, 1fr); padding: 0 16px; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .ack__strip { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+}
+
+/* ── Each chakra card ── */
+.ack__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 22px 12px 18px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: transform var(--trans), box-shadow var(--trans), background var(--trans);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ack__card:hover { transform: translateY(-6px) scale(1.03); }
+.ack__card.is-active {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+}
+
+/* Dynamic bg per chakra */
+.ack__card[data-chakra="muladhara"]    { background: var(--ck-c-muladhara); }
+.ack__card[data-chakra="svadhisthana"] { background: var(--ck-c-svadhisthana); }
+.ack__card[data-chakra="manipura"]     { background: var(--ck-c-manipura); }
+.ack__card[data-chakra="anahata"]      { background: var(--ck-c-anahata); }
+.ack__card[data-chakra="vishuddha"]    { background: var(--ck-c-vishuddha); }
+.ack__card[data-chakra="ajna"]         { background: var(--ck-c-ajna); }
+.ack__card[data-chakra="sahasrara"]    { background: var(--ck-c-sahasrara); }
+
+/* Active indicator ring */
+.ack__card.is-active::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 22px;
+  border: 2.5px solid currentColor;
+  opacity: 0.5;
+}
+.ack__card[data-chakra="muladhara"].is-active    { color: var(--ck-a-muladhara); }
+.ack__card[data-chakra="svadhisthana"].is-active { color: var(--ck-a-svadhisthana); }
+.ack__card[data-chakra="manipura"].is-active     { color: var(--ck-a-manipura); }
+.ack__card[data-chakra="anahata"].is-active      { color: var(--ck-a-anahata); }
+.ack__card[data-chakra="vishuddha"].is-active    { color: var(--ck-a-vishuddha); }
+.ack__card[data-chakra="ajna"].is-active         { color: var(--ck-a-ajna); }
+.ack__card[data-chakra="sahasrara"].is-active    { color: var(--ck-a-sahasrara); }
+
+/* Symbol circle */
+.ack__symbol-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  font-size: 34px;
+  line-height: 1;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ack__card:hover .ack__symbol-wrap,
+.ack__card.is-active .ack__symbol-wrap {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.ack__card-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.ack__card-keyword {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
+  opacity: 0.65;
+  color: var(--ink-2);
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.ack__panel-wrap {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 32px 80px;
+  overflow: hidden;
+}
+@media (max-width: 768px) { .ack__panel-wrap { padding: 0 16px 64px; } }
+
+.ack__panel {
+  display: none;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 24px 64px rgba(0,0,0,0.09);
+}
+.ack__panel.is-active {
+  display: block;
+  animation: ack-panel-in 0.55s cubic-bezier(0.25,1,0.5,1) both;
+}
+
+@keyframes ack-panel-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Panel accent bar */
+.ack__panel-bar {
+  height: 5px;
+  width: 100%;
+}
+.ack__panel[data-chakra="muladhara"]    .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-muladhara), var(--ck-a-muladhara)); }
+.ack__panel[data-chakra="svadhisthana"] .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-svadhisthana), var(--ck-a-svadhisthana)); }
+.ack__panel[data-chakra="manipura"]     .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-manipura), var(--ck-a-manipura)); }
+.ack__panel[data-chakra="anahata"]      .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-anahata), var(--ck-a-anahata)); }
+.ack__panel[data-chakra="vishuddha"]    .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-vishuddha), var(--ck-a-vishuddha)); }
+.ack__panel[data-chakra="ajna"]         .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-ajna), var(--ck-a-ajna)); }
+.ack__panel[data-chakra="sahasrara"]    .ack__panel-bar { background: linear-gradient(to right, var(--ck-c-sahasrara), var(--ck-a-sahasrara)); }
+
+/* Panel body */
+.ack__panel-body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 0;
+  background: var(--white);
+}
+@media (max-width: 900px) { .ack__panel-body { grid-template-columns: 1fr; } }
+
+/* Left: Product column */
+.ack__panel-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  position: relative;
+}
+
+/* Tinted bg for left panel */
+.ack__panel[data-chakra="muladhara"]    .ack__panel-left { background: #FFF5F5; }
+.ack__panel[data-chakra="svadhisthana"] .ack__panel-left { background: #FFF8F0; }
+.ack__panel[data-chakra="manipura"]     .ack__panel-left { background: #FFFCEE; }
+.ack__panel[data-chakra="anahata"]      .ack__panel-left { background: #F0FAF2; }
+.ack__panel[data-chakra="vishuddha"]    .ack__panel-left { background: #EEF8FC; }
+.ack__panel[data-chakra="ajna"]         .ack__panel-left { background: #F3F1FC; }
+.ack__panel[data-chakra="sahasrara"]    .ack__panel-left { background: #FAF0FD; }
+
+/* Product image */
+.ack__prod-img-wrap {
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.ack__prod-img-wrap:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.14);
+}
+.ack__prod-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ack__prod-img-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  opacity: 0.25;
+}
+
+/* Symbol large */
+.ack__prod-symbol {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 12px;
+  animation: ack-spin 12s linear infinite;
+}
+@keyframes ack-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.ack__prod-title {
+  font-family: var(--fh);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.ack__prod-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ack__prod-compare {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+.ack__prod-type {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 20px;
+  opacity: 0.55;
+  color: var(--ink-2);
+}
+
+/* ATC button */
+.ack__atc {
+  width: 100%;
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--fb);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  margin-bottom: 10px;
+}
+.ack__atc:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.ack__atc:disabled { opacity: 0.45; cursor: not-allowed; }
+.ack__atc.is-added { opacity: 0.85; }
+
+.ack__panel[data-chakra="muladhara"]    .ack__atc { background: var(--ck-a-muladhara); }
+.ack__panel[data-chakra="svadhisthana"] .ack__atc { background: var(--ck-a-svadhisthana); }
+.ack__panel[data-chakra="manipura"]     .ack__atc { background: var(--ck-a-manipura); }
+.ack__panel[data-chakra="anahata"]      .ack__atc { background: var(--ck-a-anahata); }
+.ack__panel[data-chakra="vishuddha"]    .ack__atc { background: var(--ck-a-vishuddha); }
+.ack__panel[data-chakra="ajna"]         .ack__atc { background: var(--ck-a-ajna); }
+.ack__panel[data-chakra="sahasrara"]    .ack__atc { background: var(--ck-a-sahasrara); }
+
+/* View product link */
+.ack__view-link {
+  width: 100%;
+  margin-top: 2px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(30, 32, 35, 0.22);
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+  opacity: 0.88;
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+.ack__view-link:hover { opacity: 1; transform: translateY(-1px); border-color: rgba(30, 32, 35, 0.42); }
+
+/* Right: Info column */
+.ack__panel-right {
+  padding: 48px 52px;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  border-left: 1px solid rgba(0,0,0,0.06);
+}
+@media (max-width: 900px) {
+  .ack__panel-right { padding: 36px 28px; border-left: none; border-top: 1px solid rgba(0,0,0,0.06); }
+}
+
+/* Panel title */
+.ack__panel-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ack__panel-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  color: var(--ink-3);
+}
+.ack__panel-h {
+  font-family: var(--fh);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+.ack__panel-sub {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  color: var(--ink-2);
+}
+
+/* Info table: Blocked / Balanced / Activities */
+.ack__table {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(0,0,0,0.07);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+}
+@media (max-width: 620px) { .ack__table { grid-template-columns: 1fr; } }
+
+.ack__table-col { background: var(--white); padding: 20px 18px; }
+.ack__table-col-head {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+  display: block;
+}
+.ack__table-col--blocked  .ack__table-col-head { color: #C0392B; }
+.ack__table-col--balanced .ack__table-col-head { color: #2E7D52; }
+.ack__table-col--activity .ack__table-col-head { color: #5B4DD4; }
+.ack__table-col-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  font-weight: 300;
+}
+
+/* Description block */
+.ack__desc {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  font-weight: 300;
+  border-left: 3px solid;
+  padding-left: 18px;
+}
+.ack__panel[data-chakra="muladhara"]    .ack__desc { border-color: var(--ck-a-muladhara); }
+.ack__panel[data-chakra="svadhisthana"] .ack__desc { border-color: var(--ck-a-svadhisthana); }
+.ack__panel[data-chakra="manipura"]     .ack__desc { border-color: var(--ck-a-manipura); }
+.ack__panel[data-chakra="anahata"]      .ack__desc { border-color: var(--ck-a-anahata); }
+.ack__panel[data-chakra="vishuddha"]    .ack__desc { border-color: var(--ck-a-vishuddha); }
+.ack__panel[data-chakra="ajna"]         .ack__desc { border-color: var(--ck-a-ajna); }
+.ack__panel[data-chakra="sahasrara"]    .ack__desc { border-color: var(--ck-a-sahasrara); }
+
+/* Meta pills row */
+.ack__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ack__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  color: var(--ink);
+  background: rgba(255,255,255,0.6);
+}
+.ack__pill-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  color: var(--ink-3);
+}
+
+/* Benefits list */
+.ack__benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ack__benefits-head {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 4px;
+}
+.ack__benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  font-weight: 300;
+  line-height: 1.4;
+}
+.ack__benefit-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ack__panel[data-chakra="muladhara"]    .ack__benefit-dot { background: var(--ck-a-muladhara); }
+.ack__panel[data-chakra="svadhisthana"] .ack__benefit-dot { background: var(--ck-a-svadhisthana); }
+.ack__panel[data-chakra="manipura"]     .ack__benefit-dot { background: var(--ck-a-manipura); }
+.ack__panel[data-chakra="anahata"]      .ack__benefit-dot { background: var(--ck-a-anahata); }
+.ack__panel[data-chakra="vishuddha"]    .ack__benefit-dot { background: var(--ck-a-vishuddha); }
+.ack__panel[data-chakra="ajna"]         .ack__benefit-dot { background: var(--ck-a-ajna); }
+.ack__panel[data-chakra="sahasrara"]    .ack__benefit-dot { background: var(--ck-a-sahasrara); }
+
+/* Usage row */
+.ack__usage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 620px) { .ack__usage { grid-template-columns: 1fr 1fr; } }
+.ack__usage-item {
+  background: #F8F8F6;
+  border-radius: 14px;
+  padding: 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ack__usage-icon { font-size: 20px; }
+.ack__usage-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+.ack__usage-val {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Animations */
+@keyframes ack-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .ack__header { padding: 60px 24px 40px; }
+  .ack__panel-right { gap: 22px; }
+}
+@media (max-width: 480px) {
+  .ack__header { padding: 48px 16px 32px; }
+  .ack__prod-img-wrap { width: 140px; height: 140px; }
+  .ack__panel-right { padding: 28px 20px; }
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ack *, .ack *::before, .ack *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .ack__prod-symbol { animation: none; }
+}
+</style>
+
+{%- comment -%}
+  ── STATIC CHAKRA DATA (fallback when no schema input given)
+{%- endcomment -%}
+{%- liquid
+  assign all_ck_keys     = 'muladhara,svadhisthana,manipura,anahata,vishuddha,ajna,sahasrara' | split: ','
+  assign all_ck_names    = 'Muladhara,Svadhisthana,Manipura,Anahata,Vishuddha,Ajna,Sahasrara' | split: ','
+  assign all_ck_english  = 'Root Chakra,Sacral Chakra,Solar Plexus Chakra,Heart Chakra,Throat Chakra,Third Eye Chakra,Crown Chakra' | split: ','
+  assign all_ck_keywords = 'Grounding,Creativity,Purpose,Love,Expression,Intuition,Bliss' | split: ','
+  assign all_ck_symbols  = '🔴,🟠,🟡,💚,🔵,🟣,✨' | split: ','
+  assign all_ck_nums     = '01,02,03,04,05,06,07' | split: ','
+  assign all_ck_mantras  = 'LAM,VAM,RAM,YAM,HAM,AUM,OM' | split: ','
+  assign all_ck_elements = 'Earth,Water,Fire,Air,Ether,Light,Cosmic Consciousness' | split: ','
+  assign all_ck_essences = 'Cedarwood · Patchouli · Vetiver,Orange · Sandalwood · Jasmine,Ginger · Lemon · Black Pepper,Rose · Geranium · Palmarosa,Blue Chamomile · Eucalyptus,Frankincense · Clary Sage · Vetiver,Ylang Ylang · White Lotus · Jasmine' | split: ','
+
+  assign all_blocked  = 'Anxiety, Instability, Low self-esteem, Disconnectedness,Guilt, Emotional numbness, Creative blocks, Fear of change,Low confidence, Indecision, Lack of purpose, Victim mentality,Grief, Loneliness, Inability to forgive, Emotional pain,Difficulty expressing truth, Shyness, Fear of speaking,Lack of clarity, Poor memory, Disconnection from intuition,Confusion about life purpose, Spiritual disconnection, Ego dominance' | split: ','
+
+  assign all_balanced = 'Security, Grounded, Stability, Commitment, Enthusiasm,Joy, Creativity, Healthy boundaries, Fluid emotions,Confidence, Willpower, Strong sense of self, Clarity,Compassion, Love, Forgiveness, Emotional balance,Clear communication, Honesty, Creative expression, Truth,Sharp intuition, Wisdom, Mental clarity, Vision,Spiritual awareness, Divine connection, Inner peace, Bliss' | split: ','
+
+  assign all_activities = 'Yoga & Meditation, Walk barefoot on earth, Journaling, Connect with nature,Dance, Creative hobbies, Sacral breathwork, Mindful eating,Core exercises, Sun salutations, Positive affirmations, Leadership journaling,Heart-opening yoga, Gratitude practice, Loving-kindness meditation,Chanting, Singing, Journaling your truth, Deep breathing exercises,Third-eye meditation, Dream journaling, Fasting, Silent contemplation,Meditation, Prayer, Silence, Contemplation of the infinite' | split: ','
+
+  assign all_descs = 'The Muladhara Chakra sits at the base of the spine and is the foundation of all human energy. It is our primal connection to the earth — governing survival, security, and belonging. When balanced, we feel safe, rooted, and full of vitality. Our Muladhara Attar blends sacred earthen woods and roots to anchor your energy and bring you home to yourself.,The Svadhisthana Chakra is the seat of creativity, pleasure, and emotional flow. Located just below the navel, it governs our capacity for joy, sensuality, and creative expression. When open, life feels abundant and fluid. Our Sacral Attar — warm orange and sandalwood — kindles the sacred fire of creative life force.,The Manipura Chakra is your inner sun — the source of willpower, self-esteem, and personal power. Located in the solar plexus, it transforms raw emotion into purposeful action. Our Solar Plexus Attar is crafted with warming spices and citrus to ignite your inner fire and strengthen your sense of self.,The Anahata Chakra is the bridge between the lower and upper chakras — the seat of love, compassion, and healing. When balanced, we give and receive love freely, forgive easily, and feel deeply connected to all life. Our Heart Attar, centred on pure Rose absolute, opens the heart gently and completely.,The Vishuddha Chakra governs all forms of authentic expression — speaking your truth, listening deeply, and communicating with clarity. Located at the throat, it is the voice of your soul. Our Throat Attar — cooling chamomile and eucalyptus — clears the energetic pathways of self-expression.,The Ajna Chakra — the Third Eye — is the seat of intuition, inner knowing, and subtle perception. Located between the brows, it sees beyond the obvious. Our Third Eye Attar is crafted with sacred frankincense and grounding vetiver to still the mind and awaken inner vision.,The Sahasrara Chakra is the thousand-petalled lotus at the crown of the head — our portal to divine consciousness and pure awareness. Beyond thought and form, it connects us to the infinite. Our Crown Attar — white lotus, ylang ylang, and jasmine — dissolves the veil between self and spirit.' | split: ','
+
+  assign all_benefits_1 = 'Grounding & stability,Creative energy & passion,Personal power & confidence,Unconditional love & compassion,Clear & truthful expression,Heightened intuition & clarity,Spiritual awakening & bliss' | split: ','
+  assign all_benefits_2 = 'Physical vitality & stamina,Healthy boundaries & flow,Strong will & self-discipline,Emotional healing & balance,Overcoming fear of expression,Enhanced focus & perception,Inner peace & divine connection' | split: ','
+  assign all_benefits_3 = 'Fear & anxiety relief,Releasing guilt & shame,Overcoming self-doubt,Opening the heart to forgiveness,Voice and throat health,Relief from mental fog,Transcendence & surrender' | split: ','
+-%}
+
+<section class="ack" aria-label="Chakra Attar Explorer">
+
+
+  {%- comment -%} ── SELECTOR STRIP ── {%- endcomment -%}
+  <div class="ack__strip" role="tablist" aria-label="Select chakra">
+    {%- for i in (0..6) -%}
+      {%- assign ck = all_ck_keys[i] -%}
+      <button
+        type="button"
+        class="ack__card{% if i == 0 %} is-active{% endif %}"
+        role="tab"
+        aria-selected="{% if i == 0 %}true{% else %}false{% endif %}"
+        aria-controls="ack-panel-{{ ck }}"
+        data-chakra="{{ ck }}"
+        id="ack-tab-{{ ck }}"
+      >
+        <span class="ack__symbol-wrap" aria-hidden="true">{{ all_ck_symbols[i] }}</span>
+        <span class="ack__card-name">{{ all_ck_english[i] | replace: ' Chakra', '' }}<br>Chakra</span>
+        <span class="ack__card-keyword">{{ all_ck_keywords[i] }}</span>
+      </button>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} ── DETAIL PANELS ── {%- endcomment -%}
+  <div class="ack__panel-wrap">
+    {%- for i in (0..6) -%}
+      {%- liquid
+        assign ck = all_ck_keys[i]
+        assign product_setting_key = 'product_' | append: ck
+        assign ck_prod = section.settings[product_setting_key]
+      -%}
+      <div
+        class="ack__panel{% if i == 0 %} is-active{% endif %}"
+        id="ack-panel-{{ ck }}"
+        role="tabpanel"
+        aria-labelledby="ack-tab-{{ ck }}"
+        data-chakra="{{ ck }}"
+      >
+        <div class="ack__panel-bar" aria-hidden="true"></div>
+        <div class="ack__panel-body">
+
+          {%- comment -%} ── LEFT: Product ── {%- endcomment -%}
+          <div class="ack__panel-left">
+            <span class="ack__prod-symbol" aria-hidden="true">{{ all_ck_symbols[i] }}</span>
+
+            {%- if ck_prod != blank and ck_prod != empty -%}
+              <a href="{{ ck_prod.url }}" class="ack__prod-img-wrap" aria-label="{{ ck_prod.title | escape }}">
+                {%- if ck_prod.featured_image -%}
+                  <img
+                    class="ack__prod-img"
+                    src="{{ ck_prod.featured_image | image_url: width: 500 }}"
+                    alt="{{ ck_prod.featured_image.alt | default: ck_prod.title | escape }}"
+                    width="500"
+                    height="500"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {%- else -%}
+                  <div class="ack__prod-img-ph">{{ all_ck_symbols[i] }}</div>
+                {%- endif -%}
+              </a>
+              <p class="ack__prod-type">{{ ck_prod.type | default: 'Chakra Attar' }}</p>
+              <h3 class="ack__prod-title">{{ ck_prod.title }}</h3>
+              <div class="ack__prod-price">
+                {%- if ck_prod.compare_at_price > ck_prod.price -%}
+                  <span class="ack__prod-compare">{{ ck_prod.compare_at_price | money }}</span>
+                {%- endif -%}
+                {{ ck_prod.price | money }}
+              </div>
+              {%- if ck_prod.available -%}
+                <button
+                  type="button"
+                  class="ack__atc js-ack-atc"
+                  data-id="{{ ck_prod.variants.first.id }}"
+                  aria-label="Add {{ ck_prod.title | escape }} to cart"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg>
+                  <span>Add to Cart</span>
+                </button>
+                <a href="{{ ck_prod.url }}" class="ack__view-link">
+                  View Full Details
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              {%- else -%}
+                <button type="button" class="ack__atc" disabled>Sold Out</button>
+              {%- endif -%}
+            {%- else -%}
+              <div class="ack__prod-img-wrap"><div class="ack__prod-img-ph">{{ all_ck_symbols[i] }}</div></div>
+              <p class="ack__prod-type">Chakra Attar</p>
+              <h3 class="ack__prod-title">{{ all_ck_names[i] }} Attar</h3>
+              <p style="font-size:12px;color:#999;margin-top:8px;text-align:center;">Assign product in Theme Editor</p>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} ── RIGHT: Info ── {%- endcomment -%}
+          <div class="ack__panel-right">
+
+            {%- comment -%} Title {%- endcomment -%}
+            <div class="ack__panel-title">
+              <span class="ack__panel-num">Chakra {{ all_ck_nums[i] }}</span>
+              <h3 class="ack__panel-h">{{ all_ck_names[i] }}</h3>
+              <span class="ack__panel-sub">{{ all_ck_english[i] }} · Mantra: {{ all_ck_mantras[i] }} · Element: {{ all_ck_elements[i] }}</span>
+            </div>
+
+            {%- comment -%} Description {%- endcomment -%}
+            <p class="ack__desc">{{ all_descs[i] }}</p>
+
+            {%- comment -%} Blocked / Balanced / Activities table {%- endcomment -%}
+            <div class="ack__table" role="table" aria-label="Chakra states">
+              <div class="ack__table-col ack__table-col--blocked" role="cell">
+                <span class="ack__table-col-head">Blocked</span>
+                <p class="ack__table-col-body">{{ all_blocked[i] }}</p>
+              </div>
+              <div class="ack__table-col ack__table-col--balanced" role="cell">
+                <span class="ack__table-col-head">Balanced</span>
+                <p class="ack__table-col-body">{{ all_balanced[i] }}</p>
+              </div>
+              <div class="ack__table-col ack__table-col--activity" role="cell">
+                <span class="ack__table-col-head">Balancing Activities</span>
+                <p class="ack__table-col-body">{{ all_activities[i] }}</p>
+              </div>
+            </div>
+
+            {%- comment -%} Benefits {%- endcomment -%}
+            <div class="ack__benefits">
+              <span class="ack__benefits-head">Health & Spiritual Benefits</span>
+              {%- assign b1 = all_benefits_1[i] -%}
+              {%- assign b2 = all_benefits_2[i] -%}
+              {%- assign b3 = all_benefits_3[i] -%}
+              {%- assign benefits_joined = b1 | append: '||' | append: b2 | append: '||' | append: b3 -%}
+              {%- assign benefits_list = benefits_joined | split: '||' -%}
+              {%- for b in benefits_list -%}
+                <div class="ack__benefit-item">
+                  <span class="ack__benefit-dot" aria-hidden="true"></span>
+                  {{ b }}
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%} Usage tiles {%- endcomment -%}
+            <div class="ack__usage" aria-label="How to use">
+              <div class="ack__usage-item">
+                <span class="ack__usage-icon">🧘</span>
+                <span class="ack__usage-label">Meditation</span>
+                <span class="ack__usage-val">Apply 2 drops to wrists before practice</span>
+              </div>
+              <div class="ack__usage-item">
+                <span class="ack__usage-icon">🌿</span>
+                <span class="ack__usage-label">Pulse Points</span>
+                <span class="ack__usage-val">Wrists, temples, behind ears</span>
+              </div>
+              <div class="ack__usage-item">
+                <span class="ack__usage-icon">🕯</span>
+                <span class="ack__usage-label">Space Ritual</span>
+                <span class="ack__usage-val">Diffuse or apply to candle wax ring</span>
+              </div>
+            </div>
+
+            {%- comment -%} Meta pills {%- endcomment -%}
+            <div class="ack__pills" aria-label="Key properties">
+              <div class="ack__pill">
+                <span class="ack__pill-label">Essence</span>
+                {{ all_ck_essences[i] }}
+              </div>
+              <div class="ack__pill">
+                <span class="ack__pill-label">Mantra</span>
+                {{ all_ck_mantras[i] }}
+              </div>
+              <div class="ack__pill">
+                <span class="ack__pill-label">Element</span>
+                {{ all_ck_elements[i] }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+</section>
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── TAB SWITCHER ── */
+  var tabs   = document.querySelectorAll('.ack__card');
+  var panels = document.querySelectorAll('.ack__panel');
+
+  function activate(chakra) {
+    tabs.forEach(function (t) {
+      var active = t.dataset.chakra === chakra;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var active = p.dataset.chakra === chakra;
+      if (active) {
+        p.classList.add('is-active');
+        p.style.display = 'block';
+        /* re-trigger animation */
+        p.style.animation = 'none';
+        p.offsetHeight; /* reflow */
+        p.style.animation = '';
+      } else {
+        p.classList.remove('is-active');
+        p.style.display = 'none';
+      }
+    });
+
+    /* Smooth scroll to panel on mobile */
+    if (window.innerWidth < 860) {
+      var wrap = document.querySelector('.ack__panel-wrap');
+      if (wrap) {
+        setTimeout(function () {
+          wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      }
+    }
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab.dataset.chakra); });
+    tab.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(tab.dataset.chakra); }
+    });
+  });
+
+  /* ── ADD TO CART ── */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-ack-atc');
+    if (!btn) return;
+    e.preventDefault();
+
+    var id   = parseInt(btn.dataset.id, 10);
+    var span = btn.querySelector('span');
+    var orig = span ? span.textContent : 'Add to Cart';
+    if (!id) return;
+
+    btn.disabled = true;
+    if (span) span.textContent = 'Adding…';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: id, quantity: 1 })
+    })
+    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function () {
+      btn.classList.add('is-added');
+      if (span) span.textContent = '✓ Added to Cart';
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.classList.remove('is-added');
+        if (span) span.textContent = orig;
+      }, 2400);
+    })
+    .catch(function () {
+      btn.disabled = false;
+      if (span) span.textContent = orig;
+    });
+  });
+
+})();
+</script>
+
+

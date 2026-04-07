@@ -6,7 +6,7 @@
 <style>
     /* ── COLLECTION PAGE ── */
     .arc * { box-sizing:border-box; margin:0; padding:0; }
-    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
+    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#fff; color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
   
@@ -163,8 +163,7 @@
     {%- comment -%} PRODUCT GRID {% endcomment %}
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
-        {%- paginate collection.products by section.settings.products_per_page -%}
-          {%- for product in collection.products -%}
+        {%- for product in collection.products -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap">
                 {%- if product.images.size > 0 -%}
@@ -218,26 +217,7 @@
                 </button>
               </div>
             </div>
-          {%- endfor -%}
-  
-          {%- if paginate.pages > 1 -%}
-            <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
-              {%- if paginate.previous -%}
-                <a href="{{ paginate.previous.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8249;</a>
-              {%- endif -%}
-              {%- for part in paginate.parts -%}
-                {%- if part.is_link -%}
-                  <a href="{{ part.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e2023;text-decoration:none;">{{ part.title }}</a>
-                {%- else -%}
-                  <span style="width:40px;height:40px;{%- if part.title == paginate.current_page -%}background:#1e2023;color:#fff;{%- else -%}color:#9ca3af;{%- endif -%}border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;">{{ part.title }}</span>
-                {%- endif -%}
-              {%- endfor -%}
-              {%- if paginate.next -%}
-                <a href="{{ paginate.next.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8250;</a>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        {%- endpaginate -%}
+        {%- endfor -%}
       {%- else -%}
         <div class="arc-empty">
           <h2 class="arc-empty__h">No products yet</h2>
@@ -245,35 +225,12 @@
         </div>
       {%- endif -%}
     </div>
-  
-    {%- comment -%} CONTENT BLOCK {% endcomment %}
-    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
-    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
-      <div class="arc-content">
-        <div class="arc-content__img-wrap">
-          {%- if section.settings.content_image != blank -%}
-            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
-          {%- else -%}
-            <div class="arc-content__ph">Upload image in Theme Editor</div>
-          {%- endif -%}
-        </div>
-        <div>
-          <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
-          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'The Fragrance of Your Birth Star' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: "Your Nakshatra — your birth lunar mansion — holds the blueprint of your soul's journey. Each of our 27 Nakshatra Attars is composed to reflect the deity, symbolism, and elemental energy of a specific lunar mansion, creating a deeply personal fragrance." }}</p>
-        </div>
-      </div>
-    </section>
-    {%- endif -%}
-  
-    {%- comment -%} CTA SECTION {% endcomment %}
-    <section class="arc-cta">
-      <div class="arc-cta__ov"></div>
-      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
-      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Find the Attar Written in Your Stars' }}</h2>
-      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Twenty-seven Nakshatras. Twenty-seven unique fragrances. One destined for you.' }}</p>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
-    </section>
+
+    {% render 'ask-mehak',
+      uid: 'ask-mehak-home',
+      left_image: section.settings.hero_image,
+      left_image_alt: 'Astro fragrance finder'
+    %}
   
   </div>
   

@@ -274,6 +274,12 @@
       <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'The right fragrance does more than smell beautiful — it aligns you with your own energy.' }}</p>
       <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
     </section>
+
+    {% render 'ask-mehak',
+      uid: 'ask-mehak-home',
+      left_image: section.settings.hero_image,
+      left_image_alt: 'Astro fragrance finder'
+    %}
   
   </div>
   

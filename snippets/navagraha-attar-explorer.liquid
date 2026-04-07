@@ -1,0 +1,1198 @@
+{% comment %}
+  NAVAGRAHA — Vedic Planet Attar Explorer
+  sections/navagraha-attar-explorer.liquid
+  Click a planet card → reveals full detail panel with product + info
+  9 Planets: Surya, Chandra, Mangal, Budha, Guru, Shukra, Shani, Rahu, Ketu
+{% endcomment %}
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+.nav-x {
+  --ff-display: 'Cormorant Garamond', 'Didot', 'Georgia', serif;
+  --ff-body:    'DM Sans', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --ff-label:   'DM Mono', 'SF Mono', 'Fira Mono', monospace;
+
+  /* Base palette */
+  --bg:rgb(255, 255, 255);
+  --surface:   #FFFFFF;
+  --ink:       #18181A;
+  --ink-2:     #3C3C40;
+  --ink-3:     #8A8A90;
+  --ink-4:     #C4C4CA;
+  --border:    rgba(24,24,26,0.08);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
+  --shadow-lg: 0 24px 72px rgba(0,0,0,0.14);
+
+  --trans-spring: 0.44s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --trans-ease:   0.32s cubic-bezier(0.25, 1, 0.5, 1);
+  --trans-fast:   0.18s ease;
+
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--ink);
+}
+
+/* Planet color tokens */
+:root {
+  /* Surya — Sun */
+  --p-surya-bg:   #FFF3DB; --p-surya-mid:  #F59E0B; --p-surya-deep: #92400E; --p-surya-glow: rgba(245,158,11,0.22);
+  /* Chandra — Moon */
+  --p-chandra-bg: #EEF2FF; --p-chandra-mid:#818CF8; --p-chandra-deep:#1E1B4B; --p-chandra-glow:rgba(129,140,248,0.20);
+  /* Mangal — Mars */
+  --p-mangal-bg:  #FFF0EE; --p-mangal-mid: #EF4444; --p-mangal-deep:#7F1D1D; --p-mangal-glow: rgba(239,68,68,0.20);
+  /* Budha — Mercury */
+  --p-budha-bg:   #ECFDF5; --p-budha-mid:  #10B981; --p-budha-deep: #064E3B; --p-budha-glow:  rgba(16,185,129,0.20);
+  /* Guru — Jupiter */
+  --p-guru-bg:    #FEF9EE; --p-guru-mid:   #D97706; --p-guru-deep:  #451A03; --p-guru-glow:   rgba(217,119,6,0.20);
+  /* Shukra — Venus */
+  --p-shukra-bg:  #FDF2F8; --p-shukra-mid: #EC4899; --p-shukra-deep:#831843; --p-shukra-glow: rgba(236,72,153,0.20);
+  /* Shani — Saturn */
+  --p-shani-bg:   #F5F3FF; --p-shani-mid:  #7C3AED; --p-shani-deep: #2E1065; --p-shani-glow:  rgba(124,58,237,0.20);
+  /* Rahu — North Node */
+  --p-rahu-bg:    #F0FDF4; --p-rahu-mid:   #16A34A; --p-rahu-deep:  #14532D; --p-rahu-glow:   rgba(22,163,74,0.20);
+  /* Ketu — South Node */
+  --p-ketu-bg:    #FFF7ED; --p-ketu-mid:   #EA580C; --p-ketu-deep:  #431407; --p-ketu-glow:   rgba(234,88,12,0.20);
+}
+
+.nav-x *, .nav-x *::before, .nav-x *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.nav-x a  { text-decoration: none; color: inherit; }
+.nav-x img { display: block; max-width: 100%; }
+.nav-x button { font-family: var(--ff-body); cursor: pointer; border: none; background: none; }
+
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
+.nav-x__wrap {
+  background: var(--bg);
+  padding-bottom: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grain overlay */
+.nav-x__wrap::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.nav-x__header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 88px 48px 60px;
+}
+
+.nav-x__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--ff-label);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: nv-rise 0.7s ease 0.1s forwards;
+}
+.nav-x__eyebrow::before,
+.nav-x__eyebrow::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.nav-x__title {
+  font-family: var(--ff-display);
+  font-size: clamp(38px, 5.5vw, 72px);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: nv-rise 0.7s ease 0.2s forwards;
+}
+.nav-x__title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.nav-x__sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.8;
+  font-weight: 300;
+  max-width: 520px;
+  margin: 0 auto 32px;
+  opacity: 0;
+  animation: nv-rise 0.7s ease 0.3s forwards;
+}
+
+/* Celestial divider */
+.nav-x__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  animation: nv-rise 0.7s ease 0.4s forwards;
+}
+.nav-x__divider-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--ink-4));
+}
+.nav-x__divider-line:last-child {
+  background: linear-gradient(to left, transparent, var(--ink-4));
+}
+.nav-x__divider-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+.nav-x__divider-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ============================================================
+   PLANET GRID — 9-card orbital strip
+   ============================================================ */
+.nav-x__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 10px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 28px;
+  opacity: 0;
+  animation: nv-rise 0.7s ease 0.5s forwards;
+}
+
+@media (max-width: 1000px) { .nav-x__grid { grid-template-columns: repeat(5, 1fr); gap: 9px; } }
+@media (max-width: 580px)  { .nav-x__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px; } }
+
+/* ── Planet card ── */
+.nav-x__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px 16px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition:
+    transform var(--trans-spring),
+    box-shadow var(--trans-ease),
+    background var(--trans-ease);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Shimmer on hover */
+.nav-x__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--trans-ease);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.nav-x__card:hover::before { opacity: 1; }
+
+.nav-x__card:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+}
+.nav-x__card.is-active {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.14);
+}
+
+/* Active ring */
+.nav-x__card.is-active::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 26px;
+  border: 2px solid currentColor;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Per-planet backgrounds */
+.nav-x__card[data-planet="surya"]   { background: var(--p-surya-bg);   color: var(--p-surya-mid);   }
+.nav-x__card[data-planet="chandra"] { background: var(--p-chandra-bg); color: var(--p-chandra-mid); }
+.nav-x__card[data-planet="mangal"]  { background: var(--p-mangal-bg);  color: var(--p-mangal-mid);  }
+.nav-x__card[data-planet="budha"]   { background: var(--p-budha-bg);   color: var(--p-budha-mid);   }
+.nav-x__card[data-planet="guru"]    { background: var(--p-guru-bg);    color: var(--p-guru-mid);    }
+.nav-x__card[data-planet="shukra"]  { background: var(--p-shukra-bg);  color: var(--p-shukra-mid);  }
+.nav-x__card[data-planet="shani"]   { background: var(--p-shani-bg);   color: var(--p-shani-mid);   }
+.nav-x__card[data-planet="rahu"]    { background: var(--p-rahu-bg);    color: var(--p-rahu-mid);    }
+.nav-x__card[data-planet="ketu"]    { background: var(--p-ketu-bg);    color: var(--p-ketu-mid);    }
+
+/* Planet glyph orb */
+.nav-x__orb {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  line-height: 1;
+  background: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  margin-bottom: 10px;
+  transition: transform var(--trans-spring), box-shadow var(--trans-ease);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.nav-x__card:hover .nav-x__orb,
+.nav-x__card.is-active .nav-x__orb {
+  transform: scale(1.14) rotate(-8deg);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.14);
+}
+
+.nav-x__card-name {
+  font-family: var(--ff-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+.nav-x__card-en {
+  font-family: var(--ff-label);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-align: center;
+  color: var(--ink-3);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.nav-x__panels {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 28px auto 0;
+  padding: 0 28px;
+}
+@media (max-width: 580px) { .nav-x__panels { padding: 0 16px; } }
+
+.nav-x__panel {
+  display: none;
+  border-radius: 32px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+.nav-x__panel.is-active {
+  display: block;
+  animation: nv-panel-in 0.58s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+@keyframes nv-panel-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.975); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Top accent bar */
+.nav-x__panel-accent {
+  height: 4px;
+}
+.nav-x__panel[data-planet="surya"]   .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-surya-bg),  var(--p-surya-mid),  var(--p-surya-deep)); }
+.nav-x__panel[data-planet="chandra"] .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-chandra-bg),var(--p-chandra-mid),var(--p-chandra-deep)); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-mangal-bg), var(--p-mangal-mid), var(--p-mangal-deep)); }
+.nav-x__panel[data-planet="budha"]   .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-budha-bg),  var(--p-budha-mid),  var(--p-budha-deep)); }
+.nav-x__panel[data-planet="guru"]    .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-guru-bg),   var(--p-guru-mid),   var(--p-guru-deep)); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-shukra-bg), var(--p-shukra-mid), var(--p-shukra-deep)); }
+.nav-x__panel[data-planet="shani"]   .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-shani-bg),  var(--p-shani-mid),  var(--p-shani-deep)); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-rahu-bg),   var(--p-rahu-mid),   var(--p-rahu-deep)); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__panel-accent { background: linear-gradient(90deg,var(--p-ketu-bg),   var(--p-ketu-mid),   var(--p-ketu-deep)); }
+
+/* Panel layout */
+.nav-x__panel-inner {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+}
+@media (max-width: 860px)  { .nav-x__panel-inner { grid-template-columns: 1fr; } }
+
+/* ── LEFT column ── */
+.nav-x__panel-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 36px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial glow bg */
+.nav-x__panel-left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.nav-x__panel[data-planet="surya"]   .nav-x__panel-left { background: var(--p-surya-bg); }
+.nav-x__panel[data-planet="surya"]   .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-surya-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="chandra"] .nav-x__panel-left { background: var(--p-chandra-bg); }
+.nav-x__panel[data-planet="chandra"] .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-chandra-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__panel-left { background: var(--p-mangal-bg); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-mangal-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="budha"]   .nav-x__panel-left { background: var(--p-budha-bg); }
+.nav-x__panel[data-planet="budha"]   .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-budha-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="guru"]    .nav-x__panel-left { background: var(--p-guru-bg); }
+.nav-x__panel[data-planet="guru"]    .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-guru-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__panel-left { background: var(--p-shukra-bg); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-shukra-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="shani"]   .nav-x__panel-left { background: var(--p-shani-bg); }
+.nav-x__panel[data-planet="shani"]   .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-shani-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__panel-left { background: var(--p-rahu-bg); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-rahu-glow) 0%, transparent 70%); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__panel-left { background: var(--p-ketu-bg); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__panel-left::before { background: radial-gradient(circle at 50% 40%, var(--p-ketu-glow) 0%, transparent 70%); }
+
+/* Orbital ring decoration */
+.nav-x__orbit-ring {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,0,0,0.08);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: nv-orbit-spin 40s linear infinite;
+  pointer-events: none;
+}
+.nav-x__orbit-ring:nth-child(2) {
+  width: 300px;
+  height: 300px;
+  animation-duration: 65s;
+  animation-direction: reverse;
+  border-style: dotted;
+  opacity: 0.5;
+}
+@keyframes nv-orbit-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Large planet glyph (animated) */
+.nav-x__planet-glyph {
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.12));
+  animation: nv-float 6s ease-in-out infinite;
+}
+@keyframes nv-float {
+  0%,100% { transform: translateY(0px) rotate(0deg); }
+  33%      { transform: translateY(-7px) rotate(2deg); }
+  66%      { transform: translateY(-4px) rotate(-1.5deg); }
+}
+
+/* Product image */
+.nav-x__img-wrap {
+  position: relative;
+  z-index: 1;
+  width: 168px;
+  height: 168px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.10);
+  margin-bottom: 22px;
+  transition: transform var(--trans-spring), box-shadow var(--trans-ease);
+  backdrop-filter: blur(4px);
+}
+.nav-x__img-wrap:hover {
+  transform: translateY(-5px) scale(1.03) rotate(1deg);
+  box-shadow: 0 18px 52px rgba(0,0,0,0.16);
+}
+.nav-x__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.nav-x__img-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  opacity: 0.2;
+}
+
+.nav-x__prod-type {
+  font-family: var(--ff-label);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.nav-x__prod-name {
+  font-family: var(--ff-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 8px;
+  line-height: 1.25;
+  position: relative;
+  z-index: 1;
+}
+.nav-x__prod-price {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+.nav-x__prod-compare {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-3);
+  text-decoration: line-through;
+}
+
+/* ATC Button */
+.nav-x__atc {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-family: var(--ff-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform var(--trans-spring), box-shadow var(--trans-ease), opacity var(--trans-fast);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.nav-x__atc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background var(--trans-fast);
+}
+.nav-x__atc:hover:not(:disabled)::after { background: rgba(255,255,255,0.12); }
+.nav-x__atc:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+}
+.nav-x__atc:active:not(:disabled) { transform: translateY(0px) scale(0.98); }
+.nav-x__atc:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Per-planet ATC colors */
+.nav-x__panel[data-planet="surya"]   .nav-x__atc { background: linear-gradient(135deg,var(--p-surya-mid),  var(--p-surya-deep)); }
+.nav-x__panel[data-planet="chandra"] .nav-x__atc { background: linear-gradient(135deg,var(--p-chandra-mid),var(--p-chandra-deep)); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__atc { background: linear-gradient(135deg,var(--p-mangal-mid), var(--p-mangal-deep)); }
+.nav-x__panel[data-planet="budha"]   .nav-x__atc { background: linear-gradient(135deg,var(--p-budha-mid),  var(--p-budha-deep)); }
+.nav-x__panel[data-planet="guru"]    .nav-x__atc { background: linear-gradient(135deg,var(--p-guru-mid),   var(--p-guru-deep)); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__atc { background: linear-gradient(135deg,var(--p-shukra-mid), var(--p-shukra-deep)); }
+.nav-x__panel[data-planet="shani"]   .nav-x__atc { background: linear-gradient(135deg,var(--p-shani-mid),  var(--p-shani-deep)); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__atc { background: linear-gradient(135deg,var(--p-rahu-mid),   var(--p-rahu-deep)); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__atc { background: linear-gradient(135deg,var(--p-ketu-mid),   var(--p-ketu-deep)); }
+
+/* View link */
+.nav-x__view {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(24,24,26,0.14);
+  background: rgba(255,255,255,0.7);
+  font-family: var(--ff-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform var(--trans-spring), border-color var(--trans-ease), background var(--trans-ease);
+  backdrop-filter: blur(4px);
+}
+.nav-x__view:hover {
+  transform: translateY(-2px);
+  border-color: rgba(24,24,26,0.3);
+  background: rgba(255,255,255,0.9);
+}
+
+/* ── RIGHT column ── */
+.nav-x__panel-right {
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  border-left: 1px solid var(--border);
+}
+@media (max-width: 860px) {
+  .nav-x__panel-right {
+    padding: 36px 28px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    gap: 24px;
+  }
+}
+
+/* Title block */
+.nav-x__panel-title { display: flex; flex-direction: column; gap: 5px; }
+.nav-x__panel-num {
+  font-family: var(--ff-label);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.nav-x__panel-h {
+  font-family: var(--ff-display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.03;
+}
+.nav-x__panel-sub {
+  font-family: var(--ff-label);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: 0.75;
+}
+
+/* Description */
+.nav-x__desc {
+  font-size: 15px;
+  line-height: 1.88;
+  color: var(--ink-2);
+  font-weight: 300;
+  padding-left: 20px;
+  border-left: 2.5px solid;
+}
+.nav-x__panel[data-planet="surya"]   .nav-x__desc { border-color: var(--p-surya-mid); }
+.nav-x__panel[data-planet="chandra"] .nav-x__desc { border-color: var(--p-chandra-mid); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__desc { border-color: var(--p-mangal-mid); }
+.nav-x__panel[data-planet="budha"]   .nav-x__desc { border-color: var(--p-budha-mid); }
+.nav-x__panel[data-planet="guru"]    .nav-x__desc { border-color: var(--p-guru-mid); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__desc { border-color: var(--p-shukra-mid); }
+.nav-x__panel[data-planet="shani"]   .nav-x__desc { border-color: var(--p-shani-mid); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__desc { border-color: var(--p-rahu-mid); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__desc { border-color: var(--p-ketu-mid); }
+
+/* 3-column info grid */
+.nav-x__info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+}
+@media (max-width: 560px) { .nav-x__info-grid { grid-template-columns: 1fr; } }
+
+.nav-x__info-cell { background: var(--surface); padding: 18px 16px; }
+.nav-x__info-cell-label {
+  font-family: var(--ff-label);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  display: block;
+  margin-bottom: 8px;
+}
+.nav-x__info-cell--afflicted  .nav-x__info-cell-label { color: #EF4444; }
+.nav-x__info-cell--exalted    .nav-x__info-cell-label { color: #10B981; }
+.nav-x__info-cell--remedies   .nav-x__info-cell-label { color: #818CF8; }
+.nav-x__info-cell-val {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  font-weight: 300;
+}
+
+/* Benefit dots */
+.nav-x__benefits { display: flex; flex-direction: column; gap: 9px; }
+.nav-x__benefits-h {
+  font-family: var(--ff-label);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 3px;
+}
+.nav-x__benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  font-weight: 300;
+  line-height: 1.45;
+}
+.nav-x__benefit-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.nav-x__panel[data-planet="surya"]   .nav-x__benefit-dot { background: var(--p-surya-mid); }
+.nav-x__panel[data-planet="chandra"] .nav-x__benefit-dot { background: var(--p-chandra-mid); }
+.nav-x__panel[data-planet="mangal"]  .nav-x__benefit-dot { background: var(--p-mangal-mid); }
+.nav-x__panel[data-planet="budha"]   .nav-x__benefit-dot { background: var(--p-budha-mid); }
+.nav-x__panel[data-planet="guru"]    .nav-x__benefit-dot { background: var(--p-guru-mid); }
+.nav-x__panel[data-planet="shukra"]  .nav-x__benefit-dot { background: var(--p-shukra-mid); }
+.nav-x__panel[data-planet="shani"]   .nav-x__benefit-dot { background: var(--p-shani-mid); }
+.nav-x__panel[data-planet="rahu"]    .nav-x__benefit-dot { background: var(--p-rahu-mid); }
+.nav-x__panel[data-planet="ketu"]    .nav-x__benefit-dot { background: var(--p-ketu-mid); }
+
+/* Usage tiles */
+.nav-x__usage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 560px) { .nav-x__usage { grid-template-columns: 1fr 1fr; } }
+.nav-x__usage-tile {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform var(--trans-spring), box-shadow var(--trans-ease);
+}
+.nav-x__usage-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.nav-x__usage-icon { font-size: 22px; line-height: 1; }
+.nav-x__usage-label {
+  font-family: var(--ff-body);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.nav-x__usage-val {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-weight: 300;
+  line-height: 1.45;
+}
+
+/* Attribute pills */
+.nav-x__attrs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.nav-x__attr {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: var(--ff-body);
+  font-size: 12px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--ink);
+  background: var(--surface);
+  transition: transform var(--trans-fast), box-shadow var(--trans-fast);
+}
+.nav-x__attr:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.nav-x__attr-label {
+  font-family: var(--ff-label);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-right: 2px;
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes nv-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-x__header { padding: 64px 24px 44px; }
+}
+@media (max-width: 480px) {
+  .nav-x__header { padding: 48px 16px 32px; }
+  .nav-x__img-wrap { width: 130px; height: 130px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nav-x *, .nav-x *::before, .nav-x *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nav-x__planet-glyph { animation: none; }
+  .nav-x__orbit-ring   { animation: none; }
+}
+</style>
+
+{%- comment -%}
+  ── STATIC PLANET DATA
+{%- endcomment -%}
+{%- liquid
+  assign pl_keys    = 'surya,chandra,mangal,budha,guru,shukra,shani,rahu,ketu' | split: ','
+  assign pl_names   = 'Surya,Chandra,Mangal,Budha,Guru,Shukra,Shani,Rahu,Ketu' | split: ','
+  assign pl_english = 'The Sun,The Moon,Mars,Mercury,Jupiter,Venus,Saturn,North Node,South Node' | split: ','
+  assign pl_glyphs  = '☀️,🌙,♂️,☿,♃,♀,♄,🌑,🔥' | split: ','
+  assign pl_nums    = '01,02,03,04,05,06,07,08,09' | split: ','
+  assign pl_day     = 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Saturday (Shadow),Tuesday (Shadow)' | split: ','
+  assign pl_stone   = "Ruby,Pearl,Red Coral,Emerald,Yellow Sapphire,Diamond,Blue Sapphire,Hessonite,Cat's Eye" | split: ','
+  assign pl_mantra  = 'Aum Hraam Hreem Hraum Sah Suryaya Namah,Aum Shram Shreem Shraum Sah Chandraya Namah,Aum Kraam Kreem Kraum Sah Bhaumaya Namah,Aum Braam Breem Braum Sah Budhaya Namah,Aum Graam Greem Graum Sah Gurave Namah,Aum Draam Dreem Draum Sah Shukraya Namah,Aum Praam Preem Praum Sah Shanaischaraya Namah,Aum Bhraam Bhreem Bhraum Sah Rahave Namah,Aum Sraam Sreem Sraum Sah Ketave Namah' | split: ','
+  assign pl_essence = 'Saffron · Sandalwood · Amber · Musk,White Rose · Jasmine · Camphor · Kewra,Oud · Red Musk · Cinnamon · Cardamom,Tulsi · Vetiver · Bergamot · Mint,Haldi · Champa · Kesar · Warm Woods,Rose Absolute · Tuberose · Ylang Ylang · Vanilla,Camphor · Cedarwood · Black Musk · Agar,Blue Lotus · Vetiver · Patchouli · Nag Champa,Kewra · Benzoin · Gugal · Sacred Smoke' | split: ','
+  assign pl_color   = 'Gold & Crimson,Silver & Ivory,Scarlet & Bronze,Emerald & Olive,Saffron & Golden,Rose & Pearl,Indigo & Charcoal,Smoky Jade & Black,Rust & Ash' | split: ','
+  assign pl_metal   = 'Gold,Silver,Copper,Brass,Gold & Bronze,Platinum & Silver,Iron,Lead & Brass,Iron' | split: ','
+
+  assign pl_descs = "Surya — the Soul of the Cosmos — rules vitality, authority, and the divine self. Placed at the heart of the Navagraha, he governs one's purpose and life force. Our Surya Attar is a blazing accord of aged Mysore Sandalwood, rare Saffron, and warm Kashmiri Amber — a fragrance as sovereign as the sun itself. Wear it to command presence, amplify confidence, and awaken the king within.,Chandra governs the mind, emotions, and the cycles of inner life. Fluid as moonlight and deep as the tidal sea, she rules intuition, memory, and the subconscious. Our Chandra Attar weaves White Rose, night-blooming Jasmine, and sacred Kewra into a luminous, watery accord that soothes the restless mind and awakens psychic sensitivity. A fragrance for dreamers, healers, and seekers.,Mangal — the fierce commander of the planetary army — rules courage, ambition, and the warrior spirit. The red planet governs blood, passion, and the drive to conquer. Our Mangal Attar is a bold and fiery blend of Oud, aged Red Musk, Cinnamon, and Cardamom — a battle-ready fragrance for those who refuse to be ordinary. Light it before competition or challenge.,Budha, lord of intellect and communication, governs wit, adaptability, and mercantile skill. Neutral in gender and swift in movement, he presides over language, trade, and learning. Our Budha Attar is a crisp, green-intellectual accord of Tulsi, Bergamot, cool Vetiver, and forest Mint — a perfume for the sharp mind, the writer, the strategist, and the merchant.,Guru — Brihaspati, the Teacher of Gods — is the greatest benefic in Vedic astrology. He rules wisdom, abundance, dharma, and divine grace. Our Guru Attar is an opulent, devotional blend of Haldi, rare Champa, Kashmiri Kesar, and aged warm woods — a golden fragrance that expands the spirit and invites blessings of prosperity and higher knowledge.,Shukra — Venus, the planet of beauty, poetry, and pleasure — governs love, artistic creation, and material abundance. He is the guru of the asuras and master of worldly refinement. Our Shukra Attar is a ravishing bouquet of Rose Absolute, night Tuberose, and Ylang Ylang — a seductive, feminine perfume that opens the heart, heightens sensuality, and draws love like a magnet.,Shani — Saturn, the cosmic taskmaster — rules discipline, karma, patience, and the slow but inevitable unfolding of destiny. The most feared yet wisest of the grahas, he rewards sincerity and punishes arrogance. Our Shani Attar is an austere, meditative accord of ancient Camphor, Cedarwood, Black Musk, and sacred Agar — a fragrance of depth, endurance, and spiritual gravity.,Rahu — the shadow planet of the North Node — rules illusion, obsession, foreign travel, and the hunger for the unknown. An eclipse-maker and a rule-breaker, Rahu amplifies whatever he touches. Our Rahu Attar is an otherworldly, hypnotic blend of Blue Lotus, earthy Vetiver, dark Patchouli, and smoky Nag Champa — a fragrance that dissolves boundaries and opens the doors of perception.,Ketu — the headless shadow of the South Node — is the planet of liberation, past life karma, and mystical wisdom. Where Rahu desires, Ketu renounces. Our Ketu Attar is a sacred, smoky accord of Kewra, Benzoin, Gugal resin, and the ash of ancient sacred smoke — a fragrance for contemplation, moksha, and the dissolution of the ego into pure consciousness." | split: ','
+
+  assign pl_afflicted_1 = 'Low confidence, Lack of authority, Dependency on others' | split: ','
+  assign pl_afflicted_2 = 'Emotional instability, Anxiety, Mood disorders, Insomnia' | split: ','
+  assign pl_afflicted_3 = 'Aggression, Impulsiveness, Conflict, Recklessness' | split: ','
+  assign pl_afflicted_4 = 'Indecision, Poor communication, Anxiety, Scattered focus' | split: ','
+  assign pl_afflicted_5 = 'Poor judgment, Overindulgence, Financial loss, Arrogance' | split: ','
+  assign pl_afflicted_6 = 'Heartbreak, Vanity, Laziness, Creative blocks, Lovelessness' | split: ','
+  assign pl_afflicted_7 = 'Delays, Depression, Chronic illness, Fear, Pessimism' | split: ','
+  assign pl_afflicted_8 = 'Obsession, Illusion, Deception, Addiction, Confusion' | split: ','
+  assign pl_afflicted_9 = 'Spiritual confusion, Detachment, Losses, Isolation' | split: ','
+
+  assign pl_exalted_1 = 'Leadership, Fame, Vitality, Radiant health, Success' | split: ','
+  assign pl_exalted_2 = 'Emotional intelligence, Creativity, Empathy, Calm mind' | split: ','
+  assign pl_exalted_3 = 'Courage, Ambition, Athletic prowess, Victory in conflicts' | split: ','
+  assign pl_exalted_4 = 'Eloquence, Sharp intellect, Business success, Adaptability' | split: ','
+  assign pl_exalted_5 = 'Wisdom, Wealth, Spiritual grace, Generosity, Good fortune' | split: ','
+  assign pl_exalted_6 = 'Beauty, Romance, Artistic genius, Sensuality, Abundance' | split: ','
+  assign pl_exalted_7 = 'Discipline, Longevity, Spiritual depth, Justice, Perseverance' | split: ','
+  assign pl_exalted_8 = 'Innovation, Psychic powers, Success abroad, Out-of-the-box thinking' | split: ','
+  assign pl_exalted_9 = 'Moksha, Spiritual liberation, Deep meditation, Clairvoyance' | split: ','
+
+  assign pl_remedies_1 = 'Offer water to rising sun, wear Ruby, chant Gayatri Mantra, honour fathers' | split: ','
+  assign pl_remedies_2 = 'Fast on Mondays, offer milk to Shiva, wear Pearl, meditate at night' | split: ','
+  assign pl_remedies_3 = 'Recite Hanuman Chalisa, offer red flowers, wear Red Coral, fast Tuesdays' | split: ','
+  assign pl_remedies_4 = 'Feed green vegetables to cows, wear Emerald, chant on Wednesdays' | split: ','
+  assign pl_remedies_5 = 'Serve teachers, donate turmeric, wear Yellow Sapphire, fast Thursdays' | split: ','
+  assign pl_remedies_6 = 'Offer white flowers, donate to artists, wear Diamond, fast on Fridays' | split: ','
+  assign pl_remedies_7 = 'Serve the elderly, pour sesame oil on Shani idol, wear Blue Sapphire' | split: ','
+  assign pl_remedies_8 = 'Feed stray animals, burn camphor at dusk, wear Hessonite Garnet' | split: ','
+  assign pl_remedies_9 = "Worship Ganesha, burn Gugal incense, wear Cat's Eye, practice silence" | split: ','
+
+  assign pl_b1 = 'Vitality & solar radiance,Emotional peace & lunar balance,Courage & warrior strength,Sharp intellect & communication,Wisdom, abundance & divine grace,Love, beauty & creative power,Discipline, endurance & karmic resolve,Breaking illusions & psychic insight,Liberation, moksha & past-life healing' | split: ','
+  assign pl_b2 = 'Leadership & executive presence,Dream recall & intuition,Ambition & competitive edge,Eloquence & business acumen,Financial prosperity & good fortune,Sensuality & artistic inspiration,Patience & long-term strategy,Amplified desires & foreign luck,Detachment & spiritual depth' | split: ','
+  assign pl_b3 = 'Immunity, eye & bone health,Mental calm & hormonal balance,Blood vitality & adrenal energy,Nervous system & respiratory health,Liver health & optimism,Kidney, skin & reproductive health,Longevity, joint & nerve strength,Skin & circulatory purification,Enlightenment & karmic release' | split: ','
+-%}
+
+{%- comment -%} Assign afflicted/exalted/remedies per planet index {%- endcomment -%}
+
+<section class="nav-x" aria-label="Navagraha Attar Explorer">
+  <div class="nav-x__wrap">
+
+    {%- comment -%} ── HEADER ── {%- endcomment -%}
+    <header class="nav-x__header">
+      <span class="nav-x__eyebrow">{{ section.settings.eyebrow | default: 'Navagraha Collection' }}</span>
+      <h2 class="nav-x__title">{{ section.settings.title | default: 'The Nine Planetary <em>Attars</em>' }}</h2>
+      <p class="nav-x__sub">{{ section.settings.subtitle | default: 'Ancient Vedic wisdom distilled into rare botanical essences. Each attar is formulated under the planetary hour of its ruling graha.' }}</p>
+      <div class="nav-x__divider" aria-hidden="true">
+        <span class="nav-x__divider-line"></span>
+        <span class="nav-x__divider-dot"></span>
+        <span class="nav-x__divider-icon">🪐</span>
+        <span class="nav-x__divider-dot"></span>
+        <span class="nav-x__divider-line"></span>
+      </div>
+    </header>
+
+    {%- comment -%} ── PLANET GRID ── {%- endcomment -%}
+    <div class="nav-x__grid" role="tablist" aria-label="Select planet">
+      {%- for i in (0..8) -%}
+        {%- assign pk = pl_keys[i] -%}
+        <button
+          type="button"
+          class="nav-x__card{% if i == 0 %} is-active{% endif %}"
+          role="tab"
+          aria-selected="{% if i == 0 %}true{% else %}false{% endif %}"
+          aria-controls="nvp-{{ pk }}"
+          data-planet="{{ pk }}"
+          id="nvt-{{ pk }}"
+        >
+          <span class="nav-x__orb" aria-hidden="true">{{ pl_glyphs[i] }}</span>
+          <span class="nav-x__card-name">{{ pl_names[i] }}</span>
+          <span class="nav-x__card-en">{{ pl_english[i] }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} ── DETAIL PANELS ── {%- endcomment -%}
+    <div class="nav-x__panels">
+      {%- for i in (0..8) -%}
+        {%- liquid
+          assign pk = pl_keys[i]
+          assign block_index = i
+          assign ck_prod = nil
+          if section.blocks[block_index]
+            assign ck_prod = section.blocks[block_index].settings.product
+          endif
+
+          case i
+            when 0
+              assign aff_str = 'Low confidence, lack of authority, poor vitality, dependency on others'
+              assign exl_str = 'Leadership, fame, vitality, radiant health, creative success'
+              assign rem_str = 'Offer water to rising sun daily, wear Ruby, chant Gayatri Mantra 108×, honour father figures'
+            when 1
+              assign aff_str = 'Emotional instability, anxiety, mood swings, insomnia, fear'
+              assign exl_str = 'Emotional intelligence, creativity, empathy, calm and receptive mind'
+              assign rem_str = 'Fast on Mondays, offer milk to Shiva, wear Pearl, meditate under moonlight'
+            when 2
+              assign aff_str = 'Aggression, impulsiveness, uncontrolled conflict, recklessness'
+              assign exl_str = 'Courage, ambition, athletic prowess, victory over enemies and adversity'
+              assign rem_str = 'Recite Hanuman Chalisa, offer red flowers, wear Red Coral, fast on Tuesdays'
+            when 3
+              assign aff_str = 'Indecision, poor communication, scattered focus, nervous anxiety'
+              assign exl_str = 'Eloquence, sharp intellect, business success, versatility and wit'
+              assign rem_str = 'Feed green vegetables to cows, wear Emerald, chant Budha mantra on Wednesdays'
+            when 4
+              assign aff_str = 'Poor judgment, overindulgence, financial loss, arrogance, false beliefs'
+              assign exl_str = 'Wisdom, wealth, spiritual grace, generosity, expansion and good fortune'
+              assign rem_str = 'Serve teachers and elders, donate turmeric, wear Yellow Sapphire, fast Thursdays'
+            when 5
+              assign aff_str = 'Heartbreak, vanity, laziness, creative blocks, romantic failure'
+              assign exl_str = 'Beauty, romance, artistic genius, sensuality, material abundance'
+              assign rem_str = 'Offer white flowers to Goddess Lakshmi, donate to artists, wear Diamond, fast Fridays'
+            when 6
+              assign aff_str = 'Delays, chronic obstacles, depression, illness, pessimism and fear'
+              assign exl_str = 'Discipline, longevity, spiritual depth, justice, karmic rewards'
+              assign rem_str = 'Serve elderly and underprivileged, pour sesame oil on Shani idol, wear Blue Sapphire'
+            when 7
+              assign aff_str = 'Obsession, illusion, deception, addiction, material confusion'
+              assign exl_str = 'Innovation, psychic powers, foreign success, out-of-the-box vision'
+              assign rem_str = 'Feed stray animals, burn camphor at dusk, wear Hessonite Garnet, chant Rahu mantra'
+            when 8
+              assign aff_str = 'Spiritual confusion, deep losses, isolation, meaninglessness'
+              assign exl_str = 'Moksha, liberation, deep meditation, clairvoyance, past-life healing'
+              assign rem_str = "Worship Ganesha, burn Gugal incense, wear Cat's Eye, practise daily silence"
+          endcase
+        -%}
+        <div
+          class="nav-x__panel{% if i == 0 %} is-active{% endif %}"
+          id="nvp-{{ pk }}"
+          role="tabpanel"
+          aria-labelledby="nvt-{{ pk }}"
+          data-planet="{{ pk }}"
+        >
+          <div class="nav-x__panel-accent" aria-hidden="true"></div>
+          <div class="nav-x__panel-inner">
+
+            {%- comment -%} ── LEFT: Product ── {%- endcomment -%}
+            <div class="nav-x__panel-left">
+              <span class="nav-x__orbit-ring" aria-hidden="true"></span>
+              <span class="nav-x__orbit-ring" aria-hidden="true"></span>
+
+              {%- if ck_prod != blank and ck_prod != nil -%}
+                <a href="{{ ck_prod.url }}" class="nav-x__img-wrap" aria-label="{{ ck_prod.title | escape }}">
+                  {%- if ck_prod.featured_image -%}
+                    <img
+                      class="nav-x__img"
+                      src="{{ ck_prod.featured_image | image_url: width: 600 }}"
+                      alt="{{ ck_prod.featured_image.alt | default: ck_prod.title | escape }}"
+                      width="600" height="600"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {%- else -%}
+                    <div class="nav-x__img-ph">{{ pl_glyphs[i] }}</div>
+                  {%- endif -%}
+                </a>
+                <p class="nav-x__prod-type">{{ ck_prod.type | default: 'Navagraha Attar' }}</p>
+                <h3 class="nav-x__prod-name">{{ ck_prod.title }}</h3>
+                <div class="nav-x__prod-price">
+                  {%- if ck_prod.compare_at_price > ck_prod.price -%}
+                    <span class="nav-x__prod-compare">{{ ck_prod.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  {{ ck_prod.price | money }}
+                </div>
+                {%- if ck_prod.available -%}
+                  <button
+                    type="button"
+                    class="nav-x__atc js-nv-atc"
+                    data-id="{{ ck_prod.variants.first.id }}"
+                    aria-label="Add {{ ck_prod.title | escape }} to cart"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg>
+                    <span>Add to Cart</span>
+                  </button>
+                  <a href="{{ ck_prod.url }}" class="nav-x__view">
+                    View Full Details
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                {%- else -%}
+                  <button type="button" class="nav-x__atc" disabled>Sold Out</button>
+                {%- endif -%}
+              {%- else -%}
+                <span class="nav-x__planet-glyph" aria-hidden="true">{{ pl_glyphs[i] }}</span>
+                <div class="nav-x__img-wrap"><div class="nav-x__img-ph">{{ pl_glyphs[i] }}</div></div>
+                <p class="nav-x__prod-type">Navagraha Attar</p>
+                <h3 class="nav-x__prod-name">{{ pl_names[i] }} Attar</h3>
+                <p style="font-size:12px;color:var(--ink-3);margin-top:8px;text-align:center;position:relative;z-index:1;">Assign product in Theme Editor</p>
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} ── RIGHT: Info ── {%- endcomment -%}
+            <div class="nav-x__panel-right">
+
+              {%- comment -%} Title {%- endcomment -%}
+              <div class="nav-x__panel-title">
+                <span class="nav-x__panel-num">Graha {{ pl_nums[i] }} · {{ pl_day[i] }}</span>
+                <h3 class="nav-x__panel-h">{{ pl_names[i] }}</h3>
+                <span class="nav-x__panel-sub">{{ pl_english[i] }} · {{ pl_glyphs[i] }} · {{ pl_mantra[i] | truncate: 36, '…' }}</span>
+              </div>
+
+              {%- comment -%} Description {%- endcomment -%}
+              <p class="nav-x__desc">{{ pl_descs[i] }}</p>
+
+              {%- comment -%} Afflicted / Exalted / Remedies {%- endcomment -%}
+              <div class="nav-x__info-grid" role="table">
+                <div class="nav-x__info-cell nav-x__info-cell--afflicted" role="cell">
+                  <span class="nav-x__info-cell-label">When Afflicted</span>
+                  <p class="nav-x__info-cell-val">{{ aff_str }}</p>
+                </div>
+                <div class="nav-x__info-cell nav-x__info-cell--exalted" role="cell">
+                  <span class="nav-x__info-cell-label">When Exalted</span>
+                  <p class="nav-x__info-cell-val">{{ exl_str }}</p>
+                </div>
+                <div class="nav-x__info-cell nav-x__info-cell--remedies" role="cell">
+                  <span class="nav-x__info-cell-label">Vedic Remedies</span>
+                  <p class="nav-x__info-cell-val">{{ rem_str }}</p>
+                </div>
+              </div>
+
+              {%- comment -%} Benefits {%- endcomment -%}
+              <div class="nav-x__benefits">
+                <span class="nav-x__benefits-h">Attar Benefits</span>
+                <div class="nav-x__benefit">
+                  <span class="nav-x__benefit-dot" aria-hidden="true"></span>
+                  {{ pl_b1[i] }}
+                </div>
+                <div class="nav-x__benefit">
+                  <span class="nav-x__benefit-dot" aria-hidden="true"></span>
+                  {{ pl_b2[i] }}
+                </div>
+                <div class="nav-x__benefit">
+                  <span class="nav-x__benefit-dot" aria-hidden="true"></span>
+                  {{ pl_b3[i] }}
+                </div>
+              </div>
+
+              {%- comment -%} Usage tiles {%- endcomment -%}
+              <div class="nav-x__usage" aria-label="How to use">
+                <div class="nav-x__usage-tile">
+                  <span class="nav-x__usage-icon">🧘</span>
+                  <span class="nav-x__usage-label">Planetary Hour</span>
+                  <span class="nav-x__usage-val">Apply before {{ pl_day[i] | downcase }} morning sadhana for peak potency</span>
+                </div>
+                <div class="nav-x__usage-tile">
+                  <span class="nav-x__usage-icon">🌿</span>
+                  <span class="nav-x__usage-label">Pulse Points</span>
+                  <span class="nav-x__usage-val">Wrists, behind ears, third eye, and base of throat</span>
+                </div>
+                <div class="nav-x__usage-tile">
+                  <span class="nav-x__usage-icon">🕯️</span>
+                  <span class="nav-x__usage-label">Ritual Use</span>
+                  <span class="nav-x__usage-val">Anoint oil lamp, prayer space or diya during planetary hour</span>
+                </div>
+              </div>
+
+              {%- comment -%} Attribute pills {%- endcomment -%}
+              <div class="nav-x__attrs" aria-label="Key attributes">
+                <span class="nav-x__attr">
+                  <span class="nav-x__attr-label">Essence</span>
+                  {{ pl_essence[i] | truncate: 38, '…' }}
+                </span>
+                <span class="nav-x__attr">
+                  <span class="nav-x__attr-label">Stone</span>
+                  {{ pl_stone[i] }}
+                </span>
+                <span class="nav-x__attr">
+                  <span class="nav-x__attr-label">Metal</span>
+                  {{ pl_metal[i] }}
+                </span>
+                <span class="nav-x__attr">
+                  <span class="nav-x__attr-label">Color</span>
+                  {{ pl_color[i] }}
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var tabs   = document.querySelectorAll('.nav-x__card');
+  var panels = document.querySelectorAll('.nav-x__panel');
+
+  function activate(planet) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.planet === planet;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var on = p.dataset.planet === planet;
+      if (on) {
+        p.style.display = 'block';
+        p.classList.add('is-active');
+        /* re-trigger entrance animation */
+        p.style.animation = 'none';
+        void p.offsetWidth;
+        p.style.animation = '';
+      } else {
+        p.classList.remove('is-active');
+        p.style.display = 'none';
+      }
+    });
+
+    /* Scroll to panel on mobile */
+    if (window.innerWidth < 860) {
+      var panelWrap = document.querySelector('.nav-x__panels');
+      if (panelWrap) {
+        setTimeout(function () {
+          panelWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      }
+    }
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab.dataset.planet); });
+    tab.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(tab.dataset.planet); }
+      /* Arrow key navigation */
+      var allTabs = Array.from(tabs);
+      var idx     = allTabs.indexOf(tab);
+      if (e.key === 'ArrowRight') { e.preventDefault(); activate(allTabs[(idx + 1) % allTabs.length].dataset.planet); allTabs[(idx + 1) % allTabs.length].focus(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); activate(allTabs[(idx - 1 + allTabs.length) % allTabs.length].dataset.planet); allTabs[(idx - 1 + allTabs.length) % allTabs.length].focus(); }
+    });
+  });
+
+  /* Add to Cart */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-nv-atc');
+    if (!btn) return;
+    e.preventDefault();
+
+    var id   = parseInt(btn.dataset.id, 10);
+    var span = btn.querySelector('span');
+    var orig = span ? span.textContent : 'Add to Cart';
+    if (!id) return;
+
+    btn.disabled = true;
+    if (span) span.textContent = 'Adding…';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: id, quantity: 1 })
+    })
+    .then(function (r) { if (!r.ok) throw new Error('cart error'); return r.json(); })
+    .then(function () {
+      if (span) span.textContent = '✓ Added';
+      btn.style.opacity = '0.85';
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.style.opacity = '';
+        if (span) span.textContent = orig;
+      }, 2600);
+    })
+    .catch(function () {
+      btn.disabled = false;
+      if (span) span.textContent = orig;
+    });
+  });
+
+})();
+</script>

@@ -1,0 +1,811 @@
+{%- liquid
+  assign akf_uid = uid | default: 'ask-mehak' | handleize
+
+  assign akf_image = left_image
+  assign akf_image_url = left_image_url
+  assign akf_image_alt = left_image_alt | default: 'Astro fragrance finder'
+
+  assign akf_eyebrow = eyebrow | default: 'AI-Powered'
+  assign akf_media_title = media_title | default: 'Your stars, your scent.'
+  assign akf_media_sub = media_subtitle | default: 'The cosmos have always known which fragrance was written for you.'
+
+  assign akf_form_kicker = form_kicker | default: 'Astro Fragrance Finder'
+  assign akf_form_title = form_title | default: 'Ask Mehak'
+  assign akf_form_desc = form_desc | default: 'Share your birth details and let the stars reveal your perfect scent.'
+  assign akf_submit_label = submit_label | default: 'Find My Cosmic Fragrance'
+  assign akf_privacy = privacy_text | default: 'Your details are private and never stored'
+
+  assign akf_note_1 = note_1 | default: 'Vedic birth chart analysis'
+  assign akf_note_2 = note_2 | default: 'Personalised in seconds'
+  assign akf_note_3 = note_3 | default: 'Over 12,000 readings'
+-%}
+
+<section class="akf" id="akf-{{ akf_uid }}" data-akf>
+  <div class="akf__shell">
+    <div class="akf__media">
+      {% if akf_image != blank %}
+        <img
+          src="{{ akf_image | image_url: width: 1800 }}"
+          srcset="
+            {{ akf_image | image_url: width: 900 }} 900w,
+            {{ akf_image | image_url: width: 1300 }} 1300w,
+            {{ akf_image | image_url: width: 1800 }} 1800w
+          "
+          sizes="(min-width: 990px) 48vw, 100vw"
+          alt="{{ akf_image_alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="akf__img"
+        >
+      {% elsif akf_image_url != blank %}
+        <img
+          src="{{ akf_image_url }}"
+          alt="{{ akf_image_alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="akf__img"
+        >
+      {% else %}
+        <div class="akf__placeholder">Upload left image</div>
+      {% endif %}
+
+      <div class="akf__media-caption">
+        <span class="akf__eyebrow"><span class="akf__dot"></span>{{ akf_eyebrow }}</span>
+        <h2 class="akf__media-title">{{ akf_media_title }}</h2>
+        <p class="akf__media-sub">{{ akf_media_sub }}</p>
+      </div>
+    </div>
+
+    <div class="akf__panel" role="main">
+      <p class="akf__form-kicker">{{ akf_form_kicker }}</p>
+      <h1 class="akf__form-title">{{ akf_form_title }}</h1>
+      <p class="akf__form-desc">{{ akf_form_desc }}</p>
+
+      <div class="akf__progress-wrap">
+        <div class="akf__progress-track"><div class="akf__progress-fill" id="akf-progress-{{ akf_uid }}"></div></div>
+        <p class="akf__progress-label" id="akf-label-{{ akf_uid }}">0 of 4 details filled</p>
+      </div>
+
+      <form id="akf-form-{{ akf_uid }}" class="akf__form" novalidate autocomplete="on">
+        <div class="akf__grid">
+          <div class="akf__field akf__field--full">
+            <label class="akf__label" for="akf-name-{{ akf_uid }}">Full Name</label>
+            <input class="akf__input" id="akf-name-{{ akf_uid }}" name="name" type="text" placeholder="Your full name" autocomplete="name" required>
+            <span class="akf__error" id="akf-err-name-{{ akf_uid }}" role="alert">Please enter your name</span>
+          </div>
+
+          <div class="akf__field">
+            <label class="akf__label" for="akf-dob-{{ akf_uid }}">Date of Birth</label>
+            <input class="akf__input" id="akf-dob-{{ akf_uid }}" name="dob" type="date" required>
+            <span class="akf__error" id="akf-err-dob-{{ akf_uid }}" role="alert">Required</span>
+          </div>
+
+          <div class="akf__field">
+            <label class="akf__label" for="akf-time-{{ akf_uid }}">Time of Birth</label>
+            <input class="akf__input" id="akf-time-{{ akf_uid }}" name="time" type="time" required>
+            <span class="akf__error" id="akf-err-time-{{ akf_uid }}" role="alert">Required</span>
+          </div>
+
+          <div class="akf__field akf__field--full">
+            <label class="akf__label" for="akf-city-{{ akf_uid }}">Birth City</label>
+            <input class="akf__input" id="akf-city-{{ akf_uid }}" name="city" type="text" placeholder="e.g. Mumbai, Delhi, Pune" autocomplete="address-level2" required>
+            <span class="akf__error" id="akf-err-city-{{ akf_uid }}" role="alert">Please enter your city</span>
+          </div>
+        </div>
+
+        <fieldset class="akf__gender" style="border:none;padding:0;margin:0;">
+          <legend class="akf__legend">Gender</legend>
+          <div class="akf__gender-grid">
+            <label class="akf__radio">
+              <input type="radio" name="gender" value="male" checked>
+              <span>Male</span>
+            </label>
+            <label class="akf__radio">
+              <input type="radio" name="gender" value="female">
+              <span>Female</span>
+            </label>
+            <label class="akf__radio">
+              <input type="radio" name="gender" value="other">
+              <span>Other</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="akf__submit-area">
+          <button type="submit" class="akf__submit" id="akf-submit-{{ akf_uid }}" disabled aria-label="Find my cosmic fragrance">
+            <span class="akf__spinner" aria-hidden="true"></span>
+            <span class="akf__submit-text">{{ akf_submit_label }}</span>
+            <svg class="akf__submit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <p class="akf__privacy">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            {{ akf_privacy }}
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <div class="akf__success" id="akf-success-{{ akf_uid }}" aria-live="polite" aria-atomic="true">
+      <div class="akf__success-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 6L9 17l-5-5"></path>
+        </svg>
+      </div>
+      <p class="akf__success-title">Reading the cosmos…</p>
+      <p class="akf__success-sub">Mehak is preparing your personalised astro fragrance profile.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .akf,
+  .akf * ,
+  .akf *::before,
+  .akf *::after {
+    box-sizing: border-box;
+  }
+
+  .akf {
+    --bg: #ffffff;
+    --fg: #111111;
+    --muted: #5d5d5d;
+    --line: rgba(17, 17, 17, 0.14);
+    --soft: rgba(17, 17, 17, 0.04);
+    --soft-2: rgba(17, 17, 17, 0.08);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+    background: var(--bg);
+    color: var(--fg);
+    overflow: clip;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid var(--fg);
+    border-radius: 0;
+    isolation: isolate;
+  }
+
+  .akf__shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    min-height: 760px;
+  }
+
+  .akf__media {
+    position: relative;
+    overflow: hidden;
+    background: #f5f5f5;
+    border-right: 1px solid var(--fg);
+    min-height: 760px;
+  }
+
+  .akf__img,
+  .akf__placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center center;
+    aspect-ratio: 1 / 1.08;
+  }
+
+  .akf__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(17, 17, 17, 0.45);
+    background: linear-gradient(180deg, #fafafa, #efefef);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  .akf__media-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 28px 28px 26px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.94) 24%, #fff 100%);
+    border-top: 1px solid var(--fg);
+  }
+
+  .akf__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .akf__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #111;
+    flex: 0 0 auto;
+  }
+
+  .akf__media-title {
+    margin: 0 0 10px;
+    font-size: clamp(28px, 3.2vw, 42px);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+  }
+
+  .akf__media-sub {
+    margin: 0;
+    max-width: 30rem;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .akf__panel {
+    position: relative;
+    padding: 34px 34px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+  }
+
+  .akf__form-kicker {
+    margin: 0 0 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .akf__form-title {
+    margin: 0;
+    font-size: clamp(34px, 4vw, 54px);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+    font-weight: 600;
+  }
+
+  .akf__form-desc {
+    margin: 14px 0 0;
+    max-width: 31rem;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .akf__progress-wrap {
+    margin-top: 24px;
+    margin-bottom: 22px;
+  }
+
+  .akf__progress-track {
+    height: 3px;
+    overflow: hidden;
+    background: var(--soft);
+    border-radius: 999px;
+  }
+
+  .akf__progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #111;
+    border-radius: 999px;
+    transition: width 0.45s var(--ease);
+  }
+
+  .akf__progress-label {
+    margin: 8px 0 0;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .akf__form {
+    display: block;
+  }
+
+  .akf__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 14px;
+  }
+
+  .akf__field--full {
+    grid-column: 1 / -1;
+  }
+
+  .akf__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: akfFieldIn 0.55s var(--ease) forwards;
+  }
+
+  .akf__field:nth-child(1) { animation-delay: 0.12s; }
+  .akf__field:nth-child(2) { animation-delay: 0.18s; }
+  .akf__field:nth-child(3) { animation-delay: 0.24s; }
+  .akf__field:nth-child(4) { animation-delay: 0.30s; }
+
+  @keyframes akfFieldIn {
+    to { opacity: 1; transform: none; }
+  }
+
+  .akf__label,
+  .akf__legend {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .akf__input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: #fff;
+    color: var(--fg);
+    padding: 0 14px;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    transition:
+      border-color 0.22s var(--ease),
+      box-shadow 0.22s var(--ease),
+      transform 0.22s var(--ease),
+      background 0.22s var(--ease);
+  }
+
+  .akf__input::placeholder {
+    color: rgba(17, 17, 17, 0.38);
+  }
+
+  .akf__input:hover {
+    border-color: rgba(17, 17, 17, 0.34);
+  }
+
+  .akf__input:focus {
+    border-color: #111;
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .akf__input.has-error {
+    border-color: #111;
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+  }
+
+  .akf__error {
+    min-height: 14px;
+    font-size: 10.5px;
+    line-height: 1.2;
+    color: #111;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+
+  .akf__error.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .akf__gender {
+    margin-top: 18px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: akfFieldIn 0.55s var(--ease) 0.36s forwards;
+  }
+
+  .akf__gender-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .akf__radio {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .akf__radio input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .akf__radio span {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition:
+      background 0.22s var(--ease),
+      color 0.22s var(--ease),
+      transform 0.22s var(--ease),
+      border-color 0.22s var(--ease);
+  }
+
+  .akf__radio:hover span {
+    transform: translateY(-1px);
+    border-color: rgba(17, 17, 17, 0.35);
+  }
+
+  .akf__radio input:checked + span {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+  }
+
+  .akf__radio input:focus-visible + span {
+    outline: 2px solid #111;
+    outline-offset: 2px;
+  }
+
+  .akf__submit-area {
+    margin-top: 22px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: akfFieldIn 0.55s var(--ease) 0.44s forwards;
+  }
+
+  .akf__submit {
+    width: 100%;
+    height: 52px;
+    border: 1px solid #111;
+    border-radius: 0;
+    background: #111;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition:
+      transform 0.24s var(--ease),
+      box-shadow 0.24s var(--ease),
+      background 0.24s var(--ease),
+      color 0.24s var(--ease),
+      opacity 0.2s;
+  }
+
+  .akf__submit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0));
+    opacity: 0;
+    transition: opacity 0.22s var(--ease);
+  }
+
+  .akf__submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(17, 17, 17, 0.12);
+  }
+
+  .akf__submit:hover:not(:disabled)::after {
+    opacity: 1;
+  }
+
+  .akf__submit:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .akf__submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .akf__submit.loading .akf__submit-text {
+    opacity: 0;
+  }
+
+  .akf__submit.loading .akf__spinner {
+    display: block;
+  }
+
+  .akf__submit.loading .akf__submit-icon {
+    opacity: 0;
+  }
+
+  .akf__spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: akfSpin 0.7s linear infinite;
+    position: absolute;
+  }
+
+  @keyframes akfSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .akf__submit-icon {
+    transition: transform 0.24s var(--ease), opacity 0.24s var(--ease);
+  }
+
+  .akf__submit:hover:not(:disabled) .akf__submit-icon {
+    transform: translateX(3px);
+  }
+
+  .akf__privacy {
+    margin: 12px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: rgba(17, 17, 17, 0.58);
+    letter-spacing: 0.02em;
+  }
+
+  .akf__success {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.98);
+    border: 1px solid #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease);
+    z-index: 20;
+  }
+
+  .akf__success.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .akf__success-icon {
+    width: 68px;
+    height: 68px;
+    border: 1px solid #111;
+    border-radius: 0;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(17, 17, 17, 0.08);
+    animation: akfPop 0.45s var(--ease) both;
+  }
+
+  @keyframes akfPop {
+    from { opacity: 0; transform: scale(0.86); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .akf__success-title {
+    margin: 0;
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+  }
+
+  .akf__success-sub {
+    margin: 0;
+    max-width: 280px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .akf__media,
+  .akf__panel {
+    transform: translateY(16px);
+    opacity: 0;
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    will-change: transform, opacity;
+  }
+
+  .akf.is-visible .akf__media,
+  .akf.is-visible .akf__panel {
+    transform: none;
+    opacity: 1;
+  }
+
+  .akf.is-visible .akf__panel {
+    transition-delay: 0.05s;
+  }
+
+  .akf__img {
+    transition: transform 0.55s var(--ease);
+  }
+
+  .akf:hover .akf__img {
+    transform: scale(1.015);
+  }
+
+  @media (max-width: 1100px) {
+    .akf__shell {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .akf__media {
+      min-height: 520px;
+      border-right: 0;
+      border-bottom: 1px solid #111;
+    }
+  }
+
+  @media (max-width: 740px) {
+    .akf__panel {
+      padding: 24px 18px 22px;
+    }
+
+    .akf__media-caption {
+      padding: 18px 18px 16px;
+    }
+
+    .akf__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .akf__field--full {
+      grid-column: auto;
+    }
+
+    .akf__gender-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .akf__success-title {
+      font-size: 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .akf *,
+    .akf *::before,
+    .akf *::after {
+      animation: none !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const root = document.getElementById('akf-{{ akf_uid }}');
+  if (!root) return;
+
+  const form = root.querySelector('#akf-form-{{ akf_uid }}');
+  const submit = root.querySelector('#akf-submit-{{ akf_uid }}');
+  const progress = root.querySelector('#akf-progress-{{ akf_uid }}');
+  const progressLabel = root.querySelector('#akf-label-{{ akf_uid }}');
+  const success = root.querySelector('#akf-success-{{ akf_uid }}');
+
+  const fields = {
+    name: root.querySelector('#akf-name-{{ akf_uid }}'),
+    dob: root.querySelector('#akf-dob-{{ akf_uid }}'),
+    time: root.querySelector('#akf-time-{{ akf_uid }}'),
+    city: root.querySelector('#akf-city-{{ akf_uid }}')
+  };
+
+  const errors = {
+    name: root.querySelector('#akf-err-name-{{ akf_uid }}'),
+    dob: root.querySelector('#akf-err-dob-{{ akf_uid }}'),
+    time: root.querySelector('#akf-err-time-{{ akf_uid }}'),
+    city: root.querySelector('#akf-err-city-{{ akf_uid }}')
+  };
+
+  const touched = { name: false, dob: false, time: false, city: false };
+
+  function isFilled(key) {
+    return (fields[key].value || '').trim().length > 0;
+  }
+
+  function setErrorState(key, force) {
+    if (!touched[key] && !force) return;
+    const ok = isFilled(key);
+    fields[key].classList.toggle('has-error', !ok);
+    errors[key].classList.toggle('is-visible', !ok);
+  }
+
+  function updateProgress() {
+    const filled = Object.keys(fields).filter(isFilled).length;
+    const pct = (filled / 4) * 100;
+    progress.style.width = pct + '%';
+    progressLabel.textContent = filled + ' of 4 details filled';
+    submit.disabled = filled !== 4;
+  }
+
+  Object.keys(fields).forEach((key) => {
+    fields[key].addEventListener('input', () => {
+      setErrorState(key, false);
+      updateProgress();
+    });
+
+    fields[key].addEventListener('blur', () => {
+      touched[key] = true;
+      setErrorState(key, true);
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    Object.keys(fields).forEach((key) => {
+      touched[key] = true;
+      setErrorState(key, true);
+    });
+
+    if (!Object.keys(fields).every(isFilled)) return;
+
+    const gender = form.querySelector('input[name="gender"]:checked');
+
+    submit.classList.add('loading');
+    submit.disabled = true;
+    success.classList.add('is-visible');
+
+    const params = new URLSearchParams({
+      name: fields.name.value.trim(),
+      dob: fields.dob.value,
+      time: fields.time.value,
+      city: fields.city.value.trim(),
+      gender: gender ? gender.value : 'male',
+      source: 'product-page'
+    });
+
+    setTimeout(function () {
+      window.location.href =
+        'https://astrology.anandrasafragnance.com/find-fragrance?' + params.toString() + '#cosmic-profile-form';
+    }, 1500);
+  });
+
+  updateProgress();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        root.classList.add('is-visible');
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.18 });
+
+  io.observe(root);
+})();
+</script>

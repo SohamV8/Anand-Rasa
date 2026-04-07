@@ -49,6 +49,7 @@
   .ar-mega__feature-media { position:relative; width:100%; min-height:300px; display:flex; align-items:center; justify-content:center; }
   .ar-mega__feature-img { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:block; border-radius:8px; opacity:0; transition:opacity .3s ease; will-change:opacity; pointer-events:none; }
   .ar-mega__feature-img.is-active { opacity:1; }
+  #header-preview-image { transition: opacity .3s ease; }
   .ar-mega__feature-ph { width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; font-family:var(--font-body-family); }
 
   @media(max-width:900px){
@@ -113,6 +114,7 @@
                   <a
                     href="{{ block.settings.link | default: '/collections/all' }}"
                     class="ar-mega__link"
+                    data-image="{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 }}{%- elsif mega_fallback_image != blank -%}{{ mega_fallback_image | image_url: width: 900 }}{%- endif -%}"
                     data-mega-alt="{{ block.settings.title | escape }}"
                     {{ block.shopify_attributes }}
                     {%- if block.settings.image != blank -%}
@@ -123,13 +125,13 @@
                   </a>
                 {%- endfor -%}
               {%- else -%}
-                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link">Planet Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link">Zodiac Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link">Nakshatra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-mega__link">Stress Relief Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link">Chakra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-mega__link">Love Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link">Incense Sticks</a>
+                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Planet Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Zodiac Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Nakshatra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Stress Relief Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Chakra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Love Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Incense Sticks</a>
               {%- endif -%}
             </div>
             <div class="ar-mega__feature">
@@ -144,7 +146,8 @@
                     height="{{ mega_fallback_image.height }}"
                     loading="lazy"
                     class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
-                    id="ar-mega-feature-primary-{{ section.id }}"
+                    id="header-preview-image"
+                    data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
                   >
                   <img
                     src="{{ mega_fallback_image | image_url: width: 900 }}"
@@ -265,7 +268,7 @@
       trigger.addEventListener('focusin', open);
       trigger.addEventListener('focusout', function (e) { if (!trigger.contains(e.relatedTarget)) scheduleClose(); });
 
-      var primaryImage = root.querySelector('#ar-mega-feature-primary-' + sectionId);
+      var primaryImage = root.querySelector('#header-preview-image') || root.querySelector('#ar-mega-feature-primary-' + sectionId);
       var secondaryImage = root.querySelector('#ar-mega-feature-secondary-' + sectionId);
       if (!primaryImage || !secondaryImage) return;
 
@@ -273,20 +276,10 @@
       var fallbackAlt = primaryImage.getAttribute('alt') || 'Featured Collection';
       var activeImage = primaryImage;
       var inactiveImage = secondaryImage;
-      var imageCache = {};
-
-      function preload(src) {
-        if (!src || imageCache[src]) return;
-        var preImg = new Image();
-        preImg.src = src;
-        imageCache[src] = true;
-      }
-
       function swapTo(src, altText) {
         var nextSrc = src || fallbackSrc;
         var nextAlt = altText || fallbackAlt;
         if (!nextSrc || activeImage.getAttribute('src') === nextSrc) return;
-        preload(nextSrc);
         inactiveImage.src = nextSrc;
         inactiveImage.alt = nextAlt;
         inactiveImage.classList.add('is-active');
@@ -298,8 +291,7 @@
 
       var menuLinks = dropdown.querySelectorAll('.ar-mega__link');
       menuLinks.forEach(function (link) {
-        var hoverSrc = link.getAttribute('data-mega-image');
-        if (hoverSrc) preload(hoverSrc);
+        var hoverSrc = link.getAttribute('data-image') || link.getAttribute('data-mega-image');
         link.addEventListener('mouseenter', function () {
           swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
         });

@@ -1,10 +1,6 @@
 
 {
   "sections": {
-    "hero-carousel": {
-      "type": "anand-rasa-carousel",
-      "settings": {}
-    },
     "main": {
       "type": "collection-incense",
       "settings": {
@@ -45,7 +41,6 @@
     }
   },
   "order": [
-    "hero-carousel",
     "main",
     "anand-rasa-faq"
   ]
