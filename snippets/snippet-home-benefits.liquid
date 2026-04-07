@@ -9,7 +9,7 @@
 
       {% if card_title_1 != blank %}
       <div class="ar-bp__item">
-        <div class="ar-bp__shadow"></div>
+        
         <div class="ar-bp__card">
           <div class="ar-bp__pill">{{ card_title_1 }}</div>
           <p class="ar-bp__text">{{ card_text_1 }}</p>
@@ -19,7 +19,7 @@
 
       {% if card_title_2 != blank %}
       <div class="ar-bp__item">
-        <div class="ar-bp__shadow"></div>
+        
         <div class="ar-bp__card">
           <div class="ar-bp__pill">{{ card_title_2 }}</div>
           <p class="ar-bp__text">{{ card_text_2 }}</p>
@@ -29,7 +29,7 @@
 
       {% if card_title_3 != blank %}
       <div class="ar-bp__item">
-        <div class="ar-bp__shadow"></div>
+        
         <div class="ar-bp__card">
           <div class="ar-bp__pill">{{ card_title_3 }}</div>
           <p class="ar-bp__text">{{ card_text_3 }}</p>
@@ -39,7 +39,7 @@
 
       {% if card_title_4 != blank %}
       <div class="ar-bp__item">
-        <div class="ar-bp__shadow"></div>
+        
         <div class="ar-bp__card">
           <div class="ar-bp__pill">{{ card_title_4 }}</div>
           <p class="ar-bp__text">{{ card_text_4 }}</p>
@@ -153,15 +153,7 @@
   position: relative;
 }
 
-/* Hard pink shadow — no blur, pure offset block */
-.ar-bp__shadow {
-  position: absolute;
-  inset: 0;
-  transform: translate(10px, 10px);
-  background: #d4607e;          /* deep, saturated pink — matches image */
-  border-radius: 20px;
-  z-index: 0;
-}
+
 
 .ar-bp__card {
   position: relative;
@@ -172,6 +164,7 @@
   border: 1.5px solid #111;
   height: 100%;
   box-sizing: border-box;
+  box-shadow: 8px 8px 0 #e79abc;
 }
 
 .ar-bp__pill {

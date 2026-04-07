@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-lavender",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Incense",
+        "short_description": "A soothing lavender aroma that relaxes the mind and creates a calm, peaceful atmosphere.",
+        "product_tagline": "",
+        "rating": 5,
+        "review_count": "11",
+        "show_buy_now": true,
+        "trust_1": "Lavender botanical profile",
+        "trust_2": "Clean-burning sticks",
+        "trust_3": "Evening calm & ritual",
+        "strip_col1": "Soft lavender floral",
+        "strip_col2": "Bamboo-less lavender incense sticks for relaxation, meditation, and quiet evenings.",
+        "strip_col3": "Lavender incense sticks",
+        "why_heading": "Why lavender incense sticks",
+        "why_sub": "A calming herbal-floral note—traditionally chosen to soften the mind before rest or gentle practice.",
+        "spec_origin": "India",
+        "spec_item_form": "Bamboo-less Incense",
+        "spec_item_type": "Eco-friendly, Organic, Meditation, Vedic",
+        "spec_sticks": "40",
+        "spec_burn": "30+ minutes",
+        "spec_length": "3.5 inches",
+        "spec_fragrance": "Lavender, herbal floral",
+        "spec_ingredients": "Wood powders, natural resins, essential oils",
+        "related_collection": "incense-sticks",
+        "related_heading": "Recommended",
+        "related_sub": "More sticks for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,179 @@
+<div class="ar-carousel" data-carousel>
+  <div class="ar-carousel-track">
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {% if block.settings.image %}
+          <div class="ar-carousel-slide" {{ block.shopify_attributes }}>
+            <img
+              src="{{ block.settings.image | image_url: width: 1920 }}"
+              alt="{{ block.settings.image.alt | escape }}"
+              loading="lazy"
+            >
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Controls -->
+  <button class="ar-carousel-btn prev" data-prev>‹</button>
+  <button class="ar-carousel-btn next" data-next>›</button>
+
+  <!-- Dots -->
+  <div class="ar-carousel-dots">
+    {% for block in section.blocks %}
+      <button class="dot {% if forloop.first %}active{% endif %}" data-dot="{{ forloop.index0 }}"></button>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.ar-carousel {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.ar-carousel-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar-carousel-slide {
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ar-carousel-slide img {
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+/* Buttons */
+.ar-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.ar-carousel-btn:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+.ar-carousel-btn.prev {
+  left: 16px;
+}
+
+.ar-carousel-btn.next {
+  right: 16px;
+}
+
+/* Dots */
+.ar-carousel-dots {
+  position: absolute;
+  bottom: 16px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ar-carousel-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ar-carousel-dots .dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ar-carousel-slide img {
+    max-height: 60vh;
+  }
+
+  .ar-carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('.ar-carousel-track');
+    const slides = Array.from(track ? track.children : []);
+    const nextBtn = carousel.querySelector('[data-next]');
+    const prevBtn = carousel.querySelector('[data-prev]');
+    const dots = carousel.querySelectorAll('[data-dot]');
+
+    if (!track || slides.length === 0) return;
+
+    let index = 0;
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((dot) => dot.classList.remove('active'));
+      if (dots[index]) dots[index].classList.add('active');
+    }
+
+    if (slides.length <= 1) {
+      if (nextBtn) nextBtn.style.display = 'none';
+      if (prevBtn) prevBtn.style.display = 'none';
+      const dotsWrap = carousel.querySelector('.ar-carousel-dots');
+      if (dotsWrap) dotsWrap.style.display = 'none';
+      return;
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        index = (index + 1) % slides.length;
+        updateCarousel();
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        index = (index - 1 + slides.length) % slides.length;
+        updateCarousel();
+      });
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        index = parseInt(dot.dataset.dot, 10);
+        updateCarousel();
+      });
+    });
+
+    setInterval(() => {
+      index = (index + 1) % slides.length;
+      updateCarousel();
+    }, 5000);
+  });
+});
+</script>

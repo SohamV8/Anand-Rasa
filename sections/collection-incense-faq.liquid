@@ -1,0 +1,493 @@
+{% comment %}
+  ANAND RASA — FAQ Section
+  sections/anand-rasa-faq.liquid
+  SEO-optimized for incense sticks & agarbatti
+{% endcomment %}
+
+{%- liquid
+  assign faq_heading = section.settings.heading | default: 'Frequently Asked Questions'
+  assign faq_subtext = section.settings.subtext | default: 'Everything you need to know about our pure, handcrafted agarbatti and attars.'
+-%}
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+.ar-faq {
+  --ink:     #0F0F0F;
+  --ink-2:   #3A3A3A;
+  --ink-3:   #7A7A7A;
+  --border:  #E8E4DC;
+  --bg:      #FAFAF7;
+  --gold:    #B8943A;
+  --white:   #FFFFFF;
+  --trans:   0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  --fh: var(--font-heading-family, Georgia, serif);
+  --fb: var(--font-body-family, system-ui, sans-serif);
+
+  font-family: var(--fb);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ar-faq *, .ar-faq *::before, .ar-faq *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes ar-faq-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ar-faq-line {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-faq *, .ar-faq *::before, .ar-faq *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   SECTION SHELL
+   ============================================================ */
+.ar-faq {
+  background: {{ section.settings.bg_color | default: '#FAFAF7' }};
+  padding: 96px 48px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.ar-faq__header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 64px;
+  animation: ar-faq-up 0.65s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.ar-faq__eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.ar-faq__title {
+  font-family: var(--fh);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.ar-faq__sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.ar-faq__rule {
+  display: block;
+  width: 40px;
+  height: 1.5px;
+  background: var(--gold);
+  margin: 0 auto;
+  animation: ar-faq-line 0.7s ease 0.35s both;
+}
+
+/* ============================================================
+   FAQ LIST
+   ============================================================ */
+.ar-faq__list {
+  max-width: 800px;
+  margin: 0 auto;
+  list-style: none;
+}
+
+/* ============================================================
+   ACCORDION ITEM
+   ============================================================ */
+.ar-faq__item {
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: ar-faq-up 0.55s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(var(--fi, 0) * 60ms + 0.2s);
+}
+
+.ar-faq__item:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Trigger ── */
+.ar-faq__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--fb);
+  color: var(--ink);
+  transition: color var(--trans);
+}
+
+.ar-faq__trigger:hover { color: var(--gold); }
+
+.ar-faq__question {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  flex: 1;
+  transition: color var(--trans);
+}
+
+/* ── Icon ── */
+.ar-faq__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  position: relative;
+  color: var(--ink-3);
+  transition: color var(--trans), transform var(--trans);
+}
+
+.ar-faq__icon::before,
+.ar-faq__icon::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--trans), opacity var(--trans);
+}
+
+/* Horizontal bar */
+.ar-faq__icon::before {
+  width: 14px;
+  height: 1.5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Vertical bar (becomes hidden when open) */
+.ar-faq__icon::after {
+  width: 1.5px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Open state */
+.ar-faq__item.is-open .ar-faq__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.ar-faq__item.is-open .ar-faq__icon {
+  color: var(--gold);
+  transform: rotate(45deg);
+}
+
+.ar-faq__item.is-open .ar-faq__trigger { color: var(--gold); }
+
+/* ── Answer Panel ── */
+.ar-faq__panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ar-faq__answer {
+  padding: 0 0 24px;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  font-weight: 300;
+  max-width: 680px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .ar-faq { padding: 72px 24px; }
+  .ar-faq__header { margin-bottom: 48px; }
+  .ar-faq__question { font-size: 14px; }
+  .ar-faq__answer { font-size: 14px; }
+  .ar-faq__trigger { padding: 18px 0; }
+}
+
+@media (max-width: 480px) {
+  .ar-faq { padding: 56px 16px; }
+  .ar-faq__question { font-size: 13.5px; }
+}
+</style>
+
+{%- comment -%}
+  ── FAQ SCHEMA — Google Rich Result
+  Outputs JSON-LD for FAQ rich snippets.
+  Boosts organic visibility for incense/agarbatti queries.
+{%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": {{ faq_heading | json }},
+  "mainEntity": [
+    {%- assign q_count = 0 -%}
+    {%- for i in (1..15) -%}
+      {%- assign q_key = 'q' | append: i -%}
+      {%- assign a_key = 'a' | append: i -%}
+      {%- assign q_val = section.settings[q_key] -%}
+      {%- assign a_val = section.settings[a_key] -%}
+      {%- if q_val != blank and a_val != blank -%}
+        {%- if q_count > 0 -%},{%- endif -%}
+        {
+          "@type": "Question",
+          "name": {{ q_val | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ a_val | json }}
+          }
+        }
+        {%- assign q_count = q_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+
+<section
+  class="ar-faq"
+  aria-label="{{ faq_heading | escape }}"
+  itemscope
+  itemtype="https://schema.org/FAQPage"
+>
+
+  {%- comment -%} ── HEADER ── {%- endcomment -%}
+  <header class="ar-faq__header">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="ar-faq__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="ar-faq__title">{{ faq_heading }}</h2>
+    {%- if faq_subtext != blank -%}
+      <p class="ar-faq__sub">{{ faq_subtext }}</p>
+    {%- endif -%}
+    <span class="ar-faq__rule" aria-hidden="true"></span>
+  </header>
+
+  {%- comment -%} ── FAQ ITEMS ── {%- endcomment -%}
+  <ul class="ar-faq__list" role="list">
+    {%- assign rendered = 0 -%}
+    {%- for i in (1..15) -%}
+      {%- assign q_key = 'q' | append: i -%}
+      {%- assign a_key = 'a' | append: i -%}
+      {%- assign q_val = section.settings[q_key] -%}
+      {%- assign a_val = section.settings[a_key] -%}
+      {%- if q_val != blank and a_val != blank -%}
+        {%- assign item_id = 'ar-faq-' | append: section.id | append: '-' | append: i -%}
+        <li
+          class="ar-faq__item"
+          style="--fi: {{ rendered }}"
+          itemscope
+          itemprop="mainEntity"
+          itemtype="https://schema.org/Question"
+        >
+          <button
+            type="button"
+            class="ar-faq__trigger"
+            id="{{ item_id }}-btn"
+            aria-expanded="false"
+            aria-controls="{{ item_id }}-panel"
+            itemprop="name"
+          >
+            <span class="ar-faq__question">{{ q_val }}</span>
+            <span class="ar-faq__icon" aria-hidden="true"></span>
+          </button>
+
+          <div
+            class="ar-faq__panel"
+            id="{{ item_id }}-panel"
+            role="region"
+            aria-labelledby="{{ item_id }}-btn"
+            hidden
+            itemscope
+            itemprop="acceptedAnswer"
+            itemtype="https://schema.org/Answer"
+          >
+            <p class="ar-faq__answer" itemprop="text">{{ a_val }}</p>
+          </div>
+        </li>
+        {%- assign rendered = rendered | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+
+</section>
+
+
+<script>
+(function () {
+  'use strict';
+
+  document.querySelectorAll('.ar-faq__item').forEach(function (item) {
+    var btn   = item.querySelector('.ar-faq__trigger');
+    var panel = item.querySelector('.ar-faq__panel');
+    if (!btn || !panel) return;
+
+    /* Remove hidden so CSS max-height transition works */
+    panel.removeAttribute('hidden');
+
+    btn.addEventListener('click', function () {
+      var isOpen = item.classList.contains('is-open');
+
+      /* Close all siblings */
+      var list = item.closest('.ar-faq__list');
+      if (list) {
+        list.querySelectorAll('.ar-faq__item.is-open').forEach(function (openItem) {
+          if (openItem === item) return;
+          openItem.classList.remove('is-open');
+          openItem.querySelector('.ar-faq__trigger').setAttribute('aria-expanded', 'false');
+          openItem.querySelector('.ar-faq__panel').style.maxHeight = '0';
+        });
+      }
+
+      if (isOpen) {
+        item.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        panel.style.maxHeight = '0';
+      } else {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+
+    /* Keyboard support */
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btn.click();
+      }
+    });
+  });
+
+  /* Re-calc maxHeight on resize (font changes etc.) */
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      document.querySelectorAll('.ar-faq__item.is-open').forEach(function (item) {
+        var panel = item.querySelector('.ar-faq__panel');
+        if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+      });
+    }, 150);
+  });
+
+})();
+</script>
+
+
+{%- schema -%}
+{
+  "name": "FAQ — Agarbatti",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Section Header" },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Everything you need to know about our pure, handcrafted agarbatti and attars."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background colour",
+      "default": "#FAFAF7"
+    },
+    { "type": "header", "content": "Question 1" },
+    { "type": "text",     "id": "q1", "label": "Question", "default": "What makes Anand Rasa agarbatti different from regular incense sticks?" },
+    { "type": "textarea", "id": "a1", "label": "Answer",   "default": "Anand Rasa agarbatti are 100% charcoal-free and handcrafted using traditional Kannauj methods. We use pure resins, dried flowers, sacred woods, and natural binders — no synthetic fragrances, no coal dust, no harmful chemicals. The result is cleaner smoke, longer burn time, and a fragrance that actually evolves as it burns." },
+    { "type": "header", "content": "Question 2" },
+    { "type": "text",     "id": "q2", "label": "Question", "default": "How long do Anand Rasa incense sticks burn?" },
+    { "type": "textarea", "id": "a2", "label": "Answer",   "default": "Each stick burns for 40–45 minutes, giving your space a consistent, evolving fragrance throughout. A single pack of 40 sticks typically lasts one month for daily use — one stick per morning or evening ritual." },
+    { "type": "header", "content": "Question 3" },
+    { "type": "text",     "id": "q3", "label": "Question", "default": "Are your agarbatti safe for daily use, children, and pets?" },
+    { "type": "textarea", "id": "a3", "label": "Answer",   "default": "Yes. Because our incense sticks contain no charcoal or synthetic binding agents, they produce significantly less smoke and toxic particulates than conventional agarbatti. We recommend burning them in a ventilated room. For very young children or pets sensitive to smoke, we suggest placing the holder near an open window." },
+    { "type": "header", "content": "Question 4" },
+    { "type": "text",     "id": "q4", "label": "Question", "default": "Which Anand Rasa agarbatti is best for meditation and focus?" },
+    { "type": "textarea", "id": "a4", "label": "Answer",   "default": "Our Chandan (Sandalwood) Agarbatti is most popular for deep meditation — it slows the mind and anchors focus. Loban Agarbatti is our top pick for purification and prayer. For a calming, sleep-ready environment we recommend Lavender Agarbatti or Chamomile Blend." },
+    { "type": "header", "content": "Question 5" },
+    { "type": "text",     "id": "q5", "label": "Question", "default": "What is the difference between agarbatti and dhoop?" },
+    { "type": "textarea", "id": "a5", "label": "Answer",   "default": "Agarbatti (incense sticks) are fragrance material rolled around a bamboo core and are easier to handle. Dhoop is a bamboo-free, dense incense cone or cylinder that burns slightly hotter and produces a thicker, more intense fragrance — preferred in temples and during havan. Both can be used for daily worship; the choice depends on the intensity of fragrance you prefer." },
+    { "type": "header", "content": "Question 6" },
+    { "type": "text",     "id": "q6", "label": "Question", "default": "Are Anand Rasa products suitable for havan, puja, and religious rituals?" },
+    { "type": "textarea", "id": "a6", "label": "Answer",   "default": "Absolutely. Our Havan Samagri blend is formulated specifically for fire rituals, containing camphor, guggul, cow ghee-coated herbs, and sacred woods. Our Loban and Chandan agarbatti are widely used for daily puja and aarti. All products are free from animal-derived non-sattvic ingredients." },
+    { "type": "header", "content": "Question 7" },
+    { "type": "text",     "id": "q7", "label": "Question", "default": "Do you ship across India? How long does delivery take?" },
+    { "type": "textarea", "id": "a7", "label": "Answer",   "default": "Yes — we ship to all 28 states and 8 Union Territories across India via tracked courier. Standard delivery takes 3–6 business days. Express delivery (1–2 days) is available for major metro cities. Free shipping is available on orders above ₹499." },
+    { "type": "header", "content": "Question 8" },
+    { "type": "text",     "id": "q8", "label": "Question", "default": "Can I order Anand Rasa agarbatti in bulk for temples, hotels, or gifting?" },
+    { "type": "textarea", "id": "a8", "label": "Answer",   "default": "Yes. We offer wholesale and bulk pricing for temples, Ayurvedic centres, yoga studios, hotels, wedding gifting, and corporate orders. Minimum bulk order starts at 50 packs. Please use our Bulk Inquiry form or call us directly for a custom quote with your GST details." },
+    { "type": "header", "content": "Question 9" },
+    { "type": "text",     "id": "q9", "label": "Question", "default": "What is your return and replacement policy?" },
+    { "type": "textarea", "id": "a9", "label": "Answer",   "default": "We offer a 7-day return window from the date of delivery for unopened products. If your order arrives damaged or you receive the wrong item, we will replace it at no cost — just send a photo to our support email within 48 hours of delivery. Opened packs can be returned if the product is genuinely defective or misrepresented." },
+    { "type": "header", "content": "Question 10" },
+    { "type": "text",     "id": "q10", "label": "Question", "default": "How should I store agarbatti to preserve fragrance?" },
+    { "type": "textarea", "id": "a10", "label": "Answer",   "default": "Store your agarbatti in a cool, dry place away from direct sunlight and humidity. Keep them in their original packaging or an airtight container. Avoid storing near strong-smelling substances as natural incense can absorb ambient odours. Properly stored agarbatti retain full fragrance potency for 18–24 months." },
+    { "type": "header", "content": "Question 11" },
+    { "type": "text",     "id": "q11", "label": "Question", "default": "Are Anand Rasa products cruelty-free and eco-friendly?" },
+    { "type": "textarea", "id": "a11", "label": "Answer",   "default": "Yes. We use no animal-derived ingredients (except pure cow ghee in selected havan blends where religiously significant), no synthetic dyes, and no plastic in our primary packaging. Our bamboo sticks are sustainably sourced. We are committed to reducing our packaging waste year-on-year." },
+    { "type": "header", "content": "Question 12" },
+    { "type": "text",     "id": "q12", "label": "Question", "default": "Which fragrance is best for a good night's sleep?" },
+    { "type": "textarea", "id": "a12", "label": "Answer",   "default": "Our Lavender Agarbatti and Chamomile blend are specifically crafted for evening and sleep rituals. Lavender is clinically studied for reducing anxiety and promoting deep sleep. Light one stick 20 minutes before bed in a ventilated room and allow the fragrance to settle before sleeping." },
+    { "type": "header", "content": "Questions 13–15 (Optional)" },
+    { "type": "text",     "id": "q13", "label": "Question 13" },
+    { "type": "textarea", "id": "a13", "label": "Answer 13" },
+    { "type": "text",     "id": "q14", "label": "Question 14" },
+    { "type": "textarea", "id": "a14", "label": "Answer 14" },
+    { "type": "text",     "id": "q15", "label": "Question 15" },
+    { "type": "textarea", "id": "a15", "label": "Answer 15" }
+  ],
+  "presets": [
+    {
+      "name": "FAQ — Agarbatti"
+    }
+  ]
+}
+{%- endschema -%}

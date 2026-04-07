@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-muskrose",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Incense",
+        "short_description": "A deep blend of musk and rose that creates a rich, warm, and elegantly soothing aroma.",
+        "product_tagline": "",
+        "rating": 4,
+        "review_count": "15",
+        "show_buy_now": true,
+        "trust_1": "Warm rose & musk",
+        "trust_2": "Hand-rolled sticks",
+        "trust_3": "Ambiance & devotion",
+        "strip_col1": "Romantic musk & rose",
+        "strip_col2": "Premium incense sticks with a lush floral trail—crafted for ambiance and quiet ritual.",
+        "strip_col3": "Musk rose incense sticks",
+        "why_heading": "Musk rose incense sticks",
+        "why_sub": "Layered florals with a soft musk depth—beautiful where fragrance should linger softly.",
+        "spec_origin": "India",
+        "spec_item_form": "Bamboo-less Incense",
+        "spec_item_type": "Eco-friendly, Organic, Meditation, Vedic",
+        "spec_sticks": "40",
+        "spec_burn": "30+ minutes",
+        "spec_length": "3.5 inches",
+        "spec_fragrance": "Musk, rose, warm floral",
+        "spec_ingredients": "Traditional bases, floral notes, natural binders",
+        "related_collection": "incense-sticks",
+        "related_heading": "Recommended",
+        "related_sub": "Curated for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

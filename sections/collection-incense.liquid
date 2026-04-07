@@ -1,318 +1,1236 @@
 {% comment %}
   ANAND RASA — Incense Sticks Collection
   sections/anand-rasa-collection-incense.liquid
+  Redesigned: modern minimal, sharp edges, luxury editorial aesthetic
 {% endcomment %}
 
 <style>
-    /* ── COLLECTION PAGE ── */
-    .arc * { box-sizing:border-box; margin:0; padding:0; }
-    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
-    .arc a { text-decoration:none; color:inherit; }
-    .arc img { display:block; max-width:100%; }
-    .ar-incense {
-      width:100%;
-      background:#fff;
-      overflow:hidden;
-      line-height:0;
-    }
-    .ar-incense__img {
-      width:100%;
-      height:auto;
-      max-height:none;
-      object-fit:contain;
-      object-position:center center;
-      display:block;
-      opacity:1; /* no-JS fallback */
-    }
-    .arc.is-ready .ar-incense__img {
-      opacity:0;
-      animation:arcBannerFadeIn .8s ease-out .08s forwards;
-    }
-    @media(max-width:768px){
-      .ar-incense__img { height:auto; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .arc.is-ready .ar-incense__img {
-        animation:none;
-        opacity:1;
-      }
-    }
-    @keyframes arcBannerFadeIn {
-      from { opacity:0; transform:translateY(8px); }
-      to { opacity:1; transform:translateY(0); }
-    }
-  
-    /* Hero */
-    .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#1a0800; }
-    .arc-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; }
-    .arc-hero__ov { position:absolute; inset:0; background:linear-gradient(120deg,#1a0800ee 0%,#1a080088 60%,transparent 100%); }
-    .arc-hero__con { position:relative; z-index:10; max-width:700px; padding:80px 48px 80px; animation:arUp .7s ease both; }
-    @media(max-width:768px){ .arc-hero__con { padding:60px 24px; } }
-    .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-hero__h { font-family:var(--fh); font-size:clamp(36px,5vw,72px); font-weight:400; color:#fff; line-height:1.08; letter-spacing:-.02em; margin-bottom:20px; }
-    .arc-hero__p { font-size:15px; line-height:1.75; color:rgba(255,255,255,.78); font-weight:300; max-width:480px; margin-bottom:32px; }
-    .arc-hero__btn { display:inline-flex; align-items:center; gap:10px; border:1.5px solid rgba(255,255,255,.7); padding:13px 32px; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#fff; background:transparent; transition:all .3s; }
-    .arc-hero__btn:hover { background:#fff; color:#1a0800; border-color:#fff; }
-  
-    /* Toolbar */
-    .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-    @media(max-width:768px){ .arc-toolbar { padding:20px 20px 0; } }
-    .arc-toolbar__count { font-size:13px; color:#6b7280; }
-    .arc-toolbar__sort { display:flex; align-items:center; gap:10px; }
-    .arc-toolbar__sort label { font-size:12px; color:#9ca3af; font-weight:400; }
-    .arc-toolbar__select { font-family:var(--fb); font-size:13px; color:var(--ink); background:#fff; border:1px solid rgba(30,32,35,.15); padding:8px 32px 8px 14px; appearance:none; cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231e2023' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; }
-  
-    /* Product Grid */
-    .arc-grid { max-width:1400px; margin:0 auto; padding:32px 48px 80px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
-    @media(max-width:1200px){ .arc-grid { grid-template-columns:repeat(3,1fr); } }
-    @media(max-width:900px){ .arc-grid { grid-template-columns:repeat(2,1fr); padding:24px 20px 60px; gap:16px; } }
-    @media(max-width:480px){ .arc-grid { grid-template-columns:1fr; } }
-  
-    /* Product Card */
-    .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; position:relative; }
-    .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
-    .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#f5f0e8; }
-    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
-    .arc-card:hover .arc-card__img { transform:scale(1.06); }
-    .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
-    .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
-    .arc-card__badge--new  { background:#1e2023; color:#fff; }
-    .arc-card__badge--sale { background:var(--gold); color:#fff; }
-    .arc-card__badge--bs   { background:#c9a96e; color:#fff; }
-    .arc-card__quick { position:relative; bottom:auto; left:auto; right:auto; background:#1e2023; color:#fff; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:11px 16px; text-align:center; transform:none; transition:background .25s; cursor:pointer; border:none; font-family:var(--fb); width:100%; border-radius:4px; margin-top:10px; display:block; }
-    .arc-card__quick:hover { background:#e8a0bd; color:#1e2023; }
-    .arc-card__body { padding:18px 18px 20px; flex:1; display:flex; flex-direction:column; gap:6px; }
-    .arc-card__type { font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#9ca3af; }
-    .arc-card__name { font-family:var(--fh); font-size:18px; font-weight:400; color:var(--ink); line-height:1.3; }
-    .arc-card__desc { font-size:12px; color:#6b7280; font-weight:300; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-    .arc-card__foot { margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(30,32,35,.06); }
-    .arc-card__price-wrap { display:flex; align-items:center; gap:8px; }
-    .arc-card__price { font-size:15px; font-weight:600; color:var(--ink); }
-    .arc-card__compare { font-size:13px; color:#9ca3af; text-decoration:line-through; }
-    .arc-card__buy { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); border-bottom:1.5px solid var(--ink); padding-bottom:2px; transition:color .2s,border-color .2s; }
-    .arc-card__buy:hover { color:var(--gold); border-color:var(--gold); }
-  
-    /* Empty */
-    .arc-empty { max-width:1400px; margin:0 auto; padding:80px 48px; text-align:center; grid-column:1/-1; }
-    .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
-    .arc-empty__p { font-size:14px; color:#6b7280; }
-  
-    /* Content Block */
-    .arc-content { max-width:1440px; margin:0 auto; padding:80px 48px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    @media(max-width:900px){ .arc-content { grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
-    .arc-content__img-wrap { position:relative; aspect-ratio:4/3; overflow:hidden; }
-    .arc-content__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-    .arc-content__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; }
-    .arc-content__label { font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-content__h { font-family:var(--fh); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:var(--ink); line-height:1.15; margin-bottom:20px; letter-spacing:-.01em; }
-    .arc-content__p { font-size:15px; line-height:1.8; color:#4b5563; font-weight:300; }
-  
-    /* CTA */
-    .arc-cta { background:#1a0800; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
-    @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
-    .arc-cta__ov { position:absolute; inset:0; opacity:.12; background:radial-gradient(ellipse at 50% 0%,#c9a96e 0%,transparent 65%); pointer-events:none; }
-    .arc-cta__label { font-size:10px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; position:relative; }
-    .arc-cta__h { font-family:var(--fh); font-size:clamp(28px,4vw,56px); font-weight:400; color:#fff; margin-bottom:16px; letter-spacing:-.01em; line-height:1.15; position:relative; }
-    .arc-cta__p { font-size:15px; color:rgba(255,255,255,.7); font-weight:300; margin-bottom:36px; position:relative; max-width:520px; margin-left:auto; margin-right:auto; }
-    .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s,transform .2s; position:relative; }
-    .arc-cta__btn:hover { background:#b8943a; transform:translateY(-1px); }
-  
-    /* Bulk wholesale */
-    .bulk-order-section { width:100%; background:#fff; border-top:1px solid rgba(0,0,0,.08); font-family:var(--fb); }
-    .bulk-container { max-width:1200px; margin:0 auto; padding:80px 24px; }
-    .bulk-grid { display:grid; grid-template-columns:1fr; gap:60px; }
-    @media(min-width:1024px){ .bulk-grid { grid-template-columns:1fr 1fr; } }
-    .bulk-eyebrow { font-size:11px; letter-spacing:.28em; color:#6b7280; font-weight:600; text-transform:uppercase; }
-    .bulk-heading { margin-top:10px; font-family:var(--fh); font-size:34px; font-weight:500; color:#1e2023; line-height:1.2; }
-    .bulk-description { margin-top:20px; font-size:14px; line-height:1.7; color:#4b5563; max-width:420px; }
-    .bulk-contact { margin-top:40px; display:flex; flex-direction:column; gap:18px; }
-    .bulk-label { font-size:11px; letter-spacing:.2em; color:#6b7280; margin-bottom:4px; font-weight:600; text-transform:uppercase; }
-    .bulk-contact a { color:#1e2023; font-weight:500; text-decoration:none; transition:color .2s; }
-    .bulk-contact a:hover { color:#000; text-decoration:underline; }
-    .bulk-button-outline {
-      display:inline-block; border:1px solid #1e2023; padding:10px 22px; font-size:12px; letter-spacing:.18em;
-      font-family:var(--fh); font-weight:600; text-transform:uppercase; color:#1e2023; background:transparent;
-      transition:background .3s ease,color .3s ease;
-    }
-    .bulk-button-outline:hover { background:#1e2023; color:#fff; }
-    .bulk-form { display:flex; flex-direction:column; gap:22px; margin:0; }
-    .bulk-field label { display:block; font-size:11px; letter-spacing:.2em; color:#6b7280; margin-bottom:6px; font-weight:600; text-transform:uppercase; }
-    .bulk-field input,
-    .bulk-field textarea {
-      width:100%; border:1px solid rgba(0,0,0,.2); padding:12px 14px; font-size:14px; font-family:var(--fb);
-      outline:none; transition:border-color .2s ease; border-radius:0; background:#fff; color:#1e2023;
-    }
-    .bulk-field textarea { min-height:120px; resize:vertical; line-height:1.5; }
-    .bulk-field input:focus,
-    .bulk-field textarea:focus { border-color:#1e2023; }
-    .bulk-submit {
-      width:100%; border:1px solid #1e2023; padding:14px; font-size:13px; letter-spacing:.18em; font-family:var(--fh);
-      font-weight:600; text-transform:uppercase; transition:background .3s ease,color .3s ease; background:transparent; color:#1e2023; cursor:pointer;
-    }
-    .bulk-submit:hover { background:#1e2023; color:#fff; }
-    .bulk-submit:disabled { opacity:.6; cursor:not-allowed; }
-    .bulk-success {
-      padding:20px; text-align:center; font-size:15px; line-height:1.6; color:#4b5563; background:#f0fdf4; border:1px solid #bbf7d0;
-    }
-    .bulk-errors { color:#b91c1c; font-size:14px; line-height:1.5; }
-    .bulk-errors ul { margin:8px 0 0 1.2em; padding:0; }
-    .bulk-left, .bulk-right { animation:fadeUp .55s ease both; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-  
-    @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  
-  </style>
-  
-  <div class="arc">
-  
-    {%- if section.settings.incense_image != blank -%}
-    <div class="ar-incense">
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+.arc {
+  --ink:      #0F0F0F;
+  --ink-2:    #3A3A3A;
+  --ink-3:    #7A7A7A;
+  --ink-4:    #ADADAD;
+  --bg:       #FAFAF7;
+  --bg-2:     #F3F0EB;
+  --white:    #FFFFFF;
+  --gold:     #B8943A;
+  --gold-lt:  #D4AB5A;
+  --border:   #E8E4DC;
+  --dark:     #0F0F0F;
+  --trans:    0.28s cubic-bezier(0.25, 1, 0.5, 1);
+  --fh: var(--font-heading-family, Georgia, serif);
+  --fb: var(--font-body-family, system-ui, sans-serif);
+
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.arc *, .arc *::before, .arc *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.arc a { text-decoration: none; color: inherit; }
+.arc img { display: block; max-width: 100%; }
+.arc button { font-family: var(--fb); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes arc-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes arc-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes arc-line-grow {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+@keyframes arc-card-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes arc-img-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arc *, .arc *::before, .arc *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   BANNER / TOP IMAGE
+   ============================================================ */
+.arc-banner {
+  width: 100%;
+  background: var(--dark);
+  overflow: hidden;
+  line-height: 0;
+  position: relative;
+}
+
+.arc-banner__img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  animation: arc-img-in 0.9s ease 0.1s forwards;
+}
+
+.arc-banner__ph {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1a0e00 0%, #2d1a00 100%);
+}
+
+.arc-banner__ph p:first-child {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.arc-banner__ph p:last-child {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.arc-header {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px 48px 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  animation: arc-up 0.65s ease both;
+}
+
+.arc-header__left { flex: 1; }
+
+.arc-header__eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.arc-header__title {
+  font-family: var(--fh);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+.arc-header__desc {
+  margin-top: 14px;
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.75;
+  max-width: 480px;
+  font-weight: 300;
+}
+
+.arc-header__rule {
+  display: block;
+  width: 48px;
+  height: 1.5px;
+  background: var(--gold);
+  margin-top: 24px;
+  animation: arc-line-grow 0.7s ease 0.4s both;
+}
+
+.arc-header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 4px;
+  flex-shrink: 0;
+}
+
+.arc-header__count {
+  font-size: 12px;
+  color: var(--ink-4);
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+/* Sort */
+.arc-sort-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.arc-sort-wrap::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%230F0F0F' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+.arc-sort-select {
+  font-family: var(--fb);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 9px 36px 9px 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--trans);
+}
+
+.arc-sort-select:focus { border-color: var(--ink); }
+
+/* ============================================================
+   TOOLBAR DIVIDER
+   ============================================================ */
+.arc-divider {
+  max-width: 1440px;
+  margin: 28px auto 0;
+  padding: 0 48px;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   PRODUCT GRID
+   ============================================================ */
+.arc-grid {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 48px 96px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+
+}
+
+@media (max-width: 1280px) { .arc-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px)  {
+  .arc-grid { grid-template-columns: repeat(2, 1fr); padding: 28px 20px 64px; gap: 16px; }
+}
+@media (max-width: 480px)  { .arc-grid { grid-template-columns: 1fr; gap: 12px; } }
+
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
+.arc-card {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow var(--trans);
+  opacity: 0;
+  animation: arc-card-in 0.55s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(var(--ci, 0) * 55ms + 0.15s);
+}
+
+.arc-card:hover {
+  box-shadow: 0 20px 56px rgba(0,0,0,0.10);
+  z-index: 2;
+}
+
+/* ── Image ── */
+.arc-card__media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--bg-2);
+  flex-shrink: 0;
+}
+
+.arc-card__media-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.arc-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.75s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.4s ease;
+}
+
+.arc-card__img-hover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.03);
+}
+
+.arc-card:hover .arc-card__img       { transform: scale(1.05); }
+.arc-card:hover .arc-card__img-hover { opacity: 1; transform: scale(1.02); }
+
+/* ── Badge ── */
+.arc-card__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  padding: 5px 12px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.arc-card__badge--bs   { background: var(--ink);   color: #fff; }
+.arc-card__badge--new  { background: #1A5C2A;       color: #fff; }
+.arc-card__badge--sale { background: var(--gold);   color: #fff; }
+.arc-card__badge--ltd  { background: #5C2A5A;       color: #fff; }
+
+/* ── Wishlist ── */
+.arc-card__wish {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink-3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: color var(--trans), background var(--trans), transform 0.2s ease;
+  padding: 0;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--trans), transform var(--trans), color 0.2s ease, background 0.2s ease;
+}
+
+.arc-card:hover .arc-card__wish {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arc-card__wish:hover { color: #D4607E; background: #fff; }
+.arc-card__wish svg { display: block; pointer-events: none; }
+
+/* ── Body ── */
+.arc-card__body {
+  padding: 20px 20px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.arc-card__type {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.arc-card__name {
+  font-family: var(--fh);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.arc-card__name-link { color: inherit; }
+.arc-card__name-link:hover { color: var(--gold); transition: color 0.2s ease; }
+
+.arc-card__tagline {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 300;
+  line-height: 1.55;
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Stars ── */
+.arc-card__stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.arc-card__stars-row {
+  display: flex;
+  gap: 2px;
+}
+
+.arc-star {
+  width: 11px;
+  height: 11px;
+  fill: #DDD;
+  flex-shrink: 0;
+}
+
+.arc-star.on { fill: #D4A017; }
+.arc-card__rc { font-size: 11px; color: var(--ink-4); }
+
+/* ── Price ── */
+.arc-card__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.arc-card__price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.arc-card__compare {
+  font-size: 13px;
+  color: var(--ink-4);
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
+.arc-card__save {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+/* ── Footer / ATC ── */
+.arc-card__foot {
+  margin-top: auto;
+  padding: 16px 20px 20px;
+}
+
+.arc-card__atc {
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--fb);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background var(--trans), color var(--trans), border-color var(--trans);
+  position: relative;
+  overflow: hidden;
+}
+
+.arc-card__atc:hover:not(:disabled) {
+  background: var(--ink);
+  color: #fff;
+}
+
+.arc-card__atc:disabled,
+.arc-card__atc.is-sold {
+  background: #F5F5F5;
+  color: #BBBBBB;
+  border-color: #E0E0E0;
+  cursor: not-allowed;
+}
+
+.arc-card__atc.is-added {
+  background: #1A5C2A;
+  color: #fff;
+  border-color: #1A5C2A;
+}
+
+.arc-card__atc svg { flex-shrink: 0; }
+
+/* ── Divider inside card ── */
+.arc-card__sep {
+  height: 1px;
+  background: var(--border);
+  margin: 0 20px;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.arc-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 96px 48px;
+  background: var(--white);
+}
+
+.arc-empty__icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.arc-empty__h {
+  font-family: var(--fh);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.arc-empty__p {
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.arc-pagination {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 40px 0 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.arc-page-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background var(--trans), color var(--trans), border-color var(--trans);
+  font-family: var(--fb);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.arc-page-btn:hover,
+.arc-page-btn.is-current {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.arc-page-btn--arrow { font-size: 18px; }
+
+/* ============================================================
+   CONTENT BLOCK
+   ============================================================ */
+.arc-content {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.arc-content__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 96px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .arc-content__inner { grid-template-columns: 1fr; padding: 64px 24px; gap: 48px; }
+}
+
+.arc-content__img-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+
+.arc-content__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.arc-content__img-wrap:hover .arc-content__img { transform: scale(1.03); }
+
+.arc-content__ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--ink-4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.arc-content__text { display: flex; flex-direction: column; gap: 0; }
+
+.arc-content__label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+
+.arc-content__h {
+  font-family: var(--fh);
+  font-size: clamp(28px, 3.5vw, 46px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.arc-content__p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink-2);
+  font-weight: 300;
+}
+
+/* ============================================================
+   CTA BAND
+   ============================================================ */
+.arc-cta {
+  background: var(--dark);
+  padding: 96px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) { .arc-cta { padding: 72px 24px; } }
+
+.arc-cta__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(184,148,58,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.arc-cta__label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.arc-cta__h {
+  font-family: var(--fh);
+  font-size: clamp(28px, 4vw, 54px);
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.arc-cta__p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+  line-height: 1.75;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  position: relative;
+}
+
+.arc-cta__btn {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  padding: 15px 52px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--gold);
+  transition: background var(--trans), color var(--trans), transform 0.2s ease;
+  position: relative;
+}
+
+.arc-cta__btn:hover {
+  background: transparent;
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   BULK / WHOLESALE SECTION
+   ============================================================ */
+.arc-bulk {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.arc-bulk__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) { .arc-bulk__inner { grid-template-columns: 1fr; gap: 56px; } }
+@media (max-width: 768px)  { .arc-bulk__inner { padding: 64px 24px; } }
+
+.arc-bulk__eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.arc-bulk__h {
+  font-family: var(--fh);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.arc-bulk__p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  font-weight: 300;
+  max-width: 420px;
+  margin-bottom: 36px;
+}
+
+.arc-bulk__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.arc-bulk__contact-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-4);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.arc-bulk__contact-val {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+
+.arc-bulk__contact-val:hover { color: var(--gold); }
+
+.arc-bulk__call-btn {
+  display: inline-block;
+  border: 1.5px solid var(--ink);
+  padding: 11px 28px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: background var(--trans), color var(--trans);
+}
+
+.arc-bulk__call-btn:hover { background: var(--ink); color: #fff; }
+
+/* Form */
+.arc-bulk__form { display: flex; flex-direction: column; gap: 20px; }
+
+.arc-bulk__field { display: flex; flex-direction: column; gap: 6px; }
+
+.arc-bulk__field label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.arc-bulk__field input,
+.arc-bulk__field textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: var(--fb);
+  outline: none;
+  color: var(--ink);
+  background: var(--white);
+  transition: border-color 0.2s ease;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.arc-bulk__field input:focus,
+.arc-bulk__field textarea:focus { border-color: var(--ink); }
+
+.arc-bulk__field input::placeholder,
+.arc-bulk__field textarea::placeholder { color: var(--ink-4); }
+
+.arc-bulk__field textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+
+.arc-bulk__submit {
+  width: 100%;
+  border: 1.5px solid var(--ink);
+  padding: 14px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  font-family: var(--fb);
+  font-weight: 700;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--trans), color var(--trans);
+}
+
+.arc-bulk__submit:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.arc-bulk__submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.arc-bulk__success {
+  padding: 20px 24px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #1A5C2A;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+}
+
+.arc-bulk__errors {
+  font-size: 13px;
+  color: #B91C1C;
+  line-height: 1.55;
+  padding: 14px 18px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+}
+
+.arc-bulk__errors ul { margin: 6px 0 0 1.2em; }
+
+/* ============================================================
+   RESPONSIVE OVERRIDES
+   ============================================================ */
+@media (max-width: 1024px) {
+  .arc-header { padding: 48px 32px 0; }
+  .arc-divider { padding: 0 32px; }
+  .arc-grid    { padding: 32px 32px 80px; }
+}
+
+@media (max-width: 768px) {
+  .arc-header { padding: 40px 20px 0; flex-direction: column; align-items: flex-start; gap: 20px; }
+  .arc-header__right { width: 100%; justify-content: space-between; }
+  .arc-divider { padding: 0 20px; }
+}
+
+@media (max-width: 480px) {
+  .arc-header { padding: 32px 16px 0; }
+  .arc-divider { padding: 0 16px; }
+  .arc-grid    { padding: 20px 16px 60px; }
+}
+</style>
+
+<div class="arc" itemscope itemtype="https://schema.org/CollectionPage">
+  <meta itemprop="name" content="{{ collection.title | escape }}">
+  <meta itemprop="description" content="{{ collection.description | strip_html | escape }}">
+
+  {%- comment -%} ── TOP BANNER IMAGE ── {%- endcomment -%}
+  {%- if section.settings.incense_image != blank -%}
+    <div class="arc-banner">
       <img
-        src="{{ section.settings.incense_image | image_url: width: 2400 }}"
-        srcset="{{ section.settings.incense_image | image_url: width: 900 }} 900w, {{ section.settings.incense_image | image_url: width: 1400 }} 1400w, {{ section.settings.incense_image | image_url: width: 1800 }} 1800w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
+        src="{{ section.settings.incense_image | image_url: width: 2000 }}"
+        srcset="
+          {{ section.settings.incense_image | image_url: width: 900 }} 900w,
+          {{ section.settings.incense_image | image_url: width: 1400 }} 1400w,
+          {{ section.settings.incense_image | image_url: width: 1800 }} 1800w,
+          {{ section.settings.incense_image | image_url: width: 2400 }} 2400w
+        "
         sizes="100vw"
-        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa Incense Sticks' }}"
+        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa — Pure Incense Sticks, Sacred Fragrances' | escape }}"
         width="{{ section.settings.incense_image.width | default: 2000 }}"
-        height="{{ section.settings.incense_image.height | default: 800 }}"
-        loading="lazy"
+        height="{{ section.settings.incense_image.height | default: 700 }}"
+        loading="eager"
+        fetchpriority="high"
         decoding="async"
-        class="ar-incense__img"
+        class="arc-banner__img"
       >
     </div>
   {%- else -%}
-    <div class="ar-incense-ph">
-      <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
-      <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
+    <div class="arc-banner">
+      <div class="arc-banner__ph">
+        <p>Incense Banner</p>
+        <p>Theme Editor → Upload banner image</p>
+      </div>
     </div>
   {%- endif -%}
-  
-  
-    {%- comment -%} TOOLBAR {% endcomment %}
-    <div class="arc-toolbar">
-      <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
-      <div class="arc-toolbar__sort">
-        <label for="arc-sort">Sort by</label>
-        {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-        <select id="arc-sort" class="arc-toolbar__select" onchange="window.location.href=window.location.pathname+'?sort_by='+this.value">
-          <option value="manual"            {%- if sort_by == 'manual' -%} selected{%- endif -%}>Featured</option>
-          <option value="best-selling"      {%- if sort_by == 'best-selling' -%} selected{%- endif -%}>Best Selling</option>
-          <option value="title-ascending"   {%- if sort_by == 'title-ascending' -%} selected{%- endif -%}>A–Z</option>
-          <option value="title-descending"  {%- if sort_by == 'title-descending' -%} selected{%- endif -%}>Z–A</option>
-          <option value="price-ascending"   {%- if sort_by == 'price-ascending' -%} selected{%- endif -%}>Price: Low–High</option>
-          <option value="price-descending"  {%- if sort_by == 'price-descending' -%} selected{%- endif -%}>Price: High–Low</option>
-          <option value="created-descending"{%- if sort_by == 'created-descending' -%} selected{%- endif -%}>Newest</option>
+
+  {%- comment -%} ── PAGE HEADER ── {%- endcomment -%}
+  <header class="arc-header" role="banner">
+    <div class="arc-header__left">
+      <span class="arc-header__eyebrow">Sacred Fragrance Collection</span>
+      <h1 class="arc-header__title" itemprop="name">
+        {%- if collection.title == blank -%}Best Seller Agarbatti
+        {%- else -%}{{ collection.title }}
+        {%- endif -%}
+      </h1>
+      <p class="arc-header__desc" itemprop="description">
+        {%- if collection.description != blank -%}
+          {{ collection.description | strip_html }}
+        {%- else -%}
+          Handcrafted incense sticks made from pure resins, sacred botanicals, and traditional Indian methods. Zero charcoal. Zero synthetic binding. Only truth in every thread of smoke.
+        {%- endif -%}
+      </p>
+      <span class="arc-header__rule" aria-hidden="true"></span>
+    </div>
+    <div class="arc-header__right">
+      <span class="arc-header__count" aria-live="polite">{{ collection.products_count }} products</span>
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      <div class="arc-sort-wrap">
+        <select
+          id="arc-sort"
+          class="arc-sort-select"
+          aria-label="Sort products"
+          onchange="window.location.href = window.location.pathname + '?sort_by=' + this.value + window.location.hash"
+        >
+          <option value="manual"            {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="best-selling"      {% if sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+          <option value="title-ascending"   {% if sort_by == 'title-ascending' %}selected{% endif %}>A – Z</option>
+          <option value="title-descending"  {% if sort_by == 'title-descending' %}selected{% endif %}>Z – A</option>
+          <option value="price-ascending"   {% if sort_by == 'price-ascending' %}selected{% endif %}>Price: Low – High</option>
+          <option value="price-descending"  {% if sort_by == 'price-descending' %}selected{% endif %}>Price: High – Low</option>
+          <option value="created-descending"{% if sort_by == 'created-descending' %}selected{% endif %}>Newest First</option>
         </select>
       </div>
     </div>
-  
-    {%- comment -%} PRODUCT GRID {% endcomment %}
-    <div class="arc-grid" id="arc-products">
-      {%- if collection.products.size > 0 -%}
-        {%- paginate collection.products by section.settings.products_per_page -%}
-          {%- for product in collection.products -%}
-            <div class="arc-card">
-              <a href="{{ product.url }}" class="arc-card__img-wrap">
+  </header>
+
+  <hr class="arc-divider" aria-hidden="true">
+
+  {%- comment -%} ── PRODUCT GRID ── {%- endcomment -%}
+  <main class="arc-grid" id="arc-products" aria-label="Incense products">
+    {%- if collection.products.size > 0 -%}
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign p_tags = product.tags | join: ',' | downcase
+            assign badge_text  = blank
+            assign badge_class = blank
+            if p_tags contains 'bestseller'
+              assign badge_text  = 'BESTSELLER'
+              assign badge_class = 'arc-card__badge--bs'
+            elsif p_tags contains 'new'
+              assign badge_text  = 'NEW'
+              assign badge_class = 'arc-card__badge--new'
+            elsif p_tags contains 'limited'
+              assign badge_text  = 'LIMITED'
+              assign badge_class = 'arc-card__badge--ltd'
+            elsif product.compare_at_price > product.price
+              assign badge_text  = 'SALE'
+              assign badge_class = 'arc-card__badge--sale'
+            endif
+            assign p_type = product.type | default: 'Agarbatti'
+            assign p_tagline = product.metafields.custom.tagline | metafield_text
+            if p_tagline == blank and product.description != blank
+              assign p_tagline = product.description | strip_html | truncate: 70
+            endif
+            assign rating_val   = product.metafields.reviews.rating.value.rating | default: 5
+            assign rating_count = product.metafields.reviews.rating_count | default: 0
+            assign rating_round = rating_val | round
+            assign has_sale = false
+            if product.compare_at_price > product.price
+              assign has_sale = true
+              assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+            endif
+          -%}
+
+          <article
+            class="arc-card"
+            style="--ci: {{ forloop.index0 }}"
+            itemscope
+            itemtype="https://schema.org/Product"
+          >
+            <meta itemprop="name" content="{{ product.title | escape }}">
+            <meta itemprop="url" content="{{ product.url | prepend: request.origin }}">
+            {%- if product.featured_image -%}
+              <meta itemprop="image" content="{{ product.featured_image | image_url: width: 800 | prepend: 'https:' }}">
+            {%- endif -%}
+
+            {%- comment -%} IMAGE {%- endcomment -%}
+            <div class="arc-card__media">
+              <a href="{{ product.url }}" class="arc-card__media-link" aria-label="{{ product.title | escape }}">
                 {%- if product.images.size > 0 -%}
                   <img
                     src="{{ product.featured_image | image_url: width: 800 }}"
-                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
                     width="800"
                     height="1067"
-                    loading="lazy"
+                    loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                    {% if forloop.index == 1 %}fetchpriority="high"{% endif %}
+                    decoding="async"
                     class="arc-card__img"
                   >
                   {%- if product.images.size > 1 -%}
                     <img
                       src="{{ product.images[1] | image_url: width: 800 }}"
-                      alt="{{ product.title }} - alternate view"
+                      alt="{{ product.title | escape }} — alternate view"
                       width="800"
                       height="1067"
                       loading="lazy"
+                      decoding="async"
                       class="arc-card__img-hover"
                     >
                   {%- endif -%}
                 {%- endif -%}
-                {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
-                  <span class="arc-card__badge arc-card__badge--bs">Bestseller</span>
-                {%- elsif product.tags contains 'new' or product.tags contains 'New' -%}
-                  <span class="arc-card__badge arc-card__badge--new">New</span>
-                {%- elsif product.compare_at_price > product.price -%}
-                  <span class="arc-card__badge arc-card__badge--sale">Sale</span>
+              </a>
+
+              {%- if badge_text != blank -%}
+                <span class="arc-card__badge {{ badge_class }}" aria-label="{{ badge_text }}">{{ badge_text }}</span>
+              {%- endif -%}
+
+              <button
+                type="button"
+                class="arc-card__wish"
+                aria-label="Save {{ product.title | escape }} to wishlist"
+                data-product-id="{{ product.id }}"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20.727 3.818 12.545A5.5 5.5 0 1 1 11.6 4.763l.4.4.4-.4a5.5 5.5 0 0 1 7.778 7.782L12 20.727Z"/>
+                </svg>
+              </button>
+            </div>
+
+            {%- comment -%} BODY {%- endcomment -%}
+            <div class="arc-card__body">
+              <p class="arc-card__type">{{ p_type }}</p>
+
+              <h2 class="arc-card__name">
+                <a href="{{ product.url }}" class="arc-card__name-link">{{ product.title }}</a>
+              </h2>
+
+              {%- if p_tagline != blank -%}
+                <p class="arc-card__tagline">{{ p_tagline }}</p>
+              {%- endif -%}
+
+              <div class="arc-card__stars" aria-label="{{ rating_val }} out of 5 stars">
+                <span class="arc-card__stars-row" aria-hidden="true">
+                  {%- for star in (1..5) -%}
+                    <svg class="arc-star{% if star <= rating_round %} on{% endif %}" viewBox="0 0 24 24">
+                      <path d="m12 2.6 2.97 6.02 6.64.97-4.8 4.68 1.13 6.61L12 17.73l-5.94 3.13 1.13-6.61-4.8-4.68 6.64-.97L12 2.6Z"/>
+                    </svg>
+                  {%- endfor -%}
+                </span>
+                {%- if rating_count > 0 -%}
+                  <span class="arc-card__rc">({{ rating_count }})</span>
                 {%- endif -%}
-                </a>
-              <div class="arc-card__body">
-                <p class="arc-card__type">{{ product.type | default: 'Attar' }}</p>
-                <a href="{{ product.url }}"><h3 class="arc-card__name">{{ product.title }}</h3></a>
-                {%- if product.description != blank -%}
-                  <p class="arc-card__desc">{{ product.description | strip_html | truncate: 80 }}</p>
+              </div>
+
+              <div class="arc-card__price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+                <meta itemprop="price" content="{{ product.price | divided_by: 100.0 }}">
+                <meta itemprop="availability" content="{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}">
+                {%- if has_sale -%}
+                  <span class="arc-card__compare">{{ product.compare_at_price | money }}</span>
+                  <span class="arc-card__price">{{ product.price | money }}</span>
+                  <span class="arc-card__save">–{{ saving }}%</span>
+                {%- else -%}
+                  <span class="arc-card__price">{{ product.price | money }}</span>
                 {%- endif -%}
-                <div class="arc-card__foot">
-                  <div class="arc-card__price-wrap">
-                    {%- if product.compare_at_price > product.price -%}
-                      <span class="arc-card__compare">{{ product.compare_at_price | money }}</span>
-                    {%- endif -%}
-                    <span class="arc-card__price">{{ product.price | money }}</span>
-                  </div>
-                  <a href="{{ product.url }}" class="arc-card__buy">View</a>
-                </div>
-                <button class="arc-card__quick js-arc-atc"
-                  data-id="{{ product.variants.first.id }}"
-                  data-name="{{ product.title | escape }}"
-                  aria-label="Add {{ product.title | escape }} to cart">
-                  Add to Cart
-                </button>
               </div>
             </div>
-          {%- endfor -%}
-  
-          {%- if paginate.pages > 1 -%}
-            <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
-              {%- if paginate.previous -%}
-                <a href="{{ paginate.previous.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8249;</a>
-              {%- endif -%}
-              {%- for part in paginate.parts -%}
-                {%- if part.is_link -%}
-                  <a href="{{ part.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;color:#1e2023;text-decoration:none;">{{ part.title }}</a>
-                {%- else -%}
-                  <span style="width:40px;height:40px;{%- if part.title == paginate.current_page -%}background:#1e2023;color:#fff;{%- else -%}color:#9ca3af;{%- endif -%}border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:13px;">{{ part.title }}</span>
-                {%- endif -%}
-              {%- endfor -%}
-              {%- if paginate.next -%}
-                <a href="{{ paginate.next.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8250;</a>
+
+            {%- comment -%} ATC {%- endcomment -%}
+            <div class="arc-card__sep" aria-hidden="true"></div>
+            <div class="arc-card__foot">
+              {%- if product.available -%}
+                <button
+                  type="button"
+                  class="arc-card__atc js-arc-atc"
+                  data-id="{{ product.variants.first.id }}"
+                  data-name="{{ product.title | escape }}"
+                  aria-label="Add {{ product.title | escape }} to cart"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/>
+                  </svg>
+                  <span>Add to Cart</span>
+                </button>
+              {%- else -%}
+                <button type="button" class="arc-card__atc is-sold" disabled aria-label="{{ product.title | escape }} — sold out">
+                  Sold Out
+                </button>
               {%- endif -%}
             </div>
-          {%- endif -%}
-        {%- endpaginate -%}
-      {%- else -%}
-        <div class="arc-empty">
-          <h2 class="arc-empty__h">No products yet</h2>
-          <p class="arc-empty__p">Check back soon — new products are being added.</p>
-        </div>
-      {%- endif -%}
-    </div>
-  
-    {%- comment -%} CONTENT BLOCK {% endcomment %}
-    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
-    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
-      <div class="arc-content">
+
+          </article>
+        {%- endfor -%}
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="arc-pagination" role="navigation" aria-label="Pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="arc-page-btn arc-page-btn--arrow" aria-label="Previous page">&#8249;</a>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="arc-page-btn" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+              {%- else -%}
+                <span class="arc-page-btn {% if part.title == paginate.current_page %}is-current{% endif %}" aria-current="page">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="arc-page-btn arc-page-btn--arrow" aria-label="Next page">&#8250;</a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="arc-empty" role="status">
+        <div class="arc-empty__icon" aria-hidden="true">🪔</div>
+        <h2 class="arc-empty__h">No products yet</h2>
+        <p class="arc-empty__p">New fragrances are being added. Check back soon.</p>
+      </div>
+    {%- endif -%}
+  </main>
+
+  {%- comment -%} ── CONTENT BLOCK ── {%- endcomment -%}
+  {%- if section.settings.content_title != blank or section.settings.content_image != blank -%}
+    <section class="arc-content" aria-label="{{ section.settings.content_title | escape }}">
+      <div class="arc-content__inner">
         <div class="arc-content__img-wrap">
           {%- if section.settings.content_image != blank -%}
-            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
+            <img
+              src="{{ section.settings.content_image | image_url: width: 1200 }}"
+              alt="{{ section.settings.content_title | escape }}"
+              width="1200"
+              height="900"
+              loading="lazy"
+              decoding="async"
+              class="arc-content__img"
+            >
           {%- else -%}
             <div class="arc-content__ph">Upload image in Theme Editor</div>
           {%- endif -%}
         </div>
-        <div>
+        <div class="arc-content__text">
           <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
           <h2 class="arc-content__h">{{ section.settings.content_title | default: 'The Art of Sacred Smoke' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: 'For millennia, burning incense has been the soul of Indian ritual. Our Agarbatti are rolled by hand using centuries-old methods, blending pure resins, flowers, and sacred woods into a fragrance that transforms any space into a sanctuary.' }}</p>
+          <p class="arc-content__p">{{ section.settings.content_body | default: 'For millennia, burning incense has been the soul of Indian ritual and daily prayer. Our Agarbatti are hand-rolled using centuries-old methods — blending pure resins, forest flowers, and sacred woods into smoke that transforms any space into a sanctuary.' }}</p>
         </div>
       </div>
     </section>
-    {%- endif -%}
-  
-    {%- if section.settings.bulk_enable != false -%}
+  {%- endif -%}
+
+  {%- comment -%} ── CTA BAND ── {%- endcomment -%}
+  {%- if section.settings.cta_title != blank -%}
+    <section class="arc-cta" aria-label="{{ section.settings.cta_title | escape }}">
+      <div class="arc-cta__glow" aria-hidden="true"></div>
+      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
+      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Transform Your Space into a Sacred Sanctuary' }}</h2>
+      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet.' }}</p>
+      {%- if section.settings.cta_url != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
+      {%- endif -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ── BULK / WHOLESALE ── {%- endcomment -%}
+  {%- if section.settings.bulk_enable != false -%}
     {%- liquid
       assign bulk_pid = 'BulkOrder-' | append: section.id
       assign bulk_tel_href = section.settings.bulk_phone | default: '+919311336643' | strip | replace: ' ', '' | replace: '-', ''
@@ -320,180 +1238,224 @@
         assign bulk_tel_href = bulk_tel_href | prepend: '+'
       endunless
     -%}
-    <section class="bulk-order-section" aria-labelledby="{{ bulk_pid }}-heading">
-      <div class="bulk-container">
-        <div class="bulk-grid">
-          <div class="bulk-left">
-            <p class="bulk-eyebrow">{{ section.settings.bulk_eyebrow | escape }}</p>
-            <h2 class="bulk-heading" id="{{ bulk_pid }}-heading">{{ section.settings.bulk_heading | escape }}</h2>
-            <div class="bulk-description">{{ section.settings.bulk_description | newline_to_br }}</div>
-            <div class="bulk-contact">
-              <div>
-                <p class="bulk-label">{{ section.settings.bulk_call_label | escape }}</p>
-                <a href="tel:{{ bulk_tel_href }}">{{ section.settings.bulk_phone_display | escape }}</a>
-              </div>
-              <div>
-                <p class="bulk-label">{{ section.settings.bulk_email_label | escape }}</p>
-                <a href="mailto:{{ section.settings.bulk_email }}">{{ section.settings.bulk_email | escape }}</a>
-              </div>
-              <div class="bulk-cta">
-                <a href="tel:{{ bulk_tel_href }}" class="bulk-button-outline">{{ section.settings.bulk_call_btn | escape }}</a>
-              </div>
+    <section class="arc-bulk" aria-labelledby="{{ bulk_pid }}-heading">
+      <div class="arc-bulk__inner">
+
+        <div>
+          <span class="arc-bulk__eyebrow">{{ section.settings.bulk_eyebrow | escape }}</span>
+          <h2 class="arc-bulk__h" id="{{ bulk_pid }}-heading">{{ section.settings.bulk_heading | escape }}</h2>
+          <p class="arc-bulk__p">{{ section.settings.bulk_description | newline_to_br }}</p>
+
+          <div class="arc-bulk__contacts">
+            <div>
+              <span class="arc-bulk__contact-label">{{ section.settings.bulk_call_label | escape }}</span>
+              <a href="tel:{{ bulk_tel_href }}" class="arc-bulk__contact-val">{{ section.settings.bulk_phone_display | escape }}</a>
+            </div>
+            <div>
+              <span class="arc-bulk__contact-label">{{ section.settings.bulk_email_label | escape }}</span>
+              <a href="mailto:{{ section.settings.bulk_email }}" class="arc-bulk__contact-val">{{ section.settings.bulk_email | escape }}</a>
             </div>
           </div>
-          <div class="bulk-right">
-            {%- form 'contact', id: bulk_pid, class: 'bulk-form' -%}
-              {%- if form.posted_successfully? -%}
-                <div class="bulk-success" tabindex="-1" role="status">
-                  {{ section.settings.bulk_success | default: "Thank you. Our team will contact you within 24 hours." }}
-                </div>
-              {%- else -%}
-                {%- if form.errors -%}
-                  <div class="bulk-errors" role="alert">
-                    <h3 class="visually-hidden">{{ 'templates.contact.form.error_heading' | t }}</h3>
-                    {{ form.errors | default_errors }}
-                  </div>
-                {%- endif -%}
 
-                <div class="bulk-field">
-                  <label for="{{ bulk_pid }}-name">{{ 'templates.contact.form.name' | t }} <span aria-hidden="true">*</span></label>
-                  <input
-                    type="text"
-                    id="{{ bulk_pid }}-name"
-                    name="contact[{{ 'templates.contact.form.name' | t }}]"
-                    autocomplete="name"
-                    value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-                    placeholder="{{ 'templates.contact.form.name' | t }}"
-                    required
-                  >
-                </div>
-
-                <div class="bulk-field">
-                  <label for="{{ bulk_pid }}-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
-                  <input
-                    type="email"
-                    id="{{ bulk_pid }}-email"
-                    name="contact[email]"
-                    autocomplete="email"
-                    spellcheck="false"
-                    autocapitalize="off"
-                    value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-                    placeholder="{{ 'templates.contact.form.email' | t }}"
-                    required
-                    aria-required="true"
-                    {% if form.errors contains 'email' %}
-                      aria-invalid="true"
-                    {% endif %}
-                  >
-                </div>
-
-                <div class="bulk-field">
-                  <label for="{{ bulk_pid }}-phone">{{ 'templates.contact.form.phone' | t }} <span aria-hidden="true">*</span></label>
-                  <input
-                    type="tel"
-                    id="{{ bulk_pid }}-phone"
-                    name="contact[{{ 'templates.contact.form.phone' | t }}]"
-                    autocomplete="tel"
-                    inputmode="tel"
-                    value="{% if form.phone %}{{ form.phone }}{% elsif customer != blank and customer.phone != blank %}{{ customer.phone }}{% endif %}"
-                    placeholder="{{ 'templates.contact.form.phone' | t }}"
-                    required
-                  >
-                </div>
-
-                <div class="bulk-field">
-                  <label for="{{ bulk_pid }}-body">{{ section.settings.bulk_message_label | escape }} <span aria-hidden="true">*</span></label>
-                  <textarea
-                    id="{{ bulk_pid }}-body"
-                    name="contact[{{ 'templates.contact.form.comment' | t }}]"
-                    rows="5"
-                    required
-                    placeholder="{{ section.settings.bulk_message_placeholder | escape }}"
-                  >{{ form.body | strip }}</textarea>
-                </div>
-
-                <button type="submit" class="bulk-submit">
-                  {{ section.settings.bulk_submit | escape }}
-                </button>
-              {%- endif -%}
-            {%- endform -%}
-          </div>
+          <a href="tel:{{ bulk_tel_href }}" class="arc-bulk__call-btn">{{ section.settings.bulk_call_btn | escape }}</a>
         </div>
+
+        <div>
+          {%- form 'contact', id: bulk_pid, class: 'arc-bulk__form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="arc-bulk__success" role="status" tabindex="-1">
+                {{ section.settings.bulk_success | default: 'Thank you. Our team will contact you within 24 hours.' }}
+              </div>
+            {%- else -%}
+              {%- if form.errors -%}
+                <div class="arc-bulk__errors" role="alert">
+                  <h3 class="visually-hidden">{{ 'templates.contact.form.error_heading' | t }}</h3>
+                  {{ form.errors | default_errors }}
+                </div>
+              {%- endif -%}
+
+              <div class="arc-bulk__field">
+                <label for="{{ bulk_pid }}-name">{{ 'templates.contact.form.name' | t }} *</label>
+                <input
+                  type="text"
+                  id="{{ bulk_pid }}-name"
+                  name="contact[{{ 'templates.contact.form.name' | t }}]"
+                  autocomplete="name"
+                  placeholder="{{ 'templates.contact.form.name' | t }}"
+                  value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                  required
+                >
+              </div>
+
+              <div class="arc-bulk__field">
+                <label for="{{ bulk_pid }}-email">{{ 'templates.contact.form.email' | t }} *</label>
+                <input
+                  type="email"
+                  id="{{ bulk_pid }}-email"
+                  name="contact[email]"
+                  autocomplete="email"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  placeholder="{{ 'templates.contact.form.email' | t }}"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  required
+                  {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+                >
+              </div>
+
+              <div class="arc-bulk__field">
+                <label for="{{ bulk_pid }}-phone">{{ 'templates.contact.form.phone' | t }} *</label>
+                <input
+                  type="tel"
+                  id="{{ bulk_pid }}-phone"
+                  name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  placeholder="{{ 'templates.contact.form.phone' | t }}"
+                  value="{% if form.phone %}{{ form.phone }}{% elsif customer.phone %}{{ customer.phone }}{% endif %}"
+                  required
+                >
+              </div>
+
+              <div class="arc-bulk__field">
+                <label for="{{ bulk_pid }}-body">{{ section.settings.bulk_message_label | escape }} *</label>
+                <textarea
+                  id="{{ bulk_pid }}-body"
+                  name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                  rows="5"
+                  placeholder="{{ section.settings.bulk_message_placeholder | escape }}"
+                  required
+                >{{ form.body | strip }}</textarea>
+              </div>
+
+              <button type="submit" class="arc-bulk__submit">{{ section.settings.bulk_submit | escape }}</button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+
       </div>
     </section>
-    {%- endif -%}
-  
-  </div>
-  
-  <script>
-  (function(){
-    var arcRoot = document.querySelector('.arc');
-    if (arcRoot) arcRoot.classList.add('is-ready');
+  {%- endif -%}
 
-    // Add to cart
-    document.querySelectorAll('.js-arc-atc').forEach(function(btn){
-      btn.addEventListener('click', function(e){
-        e.preventDefault(); e.stopPropagation();
-        var id = btn.dataset.id;
-        if(!id) return;
-        btn.textContent = 'Adding...';
-        btn.style.pointerEvents = 'none';
-        fetch('/cart/add.js',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({id:parseInt(id),quantity:1})
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(){
-          btn.textContent = '✓ Added';
-          setTimeout(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; }, 1800);
-        })
-        .catch(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; });
-      });
+</div><!-- /.arc -->
+
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Add to Cart ─────────────────────────────────────── */
+  function handleATC(btn) {
+    var id = parseInt(btn.dataset.id, 10);
+    if (!id) return;
+    var span = btn.querySelector('span');
+    var originalHTML = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.classList.remove('is-added');
+    if (span) span.textContent = 'Adding…';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: id, quantity: 1 })
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('Network response was not ok');
+      return r.json();
+    })
+    .then(function () {
+      btn.classList.add('is-added');
+      if (span) span.textContent = '✓ Added';
+      /* update cart count if Dawn's cart bubble exists */
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      setTimeout(function () {
+        btn.disabled = false;
+        btn.classList.remove('is-added');
+        btn.innerHTML = originalHTML;
+      }, 2000);
+    })
+    .catch(function () {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
     });
-  })();
-  </script>
-  
-  {%- schema -%}
-  {
-    "name": "Incense Sticks Collection",
-    "settings": [
-      {"type":"header","content":"Hero Section"},
-      {"type":"image_picker","id":"incense_image","label":"Top banner image"},
-      {"type":"image_picker","id":"hero_image","label":"Hero background image"},
-      {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Sacred Fragrance"},
-      {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Pure, natural incense crafted from sacred botanicals. Each stick carries the essence of ancient Indian rituals."},
-      {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},
-      {"type":"header","content":"Content Block"},
-      {"type":"image_picker","id":"content_image","label":"Content image"},
-      {"type":"text","id":"content_label","label":"Label","default":"Our Craft"},
-      {"type":"text","id":"content_title","label":"Title","default":"The Art of Sacred Smoke"},
-      {"type":"textarea","id":"content_body","label":"Body text","default":"For millennia, burning incense has been the soul of Indian ritual. Our Agarbatti are rolled by hand using centuries-old methods, blending pure resins, flowers, and sacred woods into a fragrance that transforms any space into a sanctuary."},
-      {"type":"header","content":"CTA Section"},
-      {"type":"text","id":"cta_label","label":"CTA label","default":"Anand Rasa"},
-      {"type":"text","id":"cta_title","label":"CTA heading","default":"Transform Your Space into a Sacred Sanctuary"},
-      {"type":"textarea","id":"cta_subtitle","label":"CTA subtitle","default":"Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet."},
-      {"type":"text","id":"cta_btn","label":"Button text","default":"Shop Now"},
-      {"type":"url","id":"cta_url","label":"Button URL"},
-      {"type":"header","content":"Bulk / wholesale inquiry"},
-      {"type":"checkbox","id":"bulk_enable","label":"Show bulk order form","default":true},
-      {"type":"text","id":"bulk_eyebrow","label":"Bulk eyebrow","default":"Wholesale"},
-      {"type":"text","id":"bulk_heading","label":"Bulk heading","default":"Bulk Incense Orders"},
-      {"type":"textarea","id":"bulk_description","label":"Bulk description","default":"Partner with us for bulk incense supply for temples, retailers, events, or corporate gifting. Premium quality, direct sourcing, and consistent fragrance batches."},
-      {"type":"text","id":"bulk_call_label","label":"Phone label","default":"Call us"},
-      {"type":"text","id":"bulk_phone","label":"Phone (for tel: link, E.164)","default":"+919311336643","info":"Include country code, e.g. +919311336643"},
-      {"type":"text","id":"bulk_phone_display","label":"Phone display text","default":"+91 93113 36643"},
-      {"type":"text","id":"bulk_email_label","label":"Email label","default":"Email"},
-      {"type":"text","id":"bulk_email","label":"Wholesale email","default":"anandrasafragnance@gmail.com"},
-      {"type":"text","id":"bulk_call_btn","label":"Call button text","default":"Call now"},
-      {"type":"text","id":"bulk_message_label","label":"Form message label","default":"Your inquiry"},
-      {"type":"text","id":"bulk_message_placeholder","label":"Message placeholder","default":"Quantity, timeline, delivery city, GST details…"},
-      {"type":"text","id":"bulk_submit","label":"Submit button","default":"Submit"},
-      {"type":"textarea","id":"bulk_success","label":"Success message","default":"Thank you. Our team will contact you within 24 hours."},
-      {"type":"header","content":"Products"},
-      {"type":"range","id":"products_per_page","label":"Products per page","min":8,"max":48,"step":4,"default":16}
-    ],
-    "presets": [{"name":"Incense Sticks Collection"}]
   }
-  {%- endschema -%}
-  
+
+  /* Delegated listener — works after dynamic content changes */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-arc-atc');
+    if (!btn) return;
+    e.preventDefault();
+    handleATC(btn);
+  });
+
+  /* ── Wishlist (toggle heart) ─────────────────────────── */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.arc-card__wish');
+    if (!btn) return;
+    var svg = btn.querySelector('svg');
+    var isWished = btn.getAttribute('aria-pressed') === 'true';
+    btn.setAttribute('aria-pressed', isWished ? 'false' : 'true');
+    if (svg) svg.style.fill = isWished ? 'none' : '#D4607E';
+    if (svg) svg.style.stroke = isWished ? 'currentColor' : '#D4607E';
+  });
+
+  /* ── Scroll-triggered card entrance ─────────────────── */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -60px 0px', threshold: 0.05 });
+
+    document.querySelectorAll('.arc-card').forEach(function (card) {
+      card.style.animationPlayState = 'paused';
+      io.observe(card);
+    });
+  }
+
+})();
+</script>
+
+
+{%- schema -%}
+{
+  "name": "Incense Sticks Collection",
+  "settings": [
+    { "type": "header", "content": "Top Banner" },
+    { "type": "image_picker", "id": "incense_image", "label": "Banner image" },
+    { "type": "header", "content": "Content Block" },
+    { "type": "image_picker", "id": "content_image", "label": "Content image" },
+    { "type": "text", "id": "content_label", "label": "Eyebrow label", "default": "Our Craft" },
+    { "type": "text", "id": "content_title", "label": "Heading", "default": "The Art of Sacred Smoke" },
+    { "type": "textarea", "id": "content_body", "label": "Body text", "default": "For millennia, burning incense has been the soul of Indian ritual and daily prayer. Our Agarbatti are hand-rolled using centuries-old methods — blending pure resins, forest flowers, and sacred woods into smoke that transforms any space into a sanctuary." },
+    { "type": "header", "content": "CTA Section" },
+    { "type": "text", "id": "cta_label", "label": "Eyebrow label", "default": "Anand Rasa" },
+    { "type": "text", "id": "cta_title", "label": "Heading", "default": "Transform Your Space into a Sacred Sanctuary" },
+    { "type": "textarea", "id": "cta_subtitle", "label": "Subtitle", "default": "Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet." },
+    { "type": "text", "id": "cta_btn", "label": "Button text", "default": "Shop Now" },
+    { "type": "url", "id": "cta_url", "label": "Button URL" },
+    { "type": "header", "content": "Bulk / Wholesale" },
+    { "type": "checkbox", "id": "bulk_enable", "label": "Show bulk order form", "default": true },
+    { "type": "text", "id": "bulk_eyebrow", "label": "Eyebrow", "default": "Wholesale" },
+    { "type": "text", "id": "bulk_heading", "label": "Heading", "default": "Bulk Incense Orders" },
+    { "type": "textarea", "id": "bulk_description", "label": "Description", "default": "Partner with us for bulk incense supply — temples, retailers, events, or corporate gifting. Premium quality, consistent fragrance batches, direct sourcing." },
+    { "type": "text", "id": "bulk_call_label", "label": "Phone label", "default": "Call us" },
+    { "type": "text", "id": "bulk_phone", "label": "Phone (E.164 format)", "default": "+919311336643", "info": "Include country code, e.g. +919311336643" },
+    { "type": "text", "id": "bulk_phone_display", "label": "Phone display text", "default": "+91 93113 36643" },
+    { "type": "text", "id": "bulk_email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "bulk_email", "label": "Wholesale email", "default": "anandrasafragnance@gmail.com" },
+    { "type": "text", "id": "bulk_call_btn", "label": "Call button text", "default": "Call Now" },
+    { "type": "text", "id": "bulk_message_label", "label": "Form message label", "default": "Your inquiry" },
+    { "type": "text", "id": "bulk_message_placeholder", "label": "Message placeholder", "default": "Quantity, timeline, delivery city, GST details…" },
+    { "type": "text", "id": "bulk_submit", "label": "Submit button", "default": "Send Inquiry" },
+    { "type": "textarea", "id": "bulk_success", "label": "Success message", "default": "Thank you. Our team will contact you within 24 hours." },
+    { "type": "header", "content": "Products" },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 16 }
+  ],
+  "presets": [{ "name": "Incense Sticks Collection" }]
+}
+{%- endschema -%}
