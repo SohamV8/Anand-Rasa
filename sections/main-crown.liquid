@@ -1,0 +1,960 @@
+{% comment %}
+  ANAND RASA — Premium Incense Product Page
+  Monochrome luxury PDP (aligned with site black / white sections)
+{% endcomment %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600&display=swap');
+
+  .aip *, .aip *::before, .aip *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .aip {
+    --bg: #ffffff;
+    --bg-subtle: #fafafa;
+    --text: #1a1a18;
+    --ink: #1e2023;
+    --muted: #6b7280;
+    --muted-faint: #9ca3af;
+    --line: rgba(30, 32, 35, 0.1);
+    --line-strong: rgba(30, 32, 35, 0.16);
+    --surface: #ffffff;
+    --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans: 'Jost', system-ui, sans-serif;
+    font-family: var(--sans);
+    font-weight: 400;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  .aip img { display: block; max-width: 100%; }
+  .aip a { color: inherit; text-decoration: none; }
+  .aip button { font-family: var(--sans); cursor: pointer; }
+
+  @keyframes aipFade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Breadcrumb */
+  .aip-bread { max-width: 1280px; margin: 0 auto; padding: 32px 40px 0; display: flex; align-items: center; gap: 12px; font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-faint); }
+  @media (max-width: 768px) { .aip-bread { padding: 24px 20px 0; letter-spacing: 0.16em; } }
+  .aip-bread a { transition: color 0.2s; }
+  .aip-bread a:hover { color: var(--ink); }
+  .aip-bread__sep { opacity: 0.4; color: var(--muted); }
+
+  /* ── HERO ── */
+  .aip-hero { max-width: 1320px; margin: 0 auto; padding: 48px 40px 112px; }
+  @media (max-width: 1024px) { .aip-hero { padding: 36px 20px 88px; } }
+  .aip-hero__grid { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: clamp(48px, 7vw, 96px); align-items: start; }
+  @media (max-width: 1024px) { .aip-hero__grid { grid-template-columns: 1fr; gap: 48px; } }
+
+  /* Gallery */
+  .aip-gallery { display: flex; flex-direction: row; gap: 24px; align-items: flex-start; width: 100%; }
+  @media (max-width: 600px) {
+    .aip-gallery { flex-direction: column; gap: 16px; }
+    .aip-gallery__stage { order: -1; width: 100%; max-width: 100%; }
+    .aip-gallery__thumbs-scroll { order: 1; }
+  }
+
+  .aip-gallery__thumbs-scroll {
+    display: flex; flex-direction: column; gap: 12px; width: 80px; flex-shrink: 0;
+    max-height: min(540px, 68vh); overflow-y: auto; overflow-x: hidden; padding-right: 4px;
+    scrollbar-width: thin;
+  }
+  .aip-gallery__thumbs-scroll::-webkit-scrollbar { width: 3px; }
+  .aip-gallery__thumbs-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+  @media (max-width: 600px) {
+    .aip-gallery__thumbs-scroll { flex-direction: row; width: 100%; max-height: none; overflow-x: auto; padding-bottom: 6px; gap: 10px; }
+  }
+
+  .aip-gallery__thumb {
+    width: 72px; height: 72px; flex-shrink: 0; overflow: hidden; border: 1px solid var(--line);
+    border-radius: 0; cursor: pointer; background: var(--surface); padding: 0; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .aip-gallery__thumb.is-active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .aip-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .aip-gallery__stage {
+    flex: 1; min-width: 0; width: 100%; background: var(--surface); border-radius: 0; overflow: hidden;
+    border: 1px solid var(--line); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  }
+  .aip-gallery__main {
+    position: relative; aspect-ratio: 1; width: 100%; overflow: hidden;
+    min-height: 280px;
+  }
+  @media (max-width: 600px) {
+    .aip-gallery__main { min-height: min(92vw, 480px); }
+  }
+  .aip-gallery__main-img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: opacity 0.45s ease, transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+  }
+  .aip-gallery__main-img.is-hidden { opacity: 0; pointer-events: none; }
+  .aip-gallery__stage:hover .aip-gallery__main-img:not(.is-hidden) { transform: scale(1.05); }
+
+  .aip-gallery__badge { position: absolute; top: 20px; left: 20px; z-index: 5; display: flex; flex-direction: column; gap: 8px; }
+  .aip-gallery__tag { font-family: var(--sans); font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 14px; background: var(--ink); color: #ffffff; }
+  .aip-gallery__tag--sale { background: #2d2d2d; }
+  .aip-gallery__tag--bs { background: #1a1a1a; }
+
+  .aip-gallery__zoom {
+    position: absolute; bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.96); border: 1px solid var(--line-strong); display: flex; align-items: center; justify-content: center; z-index: 6; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .aip-gallery__zoom:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+  .aip-gallery__zoom svg { width: 18px; height: 18px; color: var(--ink); }
+
+  /* Product info */
+  .aip-info { padding-top: 4px; animation: aipFade 0.85s ease both; }
+  .aip-brand { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+  .aip-info__label { display: none; }
+  .aip-info__title {
+    font-family: var(--serif); font-size: clamp(36px, 5.2vw, 56px); font-weight: 400; line-height: 1.06;
+    letter-spacing: -0.03em; margin-bottom: 20px; color: var(--ink);
+  }
+  .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 40ch; margin-bottom: 20px; }
+
+  .aip-info__rating { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .aip-info__stars { display: flex; gap: 4px; }
+  .aip-info__star { font-size: 13px; color: var(--ink); }
+  .aip-info__star-empty { color: #d1d5db; }
+  .aip-info__review-count { font-size: 11px; color: var(--muted-faint); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+
+  .aip-price { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
+  .aip-price__now { font-family: var(--serif); font-size: clamp(30px, 3.8vw, 42px); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
+  .aip-price__was { font-size: 17px; color: var(--muted-faint); text-decoration: line-through; font-family: var(--serif); font-weight: 300; }
+  .aip-price__save { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 0; color: var(--muted); }
+
+  .aip-variants { margin-bottom: 28px; }
+  .aip-variants__label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-faint); margin-bottom: 14px; display: block; }
+  .aip-variants__label span { color: var(--ink); font-weight: 500; letter-spacing: 0.06em; text-transform: none; font-size: 13px; }
+  .aip-variants__opts { display: flex; flex-wrap: wrap; gap: 10px; }
+  .aip-variant-btn {
+    min-width: 56px; padding: 12px 20px; font-size: 13px; font-weight: 500; border: 1px solid var(--line-strong); background: transparent; color: var(--ink);
+    border-radius: 0; transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .aip-variant-btn:hover { border-color: var(--ink); }
+  .aip-variant-btn.is-active { background: var(--ink); color: #ffffff; border-color: var(--ink); }
+
+  .aip-qty-row { margin-bottom: 24px; margin-top: 8px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .aip-qty-row[hidden] { display: none !important; }
+  .aip-qty-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-faint);
+  }
+  .aip-qty { display: inline-flex; align-items: stretch; border: 1px solid var(--line-strong); border-radius: 0; overflow: hidden; background: var(--surface); width: auto; max-width: 100%; }
+  @media (max-width: 600px) {
+    .aip-qty-row { width: 100%; }
+    .aip-qty { width: 100%; max-width: 280px; }
+    .aip-qty__input { flex: 1; min-width: 0; }
+  }
+  .aip-qty__btn { width: 44px; height: 44px; background: none; border: none; font-size: 18px; color: var(--ink); transition: background 0.2s; }
+  .aip-qty__btn:hover:not(:disabled) { background: rgba(30, 32, 35, 0.05); }
+  .aip-qty__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .aip-qty__input { width: 52px; height: 44px; text-align: center; border: none; border-left: 1px solid var(--line); border-right: 1px solid var(--line); font-size: 14px; font-weight: 500; color: var(--ink); background: transparent; -moz-appearance: textfield; }
+  .aip-qty__input::-webkit-inner-spin-button, .aip-qty__input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+  .aip-cta { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 28px; max-width: 440px; }
+  @media (min-width: 420px) { .aip-cta.aip-cta--dual { grid-template-columns: 1fr 1fr; max-width: none; } }
+
+  .aip-btn-atc {
+    width: 100%; padding: 16px 22px; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    background: transparent; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 0; transition: background 0.25s, color 0.25s, border-color 0.25s; min-height: 52px;
+  }
+  .aip-btn-atc:hover:not(:disabled) { background: var(--ink); color: #ffffff; }
+  .aip-btn-atc:disabled { border-color: #d1d5db; color: var(--muted-faint); cursor: not-allowed; background: transparent; }
+
+  .aip-buy-wrap[hidden], .aip-buy-wrap.is-unavailable { display: none !important; }
+  .aip-btn-buy {
+    width: 100%; padding: 16px 22px; font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    background: var(--ink) !important; color: #ffffff !important; border: 1.5px solid var(--ink) !important; border-radius: 0; text-align: center; display: block; transition: background 0.25s, border-color 0.25s; min-height: 52px; line-height: 1.4;
+  }
+  .aip-btn-buy:hover { background: #ffffff !important; border-color: #ffffff !important; color: var(--ink) !important; }
+
+  .aip-atc-msg { font-family: var(--sans); font-size: 13px; padding: 14px 18px; border-radius: 0; text-align: center; display: none; max-width: 440px; margin-bottom: 28px; border: 1px solid var(--line); }
+  .aip-atc-msg.success { display: block; background: var(--bg-subtle); color: var(--ink); border-color: var(--line-strong); }
+  .aip-atc-msg.error { display: block; background: #fafafa; color: #374151; border-color: #e5e7eb; }
+
+  .aip-trust { display: flex; flex-wrap: wrap; gap: 14px 28px; padding-top: 28px; border-top: 1px solid var(--line); margin-top: 4px; max-width: 520px; }
+  .aip-trust__pill { font-size: 11px; color: var(--muted); letter-spacing: 0.04em; font-weight: 400; display: flex; align-items: center; gap: 10px; }
+  .aip-trust__pill svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.55; stroke-width: 1.25; }
+
+  /* Info strip */
+  .aip-strip { border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); background: var(--bg-subtle); }
+  .aip-strip__inner { max-width: 1320px; margin: 0 auto; padding: 0 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  @media (max-width: 900px) { .aip-strip__inner { grid-template-columns: 1fr; padding: 0 20px; } }
+  .aip-strip__cell { padding: 44px 36px; border-right: 1px solid var(--line); }
+  .aip-strip__cell:last-child { border-right: none; }
+  @media (max-width: 900px) {
+    .aip-strip__cell { border-right: none; border-bottom: 1px solid var(--line); padding: 32px 0; }
+    .aip-strip__cell:last-child { border-bottom: none; }
+  }
+  .aip-strip__label { font-family: var(--sans); font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted-faint); margin-bottom: 14px; }
+  .aip-strip__text { font-family: var(--serif); font-size: clamp(16px, 1.9vw, 20px); line-height: 1.5; color: var(--ink); font-weight: 400; letter-spacing: -0.01em; }
+
+  /* Story */
+  .aip-story { max-width: 680px; margin: 0 auto; padding: 100px 40px 0; }
+  @media (max-width: 768px) { .aip-story { padding: 72px 20px 0; } }
+  .aip-story .aip-desc { font-size: 17px; line-height: 1.82; color: #4b5563; font-weight: 300; }
+  .aip-desc p { margin-bottom: 1.2em; }
+  .aip-desc h2, .aip-desc h3 { font-family: var(--serif); color: var(--ink); margin: 1.75em 0 0.65em; font-weight: 400; letter-spacing: -0.02em; }
+  .aip-desc h2 { font-size: clamp(24px, 2.8vw, 32px); }
+  .aip-desc h3 { font-size: clamp(18px, 2vw, 22px); }
+  .aip-desc ul, .aip-desc ol { margin: 1em 0 1.25em; padding-left: 1.25em; }
+  .aip-desc a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+
+  /* Why choose */
+  .aip-why { max-width: 720px; margin: 0 auto; padding: 100px 40px 0; text-align: center; }
+  @media (max-width: 768px) { .aip-why { padding: 72px 20px 0; } }
+  .aip-why__h { font-family: var(--serif); font-size: clamp(30px, 4.2vw, 44px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; color: var(--ink); }
+  .aip-why__sub { font-size: 15px; color: var(--muted); line-height: 1.75; font-weight: 300; max-width: 48ch; margin: 0 auto; }
+
+  /* Specs + comparison */
+  .aip-spec-compare { max-width: 1320px; margin: 0 auto; padding: 100px 40px 112px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: start; }
+  @media (max-width: 900px) { .aip-spec-compare { grid-template-columns: 1fr; padding: 72px 20px 88px; } }
+
+  .aip-block__h { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 26px); font-weight: 400; margin-bottom: 28px; letter-spacing: -0.02em; color: var(--ink); }
+  .aip-specs-lux { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .aip-specs-lux tr { border-bottom: 1px solid var(--line); }
+  .aip-specs-lux td { padding: 16px 0; vertical-align: top; }
+  .aip-specs-lux td:first-child { font-family: var(--sans); color: var(--muted); width: 42%; padding-right: 20px; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .aip-specs-lux td:last-child { color: var(--ink); font-weight: 400; }
+
+  .aip-compare { border: 1px solid var(--line-strong); border-radius: 0; overflow: hidden; background: var(--surface); }
+  .aip-compare table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .aip-compare th, .aip-compare td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); }
+  .aip-compare th { font-family: var(--sans); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; background: rgba(30, 32, 35, 0.04); color: var(--muted); }
+  .aip-compare tr:last-child td { border-bottom: none; }
+  .aip-compare td:first-child { font-weight: 500; color: var(--ink); }
+  .aip-compare td { color: var(--muted); }
+  .aip-compare__ok { color: var(--ink); font-size: 15px; }
+  .aip-compare__no { color: #d1d5db; font-size: 15px; }
+
+  /* Recommended */
+  .aip-related { max-width: 1320px; margin: 0 auto; padding: 0 40px 120px; }
+  @media (max-width: 768px) { .aip-related { padding: 0 20px 96px; } }
+  .aip-related__h { font-family: var(--serif); font-size: clamp(28px, 3.2vw, 40px); font-weight: 400; text-align: center; margin-bottom: 16px; letter-spacing: -0.02em; color: var(--ink); }
+  .aip-related__sub { text-align: center; font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-faint); margin-bottom: 56px; }
+  .aip-related__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+  @media (max-width: 1100px) { .aip-related__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .aip-related__grid { grid-template-columns: 1fr; } }
+
+  .aip-card { background: var(--surface); border: 1px solid var(--line); border-radius: 0; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.35s, box-shadow 0.35s; }
+  .aip-card:hover { border-color: var(--line-strong); box-shadow: 0 24px 48px rgba(30, 32, 35, 0.08); }
+  .aip-card__img-wrap { aspect-ratio: 1; overflow: hidden; background: #f3f4f6; }
+  .aip-card__img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.65s ease; }
+  .aip-card:hover .aip-card__img { transform: scale(1.03); }
+  .aip-card__body { padding: 24px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  .aip-card__name { font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1.35; color: var(--ink); letter-spacing: -0.01em; }
+  .aip-card__price-row { font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); }
+  .aip-card__compare { font-size: 13px; color: var(--muted-faint); text-decoration: line-through; margin-left: 8px; font-weight: 400; }
+  .aip-card__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+  .aip-card__atc {
+    padding: 12px 14px; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    background: transparent; border: 1.5px solid var(--ink); color: var(--ink); border-radius: 0; transition: background 0.2s, color 0.2s;
+  }
+  .aip-card__atc:hover:not(:disabled) { background: var(--ink); color: #ffffff; }
+  .aip-card__buy {
+    padding: 12px 14px; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    background: var(--ink); color: #ffffff !important; border: 1.5px solid var(--ink); border-radius: 0; text-align: center; transition: background 0.2s, border-color 0.2s;
+  }
+  .aip-card__buy:hover { background: #ffffff; border-color: #ffffff; color: var(--ink) !important; }
+
+  /* Zoom modal */
+  .aip-zoom-modal { display: none; position: fixed; inset: 0; background: rgba(10, 10, 10, 0.92); z-index: 1000; align-items: center; justify-content: center; }
+  .aip-zoom-modal.is-open { display: flex; }
+  .aip-zoom-modal img { max-width: 92vw; max-height: 92vh; object-fit: contain; }
+  .aip-zoom-modal__close { position: absolute; top: 28px; right: 32px; background: none; border: none; font-size: 36px; color: #ffffff; cursor: pointer; line-height: 1; opacity: 0.75; transition: opacity 0.2s; }
+  .aip-zoom-modal__close:hover { opacity: 1; }
+
+  /* Sticky bar */
+  .aip-sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line-strong); padding: 16px 20px; z-index: 99; box-shadow: 0 -4px 40px rgba(0, 0, 0, 0.06); }
+  @media (max-width: 768px) { .aip-sticky-bar { display: flex; align-items: center; gap: 16px; } }
+  .aip-sticky-bar__info { flex: 1; min-width: 0; }
+  .aip-sticky-bar__name { font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.02em; }
+  .aip-sticky-bar__price { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+  .aip-sticky-bar__btn {
+    padding: 14px 20px; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    background: var(--ink); color: #ffffff; border: 1px solid var(--ink); border-radius: 0; white-space: nowrap; flex-shrink: 0;
+  }
+  .aip-sticky-bar__btn:disabled { background: #d1d5db; border-color: #d1d5db; color: #ffffff; cursor: not-allowed; }
+</style>
+
+<div class="aip">
+
+  <nav class="aip-bread" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span class="aip-bread__sep">/</span>
+    {%- if product.collections.first -%}
+      <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+      <span class="aip-bread__sep">/</span>
+    {%- endif -%}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div class="aip-hero">
+    <div class="aip-hero__grid">
+
+      <div class="aip-gallery">
+        {%- if product.images.size > 1 -%}
+          <div class="aip-gallery__thumbs-scroll" role="list">
+            {%- for image in product.images limit: 10 -%}
+              <button
+                type="button"
+                class="aip-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img src="{{ image | image_url: width: 360 }}" alt="{{ image.alt | default: product.title }}" width="72" height="72" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="aip-gallery__stage">
+          <div class="aip-gallery__main" id="aip-main-img-wrap">
+            {%- for image in product.images -%}
+              <img
+                src="{{ image | image_url: width: 1800 }}"
+                srcset="{{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w, {{ image | image_url: width: 1800 }} 1800w, {{ image | image_url: width: 2400 }} 2400w"
+                sizes="(max-width: 1024px) 100vw, min(660px, 45vw)"
+                alt="{{ image.alt | default: product.title }}"
+                width="{{ image.width | default: 1200 }}"
+                height="{{ image.height | default: 1200 }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                class="aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
+                data-index="{{ forloop.index0 }}"
+                id="aip-img-{{ forloop.index0 }}"
+              >
+            {%- else -%}
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:13px;font-family:var(--sans);">No image</div>
+            {%- endfor -%}
+
+            <div class="aip-gallery__badge">
+              {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+                <span class="aip-gallery__tag">New</span>
+              {%- endif -%}
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+                <span class="aip-gallery__tag aip-gallery__tag--sale">−{{ savings_pct }}%</span>
+              {%- endif -%}
+              {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
+                <span class="aip-gallery__tag aip-gallery__tag--bs">Bestseller</span>
+              {%- endif -%}
+            </div>
+
+            <button type="button" class="aip-gallery__zoom" id="aip-zoom-btn" aria-label="Enlarge image">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0zm-3-3v6m-3-3h6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="aip-info">
+        <p class="aip-brand">{{ section.settings.brand_text | default: 'ANAND RAS' }}</p>
+        <span class="aip-info__label">{{ section.settings.product_label | default: product.type }}</span>
+        <h1 class="aip-info__title">{{ product.title }}</h1>
+        {%- liquid
+          assign aip_short = section.settings.short_description | strip
+          if aip_short == blank
+            assign aip_short = section.settings.product_tagline | strip
+          endif
+          if aip_short == blank
+            assign aip_short = product.metafields.custom.tagline.value | default: '' | strip
+          endif
+          if aip_short == blank and product.description != blank
+            assign aip_short = product.description | strip_html | truncate: 180
+          endif
+        -%}
+        {%- if aip_short != blank -%}
+          <p class="aip-info__tagline">{{ aip_short }}</p>
+        {%- endif -%}
+
+        {%- assign rating = section.settings.rating | default: 5 -%}
+        <div class="aip-info__rating">
+          <div class="aip-info__stars" aria-label="{{ rating }} out of 5 stars">
+            {%- for i in (1..5) -%}
+              <span class="{% if i > rating %}aip-info__star-empty{% else %}aip-info__star{% endif %}">&#9733;</span>
+            {%- endfor -%}
+          </div>
+          <span class="aip-info__review-count">{{ section.settings.review_count | default: '0' }} reviews</span>
+        </div>
+
+        <div class="aip-price" id="aip-price-wrap">
+          <span class="aip-price__was" id="aip-price-compare"{% unless product.compare_at_price > product.price %} style="display:none"{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</span>
+          <span class="aip-price__now" id="aip-price">{{ product.price | money }}</span>
+          <span class="aip-price__save" id="aip-price-save"{% unless product.compare_at_price > product.price %} style="display:none"{% endunless %}>{%- if product.compare_at_price > product.price -%}{%- assign save_amt = product.compare_at_price | minus: product.price | money -%}Save {{ save_amt }}{%- endif -%}</span>
+        </div>
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            {%- assign option_index = forloop.index0 -%}
+            <div class="aip-variants" data-option-index="{{ option_index }}">
+              <span class="aip-variants__label">
+                {{ option.name }} <span id="aip-opt-val-{{ option_index }}">{{ option.selected_value }}</span>
+              </span>
+              <div class="aip-variants__opts">
+                {%- for value in option.values -%}
+                  {%- assign is_active = false -%}
+                  {%- if value == option.selected_value -%}{%- assign is_active = true -%}{%- endif -%}
+                  <button type="button" class="aip-variant-btn{% if is_active %} is-active{% endif %}" data-option-index="{{ option_index }}" data-value="{{ value | escape }}">{{ value }}</button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <div class="aip-qty-row" id="aip-qty-row" {% unless product.selected_or_first_available_variant.available %}hidden{% endunless %}>
+          <span class="aip-qty-label" id="aip-qty-label">Quantity</span>
+          <div class="aip-qty" role="group" aria-labelledby="aip-qty-label">
+            <button type="button" class="aip-qty__btn" id="aip-qty-minus" aria-label="Decrease quantity">&#8722;</button>
+            <input class="aip-qty__input" id="aip-qty" type="number" name="quantity" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+            <button type="button" class="aip-qty__btn" id="aip-qty-plus" aria-label="Increase quantity">&#43;</button>
+          </div>
+        </div>
+
+        <div class="aip-cta{% if section.settings.show_buy_now and product.selected_or_first_available_variant.available %} aip-cta--dual{% endif %}" id="aip-cta">
+          <button type="button" class="aip-btn-atc" id="aip-atc-btn"
+            data-variant="{{ product.selected_or_first_available_variant.id }}"
+            data-available="{% if product.selected_or_first_available_variant.available %}true{% else %}false{% endif %}"
+            {% unless product.selected_or_first_available_variant.available %}disabled aria-disabled="true"{% endunless %}>
+            {%- if product.selected_or_first_available_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+          </button>
+
+          {%- if section.settings.show_buy_now -%}
+            <div id="aip-buy-wrap" class="aip-buy-wrap{% unless product.selected_or_first_available_variant.available %} is-unavailable{% endunless %}"{% unless product.selected_or_first_available_variant.available %} hidden{% endunless %}>
+              <a href="{{ routes.cart_url }}/{{ product.selected_or_first_available_variant.id }}:1?checkout" class="aip-btn-buy" id="aip-buy-btn">Buy Now</a>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="aip-atc-msg" id="aip-atc-msg" role="status" aria-live="polite"></div>
+
+        <div class="aip-trust">
+          <span class="aip-trust__pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 13l4 4L19 7"/></svg>{{ section.settings.trust_1 | default: 'Natural ingredients' }}</span>
+          <span class="aip-trust__pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ section.settings.trust_2 | default: 'Slow, clean burn' }}</span>
+          <span class="aip-trust__pill"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>{{ section.settings.trust_3 | default: 'Pooja & meditation' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="aip-strip">
+    <div class="aip-strip__inner">
+      <div class="aip-strip__cell">
+        <p class="aip-strip__label">Description</p>
+        <p class="aip-strip__text">{{ section.settings.strip_col1 | default: 'Classic spiritual aroma' }}</p>
+      </div>
+      <div class="aip-strip__cell">
+        <p class="aip-strip__label">Details</p>
+        <p class="aip-strip__text">{{ section.settings.strip_col2 | default: 'Premium sandalwood incense for pooja and meditation' }}</p>
+      </div>
+      <div class="aip-strip__cell">
+        <p class="aip-strip__label">Category</p>
+        <p class="aip-strip__text">{{ section.settings.strip_col3 | default: 'Luxury Attar' }}</p>
+      </div>
+    </div>
+  </section>
+
+  {%- if product.description != blank -%}
+    <section class="aip-story">
+      <div class="aip-desc rte">{{ product.description }}</div>
+    </section>
+  {%- endif -%}
+
+  <section class="aip-why">
+    <h2 class="aip-why__h">{{ section.settings.why_heading | default: 'Why Choose Our Incense' }}</h2>
+    <p class="aip-why__sub">{{ section.settings.why_sub | default: 'Crafted for purity, fragrance and spiritual practice' }}</p>
+  </section>
+
+  <section class="aip-spec-compare">
+    <div>
+      <h3 class="aip-block__h">Product specifications</h3>
+      <table class="aip-specs-lux">
+        <tbody>
+          <tr><td>Country of Origin</td><td>{{ section.settings.spec_origin | default: 'India' }}</td></tr>
+          <tr><td>Item Form</td><td>{{ section.settings.spec_item_form | default: 'Bamboo-less Incense' }}</td></tr>
+          <tr><td>Item Type</td><td>{{ section.settings.spec_item_type | default: 'Eco-friendly, Organic, Meditation, Vedic' }}</td></tr>
+          <tr><td>Number of Sticks</td><td>{{ section.settings.spec_sticks | default: '40' }}</td></tr>
+          <tr><td>Burning Time</td><td>{{ section.settings.spec_burn | default: '30+ minutes' }}</td></tr>
+          <tr><td>Length</td><td>{{ section.settings.spec_length | default: '3.5 inches' }}</td></tr>
+          {%- if section.settings.spec_fragrance != blank -%}
+            <tr><td>Fragrance</td><td>{{ section.settings.spec_fragrance }}</td></tr>
+          {%- endif -%}
+          {%- if section.settings.spec_ingredients != blank -%}
+            <tr><td>Key Ingredients</td><td>{{ section.settings.spec_ingredients }}</td></tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3 class="aip-block__h">How we compare</h3>
+      <div class="aip-compare">
+        <table>
+          <thead>
+            <tr>
+              <th>Features</th>
+              <th>Anand Rasa</th>
+              <th>Others</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Clean burning — low smoke</td>
+              <td class="aip-compare__ok">&#10003;</td>
+              <td class="aip-compare__no">&#10007;</td>
+            </tr>
+            <tr>
+              <td>Natural ingredients — chemical free</td>
+              <td class="aip-compare__ok">&#10003;</td>
+              <td class="aip-compare__no">&#10007;</td>
+            </tr>
+            <tr>
+              <td>Premium quality — handcrafted</td>
+              <td class="aip-compare__ok">&#10003;</td>
+              <td class="aip-compare__no">&#10007;</td>
+            </tr>
+            <tr>
+              <td>Vedic fragrance — authentic</td>
+              <td class="aip-compare__ok">&#10003;</td>
+              <td class="aip-compare__no">&#10007;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  {%- assign related_col = section.settings.related_collection -%}
+  {%- if related_col != blank and related_col.products.size > 0 -%}
+    <section class="aip-related">
+      <h2 class="aip-related__h">{{ section.settings.related_heading | default: 'Recommended' }}</h2>
+      <p class="aip-related__sub">{{ section.settings.related_sub | default: 'Curated for your ritual' }}</p>
+      <div class="aip-related__grid">
+        {%- for rp in related_col.products limit: 4 -%}
+          {%- unless rp.id == product.id -%}
+            <article class="aip-card">
+              <a href="{{ rp.url }}" class="aip-card__img-wrap">
+                {%- if rp.featured_image -%}
+                  <img src="{{ rp.featured_image | image_url: width: 900 }}" alt="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
+                {%- endif -%}
+              </a>
+              <div class="aip-card__body">
+                <h3 class="aip-card__name"><a href="{{ rp.url }}">{{ rp.title }}</a></h3>
+                <div class="aip-card__price-row">
+                  {{ rp.price | money }}
+                  {%- if rp.compare_at_price > rp.price -%}
+                    <span class="aip-card__compare">{{ rp.compare_at_price | money }}</span>
+                  {%- endif -%}
+                </div>
+                <div class="aip-card__actions">
+                  <button type="button" class="aip-card__atc js-inc-rec-atc" data-variant-id="{{ rp.selected_or_first_available_variant.id }}" {% unless rp.available %}disabled{% endunless %}>
+                    {%- if rp.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+                  </button>
+                  <a href="{{ routes.cart_url }}/{{ rp.selected_or_first_available_variant.id }}:1?checkout" class="aip-card__buy" {% unless rp.available %}style="pointer-events:none;opacity:.45"{% endunless %}>Buy Now</a>
+                </div>
+              </div>
+            </article>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+</div>
+
+<div class="aip-sticky-bar" id="aip-sticky-bar">
+  <div class="aip-sticky-bar__info">
+    <p class="aip-sticky-bar__name">{{ product.title }}</p>
+    <p class="aip-sticky-bar__price" id="aip-sticky-price">{{ product.price | money }}</p>
+  </div>
+  <button type="button" class="aip-sticky-bar__btn" id="aip-sticky-atc"
+    data-variant="{{ product.selected_or_first_available_variant.id }}"
+    {% unless product.selected_or_first_available_variant.available %}disabled aria-disabled="true"{% endunless %}>
+    {%- if product.selected_or_first_available_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+  </button>
+</div>
+
+<div class="aip-zoom-modal" id="aip-zoom-modal" role="dialog" aria-modal="true" aria-label="Product image">
+  <button type="button" class="aip-zoom-modal__close" id="aip-zoom-close" aria-label="Close">&times;</button>
+  {%- assign aip_zoom_src = product.featured_image | default: product.images.first -%}
+  {%- if aip_zoom_src -%}
+    <img
+      src="{{ aip_zoom_src | image_url: width: 2000 }}"
+      alt="{{ product.title | escape }}"
+      id="aip-zoom-img"
+      width="{{ aip_zoom_src.width | default: 2000 }}"
+      height="{{ aip_zoom_src.height | default: 2000 }}"
+      style="max-width:92vw;max-height:92vh;object-fit:contain;"
+    >
+  {%- endif -%}
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var AIP_MONEY_FORMAT = {{ shop.money_format | json }};
+  var AIP_CART_URL = {{ routes.cart_url | json }};
+  var AIP_CART_ADD_URL = {{ routes.cart_add_url | json }};
+
+  function formatMoney(cents) {
+    var c = typeof cents === 'number' ? cents : parseInt(cents, 10);
+    if (isNaN(c)) return '';
+    if (typeof Shopify !== 'undefined' && typeof Shopify.formatMoney === 'function') {
+      return Shopify.formatMoney(c, AIP_MONEY_FORMAT);
+    }
+    return (c / 100).toFixed(2);
+  }
+
+  function zoomImageUrl(url) {
+    if (!url) return url;
+    var w = 2400;
+    if (/[?&]width=\d+/.test(url)) {
+      return url.replace(/([?&]width=)\d+/g, function (m, p1) { return p1 + w; });
+    }
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'width=' + w;
+  }
+
+  var thumbs = document.querySelectorAll('.aip-gallery__thumb');
+  var mainImgs = document.querySelectorAll('.aip-gallery__main-img');
+
+  function showImg(index) {
+    mainImgs.forEach(function (img) { img.classList.add('is-hidden'); });
+    thumbs.forEach(function (t) { t.classList.remove('is-active'); });
+    var target = document.getElementById('aip-img-' + index);
+    if (target) target.classList.remove('is-hidden');
+    if (thumbs[index]) thumbs[index].classList.add('is-active');
+  }
+
+  thumbs.forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      var idx = parseInt(thumb.getAttribute('data-index'), 10);
+      if (!isNaN(idx)) showImg(idx);
+    });
+  });
+
+  var zoomBtn = document.getElementById('aip-zoom-btn');
+  var zoomModal = document.getElementById('aip-zoom-modal');
+  var zoomClose = document.getElementById('aip-zoom-close');
+  var zoomImg = document.getElementById('aip-zoom-img');
+
+  if (zoomBtn && zoomModal) {
+    zoomBtn.addEventListener('click', function () {
+      var visible = document.querySelector('.aip-gallery__main-img:not(.is-hidden)');
+      if (visible && zoomImg) {
+        zoomImg.src = zoomImageUrl(visible.currentSrc || visible.src);
+        zoomImg.alt = visible.alt || '';
+      }
+      zoomModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
+  function closeZoom() {
+    if (zoomModal) zoomModal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  if (zoomClose) zoomClose.addEventListener('click', closeZoom);
+  if (zoomModal) zoomModal.addEventListener('click', function (e) { if (e.target === zoomModal) closeZoom(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeZoom(); });
+
+  var variantData = {{ product.variants | json }};
+  var selectedOptions = [
+    {%- for option in product.options_with_values -%}
+      {{ option.selected_value | json }}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ];
+
+  function findVariant(opts) {
+    return variantData.find(function (v) {
+      return opts.every(function (o, i) {
+        var key = 'option' + (i + 1);
+        var vo = v[key];
+        if (o == null || o === '') return vo == null || vo === '';
+        return String(vo) === String(o);
+      });
+    });
+  }
+
+  function syncCtaLayout(avail) {
+    var cta = document.getElementById('aip-cta');
+    var buyWrap = document.getElementById('aip-buy-wrap');
+    if (!cta) return;
+    cta.classList.toggle('aip-cta--dual', !!avail && !!buyWrap);
+  }
+
+  function updateVariantUI(variant) {
+    if (!variant) return;
+
+    var priceEl = document.getElementById('aip-price');
+    var compareEl = document.getElementById('aip-price-compare');
+    var saveEl = document.getElementById('aip-price-save');
+    var atcBtn = document.getElementById('aip-atc-btn');
+    var buyBtn = document.getElementById('aip-buy-btn');
+    var buyWrap = document.getElementById('aip-buy-wrap');
+    var stickyBtn = document.getElementById('aip-sticky-atc');
+    var stickyPrice = document.getElementById('aip-sticky-price');
+    var qtyRow = document.getElementById('aip-qty-row');
+    var qtyInputEl = document.getElementById('aip-qty');
+    var qMinEl = document.getElementById('aip-qty-minus');
+    var qPlusEl = document.getElementById('aip-qty-plus');
+
+    var avail = !!variant.available;
+    var vid = String(variant.id);
+
+    if (priceEl) priceEl.textContent = formatMoney(variant.price);
+    if (stickyPrice) stickyPrice.textContent = formatMoney(variant.price);
+
+    var cmp = variant.compare_at_price;
+    var hasSale = cmp && parseInt(cmp, 10) > parseInt(variant.price, 10);
+    if (compareEl) {
+      if (hasSale) {
+        compareEl.style.display = '';
+        compareEl.textContent = formatMoney(cmp);
+      } else {
+        compareEl.style.display = 'none';
+      }
+    }
+    if (saveEl) {
+      if (hasSale) {
+        saveEl.style.display = '';
+        saveEl.textContent = 'Save ' + formatMoney(parseInt(cmp, 10) - parseInt(variant.price, 10));
+      } else {
+        saveEl.style.display = 'none';
+      }
+    }
+
+    if (atcBtn) {
+      atcBtn.disabled = !avail;
+      atcBtn.setAttribute('aria-disabled', avail ? 'false' : 'true');
+      atcBtn.textContent = avail ? 'Add to Cart' : 'Sold Out';
+      atcBtn.dataset.variant = vid;
+      atcBtn.dataset.available = avail ? 'true' : 'false';
+    }
+    if (stickyBtn) {
+      stickyBtn.disabled = !avail;
+      stickyBtn.textContent = avail ? 'Add to Cart' : 'Sold Out';
+      stickyBtn.dataset.variant = vid;
+    }
+    if (buyWrap) {
+      buyWrap.classList.toggle('is-unavailable', !avail);
+      buyWrap.hidden = !avail;
+    }
+    if (buyBtn && avail) {
+      var qAdd = qtyInputEl ? (parseInt(qtyInputEl.value, 10) || 1) : 1;
+      buyBtn.href = AIP_CART_URL + '/' + vid + ':' + Math.min(99, Math.max(1, qAdd)) + '?checkout';
+    }
+    if (qtyRow) qtyRow.hidden = !avail;
+    if (qtyInputEl) qtyInputEl.disabled = !avail;
+    if (qMinEl) qMinEl.disabled = !avail;
+    if (qPlusEl) qPlusEl.disabled = !avail;
+
+    syncCtaLayout(avail);
+
+    if (window.history && history.replaceState) {
+      history.replaceState({}, '', '?variant=' + encodeURIComponent(vid));
+    }
+    if (variant.featured_image && typeof variant.featured_image.position === 'number') {
+      var imgIdx = variant.featured_image.position - 1;
+      if (imgIdx >= 0) showImg(imgIdx);
+    }
+  }
+
+  document.querySelectorAll('.aip-variant-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var optIdx = parseInt(btn.getAttribute('data-option-index'), 10);
+      var val = btn.getAttribute('data-value');
+      if (isNaN(optIdx)) return;
+      document.querySelectorAll('.aip-variant-btn[data-option-index="' + optIdx + '"]').forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      selectedOptions[optIdx] = val;
+      var lbl = document.getElementById('aip-opt-val-' + optIdx);
+      if (lbl) lbl.textContent = val;
+      var variant = findVariant(selectedOptions);
+      if (variant) updateVariantUI(variant);
+    });
+  });
+
+  var qtyInput = document.getElementById('aip-qty');
+  var qMin = document.getElementById('aip-qty-minus');
+  var qPlus = document.getElementById('aip-qty-plus');
+  function syncBuyNowQty() {
+    var buyBtn = document.getElementById('aip-buy-btn');
+    var atc = document.getElementById('aip-atc-btn');
+    var qEl = document.getElementById('aip-qty');
+    if (!buyBtn || !atc || atc.dataset.available === 'false') return;
+    var q = qEl ? (parseInt(qEl.value, 10) || 1) : 1;
+    q = Math.min(99, Math.max(1, q));
+    buyBtn.href = AIP_CART_URL + '/' + atc.dataset.variant + ':' + q + '?checkout';
+  }
+
+  if (qtyInput && qMin) {
+    qMin.addEventListener('click', function () {
+      var v = parseInt(qtyInput.value, 10) || 1;
+      if (v > 1) qtyInput.value = String(v - 1);
+      syncBuyNowQty();
+    });
+  }
+  if (qtyInput && qPlus) {
+    qPlus.addEventListener('click', function () {
+      var v = parseInt(qtyInput.value, 10) || 1;
+      if (v < 99) qtyInput.value = String(v + 1);
+      syncBuyNowQty();
+    });
+  }
+  if (qtyInput) {
+    qtyInput.addEventListener('change', syncBuyNowQty);
+    qtyInput.addEventListener('input', syncBuyNowQty);
+  }
+
+  function restoreAtcAfterAdd() {
+    var atc = document.getElementById('aip-atc-btn');
+    var sticky = document.getElementById('aip-sticky-atc');
+    var ok = atc && atc.dataset.available === 'true';
+    if (atc) {
+      atc.textContent = ok ? 'Add to Cart' : 'Sold Out';
+      atc.disabled = !ok;
+    }
+    if (sticky) {
+      sticky.textContent = ok ? 'Add to Cart' : 'Sold Out';
+      sticky.disabled = !ok;
+    }
+  }
+
+  function addToCart(variantId) {
+    var id = parseInt(variantId, 10);
+    if (!id || isNaN(id)) return;
+    var atc = document.getElementById('aip-atc-btn');
+    if (atc && atc.dataset.available === 'false') return;
+    var qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+    var msg = document.getElementById('aip-atc-msg');
+    var mainBtn = document.getElementById('aip-atc-btn');
+    var stickyB = document.getElementById('aip-sticky-atc');
+    if (mainBtn) { mainBtn.textContent = 'Adding…'; mainBtn.disabled = true; }
+    if (stickyB) stickyB.disabled = true;
+
+    fetch(AIP_CART_ADD_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ id: id, quantity: qty })
+    })
+      .then(function (r) {
+        return r.json().then(function (body) {
+          if (!r.ok) {
+            var desc = body.description || body.message || (body.errors && String(body.errors)) || 'Could not add to cart';
+            throw new Error(typeof desc === 'string' ? desc : 'Could not add to cart');
+          }
+          return body;
+        });
+      })
+      .then(function (data) {
+        if (msg) {
+          msg.className = 'aip-atc-msg success';
+          msg.textContent = 'Added to your cart';
+          setTimeout(function () { msg.className = 'aip-atc-msg'; msg.textContent = ''; }, 3000);
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+        restoreAtcAfterAdd();
+      })
+      .catch(function (err) {
+        if (msg) {
+          msg.className = 'aip-atc-msg error';
+          msg.textContent = (err && err.message) ? err.message : 'Please try again.';
+          setTimeout(function () { msg.className = 'aip-atc-msg'; msg.textContent = ''; }, 4000);
+        }
+        restoreAtcAfterAdd();
+      });
+  }
+
+  var atcBtn = document.getElementById('aip-atc-btn');
+  if (atcBtn) {
+    atcBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (atcBtn.disabled || atcBtn.dataset.available === 'false') return;
+      addToCart(atcBtn.dataset.variant);
+    });
+  }
+
+  var stickyAtcBtn = document.getElementById('aip-sticky-atc');
+  if (stickyAtcBtn) {
+    stickyAtcBtn.addEventListener('click', function () {
+      if (stickyAtcBtn.disabled) return;
+      var main = document.getElementById('aip-atc-btn');
+      var vid = (main && main.dataset.variant) || stickyAtcBtn.dataset.variant;
+      addToCart(vid);
+    });
+  }
+
+  document.querySelectorAll('.js-inc-rec-atc').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.disabled) return;
+      var id = parseInt(btn.getAttribute('data-variant-id'), 10);
+      if (!id) return;
+      var label = btn.textContent;
+      btn.disabled = true;
+      fetch(AIP_CART_ADD_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: 1 })
+      })
+        .then(function (r) { return r.json().then(function (b) { if (!r.ok) throw new Error(); return b; }); })
+        .then(function () {
+          btn.textContent = 'Added';
+          document.dispatchEvent(new CustomEvent('cart:updated'));
+          setTimeout(function () { btn.textContent = label; btn.disabled = false; }, 1600);
+        })
+        .catch(function () {
+          btn.textContent = label;
+          btn.disabled = false;
+        });
+    });
+  });
+
+  var stickyBar = document.getElementById('aip-sticky-bar');
+  var mainAtcEl = document.getElementById('aip-atc-btn');
+  if (stickyBar && mainAtcEl) {
+    var io = new IntersectionObserver(function (entries) {
+      stickyBar.style.display = entries[0].isIntersecting ? 'none' : '';
+    }, { threshold: 0.35 });
+    io.observe(mainAtcEl);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Crown Chakra Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Crown Chakra" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Crown Chakra Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A serene attar crafted for spiritual connection and higher consciousness — a gentle presence of divine calm for meditation and ritual." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Enlightenment • Peace • Cosmic energy" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Crown Chakra", "default": "Spiritual connection" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Crown Chakra", "default": "Higher consciousness" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Crown Chakra", "default": "Divine peace" },
+    { "type": "header", "content": "Info strip (3 columns) — Crown Chakra" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Enlightenment & inner peace" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A meditative aroma designed to elevate awareness and invite cosmic calm into your daily ritual." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Chakra Attar" },
+    { "type": "header", "content": "Why choose section — Crown Chakra" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Crown Chakra Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support spiritual connection, higher consciousness, and a sense of divine peace." },
+    { "type": "header", "content": "Specifications table — Crown Chakra" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Item Type", "default": "Enlightenment, Peace, Cosmic energy" },
+    { "type": "text", "id": "spec_sticks", "label": "Number of Sticks", "default": "40" },
+    { "type": "text", "id": "spec_burn", "label": "Burning Time", "default": "30+ minutes" },
+    { "type": "text", "id": "spec_length", "label": "Length", "default": "3.5 inches" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Soft floral • calming resin • airy woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Crown Chakra" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More chakra-aligned aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Crown Chakra Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
