@@ -1,0 +1,42 @@
+{% render 'chakra-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Throat Chakra Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Throat Chakra" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Throat Chakra Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A clear, uplifting attar crafted for communication and truth — supporting self-expression with calm clarity and a steady voice." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Voice • Clarity • Expression" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Throat Chakra", "default": "Authentic self-expression" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Throat Chakra", "default": "Clear communication" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Throat Chakra", "default": "Truth & alignment" },
+    { "type": "header", "content": "Info strip (3 columns) — Throat Chakra" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Truth & clear expression" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A bright, balanced aroma for clarity of speech and calm confidence in communication." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Chakra Attar" },
+    { "type": "header", "content": "Why choose section — Throat Chakra" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Throat Chakra Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support communication, truth, and self-expression — a fragrance for voice and clarity." },
+    { "type": "header", "content": "Specifications table — Throat Chakra" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus", "default": "Voice, Clarity, Expression" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for", "default": "Speaking, teaching, and heartfelt conversations" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity", "default": "Long-lasting clean clarity" },
+    { "type": "text", "id": "spec_length", "label": "Application", "default": "Dab on pulse points before communication" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Fresh herb • airy floral • clean woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Throat Chakra" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More chakra-aligned aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Throat Chakra Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
