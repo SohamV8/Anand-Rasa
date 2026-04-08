@@ -1,0 +1,42 @@
+{% render 'chakra-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Sacral Chakra Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Sacral Chakra" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Sacral Chakra Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A sensual, vibrant attar for creativity and emotion — designed to encourage pleasure, passion, and an easy flow of feeling." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Passion • Flow • Sensuality" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Sacral Chakra", "default": "Creative energy" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Sacral Chakra", "default": "Emotional flow" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Sacral Chakra", "default": "Pleasure & passion" },
+    { "type": "header", "content": "Info strip (3 columns) — Sacral Chakra" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Creativity & pleasure" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A warm, expressive aroma crafted to inspire passion, sensuality, and a natural sense of flow." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Chakra Attar" },
+    { "type": "header", "content": "Why choose section — Sacral Chakra" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Sacral Chakra Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support creativity, pleasure, and emotions — a fragrance for passion, flow, and sensuality." },
+    { "type": "header", "content": "Specifications table — Sacral Chakra" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Item Type", "default": "Passion, Flow, Sensuality" },
+    { "type": "text", "id": "spec_sticks", "label": "Number of Sticks", "default": "40" },
+    { "type": "text", "id": "spec_burn", "label": "Burning Time", "default": "30+ minutes" },
+    { "type": "text", "id": "spec_length", "label": "Length", "default": "3.5 inches" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Lush floral • warm amber • soft spice" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Sacral Chakra" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More chakra-aligned aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Sacral Chakra Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
