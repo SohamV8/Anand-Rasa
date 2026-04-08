@@ -1,0 +1,42 @@
+{% render 'planet-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Jupiter Energy Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Jupiter Energy" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Jupiter Energy Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A luminous attar crafted for wisdom, growth, and knowledge — encouraging expansion, guidance, and spiritual maturity." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Expansion • Spirituality • Guidance" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Jupiter", "default": "Wisdom and growth" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Jupiter", "default": "Spiritual guidance" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Jupiter", "default": "Expansive mindset" },
+    { "type": "header", "content": "Info strip (3 columns) — Jupiter Energy" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Wisdom and expansion" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A grounded yet uplifting aroma to support learning, spiritual growth, and wise leadership." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Planet Energy Attar" },
+    { "type": "header", "content": "Why choose section — Jupiter Energy" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Jupiter Energy Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support wisdom, expansion, and guidance for long-term growth and spiritual clarity." },
+    { "type": "header", "content": "Specifications table — Jupiter Energy" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus", "default": "Expansion, Spirituality, Guidance" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for", "default": "Study, mentoring, spiritual practice, and long-term planning" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity", "default": "Long-lasting uplifting depth" },
+    { "type": "text", "id": "spec_length", "label": "Application", "default": "Dab on pulse points before prayer or learning" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Warm resin • saffron nuance • sacred woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Jupiter Energy" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More planetary aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Jupiter Energy Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
