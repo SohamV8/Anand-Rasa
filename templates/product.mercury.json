@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-mercury",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Mercury Energy Attar",
+        "short_description": "A clear attar crafted for communication, intelligence, and logic — ideal for speech, business, and mental clarity.",
+        "product_tagline": "Speech • Business • Clarity",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Clear speech",
+        "trust_2": "Logical thinking",
+        "trust_3": "Business focus",
+        "strip_col1": "Communication and clarity",
+        "strip_col2": "A crisp aroma to support intelligent communication, clarity of thought, and professional confidence.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Mercury Energy Attar",
+        "why_sub": "Crafted to support communication, intelligence, and logic for clearer speech and stronger decision-making.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Speech, Business, Clarity",
+        "spec_sticks": "Meetings, learning, and communication-heavy days",
+        "spec_burn": "Long-lasting clean mental freshness",
+        "spec_length": "Dab on pulse points before work or study",
+        "spec_fragrance": "Green herbs • fresh citrus • light woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
