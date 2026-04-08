@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-venus",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Venus Energy Attar",
+        "short_description": "A luxurious attar crafted for love, beauty, and attraction — enhancing pleasure, elegance, and relationships.",
+        "product_tagline": "Beauty • Pleasure • Relationships",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Love and attraction",
+        "trust_2": "Refined luxury",
+        "trust_3": "Pleasure and beauty",
+        "strip_col1": "Love and attraction",
+        "strip_col2": "A sensual aroma to elevate romance, beauty rituals, and harmonious relationships.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Venus Energy Attar",
+        "why_sub": "Crafted to support love, luxury, and attraction for graceful presence and emotional harmony.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Beauty, Pleasure, Relationships",
+        "spec_sticks": "Date nights, self-care rituals, and social occasions",
+        "spec_burn": "Long-lasting soft sensual aura",
+        "spec_length": "Dab on pulse points before outings",
+        "spec_fragrance": "Velvet floral • sweet musk • creamy woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
