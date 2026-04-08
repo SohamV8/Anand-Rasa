@@ -1,0 +1,42 @@
+{% render 'planet-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Ketu Energy Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Ketu Energy" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Ketu Energy Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A meditative attar crafted for detachment, spirituality, and liberation — guiding introspection and inner release." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Moksha • Introspection • Release" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Ketu", "default": "Inner detachment" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Ketu", "default": "Spiritual focus" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Ketu", "default": "Liberating calm" },
+    { "type": "header", "content": "Info strip (3 columns) — Ketu Energy" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Detachment and liberation" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A subtle aroma to support introspection, release, and deeper spiritual practice." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Planet Energy Attar" },
+    { "type": "header", "content": "Why choose section — Ketu Energy" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Ketu Energy Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support introspection, spiritual detachment, and moksha-oriented inner work." },
+    { "type": "header", "content": "Specifications table — Ketu Energy" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus", "default": "Moksha, Introspection, Release" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for", "default": "Meditation, silence, and inner healing rituals" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity", "default": "Long-lasting quiet depth" },
+    { "type": "text", "id": "spec_length", "label": "Application", "default": "Dab on pulse points before meditation" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Sacred herb • dry resin • meditative woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Ketu Energy" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More planetary aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Ketu Energy Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
