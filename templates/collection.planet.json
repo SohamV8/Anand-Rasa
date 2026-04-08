@@ -1,9 +1,34 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "collection-planet",
-      "settings": {}
+      "settings": {
+        "hero_image": "shopify://shop_images/Astrological_attar_collection_with_cosmic_landscape.png",
+        "hero_label": "Navagraha Series",
+        "hero_subtitle": "Nine celestial attars, each resonating with the energy of a Vedic planet. Find the fragrance aligned with your cosmic blueprint.",
+        "hero_btn": "Explore Collection",
+        "content_label": "Our Craft",
+        "content_title": "Align Your Fragrance with the Cosmos",
+        "content_body": "The Navagraha — nine celestial forces — each govern a dimension of your being. Our Planet Attar series captures the essence of each planetary energy in a single, pure oil, crafted to harmonize your aura with the cosmos.",
+        "cta_label": "Anand Rasa",
+        "cta_title": "Discover Your Planetary Fragrance",
+        "cta_subtitle": "Each Planet Attar is a bridge between you and the cosmic forces that shape your destiny.",
+        "cta_btn": "Shop Now",
+        "cta_url": "",
+        "products_per_page": 16
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
