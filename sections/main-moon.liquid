@@ -1,0 +1,42 @@
+{% render 'planet-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Moon Energy Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Moon Energy" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Moon Energy Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A soothing attar crafted for emotions, peace, and intuition — nurturing mental calm and inner softness." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Calmness • Nurturing • Mind" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Moon", "default": "Emotional balance" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Moon", "default": "Nurturing calm" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Moon", "default": "Intuitive peace" },
+    { "type": "header", "content": "Info strip (3 columns) — Moon Energy" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Peace and intuition" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A gentle aroma to ease the mind, support calm emotions, and deepen intuitive awareness." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Planet Energy Attar" },
+    { "type": "header", "content": "Why choose section — Moon Energy" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Moon Energy Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support emotional peace, intuition, and mental calmness with nurturing moon-like energy." },
+    { "type": "header", "content": "Specifications table — Moon Energy" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus", "default": "Calmness, Nurturing, Mind" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for", "default": "Evening wind-down, reflection, and emotional reset" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity", "default": "Long-lasting soft tranquillity" },
+    { "type": "text", "id": "spec_length", "label": "Application", "default": "Dab on pulse points before rest" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Soft floral • cool musk • gentle woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Moon Energy" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More planetary aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Moon Energy Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
