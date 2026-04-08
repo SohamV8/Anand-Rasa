@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-solar",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Solar Plexus Chakra Attar",
+        "short_description": "A bold attar for confidence and personal power — designed to awaken willpower and encourage decisive action with inner strength.",
+        "product_tagline": "Strength • Action • Control",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Confidence & willpower",
+        "trust_2": "Personal power",
+        "trust_3": "Strength in action",
+        "strip_col1": "Confidence & inner strength",
+        "strip_col2": "A vibrant aroma crafted to support strength, action, and a steady sense of control.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Solar Plexus Chakra Attar",
+        "why_sub": "Crafted to support confidence, personal power, and willpower — a fragrance for strength and action.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Strength, Action, Control",
+        "spec_sticks": "Leadership, decision-making, and personal power rituals",
+        "spec_burn": "Long-lasting energising presence",
+        "spec_length": "Dab on pulse points before important moments",
+        "spec_fragrance": "Warm spice • bright citrus • grounded woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
