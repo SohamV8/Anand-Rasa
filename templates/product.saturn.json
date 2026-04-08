@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-saturn",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Saturn Energy Attar",
+        "short_description": "A grounding attar crafted for discipline, karma, and stability — supporting patience, structure, and responsibility.",
+        "product_tagline": "Responsibility • Patience • Structure",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Disciplined mindset",
+        "trust_2": "Stable grounding",
+        "trust_3": "Patient endurance",
+        "strip_col1": "Discipline and stability",
+        "strip_col2": "A steady aroma to support karma work, routine discipline, and long-term structure.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Saturn Energy Attar",
+        "why_sub": "Crafted to support responsibility, patience, and structure for grounded progress over time.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Responsibility, Patience, Structure",
+        "spec_sticks": "Routine discipline, deep work, and long-term commitments",
+        "spec_burn": "Long-lasting grounding depth",
+        "spec_length": "Dab on pulse points before focused work",
+        "spec_fragrance": "Dark woods • earthy resin • subtle spice",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
