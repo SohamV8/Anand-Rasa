@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-root",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Root Chakra Attar",
+        "short_description": "A grounding attar for stability and survival energy — created to support security, balance, and a strong foundation in daily life.",
+        "product_tagline": "Security • Foundation • Balance",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Grounding & stability",
+        "trust_2": "Secure foundation",
+        "trust_3": "Balanced presence",
+        "strip_col1": "Grounding & stability",
+        "strip_col2": "A steady, earthy aroma crafted for security, balance, and a calm sense of rooted strength.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Root Chakra Attar",
+        "why_sub": "Crafted to support grounding, stability, and survival energy — a fragrance for security and balance.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Security, Foundation, Balance",
+        "spec_sticks": "Meditation, grounding rituals, and daily stability",
+        "spec_burn": "Long-lasting grounding comfort",
+        "spec_length": "Dab on pulse points",
+        "spec_fragrance": "Earthy woods • warm resin • subtle spice",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
