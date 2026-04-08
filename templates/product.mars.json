@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-mars",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Mars Energy Attar",
+        "short_description": "A bold attar crafted for action, courage, and strength — fuelling forward movement and fearless focus.",
+        "product_tagline": "Energy • Drive • Aggression",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Courage and action",
+        "trust_2": "Dynamic drive",
+        "trust_3": "Focused strength",
+        "strip_col1": "Action and courage",
+        "strip_col2": "A powerful aroma to sharpen drive, strengthen resolve, and support decisive movement.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Mars Energy Attar",
+        "why_sub": "Crafted to support courage, strength, and action for high-energy, goal-driven moments.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Energy, Drive, Aggression",
+        "spec_sticks": "Workouts, competitive tasks, and action-focused routines",
+        "spec_burn": "Long-lasting bold projection",
+        "spec_length": "Dab on pulse points before active hours",
+        "spec_fragrance": "Warm spice • red resin • dry woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
