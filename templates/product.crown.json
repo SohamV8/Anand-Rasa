@@ -11,7 +11,34 @@
   "sections": {
     "main": {
       "type": "main-crown",
-      "settings": {}
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Crown Chakra Attar",
+        "short_description": "A serene attar crafted for spiritual connection and higher consciousness — a gentle presence of divine calm for meditation and ritual.",
+        "product_tagline": "Enlightenment • Peace • Cosmic energy",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Spiritual connection",
+        "trust_2": "Higher consciousness",
+        "trust_3": "Divine peace",
+        "strip_col1": "Enlightenment & inner peace",
+        "strip_col2": "A meditative aroma designed to elevate awareness and invite cosmic calm into your daily ritual.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Crown Chakra Attar",
+        "why_sub": "Crafted to support spiritual connection, higher consciousness, and a sense of divine peace.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Enlightenment, Peace, Cosmic energy",
+        "spec_sticks": "Men & Women",
+        "spec_burn": "6 hours",
+        "spec_length": "Apply to your wrist",
+        "spec_fragrance": "Soft floral • calming resin • airy woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "chakra-attars",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
+      }
     }
   },
   "order": [
