@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-moon",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Moon Energy Attar",
+        "short_description": "A soothing attar crafted for emotions, peace, and intuition — nurturing mental calm and inner softness.",
+        "product_tagline": "Calmness • Nurturing • Mind",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Emotional balance",
+        "trust_2": "Nurturing calm",
+        "trust_3": "Intuitive peace",
+        "strip_col1": "Peace and intuition",
+        "strip_col2": "A gentle aroma to ease the mind, support calm emotions, and deepen intuitive awareness.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Moon Energy Attar",
+        "why_sub": "Crafted to support emotional peace, intuition, and mental calmness with nurturing moon-like energy.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Calmness, Nurturing, Mind",
+        "spec_sticks": "Evening wind-down, reflection, and emotional reset",
+        "spec_burn": "Long-lasting soft tranquillity",
+        "spec_length": "Dab on pulse points before rest",
+        "spec_fragrance": "Soft floral • cool musk • gentle woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
