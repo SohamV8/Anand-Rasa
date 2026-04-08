@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-jupiter",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Jupiter Energy Attar",
+        "short_description": "A luminous attar crafted for wisdom, growth, and knowledge — encouraging expansion, guidance, and spiritual maturity.",
+        "product_tagline": "Expansion • Spirituality • Guidance",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Wisdom and growth",
+        "trust_2": "Spiritual guidance",
+        "trust_3": "Expansive mindset",
+        "strip_col1": "Wisdom and expansion",
+        "strip_col2": "A grounded yet uplifting aroma to support learning, spiritual growth, and wise leadership.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Jupiter Energy Attar",
+        "why_sub": "Crafted to support wisdom, expansion, and guidance for long-term growth and spiritual clarity.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Expansion, Spirituality, Guidance",
+        "spec_sticks": "Study, mentoring, spiritual practice, and long-term planning",
+        "spec_burn": "Long-lasting uplifting depth",
+        "spec_length": "Dab on pulse points before prayer or learning",
+        "spec_fragrance": "Warm resin • saffron nuance • sacred woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
