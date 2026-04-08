@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-sun",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Sun Energy Attar",
+        "short_description": "A radiant attar crafted for confidence, leadership, and authority — uplifting your presence with solar vitality.",
+        "product_tagline": "Power • Vitality • Success",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Confident expression",
+        "trust_2": "Leadership energy",
+        "trust_3": "Solar vitality",
+        "strip_col1": "Confidence and authority",
+        "strip_col2": "A luminous aroma to support power, vitality, and success in your daily path.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Sun Energy Attar",
+        "why_sub": "Crafted to support confidence, leadership, and authority for a bold and successful mindset.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Power, Vitality, Success",
+        "spec_sticks": "Leadership roles, confidence rituals, and high-impact days",
+        "spec_burn": "Long-lasting radiant presence",
+        "spec_length": "Dab on pulse points each morning",
+        "spec_fragrance": "Warm citrus • golden spice • soft woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
