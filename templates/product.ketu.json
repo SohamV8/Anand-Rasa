@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-ketu",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Ketu Energy Attar",
+        "short_description": "A meditative attar crafted for detachment, spirituality, and liberation — guiding introspection and inner release.",
+        "product_tagline": "Moksha • Introspection • Release",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Inner detachment",
+        "trust_2": "Spiritual focus",
+        "trust_3": "Liberating calm",
+        "strip_col1": "Detachment and liberation",
+        "strip_col2": "A subtle aroma to support introspection, release, and deeper spiritual practice.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Ketu Energy Attar",
+        "why_sub": "Crafted to support introspection, spiritual detachment, and moksha-oriented inner work.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Moksha, Introspection, Release",
+        "spec_sticks": "Meditation, silence, and inner healing rituals",
+        "spec_burn": "Long-lasting quiet depth",
+        "spec_length": "Dab on pulse points before meditation",
+        "spec_fragrance": "Sacred herb • dry resin • meditative woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
