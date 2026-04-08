@@ -10,99 +10,38 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
-      "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
-          }
-        }
-      },
-      "block_order": [
-        "vendor",
-        "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description",
-        "share"
-      ],
+      "type": "main-throat",
       "settings": {
-        "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "gallery_layout": "stacked",
-        "mobile_thumbnails": "hide",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
-      }
-    },
-    "related-products": {
-      "type": "related-products",
-      "settings": {
-        "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "padding_top": 36,
-        "padding_bottom": 28
+        "brand_text": "ANAND RAS",
+        "product_label": "Throat Chakra Attar",
+        "short_description": "A clear, uplifting attar crafted for communication and truth — supporting self-expression with calm clarity and a steady voice.",
+        "product_tagline": "Voice • Clarity • Expression",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Authentic self-expression",
+        "trust_2": "Clear communication",
+        "trust_3": "Truth & alignment",
+        "strip_col1": "Truth & clear expression",
+        "strip_col2": "A bright, balanced aroma for clarity of speech and calm confidence in communication.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Throat Chakra Attar",
+        "why_sub": "Crafted to support communication, truth, and self-expression — a fragrance for voice and clarity.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Voice, Clarity, Expression",
+        "spec_sticks": "Speaking, teaching, and heartfelt conversations",
+        "spec_burn": "Long-lasting clean clarity",
+        "spec_length": "Dab on pulse points before communication",
+        "spec_fragrance": "Fresh herb • airy floral • clean woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
       }
     }
   },
   "order": [
-    "main",
-    "related-products"
+    "main"
   ]
 }
