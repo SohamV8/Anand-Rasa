@@ -1,0 +1,42 @@
+{% render 'planet-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Mars Energy Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero — Mars Energy" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Mars Energy Attar" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A bold attar crafted for action, courage, and strength — fuelling forward movement and fearless focus." },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Energy • Drive • Aggression" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1 — Mars", "default": "Courage and action" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2 — Mars", "default": "Dynamic drive" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3 — Mars", "default": "Focused strength" },
+    { "type": "header", "content": "Info strip (3 columns) — Mars Energy" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 — Description", "default": "Action and courage" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 — Details", "default": "A powerful aroma to sharpen drive, strengthen resolve, and support decisive movement." },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 — Category", "default": "Planet Energy Attar" },
+    { "type": "header", "content": "Why choose section — Mars Energy" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Mars Energy Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted to support courage, strength, and action for high-energy, goal-driven moments." },
+    { "type": "header", "content": "Specifications table — Mars Energy" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus", "default": "Energy, Drive, Aggression" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for", "default": "Workouts, competitive tasks, and action-focused routines" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity", "default": "Long-lasting bold projection" },
+    { "type": "text", "id": "spec_length", "label": "Application", "default": "Dab on pulse points before active hours" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Warm spice • red resin • dry woods" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Natural resins, essential oils, premium aromatic botanicals" },
+    { "type": "header", "content": "Recommended products — Mars Energy" },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text", "id": "related_sub", "label": "Subheading", "default": "More planetary aromas for your ritual" }
+  ],
+  "presets": [{ "name": "Mars Energy Attar" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
