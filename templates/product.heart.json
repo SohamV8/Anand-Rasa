@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-heart",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Heart Chakra Attar",
+        "short_description": "A tender attar for love and compassion — created to support emotional healing, openness, and harmony in relationships.",
+        "product_tagline": "Harmony • Relationships • Openness",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Love & compassion",
+        "trust_2": "Emotional healing",
+        "trust_3": "Open-hearted balance",
+        "strip_col1": "Love & emotional harmony",
+        "strip_col2": "A soothing aroma designed for compassion, connection, and a gentle sense of openness.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Heart Chakra Attar",
+        "why_sub": "Crafted to support love, compassion, and emotional healing — a fragrance for harmony and openness.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Harmony, Relationships, Openness",
+        "spec_sticks": "40",
+        "spec_burn": "30+ minutes",
+        "spec_length": "3.5 inches",
+        "spec_fragrance": "Soft rose • warm floral • gentle woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
