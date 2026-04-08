@@ -1,9 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "collection-chakra",
-      "settings": {}
+      "settings": {
+        "hero_label": "Energy Body Series",
+        "hero_subtitle": "Seven attars, one for each chakra. Balance your energy body through the sense of smell.",
+        "hero_btn": "Explore Collection",
+        "content_label": "Our Craft",
+        "content_title": "Fragrance as Energy Medicine",
+        "content_body": "The chakras are the seven wheels of life force within your body. Our Chakra Attar series works with each energy center - using botanicals specifically chosen for their vibrational affinity with each chakra - to support balance, clarity, and flow.",
+        "cta_label": "Anand Rasa",
+        "cta_title": "Balance Your Energy Body Through Scent",
+        "cta_subtitle": "Seven chakras. Seven sacred fragrances. Begin your journey inward.",
+        "cta_btn": "Shop Now",
+        "cta_url": "",
+        "products_per_page": 16,
+        "name_sahasrara": "SAHASRARA",
+        "essence_sahasrara": "Ylang Ylang, Jasmine, White Lotus",
+        "mantra_sahasrara": "OM",
+        "element_sahasrara": "Cosmic Consciousness",
+        "benefit_sahasrara": "Divine connection, spiritual awakening, clarity",
+        "product_sahasrara": "crown-chakra-attar",
+        "name_ajna": "AJNA",
+        "essence_ajna": "Frankincense, Clary Sage, Vetiver",
+        "mantra_ajna": "AUM",
+        "element_ajna": "Light & Intuition",
+        "benefit_ajna": "Intuition, mental clarity, vision",
+        "product_ajna": "third-eye-chakra-attar",
+        "name_vishuddha": "VISHUDDHA",
+        "essence_vishuddha": "Blue Chamomile, Eucalyptus, Peppermint",
+        "mantra_vishuddha": "HAM",
+        "element_vishuddha": "Ether / Space",
+        "benefit_vishuddha": "Communication, expression, truth",
+        "product_vishuddha": "throat-chakra-attar",
+        "name_anahata": "ANAHATA",
+        "essence_anahata": "Rose, Geranium, Palmarosa",
+        "mantra_anahata": "YAM",
+        "element_anahata": "Air",
+        "benefit_anahata": "Love, compassion, emotional healing",
+        "product_anahata": "heart-chakra-attar",
+        "name_manipura": "MANIPURA",
+        "essence_manipura": "Ginger, Lemon, Black Pepper",
+        "mantra_manipura": "RAM",
+        "element_manipura": "Fire",
+        "benefit_manipura": "Confidence, willpower, transformation",
+        "product_manipura": "solar-plexus-chakra-attar",
+        "name_svadhisthana": "SVADHISTHANA",
+        "essence_svadhisthana": "Orange, Sandalwood, Jasmine",
+        "mantra_svadhisthana": "VAM",
+        "element_svadhisthana": "Water",
+        "benefit_svadhisthana": "Creativity, joy, sensuality, flow",
+        "product_svadhisthana": "sacral-chakra-attar",
+        "name_muladhara": "MULADHARA",
+        "essence_muladhara": "Cedarwood, Patchouli, Vetiver",
+        "mantra_muladhara": "LAM",
+        "element_muladhara": "Earth",
+        "benefit_muladhara": "Grounding, stability, security, courage",
+        "product_muladhara": "root-chakra-attar"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
