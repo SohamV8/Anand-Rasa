@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-rahu",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Rahu Energy Attar",
+        "short_description": "A transformative attar crafted for ambition and material success — helping channel desire with conscious direction.",
+        "product_tagline": "Desire • Obsession • Transformation",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Ambition and growth",
+        "trust_2": "Material focus",
+        "trust_3": "Transformative drive",
+        "strip_col1": "Ambition and transformation",
+        "strip_col2": "A dynamic aroma to support desire-driven goals while maintaining inner awareness.",
+        "strip_col3": "Planet Energy Attar",
+        "why_heading": "Why Choose Rahu Energy Attar",
+        "why_sub": "Crafted to support ambition, transformation, and bold pursuit of material and personal goals.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Desire, Obsession, Transformation",
+        "spec_sticks": "Ambitious projects, career pushes, and reinvention phases",
+        "spec_burn": "Long-lasting intense projection",
+        "spec_length": "Dab on pulse points before key goals",
+        "spec_fragrance": "Smoky resin • deep spice • shadowed woods",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More planetary aromas for your ritual"
+      }
+    }
+  },
+  "order": ["main"]
+}
