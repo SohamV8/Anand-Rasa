@@ -12,10 +12,10 @@
   
     /* Hero */
     .arc-hero { position:relative; width:100%; min-height:500px; display:flex; align-items:center; overflow:hidden; background:#f2f2f4; }
-    .arc-hero__bg { position:absolute; top:50%; right:4%; transform:translateY(-50%); width:min(44vw,520px); height:auto; object-fit:contain; opacity:1; animation:arcHeroFloat 4.5s ease-in-out infinite; }
-    .arc-hero__ov { display:none; }
+    .arc-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:1; }
+    .arc-hero__ov { position:absolute; inset:0; background:linear-gradient(90deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.52) 45%, rgba(255,255,255,.2) 100%); z-index:2; }
     .arc-hero__con { position:relative; z-index:10; max-width:560px; padding:80px 48px; animation:arUp .7s ease both; }
-    @media(max-width:768px){ .arc-hero__con { padding:56px 24px; max-width:none; } .arc-hero__bg { position:relative; inset:auto; transform:none; width:min(80vw,380px); margin:0 auto 24px; order:-1; right:auto; top:auto; } .arc-hero { flex-direction:column; justify-content:center; text-align:left; min-height:auto; padding-top:24px; } }
+    @media(max-width:768px){ .arc-hero__con { padding:56px 24px; max-width:none; } .arc-hero { min-height:420px; } .arc-hero__ov { background:linear-gradient(180deg, rgba(255,255,255,.82) 0%, rgba(255,255,255,.62) 48%, rgba(255,255,255,.38) 100%); } }
     .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:#1e2023; margin-bottom:14px; display:block; opacity:.72; }
     .arc-hero__h { font-family:var(--fh); font-size:clamp(40px,5vw,62px); font-weight:500; color:#111827; line-height:1.06; letter-spacing:-.02em; margin-bottom:18px; }
     .arc-hero__p { font-size:15px; line-height:1.75; color:#374151; font-weight:300; max-width:520px; margin-bottom:0; }
@@ -65,7 +65,6 @@
     .arc-empty__p { font-size:14px; color:#6b7280; }
   
     @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes arcHeroFloat { 0%,100% { transform:translateY(-50%); } 50% { transform:translateY(calc(-50% - 8px)); } }
   
   </style>
   
