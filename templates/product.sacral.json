@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-sacral",
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Sacral Chakra Attar",
+        "short_description": "A sensual, vibrant attar for creativity and emotion — designed to encourage pleasure, passion, and an easy flow of feeling.",
+        "product_tagline": "Passion • Flow • Sensuality",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "trust_1": "Creative energy",
+        "trust_2": "Emotional flow",
+        "trust_3": "Pleasure & passion",
+        "strip_col1": "Creativity & pleasure",
+        "strip_col2": "A warm, expressive aroma crafted to inspire passion, sensuality, and a natural sense of flow.",
+        "strip_col3": "Chakra Attar",
+        "why_heading": "Why Choose Sacral Chakra Attar",
+        "why_sub": "Crafted to support creativity, pleasure, and emotions — a fragrance for passion, flow, and sensuality.",
+        "spec_origin": "India",
+        "spec_item_form": "Luxury Attar",
+        "spec_item_type": "Passion, Flow, Sensuality",
+        "spec_sticks": "Creative work, emotional release, and sensual ritual",
+        "spec_burn": "Long-lasting warm, expressive trail",
+        "spec_length": "Dab lightly on pulse points",
+        "spec_fragrance": "Lush floral • warm amber • soft spice",
+        "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
+        "related_collection": "incense-sticks",
+        "related_heading": "You May Also Like",
+        "related_sub": "More chakra-aligned aromas for your ritual"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
