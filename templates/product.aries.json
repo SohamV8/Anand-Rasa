@@ -1,0 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-aries",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Bold" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Leadership" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Action" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Confidence", "text": "A ritual-ready attar designed to amplify decisive energy and presence." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Focus", "text": "A grounding scent profile to keep momentum clear and steady." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Impact", "text": "A premium attar experience for those who move first and lead from the front." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For bold starters and natural leaders" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For days that demand action and confidence" } }
+      },
+      "block_order": [
+        "trait_1",
+        "trait_2",
+        "trait_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "who_1",
+        "who_2"
+      ],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Aries Zodiac Attar",
+        "subtitle": "Bold leadership energy in a luxury attar.",
+        "description": "<p>Aries is bold, forward-moving, and fearless. This Zodiac Attar is crafted to complement leadership, action, and confident presence—perfect for rituals, meditation, and daily wear.</p>",
+        "seo_keywords": "Aries zodiac attar, Aries attar, bold leadership fragrance, action energy perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "Bold, leadership-driven attar for action and confident presence.",
+        "product_tagline": "",
+        "strip_col1": "Bold leadership & action",
+        "strip_col2": "Luxury alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Aries energy — bold, decisive, and driven.",
+        "spec_item_type": "Boldness, leadership, action",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
