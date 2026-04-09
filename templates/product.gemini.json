@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-gemini",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Communication" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Curiosity" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Duality" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Clarity", "text": "A clean ritual scent designed to support clear expression and mental brightness." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Adaptability", "text": "A versatile attar presence for shifting moods, meetings, and creative days." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Spark", "text": "A premium attar experience for curiosity, exploration, and lively energy." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For communicators, creators, and curious minds" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For days that need lightness, movement, and ideas" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Gemini Zodiac Attar",
+        "subtitle": "Curious, expressive energy in a luxury attar.",
+        "description": "<p>Gemini is expressive, curious, and full of dual energy. This Zodiac Attar is crafted to complement communication, playfulness, and quick-moving inspiration—ideal for daily wear and mindful rituals.</p>",
+        "seo_keywords": "Gemini zodiac attar, Gemini attar, communication fragrance, curiosity perfume oil, duality energy, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A luxury attar for communication, curiosity, and lively dual energy.",
+        "strip_col1": "Communication & curiosity",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Gemini energy — expressive, curious, and adaptable.",
+        "spec_item_type": "Communication, curiosity, duality",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
