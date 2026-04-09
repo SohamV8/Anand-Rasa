@@ -1,193 +1,103 @@
-<section class="ar-vt">
-  <div class="ar-vt__inner">
+{%- liquid
+  assign text_testimonials = section.blocks | where: 'type', 'testimonial'
+  assign video_testimonials = section.blocks | where: 'type', 'video_testimonial'
+-%}
 
-    <!-- HEADER -->
-    <div class="ar-vt__header">
-      <h2 class="ar-vt__heading">
-        {{ heading | default: "Real Experiences" }}
-      </h2>
-      <p class="ar-vt__sub">
-        {{ subheading | default: "Authentic moments from our customers." }}
-      </p>
+{%- if text_testimonials.size > 0 -%}
+  <section class="ar-tst">
+    <div class="ar-tst__inner">
+      <div class="ar-tst__hdr">
+        <h2 class="ar-tst__h">{{ section.settings.tst_heading | default: 'What Our Customers Say' }}</h2>
+        <div class="ar-tst__div"></div>
+        <p class="ar-tst__sub">{{ section.settings.tst_sub | default: 'Real people. Real experiences.' }}</p>
+      </div>
+
+      <div class="ar-tst__track js-tst-track">
+        {%- for block in text_testimonials -%}
+          <article class="ar-tst__card" {{ block.shopify_attributes }}>
+            {%- assign rating = block.settings.rating | default: 5 -%}
+            <div class="ar-tst__stars" aria-label="{{ rating }} out of 5 stars">
+              {%- for i in (1..5) -%}
+                <span class="ar-tst__star{% if i <= rating %} on{% endif %}">&#9733;</span>
+              {%- endfor -%}
+            </div>
+            <p class="ar-tst__quote">"{{ block.settings.quote }}"</p>
+            <div class="ar-tst__author">
+              <p class="ar-tst__name">{{ block.settings.name }}</p>
+              <p class="ar-tst__loc">{{ block.settings.location }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <div class="ar-tst__dots" id="ar-tst-dots"></div>
     </div>
+  </section>
+{%- endif -%}
 
-    <!-- SLIDER -->
-    <div class="ar-vt__wrapper">
-      <div class="ar-vt__track" id="arVTTrack">
+{%- if video_testimonials.size > 0 -%}
+  <section class="ar-vtm">
+    <div class="ar-vtm__inner">
+      <div class="ar-vtm__header">
+        <h2 class="ar-vtm__h">{{ section.settings.vtm_heading | default: 'Video Testimonials' }}</h2>
+        <div class="ar-vtm__divider"></div>
+        <p class="ar-vtm__sub">{{ section.settings.vtm_sub | default: 'Real people. Real experiences.' }}</p>
+      </div>
 
-        {% for video in videos %}
-          <div class="ar-vt__slide">
-
-            <div class="ar-vt__video-box">
-              <video
-                class="ar-vt__video"
-                src="{{ video.url }}"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-              ></video>
+      <div class="ar-vtm__grid">
+        {%- for block in video_testimonials -%}
+          {%- assign v = block.settings.video -%}
+          {%- assign v_url = block.settings.video_url | strip -%}
+          <article class="ar-vtm__card" {{ block.shopify_attributes }}>
+            <div class="ar-vtm__video-wrap js-vtm-wrap">
+              {%- if v != blank -%}
+                {{
+                  v
+                  | video_tag:
+                    class: 'ar-vtm__video',
+                    image_size: '540x960',
+                    autoplay: false,
+                    loop: true,
+                    muted: true,
+                    controls: false,
+                    playsinline: true
+                }}
+              {%- elsif v_url != blank -%}
+                <video
+                  class="ar-vtm__video"
+                  src="{{ v_url }}"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                ></video>
+              {%- else -%}
+                <div class="ar-vtm__video ar-vtm__ph">Upload a portrait video</div>
+              {%- endif -%}
+              <div class="ar-vtm__play js-vtm-play" aria-hidden="true">
+                <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
+                  <circle cx="29" cy="29" r="29" fill="rgba(255,255,255,0.18)"></circle>
+                  <path d="M24 19L41 29L24 39V19Z" fill="#fff"></path>
+                </svg>
+              </div>
             </div>
 
-            <div class="ar-vt__meta">
-              <p class="ar-vt__name">{{ video.name }}</p>
+            <div class="ar-vtm__info">
+              {%- assign rating = block.settings.rating | default: 5 -%}
+              <div class="ar-vtm__stars" aria-label="{{ rating }} out of 5 stars">
+                {%- for i in (1..5) -%}
+                  <span class="ar-vtm__star{% if i <= rating %} on{% endif %}">&#9733;</span>
+                {%- endfor -%}
+              </div>
+              {%- if block.settings.quote != blank -%}
+                <p class="ar-vtm__quote">"{{ block.settings.quote }}"</p>
+              {%- endif -%}
+              <p class="ar-vtm__name">{{ block.settings.name }}</p>
+              <p class="ar-vtm__loc">{{ block.settings.location }}</p>
             </div>
-
-          </div>
-        {% endfor %}
-
+          </article>
+        {%- endfor -%}
       </div>
     </div>
-
-  </div>
-</section>
-
-
-<style>
-
-/* SECTION */
-.ar-vt {
-  padding: 120px 0;
-  background: #f8f8f7;
-}
-
-.ar-vt__inner {
-  max-width: 1400px;
-  margin: auto;
-  padding: 0 24px;
-}
-
-/* HEADER */
-.ar-vt__header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.ar-vt__heading {
-  font-size: 42px;
-  font-weight: 500;
-}
-
-.ar-vt__sub {
-  color: #6b7280;
-}
-
-/* SLIDER */
-.ar-vt__wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.ar-vt__track {
-  display: flex;
-  gap: 24px;
-  will-change: transform;
-}
-
-/* SLIDE */
-.ar-vt__slide {
-  flex: 0 0 auto;
-  width: 280px;
-}
-
-/* VIDEO */
-.ar-vt__video-box {
-  width: 100%;
-  height: 500px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #000;
-}
-
-.ar-vt__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: translateZ(0);
-}
-
-/* META */
-.ar-vt__meta {
-  text-align: center;
-  margin-top: 10px;
-}
-
-/* FADE EDGES */
-.ar-vt__wrapper::before,
-.ar-vt__wrapper::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 80px;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.ar-vt__wrapper::before {
-  left: 0;
-  background: linear-gradient(to right, #f8f8f7, transparent);
-}
-
-.ar-vt__wrapper::after {
-  right: 0;
-  background: linear-gradient(to left, #f8f8f7, transparent);
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .ar-vt__slide { width: 220px; }
-  .ar-vt__video-box { height: 420px; }
-}
-
-</style>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const track = document.getElementById("arVTTrack");
-  if (!track) return;
-
-  const slides = track.children;
-  const speed = 0.4; // smooth speed
-  let scroll = 0;
-
-  // CLONE for infinite loop
-  track.innerHTML += track.innerHTML;
-
-  function autoScroll() {
-    scroll += speed;
-    track.style.transform = `translateX(-${scroll}px)`;
-
-    if (scroll >= track.scrollWidth / 2) {
-      scroll = 0;
-    }
-
-    requestAnimationFrame(autoScroll);
-  }
-
-  autoScroll();
-
-  // VIDEO PLAY CONTROL (center active)
-  const videos = track.querySelectorAll("video");
-
-  function updateVideos() {
-    const center = window.innerWidth / 2;
-
-    videos.forEach(video => {
-      const rect = video.getBoundingClientRect();
-      const videoCenter = rect.left + rect.width / 2;
-
-      if (Math.abs(center - videoCenter) < 120) {
-        video.play().catch(()=>{});
-      } else {
-        video.pause();
-      }
-    });
-  }
-
-  setInterval(updateVideos, 300);
-
-});
-</script>
+  </section>
+{%- endif -%}
