@@ -454,15 +454,20 @@
     border:1px solid rgba(255,255,255,.7);
     background:rgba(0,0,0,.45);
     color:#fff;
-    font-size:11px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
     border-radius:999px;
-    padding:8px 12px;
+    width:36px;
+    height:36px;
+    padding:0;
     cursor:pointer;
-    transition:background .25s ease, border-color .25s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .25s ease, border-color .25s ease, transform .2s ease;
   }
-  .ar-vtm__mute-btn:hover { background:rgba(0,0,0,.65); border-color:#fff; }
+  .ar-vtm__mute-btn:hover { background:rgba(0,0,0,.65); border-color:#fff; transform:translateY(-1px); }
+  .ar-vtm__icon { display:none; line-height:0; }
+  .ar-vtm__mute-btn.is-muted .ar-vtm__icon--muted { display:block; }
+  .ar-vtm__mute-btn:not(.is-muted) .ar-vtm__icon--unmuted { display:block; }
   .ar-vtm__ph { display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.4); font-size:13px; }
   .ar-vtm__play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.28); transition:background .3s; }
   .ar-vtm__video-wrap:hover .ar-vtm__play { background:rgba(0,0,0,.45); }
