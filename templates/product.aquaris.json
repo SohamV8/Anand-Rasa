@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-aquaris",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Innovation" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Uniqueness" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Vision" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Fresh perspective", "text": "A modern attar presence designed for new ideas and clear vision." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Distinct aura", "text": "A premium, alcohol-free attar that feels unique and unmistakable." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Future focus", "text": "A ritual companion for innovation, independence, and bold thinking." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For innovators, visionaries, and originals" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For days that need uniqueness and forward energy" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Aquarius Zodiac Attar",
+        "subtitle": "Innovative vision in a luxury attar.",
+        "description": "<p>Aquarius is innovative, unique, and vision-driven. This Zodiac Attar is crafted to complement originality, independence, and future-focused energy—ideal for rituals and daily wear.</p>",
+        "seo_keywords": "Aquarius zodiac attar, Aquarius attar, innovation fragrance, unique vision perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A luxury attar for innovation, uniqueness, and vision.",
+        "strip_col1": "Innovation & vision",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Aquarius energy — original, visionary, and free.",
+        "spec_item_type": "Innovation, uniqueness, vision",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
