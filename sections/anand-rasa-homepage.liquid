@@ -442,9 +442,9 @@
   .ar-vtm__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
   @media(max-width:900px){ .ar-vtm__grid { grid-template-columns:repeat(2,1fr); } }
   @media(max-width:580px){ .ar-vtm__grid { grid-template-columns:1fr; } }
-  .ar-vtm__card { background:#faf9f7; border:1px solid rgba(30,32,35,.08); border-radius:12px; overflow:hidden; transition:transform .3s ease,box-shadow .3s ease; }
+  .ar-vtm__card { background:#faf9f7; border:1px solid rgba(30,32,35,.08); border-radius:12px; overflow:hidden; transition:transform .3s ease,box-shadow .3s ease; max-width:360px; margin:0 auto; width:100%; }
   .ar-vtm__card:hover { transform:translateY(-4px); box-shadow:0 20px 48px rgba(0,0,0,.09); }
-  .ar-vtm__video-wrap { position:relative; aspect-ratio:9/16; max-height:380px; overflow:hidden; background:#0a0a0a; cursor:pointer; }
+  .ar-vtm__video-wrap { position:relative; aspect-ratio:9/16; overflow:hidden; background:#0a0a0a; cursor:pointer; }
   .ar-vtm__video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
   .ar-vtm__ph { display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.4); font-size:13px; }
   .ar-vtm__play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.28); transition:background .3s; }
@@ -518,7 +518,7 @@
     story_url: story_url,
     story_btn: story_btn
   %}
-  {% render 'snippet-home-testimonials' %}
+  {% render 'snippet-home-testimonials', section: section %}
   {% render 'snippet-home-blog', section: section %}
   {% render 'snippet-home-cta', section: section %}
 
@@ -1022,6 +1022,18 @@
       "default": "Real people. Real experiences."
     },
     {
+      "type": "text",
+      "id": "tst_heading",
+      "label": "Text testimonial heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "tst_sub",
+      "label": "Text testimonial subtext",
+      "default": "Real people. Real experiences."
+    },
+    {
       "type": "header",
       "content": "Brand Philosophy Section"
     },
@@ -1197,6 +1209,49 @@
           "id": "location",
           "label": "City",
           "default": "Mumbai"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    },
+    {
+      "type": "video_testimonial",
+      "name": "Video Testimonial",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Upload video (recommended portrait 9:16)"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL fallback (optional)"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "This fragrance stayed with me all day and felt so elegant."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Anand Rasa Customer"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "City",
+          "default": "India"
         },
         {
           "type": "range",
