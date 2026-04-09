@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-leo",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Confidence" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Royalty" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Charisma" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Presence", "text": "A bold attar aura designed for confident self-expression." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Radiance", "text": "A premium, alcohol-free attar experience with a strong signature feel." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Charm", "text": "A ritual-ready scent for charisma, celebration, and everyday confidence." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For confident leaders and bold personalities" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For moments that call for charisma and shine" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Leo Zodiac Attar",
+        "subtitle": "Royal confidence in a luxury attar.",
+        "description": "<p>Leo is confident, radiant, and charismatic. This Zodiac Attar is crafted to complement royalty energy, strong presence, and warm magnetism—ideal for rituals and daily wear.</p>",
+        "seo_keywords": "Leo zodiac attar, Leo attar, confidence fragrance, royalty charisma perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A luxury attar for confidence, royalty energy, and charisma.",
+        "strip_col1": "Confidence, royalty, charisma",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Leo energy — radiant, confident, and bold.",
+        "spec_item_type": "Confidence, royalty, charisma",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
