@@ -446,6 +446,23 @@
   .ar-vtm__card:hover { transform:translateY(-4px); box-shadow:0 20px 48px rgba(0,0,0,.09); }
   .ar-vtm__video-wrap { position:relative; aspect-ratio:9/16; overflow:hidden; background:#0a0a0a; cursor:pointer; }
   .ar-vtm__video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .ar-vtm__mute-btn {
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    z-index:3;
+    border:1px solid rgba(255,255,255,.7);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border-radius:999px;
+    padding:8px 12px;
+    cursor:pointer;
+    transition:background .25s ease, border-color .25s ease;
+  }
+  .ar-vtm__mute-btn:hover { background:rgba(0,0,0,.65); border-color:#fff; }
   .ar-vtm__ph { display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.4); font-size:13px; }
   .ar-vtm__play { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.28); transition:background .3s; }
   .ar-vtm__video-wrap:hover .ar-vtm__play { background:rgba(0,0,0,.45); }
