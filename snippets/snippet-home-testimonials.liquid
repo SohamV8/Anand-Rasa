@@ -49,14 +49,14 @@
           {%- assign v = block.settings.video -%}
           {%- assign v_url = block.settings.video_url | strip -%}
           <article class="ar-vtm__card" {{ block.shopify_attributes }}>
-            <div class="ar-vtm__video-wrap js-vtm-wrap">
+            <div class="ar-vtm__video-wrap">
               {%- if v != blank -%}
                 {{
                   v
                   | video_tag:
                     class: 'ar-vtm__video',
                     image_size: '540x960',
-                    autoplay: false,
+                    autoplay: true,
                     loop: true,
                     muted: true,
                     controls: false,
@@ -66,6 +66,7 @@
                 <video
                   class="ar-vtm__video"
                   src="{{ v_url }}"
+                  autoplay
                   muted
                   loop
                   playsinline
@@ -74,26 +75,11 @@
               {%- else -%}
                 <div class="ar-vtm__video ar-vtm__ph">Upload a portrait video</div>
               {%- endif -%}
-              <div class="ar-vtm__play js-vtm-play" aria-hidden="true">
-                <svg width="58" height="58" viewBox="0 0 58 58" fill="none">
-                  <circle cx="29" cy="29" r="29" fill="rgba(255,255,255,0.18)"></circle>
-                  <path d="M24 19L41 29L24 39V19Z" fill="#fff"></path>
-                </svg>
-              </div>
-            </div>
-
-            <div class="ar-vtm__info">
-              {%- assign rating = block.settings.rating | default: 5 -%}
-              <div class="ar-vtm__stars" aria-label="{{ rating }} out of 5 stars">
-                {%- for i in (1..5) -%}
-                  <span class="ar-vtm__star{% if i <= rating %} on{% endif %}">&#9733;</span>
-                {%- endfor -%}
-              </div>
-              {%- if block.settings.quote != blank -%}
-                <p class="ar-vtm__quote">"{{ block.settings.quote }}"</p>
+              {%- if v != blank or v_url != blank -%}
+                <button type="button" class="ar-vtm__mute-btn js-vtm-mute-btn" aria-label="Unmute video" data-muted="true">
+                  Unmute
+                </button>
               {%- endif -%}
-              <p class="ar-vtm__name">{{ block.settings.name }}</p>
-              <p class="ar-vtm__loc">{{ block.settings.location }}</p>
             </div>
           </article>
         {%- endfor -%}
@@ -101,3 +87,35 @@
     </div>
   </section>
 {%- endif -%}
+
+<script>
+  (function () {
+    var root = document.currentScript && document.currentScript.parentElement;
+    if (!root) return;
+
+    var videos = root.querySelectorAll('.ar-vtm__video-wrap video');
+    videos.forEach(function (video) {
+      video.muted = true;
+      video.setAttribute('muted', 'muted');
+      var p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(function () {});
+    });
+
+    root.querySelectorAll('.js-vtm-mute-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var wrap = btn.closest('.ar-vtm__video-wrap');
+        if (!wrap) return;
+        var video = wrap.querySelector('video');
+        if (!video) return;
+
+        var mutedNow = !video.muted;
+        video.muted = mutedNow;
+        btn.setAttribute('data-muted', mutedNow ? 'true' : 'false');
+        btn.textContent = mutedNow ? 'Unmute' : 'Mute';
+        btn.setAttribute('aria-label', mutedNow ? 'Unmute video' : 'Mute video');
+      });
+    });
+  })();
+</script>
