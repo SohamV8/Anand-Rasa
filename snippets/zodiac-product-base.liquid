@@ -366,14 +366,24 @@
             {%- endfor -%}
 
             <div class="aip-gallery__badge">
-              {%- if section.settings.show_new_badge and (product.tags contains 'new' or product.tags contains 'New') -%}
+              {%- assign aip_is_new = false -%}
+              {%- if product.tags contains 'new' or product.tags contains 'New' -%}
+                {%- assign aip_is_new = true -%}
+              {%- endif -%}
+              {%- if section.settings.show_new_badge and aip_is_new -%}
                 <span class="aip-gallery__tag">{{ section.settings.new_badge_text }}</span>
               {%- endif -%}
+
               {%- if section.settings.show_sale_badge and product.compare_at_price > product.price -%}
                 {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
                 <span class="aip-gallery__tag aip-gallery__tag--sale">{{ section.settings.sale_badge_prefix }}{{ savings_pct }}{{ section.settings.sale_badge_suffix }}</span>
               {%- endif -%}
-              {%- if section.settings.show_bestseller_badge and (product.tags contains 'bestseller' or product.tags contains 'Bestseller') -%}
+
+              {%- assign aip_is_bestseller = false -%}
+              {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
+                {%- assign aip_is_bestseller = true -%}
+              {%- endif -%}
+              {%- if section.settings.show_bestseller_badge and aip_is_bestseller -%}
                 <span class="aip-gallery__tag aip-gallery__tag--bs">{{ section.settings.bestseller_badge_text }}</span>
               {%- endif -%}
             </div>
@@ -421,7 +431,10 @@
               </span>
               <div class="aip-variants__opts">
                 {%- for value in option.values -%}
-                  {%- assign is_active = value == option.selected_value -%}
+                  {%- assign is_active = false -%}
+                  {%- if value == option.selected_value -%}
+                    {%- assign is_active = true -%}
+                  {%- endif -%}
                   <button type="button" class="aip-variant-btn{% if is_active %} is-active{% endif %}" data-option-index="{{ option_index }}" data-value="{{ value | escape }}">{{ value }}</button>
                 {%- endfor -%}
               </div>
