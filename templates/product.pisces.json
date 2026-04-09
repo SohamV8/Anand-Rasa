@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-pisces",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Spirituality" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Imagination" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Sensitivity" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Dreamy calm", "text": "A gentle attar presence designed for soft, spiritual ease." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Inner ritual", "text": "A premium, alcohol-free attar for meditation and quiet reflection." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Creative flow", "text": "A daily companion for imagination, sensitivity, and inspired moments." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For spiritual seekers and creative souls" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For sensitive energy and calm, dreamy rituals" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Pisces Zodiac Attar",
+        "subtitle": "Spiritual imagination in a luxury attar.",
+        "description": "<p>Pisces is spiritual, imaginative, and deeply sensitive. This Zodiac Attar is crafted to complement intuition, inner calm, and dreamy presence—ideal for rituals and daily wear.</p>",
+        "seo_keywords": "Pisces zodiac attar, Pisces attar, spirituality fragrance, imagination sensitivity perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A luxury attar for spirituality, imagination, and sensitivity.",
+        "strip_col1": "Spirituality & sensitivity",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Pisces energy — intuitive, gentle, and inspired.",
+        "spec_item_type": "Spirituality, imagination, sensitivity",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
