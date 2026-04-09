@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-virgo",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Perfection" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Healing" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Intelligence" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Clean focus", "text": "A refined attar presence designed for clarity and calm precision." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Ritual balance", "text": "A premium, alcohol-free attar for steady routines and mindful moments." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Restorative ease", "text": "A gentle companion for healing energy and grounded intelligence." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For detail-lovers and thoughtful planners" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For calm routines and healing-focused rituals" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Virgo Zodiac Attar",
+        "subtitle": "Refined clarity in a luxury attar.",
+        "description": "<p>Virgo is intelligent, healing, and perfection-oriented. This Zodiac Attar is crafted to complement clarity, balance, and restorative energy—ideal for mindful rituals and daily wear.</p>",
+        "seo_keywords": "Virgo zodiac attar, Virgo attar, healing fragrance, perfection intelligence perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A refined attar for perfection, healing energy, and clear intelligence.",
+        "strip_col1": "Perfection, healing, intelligence",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Virgo energy — refined, restorative, and clear.",
+        "spec_item_type": "Perfection, healing, intelligence",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
