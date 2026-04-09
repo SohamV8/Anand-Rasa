@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-cancer",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Emotions" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Nurturing" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Home energy" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Soothing ritual", "text": "A calming attar presence designed for emotional ease and gentleness." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Comfort", "text": "A warm, nurturing profile for quiet moments, prayer, and meditation." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Soft strength", "text": "A premium attar experience for sensitive energy and steady care." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For nurturers, empaths, and home-centered souls" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For calming routines and gentle emotional grounding" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Cancer Zodiac Attar",
+        "subtitle": "Nurturing comfort in a luxury attar.",
+        "description": "<p>Cancer is deeply emotional, nurturing, and rooted in home energy. This Zodiac Attar is crafted to complement sensitivity, comfort, and calming presence—ideal for soothing rituals and daily wear.</p>",
+        "seo_keywords": "Cancer zodiac attar, Cancer attar, nurturing fragrance, emotional comfort perfume oil, home energy scent, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A comforting attar for emotions, nurturing energy, and calm ritual.",
+        "strip_col1": "Emotions & nurturing comfort",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Cancer energy — soothing, nurturing, and protective.",
+        "spec_item_type": "Emotions, nurturing, home energy",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
