@@ -12,38 +12,161 @@
     "main": {
       "type": "main-pisces",
       "blocks": {
-        "trait_1": { "type": "trait", "settings": { "text": "Spirituality" } },
-        "trait_2": { "type": "trait", "settings": { "text": "Imagination" } },
-        "trait_3": { "type": "trait", "settings": { "text": "Sensitivity" } },
-        "benefit_1": { "type": "benefit", "settings": { "title": "Dreamy calm", "text": "A gentle attar presence designed for soft, spiritual ease." } },
-        "benefit_2": { "type": "benefit", "settings": { "title": "Inner ritual", "text": "A premium, alcohol-free attar for meditation and quiet reflection." } },
-        "benefit_3": { "type": "benefit", "settings": { "title": "Creative flow", "text": "A daily companion for imagination, sensitivity, and inspired moments." } },
-        "who_1": { "type": "who_for", "settings": { "text": "For spiritual seekers and creative souls" } },
-        "who_2": { "type": "who_for", "settings": { "text": "For sensitive energy and calm, dreamy rituals" } }
+        "trait_1": {
+          "type": "trait",
+          "settings": {
+            "text": "Spirituality"
+          }
+        },
+        "trait_2": {
+          "type": "trait",
+          "settings": {
+            "text": "Imagination"
+          }
+        },
+        "trait_3": {
+          "type": "trait",
+          "settings": {
+            "text": "Sensitivity"
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Dreamy calm",
+            "text": "A gentle attar presence designed for soft, spiritual ease."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Inner ritual",
+            "text": "A premium, alcohol-free attar for meditation and quiet reflection."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Creative flow",
+            "text": "A daily companion for imagination, sensitivity, and inspired moments."
+          }
+        },
+        "who_1": {
+          "type": "who_for",
+          "settings": {
+            "text": "For spiritual seekers and creative souls"
+          }
+        },
+        "who_2": {
+          "type": "who_for",
+          "settings": {
+            "text": "For sensitive energy and calm, dreamy rituals"
+          }
+        }
       },
-      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "block_order": [
+        "trait_1",
+        "trait_2",
+        "trait_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "who_1",
+        "who_2"
+      ],
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Zodiac Attar",
         "title": "Pisces Zodiac Attar",
         "subtitle": "Spiritual imagination in a luxury attar.",
-        "description": "<p>Pisces is spiritual, imaginative, and deeply sensitive. This Zodiac Attar is crafted to complement intuition, inner calm, and dreamy presence—ideal for rituals and daily wear.</p>",
+        "description": "",
         "seo_keywords": "Pisces zodiac attar, Pisces attar, spirituality fragrance, imagination sensitivity perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "rating": 5,
+        "review_count": "0",
+        "review_count_suffix": "reviews",
+        "stars_aria_prefix": "",
+        "stars_aria_suffix": "",
         "short_description": "A luxury attar for spirituality, imagination, and sensitivity.",
+        "product_tagline": "",
+        "use_product_description_as_fallback": true,
+        "show_buy_now": true,
+        "atc_text": "Add to Cart",
+        "sold_out_text": "Sold Out",
+        "buy_now_text": "Buy Now",
+        "adding_text": "Adding…",
+        "added_text": "Added to your cart",
+        "qty_label": "Quantity",
+        "qty_decrease_aria_label": "Decrease quantity",
+        "qty_increase_aria_label": "Increase quantity",
+        "qty_input_aria_label": "Quantity",
+        "trust_1": "Natural ingredients",
+        "trust_2": "Alcohol-free attar",
+        "trust_3": "Long-lasting aroma",
+        "show_traits_highlight": true,
+        "traits_heading": "Zodiac traits",
+        "traits_aria_label": "Zodiac traits highlight",
+        "strip_label1": "Description",
         "strip_col1": "Spirituality & sensitivity",
+        "strip_label2": "Details",
         "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_label3": "Category",
         "strip_col3": "Zodiac Attar",
+        "show_product_description": true,
+        "show_who_for": false,
+        "who_for_heading": "Who is this for",
         "why_heading": "Why this Zodiac Attar",
         "why_sub": "Crafted to complement Pisces energy — intuitive, gentle, and inspired.",
+        "spec_heading": "Product specifications",
+        "spec_label_origin": "Country of Origin",
+        "spec_origin": "India",
+        "spec_label_item_form": "Item Form",
+        "spec_item_form": "Luxury Attar",
+        "spec_label_item_type": "Focus",
         "spec_item_type": "Spirituality, imagination, sensitivity",
+        "spec_label_sticks": "Ideal for",
         "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_label_burn": "Longevity",
         "spec_burn": "Long-lasting aroma",
+        "spec_label_length": "Application",
         "spec_length": "Dab on pulse points",
+        "spec_label_fragrance": "Fragrance",
+        "spec_fragrance": "",
+        "spec_label_ingredients": "Key Ingredients",
+        "spec_ingredients": "",
+        "compare_heading": "How we compare",
+        "compare_col_features": "Features",
+        "compare_col_brand": "Anand Rasa",
+        "compare_col_others": "Others",
+        "compare_row1_feature": "Alcohol-free attar — concentrated",
+        "compare_row2_feature": "Natural aromatic ingredients",
+        "compare_row3_feature": "Premium quality — crafted with care",
+        "compare_row4_feature": "Ritual-ready aroma for meditation",
+        "show_related": true,
+        "related_collection": "zodiac-attars",
         "related_heading": "Recommended",
-        "related_sub": "Explore more zodiac attars"
+        "related_sub": "Explore more zodiac attars",
+        "related_atc_text": "Add to Cart",
+        "related_sold_out_text": "Sold Out",
+        "related_buy_now_text": "Buy Now",
+        "save_prefix": "Save",
+        "show_new_badge": true,
+        "new_badge_text": "New",
+        "show_sale_badge": true,
+        "sale_badge_prefix": "−",
+        "sale_badge_suffix": "%",
+        "show_bestseller_badge": true,
+        "bestseller_badge_text": "Bestseller",
+        "no_image_text": "No image",
+        "breadcrumb_aria_label": "Breadcrumb",
+        "breadcrumb_home": "Home",
+        "gallery_thumb_aria_prefix": "View image",
+        "zoom_button_aria_label": "Enlarge image",
+        "zoom_modal_aria_label": "Product image",
+        "zoom_close_aria_label": "Close"
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
-
