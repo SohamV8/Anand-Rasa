@@ -1,0 +1,164 @@
+{% comment %}
+  Taurus Zodiac Attar product section.
+  Renders the shared zodiac PDP base snippet.
+{% endcomment %}
+
+{% render 'zodiac-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Taurus Zodiac Attar",
+  "settings": [
+    { "type": "header", "content": "Brand & hero" },
+    { "type": "text", "id": "brand_text", "label": "Brand line (above title)", "default": "ANAND RAS" },
+    { "type": "text", "id": "product_label", "label": "Product label (optional)", "default": "Zodiac Attar" },
+
+    { "type": "header", "content": "Zodiac content" },
+    { "type": "text", "id": "title", "label": "Title (H1)", "default": "Taurus Zodiac Attar" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle (below title)" },
+    { "type": "richtext", "id": "description", "label": "Description (replaces product description when set)", "default": "<p></p>" },
+
+    { "type": "header", "content": "SEO" },
+    { "type": "textarea", "id": "seo_keywords", "label": "SEO keywords (comma-separated)" },
+
+    { "type": "header", "content": "Rating & reviews" },
+    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
+    { "type": "text", "id": "review_count_suffix", "label": "Review count suffix", "default": "reviews" },
+    { "type": "text", "id": "stars_aria_prefix", "label": "Stars aria prefix" },
+    { "type": "text", "id": "stars_aria_suffix", "label": "Stars aria suffix" },
+
+    { "type": "header", "content": "Short description logic" },
+    { "type": "textarea", "id": "short_description", "label": "Short description (tagline)" },
+    { "type": "text", "id": "product_tagline", "label": "Short line (fallback)" },
+    { "type": "checkbox", "id": "use_product_description_as_fallback", "label": "Use product description as fallback tagline", "default": true },
+
+    { "type": "header", "content": "CTA text" },
+    { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
+    { "type": "text", "id": "atc_text", "label": "Add to cart text", "default": "Add to Cart" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold out text", "default": "Sold Out" },
+    { "type": "text", "id": "buy_now_text", "label": "Buy now text", "default": "Buy Now" },
+    { "type": "text", "id": "adding_text", "label": "Adding text", "default": "Adding…" },
+    { "type": "text", "id": "added_text", "label": "Added text (success message)", "default": "Added to your cart" },
+
+    { "type": "header", "content": "Quantity labels" },
+    { "type": "text", "id": "qty_label", "label": "Quantity label", "default": "Quantity" },
+    { "type": "text", "id": "qty_decrease_aria_label", "label": "Decrease qty aria-label", "default": "Decrease quantity" },
+    { "type": "text", "id": "qty_increase_aria_label", "label": "Increase qty aria-label", "default": "Increase quantity" },
+    { "type": "text", "id": "qty_input_aria_label", "label": "Qty input aria-label", "default": "Quantity" },
+
+    { "type": "header", "content": "Trust lines" },
+    { "type": "text", "id": "trust_1", "label": "Trust line 1", "default": "Natural ingredients" },
+    { "type": "text", "id": "trust_2", "label": "Trust line 2", "default": "Alcohol-free attar" },
+    { "type": "text", "id": "trust_3", "label": "Trust line 3", "default": "Long-lasting aroma" },
+
+    { "type": "header", "content": "Traits highlight (optional)" },
+    { "type": "checkbox", "id": "show_traits_highlight", "label": "Show Zodiac Traits Highlight", "default": true },
+    { "type": "text", "id": "traits_heading", "label": "Traits heading", "default": "Zodiac traits" },
+    { "type": "text", "id": "traits_aria_label", "label": "Traits aria-label", "default": "Zodiac traits highlight" },
+
+    { "type": "header", "content": "Info strip (3 columns)" },
+    { "type": "text", "id": "strip_label1", "label": "Column 1 label", "default": "Description" },
+    { "type": "text", "id": "strip_col1", "label": "Column 1 text" },
+    { "type": "text", "id": "strip_label2", "label": "Column 2 label", "default": "Details" },
+    { "type": "text", "id": "strip_col2", "label": "Column 2 text" },
+    { "type": "text", "id": "strip_label3", "label": "Column 3 label", "default": "Category" },
+    { "type": "text", "id": "strip_col3", "label": "Column 3 text" },
+
+    { "type": "header", "content": "Story section" },
+    { "type": "checkbox", "id": "show_product_description", "label": "Show product.description when custom description is empty", "default": true },
+
+    { "type": "header", "content": "Who is this for (optional)" },
+    { "type": "checkbox", "id": "show_who_for", "label": "Show “Who is this for” section", "default": true },
+    { "type": "text", "id": "who_for_heading", "label": "Who for heading", "default": "Who is this for" },
+
+    { "type": "header", "content": "Why choose section" },
+    { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why this Zodiac Attar" },
+    { "type": "textarea", "id": "why_sub", "label": "Subheading" },
+
+    { "type": "header", "content": "Specifications table" },
+    { "type": "text", "id": "spec_heading", "label": "Specs heading", "default": "Product specifications" },
+    { "type": "text", "id": "spec_label_origin", "label": "Label: Country of Origin", "default": "Country of Origin" },
+    { "type": "text", "id": "spec_origin", "label": "Country of Origin value", "default": "India" },
+    { "type": "text", "id": "spec_label_item_form", "label": "Label: Item Form", "default": "Item Form" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form value", "default": "Luxury Attar" },
+    { "type": "text", "id": "spec_label_item_type", "label": "Label: Focus", "default": "Focus" },
+    { "type": "text", "id": "spec_item_type", "label": "Focus value" },
+    { "type": "text", "id": "spec_label_sticks", "label": "Label: Ideal for", "default": "Ideal for" },
+    { "type": "text", "id": "spec_sticks", "label": "Ideal for value" },
+    { "type": "text", "id": "spec_label_burn", "label": "Label: Longevity", "default": "Longevity" },
+    { "type": "text", "id": "spec_burn", "label": "Longevity value" },
+    { "type": "text", "id": "spec_label_length", "label": "Label: Application", "default": "Application" },
+    { "type": "text", "id": "spec_length", "label": "Application value" },
+    { "type": "text", "id": "spec_label_fragrance", "label": "Label: Fragrance", "default": "Fragrance" },
+    { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)" },
+    { "type": "text", "id": "spec_label_ingredients", "label": "Label: Key Ingredients", "default": "Key Ingredients" },
+    { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)" },
+
+    { "type": "header", "content": "Comparison table" },
+    { "type": "text", "id": "compare_heading", "label": "Comparison heading", "default": "How we compare" },
+    { "type": "text", "id": "compare_col_features", "label": "Header: Features", "default": "Features" },
+    { "type": "text", "id": "compare_col_brand", "label": "Header: Brand column", "default": "Anand Rasa" },
+    { "type": "text", "id": "compare_col_others", "label": "Header: Others column", "default": "Others" },
+    { "type": "text", "id": "compare_row1_feature", "label": "Row 1 feature text", "default": "Alcohol-free attar — concentrated" },
+    { "type": "text", "id": "compare_row2_feature", "label": "Row 2 feature text", "default": "Natural aromatic ingredients" },
+    { "type": "text", "id": "compare_row3_feature", "label": "Row 3 feature text", "default": "Premium quality — crafted with care" },
+    { "type": "text", "id": "compare_row4_feature", "label": "Row 4 feature text", "default": "Ritual-ready aroma for meditation" },
+
+    { "type": "header", "content": "Recommended products" },
+    { "type": "checkbox", "id": "show_related", "label": "Show recommended products", "default": true },
+    { "type": "collection", "id": "related_collection", "label": "Collection" },
+    { "type": "text", "id": "related_heading", "label": "Heading", "default": "Recommended" },
+    { "type": "text", "id": "related_sub", "label": "Subheading" },
+    { "type": "text", "id": "related_atc_text", "label": "Related: Add to cart text", "default": "Add to Cart" },
+    { "type": "text", "id": "related_sold_out_text", "label": "Related: Sold out text", "default": "Sold Out" },
+    { "type": "text", "id": "related_buy_now_text", "label": "Related: Buy now text", "default": "Buy Now" },
+
+    { "type": "header", "content": "Badges & labels" },
+    { "type": "text", "id": "save_prefix", "label": "Save prefix (before amount)", "default": "Save" },
+    { "type": "checkbox", "id": "show_new_badge", "label": "Show New badge if product tagged", "default": true },
+    { "type": "text", "id": "new_badge_text", "label": "New badge text", "default": "New" },
+    { "type": "checkbox", "id": "show_sale_badge", "label": "Show Sale badge if compare_at_price is set", "default": true },
+    { "type": "text", "id": "sale_badge_prefix", "label": "Sale badge prefix", "default": "−" },
+    { "type": "text", "id": "sale_badge_suffix", "label": "Sale badge suffix", "default": "%" },
+    { "type": "checkbox", "id": "show_bestseller_badge", "label": "Show Bestseller badge if product tagged", "default": true },
+    { "type": "text", "id": "bestseller_badge_text", "label": "Bestseller badge text", "default": "Bestseller" },
+    { "type": "text", "id": "no_image_text", "label": "No image placeholder text", "default": "No image" },
+
+    { "type": "header", "content": "Accessibility labels" },
+    { "type": "text", "id": "breadcrumb_aria_label", "label": "Breadcrumb aria-label", "default": "Breadcrumb" },
+    { "type": "text", "id": "breadcrumb_home", "label": "Breadcrumb home label", "default": "Home" },
+    { "type": "text", "id": "gallery_thumb_aria_prefix", "label": "Gallery thumb aria prefix", "default": "View image" },
+    { "type": "text", "id": "zoom_button_aria_label", "label": "Zoom button aria-label", "default": "Enlarge image" },
+    { "type": "text", "id": "zoom_modal_aria_label", "label": "Zoom modal aria-label", "default": "Product image" },
+    { "type": "text", "id": "zoom_close_aria_label", "label": "Zoom close aria-label", "default": "Close" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "trait",
+      "name": "Zodiac Traits Highlight",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Trait" }
+      ]
+    },
+    {
+      "type": "who_for",
+      "name": "Who is this for",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Line" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Zodiac Attar Product Section — Taurus" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
+
