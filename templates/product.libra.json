@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-libra",
+      "blocks": {
+        "trait_1": { "type": "trait", "settings": { "text": "Balance" } },
+        "trait_2": { "type": "trait", "settings": { "text": "Love" } },
+        "trait_3": { "type": "trait", "settings": { "text": "Harmony" } },
+        "benefit_1": { "type": "benefit", "settings": { "title": "Elegant calm", "text": "A balanced attar aura designed to feel peaceful and refined." } },
+        "benefit_2": { "type": "benefit", "settings": { "title": "Soft romance", "text": "A premium, alcohol-free attar for warmth, love, and connection." } },
+        "benefit_3": { "type": "benefit", "settings": { "title": "Everyday harmony", "text": "A ritual-ready scent to keep energy smooth and centered." } },
+        "who_1": { "type": "who_for", "settings": { "text": "For lovers of balance and beautiful calm" } },
+        "who_2": { "type": "who_for", "settings": { "text": "For romantic, harmony-seeking energy" } }
+      },
+      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Zodiac Attar",
+        "title": "Libra Zodiac Attar",
+        "subtitle": "Balanced harmony in a luxury attar.",
+        "description": "<p>Libra is graceful, love-driven, and harmony-focused. This Zodiac Attar is crafted to complement balance, romance, and calm presence—ideal for rituals and daily wear.</p>",
+        "seo_keywords": "Libra zodiac attar, Libra attar, balance harmony fragrance, love perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
+        "short_description": "A luxury attar for balance, love, and harmony.",
+        "strip_col1": "Balance, love, harmony",
+        "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
+        "strip_col3": "Zodiac Attar",
+        "why_heading": "Why this Zodiac Attar",
+        "why_sub": "Crafted to complement Libra energy — calm, graceful, and harmonious.",
+        "spec_item_type": "Balance, love, harmony",
+        "spec_sticks": "Daily wear, rituals, meditation",
+        "spec_burn": "Long-lasting aroma",
+        "spec_length": "Dab on pulse points",
+        "related_heading": "Recommended",
+        "related_sub": "Explore more zodiac attars"
+      }
+    }
+  },
+  "order": ["main"]
+}
+
