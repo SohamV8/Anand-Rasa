@@ -1,9 +1,35 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "collection-zodiac",
-      "settings": {}
+      "settings": {
+        "hero_image": "shopify://shop_images/Mystical_zodiac_attars_under_a_starry_sky.png",
+        "hero_label": "Rashi Rasa Series",
+        "hero_subtitle": "Twelve attars, one for every rashi. Wear your zodiac energy as a fragrance.",
+        "hero_btn": "Explore Collection",
+        "content_image": "shopify://shop_images/Mystical_zodiac_attars_under_a_starry_sky.png",
+        "content_label": "Our Craft",
+        "content_title": "Your Zodiac, Your Scent",
+        "content_body": "Each of the twelve rashis carries a unique energetic signature. Our Zodiac Attar series translates these signatures into fragrance — so you can wear your cosmic identity as a quiet, powerful presence.",
+        "cta_label": "Anand Rasa",
+        "cta_title": "Wear Your Zodiac as Your Aura",
+        "cta_subtitle": "The right fragrance does more than smell beautiful — it aligns you with your own energy.",
+        "cta_btn": "Shop Now",
+        "cta_url": "",
+        "products_per_page": 16
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
