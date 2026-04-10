@@ -275,10 +275,10 @@
 </style>
 
 {%- liquid
-  assign _title_override = section.settings.title_override | strip
+  assign title_override_value = section.settings.title_override | strip
   assign aip_display_title = product.title
-  if _title_override != blank
-    assign aip_display_title = _title_override
+  if title_override_value != blank
+    assign aip_display_title = title_override_value
   endif
 
   assign aip_subtitle = section.settings.subtitle | strip
