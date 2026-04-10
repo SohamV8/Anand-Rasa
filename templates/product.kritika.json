@@ -10,24 +10,24 @@
 {
   "sections": {
     "main": {
-      "type": "main-jyeshtha",
+      "type": "main-kritika",
       "blocks": {
         "benefit_1": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Power"
+            "text": "Purification"
           }
         },
         "benefit_2": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Seniority"
+            "text": "Fire"
           }
         },
         "benefit_3": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Protection"
+            "text": "Leadership"
           }
         }
       },
@@ -39,9 +39,9 @@
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Attar",
-        "title_override": "Jyeshtha Nakshatra Attar",
+        "title_override": "Kritika Nakshatra Attar",
         "subtitle": "Aligned with your birth star energy",
-        "short_description": "Jyeshtha energy profile — power, seniority, protection.",
+        "short_description": "Kritika energy profile — purification, fire, leadership.",
         "product_tagline": "",
         "rating": 5,
         "review_count": "0",
@@ -52,11 +52,11 @@
         "trust_1": "Natural ingredients",
         "trust_2": "Long-lasting scent",
         "trust_3": "Spiritual alignment",
-        "strip_col1": "Jyeshtha energy",
-        "strip_col2": "Themes: power, seniority, protection.",
+        "strip_col1": "Kritika energy",
+        "strip_col2": "Themes: purification, fire, leadership.",
         "strip_col3": "Nakshatra Attar",
-        "why_heading": "Why Jyeshtha Nakshatra Attar",
-        "why_sub": "A refined attar crafted to echo Jyeshtha traits — power, seniority, protection.",
+        "why_heading": "Why Kritika Nakshatra Attar",
+        "why_sub": "A refined attar crafted to echo Kritika traits — purification, fire, leadership.",
         "spec_origin": "India",
         "spec_item_form": "Attar (Roll-on / Dab)",
         "spec_item_type": "Alcohol-free, Long-lasting, Premium",
@@ -75,11 +75,11 @@
         "related_sub": "Curated for your ritual",
         "energy_benefits_heading": "Nakshatra Energy Benefits",
         "best_for_heading": "Best for (life situations)",
-        "best_for": "When you want to embody power, seniority, protection in daily life.",
+        "best_for": "When you want to embody purification, fire, leadership in daily life.",
         "who_heading": "Who should use this",
         "who_should_use": "<p>Recommended for those who want a personal fragrance ritual aligned with their birth star.</p>",
         "spiritual_heading": "Spiritual alignment note",
-        "spiritual_alignment_note": "Use as a mindful anchor for Jyeshtha intentions — power, seniority, protection."
+        "spiritual_alignment_note": "Use as a mindful anchor for Kritika intentions — purification, fire, leadership."
       }
     }
   },
