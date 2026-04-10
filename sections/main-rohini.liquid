@@ -1,0 +1,331 @@
+{% comment %}
+  Nakshatra Attar PDP (wrapper section)
+  Renders shared PDP UI from snippets/nakshatra-product-pdp.liquid
+{% endcomment %}
+
+{% render 'nakshatra-product-pdp' %}
+
+{% schema %}
+{
+  "name": "Rohini Attar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Nakshatra content"
+    },
+    {
+      "type": "text",
+      "id": "title_override",
+      "label": "Title (override)",
+      "default": "Rohini Nakshatra Attar"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Aligned with your birth star energy"
+    },
+    {
+      "type": "richtext",
+      "id": "long_description",
+      "label": "Description (rich text)",
+      "default": "<p><strong>Rohini Nakshatra Attar</strong> is crafted as a scent companion for those who resonate with Rohini qualities — attraction, beauty, growth. Wear it as a subtle reminder of your natural rhythm, supporting clarity, balance, and intention throughout the day.</p><p>Adjust the benefits, best-for situations, and alignment note in the Theme Editor to match your exact product story.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "who_should_use",
+      "label": "Who should use this",
+      "default": "<p>Recommended for those who want a personal fragrance ritual aligned with their birth star—especially during periods of transition, focus, or inner work.</p>"
+    },
+    {
+      "type": "text",
+      "id": "energy_benefits_heading",
+      "label": "Energy benefits heading",
+      "default": "Nakshatra Energy Benefits"
+    },
+    {
+      "type": "text",
+      "id": "best_for_heading",
+      "label": "Best for heading",
+      "default": "Best for (life situations)"
+    },
+    {
+      "type": "textarea",
+      "id": "best_for",
+      "label": "Best for (life situations)",
+      "default": "When you want to embody attraction, beauty, growth in daily life."
+    },
+    {
+      "type": "text",
+      "id": "who_heading",
+      "label": "Who should use heading",
+      "default": "Who should use this"
+    },
+    {
+      "type": "text",
+      "id": "spiritual_heading",
+      "label": "Spiritual alignment note heading",
+      "default": "Spiritual alignment note"
+    },
+    {
+      "type": "textarea",
+      "id": "spiritual_alignment_note",
+      "label": "Spiritual alignment note",
+      "default": "Use as a mindful anchor for Rohini intentions — attraction, beauty, growth."
+    },
+    {
+      "type": "header",
+      "content": "Brand & hero"
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Brand line (above title)",
+      "default": "ANAND RAS"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Product label (hidden in new layout; optional SEO)",
+      "default": "Attar"
+    },
+    {
+      "type": "textarea",
+      "id": "short_description",
+      "label": "Short description (below title)",
+      "info": "Shown under the product title. Overrides the short line when set.",
+      "default": "Rohini energy profile — attraction, beauty, growth."
+    },
+    {
+      "type": "text",
+      "id": "product_tagline",
+      "label": "Short line (fallback)",
+      "info": "Used if the textarea above is empty. Then metafield, then product excerpt."
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "label": "Star rating (display)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review count",
+      "default": "0"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show Buy Now button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_add_to_cart_text",
+      "label": "Add to cart button text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "cta_sold_out_text",
+      "label": "Sold out button text",
+      "default": "Sold Out"
+    },
+    {
+      "type": "text",
+      "id": "cta_buy_now_text",
+      "label": "Buy now button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust line 1",
+      "default": "Natural ingredients"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust line 2",
+      "default": "Long-lasting scent"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust line 3",
+      "default": "Spiritual alignment"
+    },
+    {
+      "type": "header",
+      "content": "Info strip (3 columns)"
+    },
+    {
+      "type": "text",
+      "id": "strip_col1",
+      "label": "Column 1 — Description",
+      "default": "Rohini energy"
+    },
+    {
+      "type": "text",
+      "id": "strip_col2",
+      "label": "Column 2 — Details",
+      "default": "Themes: attraction, beauty, growth."
+    },
+    {
+      "type": "text",
+      "id": "strip_col3",
+      "label": "Column 3 — Category",
+      "default": "Nakshatra Attar"
+    },
+    {
+      "type": "header",
+      "content": "Why choose section"
+    },
+    {
+      "type": "text",
+      "id": "why_heading",
+      "label": "Heading",
+      "default": "Why Rohini Nakshatra Attar"
+    },
+    {
+      "type": "textarea",
+      "id": "why_sub",
+      "label": "Subheading",
+      "default": "A refined attar crafted to echo Rohini traits — attraction, beauty, growth."
+    },
+    {
+      "type": "header",
+      "content": "Specifications table"
+    },
+    {
+      "type": "text",
+      "id": "spec_origin",
+      "label": "Country of Origin",
+      "default": "India"
+    },
+    {
+      "type": "text",
+      "id": "spec_item_form",
+      "label": "Item Form",
+      "default": "Attar (Roll-on / Dab)"
+    },
+    {
+      "type": "text",
+      "id": "spec_item_type",
+      "label": "Item Type",
+      "default": "Alcohol-free, Long-lasting, Premium"
+    },
+    {
+      "type": "text",
+      "id": "spec_sticks",
+      "label": "Number of Sticks",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "spec_burn",
+      "label": "Burning Time",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "spec_length",
+      "label": "Length",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "spec_fragrance",
+      "label": "Fragrance (optional row)"
+    },
+    {
+      "type": "text",
+      "id": "spec_ingredients",
+      "label": "Key ingredients (optional row)"
+    },
+    {
+      "type": "header",
+      "content": "Comparison table"
+    },
+    {
+      "type": "text",
+      "id": "compare_brand_label",
+      "label": "Brand column label",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "compare_row_1",
+      "label": "Row 1 label",
+      "default": "Clean profile — balanced wear"
+    },
+    {
+      "type": "text",
+      "id": "compare_row_2",
+      "label": "Row 2 label",
+      "default": "Alcohol-free — skin-friendly"
+    },
+    {
+      "type": "text",
+      "id": "compare_row_3",
+      "label": "Row 3 label",
+      "default": "Premium quality — crafted"
+    },
+    {
+      "type": "text",
+      "id": "compare_row_4",
+      "label": "Row 4 label",
+      "default": "Intention-led — spiritual alignment"
+    },
+    {
+      "type": "header",
+      "content": "Recommended products"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Heading",
+      "default": "Recommended"
+    },
+    {
+      "type": "text",
+      "id": "related_sub",
+      "label": "Subheading",
+      "default": "Curated for your ritual"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "energy_benefit",
+      "name": "Energy benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit",
+          "default": "Energy benefit text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rohini Attar"
+    }
+  ],
+  "enabled_on": {
+    "templates": [
+      "product"
+    ]
+  }
+}
+{% endschema %}
