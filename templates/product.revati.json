@@ -10,24 +10,24 @@
 {
   "sections": {
     "main": {
-      "type": "main-pushya",
+      "type": "main-revati",
       "blocks": {
         "benefit_1": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Nourishment"
+            "text": "Compassion"
           }
         },
         "benefit_2": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Support"
+            "text": "Completion"
           }
         },
         "benefit_3": {
           "type": "energy_benefit",
           "settings": {
-            "text": "Stability"
+            "text": "Guidance"
           }
         }
       },
@@ -39,9 +39,9 @@
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Attar",
-        "title_override": "Pushya Nakshatra Attar",
+        "title_override": "Revati Nakshatra Attar",
         "subtitle": "Aligned with your birth star energy",
-        "short_description": "Pushya energy profile — nourishment, support, stability.",
+        "short_description": "Revati energy profile — compassion, completion, guidance.",
         "product_tagline": "",
         "rating": 5,
         "review_count": "0",
@@ -52,11 +52,11 @@
         "trust_1": "Natural ingredients",
         "trust_2": "Long-lasting scent",
         "trust_3": "Spiritual alignment",
-        "strip_col1": "Pushya energy",
-        "strip_col2": "Themes: nourishment, support, stability.",
+        "strip_col1": "Revati energy",
+        "strip_col2": "Themes: compassion, completion, guidance.",
         "strip_col3": "Nakshatra Attar",
-        "why_heading": "Why Pushya Nakshatra Attar",
-        "why_sub": "A refined attar crafted to echo Pushya traits — nourishment, support, stability.",
+        "why_heading": "Why Revati Nakshatra Attar",
+        "why_sub": "A refined attar crafted to echo Revati traits — compassion, completion, guidance.",
         "spec_origin": "India",
         "spec_item_form": "Attar (Roll-on / Dab)",
         "spec_item_type": "Alcohol-free, Long-lasting, Premium",
@@ -75,11 +75,11 @@
         "related_sub": "Curated for your ritual",
         "energy_benefits_heading": "Nakshatra Energy Benefits",
         "best_for_heading": "Best for (life situations)",
-        "best_for": "When you want to embody nourishment, support, stability in daily life.",
+        "best_for": "When you want to embody compassion, completion, guidance in daily life.",
         "who_heading": "Who should use this",
         "who_should_use": "<p>Recommended for those who want a personal fragrance ritual aligned with their birth star.</p>",
         "spiritual_heading": "Spiritual alignment note",
-        "spiritual_alignment_note": "Use as a mindful anchor for Pushya intentions — nourishment, support, stability."
+        "spiritual_alignment_note": "Use as a mindful anchor for Revati intentions — compassion, completion, guidance."
       }
     }
   },
