@@ -1,0 +1,89 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-shravana",
+      "blocks": {
+        "benefit_1": {
+          "type": "energy_benefit",
+          "settings": {
+            "text": "Listening"
+          }
+        },
+        "benefit_2": {
+          "type": "energy_benefit",
+          "settings": {
+            "text": "Learning"
+          }
+        },
+        "benefit_3": {
+          "type": "energy_benefit",
+          "settings": {
+            "text": "Wisdom"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3"
+      ],
+      "settings": {
+        "brand_text": "ANAND RAS",
+        "product_label": "Attar",
+        "title_override": "Shravana Nakshatra Attar",
+        "subtitle": "Aligned with your birth star energy",
+        "short_description": "Shravana energy profile — listening, learning, wisdom.",
+        "product_tagline": "",
+        "rating": 5,
+        "review_count": "0",
+        "show_buy_now": true,
+        "cta_add_to_cart_text": "Add to Cart",
+        "cta_sold_out_text": "Sold Out",
+        "cta_buy_now_text": "Buy Now",
+        "trust_1": "Natural ingredients",
+        "trust_2": "Long-lasting scent",
+        "trust_3": "Spiritual alignment",
+        "strip_col1": "Shravana energy",
+        "strip_col2": "Themes: listening, learning, wisdom.",
+        "strip_col3": "Nakshatra Attar",
+        "why_heading": "Why Shravana Nakshatra Attar",
+        "why_sub": "A refined attar crafted to echo Shravana traits — listening, learning, wisdom.",
+        "spec_origin": "India",
+        "spec_item_form": "Attar (Roll-on / Dab)",
+        "spec_item_type": "Alcohol-free, Long-lasting, Premium",
+        "spec_sticks": "—",
+        "spec_burn": "—",
+        "spec_length": "—",
+        "spec_fragrance": "",
+        "spec_ingredients": "",
+        "compare_brand_label": "Anand Rasa",
+        "compare_row_1": "Clean profile — balanced wear",
+        "compare_row_2": "Alcohol-free — skin-friendly",
+        "compare_row_3": "Premium quality — crafted",
+        "compare_row_4": "Intention-led — spiritual alignment",
+        "related_collection": "",
+        "related_heading": "Recommended",
+        "related_sub": "Curated for your ritual",
+        "energy_benefits_heading": "Nakshatra Energy Benefits",
+        "best_for_heading": "Best for (life situations)",
+        "best_for": "When you want to embody listening, learning, wisdom in daily life.",
+        "who_heading": "Who should use this",
+        "who_should_use": "<p>Recommended for those who want a personal fragrance ritual aligned with their birth star.</p>",
+        "spiritual_heading": "Spiritual alignment note",
+        "spiritual_alignment_note": "Use as a mindful anchor for Shravana intentions — listening, learning, wisdom."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
