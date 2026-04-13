@@ -1,134 +1,872 @@
+{% comment %}
+  ANAND RASA — Testimonials Section (Text + Video)
+  White · 100vh · Centered · Rounded Videos · Light Apple UI
+{% endcomment %}
+
 {%- liquid
-  assign text_testimonials = section.blocks | where: 'type', 'testimonial'
+  assign text_testimonials  = section.blocks | where: 'type', 'testimonial'
   assign video_testimonials = section.blocks | where: 'type', 'video_testimonial'
 -%}
 
-{%- if text_testimonials.size > 0 -%}
-  <section class="ar-tst">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+.ar-tm {
+  --fh:    var(--font-heading-family, 'Georgia', serif);
+  --fb:    var(--font-body-family, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  --ink:   #0F0F0F;
+  --ink-2: #3A3A3A;
+  --ink-3: #7A7A7A;
+  --ink-4: #C0C0C0;
+  --bg:    #FFFFFF;
+  --bg-2:  #F5F5F5;
+  --white: #FFFFFF;
+  --gold:  #B8943A;
+  --bdr:   rgba(0,0,0,0.07);
+  /* Apple-like easing */
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --tr:    0.45s var(--ease-smooth);
+  --radius-video: 22px;
+  font-family: var(--fb);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(12px, 3vw, 28px);
+  padding-right: clamp(12px, 3vw, 28px);
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+.ar-tm *, .ar-tm *::before, .ar-tm *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.ar-tm button { font-family: var(--fb); cursor: pointer; border: none; background: none; }
+
+@keyframes ar-up   { from { opacity:0; transform:translate3d(0, 18px, 0); } to { opacity:1; transform:translate3d(0, 0, 0); } }
+@keyframes ar-fade { from { opacity:0; } to { opacity:1; } }
+@keyframes ar-line { from { transform:scaleX(0); transform-origin:center; } to { transform:scaleX(1); transform-origin:center; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ar-tst__track,
+  .ar-vtm__track {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .ar-tm *, .ar-tm *::before, .ar-tm *::after {
+    animation-duration:0.01ms !important; transition-duration:0.01ms !important;
+  }
+  .ar-tst__track,
+  .ar-vtm__track {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================================
+   SHARED SECTION SHAPE
+   ============================================================ */
+.ar-tst,
+.ar-vtm {
+  min-height: min(100vh, 920px);
+  min-height: min(100dvh, 920px);
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+  position: relative;
+}
+
+/* Warm gold glow — barely visible (0.05) */
+.ar-tst::before,
+.ar-vtm::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(184, 148, 58, 0.05) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ar-tst__inner,
+.ar-vtm__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* ============================================================
+   SHARED HEADER
+   ============================================================ */
+.ar-tst__hdr,
+.ar-vtm__header {
+  text-align: center;
+  padding: 58px 0 32px;
+  flex-shrink: 0;
+  opacity: 0;
+  animation: ar-up 0.75s var(--ease-out) 0.08s forwards;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ar-tst__eyebrow,
+.ar-vtm__eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.ar-tst__h,
+.ar-vtm__h {
+  font-family: var(--fh);
+  font-size: clamp(26px, 3.5vw, 46px);
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 10px;
+}
+
+.ar-tst__sub,
+.ar-vtm__sub {
+  font-size: 15px;
+  color: var(--ink-3);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ar-tst__rule,
+.ar-vtm__rule {
+  width: 36px;
+  height: 1.5px;
+  background: var(--gold);
+  margin: 0 auto;
+  display: block;
+  animation: ar-line 0.7s ease 0.4s both;
+}
+
+/* ============================================================
+   SHARED SLIDER AREA
+   ============================================================ */
+.ar-tst__slider-area {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.ar-vtm__slider-area {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* Edge fades — pure white (#FFFFFF) only */
+.ar-tst__fade,
+.ar-vtm__fade {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 90px;
+  z-index: 3;
+  pointer-events: none;
+}
+.ar-tst__fade-l,
+.ar-vtm__fade-l { left: 0; background: linear-gradient(to right, #FFFFFF, rgba(255, 255, 255, 0)); }
+.ar-tst__fade-r,
+.ar-vtm__fade-r { right: 0; background: linear-gradient(to left, #FFFFFF, rgba(255, 255, 255, 0)); }
+
+/* Shared arrows — pure white + light border (light theme; no dark fill on hover) */
+.ar-tst__arrow,
+.ar-vtm__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: background var(--tr), border-color var(--tr), box-shadow var(--tr), transform var(--tr);
+  cursor: pointer;
+}
+.ar-tst__arrow:hover,
+.ar-vtm__arrow:hover {
+  background: #FFFFFF;
+  color: var(--ink);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  transform: translateY(-50%) scale(1.06);
+}
+.ar-tst__arrow-l, .ar-vtm__arrow-l { left:  18px; }
+.ar-tst__arrow-r, .ar-vtm__arrow-r { right: 18px; }
+.ar-tst__arrow svg, .ar-vtm__arrow svg { display: block; }
+
+/* Shared dots */
+.ar-tst__dots,
+.ar-vtm__dots {
+  display: flex; justify-content: center; align-items: center;
+  gap: 6px; padding: 16px 0 22px; flex-shrink: 0;
+  opacity: 0; animation: ar-fade 0.5s ease 0.55s forwards;
+}
+.ar-tst__dot,
+.ar-vtm__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #D4D4D4; border: none; cursor: pointer; padding: 0;
+  transition: background var(--tr), width var(--tr), border-radius var(--tr);
+}
+.ar-tst__dot.is-on,
+.ar-vtm__dot.is-on {
+  background: var(--gold); width: 20px; border-radius: 3px;
+}
+
+/* ============================================================
+   TEXT TESTIMONIAL TRACK + CARDS
+   ============================================================ */
+.ar-tst__track::before,
+.ar-tst__track::after {
+  content: '';
+  flex: 1 1 0;
+  min-width: 0;
+  pointer-events: none;
+}
+.ar-tst__track {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 90px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 18px 90px;
+  width: 100%;
+  max-width: 100%;
+  will-change: scroll-position;
+  align-items: stretch;
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+.ar-tst__track::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+}
+.ar-tst__track.is-dragging { cursor: grabbing; }
+.ar-tst__track .ar-tst__quote,
+.ar-tst__track .ar-tst__name,
+.ar-tst__track .ar-tst__loc {
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+
+.ar-tst__card {
+  flex: 0 0 340px;
+  scroll-snap-align: center;
+  background: #FAFAFA;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 20px;
+  padding: 32px 28px 28px;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    box-shadow 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out),
+    opacity 0.55s var(--ease-out);
+  cursor: default;
+}
+.ar-tst__card.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+.ar-tst__card:hover {
+  box-shadow: 0 20px 48px rgba(0,0,0,0.09);
+  transform: translate3d(0, -6px, 0) !important;
+}
+.ar-tst__card::before {
+  content: '\201C';
+  position: absolute; top: -4px; left: 18px;
+  font-family: var(--fh); font-size: 88px;
+  color: var(--gold); opacity: 0.08; line-height: 1;
+  pointer-events: none; user-select: none;
+}
+
+.ar-tst__stars { display: flex; gap: 2px; margin-bottom: 16px; }
+.ar-tst__star  { font-size: 13px; color: #E0E0E0; transition: transform 0.15s ease; }
+.ar-tst__star.on { color: #F5A623; }
+.ar-tst__card:hover .ar-tst__star.on { transform: scale(1.1); }
+
+.ar-tst__quote {
+  font-family: var(--fh);
+  font-size: 15px; font-weight: 400;
+  line-height: 1.75; color: var(--ink-2);
+  flex: 1; margin-bottom: 22px; letter-spacing: -0.01em;
+}
+
+.ar-tst__author {
+  display: flex; align-items: center; gap: 11px;
+  padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.06);
+}
+.ar-tst__avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg,#E8E0F0,#D4E8F0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: var(--ink-2); flex-shrink: 0;
+}
+.ar-tst__name { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.ar-tst__loc  { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
+.ar-tst__verified {
+  margin-left: auto; display: flex; align-items: center; gap: 3px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #2E7D52; flex-shrink: 0;
+}
+
+/* ============================================================
+   VIDEO TRACK + CARDS — fully rounded, no cuts
+   ============================================================ */
+.ar-vtm__track::before,
+.ar-vtm__track::after {
+  content: '';
+  flex: 1 1 0;
+  min-width: 0;
+  pointer-events: none;
+  align-self: stretch;
+}
+.ar-vtm__track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 90px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 14px 90px;
+  width: 100%;
+  max-width: 100%;
+  will-change: scroll-position;
+  align-items: center;
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+.ar-vtm__track::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+}
+.ar-vtm__track.is-dragging { cursor: grabbing; }
+
+/* Card — single clip boundary; GPU + isolation fix Safari edge artifacts */
+.ar-vtm__card {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  border-radius: var(--radius-video);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  background: #ECECEC;
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.97);
+  transition:
+    transform 0.55s var(--ease-out),
+    box-shadow 0.55s var(--ease-out),
+    opacity 0.55s var(--ease-out);
+  height: min(68vh, 460px);
+  height: min(65dvh, min(68vh, 460px));
+  width: auto;
+  max-width: min(280px, calc(45vw - 36px));
+  aspect-ratio: 9 / 16;
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  cursor: default;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.ar-vtm__card.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.ar-vtm__card:hover {
+  transform: translate3d(0, -6px, 0) scale(1.02) !important;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.ar-vtm__card--active {
+  box-shadow:
+    0 0 0 2px rgba(184,148,58,0.55),
+    0 14px 44px rgba(184,148,58,0.15) !important;
+}
+
+/* Video wrap: letterbox area matches card; full frame visible (no crop) */
+.ar-vtm__video-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  position: relative;
+  background: #ECECEC;
+  line-height: 0;
+  font-size: 0;
+}
+
+/* Full video in frame — contain = no cropped edges; card radius clips uniformly */
+.ar-vtm__video {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  vertical-align: top;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.ar-vtm__ph {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; font-size: 11px; color: rgba(0,0,0,0.3);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* Bottom gradient — dark → transparent (readability on video only; section stays #FFFFFF) */
+.ar-vtm__video-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 52%;
+  background: linear-gradient(
+    to top,
+    rgba(15, 15, 15, 0.82) 0%,
+    rgba(15, 15, 15, 0.28) 48%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Controls */
+.ar-vtm__controls {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  z-index: 2; padding: 13px 13px 15px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;
+}
+.ar-vtm__info { display: flex; flex-direction: column; gap: 2px; }
+.ar-vtm__card-name { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.2; }
+.ar-vtm__card-tag  { font-size: 10px; color: rgba(255,255,255,0.6); }
+
+.ar-vtm__play-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.28);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; cursor: pointer;
+  transition: background var(--tr), transform 0.2s ease; flex-shrink: 0;
+}
+.ar-vtm__play-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.08); }
+
+/* Mute — always visible */
+.ar-vtm__mute-btn {
+  position: absolute; top: 11px; right: 11px; z-index: 3;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; cursor: pointer;
+  transition: background var(--tr);
+}
+.ar-vtm__mute-btn:hover { background: rgba(255,255,255,0.3); }
+
+.ar-vtm__icon--muted,
+.ar-vtm__icon--unmuted { display: flex; align-items: center; }
+.ar-vtm__mute-btn.is-muted .ar-vtm__icon--unmuted { display: none; }
+.ar-vtm__mute-btn:not(.is-muted) .ar-vtm__icon--muted { display: none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .ar-tm { width: 92%; }
+  .ar-vtm__card {
+    max-width: min(260px, calc(42vw - 32px));
+    height: min(64vh, 430px);
+    height: min(62dvh, min(64vh, 430px));
+  }
+}
+@media (max-width: 900px) {
+  .ar-tm { width: 94%; }
+  .ar-tst__card  { flex: 0 0 min(300px, 78vw); }
+  .ar-tst__track { padding: 16px 72px; scroll-padding-inline: 72px; }
+  .ar-vtm__track { padding: 14px 72px; scroll-padding-inline: 72px; }
+  .ar-vtm__card {
+    max-width: min(240px, calc(40vw - 28px));
+    height: min(60vh, 400px);
+    height: min(58dvh, min(60vh, 400px));
+  }
+}
+@media (max-width: 640px) {
+  .ar-tm { width: 94%; padding-left: clamp(10px, 2.5vw, 20px); padding-right: clamp(10px, 2.5vw, 20px); }
+  .ar-tst,
+  .ar-vtm { min-height: min(100vh, 840px); min-height: min(100dvh, 840px); }
+  .ar-tst__hdr,
+  .ar-vtm__header { padding: 40px 0 24px; }
+  .ar-tst__h,
+  .ar-vtm__h { font-size: clamp(22px, 5.2vw, 40px); }
+  .ar-tst__sub,
+  .ar-vtm__sub { font-size: 14px; }
+  .ar-tst__card   { flex: 0 0 min(82vw, 340px); padding: 24px 18px; }
+  .ar-tst__track  { padding: 14px 52px; gap: 14px; scroll-padding-inline: 52px; }
+  .ar-vtm__track  { padding: 14px 52px; gap: 10px; scroll-padding-inline: 52px; }
+  .ar-tst__arrow-l, .ar-vtm__arrow-l { left: 6px; }
+  .ar-tst__arrow-r, .ar-vtm__arrow-r { right: 6px; }
+  .ar-tst__arrow,
+  .ar-vtm__arrow { width: 40px; height: 40px; }
+  .ar-tst__fade,
+  .ar-vtm__fade   { width: 48px; }
+  .ar-vtm__card {
+    height: min(56vh, 380px);
+    height: min(52dvh, min(56vh, 380px));
+    max-width: min(220px, calc(72vw - 64px));
+    border-radius: 20px;
+  }
+}
+@media (max-width: 400px) {
+  .ar-tm { width: 96%; }
+  .ar-tst__card  { flex: 0 0 min(88vw, 320px); }
+  .ar-vtm__card  {
+    height: min(52vh, 340px);
+    height: min(48dvh, min(52vh, 340px));
+    max-width: min(200px, calc(78vw - 56px));
+  }
+  .ar-tst__track { padding: 12px 40px; gap: 12px; scroll-padding-inline: 40px; }
+  .ar-vtm__track { padding: 12px 40px; gap: 8px; scroll-padding-inline: 40px; }
+}
+</style>
+
+<div class="ar-tm">
+
+  {%- if text_testimonials.size > 0 -%}
+  <section class="ar-tst" aria-label="Customer Testimonials">
     <div class="ar-tst__inner">
+
       <div class="ar-tst__hdr">
+        <span class="ar-tst__eyebrow">{{ section.settings.tst_eyebrow | default: 'Trusted by Thousands' }}</span>
         <h2 class="ar-tst__h">{{ section.settings.tst_heading | default: 'What Our Customers Say' }}</h2>
-        <div class="ar-tst__div"></div>
-        <p class="ar-tst__sub">{{ section.settings.tst_sub | default: 'Real people. Real experiences.' }}</p>
+        <p class="ar-tst__sub">{{ section.settings.tst_sub | default: 'Real people. Real experiences. Real fragrance.' }}</p>
+        <span class="ar-tst__rule" aria-hidden="true"></span>
       </div>
 
-      <div class="ar-tst__track js-tst-track">
-        {%- for block in text_testimonials -%}
-          <article class="ar-tst__card" {{ block.shopify_attributes }}>
-            {%- assign rating = block.settings.rating | default: 5 -%}
-            <div class="ar-tst__stars" aria-label="{{ rating }} out of 5 stars">
-              {%- for i in (1..5) -%}
-                <span class="ar-tst__star{% if i <= rating %} on{% endif %}">&#9733;</span>
-              {%- endfor -%}
-            </div>
-            <p class="ar-tst__quote">"{{ block.settings.quote }}"</p>
-            <div class="ar-tst__author">
-              <p class="ar-tst__name">{{ block.settings.name }}</p>
-              <p class="ar-tst__loc">{{ block.settings.location }}</p>
-            </div>
-          </article>
-        {%- endfor -%}
+      <div class="ar-tst__slider-area">
+        <div class="ar-tst__fade ar-tst__fade-l" aria-hidden="true"></div>
+        <div class="ar-tst__fade ar-tst__fade-r" aria-hidden="true"></div>
+        <button type="button" class="ar-tst__arrow ar-tst__arrow-l js-tst-l" aria-label="Previous testimonial">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" class="ar-tst__arrow ar-tst__arrow-r js-tst-r" aria-label="Next testimonial">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="ar-tst__track js-tst-track" role="list">
+          {%- for block in text_testimonials -%}
+            {%- assign rating   = block.settings.rating | default: 5 -%}
+            {%- assign initials = block.settings.name | slice: 0, 1 | upcase -%}
+            <article class="ar-tst__card" role="listitem" {{ block.shopify_attributes }}>
+              <div class="ar-tst__stars" aria-label="{{ rating }} out of 5 stars">
+                {%- for i in (1..5) -%}
+                  <span class="ar-tst__star{% if i <= rating %} on{% endif %}" aria-hidden="true">★</span>
+                {%- endfor -%}
+              </div>
+              <blockquote class="ar-tst__quote">"{{ block.settings.quote }}"</blockquote>
+              <div class="ar-tst__author">
+                <div class="ar-tst__avatar" aria-hidden="true">{{ initials }}</div>
+                <div>
+                  <p class="ar-tst__name">{{ block.settings.name }}</p>
+                  <p class="ar-tst__loc">{{ block.settings.location }}</p>
+                </div>
+                <span class="ar-tst__verified" aria-label="Verified purchase">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  Verified
+                </span>
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
       </div>
 
-      <div class="ar-tst__dots" id="ar-tst-dots"></div>
+      <div class="ar-tst__dots js-tst-dots" role="tablist" aria-label="Testimonial slides"></div>
+
     </div>
   </section>
-{%- endif -%}
+  {%- endif -%}
 
-{%- if video_testimonials.size > 0 -%}
-  <section class="ar-vtm">
+  {%- if video_testimonials.size > 0 -%}
+  <section class="ar-vtm" aria-label="Video Testimonials">
     <div class="ar-vtm__inner">
+
       <div class="ar-vtm__header">
+        <span class="ar-vtm__eyebrow">{{ section.settings.vtm_eyebrow | default: 'Voices of Trust' }}</span>
         <h2 class="ar-vtm__h">{{ section.settings.vtm_heading | default: 'Video Testimonials' }}</h2>
-        <div class="ar-vtm__divider"></div>
-        <p class="ar-vtm__sub">{{ section.settings.vtm_sub | default: 'Real people. Real experiences.' }}</p>
+        <p class="ar-vtm__sub">{{ section.settings.vtm_sub | default: 'Watch how our fragrances transform daily moments.' }}</p>
+        <span class="ar-vtm__rule" aria-hidden="true"></span>
       </div>
 
-      <div class="ar-vtm__grid">
-        {%- for block in video_testimonials -%}
-          {%- assign v = block.settings.video -%}
-          {%- assign v_url = block.settings.video_url | strip -%}
-          <article class="ar-vtm__card" {{ block.shopify_attributes }}>
-            <div class="ar-vtm__video-wrap">
-              {%- if v != blank -%}
-                {{
-                  v
-                  | video_tag:
-                    class: 'ar-vtm__video',
-                    image_size: '540x960',
-                    autoplay: true,
-                    loop: true,
-                    muted: true,
-                    controls: false,
-                    playsinline: true
-                }}
-              {%- elsif v_url != blank -%}
-                <video
-                  class="ar-vtm__video"
-                  src="{{ v_url }}"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                ></video>
-              {%- else -%}
-                <div class="ar-vtm__video ar-vtm__ph">Upload a portrait video</div>
-              {%- endif -%}
-              {%- if v != blank or v_url != blank -%}
-                <button type="button" class="ar-vtm__mute-btn js-vtm-mute-btn is-muted" aria-label="Unmute video" data-muted="true">
-                  <span class="ar-vtm__icon ar-vtm__icon--muted" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                      <line x1="23" y1="9" x2="17" y2="15"></line>
-                      <line x1="17" y1="9" x2="23" y2="15"></line>
-                    </svg>
-                  </span>
-                  <span class="ar-vtm__icon ar-vtm__icon--unmuted" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                  </span>
-                </button>
-              {%- endif -%}
-            </div>
-          </article>
-        {%- endfor -%}
+      <div class="ar-vtm__slider-area">
+        <div class="ar-vtm__fade ar-vtm__fade-l" aria-hidden="true"></div>
+        <div class="ar-vtm__fade ar-vtm__fade-r" aria-hidden="true"></div>
+        <button type="button" class="ar-vtm__arrow ar-vtm__arrow-l js-vtm-l" aria-label="Previous video">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" class="ar-vtm__arrow ar-vtm__arrow-r js-vtm-r" aria-label="Next video">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="ar-vtm__track js-vtm-track" role="list">
+          {%- for block in video_testimonials -%}
+            {%- assign v     = block.settings.video -%}
+            {%- assign v_url = block.settings.video_url | strip -%}
+            <article class="ar-vtm__card" role="listitem" {{ block.shopify_attributes }}>
+              <div class="ar-vtm__video-wrap">
+                {%- if v != blank -%}
+                  {{ v | video_tag: class: 'ar-vtm__video', image_size: '540x960', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+                {%- elsif v_url != blank -%}
+                  <video class="ar-vtm__video" src="{{ v_url }}" autoplay muted loop playsinline preload="metadata"></video>
+                {%- else -%}
+                  <div class="ar-vtm__video ar-vtm__ph">Upload a portrait video</div>
+                {%- endif -%}
+                {%- if v != blank or v_url != blank -%}
+                  <div class="ar-vtm__video-overlay" aria-hidden="true"></div>
+                  <button type="button" class="ar-vtm__mute-btn js-vtm-mute is-muted" aria-label="Unmute video" data-muted="true">
+                    <span class="ar-vtm__icon ar-vtm__icon--muted" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+                    </span>
+                    <span class="ar-vtm__icon ar-vtm__icon--unmuted" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                    </span>
+                  </button>
+                  <div class="ar-vtm__controls">
+                    <div class="ar-vtm__info">
+                      {%- if block.settings.name != blank -%}<span class="ar-vtm__card-name">{{ block.settings.name }}</span>{%- endif -%}
+                      {%- if block.settings.tag  != blank -%}<span class="ar-vtm__card-tag">{{ block.settings.tag }}</span>{%- endif -%}
+                    </div>
+                    <button type="button" class="ar-vtm__play-btn js-vtm-play" aria-label="Pause video">
+                      <svg class="js-vtm-play-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="none" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                    </button>
+                  </div>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
       </div>
+
+      <div class="ar-vtm__dots js-vtm-dots" role="tablist" aria-label="Video slides"></div>
+
     </div>
   </section>
-{%- endif -%}
+  {%- endif -%}
+
+</div>
 
 <script>
-  (function () {
-    var root = document.currentScript && document.currentScript.parentElement;
-    if (!root) return;
+(function () {
+  'use strict';
 
-    var videos = root.querySelectorAll('.ar-vtm__video-wrap video');
-    videos.forEach(function (video) {
-      video.muted = true;
-      video.setAttribute('muted', 'muted');
-      var p = video.play();
-      if (p && typeof p.catch === 'function') p.catch(function () {});
+  function buildDots(el, n, cls, on) {
+    if (!el) return [];
+    el.innerHTML = '';
+    return Array.from({ length: n }, function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = cls + (i === 0 ? ' ' + on : '');
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-label', 'Slide ' + (i + 1));
+      b.dataset.idx = i; el.appendChild(b); return b;
     });
-
-    root.querySelectorAll('.js-vtm-mute-btn').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var wrap = btn.closest('.ar-vtm__video-wrap');
-        if (!wrap) return;
-        var video = wrap.querySelector('video');
-        if (!video) return;
-
-        var mutedNow = !video.muted;
-        video.muted = mutedNow;
-        btn.setAttribute('data-muted', mutedNow ? 'true' : 'false');
-        btn.classList.toggle('is-muted', mutedNow);
-        btn.setAttribute('aria-label', mutedNow ? 'Unmute video' : 'Mute video');
+  }
+  function syncDots(dots, idx, on) {
+    dots.forEach(function (d, i) { d.classList.toggle(on, i === idx); });
+  }
+  function nearestSlideIndex(track, slides) {
+    if (!slides.length) return 0;
+    var cx = track.scrollLeft + track.clientWidth * 0.5;
+    var best = 0, bestDist = Infinity;
+    for (var i = 0; i < slides.length; i++) {
+      var el = slides[i];
+      var mid = el.offsetLeft + el.offsetWidth * 0.5;
+      var d = Math.abs(mid - cx);
+      if (d < bestDist) { bestDist = d; best = i; }
+    }
+    return best;
+  }
+  function scrollSlideIntoCenter(track, slides, index) {
+    var el = slides[index];
+    if (!el) return;
+    var max = Math.max(0, track.scrollWidth - track.clientWidth);
+    var target = el.offsetLeft + el.offsetWidth * 0.5 - track.clientWidth * 0.5;
+    track.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
+  }
+  function addDrag(track) {
+    if (!track) return;
+    var drag = false, sx = 0, ss = 0;
+    track.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      if (e.target.closest('button, a, input, textarea, select')) return;
+      e.preventDefault();
+      drag = true;
+      sx = e.pageX;
+      ss = track.scrollLeft;
+      track.classList.add('is-dragging');
+    });
+    document.addEventListener('mousemove', function (e) {
+      if (!drag) return;
+      track.scrollLeft = ss - (e.pageX - sx);
+    });
+    document.addEventListener('mouseup', function () {
+      if (!drag) return;
+      drag = false;
+      track.classList.remove('is-dragging');
+    });
+  }
+  function entrance(items, cls) {
+    if (!('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add(cls); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e, i) {
+        if (e.isIntersecting) { setTimeout(function () { e.target.classList.add(cls); }, i * 70); io.unobserve(e.target); }
       });
-    });
-  })();
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ── TEXT TESTIMONIALS ── */
+  var tst = document.querySelector('.ar-tst');
+  if (tst) {
+    var tt  = tst.querySelector('.js-tst-track');
+    var tde = tst.querySelector('.js-tst-dots');
+    var tbl = tst.querySelector('.js-tst-l');
+    var tbr = tst.querySelector('.js-tst-r');
+    var tc  = tt ? Array.from(tt.querySelectorAll('.ar-tst__card')) : [];
+    if (tt && tc.length) {
+      entrance(tc, 'is-visible'); addDrag(tt);
+      var td = buildDots(tde, tc.length, 'ar-tst__dot', 'is-on');
+      function tIdx() { return nearestSlideIndex(tt, tc); }
+      td.forEach(function (b) { b.addEventListener('click', function () { scrollSlideIntoCenter(tt, tc, +b.dataset.idx); }); });
+      var tTimer; tt.addEventListener('scroll', function () { clearTimeout(tTimer); tTimer = setTimeout(function () { syncDots(td, tIdx(), 'is-on'); }, 80); }, { passive: true });
+      function tScroll(d) {
+        var cur = nearestSlideIndex(tt, tc);
+        var next = d < 0 ? Math.max(0, cur - 1) : Math.min(tc.length - 1, cur + 1);
+        scrollSlideIntoCenter(tt, tc, next);
+      }
+      if (tbl) tbl.addEventListener('click', function () { tScroll(-1); });
+      if (tbr) tbr.addEventListener('click', function () { tScroll(1); });
+    }
+  }
+
+  /* ── VIDEO TESTIMONIALS ── */
+  var vtm = document.querySelector('.ar-vtm');
+  if (vtm) {
+    var vt  = vtm.querySelector('.js-vtm-track');
+    var vde = vtm.querySelector('.js-vtm-dots');
+    var vbl = vtm.querySelector('.js-vtm-l');
+    var vbr = vtm.querySelector('.js-vtm-r');
+    var vc  = vt ? Array.from(vt.querySelectorAll('.ar-vtm__card')) : [];
+    if (vt && vc.length) {
+      entrance(vc, 'is-visible'); addDrag(vt);
+      vtm.querySelectorAll('video').forEach(function (v) {
+        v.setAttribute('draggable', 'false');
+        v.muted = true;
+        var p = v.play();
+        if (p && p.catch) p.catch(function () {});
+      });
+      var vd = buildDots(vde, vc.length, 'ar-vtm__dot', 'is-on');
+      function vIdx() { return nearestSlideIndex(vt, vc); }
+      function vActive(idx) { vc.forEach(function (c, i) { c.classList.toggle('ar-vtm__card--active', i === idx); }); syncDots(vd, idx, 'is-on'); }
+      vd.forEach(function (b) { b.addEventListener('click', function () { scrollSlideIntoCenter(vt, vc, +b.dataset.idx); }); });
+      var vTimer; vt.addEventListener('scroll', function () { clearTimeout(vTimer); vTimer = setTimeout(function () { vActive(vIdx()); }, 80); }, { passive: true });
+      vActive(0);
+      function vScroll(d) {
+        var cur = nearestSlideIndex(vt, vc);
+        var next = d < 0 ? Math.max(0, cur - 1) : Math.min(vc.length - 1, cur + 1);
+        scrollSlideIntoCenter(vt, vc, next);
+      }
+      if (vbl) vbl.addEventListener('click', function () { vScroll(-1); });
+      if (vbr) vbr.addEventListener('click', function () { vScroll(1); });
+
+      vtm.addEventListener('click', function (e) {
+        var mb = e.target.closest('.js-vtm-mute');
+        if (mb) {
+          var vid = mb.closest('.ar-vtm__video-wrap') && mb.closest('.ar-vtm__video-wrap').querySelector('video');
+          if (!vid) return;
+          vid.muted = !vid.muted;
+          mb.classList.toggle('is-muted', vid.muted);
+          mb.setAttribute('aria-label', vid.muted ? 'Unmute video' : 'Mute video');
+          mb.dataset.muted = String(vid.muted);
+        }
+        var pb = e.target.closest('.js-vtm-play');
+        if (pb) {
+          var vid2 = pb.closest('.ar-vtm__video-wrap') && pb.closest('.ar-vtm__video-wrap').querySelector('video');
+          var ico  = pb.querySelector('.js-vtm-play-icon');
+          if (!vid2) return;
+          if (vid2.paused) {
+            vid2.play();
+            if (ico) ico.innerHTML = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+            pb.setAttribute('aria-label', 'Pause video');
+          } else {
+            vid2.pause();
+            if (ico) ico.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+            pb.setAttribute('aria-label', 'Play video');
+          }
+        }
+      });
+
+      if ('IntersectionObserver' in window) {
+        var vio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var v = e.target.querySelector('video'); if (!v) return;
+            if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+            else v.pause();
+          });
+        }, { threshold: 0.25 });
+        vc.forEach(function (c) { vio.observe(c); });
+      }
+    }
+  }
+})();
 </script>

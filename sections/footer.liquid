@@ -87,32 +87,32 @@
         <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="arf__link">Zodiac Attar</a>
         <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="arf__link">Nakshatra Attar</a>
         <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="arf__link">Chakra Attar</a>
-        <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="arf__link">Stress Relief Attar</a>
-        <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="arf__link">Love Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="arf__link">Stress Relief Attar</a>
+        <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="arf__link">Love Attar</a>
         <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="arf__link">Incense Sticks</a>
-        <a href="{% render 'ar-collection-url', handle: 'gift-sets' %}" class="arf__link">Gift Sets</a>
+        <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="arf__link">Gift Sets</a>
       </div>
     </div>
 
     <div>
       <span class="arf__col-title">Support</span>
       <div class="arf__links">
-        <a href="/pages/contact"            class="arf__link">Contact Us</a>
-        <a href="/policies/shipping-policy" class="arf__link">Shipping Policy</a>
-        <a href="/pages/bulk-enquiry"       class="arf__link">Bulk Enquiry</a>
-        <a href="/pages/faq"                class="arf__link">FAQ</a>
-        <a href="/pages/find-fragrance"     class="arf__link">Astro Fragrance Finder</a>
+        <a href="{% render 'ar-page-url', handle: 'contact' %}" class="arf__link">Contact Us</a>
+        <a href="{% if shop.shipping_policy %}{{ shop.shipping_policy.url }}{% else %}/policies/shipping-policy{% endif %}" class="arf__link">Shipping Policy</a>
+        <a href="{% render 'ar-page-url', handle: 'bulk-enquiry' %}" class="arf__link">Bulk Enquiry</a>
+        <a href="{% render 'ar-page-url', handle: 'faq' %}" class="arf__link">FAQ</a>
+        <a href="{% render 'ar-page-url', handle: 'find-fragrance' %}" class="arf__link">Astro Fragrance Finder</a>
       </div>
     </div>
 
     <div>
       <span class="arf__col-title">Company</span>
       <div class="arf__links">
-        <a href="/pages/about"              class="arf__link">About Anand Rasa</a>
-        <a href="/blogs/news"               class="arf__link">Blog</a>
-        <a href="/policies/privacy-policy"  class="arf__link">Privacy Policy</a>
-        <a href="/policies/terms-of-service" class="arf__link">Terms &amp; Conditions</a>
-        <a href="/policies/refund-policy"   class="arf__link">Refund Policy</a>
+        <a href="{% render 'ar-page-url', handle: 'about' %}" class="arf__link">About Anand Rasa</a>
+        <a href="{% if blogs['news'] != empty %}{{ blogs['news'].url }}{% else %}/blogs/news{% endif %}" class="arf__link">Blog</a>
+        <a href="{% if shop.privacy_policy %}{{ shop.privacy_policy.url }}{% else %}/policies/privacy-policy{% endif %}" class="arf__link">Privacy Policy</a>
+        <a href="{% if shop.terms_of_service %}{{ shop.terms_of_service.url }}{% else %}/policies/terms-of-service{% endif %}" class="arf__link">Terms &amp; Conditions</a>
+        <a href="{% if shop.refund_policy %}{{ shop.refund_policy.url }}{% else %}/policies/refund-policy{% endif %}" class="arf__link">Refund Policy</a>
       </div>
     </div>
   </div>

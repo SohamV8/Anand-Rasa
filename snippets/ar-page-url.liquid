@@ -1,0 +1,12 @@
+{% comment %}
+  Page URL by handle: uses live page URL when the page exists, else /pages/{handle}.
+  Usage: {% render 'ar-page-url', handle: 'about' %}
+{% endcomment %}
+{%- assign page_handle = handle | strip -%}
+{%- if page_handle == blank -%}
+  {{- routes.root_url -}}
+{%- elsif pages[page_handle] != empty -%}
+  {{- pages[page_handle].url -}}
+{%- else -%}
+  {{- routes.root_url -}}pages/{{- page_handle -}}
+{%- endif -%}

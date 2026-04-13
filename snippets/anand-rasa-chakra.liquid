@@ -363,19 +363,28 @@
 }
 
 /* ============================================================
-   SYMBOL / DECORATION
+   SYMBOL / DECORATION (chakra artwork from /assets)
    ============================================================ */
 .ar-chakra__symbol {
   position: absolute;
   bottom: 24px;
   right: 24px;
-  font-size: 48px;
-  opacity: 0.08;
-  line-height: 1;
+  width: 96px;
+  height: 96px;
+  opacity: 0.14;
+  line-height: 0;
   pointer-events: none;
   user-select: none;
   z-index: 0;
-  filter: blur(0.5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ar-chakra__symbol img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: blur(0.35px);
 }
 
 /* ============================================================
@@ -488,7 +497,7 @@
 @media (max-width: 480px) {
   .ar-chakra__info { padding: 32px 20px 16px; }
   .ar-chakra__media { padding: 12px 20px 32px; }
-  .ar-chakra__symbol { font-size: 36px; }
+  .ar-chakra__symbol { width: 72px; height: 72px; bottom: 16px; right: 16px; }
 }
 </style>
 
@@ -507,13 +516,14 @@
   {%- assign chakras = '7,6,5,4,3,2,1' | split: ',' -%}
   {%- assign ck_names    = 'sahasrara,ajna,vishuddha,anahata,manipura,svadhisthana,muladhara' | split: ',' -%}
   {%- assign ck_english  = 'Crown Chakra,Third Eye Chakra,Throat Chakra,Heart Chakra,Solar Plexus Chakra,Sacral Chakra,Root Chakra' | split: ',' -%}
-  {%- assign ck_symbols  = '☸,👁,🌀,💚,☀,🌙,🔴' | split: ',' -%}
+  {%- comment -%} PNGs in /assets — same order as ck_names (crown → root) {%- endcomment -%}
+  {%- assign ck_symbol_assets = 'Sahasrara.png,Ajna.png,Vishuddha.png,Anahata.png,Manipura.png,Svadhisthana.png,Muladhara.png' | split: ',' -%}
   {%- assign ck_numbers  = '07,06,05,04,03,02,01' | split: ',' -%}
 
   {%- for idx in (0..6) -%}
     {%- assign ck_key    = ck_names[idx] -%}
     {%- assign ck_eng    = ck_english[idx] -%}
-    {%- assign ck_sym    = ck_symbols[idx] -%}
+    {%- assign ck_sym_asset = ck_symbol_assets[idx] -%}
     {%- assign ck_num    = ck_numbers[idx] -%}
 
     {%- assign q_sanskrit = 'name_' | append: ck_key -%}
@@ -650,7 +660,16 @@
         </div>
       </div>
 
-      <span class="ar-chakra__symbol" aria-hidden="true">{{ ck_sym }}</span>
+      <span class="ar-chakra__symbol" aria-hidden="true">
+        <img
+          src="{{ ck_sym_asset | asset_url }}"
+          alt=""
+          width="96"
+          height="96"
+          loading="lazy"
+          decoding="async"
+        >
+      </span>
 
     </article>
   {%- endfor -%}

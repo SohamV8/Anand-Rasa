@@ -5,7 +5,20 @@
 <style>
   .ar-nav *, .ar-nav *::before, .ar-nav *::after { box-sizing:border-box; }
 
-  .ar-nav { position:sticky; top:0; z-index:200; background:#fff; border-bottom:1px solid rgba(30,32,35,.1); font-family: var(--font-body-family); }
+  /* Fixed bar so it never scrolls away (sticky can fail inside section wrappers). */
+  #shopify-section-{{ section.id }} { position: relative; z-index: 200; }
+  .ar-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 200;
+    background: #fff;
+    border-bottom: 1px solid rgba(30, 32, 35, 0.1);
+    font-family: var(--font-body-family);
+    box-shadow: 0 1px 0 rgba(30, 32, 35, 0.06);
+  }
   .ar-nav__inner { max-width:1440px; margin:0 auto; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:0 48px; height:76px; gap:24px; }
   .ar-nav__left  { display:flex; align-items:center; gap:36px; }
   .ar-nav__right { display:flex; align-items:center; gap:28px; justify-content:flex-end; }
@@ -78,7 +91,7 @@
     <div class="ar-nav__left">
       <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
       <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-      <a href="{{ section.settings.nav_l3_url | default: '/collections/gift-sets' }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+      <a href="{{ section.settings.nav_l3_url | default: '/collections/giftsets' }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
     </div>
 
     <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
@@ -125,12 +138,13 @@
                   </a>
                 {%- endfor -%}
               {%- else -%}
+              <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Bestseller</a>
                 <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Planet Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Zodiac Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Nakshatra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Stress Relief Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Stress Relief Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Chakra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Love Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Love Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Incense Sticks</a>
               {%- endif -%}
             </div>
@@ -187,7 +201,7 @@
   <button class="ar-nav__drawer-close js-ar-close" aria-label="Close menu">&times;</button>
   <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
   <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-  <a href="{{ section.settings.nav_l3_url | default: '/collections/gift-sets' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+  <a href="{{ section.settings.nav_l3_url | default: '/collections/giftsets' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
   <button class="ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false">
     {{ section.settings.nav_r1 | default: 'Collections' }}
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -201,9 +215,9 @@
       <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Planets Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Zodiac Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Nakshatra Attars</a>
-      <a href="{% render 'ar-collection-url', handle: 'stressrelief' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
-      <a href="{% render 'ar-collection-url', handle: 'love-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
     {%- endif -%}
   </div>

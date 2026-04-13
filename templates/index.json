@@ -107,14 +107,14 @@
           "type": "category",
           "settings": {
             "title": "Stress Relief Attar",
-            "link": "/collections/stressrelief"
+            "link": "/collections/stress-relief"
           }
         },
         "cat-6": {
           "type": "category",
           "settings": {
             "title": "Love Attar",
-            "link": "/collections/love-attars"
+            "link": "/collections/love-attar"
           }
         },
         "planet-1": {
@@ -210,7 +210,7 @@
           "settings": {
             "image": "shopify://shop_images/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png",
             "title": "Discovery Kit",
-            "link": "/collections/gift-sets"
+            "link": "/collections/giftsets"
           }
         },
         "bp-phil-1": {
@@ -299,10 +299,10 @@
         "t1_url": "/collections/incense-sticks",
         "t1_label": "Shop Now",
         "t2_image": "shopify://shop_images/stress_calm.webp",
-        "t2_url": "/collections/stressrelief",
+        "t2_url": "/collections/stress-relief",
         "t2_label": "Shop Now",
         "t3_image": "shopify://shop_images/love.webp",
-        "t3_url": "/collections/love-attars",
+        "t3_url": "/collections/love-attar",
         "t3_label": "Shop Now",
         "pure_heading": "More than fragrance",
         "pure_text": "Crafted with intention and tradition, each attar is designed to become a quiet part of your presence.",
@@ -317,7 +317,7 @@
         "combo_heading": "Discovery Kit",
         "combo_text": "The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.",
         "combo_btn": "SHOP NOW",
-        "combo_url": "/collections/gift-sets",
+        "combo_url": "/collections/giftsets",
         "vtm_heading": "What Our Customers Say",
         "vtm_sub": "Real people. Real experiences.",
         "tst_heading": "What Our Customers Say",

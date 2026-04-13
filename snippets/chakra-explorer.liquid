@@ -155,7 +155,7 @@
 .ack__card[data-chakra="ajna"].is-active         { color: var(--ck-a-ajna); }
 .ack__card[data-chakra="sahasrara"].is-active    { color: var(--ck-a-sahasrara); }
 
-/* Symbol circle */
+/* Symbol circle (chakra artwork from /assets) */
 .ack__symbol-wrap {
   width: 72px;
   height: 72px;
@@ -164,12 +164,17 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 12px;
-  font-size: 34px;
-  line-height: 1;
+  line-height: 0;
   border: 2px solid rgba(255,255,255,0.6);
   background: rgba(255,255,255,0.35);
   backdrop-filter: blur(4px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ack__symbol-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
 }
 .ack__card:hover .ack__symbol-wrap,
 .ack__card.is-active .ack__symbol-wrap {
@@ -294,17 +299,26 @@
   font-size: 48px;
   opacity: 0.25;
 }
+.ack__prod-img-ph .ack__prod-img-ph-symbol {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  opacity: 0.85;
+}
 
 /* Symbol large */
 .ack__prod-symbol {
-  font-size: 56px;
-  line-height: 1;
-  margin-bottom: 12px;
-  animation: ack-spin 12s linear infinite;
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+  line-height: 0;
 }
-@keyframes ack-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+.ack__prod-symbol-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .ack__prod-title {
@@ -609,6 +623,8 @@
     transition-duration: 0.01ms !important;
   }
   .ack__prod-symbol { animation: none; }
+  .ack__symbol-wrap,
+  .ack__prod-symbol { transition: none; }
 }
 </style>
 
@@ -620,7 +636,8 @@
   assign all_ck_names    = 'Muladhara,Svadhisthana,Manipura,Anahata,Vishuddha,Ajna,Sahasrara' | split: ','
   assign all_ck_english  = 'Root Chakra,Sacral Chakra,Solar Plexus Chakra,Heart Chakra,Throat Chakra,Third Eye Chakra,Crown Chakra' | split: ','
   assign all_ck_keywords = 'Grounding,Creativity,Purpose,Love,Expression,Intuition,Bliss' | split: ','
-  assign all_ck_symbols  = '🔴,🟠,🟡,💚,🔵,🟣,✨' | split: ','
+  # PNGs in /assets — same order as all_ck_keys (root → crown)
+  assign all_ck_symbol_assets = 'Muladhara.png,Svadhisthana.png,Manipura.png,Anahata.png,Vishuddha.png,Ajna.png,Sahasrara.png' | split: ','
   assign all_ck_nums     = '01,02,03,04,05,06,07' | split: ','
   assign all_ck_mantras  = 'LAM,VAM,RAM,YAM,HAM,AUM,OM' | split: ','
   assign all_ck_elements = 'Earth,Water,Fire,Air,Ether,Light,Cosmic Consciousness' | split: ','
@@ -655,7 +672,17 @@
         data-chakra="{{ ck }}"
         id="ack-tab-{{ ck }}"
       >
-        <span class="ack__symbol-wrap" aria-hidden="true">{{ all_ck_symbols[i] }}</span>
+        <span class="ack__symbol-wrap" aria-hidden="true">
+          <img
+            class="ack__symbol-img"
+            src="{{ all_ck_symbol_assets[i] | asset_url }}"
+            alt=""
+            width="44"
+            height="44"
+            loading="lazy"
+            decoding="async"
+          >
+        </span>
         <span class="ack__card-name">{{ all_ck_english[i] | replace: ' Chakra', '' }}<br>Chakra</span>
         <span class="ack__card-keyword">{{ all_ck_keywords[i] }}</span>
       </button>
@@ -682,7 +709,17 @@
 
           {%- comment -%} ── LEFT: Product ── {%- endcomment -%}
           <div class="ack__panel-left">
-            <span class="ack__prod-symbol" aria-hidden="true">{{ all_ck_symbols[i] }}</span>
+            <span class="ack__prod-symbol" aria-hidden="true">
+              <img
+                class="ack__prod-symbol-img"
+                src="{{ all_ck_symbol_assets[i] | asset_url }}"
+                alt=""
+                width="56"
+                height="56"
+                loading="lazy"
+                decoding="async"
+              >
+            </span>
 
             {%- if ck_prod != blank and ck_prod != empty -%}
               <a href="{{ ck_prod.url }}" class="ack__prod-img-wrap" aria-label="{{ ck_prod.title | escape }}">
@@ -697,7 +734,17 @@
                     decoding="async"
                   >
                 {%- else -%}
-                  <div class="ack__prod-img-ph">{{ all_ck_symbols[i] }}</div>
+                  <div class="ack__prod-img-ph">
+                    <img
+                      class="ack__prod-img-ph-symbol"
+                      src="{{ all_ck_symbol_assets[i] | asset_url }}"
+                      alt=""
+                      width="72"
+                      height="72"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  </div>
                 {%- endif -%}
               </a>
               <p class="ack__prod-type">{{ ck_prod.type | default: 'Chakra Attar' }}</p>
@@ -726,7 +773,19 @@
                 <button type="button" class="ack__atc" disabled>Sold Out</button>
               {%- endif -%}
             {%- else -%}
-              <div class="ack__prod-img-wrap"><div class="ack__prod-img-ph">{{ all_ck_symbols[i] }}</div></div>
+              <div class="ack__prod-img-wrap">
+                <div class="ack__prod-img-ph">
+                  <img
+                    class="ack__prod-img-ph-symbol"
+                    src="{{ all_ck_symbol_assets[i] | asset_url }}"
+                    alt=""
+                    width="72"
+                    height="72"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+              </div>
               <p class="ack__prod-type">Chakra Attar</p>
               <h3 class="ack__prod-title">{{ all_ck_names[i] }} Attar</h3>
               <p style="font-size:12px;color:#999;margin-top:8px;text-align:center;">Assign product in Theme Editor</p>

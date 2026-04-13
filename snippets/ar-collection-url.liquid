@@ -1,11 +1,25 @@
 {% comment %}
-  Collection URL for handle, or /collections/{handle} fallback.
+  Collection URL resolver with handle aliases.
   Usage: {% render 'ar-collection-url', handle: 'planet-attars' %}
 {% endcomment %}
-{%- if handle == blank -%}
-  {{ routes.collections_url }}
-{%- elsif collections[handle] != empty -%}
-  {{- collections[handle].url -}}
+{%- assign resolved_handle = handle | strip -%}
+{%- case resolved_handle -%}
+  {%- when 'Bestseller' -%}
+    {%- assign resolved_handle = 'bestseller' -%}
+  {%- when 'stressrelief' -%}
+    {%- assign resolved_handle = 'stress-relief' -%}
+  {%- when 'love-attars' -%}
+    {%- assign resolved_handle = 'love-attar' -%}
+  {%- when 'gift-sets' -%}
+    {%- assign resolved_handle = 'giftsets' -%}
+{%- endcase -%}
+
+{%- if resolved_handle == blank -%}
+  {{- routes.collections_url -}}
+{%- elsif collections[resolved_handle] != empty -%}
+  {{- collections[resolved_handle].url -}}
+{%- elsif resolved_handle != blank -%}
+  {{- routes.collections_url -}}/{{- resolved_handle -}}
 {%- else -%}
-  {{- routes.collections_url }}/{{- handle -}}
+  {{- routes.collections_url -}}
 {%- endif -%}
