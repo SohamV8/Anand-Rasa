@@ -1,0 +1,185 @@
+{%- liquid
+  assign afq_title = title | default: 'Frequently Asked Questions — Attars'
+  assign afq_intro = intro | default: 'Everything you need to know about attars, usage, longevity, and care.'
+  assign afq_product_title = product.title | default: 'this attar'
+-%}
+
+<section class="afq" aria-label="Attar FAQs">
+  <div class="afq__inner">
+    <p class="afq__eyebrow">ATTAR GUIDE</p>
+    <h2 class="afq__title">{{ afq_title }}</h2>
+    <p class="afq__intro">{{ afq_intro }}</p>
+
+    <div class="afq__list">
+      <details class="afq__item" open>
+        <summary class="afq__q">What is an attar, and how is it different from perfume?</summary>
+        <p class="afq__a">Attar is a concentrated, alcohol-free fragrance oil traditionally distilled from natural botanicals. It usually feels richer and more intimate on skin compared to alcohol-based sprays.</p>
+      </details>
+      <details class="afq__item">
+        <summary class="afq__q">How do I apply {{ afq_product_title }} for best results?</summary>
+        <p class="afq__a">Apply 1-2 small dabs on pulse points like wrists, neck, and behind ears. For a softer trail, apply on inner elbows or on fabric edges after patch testing.</p>
+      </details>
+      <details class="afq__item">
+        <summary class="afq__q">How long does attar last on skin?</summary>
+        <p class="afq__a">Most attars last 6-10 hours depending on skin type, weather, and application amount. On moisturized skin, longevity is usually better.</p>
+      </details>
+      <details class="afq__item">
+        <summary class="afq__q">Can I layer attars with other fragrances?</summary>
+        <p class="afq__a">Yes. Start with lighter floral/citrus attars first, then add deeper woody or resinous notes. Keep dosage minimal to avoid overpowering blends.</p>
+      </details>
+      <details class="afq__item">
+        <summary class="afq__q">Is attar suitable for daily use?</summary>
+        <p class="afq__a">Absolutely. Attars are ideal for daily wear, rituals, meditation, and office-friendly scenting when applied in small amounts.</p>
+      </details>
+      <details class="afq__item">
+        <summary class="afq__q">How should I store attars?</summary>
+        <p class="afq__a">Keep bottles tightly closed, away from direct sunlight, heat, and humidity. Store upright in a cool, dark place to preserve aroma quality.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+{%- if product != blank -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an attar, and how is it different from perfume?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Attar is a concentrated, alcohol-free fragrance oil traditionally distilled from natural botanicals. It usually feels richer and more intimate on skin compared to alcohol-based sprays."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I apply {{ afq_product_title | escape }} for best results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Apply 1-2 small dabs on pulse points like wrists, neck, and behind ears. For a softer trail, apply on inner elbows or on fabric edges after patch testing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does attar last on skin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most attars last 6-10 hours depending on skin type, weather, and application amount. On moisturized skin, longevity is usually better."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I layer attars with other fragrances?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Start with lighter floral/citrus attars first, then add deeper woody or resinous notes. Keep dosage minimal to avoid overpowering blends."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is attar suitable for daily use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely. Attars are ideal for daily wear, rituals, meditation, and office-friendly scenting when applied in small amounts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How should I store attars?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Keep bottles tightly closed, away from direct sunlight, heat, and humidity. Store upright in a cool, dark place to preserve aroma quality."
+      }
+    }
+  ]
+}
+</script>
+{%- endif -%}
+
+<style>
+  .afq {
+    margin: clamp(18px, 2vw, 30px) auto 0;
+    padding: 0 clamp(12px, 2vw, 20px);
+    font-family: var(--font-body-family, system-ui, -apple-system, sans-serif);
+  }
+  .afq__inner {
+    max-width: min(1280px, 100%);
+    margin: 0 auto;
+    background: #fff;
+ 
+    box-shadow: none;
+    padding: clamp(16px, 2.1vw, 24px);
+  }
+  .afq__eyebrow {
+    margin: 0 0 6px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: #666;
+    font-weight: 600;
+  }
+  .afq__title {
+    margin: 0;
+    font-size: clamp(20px, 2vw, 30px);
+    line-height: 1.18;
+    color: #0f0f0f;
+    letter-spacing: -0.01em;
+  }
+  .afq__intro {
+    margin: 8px 0 0;
+    color: #5a5a5a;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .afq__list {
+    margin-top: 14px;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid #111;
+  }
+  .afq__item {
+    border-bottom: 1px solid #111;
+    border-left: 1px solid #111;
+    border-right: 1px solid #111;
+    border-radius: 0;
+    background: #fff;
+    overflow: hidden;
+  }
+  .afq__q {
+    position: relative;
+    cursor: pointer;
+    list-style: none;
+    padding: 13px 42px 13px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #101010;
+    transition: background-color 0.2s ease;
+  }
+  .afq__q:hover { background: #f7f7f7; }
+  .afq__q::after {
+    content: '+';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    line-height: 1;
+    color: #444;
+  }
+  .afq__item[open] .afq__q::after { content: '\2212'; }
+  .afq__q::-webkit-details-marker { display: none; }
+  .afq__a {
+    margin: 0;
+    padding: 0 14px 13px;
+    color: #4d4d4d;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  @media (max-width: 700px) {
+    .afq__inner { padding: 14px; }
+    .afq__q { font-size: 13px; padding: 12px 38px 12px 12px; }
+    .afq__q::after { right: 12px; }
+    .afq__a { font-size: 12.5px; padding: 0 12px 12px; }
+  }
+</style>

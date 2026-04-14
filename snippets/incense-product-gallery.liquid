@@ -1,0 +1,36 @@
+<section class="ar-incense-gallery" aria-label="Incense visuals">
+  <div class="ar-incense-gallery__stack">
+    <img class="ar-incense-gallery__img" src="{{ 'incense/incense1.jpeg' | asset_url }}" alt="Incense showcase 1" loading="lazy" decoding="async">
+    <img class="ar-incense-gallery__img" src="{{ 'incense/incense2.jpeg' | asset_url }}" alt="Incense showcase 2" loading="lazy" decoding="async">
+    <img class="ar-incense-gallery__img" src="{{ 'incense/incense3.jpeg' | asset_url }}" alt="Incense showcase 3" loading="lazy" decoding="async">
+    <img class="ar-incense-gallery__img" src="{{ 'incense/incense4.jpeg' | asset_url }}" alt="Incense showcase 4" loading="lazy" decoding="async">
+  </div>
+</section>
+
+<style>
+  .ar-incense-gallery {
+    margin: clamp(20px, 2.2vw, 34px) auto 0;
+    padding: 0 clamp(10px, 2vw, 20px);
+  }
+  .ar-incense-gallery__stack {
+    width: 90%;
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(12px, 1.7vw, 20px);
+  }
+  .ar-incense-gallery__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05), 0 10px 24px rgba(0, 0, 0, 0.08);
+  }
+  @media (max-width: 700px) {
+    .ar-incense-gallery__stack {
+      width: 92%;
+      gap: 12px;
+    }
+  }
+</style>
