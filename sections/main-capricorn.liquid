@@ -1,0 +1,36 @@
+{% comment %}Capricorn Zodiac Attar product section.{% endcomment %}
+{% render 'zodiac-product-base', section: section, product: product %}
+
+{% schema %}
+{
+  "name": "Capricorn Zodiac Attar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "trait",
+      "name": "Zodiac Trait",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Trait" }
+      ]
+    },
+    {
+      "type": "who_for",
+      "name": "Who is this for",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Line" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Zodiac Attar Product Section — Capricorn" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
+

@@ -168,8 +168,10 @@
   background: var(--ink-4);
 }
 .nav-x__divider-icon {
-  font-size: 18px;
-  line-height: 1;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
 }
 
 /* ============================================================
@@ -262,14 +264,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  line-height: 1;
   background: rgba(255,255,255,0.5);
   border: 1.5px solid rgba(255,255,255,0.7);
   backdrop-filter: blur(8px);
   margin-bottom: 10px;
   transition: transform var(--trans-spring), box-shadow var(--trans-ease);
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.nav-x__orb-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
 }
 .nav-x__card:hover .nav-x__orb,
 .nav-x__card.is-active .nav-x__orb {
@@ -411,10 +417,12 @@
   to   { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Large planet glyph (animated) */
-.nav-x__planet-glyph {
-  font-size: 64px;
-  line-height: 1;
+/* Large planet image (animated) */
+.nav-x__planet-img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  display: block;
   margin-bottom: 14px;
   position: relative;
   z-index: 1;
@@ -802,7 +810,7 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .nav-x__planet-glyph { animation: none; }
+  .nav-x__planet-img { animation: none; }
   .nav-x__orbit-ring   { animation: none; }
 }
 </style>
@@ -814,7 +822,7 @@
   assign pl_keys    = 'surya,chandra,mangal,budha,guru,shukra,shani,rahu,ketu' | split: ','
   assign pl_names   = 'Surya,Chandra,Mangal,Budha,Guru,Shukra,Shani,Rahu,Ketu' | split: ','
   assign pl_english = 'The Sun,The Moon,Mars,Mercury,Jupiter,Venus,Saturn,North Node,South Node' | split: ','
-  assign pl_glyphs  = '☀️,🌙,♂️,☿,♃,♀,♄,🌑,🔥' | split: ','
+  assign pl_images  = 'Planet/sun.webp,Planet/moon.webp,Planet/mars.webp,Planet/Mercury.webp,Planet/Jupiter.webp,Planet/Venus.webp,Planet/Saturn.webp,Planet/Rahu.webp,Planet/Ketu.webp' | split: ','
   assign pl_nums    = '01,02,03,04,05,06,07,08,09' | split: ','
   assign pl_day     = 'Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Saturday (Shadow),Tuesday (Shadow)' | split: ','
   assign pl_stone   = "Ruby,Pearl,Red Coral,Emerald,Yellow Sapphire,Diamond,Blue Sapphire,Hessonite,Cat's Eye" | split: ','
@@ -873,7 +881,7 @@
       <div class="nav-x__divider" aria-hidden="true">
         <span class="nav-x__divider-line"></span>
         <span class="nav-x__divider-dot"></span>
-        <span class="nav-x__divider-icon">🪐</span>
+        <img class="nav-x__divider-icon" src="{{ 'Planet/Saturn.webp' | asset_url }}" alt="" loading="lazy" decoding="async">
         <span class="nav-x__divider-dot"></span>
         <span class="nav-x__divider-line"></span>
       </div>
@@ -892,7 +900,9 @@
           data-planet="{{ pk }}"
           id="nvt-{{ pk }}"
         >
-          <span class="nav-x__orb" aria-hidden="true">{{ pl_glyphs[i] }}</span>
+          <span class="nav-x__orb" aria-hidden="true">
+            <img class="nav-x__orb-img" src="{{ pl_images[i] | asset_url }}" alt="" loading="lazy" decoding="async">
+          </span>
           <span class="nav-x__card-name">{{ pl_names[i] }}</span>
           <span class="nav-x__card-en">{{ pl_english[i] }}</span>
         </button>
@@ -976,7 +986,7 @@
                       decoding="async"
                     >
                   {%- else -%}
-                    <div class="nav-x__img-ph">{{ pl_glyphs[i] }}</div>
+                    <div class="nav-x__img-ph"><img class="nav-x__orb-img" src="{{ pl_images[i] | asset_url }}" alt="" loading="lazy" decoding="async"></div>
                   {%- endif -%}
                 </a>
                 <p class="nav-x__prod-type">{{ ck_prod.type | default: 'Navagraha Attar' }}</p>
@@ -1005,8 +1015,8 @@
                   <button type="button" class="nav-x__atc" disabled>Sold Out</button>
                 {%- endif -%}
               {%- else -%}
-                <span class="nav-x__planet-glyph" aria-hidden="true">{{ pl_glyphs[i] }}</span>
-                <div class="nav-x__img-wrap"><div class="nav-x__img-ph">{{ pl_glyphs[i] }}</div></div>
+                <img class="nav-x__planet-img" src="{{ pl_images[i] | asset_url }}" alt="" loading="lazy" decoding="async" aria-hidden="true">
+                <div class="nav-x__img-wrap"><div class="nav-x__img-ph"><img class="nav-x__orb-img" src="{{ pl_images[i] | asset_url }}" alt="" loading="lazy" decoding="async"></div></div>
                 <p class="nav-x__prod-type">Navagraha Attar</p>
                 <h3 class="nav-x__prod-name">{{ pl_names[i] }} Attar</h3>
                 <p style="font-size:12px;color:var(--ink-3);margin-top:8px;text-align:center;position:relative;z-index:1;">Assign product in Theme Editor</p>
@@ -1020,7 +1030,7 @@
               <div class="nav-x__panel-title">
                 <span class="nav-x__panel-num">Graha {{ pl_nums[i] }} · {{ pl_day[i] }}</span>
                 <h3 class="nav-x__panel-h">{{ pl_names[i] }}</h3>
-                <span class="nav-x__panel-sub">{{ pl_english[i] }} · {{ pl_glyphs[i] }} · {{ pl_mantra[i] | truncate: 36, '…' }}</span>
+                <span class="nav-x__panel-sub">{{ pl_english[i] }} · {{ pl_mantra[i] | truncate: 36, '…' }}</span>
               </div>
 
               {%- comment -%} Description {%- endcomment -%}

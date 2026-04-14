@@ -2,24 +2,37 @@
   Collection URL resolver with handle aliases.
   Usage: {% render 'ar-collection-url', handle: 'planet-attars' %}
 {% endcomment %}
-{%- assign resolved_handle = handle | strip -%}
-{%- case resolved_handle -%}
-  {%- when 'Bestseller' -%}
-    {%- assign resolved_handle = 'bestseller' -%}
-  {%- when 'stressrelief' -%}
-    {%- assign resolved_handle = 'stress-relief' -%}
-  {%- when 'love-attars' -%}
-    {%- assign resolved_handle = 'love-attar' -%}
-  {%- when 'gift-sets' -%}
-    {%- assign resolved_handle = 'giftsets' -%}
+{%- assign requested_handle = handle | strip -%}
+{%- assign lookup_handle = requested_handle | downcase -%}
+{%- assign candidate_handles = lookup_handle -%}
+
+{%- case lookup_handle -%}
+  {%- when 'bestseller' -%}
+    {%- assign candidate_handles = 'bestseller,Bestseller' -%}
+  {%- when 'stressrelief', 'stress-relief' -%}
+    {%- assign candidate_handles = 'stress-relief,stressrelief' -%}
+  {%- when 'love-attars', 'love-attar' -%}
+    {%- assign candidate_handles = 'love-attar,love-attars' -%}
+  {%- when 'gift-sets', 'giftsets' -%}
+    {%- assign candidate_handles = 'giftsets,gift-sets' -%}
 {%- endcase -%}
 
-{%- if resolved_handle == blank -%}
+{%- assign resolved_handle = '' -%}
+{%- assign candidate_list = candidate_handles | split: ',' -%}
+{%- for candidate in candidate_list -%}
+  {%- assign clean_candidate = candidate | strip -%}
+  {%- if clean_candidate != blank and collections[clean_candidate] != empty -%}
+    {%- assign resolved_handle = clean_candidate -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if requested_handle == blank -%}
   {{- routes.collections_url -}}
 {%- elsif collections[resolved_handle] != empty -%}
   {{- collections[resolved_handle].url -}}
-{%- elsif resolved_handle != blank -%}
-  {{- routes.collections_url -}}/{{- resolved_handle -}}
+{%- elsif lookup_handle != blank -%}
+  {{- routes.collections_url -}}/{{- lookup_handle -}}
 {%- else -%}
   {{- routes.collections_url -}}
 {%- endif -%}

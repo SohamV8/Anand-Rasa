@@ -1,5 +1,5 @@
 {%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
-<section class="ar-zh">
+<section class="ar-zh" style="background:#0F0F0F;">
   <div class="ar-zh__in">
     <div class="ar-zh__left">
       <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
@@ -7,42 +7,19 @@
       <a href="{{ section.settings.zh_url | default: '/collections/nakshatra-attars' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
     </div>
     <div class="ar-zh__right">
-      {%- liquid
-        assign zh_heading_fallback = section.settings.zh_heading | default: 'Nakshatra Attar'
-        assign zh_video_raw = section.settings.zh_video | strip
-        assign zh_video_src = blank
-        assign zh_video_type = 'video/mp4'
-
-        if zh_video_raw != blank
-          if zh_video_raw contains '://' or zh_video_raw contains '/'
-            assign zh_video_src = zh_video_raw
-          else
-            assign zh_video_src = zh_video_raw | file_url
-          endif
-
-          assign zh_video_lower = zh_video_src | downcase
-          if zh_video_lower contains '.webm'
-            assign zh_video_type = 'video/webm'
-          elsif zh_video_lower contains '.mov'
-            assign zh_video_type = 'video/quicktime'
-          else
-            assign zh_video_type = 'video/mp4'
-          endif
-        endif
-      -%}
-
-      {%- if zh_video_src != blank -%}
-        <video class="ar-zh__media" autoplay loop muted playsinline preload="metadata" aria-label="{{ zh_heading_fallback | escape }}">
-          <source src="{{ zh_video_src }}" type="{{ zh_video_type }}">
-          Video cannot be played in your browser.
-        </video>
-      {%- elsif section.settings.zh_gif != blank -%}
-        <img src="{{ section.settings.zh_gif | image_url: width: 1200 }}" alt="{{ zh_heading_fallback | escape }}" width="1200" height="1200" loading="lazy" class="ar-zh__media">
-      {%- elsif section.settings.zh_image != blank -%}
-        <img src="{{ section.settings.zh_image | image_url: width: 1200 }}" alt="{{ zh_heading_fallback | escape }}" width="1200" height="800" loading="lazy" class="ar-zh__media">
-      {%- else -%}
-        <div class="ar-zh__ph">Upload your video, GIF or image in Theme Editor</div>
-      {%- endif -%}
+      <video
+        class="ar-zh__media"
+        style="width:88%;height:88%;inset:0;margin:auto;object-fit:contain;object-position:center center;"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="metadata"
+        aria-label="Nakshatra Attar animation"
+      >
+        <source src="{{ 'NakshatraGif1.webm' | asset_url }}" type="video/webm">
+        Video cannot be played in your browser.
+      </video>
     </div>
   </div>
 </section>

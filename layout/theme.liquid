@@ -264,6 +264,25 @@
           font-size: 1.6rem;
         }
       }
+
+      {% if request.page_type == 'product' %}
+        /* Product pages: Caudex for all content, Poppins only for title */
+        #MainContent,
+        #MainContent *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+          font-family: 'Caudex', serif !important;
+        }
+
+        #MainContent h1,
+        #MainContent .product__title,
+        #MainContent .product__title h1,
+        #MainContent [data-product-title],
+        #MainContent .aip-pdp__title,
+        #MainContent .ar-pdp__title {
+          font-family: 'Poppins', sans-serif !important;
+          font-weight: 500;
+          letter-spacing: 0.01em;
+        }
+      {% endif %}
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
@@ -349,6 +368,9 @@
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
+      {%- if request.page_type == 'product' and product != blank -%}
+        {% render 'customer-care-product', product: product %}
+      {%- endif -%}
     </main>
 
     {% sections 'footer-group' %}

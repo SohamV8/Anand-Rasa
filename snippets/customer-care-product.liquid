@@ -1,0 +1,349 @@
+{% comment %}
+  ANAND RASA — Personalized Care Widget
+  snippets/anand-rasa-care.liquid
+  Usage: {% render 'anand-rasa-care', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign ccp_phone   = '919311336643'
+  assign ccp_title   = product.title | default: 'your fragrance'
+  assign ccp_url     = shop.url | append: product.url
+  assign ccp_msg     = 'Hi Anand Rasa team, I would like help with your attars and incense collections. I am interested in: ' | append: ccp_title | append: '. Product: ' | append: ccp_url
+  assign ccp_wa      = 'https://wa.me/' | append: ccp_phone | append: '?text=' | append: ccp_msg | url_encode
+-%}
+
+<section class="arc-care" aria-label="Personalized fragrance assistance">
+  <div class="arc-care__card">
+
+    <div class="arc-care__copy">
+      <span class="arc-care__status" role="status" aria-live="polite">
+        <span class="arc-care__dot" aria-hidden="true"></span>
+        Advisors available now
+      </span>
+
+      <h3 class="arc-care__title">
+        Personalized fragrance guidance by Anand Rasa experts
+      </h3>
+
+      <a
+        class="arc-care__cta"
+        href="{{ ccp_wa }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with an Anand Rasa expert on WhatsApp"
+      >
+        <svg class="arc-care__wa-ico" viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.51 5.833L.057 23.571a.5.5 0 0 0 .611.61l5.79-1.437A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.793 9.793 0 0 1-5.002-1.371l-.359-.213-3.728.925.952-3.645-.234-.376A9.792 9.792 0 0 1 2.182 12C2.182 6.575 6.575 2.182 12 2.182S21.818 6.575 21.818 12 17.425 21.818 12 21.818z"/>
+        </svg>
+        <span>Chat with an Expert</span>
+        <svg class="arc-care__arrow" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="arc-care__media" aria-hidden="true">
+      <img
+        class="arc-care__img"
+        src="{{ 'care.webp' | asset_url }}"
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width="520"
+        height="400"
+      >
+    </div>
+
+  </div>
+</section>
+
+<style>
+.arc-care {
+  --care-radius: 20px;
+  --care-trans: 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+  --care-ink: #0F0F0F;
+  --care-sub: #5C5C5C;
+  --care-btn: #0F0F0F;
+  --care-btn-h: #1D2330;
+
+  margin: clamp(20px, 2.5vw, 36px) auto 0;
+  padding: 0 clamp(12px, 2.5vw, 24px);
+  max-width: min(1280px, 100%);
+  font-family: var(--font-body-family, system-ui, -apple-system, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Card */
+.arc-care__card {
+  position: relative;
+  border-radius: var(--care-radius);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  height: clamp(220px, 30vh, 340px);
+  background:
+    radial-gradient(ellipse 90% 130% at 0% 10%, rgba(255,255,255,0.65) 0%, transparent 55%),
+    radial-gradient(ellipse 75% 110% at 100% 90%, rgba(212,188,172,0.28) 0%, transparent 58%),
+    linear-gradient(118deg, #F5EDE7 0%, #EDE3DC 48%, #E3D5CC 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.7) inset,
+    0 2px 4px rgba(0,0,0,0.03),
+    0 12px 40px rgba(0,0,0,0.08);
+  transform: translateZ(0);
+  will-change: transform;
+  transition: box-shadow var(--care-trans), transform var(--care-trans);
+}
+
+.arc-care__card:hover {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.7) inset,
+    0 2px 4px rgba(0,0,0,0.03),
+    0 20px 56px rgba(0,0,0,0.12);
+  transform: translateY(-2px) translateZ(0);
+}
+
+/* subtle texture */
+.arc-care__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+/* Copy column */
+.arc-care__copy {
+  position: relative;
+  z-index: 1;
+  padding: clamp(18px, 2.5vw, 32px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(12px, 1.5vw, 18px);
+  opacity: 0;
+  animation: arc-care-up 0.65s cubic-bezier(0.25,1,0.5,1) 0.08s forwards;
+}
+
+.arc-care__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  background: rgba(255,255,255,0.52);
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--care-sub);
+  letter-spacing: 0.01em;
+  width: fit-content;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.arc-care__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34C759;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(52,199,89,0.45);
+  animation: arc-care-pulse 2s ease-in-out infinite;
+}
+
+@keyframes arc-care-pulse {
+  0%  { box-shadow: 0 0 0 0   rgba(52,199,89,0.45); }
+  60% { box-shadow: 0 0 0 5px rgba(52,199,89,0); }
+  100%{ box-shadow: 0 0 0 0   rgba(52,199,89,0); }
+}
+
+.arc-care__title {
+  margin: 0;
+  color: var(--care-ink);
+  font-family: var(--font-heading-family, 'Georgia', serif);
+  font-size: clamp(16px, 1.7vw, 26px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  max-width: 20ch;
+}
+
+.arc-care__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  background: var(--care-btn);
+  color: #fff;
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(15,15,15,0.22), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transition: transform var(--care-trans), background var(--care-trans), box-shadow var(--care-trans);
+  position: relative;
+  overflow: hidden;
+}
+
+.arc-care__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.55s ease;
+}
+
+.arc-care__cta:hover::after {
+  transform: translateX(100%);
+}
+
+.arc-care__cta:hover {
+  transform: translateY(-2px);
+  background: var(--care-btn-h);
+  box-shadow: 0 8px 24px rgba(15,15,15,0.28), 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+
+.arc-care__cta:active {
+  transform: translateY(0);
+}
+
+.arc-care__wa-ico {
+  flex-shrink: 0;
+}
+
+.arc-care__arrow {
+  flex-shrink: 0;
+  transition: transform var(--care-trans);
+}
+
+.arc-care__cta:hover .arc-care__arrow {
+  transform: translateX(3px);
+}
+
+/* Media column */
+.arc-care__media {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  animation: arc-care-fade 0.75s ease 0.15s forwards;
+}
+
+.arc-care__img {
+  width: min(100%, 460px);
+  height: auto;
+  max-height: 90%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transform: none;
+  transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+}
+
+.arc-care__card:hover .arc-care__img {
+  transform: scale(1.01);
+}
+
+/* Animations */
+@keyframes arc-care-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes arc-care-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .arc-care__card {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .arc-care__copy {
+    padding: clamp(20px, 4vw, 28px);
+    align-items: flex-start;
+  }
+
+  .arc-care__title {
+    max-width: none;
+    font-size: clamp(18px, 4.5vw, 26px);
+  }
+
+  .arc-care__media {
+    align-items: center;
+    min-height: 220px;
+    padding: 8px 0 14px;
+  }
+
+  .arc-care__img {
+    max-height: 260px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .arc-care {
+    padding: 0 12px;
+    margin-top: 16px;
+  }
+
+  .arc-care__copy {
+    padding: 20px 18px 14px;
+    gap: 12px;
+  }
+
+  .arc-care__status {
+    font-size: 11px;
+    padding: 5px 11px;
+  }
+
+  .arc-care__cta {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .arc-care__media {
+    min-height: 180px;
+    padding: 8px 0 12px;
+  }
+
+  .arc-care__img {
+    max-height: 220px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arc-care__copy,
+  .arc-care__media {
+    animation: none;
+    opacity: 1;
+  }
+
+  .arc-care__cta,
+  .arc-care__img,
+  .arc-care__card {
+    transition: none;
+  }
+
+  .arc-care__dot {
+    animation: none;
+  }
+}
+</style>

@@ -13,11 +13,50 @@
       {%- assign zc = collections[section.settings.zc_collection] -%}
       {%- if zc != blank -%}
         {%- for p in zc.products limit: 12 -%}
+          {%- assign p_handle = p.handle | downcase -%}
+          {%- assign p_title = p.title | downcase -%}
+          {%- assign zc_asset = '' -%}
+          {%- if p_handle contains 'aries' -%}
+            {%- assign zc_asset = 'Zodiac/aries.webp' -%}
+          {%- elsif p_handle contains 'taurus' -%}
+            {%- assign zc_asset = 'Zodiac/taurus.webp' -%}
+          {%- elsif p_handle contains 'gemini' -%}
+            {%- assign zc_asset = 'Zodiac/gemini.webp' -%}
+          {%- elsif p_handle contains 'cancer' -%}
+            {%- assign zc_asset = 'Zodiac/cancer.webp' -%}
+          {%- elsif p_handle contains 'leo' -%}
+            {%- assign zc_asset = 'Zodiac/leo.webp' -%}
+          {%- elsif p_handle contains 'virgo' -%}
+            {%- assign zc_asset = 'Zodiac/virgo.webp' -%}
+          {%- elsif p_handle contains 'libra' -%}
+            {%- assign zc_asset = 'Zodiac/libra.webp' -%}
+          {%- elsif p_handle contains 'scorpio' -%}
+            {%- assign zc_asset = 'Zodiac/scorpio.webp' -%}
+          {%- elsif p_handle contains 'sagittarius' -%}
+            {%- assign zc_asset = 'Zodiac/sagittarius.webp' -%}
+          {%- elsif p_handle contains 'capricorn' or p_handle contains 'capricorn' or p_title contains 'capricorn' or p_title contains 'capricorn' -%}
+            {%- assign zc_asset = 'Zodiac/capricorn.webp' -%}
+          {%- elsif p_handle contains 'aquarius' or p_handle contains 'aquaris' -%}
+            {%- assign zc_asset = 'Zodiac/aquarius.webp' -%}
+          {%- elsif p_handle contains 'pisces' -%}
+            {%- assign zc_asset = 'Zodiac/pisces.webp' -%}
+          {%- endif -%}
           <article class="ar-sc__card">
             <a href="{{ p.url }}" class="ar-sc__link">
               <div class="ar-sc__imgw">
-                {%- if p.featured_image -%}
-                  <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-sc__img">
+                {%- if zc_asset != blank -%}
+                  <img src="{{ zc_asset | asset_url }}" alt="{{ p.title }}" width="400" height="533" loading="lazy" sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px" class="ar-sc__img">
+                {%- elsif p.featured_image -%}
+                  <img
+                    src="{{ p.featured_image | image_url: width: 400 }}"
+                    srcset="{{ p.featured_image | image_url: width: 240 }} 240w, {{ p.featured_image | image_url: width: 320 }} 320w, {{ p.featured_image | image_url: width: 400 }} 400w"
+                    sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
+                    alt="{{ p.featured_image.alt | default: p.title }}"
+                    width="400"
+                    height="533"
+                    loading="lazy"
+                    class="ar-sc__img"
+                  >
                 {%- endif -%}
               </div>
               <h3 class="ar-sc__name">{{ p.title }}</h3>

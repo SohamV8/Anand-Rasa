@@ -1,8 +1,5 @@
 {%- liquid
   assign akf_uid = uid | default: 'ask-mehak' | handleize
-
-  assign akf_image = left_image
-  assign akf_image_url = left_image_url
   assign akf_image_alt = left_image_alt | default: 'Astro fragrance finder'
 
   assign akf_eyebrow = eyebrow | default: 'AI-Powered'
@@ -23,33 +20,14 @@
 <section class="akf" id="akf-{{ akf_uid }}" data-akf>
   <div class="akf__shell">
     <div class="akf__media">
-      {% if akf_image != blank %}
-        <img
-          src="{{ akf_image | image_url: width: 1800 }}"
-          srcset="
-            {{ akf_image | image_url: width: 900 }} 900w,
-            {{ akf_image | image_url: width: 1300 }} 1300w,
-            {{ akf_image | image_url: width: 1800 }} 1800w
-          "
-          sizes="(min-width: 990px) 48vw, 100vw"
-          alt="{{ akf_image_alt | escape }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="akf__img"
-        >
-      {% elsif akf_image_url != blank %}
-        <img
-          src="{{ akf_image_url }}"
-          alt="{{ akf_image_alt | escape }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          class="akf__img"
-        >
-      {% else %}
-        <div class="akf__placeholder">Upload left image</div>
-      {% endif %}
+      <img
+        src="{{ 'care.webp' | asset_url }}"
+        alt="{{ akf_image_alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="akf__img"
+      >
 
       <div class="akf__media-caption">
         <span class="akf__eyebrow"><span class="akf__dot"></span>{{ akf_eyebrow }}</span>
