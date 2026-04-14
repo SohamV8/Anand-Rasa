@@ -369,6 +369,22 @@
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
       {%- if request.page_type == 'product' and product != blank -%}
+        {%- assign ar_product_type = product.type | downcase -%}
+        {%- assign ar_product_title = product.title | downcase -%}
+        {%- assign ar_is_incense = false -%}
+        {%- if ar_product_type contains 'incense' or ar_product_title contains 'incense' -%}
+          {%- assign ar_is_incense = true -%}
+        {%- endif -%}
+
+        {%- unless ar_is_incense -%}
+          {% render 'ask-mehak', uid: product.handle %}
+        {%- else -%}
+          {% render 'incense-product-gallery' %}
+        {%- endunless -%}
+
+        {%- if ar_product_type contains 'attar' or ar_product_title contains 'attar' -%}
+          {% render 'faq.attars', product: product %}
+        {%- endif -%}
         {% render 'customer-care-product', product: product %}
       {%- endif -%}
     </main>

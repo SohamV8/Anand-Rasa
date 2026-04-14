@@ -1,9 +1,248 @@
-{%- comment -%} 5. DISCOVER THE FRAGRANCE {%- endcomment -%}
-<section class="ar-find">
-  <div class="ar-find__bg"></div>
-  <div class="ar-find__con">
-    <h2 class="ar-find__h">{{ section.settings.find_heading | default: 'Discover the fragrance written in your stars.' }}</h2>
-    <p class="ar-find__p">{{ section.settings.find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.' }}</p>
-    <a href="{{ section.settings.find_url | default: '/pages/find-fragrance' }}" class="ar-find__btn">{{ section.settings.find_btn | default: 'Find Your Fragrance' }}</a>
+{%- liquid
+  assign cf_uid = uid | default: 'discover-fragrance' | handleize
+
+  assign find_heading = find_heading | default: 'Discover the fragrance written in your stars.'
+  assign find_text = find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.'
+  assign find_url = find_url | default: 'https://astrology.anandrasafragnance.com/find-fragrance'
+  assign find_btn = find_btn | default: 'Find Your Fragrance'
+
+  assign ca_uid = ca_uid | default: 'clouds-aether' | handleize
+-%}
+
+<section class="ar-cloud-hero" id="ar-cloud-hero-{{ cf_uid }}">
+  <div class="ar-cloud-hero__bg" aria-hidden="true">
+    <svg class="ar-cloud-hero__svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <filter id="grain-{{ ca_uid }}">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.85"
+            numOctaves="2"
+            stitchTiles="stitch"
+            seed="8"
+          />
+          <feColorMatrix
+            type="saturate"
+            values="0"
+          />
+          <feComponentTransfer>
+            <feFuncA type="table" tableValues="0 0.035" />
+          </feComponentTransfer>
+        </filter>
+
+        <radialGradient id="Gradient1-{{ ca_uid }}" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+          <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite" />
+          <stop offset="0%" stop-color="#ff0" />
+          <stop offset="100%" stop-color="#ff00" />
+        </radialGradient>
+
+        <radialGradient id="Gradient2-{{ ca_uid }}" cx="50%" cy="50%" fx="10%" fy="50%" r=".5">
+          <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite" />
+          <stop offset="0%" stop-color="#0ff" />
+          <stop offset="100%" stop-color="#0ff0" />
+        </radialGradient>
+
+        <radialGradient id="Gradient3-{{ ca_uid }}" cx="50%" cy="50%" fx="50%" fy="50%" r=".5">
+          <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite" />
+          <stop offset="0%" stop-color="#f0f" />
+          <stop offset="100%" stop-color="#f0f0" />
+        </radialGradient>
+      </defs>
+
+      <rect width="100%" height="100%" fill="url(#Gradient1-{{ ca_uid }})">
+        <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite" />
+        <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="17s" repeatCount="indefinite" />
+      </rect>
+
+      <rect width="100%" height="100%" fill="url(#Gradient2-{{ ca_uid }})">
+        <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite" />
+        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="18s" repeatCount="indefinite" />
+      </rect>
+
+      <rect width="100%" height="100%" fill="url(#Gradient3-{{ ca_uid }})">
+        <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite" />
+        <animate attributeName="y" dur="26s" values="0%;25%;0%" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="19s" repeatCount="indefinite" />
+      </rect>
+    </svg>
+
+    <div class="ar-cloud-hero__grain"></div>
+    <div class="ar-cloud-hero__vignette"></div>
+  </div>
+
+  <div class="ar-cloud-hero__content">
+    <h2 class="ar-find__h">{{ find_heading }}</h2>
+    <p class="ar-find__p">{{ find_text }}</p>
+    <a href="{{ find_url }}" class="ar-find__btn">{{ find_btn }}</a>
   </div>
 </section>
+
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Libre+Franklin:400,700&subset=latin");
+
+  .ar-cloud-hero {
+    position: relative;
+    height: 70vh;
+    min-height: 520px;
+    overflow: hidden;
+    isolation: isolate;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+  }
+
+  .ar-cloud-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .ar-cloud-hero__svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transform: scale(1.16);
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  .ar-cloud-hero__grain {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.45;
+    mix-blend-mode: overlay;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+  }
+
+  .ar-cloud-hero__vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 68%, rgba(0,0,0,0.45) 100%);
+  }
+
+  .ar-cloud-hero__content {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    max-width: 760px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    animation: arCloudFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .ar-find__h {
+    margin: 0;
+    font-family: "Libre Franklin", system-ui, sans-serif;
+    font-size: clamp(32px, 5vw, 58px);
+    line-height: 1.06;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: rgba(255,255,255,0.95);
+    text-wrap: balance;
+    text-shadow: 0 0 16px rgba(255,255,255,0.18);
+  }
+
+  .ar-find__p {
+    margin: 0;
+    max-width: 620px;
+    font-family: "Libre Franklin", system-ui, sans-serif;
+    font-size: clamp(14px, 1.4vw, 16px);
+    line-height: 1.8;
+    color: rgba(255,255,255,0.74);
+  }
+
+  .ar-find__btn {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 24px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.38);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    text-decoration: none;
+    font-family: "Libre Franklin", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  }
+
+  .ar-find__btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.96);
+    color: #000;
+    border-color: rgba(255,255,255,0.9);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.22);
+  }
+
+  .ar-find__btn:active {
+    transform: translateY(0);
+  }
+
+  @keyframes arCloudFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ar-cloud-hero {
+      height: 60vh;
+      min-height: 460px;
+    }
+
+    .ar-cloud-hero__svg {
+      transform: scale(1.24);
+    }
+
+    .ar-cloud-hero__content {
+      gap: 14px;
+      padding: 0 18px;
+    }
+
+    .ar-find__btn {
+      min-height: 44px;
+      padding: 0 20px;
+      font-size: 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ar-cloud-hero svg animate,
+    .ar-cloud-hero svg animateTransform {
+      display: none !important;
+    }
+
+    .ar-cloud-hero__content,
+    .ar-find__btn {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
