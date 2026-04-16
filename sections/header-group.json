@@ -1,1 +1,83 @@
-{"name":"t:sections.header.name","type":"header","sections":{"announcement-bar":{"type":"announcement-bar","blocks":{"announcement-bar-0":{"type":"announcement","settings":{"text":"Welcome to our store","link":""}}},"block_order":["announcement-bar-0"],"disabled":true,"settings":{"auto_rotate":false,"change_slides_speed":5,"color_scheme":"scheme-1","show_line_separator":true,"show_social":false,"enable_country_selector":false,"enable_language_selector":false}},"header":{"type":"header","settings":{"logo":"shopify:\/\/shop_images\/anand-rasa-logo-black.png","logo_width":180,"logo_text":"","logo_subtext":"","nav_l1":"Shop","nav_l1_url":"","nav_l2":"Blogs","nav_l2_url":"","nav_l3":"Gift Sets","nav_l3_url":"","nav_r1":"Collections","nav_r1_url":"","mega_menu_image":"shopify:\/\/shop_images\/PlanetHero.png","nav_r2":"About","nav_r2_url":""}}},"order":["announcement-bar","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-bar-0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement-bar-0"
+      ],
+      "disabled": true,
+      "settings": {
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-1",
+        "show_line_separator": true,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "collection_giftsets_4jR76j": {
+      "type": "collection-giftsets",
+      "name": "Gift Sets Collection",
+      "settings": {
+        "hero_label": "Curated for Gifting",
+        "hero_subtitle": "Thoughtfully bundled attars and discovery sets — elegant to give, unforgettable to receive. Share the ritual of pure fragrance.",
+        "hero_btn": "Browse Stress Relief Attars",
+        "content_label": "The Gift of Scent",
+        "content_title": "Give more than a bottle — give a ritual",
+        "content_body": "Our gift sets pair complementary attars and discovery formats so someone can explore Anand Rasa without choosing a single note. Each set is composed for balance: celebration, self-care, or a quiet introduction to pure oil perfumery.",
+        "cta_label": "Anand Rasa",
+        "cta_title": "Find an attar to love",
+        "cta_subtitle": "After the set, many guests return for a full bottle — browse the full collection.",
+        "cta_btn": "Shop All Attars",
+        "cta_url": "",
+        "products_per_page": 16
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/anand-rasa-logo-black.png",
+        "logo_width": 180,
+        "logo_text": "",
+        "logo_subtext": "",
+        "nav_l1": "Shop",
+        "nav_l1_url": "",
+        "nav_l2": "Blogs",
+        "nav_l2_url": "",
+        "nav_l3": "Gift Sets",
+        "nav_l3_url": "",
+        "nav_r1": "Collections",
+        "nav_r1_url": "",
+        "mega_menu_image": "shopify://shop_images/PlanetHero.png",
+        "nav_r2": "About",
+        "nav_r2_url": ""
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "collection_giftsets_4jR76j",
+    "header"
+  ]
+}
