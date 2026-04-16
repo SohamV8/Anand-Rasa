@@ -246,35 +246,6 @@
       {%- endif -%}
     </div>
   
-    {%- comment -%} CONTENT BLOCK {% endcomment %}
-    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
-    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
-      <div class="arc-content">
-        <div class="arc-content__img-wrap">
-          {%- if section.settings.content_image != blank -%}
-            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
-          {%- else -%}
-            <div class="arc-content__ph">Upload image in Theme Editor</div>
-          {%- endif -%}
-        </div>
-        <div>
-          <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
-          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Your Zodiac, Your Scent' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: 'Each of the twelve rashis carries a unique energetic signature. Our Zodiac Attar series translates these signatures into fragrance — so you can wear your cosmic identity as a quiet, powerful presence.' }}</p>
-        </div>
-      </div>
-    </section>
-    {%- endif -%}
-  
-    {%- comment -%} CTA SECTION {% endcomment %}
-    <section class="arc-cta">
-      <div class="arc-cta__ov"></div>
-      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
-      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Wear Your Zodiac as Your Aura' }}</h2>
-      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'The right fragrance does more than smell beautiful — it aligns you with your own energy.' }}</p>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
-    </section>
-
     {% render 'ask-mehak',
       uid: 'ask-mehak-home',
       left_image: section.settings.hero_image,
