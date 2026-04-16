@@ -36,24 +36,6 @@
         "enable_language_selector": false
       }
     },
-    "collection_giftsets_4jR76j": {
-      "type": "collection-giftsets",
-      "name": "Gift Sets Collection",
-      "settings": {
-        "hero_label": "Curated for Gifting",
-        "hero_subtitle": "Thoughtfully bundled attars and discovery sets — elegant to give, unforgettable to receive. Share the ritual of pure fragrance.",
-        "hero_btn": "Browse Stress Relief Attars",
-        "content_label": "The Gift of Scent",
-        "content_title": "Give more than a bottle — give a ritual",
-        "content_body": "Our gift sets pair complementary attars and discovery formats so someone can explore Anand Rasa without choosing a single note. Each set is composed for balance: celebration, self-care, or a quiet introduction to pure oil perfumery.",
-        "cta_label": "Anand Rasa",
-        "cta_title": "Find an attar to love",
-        "cta_subtitle": "After the set, many guests return for a full bottle — browse the full collection.",
-        "cta_btn": "Shop All Attars",
-        "cta_url": "",
-        "products_per_page": 16
-      }
-    },
     "header": {
       "type": "header",
       "settings": {
@@ -77,7 +59,6 @@
   },
   "order": [
     "announcement-bar",
-    "collection_giftsets_4jR76j",
     "header"
   ]
 }
