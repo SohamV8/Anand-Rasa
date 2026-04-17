@@ -1,0 +1,857 @@
+{% comment %}
+  ANAND RASA — Zodiac Attar Explorer
+  sections/anand-rasa-zodiac-explorer.liquid
+  12 Zodiac signs · Click to reveal · Product + Info · Full animations
+{% endcomment %}
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+.zx {
+  --ff-display: var(--font-heading-family, 'Georgia', 'Didot', serif);
+  --ff-body:    var(--font-body-family, system-ui, -apple-system, sans-serif);
+  --ff-label:   'SF Mono', 'Fira Mono', monospace;
+
+  --bg:      #FFFFFF;
+  --surface: #FFFFFF;
+  --ink:     #18181A;
+  --ink-2:   #3C3C40;
+  --ink-3:   #8A8A90;
+  --ink-4:   #C4C4CA;
+  --border:  rgba(24,24,26,0.08);
+
+  --shadow-sm: 0 2px 8px  rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
+  --shadow-lg: 0 24px 72px rgba(0,0,0,0.13);
+
+  --ts: 0.44s cubic-bezier(0.34,1.56,0.64,1);
+  --te: 0.32s cubic-bezier(0.25,1,0.5,1);
+  --tf: 0.18s ease;
+
+  font-family: var(--ff-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* Zodiac color tokens */
+:root {
+  --z-aries-bg:    #FFF0EE; --z-aries-mid:    #EF4444; --z-aries-deep:   #7F1D1D; --z-aries-glow:   rgba(239,68,68,0.18);
+  --z-taurus-bg:   #ECFDF5; --z-taurus-mid:   #10B981; --z-taurus-deep:  #064E3B; --z-taurus-glow:  rgba(16,185,129,0.18);
+  --z-gemini-bg:   #FEFCE8; --z-gemini-mid:   #EAB308; --z-gemini-deep:  #713F12; --z-gemini-glow:  rgba(234,179,8,0.18);
+  --z-cancer-bg:   #EEF2FF; --z-cancer-mid:   #818CF8; --z-cancer-deep:  #1E1B4B; --z-cancer-glow:  rgba(129,140,248,0.18);
+  --z-leo-bg:      #FFF3DB; --z-leo-mid:      #F59E0B; --z-leo-deep:     #92400E; --z-leo-glow:     rgba(245,158,11,0.18);
+  --z-virgo-bg:    #F0FDF4; --z-virgo-mid:    #22C55E; --z-virgo-deep:   #14532D; --z-virgo-glow:   rgba(34,197,94,0.18);
+  --z-libra-bg:    #FDF2F8; --z-libra-mid:    #EC4899; --z-libra-deep:   #831843; --z-libra-glow:   rgba(236,72,153,0.18);
+  --z-scorpio-bg:  #F5F3FF; --z-scorpio-mid:  #7C3AED; --z-scorpio-deep: #2E1065; --z-scorpio-glow: rgba(124,58,237,0.18);
+  --z-sagit-bg:    #FFF7ED; --z-sagit-mid:    #F97316; --z-sagit-deep:   #431407; --z-sagit-glow:   rgba(249,115,22,0.18);
+  --z-capri-bg:    #F8FAFC; --z-capri-mid:    #475569; --z-capri-deep:   #0F172A; --z-capri-glow:   rgba(71,85,105,0.18);
+  --z-aqua-bg:     #EFF6FF; --z-aqua-mid:     #3B82F6; --z-aqua-deep:    #1E3A8A; --z-aqua-glow:    rgba(59,130,246,0.18);
+  --z-pisces-bg:   #F0FDFA; --z-pisces-mid:   #14B8A6; --z-pisces-deep:  #134E4A; --z-pisces-glow:  rgba(20,184,166,0.18);
+}
+
+.zx *, .zx *::before, .zx *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.zx a { text-decoration: none; color: inherit; }
+.zx img { display: block; max-width: 100%; }
+.zx button { font-family: var(--ff-body); cursor: pointer; border: none; background: none; }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes zx-rise  { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+@keyframes zx-panel { from { opacity:0; transform:translateY(24px) scale(0.975); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes zx-float { 0%,100%{transform:translateY(0) rotate(0deg);} 40%{transform:translateY(-8px) rotate(3deg);} 70%{transform:translateY(-4px) rotate(-2deg);} }
+@keyframes zx-spin  { from{transform:translate(-50%,-50%) rotate(0deg);} to{transform:translate(-50%,-50%) rotate(360deg);} }
+@keyframes zx-line  { from{transform:scaleX(0);} to{transform:scaleX(1);} }
+
+@media (prefers-reduced-motion: reduce) {
+  .zx *, .zx *::before, .zx *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  .zx__sign-img, .zx__orbit-ring { animation: none !important; }
+}
+
+/* ============================================================
+   SECTION WRAPPER
+   ============================================================ */
+.zx__wrap {
+  background: var(--bg);
+  padding-bottom: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.zx__wrap::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.zx__header {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 88px 48px 60px;
+}
+
+.zx__eyebrow {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--ff-label);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 18px;
+  opacity: 0; animation: zx-rise 0.7s ease 0.1s forwards;
+}
+.zx__eyebrow::before, .zx__eyebrow::after {
+  content: ''; width: 28px; height: 1px;
+  background: currentColor; opacity: 0.5;
+}
+
+.zx__title {
+  font-family: var(--ff-display);
+  font-size: clamp(36px, 5.5vw, 70px);
+  font-weight: 300; color: var(--ink);
+  letter-spacing: -0.04em; line-height: 1.02;
+  margin-bottom: 18px;
+  opacity: 0; animation: zx-rise 0.7s ease 0.2s forwards;
+}
+.zx__title em { font-style: italic; font-weight: 400; }
+
+.zx__sub {
+  font-size: 15px; color: var(--ink-3);
+  line-height: 1.8; font-weight: 300;
+  max-width: 520px; margin: 0 auto 32px;
+  opacity: 0; animation: zx-rise 0.7s ease 0.3s forwards;
+}
+
+.zx__divider {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  opacity: 0; animation: zx-rise 0.7s ease 0.4s forwards;
+}
+.zx__div-line {
+  width: 56px; height: 1px; background: linear-gradient(to right, transparent, var(--ink-4));
+}
+.zx__div-line:last-child { background: linear-gradient(to left, transparent, var(--ink-4)); }
+.zx__div-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4); }
+.zx__div-star { font-size: 16px; opacity: 0.5; }
+
+/* ============================================================
+   ZODIAC GRID — 6×2 (desktop) / 4×3 / 3×4
+   ============================================================ */
+.zx__grid {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  max-width: 1240px; margin: 0 auto;
+  padding: 0 28px;
+  opacity: 0; animation: zx-rise 0.7s ease 0.5s forwards;
+}
+
+@media (max-width: 1100px) { .zx__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 680px)  { .zx__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px; } }
+@media (max-width: 380px)  { .zx__grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── Zodiac card ── */
+.zx__card {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 10px 16px;
+  border-radius: 24px; cursor: pointer;
+  transition: transform var(--ts), box-shadow var(--te), background var(--te);
+  outline: none; -webkit-tap-highlight-color: transparent;
+  isolation: isolate; overflow: hidden;
+}
+
+.zx__card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, transparent 50%);
+  opacity: 0; transition: opacity var(--te); border-radius: inherit; pointer-events: none;
+}
+.zx__card:hover::before { opacity: 1; }
+
+.zx__card:hover  { transform: translateY(-8px) scale(1.04); box-shadow: 0 16px 48px rgba(0,0,0,0.11); }
+.zx__card.is-active { transform: translateY(-5px) scale(1.05); box-shadow: 0 14px 44px rgba(0,0,0,0.13); }
+
+.zx__card.is-active::after {
+  content: ''; position: absolute; inset: -2px; border-radius: 26px;
+  border: 2px solid currentColor; opacity: 0.4; pointer-events: none;
+}
+
+/* Per-sign colors */
+.zx__card[data-sign="aries"]       { background:var(--z-aries-bg);   color:var(--z-aries-mid); }
+.zx__card[data-sign="taurus"]      { background:var(--z-taurus-bg);  color:var(--z-taurus-mid); }
+.zx__card[data-sign="gemini"]      { background:var(--z-gemini-bg);  color:var(--z-gemini-mid); }
+.zx__card[data-sign="cancer"]      { background:var(--z-cancer-bg);  color:var(--z-cancer-mid); }
+.zx__card[data-sign="leo"]         { background:var(--z-leo-bg);     color:var(--z-leo-mid); }
+.zx__card[data-sign="virgo"]       { background:var(--z-virgo-bg);   color:var(--z-virgo-mid); }
+.zx__card[data-sign="libra"]       { background:var(--z-libra-bg);   color:var(--z-libra-mid); }
+.zx__card[data-sign="scorpio"]     { background:var(--z-scorpio-bg); color:var(--z-scorpio-mid); }
+.zx__card[data-sign="sagittarius"] { background:var(--z-sagit-bg);   color:var(--z-sagit-mid); }
+.zx__card[data-sign="capricorn"]   { background:var(--z-capri-bg);   color:var(--z-capri-mid); }
+.zx__card[data-sign="aquarius"]    { background:var(--z-aqua-bg);    color:var(--z-aqua-mid); }
+.zx__card[data-sign="pisces"]      { background:var(--z-pisces-bg);  color:var(--z-pisces-mid); }
+
+/* Orb */
+.zx__orb {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; line-height: 1;
+  background: rgba(255,255,255,0.52);
+  border: 1.5px solid rgba(255,255,255,0.72);
+  backdrop-filter: blur(6px);
+  margin-bottom: 9px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  transition: transform var(--ts), box-shadow var(--te);
+}
+.zx__card:hover .zx__orb,
+.zx__card.is-active .zx__orb {
+  transform: scale(1.14) rotate(-8deg);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+}
+
+.zx__card-name {
+  font-family: var(--ff-display);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.02em; text-align: center;
+  color: var(--ink); margin-bottom: 2px; line-height: 1.2;
+}
+.zx__card-dates {
+  font-family: var(--ff-label);
+  font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 500;
+  text-align: center; color: var(--ink-3); opacity: 0.8;
+}
+
+/* ============================================================
+   PANELS CONTAINER
+   ============================================================ */
+.zx__panels {
+  position: relative; z-index: 1;
+  max-width: 1240px; margin: 28px auto 0;
+  padding: 0 28px;
+}
+@media (max-width: 580px) { .zx__panels { padding: 0 16px; } }
+
+.zx__panel {
+  display: none;
+  border-radius: 32px; overflow: hidden;
+  background: var(--surface); box-shadow: var(--shadow-lg);
+}
+.zx__panel.is-active {
+  display: block;
+  animation: zx-panel 0.58s cubic-bezier(0.25,1,0.5,1) both;
+}
+
+/* Accent bar */
+.zx__panel-bar { height: 4px; }
+.zx__panel[data-sign="aries"]       .zx__panel-bar { background:linear-gradient(90deg,var(--z-aries-bg),  var(--z-aries-mid),  var(--z-aries-deep)); }
+.zx__panel[data-sign="taurus"]      .zx__panel-bar { background:linear-gradient(90deg,var(--z-taurus-bg), var(--z-taurus-mid), var(--z-taurus-deep)); }
+.zx__panel[data-sign="gemini"]      .zx__panel-bar { background:linear-gradient(90deg,var(--z-gemini-bg), var(--z-gemini-mid), var(--z-gemini-deep)); }
+.zx__panel[data-sign="cancer"]      .zx__panel-bar { background:linear-gradient(90deg,var(--z-cancer-bg), var(--z-cancer-mid), var(--z-cancer-deep)); }
+.zx__panel[data-sign="leo"]         .zx__panel-bar { background:linear-gradient(90deg,var(--z-leo-bg),    var(--z-leo-mid),    var(--z-leo-deep)); }
+.zx__panel[data-sign="virgo"]       .zx__panel-bar { background:linear-gradient(90deg,var(--z-virgo-bg),  var(--z-virgo-mid),  var(--z-virgo-deep)); }
+.zx__panel[data-sign="libra"]       .zx__panel-bar { background:linear-gradient(90deg,var(--z-libra-bg),  var(--z-libra-mid),  var(--z-libra-deep)); }
+.zx__panel[data-sign="scorpio"]     .zx__panel-bar { background:linear-gradient(90deg,var(--z-scorpio-bg),var(--z-scorpio-mid),var(--z-scorpio-deep)); }
+.zx__panel[data-sign="sagittarius"] .zx__panel-bar { background:linear-gradient(90deg,var(--z-sagit-bg),  var(--z-sagit-mid),  var(--z-sagit-deep)); }
+.zx__panel[data-sign="capricorn"]   .zx__panel-bar { background:linear-gradient(90deg,var(--z-capri-bg),  var(--z-capri-mid),  var(--z-capri-deep)); }
+.zx__panel[data-sign="aquarius"]    .zx__panel-bar { background:linear-gradient(90deg,var(--z-aqua-bg),   var(--z-aqua-mid),   var(--z-aqua-deep)); }
+.zx__panel[data-sign="pisces"]      .zx__panel-bar { background:linear-gradient(90deg,var(--z-pisces-bg), var(--z-pisces-mid), var(--z-pisces-deep)); }
+
+/* Panel layout */
+.zx__panel-inner {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}
+@media (max-width: 860px) { .zx__panel-inner { grid-template-columns: 1fr; } }
+
+/* ── LEFT column ── */
+.zx__panel-left {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; padding: 48px 32px;
+  position: relative; overflow: hidden;
+}
+
+.zx__panel-left::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+}
+
+/* Tinted bg per sign */
+.zx__panel[data-sign="aries"]       .zx__panel-left { background:var(--z-aries-bg); }
+.zx__panel[data-sign="aries"]       .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-aries-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="taurus"]      .zx__panel-left { background:var(--z-taurus-bg); }
+.zx__panel[data-sign="taurus"]      .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-taurus-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="gemini"]      .zx__panel-left { background:var(--z-gemini-bg); }
+.zx__panel[data-sign="gemini"]      .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-gemini-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="cancer"]      .zx__panel-left { background:var(--z-cancer-bg); }
+.zx__panel[data-sign="cancer"]      .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-cancer-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="leo"]         .zx__panel-left { background:var(--z-leo-bg); }
+.zx__panel[data-sign="leo"]         .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-leo-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="virgo"]       .zx__panel-left { background:var(--z-virgo-bg); }
+.zx__panel[data-sign="virgo"]       .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-virgo-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="libra"]       .zx__panel-left { background:var(--z-libra-bg); }
+.zx__panel[data-sign="libra"]       .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-libra-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="scorpio"]     .zx__panel-left { background:var(--z-scorpio-bg); }
+.zx__panel[data-sign="scorpio"]     .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-scorpio-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="sagittarius"] .zx__panel-left { background:var(--z-sagit-bg); }
+.zx__panel[data-sign="sagittarius"] .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-sagit-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="capricorn"]   .zx__panel-left { background:var(--z-capri-bg); }
+.zx__panel[data-sign="capricorn"]   .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-capri-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="aquarius"]    .zx__panel-left { background:var(--z-aqua-bg); }
+.zx__panel[data-sign="aquarius"]    .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-aqua-glow) 0%,transparent 70%); }
+.zx__panel[data-sign="pisces"]      .zx__panel-left { background:var(--z-pisces-bg); }
+.zx__panel[data-sign="pisces"]      .zx__panel-left::before { background:radial-gradient(circle at 50% 40%,var(--z-pisces-glow) 0%,transparent 70%); }
+
+/* Orbital decoration rings */
+.zx__orbit-ring {
+  position: absolute; border-radius: 50%;
+  border: 1px dashed rgba(0,0,0,0.07);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: zx-spin 44s linear infinite;
+  pointer-events: none;
+}
+.zx__orbit-ring:first-of-type { width: 200px; height: 200px; }
+.zx__orbit-ring:last-of-type  { width: 290px; height: 290px; animation-duration: 70s; animation-direction: reverse; border-style: dotted; opacity: 0.5; }
+
+/* Sign large glyph */
+.zx__sign-big {
+  font-size: 56px; line-height: 1;
+  margin-bottom: 12px;
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.10));
+  animation: zx-float 7s ease-in-out infinite;
+}
+
+/* Product image */
+.zx__img-wrap {
+  position: relative; z-index: 1;
+  width: 160px; height: 160px; border-radius: 22px; overflow: hidden;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+  margin-bottom: 20px; cursor: pointer;
+  transition: transform var(--ts), box-shadow var(--te);
+  backdrop-filter: blur(4px);
+}
+.zx__img-wrap:hover { transform: translateY(-5px) scale(1.03) rotate(1deg); box-shadow: 0 18px 48px rgba(0,0,0,0.15); }
+.zx__img      { width: 100%; height: 100%; object-fit: cover; display: block; }
+.zx__img-ph   { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 52px; opacity: 0.18; }
+
+.zx__prod-type {
+  font-family: var(--ff-label);
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink-3); margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+.zx__prod-name {
+  font-family: var(--ff-display);
+  font-size: 19px; font-weight: 400; color: var(--ink);
+  letter-spacing: -0.01em; text-align: center;
+  margin-bottom: 8px; line-height: 1.25;
+  position: relative; z-index: 1;
+}
+.zx__prod-price {
+  font-size: 17px; font-weight: 700; color: var(--ink);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+  position: relative; z-index: 1;
+}
+.zx__prod-compare {
+  font-size: 13px; font-weight: 400; color: var(--ink-3); text-decoration: line-through;
+}
+
+/* ATC */
+.zx__atc {
+  position: relative; z-index: 1;
+  width: 100%; padding: 13px 24px; border-radius: 999px;
+  font-family: var(--ff-body); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform var(--ts), box-shadow var(--te), opacity var(--tf);
+  margin-bottom: 10px; overflow: hidden;
+}
+.zx__atc::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background var(--tf); }
+.zx__atc:hover:not(:disabled)::after { background:rgba(255,255,255,0.12); }
+.zx__atc:hover:not(:disabled) { transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+.zx__atc:active:not(:disabled) { transform:scale(0.98); }
+.zx__atc:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* Per-sign ATC gradient */
+.zx__panel[data-sign="aries"]       .zx__atc { background:linear-gradient(135deg,var(--z-aries-mid),  var(--z-aries-deep)); }
+.zx__panel[data-sign="taurus"]      .zx__atc { background:linear-gradient(135deg,var(--z-taurus-mid), var(--z-taurus-deep)); }
+.zx__panel[data-sign="gemini"]      .zx__atc { background:linear-gradient(135deg,var(--z-gemini-mid), var(--z-gemini-deep)); }
+.zx__panel[data-sign="cancer"]      .zx__atc { background:linear-gradient(135deg,var(--z-cancer-mid), var(--z-cancer-deep)); }
+.zx__panel[data-sign="leo"]         .zx__atc { background:linear-gradient(135deg,var(--z-leo-mid),    var(--z-leo-deep)); }
+.zx__panel[data-sign="virgo"]       .zx__atc { background:linear-gradient(135deg,var(--z-virgo-mid),  var(--z-virgo-deep)); }
+.zx__panel[data-sign="libra"]       .zx__atc { background:linear-gradient(135deg,var(--z-libra-mid),  var(--z-libra-deep)); }
+.zx__panel[data-sign="scorpio"]     .zx__atc { background:linear-gradient(135deg,var(--z-scorpio-mid),var(--z-scorpio-deep)); }
+.zx__panel[data-sign="sagittarius"] .zx__atc { background:linear-gradient(135deg,var(--z-sagit-mid),  var(--z-sagit-deep)); }
+.zx__panel[data-sign="capricorn"]   .zx__atc { background:linear-gradient(135deg,var(--z-capri-mid),  var(--z-capri-deep)); }
+.zx__panel[data-sign="aquarius"]    .zx__atc { background:linear-gradient(135deg,var(--z-aqua-mid),   var(--z-aqua-deep)); }
+.zx__panel[data-sign="pisces"]      .zx__atc { background:linear-gradient(135deg,var(--z-pisces-mid), var(--z-pisces-deep)); }
+
+/* View link */
+.zx__view {
+  position: relative; z-index: 1;
+  width: 100%; padding: 11px 20px; border-radius: 999px;
+  border: 1.5px solid rgba(24,24,26,0.13);
+  background: rgba(255,255,255,0.65);
+  font-family: var(--ff-body); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: transform var(--ts), border-color var(--te), background var(--te);
+  backdrop-filter: blur(4px);
+}
+.zx__view:hover { transform:translateY(-2px); border-color:rgba(24,24,26,0.28); background:rgba(255,255,255,0.9); }
+
+/* ── RIGHT column ── */
+.zx__panel-right {
+  padding: 48px 52px;
+  display: flex; flex-direction: column; gap: 28px;
+  border-left: 1px solid var(--border);
+}
+@media (max-width: 860px) {
+  .zx__panel-right { padding: 36px 28px; border-left: none; border-top: 1px solid var(--border); gap: 22px; }
+}
+
+/* Title */
+.zx__panel-title { display: flex; flex-direction: column; gap: 5px; }
+.zx__panel-num {
+  font-family: var(--ff-label); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-4);
+}
+.zx__panel-h {
+  font-family: var(--ff-display);
+  font-size: clamp(30px, 4vw, 50px);
+  font-weight: 300; color: var(--ink);
+  letter-spacing: -0.03em; line-height: 1.03;
+}
+.zx__panel-sub {
+  font-family: var(--ff-label); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-3); opacity: 0.75;
+}
+
+/* Description */
+.zx__desc {
+  font-size: 15px; line-height: 1.88; color: var(--ink-2);
+  font-weight: 300; padding-left: 20px; border-left: 2.5px solid;
+}
+.zx__panel[data-sign="aries"]       .zx__desc { border-color:var(--z-aries-mid); }
+.zx__panel[data-sign="taurus"]      .zx__desc { border-color:var(--z-taurus-mid); }
+.zx__panel[data-sign="gemini"]      .zx__desc { border-color:var(--z-gemini-mid); }
+.zx__panel[data-sign="cancer"]      .zx__desc { border-color:var(--z-cancer-mid); }
+.zx__panel[data-sign="leo"]         .zx__desc { border-color:var(--z-leo-mid); }
+.zx__panel[data-sign="virgo"]       .zx__desc { border-color:var(--z-virgo-mid); }
+.zx__panel[data-sign="libra"]       .zx__desc { border-color:var(--z-libra-mid); }
+.zx__panel[data-sign="scorpio"]     .zx__desc { border-color:var(--z-scorpio-mid); }
+.zx__panel[data-sign="sagittarius"] .zx__desc { border-color:var(--z-sagit-mid); }
+.zx__panel[data-sign="capricorn"]   .zx__desc { border-color:var(--z-capri-mid); }
+.zx__panel[data-sign="aquarius"]    .zx__desc { border-color:var(--z-aqua-mid); }
+.zx__panel[data-sign="pisces"]      .zx__desc { border-color:var(--z-pisces-mid); }
+
+/* 3-col info grid */
+.zx__info-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+}
+@media (max-width: 560px) { .zx__info-grid { grid-template-columns: 1fr; } }
+
+.zx__info-cell { background: var(--surface); padding: 18px 16px; }
+.zx__info-label {
+  font-family: var(--ff-label); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-4); display: block; margin-bottom: 8px;
+}
+.zx__info-cell--shadow .zx__info-label { color: #EF4444; }
+.zx__info-cell--light  .zx__info-label { color: #10B981; }
+.zx__info-cell--tips   .zx__info-label { color: #818CF8; }
+.zx__info-val { font-size: 13px; line-height: 1.7; color: var(--ink-2); font-weight: 300; }
+
+/* Benefits */
+.zx__benefits { display: flex; flex-direction: column; gap: 9px; }
+.zx__benefits-h {
+  font-family: var(--ff-label); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 3px;
+}
+.zx__benefit { display: flex; align-items: flex-start; gap: 10px; font-size: 13.5px; color: var(--ink-2); font-weight: 300; line-height: 1.45; }
+.zx__bdot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:6px; }
+.zx__panel[data-sign="aries"]       .zx__bdot { background:var(--z-aries-mid); }
+.zx__panel[data-sign="taurus"]      .zx__bdot { background:var(--z-taurus-mid); }
+.zx__panel[data-sign="gemini"]      .zx__bdot { background:var(--z-gemini-mid); }
+.zx__panel[data-sign="cancer"]      .zx__bdot { background:var(--z-cancer-mid); }
+.zx__panel[data-sign="leo"]         .zx__bdot { background:var(--z-leo-mid); }
+.zx__panel[data-sign="virgo"]       .zx__bdot { background:var(--z-virgo-mid); }
+.zx__panel[data-sign="libra"]       .zx__bdot { background:var(--z-libra-mid); }
+.zx__panel[data-sign="scorpio"]     .zx__bdot { background:var(--z-scorpio-mid); }
+.zx__panel[data-sign="sagittarius"] .zx__bdot { background:var(--z-sagit-mid); }
+.zx__panel[data-sign="capricorn"]   .zx__bdot { background:var(--z-capri-mid); }
+.zx__panel[data-sign="aquarius"]    .zx__bdot { background:var(--z-aqua-mid); }
+.zx__panel[data-sign="pisces"]      .zx__bdot { background:var(--z-pisces-mid); }
+
+/* Usage tiles */
+.zx__usage {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+}
+@media (max-width: 560px) { .zx__usage { grid-template-columns: 1fr 1fr; } }
+.zx__tile {
+  background: var(--bg); border-radius: 16px; padding: 16px 14px;
+  display: flex; flex-direction: column; gap: 5px;
+  transition: transform var(--ts), box-shadow var(--te);
+}
+.zx__tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.zx__tile-icon  { font-size: 22px; line-height: 1; }
+.zx__tile-label { font-size: 12px; font-weight: 700; color: var(--ink); letter-spacing: 0.02em; }
+.zx__tile-val   { font-size: 11.5px; color: var(--ink-3); font-weight: 300; line-height: 1.45; }
+
+/* Attribute pills */
+.zx__attrs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.zx__attr {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 13px; border-radius: 999px;
+  font-size: 12px; font-weight: 500;
+  border: 1.5px solid var(--border); color: var(--ink); background: var(--surface);
+  transition: transform var(--tf), box-shadow var(--tf);
+}
+.zx__attr:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.zx__attr-lbl {
+  font-family: var(--ff-label); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-4); margin-right: 2px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) { .zx__header { padding: 64px 24px 44px; } }
+@media (max-width: 480px) {
+  .zx__header { padding: 48px 16px 32px; }
+  .zx__panel-right { padding: 28px 20px; }
+  .zx__img-wrap { width: 130px; height: 130px; }
+}
+</style>
+
+{%- liquid
+  assign zx_keys   = 'aries,taurus,gemini,cancer,leo,virgo,libra,scorpio,sagittarius,capricorn,aquarius,pisces' | split: ','
+  assign zx_names  = 'Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius,Capricorn,Aquarius,Pisces' | split: ','
+  assign zx_glyphs = '♈,♉,♊,♋,♌,♍,♎,♏,♐,♑,♒,♓' | split: ','
+  assign zx_emoji  = '🐏,🐂,👯,🦀,🦁,👸,⚖️,🦂,🏹,🐐,🏺,🐟' | split: ','
+  assign zx_dates  = 'Mar 21–Apr 19,Apr 20–May 20,May 21–Jun 20,Jun 21–Jul 22,Jul 23–Aug 22,Aug 23–Sep 22,Sep 23–Oct 22,Oct 23–Nov 21,Nov 22–Dec 21,Dec 22–Jan 19,Jan 20–Feb 18,Feb 19–Mar 20' | split: ','
+  assign zx_nums   = '01,02,03,04,05,06,07,08,09,10,11,12' | split: ','
+  assign zx_elem   = 'Fire,Earth,Air,Water,Fire,Earth,Air,Water,Fire,Earth,Air,Water' | split: ','
+  assign zx_mode   = 'Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable' | split: ','
+  assign zx_ruler  = 'Mars,Venus,Mercury,Moon,Sun,Mercury,Venus,Pluto & Mars,Jupiter,Saturn,Uranus & Saturn,Neptune & Jupiter' | split: ','
+  assign zx_stone  = 'Diamond & Ruby,Emerald & Rose Quartz,Agate & Citrine,Moonstone & Pearl,Peridot & Ruby,Sapphire & Carnelian,Opal & Lapis Lazuli,Topaz & Obsidian,Turquoise & Tanzanite,Garnet & Onyx,Amethyst & Aquamarine,Aquamarine & Bloodstone' | split: ','
+  assign zx_essence = 'Red Musk · Oud · Black Pepper · Cardamom,Rose Absolute · Sandalwood · Vetiver · Vanilla,Neroli · Bergamot · Lemon · Mint,White Rose · Jasmine · Camphor · Kewra,Saffron · Amber · Benzoin · Warm Musk,Neroli · Vetiver · Chamomile · Clean Woods,Rose · Tuberose · Ylang Ylang · White Tea,Dark Oud · Black Musk · Patchouli · Incense,Clove · Cinnamon · Frankincense · Cedarwood,Oakmoss · Cedarwood · Myrrh · Dark Musk,Violet · Lavender · Ambergris · Ozonic,Blue Lotus · Aqua · Jasmine · Sandalwood' | split: ','
+
+  assign zx_descs = "Aries — the first fire of the zodiac and the trailblazer of the celestial wheel. Ruled by Mars, the Ram charges forward with unrelenting force, courage, and an insatiable desire to be first. Our Aries Attar is an electrifying accord of smoky Oud, Red Musk, Cardamom, and Black Pepper — a fragrance as bold and unapologetic as the sign itself. Wear it when you need to conquer, lead, or simply remind the world that you have arrived.,Taurus — the most sensory sign of the zodiac — lives fully in the body: touching, tasting, and inhaling beauty with deep, patient appreciation. Ruled by Venus, the Bull seeks permanence, luxury, and the sacred pleasure of material existence. Our Taurus Attar is a rich, grounding accord of Rose Absolute, aged Mysore Sandalwood, Vetiver root, and Vanilla — a fragrance of quiet opulence and enduring earthly beauty.,Gemini — the celestial twins of the zodiac — live simultaneously in two worlds: intellect and emotion, past and future, question and answer. Ruled by Mercury, they are the eternal students and communicators of the cosmos. Our Gemini Attar is a sparkling, mercurial accord of Neroli blossom, sun-drenched Bergamot, lemon zest, and fresh Mint — a fragrance of wit, duality, and perpetual curiosity.,Cancer — the most intuitive and emotionally rich sign of the zodiac — rules memory, home, and the invisible bonds of love. Ruled by the Moon, the Crab navigates life by feeling rather than thought. Our Cancer Attar is a luminous, watery accord of White Rose, night-blooming Jasmine, sacred Camphor, and Kewra — a fragrance of emotional depth, nurturing warmth, and the quiet sanctity of home.,Leo — the sovereign of the zodiac — was born to shine. Ruled by the Sun itself, the Lion radiates creativity, warmth, and an irresistible magnetic presence. Leo does not seek attention; it simply arrives wherever Leo does. Our Leo Attar is an imperial accord of Kashmiri Saffron, golden Amber, warm Benzoin, and Musk — a regal, luminous fragrance worthy of royalty.,Virgo — the master craftsperson of the zodiac — applies their legendary discernment to everything they touch. Ruled by Mercury, the Virgin pursues excellence not from perfectionism but from a deep love of refinement. Our Virgo Attar is a clean, precise accord of white Neroli, cool Vetiver, Roman Chamomile, and pure Forest Woods — a fragrance of clarity, intelligence, and understated elegance.,Libra — the aesthete of the zodiac — lives in the pursuit of beauty, balance, and perfect harmony. Ruled by Venus, the Scales are forever weighing, negotiating, and finding the most graceful middle path. Our Libra Attar is a luxurious, perfectly balanced accord of Rose Absolute, creamy Tuberose, Ylang Ylang, and White Tea — a fragrance as refined and enchanting as Libra itself.,Scorpio — the most intensely private and powerfully magnetic sign of the zodiac — sees through every surface to the hidden truth beneath. Ruled by Pluto and Mars, the Scorpion transforms through crisis and rebirth. Our Scorpio Attar is a dark, hypnotic accord of ancient Oud, Black Musk, earthy Patchouli, and sacred Temple Incense — a fragrance of mystery, magnetism, and unshakeable depth.,Sagittarius — the philosopher-adventurer of the zodiac — burns with an eternal hunger for wisdom, freedom, and the far horizon. Ruled by Jupiter, the Archer aims high and shoots farther than any other sign. Our Sagittarius Attar is a warm, expansive accord of Clove, Cinnamon, sacred Frankincense, and aged Cedarwood — a fragrance of open roads, ancient temples, and the joy of becoming.,Capricorn — the ancient mountain of the zodiac — climbs steadily toward its summit with unmatched discipline, patience, and an inner certainty that cannot be shaken. Ruled by Saturn, the Sea-Goat understands that mastery requires time. Our Capricorn Attar is a deep, austere accord of Oakmoss, aged Cedarwood, sacred Myrrh, and Dark Musk — a fragrance of ambition forged in silence and purpose worn like armour.,Aquarius — the visionary rebel of the zodiac — lives several decades ahead of the rest of humanity. Ruled by Uranus and Saturn, the Water-Bearer does not follow trends; Aquarius creates them. Our Aquarius Attar is an avant-garde accord of Violet, Lavender, rare Ambergris, and Ozonic marine accord — a fragrance as original, electric, and unforgettable as the sign that inspires it.,Pisces — the last and most mystical sign of the zodiac — carries within it the memory of all eleven signs before. Ruled by Neptune and Jupiter, the Fish swims in the space between waking and dreaming, between self and selflessness. Our Pisces Attar is a translucent, dreamy accord of Blue Lotus, Aqua essence, night-blooming Jasmine, and sacred Sandalwood — a fragrance of compassion, surrender, and infinite spiritual depth." | split: ','
+
+  assign zx_shadow = 'Aggression · Impatience · Selfishness · Recklessness,Stubbornness · Possessiveness · Materialism,Superficiality · Anxiety · Inconsistency · Gossip,Clinginess · Moodiness · Manipulation · Overprotection,Arrogance · Drama · Ego · Need for validation,Criticism · Anxiety · Over-analysis · Rigidity,Indecision · People-pleasing · Avoidance of conflict,Jealousy · Control · Secrecy · Intensity,Bluntness · Overcommitment · Carelessness · Restlessness,Coldness · Overwork · Rigidity · Fear of failure,Detachment · Aloofness · Contrarianism · Unpredictability,Escapism · Confusion · Boundary issues · Victimhood' | split: ','
+
+  assign zx_light = 'Courage · Leadership · Spontaneity · Passion · Initiative,Loyalty · Patience · Sensuality · Reliability · Beauty,Wit · Communication · Curiosity · Adaptability · Intelligence,Intuition · Empathy · Nurturing · Emotional depth · Memory,Generosity · Creativity · Warmth · Charisma · Royalty,Precision · Service · Analytical brilliance · Healing,Diplomacy · Charm · Beauty · Fairness · Partnership,Depth · Loyalty · Transformation · Intensity · Magnetism,Optimism · Wisdom · Freedom · Honesty · Expansion,Discipline · Ambition · Integrity · Patience · Mastery,Innovation · Humanitarian vision · Originality · Brilliance,Compassion · Intuition · Mysticism · Empathy · Art' | split: ','
+
+  assign zx_tips = 'Apply before leadership moments, negotiations, or physical challenges,Use during self-care rituals, luxury experiences, or creative work,Wear during writing, speaking, learning, or social connections,Apply at home, during meditation, or before emotional conversations,Use before performances, presentations, or creative endeavours,Apply during work, study, or healing and wellness practices,Wear on dates, social gatherings, or artistic pursuits,Apply during meditation, shadow work, or transformative decisions,Use before travel, lectures, philosophical discussions, or exploration,Apply before goal-setting, work, or any long-term commitment,Wear during brainstorming, activism, innovation, or group work,Apply during creative work, spiritual practice, or quiet reflection' | split: ','
+
+  assign zx_b1 = 'Ignites confidence, courage & warrior energy,Deepens sensory awareness & grounds scattered energy,Sharpens focus, enhances communication & mental agility,Soothes emotional turbulence & deepens empathy,Amplifies charisma, creativity & radiant self-expression,Clears mental fog & supports precision and mindfulness,Balances energy & opens the heart to beauty and love,Deepens emotional power & supports transformation,Expands the mind & invites wisdom and optimism,Grounds restless energy & supports long-term focus,Stimulates innovation & elevates original thinking,Opens intuition & deepens compassion and surrender' | split: ','
+  assign zx_b2 = 'Reduces aggression & supports healthy assertiveness,Eases anxiety & promotes sensory calm and security,Relieves nervous tension & supports joyful curiosity,Releases emotional pain & supports nurturing boundaries,Reduces ego & supports authentic self-confidence,Eases critical self-talk & promotes acceptance,Reduces people-pleasing & supports healthy boundaries,Dissolves jealousy & supports deep trust and intimacy,Reduces restlessness & supports grounded expansion,Releases workaholism & supports patience with self,Reduces emotional detachment & invites genuine connection,Reduces escapism & supports clarity and self-compassion' | split: ','
+  assign zx_b3 = 'Immunity, adrenal vitality & physical energy,Stress relief, skin health & hormonal balance,Nervous system calm & respiratory health,Hormonal balance, lymphatic support & emotional healing,Heart health, eye vitality & immune boost,Digestion, nervous system & gut-mind connection,Kidney health, skin clarity & stress reduction,Detoxification, reproductive health & deep immunity,Liver support, optimism chemistry & respiratory vitality,Joint health, bone density & long-term vitality,Circulation, neurological function & mental clarity,Lymphatic drainage, adrenal rest & spiritual renewal' | split: ','
+-%}
+
+<section class="zx" aria-label="Zodiac Attar Explorer" itemscope itemtype="https://schema.org/ItemList">
+  <meta itemprop="name" content="Zodiac Attar Collection">
+  <div class="zx__wrap">
+
+    {%- comment -%} ── HEADER ── {%- endcomment -%}
+    <header class="zx__header">
+      <span class="zx__eyebrow">{{ section.settings.eyebrow | default: 'Zodiac Collection' }}</span>
+      <h2 class="zx__title">{{ section.settings.title | default: 'The Twelve Zodiac <em>Attars</em>' }}</h2>
+      <p class="zx__sub">{{ section.settings.subtitle | default: 'Twelve rare botanical attars — each formulated for the soul, shadow, and stars of its zodiac sign. Find your fragrance in the cosmos.' }}</p>
+      <div class="zx__divider" aria-hidden="true">
+        <span class="zx__div-line"></span>
+        <span class="zx__div-dot"></span>
+        <span class="zx__div-star">✦</span>
+        <span class="zx__div-dot"></span>
+        <span class="zx__div-line"></span>
+      </div>
+    </header>
+
+    {%- comment -%} ── SIGN GRID ── {%- endcomment -%}
+    <div class="zx__grid" role="tablist" aria-label="Select your zodiac sign">
+      {%- for i in (0..11) -%}
+        {%- assign sk = zx_keys[i] -%}
+        <button
+          type="button"
+          class="zx__card{% if i == 0 %} is-active{% endif %}"
+          role="tab"
+          aria-selected="{% if i == 0 %}true{% else %}false{% endif %}"
+          aria-controls="zxp-{{ sk }}"
+          data-sign="{{ sk }}"
+          id="zxt-{{ sk }}"
+        >
+          <span class="zx__orb" aria-hidden="true">{{ zx_glyphs[i] }}</span>
+          <span class="zx__card-name">{{ zx_names[i] }}</span>
+          <span class="zx__card-dates">{{ zx_dates[i] }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} ── DETAIL PANELS ── {%- endcomment -%}
+    <div class="zx__panels">
+      {%- for i in (0..11) -%}
+        {%- liquid
+          assign sk      = zx_keys[i]
+          assign zx_prod = blank
+          assign zx_setting_key = 'product_' | append: sk
+          assign zx_setting_product = section.settings[zx_setting_key]
+
+          if collection != blank and collection.products_count > 0
+            for cp in collection.products
+              assign cp_handle = cp.handle | downcase
+              if sk == 'capricorn'
+                if cp_handle contains 'capricorn' or cp_handle contains 'capricon'
+                  assign zx_prod = cp
+                  break
+                endif
+              elsif sk == 'aquarius'
+                if cp_handle contains 'aquarius' or cp_handle contains 'aquaris'
+                  assign zx_prod = cp
+                  break
+                endif
+              else
+                if cp_handle contains sk
+                  assign zx_prod = cp
+                  break
+                endif
+              endif
+            endfor
+          endif
+
+          if zx_prod == blank and zx_setting_product != blank
+            assign zx_prod = all_products[zx_setting_product]
+          endif
+
+          if zx_prod == blank
+            if sk == 'capricorn'
+              assign zx_prod = all_products['capricon-zodiac-attar']
+            elsif sk == 'aquarius'
+              assign zx_prod = all_products['aquaris-zodiac-attar']
+            endif
+          endif
+
+          if zx_prod == blank
+            assign zx_fallback_handle = sk | append: '-zodiac-attar'
+            assign zx_prod = all_products[zx_fallback_handle]
+          endif
+        -%}
+        <div
+          class="zx__panel{% if i == 0 %} is-active{% endif %}"
+          id="zxp-{{ sk }}"
+          role="tabpanel"
+          aria-labelledby="zxt-{{ sk }}"
+          data-sign="{{ sk }}"
+          itemscope
+          itemprop="itemListElement"
+          itemtype="https://schema.org/ListItem"
+        >
+          <meta itemprop="position" content="{{ i | plus: 1 }}">
+          <meta itemprop="name" content="{{ zx_names[i] }} Attar">
+
+          <div class="zx__panel-bar" aria-hidden="true"></div>
+          <div class="zx__panel-inner">
+
+            {%- comment -%} LEFT: Product ── {%- endcomment -%}
+            <div class="zx__panel-left">
+              <span class="zx__orbit-ring" aria-hidden="true"></span>
+              <span class="zx__orbit-ring" aria-hidden="true"></span>
+
+              <span class="zx__sign-big" aria-label="{{ zx_names[i] }} symbol" role="img">{{ zx_glyphs[i] }}</span>
+
+              {%- if zx_prod != blank and zx_prod != empty -%}
+                <a href="{{ zx_prod.url }}" class="zx__img-wrap" aria-label="{{ zx_prod.title | escape }}">
+                  {%- if zx_prod.featured_image -%}
+                    <img
+                      class="zx__img"
+                      src="{{ zx_prod.featured_image | image_url: width: 600 }}"
+                      alt="{{ zx_prod.featured_image.alt | default: zx_prod.title | escape }}"
+                      width="600" height="600"
+                      loading="lazy" decoding="async"
+                    >
+                  {%- else -%}
+                    <div class="zx__img-ph">{{ zx_glyphs[i] }}</div>
+                  {%- endif -%}
+                </a>
+                <p class="zx__prod-type">{{ zx_prod.type | default: 'Zodiac Attar' }}</p>
+                <h3 class="zx__prod-name">{{ zx_prod.title }}</h3>
+                <div class="zx__prod-price">
+                  {%- if zx_prod.compare_at_price > zx_prod.price -%}
+                    <span class="zx__prod-compare">{{ zx_prod.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  {{ zx_prod.price | money }}
+                </div>
+                {%- if zx_prod.available -%}
+                  <button
+                    type="button"
+                    class="zx__atc js-zx-atc"
+                    data-id="{{ zx_prod.variants.first.id }}"
+                    aria-label="Add {{ zx_prod.title | escape }} to cart"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg>
+                    <span>Add to Cart</span>
+                  </button>
+                  <a href="{{ zx_prod.url }}" class="zx__view">
+                    View Details
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                {%- else -%}
+                  <button type="button" class="zx__atc" disabled>Sold Out</button>
+                {%- endif -%}
+              {%- else -%}
+                <div class="zx__img-wrap"><div class="zx__img-ph">{{ zx_glyphs[i] }}</div></div>
+                <p class="zx__prod-type">Zodiac Attar</p>
+                <h3 class="zx__prod-name">{{ zx_names[i] }} Attar</h3>
+                <p style="font-size:12px;color:var(--ink-3);margin-top:8px;text-align:center;position:relative;z-index:1;">Assign product in Theme Editor</p>
+              {%- endif -%}
+            </div>
+
+            {%- comment -%} RIGHT: Info ── {%- endcomment -%}
+            <div class="zx__panel-right">
+
+              <div class="zx__panel-title">
+                <span class="zx__panel-num">Sign {{ zx_nums[i] }} · {{ zx_elem[i] }} · {{ zx_mode[i] }}</span>
+                <h3 class="zx__panel-h">{{ zx_names[i] }}</h3>
+                <span class="zx__panel-sub">{{ zx_dates[i] }} · Ruler: {{ zx_ruler[i] }} · Stone: {{ zx_stone[i] | truncate: 28, '…' }}</span>
+              </div>
+
+              <p class="zx__desc">{{ zx_descs[i] }}</p>
+
+              <div class="zx__info-grid" role="table">
+                <div class="zx__info-cell zx__info-cell--shadow" role="cell">
+                  <span class="zx__info-label">Shadow Side</span>
+                  <p class="zx__info-val">{{ zx_shadow[i] }}</p>
+                </div>
+                <div class="zx__info-cell zx__info-cell--light" role="cell">
+                  <span class="zx__info-label">Light Side</span>
+                  <p class="zx__info-val">{{ zx_light[i] }}</p>
+                </div>
+                <div class="zx__info-cell zx__info-cell--tips" role="cell">
+                  <span class="zx__info-label">Best Worn When</span>
+                  <p class="zx__info-val">{{ zx_tips[i] }}</p>
+                </div>
+              </div>
+
+              <div class="zx__benefits">
+                <span class="zx__benefits-h">Attar Benefits</span>
+                <div class="zx__benefit"><span class="zx__bdot" aria-hidden="true"></span>{{ zx_b1[i] }}</div>
+                <div class="zx__benefit"><span class="zx__bdot" aria-hidden="true"></span>{{ zx_b2[i] }}</div>
+                <div class="zx__benefit"><span class="zx__bdot" aria-hidden="true"></span>{{ zx_b3[i] }}</div>
+              </div>
+
+              <div class="zx__usage" aria-label="How to use">
+                <div class="zx__tile">
+                  <span class="zx__tile-icon">🌙</span>
+                  <span class="zx__tile-label">Pulse Points</span>
+                  <span class="zx__tile-val">Wrists, temples, behind ears, base of throat</span>
+                </div>
+                <div class="zx__tile">
+                  <span class="zx__tile-icon">🧘</span>
+                  <span class="zx__tile-label">Ritual Use</span>
+                  <span class="zx__tile-val">Apply before meditation, journaling, or sign-specific practices</span>
+                </div>
+                <div class="zx__tile">
+                  <span class="zx__tile-icon">✨</span>
+                  <span class="zx__tile-label">Best Moment</span>
+                  <span class="zx__tile-val">New Moon or Full Moon in {{ zx_names[i] }} for peak resonance</span>
+                </div>
+              </div>
+
+              <div class="zx__attrs" aria-label="Key properties">
+                <span class="zx__attr"><span class="zx__attr-lbl">Essence</span>{{ zx_essence[i] | truncate: 36, '…' }}</span>
+                <span class="zx__attr"><span class="zx__attr-lbl">Element</span>{{ zx_elem[i] }}</span>
+                <span class="zx__attr"><span class="zx__attr-lbl">Ruler</span>{{ zx_ruler[i] }}</span>
+                <span class="zx__attr"><span class="zx__attr-lbl">Stone</span>{{ zx_stone[i] | truncate: 28, '…' }}</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  var tabs   = document.querySelectorAll('.zx__card');
+  var panels = document.querySelectorAll('.zx__panel');
+
+  function activate(sign) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.sign === sign;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var on = p.dataset.sign === sign;
+      if (on) {
+        p.style.display = 'block';
+        p.classList.add('is-active');
+        p.style.animation = 'none';
+        void p.offsetWidth;
+        p.style.animation = '';
+      } else {
+        p.classList.remove('is-active');
+        p.style.display = 'none';
+      }
+    });
+    if (window.innerWidth < 860) {
+      var pw = document.querySelector('.zx__panels');
+      if (pw) setTimeout(function () { pw.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+    }
+  }
+
+  var allTabs = Array.from(tabs);
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab.dataset.sign); });
+    tab.addEventListener('keydown', function (e) {
+      var idx = allTabs.indexOf(tab);
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(tab.dataset.sign); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); var n = allTabs[(idx+1)%allTabs.length]; activate(n.dataset.sign); n.focus(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); var p = allTabs[(idx-1+allTabs.length)%allTabs.length]; activate(p.dataset.sign); p.focus(); }
+    });
+  });
+
+  /* ATC */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-zx-atc');
+    if (!btn) return;
+    e.preventDefault();
+    var id = parseInt(btn.dataset.id, 10);
+    var span = btn.querySelector('span');
+    var orig = span ? span.textContent : 'Add to Cart';
+    if (!id) return;
+    btn.disabled = true;
+    if (span) span.textContent = 'Adding…';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: id, quantity: 1 })
+    })
+    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function () {
+      if (span) span.textContent = '✓ Added';
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      setTimeout(function () { btn.disabled = false; if (span) span.textContent = orig; }, 2600);
+    })
+    .catch(function () { btn.disabled = false; if (span) span.textContent = orig; });
+  });
+
+})();
+</script>
