@@ -959,6 +959,9 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%} ── FRAGRANCE CATEGORIES VIDEO ── {%- endcomment -%}
+  {% render 'fragrance-categories-video' %}
+
   {%- comment -%} ── PAGE HEADER ── {%- endcomment -%}
   <header class="arc-header" role="banner">
     <div class="arc-header__left">
@@ -1188,33 +1191,7 @@
     {%- endif -%}
   </main>
 
-  {%- comment -%} ── CONTENT BLOCK ── {%- endcomment -%}
-  {%- if section.settings.content_title != blank or section.settings.content_image != blank -%}
-    <section class="arc-content" aria-label="{{ section.settings.content_title | escape }}">
-      <div class="arc-content__inner">
-        <div class="arc-content__img-wrap">
-          {%- if section.settings.content_image != blank -%}
-            <img
-              src="{{ section.settings.content_image | image_url: width: 1200 }}"
-              alt="{{ section.settings.content_title | escape }}"
-              width="1200"
-              height="900"
-              loading="lazy"
-              decoding="async"
-              class="arc-content__img"
-            >
-          {%- else -%}
-            <div class="arc-content__ph">Upload image in Theme Editor</div>
-          {%- endif -%}
-        </div>
-        <div class="arc-content__text">
-          <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Craft' }}</span>
-          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'The Art of Sacred Smoke' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: 'For millennia, burning incense has been the soul of Indian ritual and daily prayer. Our Agarbatti are hand-rolled using centuries-old methods — blending pure resins, forest flowers, and sacred woods into smoke that transforms any space into a sanctuary.' }}</p>
-        </div>
-      </div>
-    </section>
-  {%- endif -%}
+
 
   {%- comment -%} ── CTA BAND ── {%- endcomment -%}
   {%- if section.settings.cta_title != blank -%}
@@ -1428,10 +1405,7 @@
     { "type": "header", "content": "Top Banner" },
     { "type": "image_picker", "id": "incense_image", "label": "Banner image" },
     { "type": "header", "content": "Content Block" },
-    { "type": "image_picker", "id": "content_image", "label": "Content image" },
-    { "type": "text", "id": "content_label", "label": "Eyebrow label", "default": "Our Craft" },
-    { "type": "text", "id": "content_title", "label": "Heading", "default": "The Art of Sacred Smoke" },
-    { "type": "textarea", "id": "content_body", "label": "Body text", "default": "For millennia, burning incense has been the soul of Indian ritual and daily prayer. Our Agarbatti are hand-rolled using centuries-old methods — blending pure resins, forest flowers, and sacred woods into smoke that transforms any space into a sanctuary." },
+    
     { "type": "header", "content": "CTA Section" },
     { "type": "text", "id": "cta_label", "label": "Eyebrow label", "default": "Anand Rasa" },
     { "type": "text", "id": "cta_title", "label": "Heading", "default": "Transform Your Space into a Sacred Sanctuary" },

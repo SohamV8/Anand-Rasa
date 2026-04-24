@@ -1,0 +1,172 @@
+{% comment %}
+  Anand Rasa — Fragrance Categories (Video Circles)
+  Snippet: snippets/fragrance-categories-video.liquid
+{% endcomment %}
+
+<section class="ar-cat-video">
+  <div class="ar-cat-video__wrap">
+
+    <h2 class="ar-cat-video__heading">
+      {{ section.settings.heading | default: "Fragrances For Divine Experiences" }}
+    </h2>
+
+    <div class="ar-cat-video__grid">
+
+      {% for block in section.blocks %}
+        <div class="ar-cat-video__item">
+
+          <div class="ar-cat-video__media">
+            <video
+              src="{{ block.settings.video }}"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+            ></video>
+          </div>
+
+          <p class="ar-cat-video__label">
+            {{ block.settings.label }}
+          </p>
+
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<style>
+/* =========================
+   CONTAINER
+========================= */
+
+.ar-cat-video {
+  padding: 60px 20px;
+  background: #f6f6f6;
+}
+
+.ar-cat-video__wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* =========================
+   HEADING
+========================= */
+
+.ar-cat-video__heading {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 40px;
+  color: #111;
+  letter-spacing: -0.02em;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.ar-cat-video__grid {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   ITEM
+========================= */
+
+.ar-cat-video__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 160px;
+}
+
+/* =========================
+   VIDEO CIRCLE
+========================= */
+
+.ar-cat-video__media {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+
+  background: #000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+  transition: transform 0.4s ease;
+}
+
+.ar-cat-video__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* HOVER EFFECT */
+.ar-cat-video__item:hover .ar-cat-video__media {
+  transform: scale(1.05);
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.ar-cat-video__label {
+  font-size: 14px;
+  color: #222;
+  font-weight: 500;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .ar-cat-video__grid {
+    gap: 20px;
+  }
+
+  .ar-cat-video__item {
+    width: 120px;
+  }
+
+  .ar-cat-video__media {
+    width: 120px;
+    height: 120px;
+  }
+
+  .ar-cat-video__heading {
+    font-size: 22px;
+  }
+
+  .ar-cat-video__label {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   PERFORMANCE OPTIMIZATION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-cat-video__media video {
+    animation: none;
+  }
+}
+</style>
+
+{%- comment -%}
+  NOTE:
+  Snippets do not support {% schema %} blocks in Shopify.
+  Keep settings/blocks schema in a section file and render this snippet from that section.
+{%- endcomment -%}

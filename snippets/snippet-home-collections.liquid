@@ -5,6 +5,23 @@
       {%- if block.type == 'category' -%}
         {%- liquid
           assign ar_cat_href = block.settings.link | strip
+          assign ar_cat_fallback_image = ''
+          case block.settings.title
+            when 'Planet Attar'
+              assign ar_cat_fallback_image = 'PlanetHero.webp'
+            when 'Zodiac Attar'
+              assign ar_cat_fallback_image = 'PlanetHero.webp'
+            when 'Nakshatra Attar'
+              assign ar_cat_fallback_image = 'NakshatraGif1.webm'
+            when 'Chakra Attar'
+              assign ar_cat_fallback_image = 'chakra.webp'
+            when 'Stress Relief Attar'
+              assign ar_cat_fallback_image = 'stress.webp'
+            when 'Love Attar'
+              assign ar_cat_fallback_image = 'love.webp'
+            when 'Incense Sticks'
+              assign ar_cat_fallback_image = 'incense.jpeg'
+          endcase
           if ar_cat_href == blank
             assign ar_cat_handle = ''
             case block.settings.title
@@ -46,6 +63,28 @@
                 src="{{ block.settings.image | image_url: width: 1200 }}"
                 srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
                 sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+                width="1200"
+                height="900"
+                loading="lazy"
+                class="ar-cat__img"
+                decoding="async"
+              >
+            {%- elsif ar_cat_fallback_image == 'NakshatraGif1.webm' -%}
+              <video
+                class="ar-cat__img"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+                aria-label="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+              >
+                <source src="{{ ar_cat_fallback_image | asset_url }}" type="video/webm">
+              </video>
+            {%- elsif ar_cat_fallback_image != blank -%}
+              <img
+                src="{{ ar_cat_fallback_image | asset_url }}"
                 alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
                 width="1200"
                 height="900"

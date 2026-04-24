@@ -61,6 +61,7 @@
   .ar-mega__feature { background:linear-gradient(135deg,#faf9f7 0%,#f5f0eb 100%); display:flex; align-items:center; justify-content:center; padding:24px; border-left:1px solid rgba(30,32,35,.06); border-radius:0 16px 16px 0; }
   .ar-mega__feature-media { position:relative; width:100%; min-height:300px; display:flex; align-items:center; justify-content:center; }
   .ar-mega__feature-img { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:block; border-radius:8px; opacity:0; transition:opacity .3s ease; will-change:opacity; pointer-events:none; }
+  .ar-mega__feature-video { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:none; border-radius:8px; }
   .ar-mega__feature-img.is-active { opacity:1; }
   #header-preview-image { transition: opacity .3s ease; }
   .ar-mega__feature-ph { width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; font-family:var(--font-body-family); }
@@ -124,14 +125,43 @@
               <span class="ar-mega__col-title">Collections</span>
               {%- if mega_blocks.size > 0 -%}
                 {%- for block in mega_blocks -%}
+                  {%- liquid
+                    assign ar_mega_hover_image = ''
+                    assign ar_mega_hover_video = ''
+                    if block.settings.image != blank
+                      assign ar_mega_hover_image = block.settings.image | image_url: width: 900
+                    else
+                      case block.settings.title
+                        when 'Planet Attar', 'Planet Attars'
+                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                        when 'Zodiac Attar', 'Zodiac Attars'
+                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                        when 'Nakshatra Attar', 'Nakshatra Attars'
+                          assign ar_mega_hover_video = 'NakshatraGif1.webm' | asset_url
+                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                        when 'Chakra Attar', 'Chakra Attars'
+                          assign ar_mega_hover_image = 'chakra.webp' | asset_url
+                        when 'Stress Relief Attar', 'Stress Relief Attars'
+                          assign ar_mega_hover_image = 'stress.webp' | asset_url
+                        when 'Love Attar', 'Love Attars'
+                          assign ar_mega_hover_image = 'love.webp' | asset_url
+                        when 'Incense Sticks'
+                          assign ar_mega_hover_image = 'incense.jpeg' | asset_url
+                      endcase
+                    endif
+                    if ar_mega_hover_image == blank and mega_fallback_image != blank
+                      assign ar_mega_hover_image = mega_fallback_image | image_url: width: 900
+                    endif
+                  -%}
                   <a
                     href="{{ block.settings.link | default: '/collections/all' }}"
                     class="ar-mega__link"
-                    data-image="{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 900 }}{%- elsif mega_fallback_image != blank -%}{{ mega_fallback_image | image_url: width: 900 }}{%- endif -%}"
+                    data-image="{{ ar_mega_hover_image }}"
+                    data-video="{{ ar_mega_hover_video }}"
                     data-mega-alt="{{ block.settings.title | escape }}"
                     {{ block.shopify_attributes }}
-                    {%- if block.settings.image != blank -%}
-                      data-mega-image="{{ block.settings.image | image_url: width: 900 }}"
+                    {%- if ar_mega_hover_image != blank -%}
+                      data-mega-image="{{ ar_mega_hover_image }}"
                     {%- endif -%}
                   >
                     {{ block.settings.title | default: 'Collection' }}
@@ -139,13 +169,13 @@
                 {%- endfor -%}
               {%- else -%}
               <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Bestseller</a>
-                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Planet Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Zodiac Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Nakshatra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Stress Relief Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Chakra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Love Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Incense Sticks</a>
+                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link" data-image="{{ 'PlanetHero.webp' | asset_url }}">Planet Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link" data-image="{{ 'PlanetHero.webp' | asset_url }}">Zodiac Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link" data-image="{{ 'PlanetHero.webp' | asset_url }}" data-video="{{ 'NakshatraGif1.webm' | asset_url }}">Nakshatra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link" data-image="{{ 'stress.webp' | asset_url }}">Stress Relief Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" data-image="{{ 'chakra.webp' | asset_url }}">Chakra Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" data-image="{{ 'love.webp' | asset_url }}">Love Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" data-image="{{ 'incense.jpeg' | asset_url }}">Incense Sticks</a>
               {%- endif -%}
             </div>
             <div class="ar-mega__feature">
@@ -172,6 +202,30 @@
                     class="ar-mega__feature-img js-ar-mega-feature-secondary"
                     id="ar-mega-feature-secondary-{{ section.id }}"
                   >
+                  <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
+                </div>
+              {%- elsif mega_blocks.size > 0 -%}
+                <div class="ar-mega__feature-media">
+                  <img
+                    src="{{ 'PlanetHero.webp' | asset_url }}"
+                    alt="Featured Collection"
+                    width="900"
+                    height="1200"
+                    loading="lazy"
+                    class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
+                    id="header-preview-image"
+                    data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
+                  >
+                  <img
+                    src="{{ 'PlanetHero.webp' | asset_url }}"
+                    alt="Featured Collection"
+                    width="900"
+                    height="1200"
+                    loading="lazy"
+                    class="ar-mega__feature-img js-ar-mega-feature-secondary"
+                    id="ar-mega-feature-secondary-{{ section.id }}"
+                  >
+                  <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
                 </div>
               {%- else -%}
                 <div class="ar-mega__feature-ph">Upload featured image in Theme Editor</div>
@@ -285,6 +339,7 @@
 
       var primaryImage = root.querySelector('#header-preview-image') || root.querySelector('#ar-mega-feature-primary-' + sectionId);
       var secondaryImage = root.querySelector('#ar-mega-feature-secondary-' + sectionId);
+      var previewVideo = root.querySelector('.js-ar-mega-feature-video');
       if (!primaryImage || !secondaryImage) return;
 
       var fallbackSrc = primaryImage.getAttribute('src');
@@ -295,6 +350,13 @@
         var nextSrc = src || fallbackSrc;
         var nextAlt = altText || fallbackAlt;
         if (!nextSrc || activeImage.getAttribute('src') === nextSrc) return;
+        if (previewVideo) {
+          previewVideo.pause();
+          previewVideo.removeAttribute('src');
+          previewVideo.style.display = 'none';
+        }
+        primaryImage.style.display = '';
+        secondaryImage.style.display = '';
         inactiveImage.src = nextSrc;
         inactiveImage.alt = nextAlt;
         inactiveImage.classList.add('is-active');
@@ -307,11 +369,25 @@
       var menuLinks = dropdown.querySelectorAll('.ar-mega__link');
       menuLinks.forEach(function (link) {
         var hoverSrc = link.getAttribute('data-image') || link.getAttribute('data-mega-image');
+        var hoverVideo = link.getAttribute('data-video');
+        function showVideoOrImage() {
+          if (hoverVideo && previewVideo) {
+            primaryImage.classList.remove('is-active');
+            secondaryImage.classList.remove('is-active');
+            primaryImage.style.display = 'none';
+            secondaryImage.style.display = 'none';
+            previewVideo.src = hoverVideo;
+            previewVideo.style.display = 'block';
+            previewVideo.play().catch(function(){});
+          } else {
+            swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+          }
+        }
         link.addEventListener('mouseenter', function () {
-          swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+          showVideoOrImage();
         });
         link.addEventListener('focus', function () {
-          swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+          showVideoOrImage();
         });
       });
 

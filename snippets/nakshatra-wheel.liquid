@@ -1,0 +1,881 @@
+{% comment %}
+  ANAND RASA — Nakshatra Attar Explorer
+  sections/anand-rasa-nakshatra.liquid
+  27-segment interactive wheel · Product showcase · Full animations
+{% endcomment %}
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+.nk {
+  --fh: var(--font-heading-family,'Georgia',serif);
+  --fb: var(--font-body-family,system-ui,-apple-system,sans-serif);
+  --bg:    #FAFAF7;
+  --white: #FFFFFF;
+  --ink:   #0F0F0F;
+  --ink-2: #3A3A3A;
+  --ink-3: #7A7A7A;
+  --ink-4: #C0C0C0;
+  --gold:  #B8943A;
+  --gold-l:#D4AB5A;
+  --bdr:   rgba(0,0,0,0.08);
+  --ts:    0.38s cubic-bezier(0.25,1,0.5,1);
+  --tf:    0.18s ease;
+  font-family:var(--fb);
+  -webkit-font-smoothing:antialiased;
+}
+.nk *,.nk *::before,.nk *::after{box-sizing:border-box;margin:0;padding:0;}
+.nk a{text-decoration:none;color:inherit;}
+.nk img{display:block;max-width:100%;}
+.nk button{font-family:var(--fb);cursor:pointer;border:none;background:none;}
+
+/* ============================================================
+   SECTION SHELL
+   ============================================================ */
+.nk__section {
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  position:relative;
+}
+
+/* Subtle radial glow behind wheel */
+.nk__section::before {
+  content:'';
+  position:absolute;
+  top:-10%;left:50%;
+  transform:translateX(-50%);
+  width:900px;height:900px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(184,148,58,0.07) 0%,transparent 65%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ============================================================
+   HERO HEADER
+   ============================================================ */
+.nk__hero {
+  position:relative;z-index:1;
+  text-align:center;
+  padding:72px 48px 56px;
+  flex-shrink:0;
+}
+
+.nk__eyebrow {
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:10px;font-weight:700;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:14px;
+  opacity:0;animation:nk-rise .65s ease .1s forwards;
+}
+.nk__eyebrow::before,.nk__eyebrow::after{
+  content:'';width:24px;height:1px;background:currentColor;opacity:.5;
+}
+
+.nk__title {
+  font-family:var(--fh);
+  font-size:clamp(32px,5vw,64px);
+  font-weight:300;color:var(--ink);
+  letter-spacing:-.04em;line-height:1.04;
+  margin-bottom:14px;
+  opacity:0;animation:nk-rise .65s ease .2s forwards;
+}
+.nk__title em{font-style:italic;font-weight:400;color:var(--gold);}
+
+.nk__sub {
+  font-size:15px;color:var(--ink-3);
+  line-height:1.8;font-weight:300;
+  max-width:520px;margin:0 auto 28px;
+  opacity:0;animation:nk-rise .65s ease .3s forwards;
+}
+
+.nk__divider {
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  opacity:0;animation:nk-rise .65s ease .4s forwards;
+}
+.nk__div-line{width:48px;height:1px;}
+.nk__div-line:first-child{background:linear-gradient(to right,transparent,var(--gold));}
+.nk__div-line:last-child {background:linear-gradient(to left, transparent,var(--gold));}
+.nk__div-star{font-size:14px;color:var(--gold);opacity:.7;}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.nk__layout {
+  position:relative;z-index:1;
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  max-width:1440px;
+  margin:0 auto;
+  width:100%;
+  padding:0 48px 80px;
+  align-items:center;
+}
+
+/* ============================================================
+   LEFT — WHEEL
+   ============================================================ */
+.nk__wheel-col {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:0 24px 0 0;
+}
+
+.nk__wheel-wrap {
+  position:relative;
+  width:min(500px,100%);
+  aspect-ratio:1/1;
+  opacity:0;
+  animation:nk-pop .8s cubic-bezier(.34,1.56,.64,1) .5s forwards;
+}
+
+/* SVG wheel */
+#nk-svg {
+  width:100%;height:100%;
+  overflow:visible;
+  cursor:pointer;
+}
+
+/* Segment styling */
+.nk-seg {
+  cursor:pointer;
+  transition:opacity var(--tf),filter var(--tf);
+}
+.nk-seg path {
+  stroke:#fff;
+  stroke-width:1.5;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),filter .3s ease;
+  transform-origin:center;
+  transform-box:fill-box;
+}
+.nk-seg:hover path  { filter:brightness(1.12); }
+.nk-seg.is-active path {
+  filter:brightness(1.18) drop-shadow(0 0 12px rgba(184,148,58,.5));
+  stroke:var(--gold);stroke-width:2.5;
+}
+
+/* Segment label */
+.nk-seg text {
+  font-size:7px;
+  font-family:var(--ff-body,system-ui,sans-serif);
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  fill:#fff;
+  pointer-events:none;
+  paint-order:stroke;
+  stroke:#0008;
+  stroke-width:.3px;
+  transition:font-size .2s ease;
+}
+.nk-seg.is-active text { font-size:7.5px; fill:#fff700; stroke:#0006; }
+
+/* Centre circle */
+.nk__centre {
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:18%;aspect-ratio:1/1;
+  border-radius:50%;
+  background:var(--bg);
+  border:2px solid rgba(184,148,58,.3);
+  box-shadow:0 0 0 6px var(--bg),0 0 32px rgba(184,148,58,.14);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  pointer-events:none;
+  z-index:5;
+}
+.nk__centre-star { font-size:20px;line-height:1; }
+.nk__centre-text {
+  font-size:7px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);margin-top:2px;
+}
+
+/* Outer ring tick marks */
+.nk__ticks {
+  position:absolute;inset:0;pointer-events:none;z-index:3;
+  animation:nk-spin-slow 80s linear infinite;
+}
+@keyframes nk-spin-slow{ to{transform:rotate(360deg);} }
+
+/* Selected name label below wheel */
+.nk__wheel-label {
+  margin-top:20px;
+  text-align:center;
+  min-height:32px;
+  transition:opacity var(--ts);
+}
+.nk__wheel-label-name {
+  font-family:var(--fh);
+  font-size:clamp(16px,2vw,24px);
+  font-weight:400;color:var(--ink);
+  letter-spacing:-.015em;
+  display:block;
+}
+.nk__wheel-label-num {
+  font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);opacity:.75;margin-top:2px;display:block;
+}
+
+/* ============================================================
+   RIGHT — PRODUCT PANEL
+   ============================================================ */
+.nk__panel-col {
+  padding:0 0 0 40px;
+  border-left:1px solid var(--bdr);
+  min-height:540px;
+  display:flex;align-items:center;
+}
+
+.nk__panel {
+  width:100%;
+  opacity:0;transform:translateX(20px);
+  transition:opacity .42s ease,transform .42s ease;
+}
+.nk__panel.is-visible{
+  opacity:1;transform:translateX(0);
+}
+
+/* Top meta row */
+.nk__panel-meta {
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:22px;flex-wrap:wrap;
+}
+.nk__panel-num {
+  font-size:10px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink-4);
+}
+.nk__panel-lord-pill {
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 12px;border-radius:999px;
+  background:rgba(184,148,58,.1);
+  border:1px solid rgba(184,148,58,.25);
+  font-size:11px;font-weight:600;color:var(--gold);
+  letter-spacing:.04em;
+}
+
+/* Nakshatra name */
+.nk__panel-h {
+  font-family:var(--fh);
+  font-size:clamp(28px,3.5vw,52px);
+  font-weight:300;color:var(--ink);
+  letter-spacing:-.04em;line-height:1.04;
+  margin-bottom:6px;
+}
+.nk__panel-meaning {
+  font-size:14px;font-style:italic;
+  color:var(--ink-3);font-weight:300;
+  margin-bottom:20px;letter-spacing:.01em;
+}
+
+/* Divider */
+.nk__panel-rule {
+  width:40px;height:1.5px;
+  background:var(--gold);margin-bottom:20px;
+  animation:nk-line .5s ease both;
+  transform-origin:left;
+}
+@keyframes nk-line{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+
+/* Description */
+.nk__panel-desc {
+  font-size:14.5px;line-height:1.85;
+  color:var(--ink-2);font-weight:300;
+  margin-bottom:24px;
+  padding-left:16px;
+  border-left:2px solid rgba(184,148,58,.4);
+}
+
+/* Info grid */
+.nk__info-grid {
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--bdr);
+  border:1px solid var(--bdr);border-radius:16px;
+  overflow:hidden;margin-bottom:24px;
+}
+.nk__info-cell{background:var(--white);padding:14px 16px;}
+.nk__info-lbl {
+  font-size:9px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-4);
+  display:block;margin-bottom:5px;
+}
+.nk__info-val {font-size:13px;color:var(--ink-2);font-weight:400;line-height:1.4;}
+
+/* Product card */
+.nk__prod {
+  display:flex;align-items:center;gap:16px;
+  background:var(--white);
+  border:1px solid var(--bdr);border-radius:20px;
+  padding:16px;margin-bottom:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+  transition:box-shadow var(--ts),transform var(--ts);
+  text-decoration:none;color:inherit;
+}
+.nk__prod:hover{
+  box-shadow:0 12px 36px rgba(0,0,0,.1);
+  transform:translateY(-3px);
+}
+.nk__prod-img{
+  width:80px;height:80px;border-radius:14px;
+  overflow:hidden;background:#f5f0e8;flex-shrink:0;
+}
+.nk__prod-img img{width:100%;height:100%;object-fit:cover;}
+.nk__prod-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.2;}
+.nk__prod-info{flex:1;min-width:0;}
+.nk__prod-type{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px;}
+.nk__prod-name{font-family:var(--fh);font-size:17px;font-weight:400;color:var(--ink);line-height:1.25;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nk__prod-price{font-size:15px;font-weight:700;color:var(--ink);}
+.nk__prod-compare{font-size:12px;font-weight:400;color:var(--ink-4);text-decoration:line-through;margin-right:6px;}
+
+/* ATC */
+.nk__atc {
+  width:100%;padding:14px;border-radius:999px;
+  background:var(--ink);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:background var(--ts),transform .2s ease,box-shadow .2s ease;
+  cursor:pointer;font-family:var(--fb);margin-bottom:10px;
+}
+.nk__atc:hover:not(:disabled){background:#1D2330;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.nk__atc:disabled{opacity:.4;cursor:not-allowed;}
+.nk__atc.is-added{background:#2E7D52;}
+
+.nk__view-link {
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);text-decoration:none;
+  transition:color var(--tf);
+}
+.nk__view-link:hover{color:var(--ink);}
+
+/* Empty state */
+.nk__empty {
+  text-align:center;padding:40px 24px;
+}
+.nk__empty-icon{font-size:40px;margin-bottom:12px;opacity:.25;}
+.nk__empty-h{font-family:var(--fh);font-size:20px;font-weight:300;color:var(--ink);margin-bottom:8px;}
+.nk__empty-p{font-size:14px;color:var(--ink-3);}
+
+/* Benefit dots */
+.nk__benefits{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
+.nk__benefit{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--ink-2);font-weight:300;line-height:1.45;}
+.nk__bdot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes nk-rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@keyframes nk-pop {from{opacity:0;transform:scale(.88);}to{opacity:1;transform:scale(1);}}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1100px){
+  .nk__layout{padding:0 32px 72px;gap:0;}
+  .nk__panel-col{padding-left:28px;}
+}
+
+@media(max-width:860px){
+  .nk__layout{
+    grid-template-columns:1fr;
+    padding:0 24px 64px;
+  }
+  .nk__wheel-col{padding:0 0 32px;}
+  .nk__panel-col{
+    border-left:none;border-top:1px solid var(--bdr);
+    padding:32px 0 0;min-height:auto;
+  }
+  .nk__wheel-wrap{width:min(420px,100%);}
+  .nk__hero{padding:56px 24px 40px;}
+}
+
+@media(max-width:560px){
+  .nk__layout{padding:0 16px 56px;}
+  .nk__hero{padding:44px 16px 32px;}
+  .nk__wheel-wrap{width:min(360px,100%);}
+  .nk__info-grid{grid-template-columns:1fr;}
+  .nk__prod-img{width:64px;height:64px;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .nk *,.nk *::before,.nk *::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}
+  .nk__ticks{animation:none;}
+}
+</style>
+
+{%- comment -%}
+  ── STATIC NAKSHATRA DATA
+{%- endcomment -%}
+{%- liquid
+  assign nk_names   = 'Ashwini,Bharani,Krittika,Rohini,Mrigashira,Ardra,Punarvasu,Pushya,Ashlesha,Magha,Purva Phalguni,Uttara Phalguni,Hasta,Chitra,Swati,Vishakha,Anuradha,Jyeshtha,Mula,Purva Ashadha,Uttara Ashadha,Shravana,Dhanishtha,Shatabhisha,Purva Bhadrapada,Uttara Bhadrapada,Revati' | split: ','
+  assign nk_lords   = 'Ketu,Venus,Sun,Moon,Mars,Rahu,Jupiter,Saturn,Mercury,Ketu,Venus,Sun,Moon,Mars,Rahu,Jupiter,Saturn,Mercury,Ketu,Venus,Sun,Moon,Mars,Rahu,Jupiter,Saturn,Mercury' | split: ','
+  assign nk_meanings = 'The Physician,Bearer of Death,The Cutter,The Red One,Deer Head,The Moist One,Return of Light,Nourishment,The Embracer,The Royal Star,The Former Red One,The Latter Red One,The Hand,The Bright Jewel,The Independent,The Forked,Subsequent Success,The Eldest,The Root,Former Invincible,Latter Invincible,The Listener,Most Famous,Hundred Healers,Former Beautiful Foot,Latter Beautiful Foot,The Wealthy' | split: ','
+  assign nk_devas   = 'Ashwini Kumaras,Yama,Agni,Brahma & Prajapati,Soma,Rudra,Aditi,Brihaspati,Naga Serpents,Pitru Ancestors,Bhaga,Aryaman,Savita,Tvashta,Vayu,Indra & Agni,Mitra,Indra,Nirriti,Apas,Vishvadevas,Vishnu,Ashta Vasus,Varuna,Aja Ekapada,Ahir Budhnya,Pushan' | split: ','
+  assign nk_symbols = '🐴,🔱,🔥,🌹,💫,💎,⚡,🌸,🐍,👑,🛏,🌞,✋,⚡,🌿,🪷,⭐,☂,🌿,🌊,🏆,👂,🥁,💧,⚔,🐍,🐠' | split: ','
+  assign nk_rashi   = 'Aries,Aries-Taurus,Taurus-Gemini,Taurus,Taurus-Gemini,Gemini,Gemini-Cancer,Cancer,Cancer,Leo,Leo,Leo-Virgo,Virgo,Virgo-Libra,Libra,Libra-Scorpio,Scorpio,Scorpio,Scorpio-Sagittarius,Sagittarius,Sagittarius-Capricorn,Capricorn,Capricorn-Aquarius,Aquarius,Aquarius-Pisces,Pisces,Pisces' | split: ','
+  assign nk_essence = 'Camphor · Musk · Neroli,Rose Absolute · Jasmine · Vanilla,Saffron · Amber · Sandalwood,Rose · Sandalwood · Kewra,Vetiver · Jasmine · Cardamom,Blue Lotus · Musk · Patchouli,Champa · Sandalwood · Benzoin,Jasmine · Kewra · Rose,Dark Oud · Musk · Incense,Saffron · Amber · Cedarwood,Rose · Vanilla · Ylang Ylang,Champa · Sandalwood · Saffron,Jasmine · Rose · Neroli,Oud · Saffron · Amber,Vetiver · Lavender · Mint,Rose · Jasmine · Clove,Lotus · Musk · Neroli,Camphor · Oud · Amber,Gugal · Myrrh · Dark Musk,Aqua · Jasmine · Sandalwood,Champa · Saffron · Cedarwood,Jasmine · Sandalwood · Vetiver,Camphor · Musk · Cedarwood,Blue Lotus · Aqua · Vetiver,Frankincense · Myrrh · Oud,Lotus · Sandalwood · Camphor,Rose · Jasmine · Aqua' | split: ','
+  assign nk_benefits = 'Healing energy · Swift action · Fearlessness,Transformation · Sensuality · Devotion,Leadership · Purification · Will,Love · Growth · Nourishment,Research · Gentle nature · Seeking,Storms · Renewal · Raw power,Restoration · Optimism · Goodwill,Nourishment · Devotion · Contentment,Mysticism · Intuition · Wisdom,Royalty · Ancestors · Authority,Love · Arts · Passion,Service · Endurance · Marriage,Skill · Healing · Craftsmanship,Creativity · Beauty · Architecture,Independence · Social grace · Intelligence,Ambition · Dual nature · Achievement,Devotion · Friendship · Discipline,Seniority · Leadership · Protection,Liberation · Truth · Breaking patterns,Determination · Victory · Philosophy,Universal principles · Achievement · Ethics,Listening · Devotion · Learning,Wealth · Music · Martial skill,Healing · Science · Independent thought,Fierce · Vision · Discipline,Depth · Karma · Endurance,Journey · Nourishment · Devotion' | split: ','
+
+  assign nk_descs = "Ashwini is the first nakshatra, governed by the divine twin physicians Ashwini Kumaras and ruled by Ketu. Born of the star Hamal in Aries, those of this nakshatra are swift, pioneering, and carry a primal healing energy. The Ashwini attar mirrors this first light — fresh, clean, and electric.,Bharani, ruled by Venus and the stern lord Yama, sits deep in Aries and governs cycles of creation and destruction. Deeply sensual and fiercely devoted, Bharani natives possess extraordinary endurance. The Bharani attar is a devotional accord of Rose Absolute and Jasmine.,Krittika, ruled by the Sun and the fierce god Agni, spans Aries and Taurus — the only nakshatra governed by two rashis. Sharp, incisive, and purifying, Krittika natives are born leaders and spiritual warriors. The Krittika attar blazes with Saffron and sacred Amber.,Rohini, the most beloved nakshatra of the Moon, sits in Taurus and is associated with fertility, beauty, and abundant growth. Lord Brahma chose Rohini above all twenty-seven. The Rohini attar is an opulent accord of Rose and aged Mysore Sandalwood.,Mrigashira, the gentle deer's head, is ruled by Mars and the Moon God Soma. It spans Taurus and Gemini, governing curiosity, the seeking spirit, and the eternal search for beauty. The Mrigashira attar is a serene blend of Vetiver and night Jasmine.,Ardra, the moist one governed by Rahu and the storm god Rudra, brings storms, transformation, and radical change. Those born in Ardra are raw, intense, and deeply intelligent. The Ardra attar is a dark, brooding accord of Blue Lotus and Musk.,Punarvasu, meaning the return of light, is ruled by Jupiter and the boundless goddess Aditi. Spanning Gemini and Cancer, it governs renewal, restoration, and limitless optimism. The Punarvasu attar is expansive and devotional — Champa and warm Benzoin.,Pushya, the most auspicious nakshatra, is ruled by Saturn and the divine teacher Brihaspati. Located in Cancer, it governs nourishment, devotion, and spiritual sustenance. The Pushya attar is a sacred blend of Jasmine and Kewra.,Ashlesha, ruled by Mercury and the Naga serpent deities, sits entirely in Cancer. This mysterious nakshatra governs kundalini energy, deep wisdom, and the coiling power of the subconscious. The Ashlesha attar is a hypnotic blend of Oud and sacred Incense.,Magha, the royal nakshatra ruled by Ketu and the ancestral Pitrus, sits at the heart of Leo. It governs ancestry, royal lineage, and the authority inherited from past lives. The Magha attar is an imperial accord of Saffron and aged Amber.,Purva Phalguni, ruled by Venus and Bhaga, the god of delight, radiates love, pleasure, and creative joy. It governs rest, romance, and the sweetness of life at its most generous. The Purva Phalguni attar is a sensuous bouquet of Rose and Ylang Ylang.,Uttara Phalguni, ruled by the Sun and Aryaman, is the nakshatra of contracts, marriage, and enduring service. It bridges Leo and Virgo — where creativity meets duty. The Uttara Phalguni attar is devotional and steady — Champa and aged Sandalwood.,Hasta, ruled by the Moon and Savita, governs the hands, craft, and the miraculous skill of healing through touch. Located in Virgo, it blesses artisans, healers, and all who create. The Hasta attar is light and precise — Jasmine and white Neroli.,Chitra, the bright jewel, is ruled by Mars and the divine architect Tvashta. It governs beauty, architecture, and the impulse to create forms of sublime elegance. The Chitra attar is a jewel-like accord of rare Oud and Kashmiri Saffron.,Swati, the independent one, is ruled by Rahu and Vayu, the wind. Located in Libra, it governs mobility, social intelligence, and the ability to bend without breaking. The Swati attar is airy and refined — Vetiver and Lavender.,Vishakha, the forked nakshatra, is ruled by Jupiter and both Indra and Agni. Spanning Libra and Scorpio, it governs ambition, fierce determination, and the drive to achieve at all costs. The Vishakha attar is bold and complex — Rose and Clove.,Anuradha, meaning subsequent success, is ruled by Saturn and Mitra, the god of friendship. Located in Scorpio, it governs devotion, discipline, and the deep bonds of loyalty. The Anuradha attar is a soulful accord of Blue Lotus and Musk.,Jyeshtha, the eldest and most powerful, is ruled by Mercury and Indra, king of the gods. Located in Scorpio, it governs seniority, authority, and the heavy burden of leadership. The Jyeshtha attar is commanding and complex — Camphor and sacred Oud.,Mula, the root, is ruled by Ketu and Nirriti, goddess of dissolution. Located at the galactic centre in Sagittarius, it governs liberation, the destruction of illusions, and the pursuit of ultimate truth. The Mula attar is raw and sacred — Gugal and dark Myrrh.,Purva Ashadha, the former invincible, is ruled by Venus and the water goddess Apas. It governs determination, philosophy, and the power of purification through water. The Purva Ashadha attar is fluid and ethereal — Aqua essence and Jasmine.,Uttara Ashadha, the latter invincible, is ruled by the Sun and the Vishvadevas, the universal gods. Located at the apex of Sagittarius, it governs universal principles, lasting achievement, and ethical leadership. The Uttara Ashadha attar is solar and noble — Champa and golden Saffron.,Shravana, the listener, is ruled by the Moon and Lord Vishnu, the preserver. Located in Capricorn, it governs the sacred power of listening, learning, and devotion to dharma. The Shravana attar is meditative and pure — Jasmine and aged Sandalwood.,Dhanishtha, the most famous, is ruled by Mars and the eight Vasus. Spanning Capricorn and Aquarius, it governs wealth, music, and the martial arts. The Dhanishtha attar is resonant and powerful — Camphor and deep Cedarwood.,Shatabhisha, the hundred healers, is ruled by Rahu and the oceanic Varuna. Located in Aquarius, it governs healing, science, and the fearless pursuit of hidden knowledge. The Shatabhisha attar is mysterious and aquatic — Blue Lotus and pure Vetiver.,Purva Bhadrapada, the former beautiful foot, is ruled by Jupiter and the fiery Aja Ekapada. Spanning Aquarius and Pisces, it governs fierce vision, asceticism, and the transformation of passion into purpose. The Purva Bhadrapada attar is intense — Frankincense and Oud.,Uttara Bhadrapada, the latter beautiful foot, is ruled by Saturn and the serpentine Ahir Budhnya. Located in Pisces, it governs depth, karma, endurance, and the wisdom born from long suffering. The Uttara Bhadrapada attar is deep and sacred — Lotus and Camphor.,Revati, the wealthy one and the last nakshatra, is ruled by Mercury and the gentle Pushan. Located in Pisces, it governs safe journeys, nourishment, and the compassionate completion of cycles. The Revati attar is oceanic and tender — Rose and sacred Aqua." | split: ','
+-%}
+
+<section class="nk" aria-label="Nakshatra Attar Explorer">
+  <div class="nk__section">
+
+    {%- comment -%} HERO HEADER {%- endcomment -%}
+    <header class="nk__hero">
+      <span class="nk__eyebrow">{{ section.settings.eyebrow | default: '27 Sacred Star Clusters' }}</span>
+      <h1 class="nk__title">{{ section.settings.title | default: "What's Your <em>Nakshatra?</em>" }}</h1>
+      <p class="nk__sub">{{ section.settings.subtitle | default: 'Select your birth star from the celestial wheel. Discover the attar crafted for your nakshatra — formulated under its ruling planet and planetary hour.' }}</p>
+      <div class="nk__divider" aria-hidden="true">
+        <span class="nk__div-line"></span>
+        <span class="nk__div-star">✦</span>
+        <span class="nk__div-line"></span>
+      </div>
+    </header>
+
+    {%- comment -%} MAIN LAYOUT {%- endcomment -%}
+    <div class="nk__layout">
+
+      {%- comment -%} ── LEFT: WHEEL ── {%- endcomment -%}
+      <div class="nk__wheel-col">
+        <div class="nk__wheel-wrap" role="group" aria-label="Nakshatra selection wheel">
+
+          {%- comment -%} SVG WHEEL — rendered by JS below {%- endcomment -%}
+          <svg id="nk-svg" viewBox="-1 -1 202 202" role="listbox" aria-label="Select your Nakshatra" focusable="true"></svg>
+
+          {%- comment -%} Outer tick decoration {%- endcomment -%}
+          <svg class="nk__ticks" viewBox="0 0 200 200" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;">
+            {%- for i in (0..53) -%}
+              {%- assign tick_angle = i | times: 360 | divided_by: 54 -%}
+              <line
+                x1="100" y1="4" x2="100" y2="{% if i == 0 or i == 27 %}8{% else %}6{% endif %}"
+                stroke="rgba(184,148,58,0.2)"
+                stroke-width="1"
+                transform="rotate({{ tick_angle }},100,100)"
+              />
+            {%- endfor -%}
+          </svg>
+
+          {%- comment -%} Centre ── {%- endcomment -%}
+          <div class="nk__centre" aria-hidden="true">
+            <span class="nk__centre-star">⭐</span>
+            <span class="nk__centre-text">Nakshatra</span>
+          </div>
+
+        </div>
+
+        {%- comment -%} Selected name label {%- endcomment -%}
+        <div class="nk__wheel-label js-nk-wheel-label" aria-live="polite">
+          <span class="nk__wheel-label-name js-nk-label-name">Select your star</span>
+          <span class="nk__wheel-label-num  js-nk-label-num"></span>
+        </div>
+      </div>
+
+      {%- comment -%} ── RIGHT: PANEL ── {%- endcomment -%}
+      <div class="nk__panel-col">
+        <div class="nk__panel js-nk-panel">
+
+          {%- comment -%} Default / empty state {%- endcomment -%}
+          <div class="nk__empty js-nk-empty">
+            <div class="nk__empty-icon">🌟</div>
+            <h2 class="nk__empty-h">Choose your Nakshatra</h2>
+            <p class="nk__empty-p">Tap any segment of the celestial wheel to reveal your birth-star attar and sacred properties.</p>
+          </div>
+
+          {%- comment -%} Panel content (hidden until selection) {%- endcomment -%}
+          <div class="js-nk-detail" style="display:none;">
+
+            <div class="nk__panel-meta">
+              <span class="nk__panel-num js-nk-num"></span>
+              <span class="nk__panel-lord-pill js-nk-lord">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="var(--gold)" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span class="js-nk-lord-name"></span>
+              </span>
+              <span class="nk__panel-lord-pill js-nk-rashi">
+                <span class="js-nk-rashi-name"></span>
+              </span>
+            </div>
+
+            <h2 class="nk__panel-h js-nk-name"></h2>
+            <p class="nk__panel-meaning js-nk-meaning"></p>
+            <div class="nk__panel-rule js-nk-rule"></div>
+
+            <p class="nk__panel-desc js-nk-desc"></p>
+
+            <div class="nk__info-grid">
+              <div class="nk__info-cell">
+                <span class="nk__info-lbl">Ruling Planet</span>
+                <span class="nk__info-val js-nk-lord-val"></span>
+              </div>
+              <div class="nk__info-cell">
+                <span class="nk__info-lbl">Devata</span>
+                <span class="nk__info-val js-nk-deva"></span>
+              </div>
+              <div class="nk__info-cell">
+                <span class="nk__info-lbl">Rashi</span>
+                <span class="nk__info-val js-nk-rashi-val"></span>
+              </div>
+              <div class="nk__info-cell">
+                <span class="nk__info-lbl">Essence Blend</span>
+                <span class="nk__info-val js-nk-essence"></span>
+              </div>
+            </div>
+
+            <div class="nk__benefits js-nk-benefits">
+              <div class="nk__benefit">
+                <span class="nk__bdot" aria-hidden="true"></span>
+                <span class="js-nk-b1"></span>
+              </div>
+            </div>
+
+            <div class="js-nk-prod-wrap"></div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Product data for JS — serialise from schema {%- endcomment -%}
+<script>
+window.__NK_PRODUCTS__ = {
+  {%- for i in (0..26) -%}
+    {%- assign nk_key = 'product_' | append: i -%}
+    {%- assign nk_p   = all_products[section.settings[nk_key]] -%}
+    "{{ i }}": {%- if nk_p != blank and nk_p != empty -%}
+    {
+      "id":      {{ nk_p.variants.first.id | json }},
+      "title":   {{ nk_p.title | json }},
+      "url":     {{ nk_p.url | prepend: request.origin | json }},
+      "type":    {{ nk_p.type | default: 'Nakshatra Attar' | json }},
+      "price":   {{ nk_p.price | money | json }},
+      "compare": {% if nk_p.compare_at_price > nk_p.price %}{{ nk_p.compare_at_price | money | json }}{% else %}null{% endif %},
+      "img":     {% if nk_p.featured_image %}{{ nk_p.featured_image | image_url: width: 400 | json }}{% else %}null{% endif %},
+      "imgAlt":  {{ nk_p.featured_image.alt | default: nk_p.title | escape | json }},
+      "avail":   {{ nk_p.available | json }}
+    }
+    {%- else -%}null{%- endif -%}
+    {%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+};
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── DATA ──────────────────────────────────────── */
+  var NAMES    = {{ nk_names    | json }};
+  var LORDS    = {{ nk_lords    | json }};
+  var MEANINGS = {{ nk_meanings | json }};
+  var DEVAS    = {{ nk_devas   | json }};
+  var SYMBOLS  = {{ nk_symbols  | json }};
+  var RASHI    = {{ nk_rashi    | json }};
+  var ESSENCE  = {{ nk_essence  | json }};
+  var BENEFITS = {{ nk_benefits | json }};
+  var DESCS    = {{ nk_descs    | json }};
+  var PRODUCTS = window.__NK_PRODUCTS__ || {};
+
+  var COUNT = 27;
+  var CX = 100, CY = 100, OR = 98, IR = 36;
+  var ANGLE = 360 / COUNT;
+
+  /* Pastel colour palette — 27 unique colours cycling through hues */
+  var COLOURS = [
+    '#F5C6D0','#F9CDA8','#FDE68A','#D1F5A8','#A8E6CF',
+    '#A8D8F0','#C4B5F7','#F5B8E8','#F7C6B2','#E8E4A0',
+    '#B2E8D0','#A0D4F5','#D4A8F5','#F5A8D4','#F5D4A8',
+    '#C8E8A0','#A8C8F5','#E0A8F5','#F5A8C8','#F5E0A8',
+    '#B0E0B0','#A0C4E0','#D8B0F0','#F0B0D4','#F0D8A0',
+    '#B8F0C8','#A8D0F8'
+  ];
+
+  /* ── UTILS ──────────────────────────────────────── */
+  function polar(cx, cy, r, deg) {
+    var rad = (deg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function svgArc(cx, cy, r, startDeg, endDeg) {
+    var s = polar(cx, cy, r, startDeg);
+    var e = polar(cx, cy, r, endDeg);
+    var large = (endDeg - startDeg) > 180 ? 1 : 0;
+    return 'M ' + s.x + ' ' + s.y + ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + e.x + ' ' + e.y;
+  }
+
+  function segPath(i) {
+    var s = i * ANGLE;
+    var e = s + ANGLE;
+    var outer = svgArc(CX, CY, OR, s, e);
+    var inner = svgArc(CX, CY, IR, e, s);
+    var iEnd   = polar(CX, CY, IR, e);
+    var oStart = polar(CX, CY, OR, s);
+    return outer + ' L ' + iEnd.x + ' ' + iEnd.y + ' ' + inner + ' L ' + oStart.x + ' ' + oStart.y + ' Z';
+  }
+
+  function labelPos(i) {
+    var mid = i * ANGLE + ANGLE / 2;
+    var r   = (OR + IR) / 2;
+    return polar(CX, CY, r, mid);
+  }
+
+  function labelAngle(i) {
+    var mid = i * ANGLE + ANGLE / 2;
+    /* rotate text to sit along arc */
+    return mid - 90;
+  }
+
+  /* ── BUILD SVG WHEEL ────────────────────────────── */
+  var svg = document.getElementById('nk-svg');
+
+  for (var i = 0; i < COUNT; i++) {
+    var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.classList.add('nk-seg');
+    g.setAttribute('role', 'option');
+    g.setAttribute('aria-label', NAMES[i]);
+    g.setAttribute('tabindex', '0');
+    g.dataset.idx = i;
+
+    /* Path */
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', segPath(i));
+    path.setAttribute('fill', COLOURS[i]);
+
+    /* Text label */
+    var lp = labelPos(i);
+    var la = labelAngle(i);
+
+    var text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', lp.x);
+    text.setAttribute('y', lp.y);
+    text.setAttribute('transform', 'rotate(' + la + ',' + lp.x + ',' + lp.y + ')');
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('dominant-baseline', 'middle');
+
+    /* Short name: first word only if too long */
+    var shortName = NAMES[i].split(' ')[0];
+    if (shortName.length > 9) shortName = shortName.slice(0, 8) + '…';
+    text.textContent = shortName;
+
+    g.appendChild(path);
+    g.appendChild(text);
+    svg.appendChild(g);
+  }
+
+  /* ── SELECTION LOGIC ────────────────────────────── */
+  var activeIdx = -1;
+
+  var labelName = document.querySelector('.js-nk-label-name');
+  var labelNum  = document.querySelector('.js-nk-label-num');
+  var emptyEl   = document.querySelector('.js-nk-empty');
+  var detailEl  = document.querySelector('.js-nk-detail');
+
+  /* Panel refs */
+  var pNum       = document.querySelector('.js-nk-num');
+  var pLordName  = document.querySelector('.js-nk-lord-name');
+  var pRashiName = document.querySelector('.js-nk-rashi-name');
+  var pName      = document.querySelector('.js-nk-name');
+  var pMeaning   = document.querySelector('.js-nk-meaning');
+  var pDesc      = document.querySelector('.js-nk-desc');
+  var pLordVal   = document.querySelector('.js-nk-lord-val');
+  var pDeva      = document.querySelector('.js-nk-deva');
+  var pRashiVal  = document.querySelector('.js-nk-rashi-val');
+  var pEssence   = document.querySelector('.js-nk-essence');
+  var pB1        = document.querySelector('.js-nk-b1');
+  var pProdWrap  = document.querySelector('.js-nk-prod-wrap');
+  var panel      = document.querySelector('.js-nk-panel');
+
+  function selectNakshatra(idx) {
+    if (idx === activeIdx) return;
+    activeIdx = idx;
+
+    /* Update wheel segments */
+    document.querySelectorAll('.nk-seg').forEach(function (g) {
+      g.classList.toggle('is-active', +g.dataset.idx === idx);
+      g.setAttribute('aria-selected', +g.dataset.idx === idx ? 'true' : 'false');
+    });
+
+    /* Labels below wheel */
+    if (labelName) labelName.textContent = NAMES[idx];
+    if (labelNum)  labelNum.textContent  = 'Nakshatra ' + String(idx + 1).padStart(2, '0') + ' · ' + SYMBOLS[idx];
+
+    /* Show detail, hide empty */
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (detailEl) detailEl.style.display = 'block';
+
+    /* Populate fields */
+    if (pNum)       pNum.textContent      = 'Nakshatra ' + String(idx + 1).padStart(2, '0');
+    if (pLordName)  pLordName.textContent = LORDS[idx] + ' ruled';
+    if (pRashiName) pRashiName.textContent = RASHI[idx];
+    if (pName)      pName.textContent     = NAMES[idx];
+    if (pMeaning)   pMeaning.textContent  = '"' + MEANINGS[idx] + '"';
+    if (pDesc)      pDesc.textContent     = DESCS[idx];
+    if (pLordVal)   pLordVal.textContent  = LORDS[idx];
+    if (pDeva)      pDeva.textContent     = DEVAS[idx];
+    if (pRashiVal)  pRashiVal.textContent = RASHI[idx];
+    if (pEssence)   pEssence.textContent  = ESSENCE[idx];
+    if (pB1)        pB1.textContent       = BENEFITS[idx];
+
+    /* Product card */
+    buildProductCard(idx);
+
+    /* Animate panel in */
+    if (panel) {
+      panel.classList.remove('is-visible');
+      void panel.offsetWidth; /* reflow */
+      panel.classList.add('is-visible');
+    }
+
+    /* Scroll to panel on mobile */
+    if (window.innerWidth < 860) {
+      var panelCol = document.querySelector('.nk__panel-col');
+      if (panelCol) setTimeout(function () {
+        panelCol.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+  }
+
+  function buildProductCard(idx) {
+    if (!pProdWrap) return;
+    pProdWrap.innerHTML = '';
+
+    var p = PRODUCTS[String(idx)];
+    if (!p) {
+      pProdWrap.innerHTML = '<p style="font-size:12px;color:var(--ink-3);margin-bottom:12px;">Assign product in Theme Editor → Nakshatra ' + (idx+1) + '</p>';
+      return;
+    }
+
+    /* Product card */
+    var a = document.createElement('a');
+    a.href = p.url;
+    a.className = 'nk__prod';
+    a.setAttribute('aria-label', 'View ' + p.title);
+
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'nk__prod-img';
+    if (p.img) {
+      var img = document.createElement('img');
+      img.src = 'https:' + p.img;
+      img.alt = p.imgAlt || '';
+      img.width = 160; img.height = 160;
+      img.loading = 'lazy'; img.decoding = 'async';
+      imgDiv.appendChild(img);
+    } else {
+      var ph = document.createElement('div');
+      ph.className = 'nk__prod-img-ph';
+      ph.textContent = SYMBOLS[idx];
+      imgDiv.appendChild(ph);
+    }
+
+    var info = document.createElement('div');
+    info.className = 'nk__prod-info';
+    info.innerHTML = [
+      '<span class="nk__prod-type">' + escHtml(p.type) + '</span>',
+      '<span class="nk__prod-name">' + escHtml(p.title) + '</span>',
+      '<span class="nk__prod-price">' +
+        (p.compare ? '<span class="nk__prod-compare">' + escHtml(p.compare) + '</span>' : '') +
+        escHtml(p.price) +
+      '</span>'
+    ].join('');
+
+    a.appendChild(imgDiv);
+    a.appendChild(info);
+    pProdWrap.appendChild(a);
+
+    /* ATC */
+    if (p.avail) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nk__atc js-nk-atc';
+      btn.dataset.id = p.id;
+      btn.setAttribute('aria-label', 'Add ' + p.title + ' to cart');
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg><span>Add to Cart</span>';
+      pProdWrap.appendChild(btn);
+
+      var vl = document.createElement('a');
+      vl.href = p.url;
+      vl.className = 'nk__view-link';
+      vl.innerHTML = 'View Full Details <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      pProdWrap.appendChild(vl);
+    } else {
+      var sold = document.createElement('button');
+      sold.type = 'button'; sold.className = 'nk__atc'; sold.disabled = true;
+      sold.textContent = 'Sold Out';
+      pProdWrap.appendChild(sold);
+    }
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── EVENT LISTENERS ────────────────────────────── */
+  svg.addEventListener('click', function (e) {
+    var seg = e.target.closest('.nk-seg');
+    if (!seg) return;
+    selectNakshatra(+seg.dataset.idx);
+  });
+
+  svg.addEventListener('keydown', function (e) {
+    var seg = document.activeElement.closest ? document.activeElement.closest('.nk-seg') : null;
+    if (!seg) return;
+    var idx = +seg.dataset.idx;
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectNakshatra(idx); }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      var next = svg.querySelector('[data-idx="' + ((idx+1)%COUNT) + '"]');
+      if (next) { next.focus(); selectNakshatra((idx+1)%COUNT); }
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      var prev = svg.querySelector('[data-idx="' + ((idx-1+COUNT)%COUNT) + '"]');
+      if (prev) { prev.focus(); selectNakshatra((idx-1+COUNT)%COUNT); }
+    }
+  });
+
+  /* ── ADD TO CART ────────────────────────────────── */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.js-nk-atc');
+    if (!btn) return;
+    e.preventDefault();
+    var id   = parseInt(btn.dataset.id, 10);
+    var span = btn.querySelector('span');
+    var orig = span ? span.textContent : 'Add to Cart';
+    if (!id) return;
+    btn.disabled = true;
+    if (span) span.textContent = 'Adding…';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: id, quantity: 1 })
+    })
+    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function () {
+      btn.classList.add('is-added');
+      if (span) span.textContent = '✓ Added';
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+      setTimeout(function () { btn.disabled = false; btn.classList.remove('is-added'); if (span) span.textContent = orig; }, 2600);
+    })
+    .catch(function () { btn.disabled = false; if (span) span.textContent = orig; });
+  });
+
+  /* Select first on load to hint interactivity */
+  setTimeout(function () {
+    var firstSeg = svg.querySelector('.nk-seg[data-idx="0"]');
+    if (firstSeg) firstSeg.focus();
+    selectNakshatra(0);
+  }, 900);
+
+})();
+</script>
