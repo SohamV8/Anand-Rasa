@@ -1,5 +1,29 @@
 {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
 <section class="ar-nav9">
+  <style>
+    #shopify-section-{{ section.id }} .ar-nav9__main { min-height: 100vh; background-color:#FFFFFF ;}
+    #shopify-section-{{ section.id }} .ar-nav9__panel { padding: clamp(20px, 4vw, 40px); }
+    #shopify-section-{{ section.id }} .ar-nav9__pimg {
+      width: 100%;
+      max-width: min(460px, 96%);
+      height: auto;
+      max-height: calc(100vh - 180px);
+      object-fit: contain;
+      padding: clamp(8px, 1.8vw, 16px);
+      margin: 0 auto;
+    }
+    #shopify-section-{{ section.id }} .ar-nav9__bimg {
+      padding: clamp(6px, 1.2vw, 12px);
+      margin: clamp(4px, 1vw, 10px);
+      width: calc(100% - clamp(8px, 2vw, 20px));
+      height: calc(100% - clamp(8px, 2vw, 20px));
+    }
+    @media (max-width: 1023px) {
+      #shopify-section-{{ section.id }} .ar-nav9__main { min-height: 100vh; }
+      #shopify-section-{{ section.id }} .ar-nav9__panel { padding: clamp(16px, 5vw, 28px); }
+      #shopify-section-{{ section.id }} .ar-nav9__pimg { max-height: min(72vh, 620px); }
+    }
+  </style>
   {%- liquid
     if collections['planet-attars'] != empty
       assign ar_nav9_fallback = collections['planet-attars'].url
@@ -33,17 +57,45 @@
       {%- assign ar_nav9_btn_first = true -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'planet' -%}
+          {%- assign ar_nav9_perfume_fallback = '' -%}
+          {%- assign ar_nav9_planet_fallback = '' -%}
+          {%- case block.settings.name | downcase -%}
+            {%- when 'sun' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/surya_attar.webp' | asset_url -%}
+            {%- when 'moon' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/chandra_attar.webp' | asset_url -%}
+            {%- when 'mars' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/mangal_attar.webp' | asset_url -%}
+            {%- when 'mercury' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/budh_attar.webp' | asset_url -%}
+            {%- when 'jupiter' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/guru_attar.webp' | asset_url -%}
+            {%- when 'venus' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/shukra_attar.webp' | asset_url -%}
+            {%- when 'saturn' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/shani_attar.webp' | asset_url -%}
+            {%- when 'rahu' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/rahu_attar.webp' | asset_url -%}
+            {%- when 'ketu' -%}{%- assign ar_nav9_perfume_fallback = 'Planet/ketu_attar.webp' | asset_url -%}
+          {%- endcase -%}
+          {%- case block.settings.name | downcase -%}
+            {%- when 'sun' -%}{%- assign ar_nav9_planet_fallback = 'Planet/sun.webp' | asset_url -%}
+            {%- when 'moon' -%}{%- assign ar_nav9_planet_fallback = 'Planet/moon.webp' | asset_url -%}
+            {%- when 'mars' -%}{%- assign ar_nav9_planet_fallback = 'Planet/mars.webp' | asset_url -%}
+            {%- when 'mercury' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Mercury.webp' | asset_url -%}
+            {%- when 'jupiter' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Jupiter.webp' | asset_url -%}
+            {%- when 'venus' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Venus.webp' | asset_url -%}
+            {%- when 'saturn' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Saturn.webp' | asset_url -%}
+            {%- when 'rahu' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Rahu.webp' | asset_url -%}
+            {%- when 'ketu' -%}{%- assign ar_nav9_planet_fallback = 'Planet/Ketu.webp' | asset_url -%}
+          {%- endcase -%}
           <button
             type="button"
             class="ar-nav9__btn{% if ar_nav9_btn_first %} is-active{% endif %}"
-            data-img="{%- if block.settings.perfume_image != blank -%}{{ block.settings.perfume_image | image_url: width: 600 }}{%- endif -%}"
+            data-img="{%- if ar_nav9_perfume_fallback != blank -%}{{ ar_nav9_perfume_fallback }}{%- elsif block.settings.perfume_image != blank -%}{{ block.settings.perfume_image | image_url: width: 900 }}{%- endif -%}"
             data-desc="{{ block.settings.description | default: '' | strip_newlines | escape }}"
             data-url="{% if block.settings.url != blank %}{{ block.settings.url | escape }}{% endif %}"
             aria-label="{{ block.settings.name | default: 'Planet' | escape }}"
             {{ block.shopify_attributes }}
           >
-            {%- if block.settings.planet_image != blank -%}
+            {%- if ar_nav9_perfume_fallback != blank -%}
+              <img src="{{ ar_nav9_perfume_fallback }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
+            {%- elsif block.settings.planet_image != blank -%}
               <img src="{{ block.settings.planet_image | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
+            {%- elsif ar_nav9_planet_fallback != blank -%}
+              <img src="{{ ar_nav9_planet_fallback }}" alt="{{ block.settings.name | escape }}" width="400" height="400" loading="lazy" class="ar-nav9__bimg">
             {%- endif -%}
           </button>
           {%- assign ar_nav9_btn_first = false -%}
@@ -51,14 +103,34 @@
       {%- endfor -%}
     </div>
     <div class="ar-nav9__panel">
+      {%- assign ar_nav9_init_img = '' -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'planet' -%}
+          {%- case block.settings.name | downcase -%}
+            {%- when 'sun' -%}{%- assign ar_nav9_init_img = 'Planet/surya_attar.webp' | asset_url -%}
+            {%- when 'moon' -%}{%- assign ar_nav9_init_img = 'Planet/chandra_attar.webp' | asset_url -%}
+            {%- when 'mars' -%}{%- assign ar_nav9_init_img = 'Planet/mangal_attar.webp' | asset_url -%}
+            {%- when 'mercury' -%}{%- assign ar_nav9_init_img = 'Planet/budh_attar.webp' | asset_url -%}
+            {%- when 'jupiter' -%}{%- assign ar_nav9_init_img = 'Planet/guru_attar.webp' | asset_url -%}
+            {%- when 'venus' -%}{%- assign ar_nav9_init_img = 'Planet/shukra_attar.webp' | asset_url -%}
+            {%- when 'saturn' -%}{%- assign ar_nav9_init_img = 'Planet/shani_attar.webp' | asset_url -%}
+            {%- when 'rahu' -%}{%- assign ar_nav9_init_img = 'Planet/rahu_attar.webp' | asset_url -%}
+            {%- when 'ketu' -%}{%- assign ar_nav9_init_img = 'Planet/ketu_attar.webp' | asset_url -%}
+          {%- endcase -%}
+          {%- if ar_nav9_init_img == '' and block.settings.perfume_image != blank -%}
+            {%- assign ar_nav9_init_img = block.settings.perfume_image | image_url: width: 900 -%}
+          {%- endif -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
       <img
         class="ar-nav9__pimg js-ar-nav9-pimg"
         id="ar-pimg-{{ section.id }}"
         width="280"
         height="420"
         alt="{% if ar_nav9_init_perfume != blank %}{{ section.settings.nav9_heading | default: 'Navagraha' | escape }} — selected attar{% else %}Selected planet attar{% endif %}"
-        {% if ar_nav9_init_perfume != blank -%}
-          src="{{ ar_nav9_init_perfume | image_url: width: 600 }}"
+        {% if ar_nav9_init_img != blank -%}
+          src="{{ ar_nav9_init_img }}"
         {%- endif %}
       >
       <p class="ar-nav9__pdesc js-ar-nav9-pdesc" id="ar-pdesc-{{ section.id }}">{{ ar_nav9_init_desc | escape }}</p>

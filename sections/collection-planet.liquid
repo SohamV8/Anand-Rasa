@@ -38,8 +38,8 @@
     .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; position:relative; }
     .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
     .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#f5f0e8; }
-    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
+    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; transition:transform .7s ease; }
+    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; opacity:0; transition:opacity .5s ease,transform .7s ease; }
     .arc-card:hover .arc-card__img { transform:scale(1.06); }
     .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
     .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
@@ -107,23 +107,75 @@
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
         {%- paginate collection.products by section.settings.products_per_page -%}
+          {%- assign ar_bucket_surya = '' -%}
+          {%- assign ar_bucket_chandra = '' -%}
+          {%- assign ar_bucket_guru = '' -%}
+          {%- assign ar_bucket_shukra = '' -%}
+          {%- assign ar_bucket_budha = '' -%}
+          {%- assign ar_bucket_mangal = '' -%}
+          {%- assign ar_bucket_shani = '' -%}
+          {%- assign ar_bucket_rahu = '' -%}
+          {%- assign ar_bucket_ketu = '' -%}
+          {%- assign ar_bucket_rest = '' -%}
+
           {%- for product in collection.products -%}
+            {%- assign ar_attar_img = '' -%}
+            {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
+            {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
+              {%- assign ar_attar_img = 'Planet/surya_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'moon' or ar_key contains 'chandra' -%}
+              {%- assign ar_attar_img = 'Planet/chandra_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'mars' or ar_key contains 'mangal' -%}
+              {%- assign ar_attar_img = 'Planet/mangal_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'mercury' or ar_key contains 'budh' -%}
+              {%- assign ar_attar_img = 'Planet/budh_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'jupiter' or ar_key contains 'guru' -%}
+              {%- assign ar_attar_img = 'Planet/guru_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'venus' or ar_key contains 'shukra' -%}
+              {%- assign ar_attar_img = 'Planet/shukra_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'saturn' or ar_key contains 'shani' -%}
+              {%- assign ar_attar_img = 'Planet/shani_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'rahu' -%}
+              {%- assign ar_attar_img = 'Planet/rahu_attar.webp' | asset_url -%}
+            {%- elsif ar_key contains 'ketu' -%}
+              {%- assign ar_attar_img = 'Planet/ketu_attar.webp' | asset_url -%}
+            {%- endif -%}
+            {%- capture ar_card_markup -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap">
-                {%- if product.images.size > 0 -%}
+                {%- if ar_attar_img != blank -%}
                   <img
-                    src="{{ product.featured_image | image_url: width: 800 }}"
-                    alt="{{ product.featured_image.alt | default: product.title }}"
-                    width="800"
+                    src="{{ ar_attar_img }}"
+                    alt="{{ product.title }}"
+                    width="1600"
                     height="1067"
                     loading="lazy"
                     class="arc-card__img"
                   >
                   {%- if product.images.size > 1 -%}
                     <img
-                      src="{{ product.images[1] | image_url: width: 800 }}"
+                      src="{{ product.images[1] | image_url: width: 1600 }}"
                       alt="{{ product.title }} - alternate view"
-                      width="800"
+                      width="1600"
+                      height="1067"
+                      loading="lazy"
+                      class="arc-card__img-hover"
+                    >
+                  {%- endif -%}
+                {%- elsif product.images.size > 0 -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 1600 }}"
+                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    width="1600"
+                    height="1067"
+                    loading="lazy"
+                    class="arc-card__img"
+                  >
+                  {%- if product.images.size > 1 -%}
+                    <img
+                      src="{{ product.images[1] | image_url: width: 1600 }}"
+                      alt="{{ product.title }} - alternate view"
+                      width="1600"
                       height="1067"
                       loading="lazy"
                       class="arc-card__img-hover"
@@ -161,7 +213,41 @@
                 </button>
               </div>
             </div>
+            {%- endcapture -%}
+
+            {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
+              {%- assign ar_bucket_surya = ar_bucket_surya | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'moon' or ar_key contains 'chandra' -%}
+              {%- assign ar_bucket_chandra = ar_bucket_chandra | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'jupiter' or ar_key contains 'guru' -%}
+              {%- assign ar_bucket_guru = ar_bucket_guru | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'venus' or ar_key contains 'shukra' -%}
+              {%- assign ar_bucket_shukra = ar_bucket_shukra | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'mercury' or ar_key contains 'budh' or ar_key contains 'budha' -%}
+              {%- assign ar_bucket_budha = ar_bucket_budha | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'mars' or ar_key contains 'mangal' -%}
+              {%- assign ar_bucket_mangal = ar_bucket_mangal | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'saturn' or ar_key contains 'shani' -%}
+              {%- assign ar_bucket_shani = ar_bucket_shani | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'rahu' -%}
+              {%- assign ar_bucket_rahu = ar_bucket_rahu | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'ketu' -%}
+              {%- assign ar_bucket_ketu = ar_bucket_ketu | append: ar_card_markup -%}
+            {%- else -%}
+              {%- assign ar_bucket_rest = ar_bucket_rest | append: ar_card_markup -%}
+            {%- endif -%}
           {%- endfor -%}
+
+          {{ ar_bucket_surya }}
+          {{ ar_bucket_chandra }}
+          {{ ar_bucket_guru }}
+          {{ ar_bucket_shukra }}
+          {{ ar_bucket_budha }}
+          {{ ar_bucket_mangal }}
+          {{ ar_bucket_shani }}
+          {{ ar_bucket_rahu }}
+          {{ ar_bucket_ketu }}
+          {{ ar_bucket_rest }}
   
           {%- if paginate.pages > 1 -%}
             <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">

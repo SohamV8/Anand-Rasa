@@ -50,8 +50,8 @@
     .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; position:relative; }
     .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
     .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#f5f0e8; }
-    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
+    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; transition:transform .7s ease; }
+    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; opacity:0; transition:opacity .5s ease,transform .7s ease; }
     .arc-card:hover .arc-card__img { transform:scale(1.06); }
     .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
     .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
@@ -164,23 +164,84 @@
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
         {%- paginate collection.products by section.settings.products_per_page -%}
+          {%- assign ar_bucket_aries = '' -%}
+          {%- assign ar_bucket_taurus = '' -%}
+          {%- assign ar_bucket_gemini = '' -%}
+          {%- assign ar_bucket_cancer = '' -%}
+          {%- assign ar_bucket_leo = '' -%}
+          {%- assign ar_bucket_virgo = '' -%}
+          {%- assign ar_bucket_libra = '' -%}
+          {%- assign ar_bucket_scorpio = '' -%}
+          {%- assign ar_bucket_sagittarius = '' -%}
+          {%- assign ar_bucket_capricorn = '' -%}
+          {%- assign ar_bucket_aquarius = '' -%}
+          {%- assign ar_bucket_pisces = '' -%}
+          {%- assign ar_bucket_rest = '' -%}
+
           {%- for product in collection.products -%}
+            {%- assign ar_zodiac_img = '' -%}
+            {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
+            {%- if ar_key contains 'aries' or ar_key contains 'mesha' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/aries.webp' | asset_url -%}
+            {%- elsif ar_key contains 'taurus' or ar_key contains 'vrishabha' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/taurus.webp' | asset_url -%}
+            {%- elsif ar_key contains 'gemini' or ar_key contains 'mithuna' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/gemini.webp' | asset_url -%}
+            {%- elsif ar_key contains 'cancer' or ar_key contains 'karka' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/cancer.webp' | asset_url -%}
+            {%- elsif ar_key contains 'leo' or ar_key contains 'simha' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/leo.webp' | asset_url -%}
+            {%- elsif ar_key contains 'virgo' or ar_key contains 'kanya' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/virgo.webp' | asset_url -%}
+            {%- elsif ar_key contains 'libra' or ar_key contains 'tula' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/libra.webp' | asset_url -%}
+            {%- elsif ar_key contains 'scorpio' or ar_key contains 'vrischika' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/scorpio.webp' | asset_url -%}
+            {%- elsif ar_key contains 'sagittarius' or ar_key contains 'dhanu' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/sagittarius.webp' | asset_url -%}
+            {%- elsif ar_key contains 'capricorn' or ar_key contains 'makara' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/capricorn.webp' | asset_url -%}
+            {%- elsif ar_key contains 'aquarius' or ar_key contains 'kumbha' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/aquarius.webp' | asset_url -%}
+            {%- elsif ar_key contains 'pisces' or ar_key contains 'meena' -%}
+              {%- assign ar_zodiac_img = 'Zodiac/pisces.webp' | asset_url -%}
+            {%- endif -%}
+            {%- capture ar_card_markup -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap">
-                {%- if product.images.size > 0 -%}
+                {%- if ar_zodiac_img != blank -%}
                   <img
-                    src="{{ product.featured_image | image_url: width: 800 }}"
-                    alt="{{ product.featured_image.alt | default: product.title }}"
-                    width="800"
+                    src="{{ ar_zodiac_img }}"
+                    alt="{{ product.title }}"
+                    width="1600"
                     height="1067"
                     loading="lazy"
                     class="arc-card__img"
                   >
                   {%- if product.images.size > 1 -%}
                     <img
-                      src="{{ product.images[1] | image_url: width: 800 }}"
+                      src="{{ product.images[1] | image_url: width: 1600 }}"
                       alt="{{ product.title }} - alternate view"
-                      width="800"
+                      width="1600"
+                      height="1067"
+                      loading="lazy"
+                      class="arc-card__img-hover"
+                    >
+                  {%- endif -%}
+                {%- elsif product.images.size > 0 -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 1600 }}"
+                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    width="1600"
+                    height="1067"
+                    loading="lazy"
+                    class="arc-card__img"
+                  >
+                  {%- if product.images.size > 1 -%}
+                    <img
+                      src="{{ product.images[1] | image_url: width: 1600 }}"
+                      alt="{{ product.title }} - alternate view"
+                      width="1600"
                       height="1067"
                       loading="lazy"
                       class="arc-card__img-hover"
@@ -218,7 +279,48 @@
                 </button>
               </div>
             </div>
+            {%- endcapture -%}
+            {%- if ar_key contains 'aries' or ar_key contains 'mesha' -%}
+              {%- assign ar_bucket_aries = ar_bucket_aries | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'taurus' or ar_key contains 'vrishabha' -%}
+              {%- assign ar_bucket_taurus = ar_bucket_taurus | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'gemini' or ar_key contains 'mithuna' -%}
+              {%- assign ar_bucket_gemini = ar_bucket_gemini | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'cancer' or ar_key contains 'karka' -%}
+              {%- assign ar_bucket_cancer = ar_bucket_cancer | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'leo' or ar_key contains 'simha' -%}
+              {%- assign ar_bucket_leo = ar_bucket_leo | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'virgo' or ar_key contains 'kanya' -%}
+              {%- assign ar_bucket_virgo = ar_bucket_virgo | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'libra' or ar_key contains 'tula' -%}
+              {%- assign ar_bucket_libra = ar_bucket_libra | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'scorpio' or ar_key contains 'vrischika' -%}
+              {%- assign ar_bucket_scorpio = ar_bucket_scorpio | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'sagittarius' or ar_key contains 'dhanu' -%}
+              {%- assign ar_bucket_sagittarius = ar_bucket_sagittarius | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'capricorn' or ar_key contains 'makara' -%}
+              {%- assign ar_bucket_capricorn = ar_bucket_capricorn | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'aquarius' or ar_key contains 'kumbha' -%}
+              {%- assign ar_bucket_aquarius = ar_bucket_aquarius | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'pisces' or ar_key contains 'meena' -%}
+              {%- assign ar_bucket_pisces = ar_bucket_pisces | append: ar_card_markup -%}
+            {%- else -%}
+              {%- assign ar_bucket_rest = ar_bucket_rest | append: ar_card_markup -%}
+            {%- endif -%}
           {%- endfor -%}
+          {{ ar_bucket_aries }}
+          {{ ar_bucket_taurus }}
+          {{ ar_bucket_gemini }}
+          {{ ar_bucket_cancer }}
+          {{ ar_bucket_leo }}
+          {{ ar_bucket_virgo }}
+          {{ ar_bucket_libra }}
+          {{ ar_bucket_scorpio }}
+          {{ ar_bucket_sagittarius }}
+          {{ ar_bucket_capricorn }}
+          {{ ar_bucket_aquarius }}
+          {{ ar_bucket_pisces }}
+          {{ ar_bucket_rest }}
   
           {%- if paginate.pages > 1 -%}
             <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
