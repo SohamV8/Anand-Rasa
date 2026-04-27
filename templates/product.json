@@ -27,6 +27,13 @@
           "type": "price",
           "settings": {}
         },
+        "text_XtgpFE": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
+            "text_style": "body"
+          }
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -60,6 +67,7 @@
         "vendor",
         "title",
         "price",
+        "text_XtgpFE",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
