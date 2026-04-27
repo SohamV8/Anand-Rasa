@@ -45,35 +45,30 @@
         "trust-1": {
           "type": "trust_item",
           "settings": {
-            "icon": "shopify://shop_images/Shop.png",
             "title": "Promoting Local Businesses"
           }
         },
         "trust-2": {
           "type": "trust_item",
           "settings": {
-            "icon": "shopify://shop_images/NoAnimal.png",
             "title": "Not tested on animals"
           }
         },
         "trust-3": {
           "type": "trust_item",
           "settings": {
-            "icon": "shopify://shop_images/NoChem.png",
             "title": "No Alcohol or Chemicals"
           }
         },
         "trust-4": {
           "type": "trust_item",
           "settings": {
-            "icon": "shopify://shop_images/FreeShipping.png",
             "title": "Free Shipping"
           }
         },
         "cat-1": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/PlanetHero.png",
             "title": "Planet Attar",
             "link": "/collections/planet-attars"
           }
@@ -81,7 +76,6 @@
         "cat-2": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/PlanetHero.png",
             "title": "Zodiac Attar",
             "link": "/collections/zodiac-attars"
           }
@@ -117,8 +111,6 @@
         "planet-1": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/surya_card.webp",
-            "perfume_image": "shopify://shop_images/sun.webp",
             "name": "Sun",
             "description": "Golden warmth in every note.",
             "url": "/collections/planet-attars"
@@ -127,8 +119,6 @@
         "planet-2": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/moon_card.webp",
-            "perfume_image": "shopify://shop_images/moon.webp",
             "name": "Moon",
             "description": "Calm whispers in silver light.",
             "url": "/collections/planet-attars"
@@ -137,8 +127,6 @@
         "planet-3": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/mangal_card.webp",
-            "perfume_image": "shopify://shop_images/mars.webp",
             "name": "Mars",
             "description": "Flame of courage, scent of victory.",
             "url": "/collections/planet-attars"
@@ -147,8 +135,6 @@
         "planet-4": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/budh_card.webp",
-            "perfume_image": "shopify://shop_images/mercury.webp",
             "name": "Mercury",
             "description": "Quick thoughts, cool citrus.",
             "url": "/collections/planet-attars"
@@ -157,8 +143,6 @@
         "planet-5": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/guru_card.webp",
-            "perfume_image": "shopify://shop_images/jupiter.webp",
             "name": "Jupiter",
             "description": "Grandeur laced in calm sandalwood.",
             "url": "/collections/planet-attars"
@@ -167,8 +151,6 @@
         "planet-6": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/shukra_card.webp",
-            "perfume_image": "shopify://shop_images/Venus.webp",
             "name": "Venus",
             "description": "Love reborn in rose and velvet.",
             "url": "/collections/planet-attars"
@@ -177,8 +159,6 @@
         "planet-7": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/shani_card.webp",
-            "perfume_image": "shopify://shop_images/saturn.webp",
             "name": "Saturn",
             "description": "The scent of timeless strength.",
             "url": "/collections/planet-attars"
@@ -189,14 +169,12 @@
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_12_21_21_PM.png",
             "title": "Incense Sticks",
-            "link": "/collections/incense-sticks"
+            "link": "shopify://collections/insane-stick"
           }
         },
         "planet-8": {
           "type": "planet",
           "settings": {
-            "planet_image": "shopify://shop_images/rahu_card.webp",
-            "perfume_image": "shopify://shop_images/rahu.webp",
             "name": "Rahu",
             "description": "Shadows fire, smoky mystery.",
             "url": "/collections/planet-attars"
@@ -205,7 +183,6 @@
         "cat-8": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png",
             "title": "Discovery Kit",
             "link": "/collections/giftsets"
           }
@@ -269,7 +246,6 @@
         "bp-phil-4"
       ],
       "settings": {
-        "hero_image": "shopify://shop_images/KV_Hero.webp",
         "hero_eyebrow": "ANAND RAS",
         "hero_headline": "Perfume for your soul",
         "hero_body": "Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.",
@@ -292,13 +268,10 @@
         "zc_collection": "zodiac-attars",
         "zc_heading": "ZODIAC",
         "zc_sub": "Choose your zodiac fragrance.",
-        "t1_image": "shopify://shop_images/Incensehero.webp",
         "t1_url": "/collections/incense-sticks",
         "t1_label": "Shop Now",
-        "t2_image": "shopify://shop_images/stress_calm.webp",
         "t2_url": "/collections/stress-relief",
         "t2_label": "Shop Now",
-        "t3_image": "shopify://shop_images/love.webp",
         "t3_url": "/collections/love-attar",
         "t3_label": "Shop Now",
         "pure_heading": "More than fragrance",
@@ -309,7 +282,6 @@
         "find_text": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.",
         "find_btn": "Find Your Fragrance",
         "find_url": "/pages/find-fragrance",
-        "combo_image": "shopify://shop_images/Gemini_Generated_Image_9ab3ha9ab3ha9ab3.png",
         "combo_image_url": "",
         "combo_heading": "Discovery Kit",
         "combo_text": "The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.",
@@ -323,7 +295,6 @@
         "blog": "news",
         "blog_limit": 3,
         "blog_heading": "OUR BLOGS",
-        "incense_image": "shopify://shop_images/incense_3c1395fd-341d-41d0-9a6f-8e0278e60546.jpg",
         "incense_url": "/collections/incense-sticks",
         "inc_collection": "incense-sticks",
         "inc_heading": "Shop Incense Sticks"
