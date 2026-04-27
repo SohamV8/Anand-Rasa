@@ -82,6 +82,71 @@
         "padding_bottom": 12
       }
     },
+    "1777286995f45adf32": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_0f5d8dd_N4q6yE": {
+          "type": "ai_gen_block_0f5d8dd",
+          "settings": {
+            "spec_table_title": "Specifications",
+            "spec_1_label": "Country of Origin",
+            "spec_1_value": "India",
+            "spec_2_label": "Item Form",
+            "spec_2_value": "Incense Sticks",
+            "spec_3_label": "Item Type",
+            "spec_3_value": "Handcrafted",
+            "spec_4_label": "Number of Sticks",
+            "spec_4_value": "100 Sticks",
+            "spec_5_label": "Burning Time",
+            "spec_5_value": "30-40 Minutes",
+            "spec_6_label": "Length of Stick",
+            "spec_6_value": "8 Inches",
+            "feature_table_title": "Features Comparison",
+            "feature_column_title": "Feature",
+            "our_brand_title": "Our Brand",
+            "others_title": "Others",
+            "feature_1_name": "Clean Burning - Low Smoke",
+            "feature_2_name": "Natural Ingredients (Chemical & Charcoal Free)",
+            "feature_3_name": "Premium Quality - Handcrafted",
+            "feature_4_name": "Vedic Fragrance - Spiritual",
+            "feature_5_name": "Eco Friendly - Daily Use",
+            "show_sticky_bar": true,
+            "button_text": "Add to Cart",
+            "max_width": 1200,
+            "section_padding": 40,
+            "table_gap": 30,
+            "table_padding": 25,
+            "row_padding": 12,
+            "border_radius": 12,
+            "button_radius": 8,
+            "title_size": 18,
+            "text_size": 14,
+            "background_color": "#FAF8F5",
+            "table_background": "#FFFFFF",
+            "title_color": "#2C2C2C",
+            "label_color": "#2C2C2C",
+            "value_color": "#666666",
+            "border_color": "#E8E8E8",
+            "header_background": "#F5F5F5",
+            "header_text_color": "#2C2C2C",
+            "check_bg_color": "#E8F5E9",
+            "check_icon_color": "#2E7D32",
+            "cross_bg_color": "#FFEBEE",
+            "cross_icon_color": "#C62828",
+            "sticky_bar_bg": "#FFFFFF",
+            "sticky_text_color": "#2C2C2C",
+            "button_bg_color": "#121212",
+            "button_text_color": "#FFFFFF",
+            "button_hover_bg": "#2C2C2C"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_0f5d8dd_N4q6yE"
+      ],
+      "settings": {}
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -103,6 +168,7 @@
   },
   "order": [
     "main",
+    "1777286995f45adf32",
     "related-products"
   ]
 }
