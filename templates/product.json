@@ -23,13 +23,6 @@
           "type": "title",
           "settings": {}
         },
-        "text_jNaTJ4": {
-          "type": "text",
-          "settings": {
-            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
-            "text_style": "body"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {}
@@ -56,18 +49,6 @@
           "type": "description",
           "settings": {}
         },
-        "icon_with_text_HqhJxY": {
-          "type": "icon-with-text",
-          "settings": {
-            "layout": "horizontal",
-            "icon_1": "heart",
-            "heading_1": "100% Natural",
-            "icon_2": "return",
-            "heading_2": "Trusted",
-            "icon_3": "truck",
-            "heading_3": "Easy Ship"
-          }
-        },
         "share": {
           "type": "share",
           "settings": {
@@ -78,13 +59,11 @@
       "block_order": [
         "vendor",
         "title",
-        "text_jNaTJ4",
         "price",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
         "description",
-        "icon_with_text_HqhJxY",
         "share"
       ],
       "settings": {
@@ -93,7 +72,7 @@
         "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
-        "gallery_layout": "thumbnail_slider",
+        "gallery_layout": "stacked",
         "mobile_thumbnails": "hide",
         "media_position": "left",
         "image_zoom": "lightbox",
@@ -102,79 +81,6 @@
         "padding_top": 36,
         "padding_bottom": 12
       }
-    },
-    "1777275779e9084f90": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_3c49e59_wbUred": {
-          "type": "ai_gen_block_3c49e59",
-          "settings": {
-            "max_width": 1200,
-            "section_padding": 40,
-            "table_gap": 30,
-            "table_padding": 25,
-            "cell_padding": 12,
-            "spec_table_title": "Specifications",
-            "spec_1_label": "Country of Origin",
-            "spec_1_value": "India",
-            "spec_2_label": "Item Form",
-            "spec_2_value": "Stick",
-            "spec_3_label": "Item Type",
-            "spec_3_value": "Incense Sticks",
-            "spec_4_label": "Number of Sticks",
-            "spec_4_value": "100 Sticks",
-            "spec_5_label": "Burning Time",
-            "spec_5_value": "30-40 Minutes",
-            "spec_6_label": "Length of Stick",
-            "spec_6_value": "8 Inches",
-            "feature_table_title": "Features Comparison",
-            "feature_column_title": "Feature",
-            "our_brand_column": "Our Brand",
-            "others_column": "Others",
-            "feature_1_name": "Clean Burning - Low Smoke",
-            "feature_1_ours": true,
-            "feature_1_others": false,
-            "feature_2_name": "Natural Ingredients (Chemical & Charcoal Free)",
-            "feature_2_ours": true,
-            "feature_2_others": false,
-            "feature_3_name": "Premium Quality - Handcrafted",
-            "feature_3_ours": true,
-            "feature_3_others": false,
-            "feature_4_name": "Vedic Fragrance - Spiritual",
-            "feature_4_ours": true,
-            "feature_4_others": false,
-            "feature_5_name": "Eco Friendly - Daily Use",
-            "feature_5_ours": true,
-            "feature_5_others": false,
-            "sticky_bar_enabled": true,
-            "button_text": "Add to Cart",
-            "background_color": "#faf8f5",
-            "table_background": "#ffffff",
-            "title_color": "#2c2c2c",
-            "label_color": "#2c2c2c",
-            "value_color": "#5c5c5c",
-            "border_color": "#e8e8e8",
-            "check_color": "#2d7a3e",
-            "cross_color": "#c94545",
-            "sticky_bar_background": "#ffffff",
-            "sticky_text_color": "#2c2c2c",
-            "button_background": "#2c2c2c",
-            "button_text_color": "#ffffff",
-            "button_hover_background": "#1a1a1a",
-            "border_radius": 8,
-            "button_radius": 4,
-            "shadow_opacity": 0.1,
-            "title_size": 20,
-            "text_size": 14,
-            "icon_size": 20
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_3c49e59_wbUred"
-      ],
-      "settings": {}
     },
     "related-products": {
       "type": "related-products",
@@ -197,7 +103,6 @@
   },
   "order": [
     "main",
-    "1777275779e9084f90",
     "related-products"
   ]
 }
