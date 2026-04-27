@@ -1,4 +1,12 @@
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "anand-rasa-homepage": {
@@ -7,7 +15,6 @@
         "video_testimonial_X4wnTD": {
           "type": "video_testimonial",
           "settings": {
-            "video": "",
             "video_url": "",
             "quote": "This fragrance stayed with me all day and felt so elegant.",
             "name": "Anand Rasa Customer",
@@ -18,7 +25,6 @@
         "video_testimonial_aW7QJW": {
           "type": "video_testimonial",
           "settings": {
-            "video": "",
             "video_url": "",
             "quote": "This fragrance stayed with me all day and felt so elegant.",
             "name": "Anand Rasa Customer",
@@ -29,7 +35,6 @@
         "video_testimonial_WyKQgB": {
           "type": "video_testimonial",
           "settings": {
-            "video": "",
             "video_url": "",
             "quote": "This fragrance stayed with me all day and felt so elegant.",
             "name": "Anand Rasa Customer",
@@ -362,10 +367,15 @@
         "q15": "",
         "a15": ""
       }
+    },
+    "1777269447655d4c93": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
     "anand-rasa-homepage",
-    "anand-rasa-faq"
+    "anand-rasa-faq",
+    "1777269447655d4c93"
   ]
 }
