@@ -1,12 +1,26 @@
-{% comment %}
-  Page URL by handle: uses live page URL when the page exists, else /pages/{handle}.
-  Usage: {% render 'ar-page-url', handle: 'about' %}
-{% endcomment %}
-{%- assign page_handle = handle | strip -%}
-{%- if page_handle == blank -%}
-  {{- routes.root_url -}}
-{%- elsif pages[page_handle] != empty -%}
-  {{- pages[page_handle].url -}}
-{%- else -%}
-  {{- routes.root_url -}}pages/{{- page_handle -}}
-{%- endif -%}
+{% liquid
+  assign key = handle | downcase | strip
+  assign url = ''
+
+  case key
+    when 'about', 'about-us', 'about-anand-rasa'
+      assign url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url
+    when 'contact', 'contact-us'
+      assign url = pages['contact'].url | default: pages['contact-us'].url
+    when 'faq', 'faqs'
+      assign url = pages['faq'].url | default: pages['faqs'].url
+    when 'bulk-enquiry', 'bulk-enquiry-form', 'bulk-inquiry'
+      assign url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url
+    when 'find-fragrance', 'find-your-fragrance', 'astro-fragrance-finder'
+      assign url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url
+    else
+      assign url = pages[key].url | default: '/pages/' | append: key
+  endcase
+
+  if url == blank and key != blank
+    assign url = pages[key].url | default: '/pages/' | append: key
+  elsif url == blank
+    assign url = routes.root_url
+  endif
+%}
+{{ url }}

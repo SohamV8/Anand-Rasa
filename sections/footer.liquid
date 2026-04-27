@@ -50,6 +50,17 @@
 </style>
 
 <footer class="arf">
+  {%- assign ar_footer_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
+  {%- if ar_footer_about_url == blank -%}{%- capture ar_footer_about_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}{%- endif -%}
+  {%- assign ar_footer_contact_url = pages['contact'].url | default: pages['contact-us'].url -%}
+  {%- if ar_footer_contact_url == blank -%}{%- capture ar_footer_contact_url -%}{% render 'ar-page-url', handle: 'contact' %}{%- endcapture -%}{%- endif -%}
+  {%- assign ar_footer_faq_url = pages['faq'].url | default: pages['faqs'].url -%}
+  {%- if ar_footer_faq_url == blank -%}{%- capture ar_footer_faq_url -%}{% render 'ar-page-url', handle: 'faq' %}{%- endcapture -%}{%- endif -%}
+  {%- assign ar_footer_bulk_url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url -%}
+  {%- if ar_footer_bulk_url == blank -%}{%- capture ar_footer_bulk_url -%}{% render 'ar-page-url', handle: 'bulk-enquiry' %}{%- endcapture -%}{%- endif -%}
+  {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url -%}
+  {%- if ar_footer_find_url == blank -%}{%- capture ar_footer_find_url -%}{% render 'ar-page-url', handle: 'find-fragrance' %}{%- endcapture -%}{%- endif -%}
+
   <div class="arf__main">
     <div>
       {%- if section.settings.logo != blank -%}
@@ -98,18 +109,18 @@
     <div>
       <span class="arf__col-title">Support</span>
       <div class="arf__links">
-        <a href="{% render 'ar-page-url', handle: 'contact' %}" class="arf__link">Contact Us</a>
+        <a href="{{ ar_footer_contact_url }}" class="arf__link">Contact Us</a>
         <a href="{% if shop.shipping_policy %}{{ shop.shipping_policy.url }}{% else %}/policies/shipping-policy{% endif %}" class="arf__link">Shipping Policy</a>
-        <a href="{% render 'ar-page-url', handle: 'bulk-enquiry' %}" class="arf__link">Bulk Enquiry</a>
-        <a href="{% render 'ar-page-url', handle: 'faq' %}" class="arf__link">FAQ</a>
-        <a href="{% render 'ar-page-url', handle: 'find-fragrance' %}" class="arf__link">Astro Fragrance Finder</a>
+        <a href="{{ ar_footer_bulk_url }}" class="arf__link">Bulk Enquiry</a>
+        <a href="{{ ar_footer_faq_url }}" class="arf__link">FAQ</a>
+        <a href="{{ ar_footer_find_url }}" class="arf__link">Astro Fragrance Finder</a>
       </div>
     </div>
 
     <div>
       <span class="arf__col-title">Company</span>
       <div class="arf__links">
-        <a href="{% render 'ar-page-url', handle: 'about' %}" class="arf__link">About Anand Rasa</a>
+        <a href="{{ ar_footer_about_url }}" class="arf__link">About Anand Rasa</a>
         <a href="{% if blogs['news'] != empty %}{{ blogs['news'].url }}{% else %}/blogs/news{% endif %}" class="arf__link">Blog</a>
         <a href="{% if shop.privacy_policy %}{{ shop.privacy_policy.url }}{% else %}/policies/privacy-policy{% endif %}" class="arf__link">Privacy Policy</a>
         <a href="{% if shop.terms_of_service %}{{ shop.terms_of_service.url }}{% else %}/policies/terms-of-service{% endif %}" class="arf__link">Terms &amp; Conditions</a>

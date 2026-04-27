@@ -86,13 +86,23 @@
     {%- endif -%}
   {%- endfor -%}
 {%- endif -%}
+{%- capture ar_header_giftsets_url -%}{% render 'ar-collection-url', handle: 'giftsets' %}{%- endcapture -%}
+{%- assign ar_header_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
+{%- if ar_header_about_url == blank -%}
+  {%- capture ar_header_about_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}
+{%- endif -%}
+{%- if blogs['news'] != empty -%}
+  {%- assign ar_header_blog_url = blogs['news'].url -%}
+{%- else -%}
+  {%- assign ar_header_blog_url = routes.root_url -%}
+{%- endif -%}
 
 <nav class="ar-nav" aria-label="Main navigation">
   <div class="ar-nav__inner">
     <div class="ar-nav__left">
       <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
-      <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-      <a href="{{ section.settings.nav_l3_url | default: '/collections/giftsets' }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+      <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
+      <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
     </div>
 
     <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
@@ -128,33 +138,80 @@
                   {%- liquid
                     assign ar_mega_hover_image = ''
                     assign ar_mega_hover_video = ''
+                    assign ar_mega_title_key = block.settings.title | default: '' | downcase | strip
+                    assign ar_mega_link_key = block.settings.link | default: '' | downcase
+                    assign ar_mega_link_url = block.settings.link
+                    if ar_mega_link_url == blank
+                      if ar_mega_title_key contains 'best'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'bestseller'
+                        endcapture
+                      elsif ar_mega_title_key contains 'planet'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'planet-attars'
+                        endcapture
+                      elsif ar_mega_title_key contains 'zodiac'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'zodiac-attars'
+                        endcapture
+                      elsif ar_mega_title_key contains 'nakshatra' or ar_mega_title_key contains 'naksahtra'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'nakshatra-attars'
+                        endcapture
+                      elsif ar_mega_title_key contains 'chakra'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'chakra-attars'
+                        endcapture
+                      elsif ar_mega_title_key contains 'stress'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'stress-relief'
+                        endcapture
+                      elsif ar_mega_title_key contains 'love'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'love-attar'
+                        endcapture
+                      elsif ar_mega_title_key contains 'incense'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'incense-sticks'
+                        endcapture
+                      elsif ar_mega_title_key contains 'gift' or ar_mega_title_key contains 'discovery'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'giftsets'
+                        endcapture
+                      endif
+                    endif
+                    assign ar_mega_link_url = ar_mega_link_url | strip
+                    if ar_mega_link_url == blank
+                      assign ar_mega_link_url = routes.collections_url
+                    endif
                     if block.settings.image != blank
                       assign ar_mega_hover_image = block.settings.image | image_url: width: 900
                     else
-                      case block.settings.title
-                        when 'Planet Attar', 'Planet Attars'
-                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
-                        when 'Zodiac Attar', 'Zodiac Attars'
-                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
-                        when 'Nakshatra Attar', 'Nakshatra Attars'
-                          assign ar_mega_hover_video = 'NakshatraGif1.webm' | asset_url
-                          assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
-                        when 'Chakra Attar', 'Chakra Attars'
-                          assign ar_mega_hover_image = 'chakra.webp' | asset_url
-                        when 'Stress Relief Attar', 'Stress Relief Attars'
-                          assign ar_mega_hover_image = 'stress.webp' | asset_url
-                        when 'Love Attar', 'Love Attars'
-                          assign ar_mega_hover_image = 'love.webp' | asset_url
-                        when 'Incense Sticks'
-                          assign ar_mega_hover_image = 'incense.jpeg' | asset_url
-                      endcase
+                      if ar_mega_title_key contains 'planet' or ar_mega_link_key contains 'planet-attars'
+                        assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                      elsif ar_mega_title_key contains 'zodiac' or ar_mega_link_key contains 'zodiac-attars'
+                        assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                      elsif ar_mega_title_key contains 'nakshatra' or ar_mega_link_key contains 'nakshatra-attars'
+                        assign ar_mega_hover_video = 'NakshatraGif1.webm' | asset_url
+                        assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                      elsif ar_mega_title_key contains 'chakra' or ar_mega_link_key contains 'chakra-attars'
+                        assign ar_mega_hover_image = 'chakra.webp' | asset_url
+                      elsif ar_mega_title_key contains 'stress' or ar_mega_link_key contains 'stress-relief'
+                        assign ar_mega_hover_image = 'stress.webp' | asset_url
+                      elsif ar_mega_title_key contains 'love' or ar_mega_link_key contains 'love-attar'
+                        assign ar_mega_hover_image = 'love.webp' | asset_url
+                      elsif ar_mega_title_key contains 'incense' or ar_mega_link_key contains 'incense-sticks'
+                        assign ar_mega_hover_image = 'incense.jpeg' | asset_url
+                      endif
                     endif
                     if ar_mega_hover_image == blank and mega_fallback_image != blank
                       assign ar_mega_hover_image = mega_fallback_image | image_url: width: 900
+                    elsif ar_mega_hover_image == blank
+                      assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
                     endif
                   -%}
                   <a
-                    href="{{ block.settings.link | default: '/collections/all' }}"
+                    href="{{ ar_mega_link_url }}"
                     class="ar-mega__link"
                     data-image="{{ ar_mega_hover_image }}"
                     data-video="{{ ar_mega_hover_video }}"
@@ -179,63 +236,44 @@
               {%- endif -%}
             </div>
             <div class="ar-mega__feature">
+              {%- assign ar_mega_primary_src = '' -%}
+              {%- assign ar_mega_primary_width = 900 -%}
+              {%- assign ar_mega_primary_height = 1200 -%}
               {%- if mega_fallback_image != blank -%}
-                <div class="ar-mega__feature-media">
-                  <img
-                    src="{{ mega_fallback_image | image_url: width: 900 }}"
-                    srcset="{{ mega_fallback_image | image_url: width: 300 }} 300w, {{ mega_fallback_image | image_url: width: 600 }} 600w, {{ mega_fallback_image | image_url: width: 900 }} 900w"
-                    sizes="300px"
-                    alt="Featured Collection"
-                    width="{{ mega_fallback_image.width }}"
-                    height="{{ mega_fallback_image.height }}"
-                    loading="lazy"
-                    class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
-                    id="header-preview-image"
-                    data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
-                  >
-                  <img
-                    src="{{ mega_fallback_image | image_url: width: 900 }}"
-                    alt="Featured Collection"
-                    width="{{ mega_fallback_image.width }}"
-                    height="{{ mega_fallback_image.height }}"
-                    loading="lazy"
-                    class="ar-mega__feature-img js-ar-mega-feature-secondary"
-                    id="ar-mega-feature-secondary-{{ section.id }}"
-                  >
-                  <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
-                </div>
-              {%- elsif mega_blocks.size > 0 -%}
-                <div class="ar-mega__feature-media">
-                  <img
-                    src="{{ 'PlanetHero.webp' | asset_url }}"
-                    alt="Featured Collection"
-                    width="900"
-                    height="1200"
-                    loading="lazy"
-                    class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
-                    id="header-preview-image"
-                    data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
-                  >
-                  <img
-                    src="{{ 'PlanetHero.webp' | asset_url }}"
-                    alt="Featured Collection"
-                    width="900"
-                    height="1200"
-                    loading="lazy"
-                    class="ar-mega__feature-img js-ar-mega-feature-secondary"
-                    id="ar-mega-feature-secondary-{{ section.id }}"
-                  >
-                  <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
-                </div>
+                {%- assign ar_mega_primary_src = mega_fallback_image | image_url: width: 900 -%}
+                {%- assign ar_mega_primary_width = mega_fallback_image.width | default: 900 -%}
+                {%- assign ar_mega_primary_height = mega_fallback_image.height | default: 1200 -%}
               {%- else -%}
-                <div class="ar-mega__feature-ph">Upload featured image in Theme Editor</div>
+                {%- assign ar_mega_primary_src = 'PlanetHero.webp' | asset_url -%}
               {%- endif -%}
+              <div class="ar-mega__feature-media">
+                <img
+                  src="{{ ar_mega_primary_src }}"
+                  alt="Featured Collection"
+                  width="{{ ar_mega_primary_width }}"
+                  height="{{ ar_mega_primary_height }}"
+                  loading="lazy"
+                  class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
+                  id="header-preview-image"
+                  data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
+                >
+                <img
+                  src="{{ ar_mega_primary_src }}"
+                  alt="Featured Collection"
+                  width="{{ ar_mega_primary_width }}"
+                  height="{{ ar_mega_primary_height }}"
+                  loading="lazy"
+                  class="ar-mega__feature-img js-ar-mega-feature-secondary"
+                  id="ar-mega-feature-secondary-{{ section.id }}"
+                >
+                <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <a href="{{ section.settings.nav_r2_url | default: '/pages/about' }}" class="ar-nav__link">{{ section.settings.nav_r2 | default: 'About' }}</a>
+      <a href="{{ section.settings.nav_r2_url | default: ar_header_about_url }}" class="ar-nav__link">{{ section.settings.nav_r2 | default: 'About' }}</a>
 
       <a href="{{ routes.cart_url }}" class="ar-nav__icon" aria-label="Cart">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.847-7.148a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.273"/></svg>
@@ -254,8 +292,8 @@
 <div class="ar-nav__drawer js-ar-drawer" aria-hidden="true">
   <button class="ar-nav__drawer-close js-ar-close" aria-label="Close menu">&times;</button>
   <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
-  <a href="{{ section.settings.nav_l2_url | default: '/blogs/news' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-  <a href="{{ section.settings.nav_l3_url | default: '/collections/giftsets' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+  <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
+  <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
   <button class="ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false">
     {{ section.settings.nav_r1 | default: 'Collections' }}
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -263,7 +301,54 @@
   <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub">
     {%- if mega_blocks.size > 0 -%}
       {%- for block in mega_blocks -%}
-        <a href="{{ block.settings.link | default: '/collections/all' }}" class="ar-nav__drawer-link ar-nav__drawer-sub">{{ block.settings.title | default: 'Collection' }}</a>
+        {%- liquid
+          assign ar_drawer_title_key = block.settings.title | default: '' | downcase | strip
+          assign ar_drawer_link_url = block.settings.link | strip
+          if ar_drawer_link_url == blank
+            if ar_drawer_title_key contains 'best'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'bestseller'
+              endcapture
+            elsif ar_drawer_title_key contains 'planet'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'planet-attars'
+              endcapture
+            elsif ar_drawer_title_key contains 'zodiac'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'zodiac-attars'
+              endcapture
+            elsif ar_drawer_title_key contains 'nakshatra' or ar_drawer_title_key contains 'naksahtra'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'nakshatra-attars'
+              endcapture
+            elsif ar_drawer_title_key contains 'chakra'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'chakra-attars'
+              endcapture
+            elsif ar_drawer_title_key contains 'stress'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'stress-relief'
+              endcapture
+            elsif ar_drawer_title_key contains 'love'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'love-attar'
+              endcapture
+            elsif ar_drawer_title_key contains 'incense'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'incense-sticks'
+              endcapture
+            elsif ar_drawer_title_key contains 'gift' or ar_drawer_title_key contains 'discovery'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'giftsets'
+              endcapture
+            endif
+          endif
+          assign ar_drawer_link_url = ar_drawer_link_url | strip
+          if ar_drawer_link_url == blank
+            assign ar_drawer_link_url = routes.collections_url
+          endif
+        -%}
+        <a href="{{ ar_drawer_link_url }}" class="ar-nav__drawer-link ar-nav__drawer-sub">{{ block.settings.title | default: 'Collection' }}</a>
       {%- endfor -%}
     {%- else -%}
       <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Bestseller</a>
@@ -276,7 +361,7 @@
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
     {%- endif -%}
   </div>
-  <a href="{{ section.settings.nav_r2_url | default: '/pages/about' }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>
+  <a href="{{ section.settings.nav_r2_url | default: ar_header_about_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>
   <a href="{{ routes.cart_url }}" class="ar-nav__drawer-link">Cart ({{ cart.item_count }})</a>
   <a href="{{ routes.account_url }}" class="ar-nav__drawer-link">Account</a>
 </div>
@@ -378,7 +463,10 @@
             secondaryImage.style.display = 'none';
             previewVideo.src = hoverVideo;
             previewVideo.style.display = 'block';
-            previewVideo.play().catch(function(){});
+            previewVideo.play().catch(function(){
+              previewVideo.style.display = 'none';
+              swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
+            });
           } else {
             swapTo(hoverSrc, link.getAttribute('data-mega-alt'));
           }
@@ -390,6 +478,13 @@
           showVideoOrImage();
         });
       });
+
+      if (previewVideo) {
+        previewVideo.addEventListener('error', function () {
+          previewVideo.style.display = 'none';
+          swapTo(fallbackSrc, fallbackAlt);
+        });
+      }
 
       dropdown.addEventListener('mouseleave', function () {
         swapTo(fallbackSrc, fallbackAlt);

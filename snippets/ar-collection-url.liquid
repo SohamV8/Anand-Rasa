@@ -8,13 +8,23 @@
 
 {%- case lookup_handle -%}
   {%- when 'bestseller' -%}
-    {%- assign candidate_handles = 'bestseller,Bestseller' -%}
+    {%- assign candidate_handles = 'bestseller,Bestseller,best-seller,bestsellers,best-sellers' -%}
+  {%- when 'planet-attars', 'planet-attar', 'planet' -%}
+    {%- assign candidate_handles = 'planet-attars,planet-attar,planet,planetattar,planet-attarss' -%}
+  {%- when 'zodiac-attars', 'zodiac-attar', 'zodiac' -%}
+    {%- assign candidate_handles = 'zodiac-attars,zodiac-attar,zodiac,zodiacattar' -%}
+  {%- when 'nakshatra-attars', 'nakshatra-attar', 'nakshatra', 'naksahtra' -%}
+    {%- assign candidate_handles = 'nakshatra-attars,nakshatra-attar,nakshatra,naksahtra,naksahtra-attars,nakshtra-attars' -%}
+  {%- when 'chakra-attars', 'chakra-attar', 'chakra' -%}
+    {%- assign candidate_handles = 'chakra-attars,chakra-attar,chakra,chakras' -%}
   {%- when 'stressrelief', 'stress-relief' -%}
-    {%- assign candidate_handles = 'stress-relief,stressrelief' -%}
+    {%- assign candidate_handles = 'stress-relief,stressrelief,stress-relief-attars,stress' -%}
   {%- when 'love-attars', 'love-attar' -%}
-    {%- assign candidate_handles = 'love-attar,love-attars' -%}
+    {%- assign candidate_handles = 'love-attar,love-attars,love,lov-attar' -%}
+  {%- when 'incense-sticks', 'incense-stick', 'incense' -%}
+    {%- assign candidate_handles = 'incense-sticks,incense-stick,incense,incenses,incense-products' -%}
   {%- when 'gift-sets', 'giftsets' -%}
-    {%- assign candidate_handles = 'giftsets,gift-sets' -%}
+    {%- assign candidate_handles = 'giftsets,gift-sets,gift-set,discovery-kit,discovery-kits' -%}
 {%- endcase -%}
 
 {%- assign resolved_handle = '' -%}
@@ -31,8 +41,6 @@
   {{- routes.collections_url -}}
 {%- elsif collections[resolved_handle] != empty -%}
   {{- collections[resolved_handle].url -}}
-{%- elsif lookup_handle != blank -%}
-  {{- routes.collections_url -}}/{{- lookup_handle -}}
 {%- else -%}
   {{- routes.collections_url -}}
 {%- endif -%}

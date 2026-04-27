@@ -1,12 +1,4 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
+
 {
   "sections": {
     "anand-rasa-homepage": {
@@ -169,7 +161,7 @@
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_12_21_21_PM.png",
             "title": "Incense Sticks",
-            "link": "shopify://collections/insane-stick"
+            "link": "shopify://collections/incense-sticks"
           }
         },
         "planet-8": {
@@ -277,11 +269,11 @@
         "pure_heading": "More than fragrance",
         "pure_text": "Crafted with intention and tradition, each attar is designed to become a quiet part of your presence.",
         "pure_btn": "OUR STORY",
-        "pure_url": "/pages/about",
+        "pure_url": "/pages/about-us",
         "find_heading": "Discover the fragrance written in your stars.",
         "find_text": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.",
         "find_btn": "Find Your Fragrance",
-        "find_url": "/pages/find-fragrance",
+        "find_url": "/pages/find-your-fragrance",
         "combo_image_url": "",
         "combo_heading": "Discovery Kit",
         "combo_text": "The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.",

@@ -1,6 +1,15 @@
 {%- comment -%} 2. CATEGORY GRID {%- endcomment -%}
 <section class="ar-cat">
   <div class="ar-cat__grid">
+    {%- liquid
+      assign has_category_blocks = false
+      for block in section.blocks
+        if block.type == 'category'
+          assign has_category_blocks = true
+          break
+        endif
+      endfor
+    -%}
     {%- for block in section.blocks -%}
       {%- if block.type == 'category' -%}
         {%- liquid
@@ -97,6 +106,96 @@
             {%- endif -%}
             <div class="ar-cat__txt">
               <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
+              <span class="ar-cat__cta">Explore</span>
+            </div>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Auto-show required collections that are missing from category blocks {%- endcomment -%}
+    {%- liquid
+      assign required_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|giftsets' | split: '|'
+      assign required_titles = 'Planet Attar|Zodiac Attar|Nakshatra Attar|Chakra Attar|Stress Relief Attar|Love Attar|Incense Sticks|Discovery Kit' | split: '|'
+      assign required_fallbacks = 'PlanetHero.webp|PlanetHero.webp|NakshatraGif1.webm|chakra.webp|stress.webp|love.webp|incense.jpeg|giftsets.webp' | split: '|'
+    -%}
+    {%- for required_handle in required_handles -%}
+      {%- liquid
+        assign required_title = required_titles[forloop.index0]
+        assign required_fallback = required_fallbacks[forloop.index0]
+        assign already_present = false
+        for block in section.blocks
+          if block.type == 'category'
+            assign block_title_down = block.settings.title | downcase
+            assign block_link = block.settings.link | default: ''
+            if block_link contains required_handle
+              assign already_present = true
+              break
+            endif
+            if required_handle == 'planet-attars' and block_title_down contains 'planet'
+              assign already_present = true
+              break
+            elsif required_handle == 'zodiac-attars' and block_title_down contains 'zodiac'
+              assign already_present = true
+              break
+            elsif required_handle == 'nakshatra-attars' and block_title_down contains 'nakshatra'
+              assign already_present = true
+              break
+            elsif required_handle == 'chakra-attars' and block_title_down contains 'chakra'
+              assign already_present = true
+              break
+            elsif required_handle == 'stress-relief' and block_title_down contains 'stress'
+              assign already_present = true
+              break
+            elsif required_handle == 'love-attar' and block_title_down contains 'love'
+              assign already_present = true
+              break
+            elsif required_handle == 'incense-sticks' and block_title_down contains 'incense'
+              assign already_present = true
+              break
+            elsif required_handle == 'giftsets' and block_title_down contains 'discovery'
+              assign already_present = true
+              break
+            endif
+          endif
+        endfor
+        assign auto_href = routes.collections_url | append: '/' | append: required_handle
+        if collections[required_handle] != empty
+          assign auto_href = collections[required_handle].url
+        endif
+      -%}
+      {%- if already_present == false or has_category_blocks == false -%}
+        <a
+          href="{{ auto_href }}"
+          class="ar-cat__item"
+          aria-label="{{ required_title | escape }} — Explore"
+        >
+          <div class="ar-cat__wrap">
+            {%- if required_fallback == 'NakshatraGif1.webm' -%}
+              <video
+                class="ar-cat__img"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+                aria-label="{{ required_title | escape }} | {{ shop.name | escape }}"
+              >
+                <source src="{{ required_fallback | asset_url }}" type="video/webm">
+              </video>
+            {%- else -%}
+              <img
+                src="{{ required_fallback | asset_url }}"
+                alt="{{ required_title | escape }} | {{ shop.name | escape }}"
+                width="1200"
+                height="900"
+                loading="lazy"
+                class="ar-cat__img"
+                decoding="async"
+              >
+            {%- endif -%}
+            <div class="ar-cat__txt">
+              <h3 class="ar-cat__title">{{ required_title }}</h3>
               <span class="ar-cat__cta">Explore</span>
             </div>
           </div>
