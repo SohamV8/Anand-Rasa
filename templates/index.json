@@ -1,4 +1,3 @@
-
 {
   "sections": {
     "anand-rasa-homepage": {
@@ -37,24 +36,28 @@
         "trust-1": {
           "type": "trust_item",
           "settings": {
+            "icon": "shopify://shop_images/Shop.webp",
             "title": "Promoting Local Businesses"
           }
         },
         "trust-2": {
           "type": "trust_item",
           "settings": {
+            "icon": "shopify://shop_images/NoAnimal.webp",
             "title": "Not tested on animals"
           }
         },
         "trust-3": {
           "type": "trust_item",
           "settings": {
+            "icon": "shopify://shop_images/NoChem.webp",
             "title": "No Alcohol or Chemicals"
           }
         },
         "trust-4": {
           "type": "trust_item",
           "settings": {
+            "icon": "shopify://shop_images/FreeShipping.webp",
             "title": "Free Shipping"
           }
         },
@@ -161,7 +164,7 @@
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_12_21_21_PM.png",
             "title": "Incense Sticks",
-            "link": "shopify://collections/incense-sticks"
+            "link": "shopify://collections/incense-stick"
           }
         },
         "planet-8": {
@@ -245,7 +248,7 @@
         "hero_btn1_url": "/collections/planet-attars",
         "hero_btn2_label": "Explore Collections",
         "hero_btn2_url": "/collections",
-        "bs_collection": "planet-attars",
+        "bs_collection": "bestseller",
         "bs_limit": 10,
         "bs_heading": "BestSellers",
         "bs_sub": "Explore our best sellers.",
@@ -257,7 +260,7 @@
         "zh_text": "Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion.",
         "zh_btn": "EXPLORE NAKSHATRA ATTARS",
         "zh_url": "/collections/nakshatra-attars",
-        "zc_collection": "zodiac-attars",
+        "zc_collection": "zodiac-attar",
         "zc_heading": "ZODIAC",
         "zc_sub": "Choose your zodiac fragrance.",
         "t1_url": "/collections/incense-sticks",
@@ -269,11 +272,12 @@
         "pure_heading": "More than fragrance",
         "pure_text": "Crafted with intention and tradition, each attar is designed to become a quiet part of your presence.",
         "pure_btn": "OUR STORY",
-        "pure_url": "/pages/about-us",
+        "pure_url": "/pages/about",
         "find_heading": "Discover the fragrance written in your stars.",
         "find_text": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.",
         "find_btn": "Find Your Fragrance",
-        "find_url": "/pages/find-your-fragrance",
+        "find_url": "/pages/find-fragrance",
+        "combo_image": "shopify://shop_images/gift-set-of-perfume-and-attar-indian-traditional-minimal-cream-color-modern-traditional-professional.png",
         "combo_image_url": "",
         "combo_heading": "Discovery Kit",
         "combo_text": "The Discovery Kit is your personal journey through scent. A curated collection crafted to match different moods and moments.",
@@ -288,7 +292,7 @@
         "blog_limit": 3,
         "blog_heading": "OUR BLOGS",
         "incense_url": "/collections/incense-sticks",
-        "inc_collection": "incense-sticks",
+        "inc_collection": "incense-stick",
         "inc_heading": "Shop Incense Sticks"
       }
     },

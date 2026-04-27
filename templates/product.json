@@ -129,23 +129,23 @@
             "button_radius": 8,
             "title_size": 18,
             "text_size": 14,
-            "background_color": "#FAF8F5",
-            "table_background": "#FFFFFF",
-            "title_color": "#2C2C2C",
-            "label_color": "#2C2C2C",
+            "background_color": "#faf8f5",
+            "table_background": "#ffffff",
+            "title_color": "#2c2c2c",
+            "label_color": "#2c2c2c",
             "value_color": "#666666",
-            "border_color": "#E8E8E8",
-            "header_background": "#F5F5F5",
-            "header_text_color": "#2C2C2C",
-            "check_bg_color": "#E8F5E9",
-            "check_icon_color": "#2E7D32",
-            "cross_bg_color": "#FFEBEE",
-            "cross_icon_color": "#C62828",
-            "sticky_bar_bg": "#FFFFFF",
-            "sticky_text_color": "#2C2C2C",
+            "border_color": "#e8e8e8",
+            "header_background": "#f5f5f5",
+            "header_text_color": "#2c2c2c",
+            "check_bg_color": "#e8f5e9",
+            "check_icon_color": "#2e7d32",
+            "cross_bg_color": "#ffebee",
+            "cross_icon_color": "#c62828",
+            "sticky_bar_bg": "#ffffff",
+            "sticky_text_color": "#2c2c2c",
             "button_bg_color": "#121212",
-            "button_text_color": "#FFFFFF",
-            "button_hover_bg": "#2C2C2C"
+            "button_text_color": "#ffffff",
+            "button_hover_bg": "#2c2c2c"
           },
           "blocks": {}
         }
@@ -172,11 +172,32 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "1777290678d5cd77e4": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MXUhLe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MXUhLe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "main",
     "1777286995f45adf32",
-    "related-products"
+    "related-products",
+    "1777290678d5cd77e4"
   ]
 }
