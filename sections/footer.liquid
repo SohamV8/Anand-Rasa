@@ -130,7 +130,9 @@
         </a>
       {%- else -%}
         <a href="{{ section.settings.instagram | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.75A4 4 0 0 0 3.75 7.75v8.5a4 4 0 0 0 4 4h8.5a4 4 0 0 0 4-4v-8.5a4 4 0 0 0-4-4h-8.5Zm9.4 1.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.75a3.25 3.25 0 1 0 0 6.5 3.25 3.25 0 0 0 0-6.5Z"/>
+          </svg>
         </a>
       {%- endif -%}
 
@@ -144,7 +146,9 @@
         </a>
       {%- else -%}
         <a href="{{ section.settings.facebook | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M13.5 22v-8.25h2.78l.42-3.22H13.5V8.47c0-.93.26-1.56 1.6-1.56h1.72V4.03A22.2 22.2 0 0 0 14.3 3.9c-2.5 0-4.22 1.53-4.22 4.34v2.29H7.25v3.22h2.83V22h3.42Z"/>
+          </svg>
         </a>
       {%- endif -%}
 
@@ -158,7 +162,9 @@
         </a>
       {%- else -%}
         <a href="{{ section.settings.youtube | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.4 19.6C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 001.94-2A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.67 4.6 12 4.6 12 4.6s-5.67 0-7.48.48A2.98 2.98 0 0 0 2.42 7.2C1.94 9.01 1.94 12 1.94 12s0 2.99.48 4.8a2.98 2.98 0 0 0 2.1 2.11c1.81.48 7.48.48 7.48.48s5.67 0 7.48-.48a2.98 2.98 0 0 0 2.1-2.1c.48-1.82.48-4.81.48-4.81s0-2.99-.48-4.8Zm-11.4 8V8.8L15.7 12l-5.52 3.19Z"/>
+          </svg>
         </a>
       {%- endif -%}
 
@@ -172,7 +178,9 @@
         </a>
       {%- else -%}
         <a href="{{ section.settings.linkedin | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.56 8.98H3.3V20h3.26V8.98ZM4.93 3.75a1.89 1.89 0 1 0 0 3.78 1.89 1.89 0 0 0 0-3.78ZM20.7 13.68c0-3.32-1.77-4.86-4.13-4.86-1.9 0-2.76 1.05-3.24 1.79v-1.53h-3.25V20h3.25v-6.03c0-1.59.3-3.13 2.27-3.13 1.94 0 1.97 1.82 1.97 3.24V20h3.26l-.01-6.32Z"/>
+          </svg>
         </a>
       {%- endif -%}
     </div>
@@ -183,7 +191,7 @@
       {%- elsif section.settings.pay_visa_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_visa_url }}" alt="Visa" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot">VISA</div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer/visa-icon.svg' | asset_url }}" alt="Visa" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_mc != blank -%}
@@ -191,7 +199,7 @@
       {%- elsif section.settings.pay_mc_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_mc_url }}" alt="Mastercard" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot">MC</div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer/master-card-icon.svg' | asset_url }}" alt="Mastercard" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_upi != blank -%}
@@ -199,7 +207,7 @@
       {%- elsif section.settings.pay_upi_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_upi_url }}" alt="UPI" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot">UPI</div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer/upi-payment-icon.svg' | asset_url }}" alt="UPI" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_rp != blank -%}
@@ -207,7 +215,7 @@
       {%- elsif section.settings.pay_rp_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_rp_url }}" alt="RuPay" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot">RP</div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer/razorpay-icon.svg' | asset_url }}" alt="Razorpay" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
     </div>
   </div>
@@ -235,7 +243,15 @@
         class="arf__brand-img"
       >
     {%- else -%}
-      <div class="arf__brand-img-ph">Upload your brand image — Theme Editor → Footer Brand Image</div>
+      <img
+        src="{{ 'Footer/Footer.webp' | asset_url }}"
+        sizes="100vw"
+        alt="{{ shop.name }}"
+        width="2000"
+        height="400"
+        loading="lazy"
+        class="arf__brand-img"
+      >
     {%- endif -%}
   </div>
 

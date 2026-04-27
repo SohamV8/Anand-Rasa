@@ -47,7 +47,14 @@
           class="ar-hero__img"
         >
       {%- else -%}
-        <div class="ar-hero__ph">Upload hero image in Theme Editor</div>
+        <img
+          src="{{ 'home.webp' | asset_url }}"
+          alt="{{ section.settings.hero_headline | default: shop.name | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="ar-hero__img"
+        >
       {%- endif -%}
     </div>
 

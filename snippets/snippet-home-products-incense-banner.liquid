@@ -12,8 +12,14 @@
     >
   </a>
 {%- else -%}
-  <div class="ar-incense-ph">
-    <p style="font-size:18px;font-weight:600;color:#c06080;">Incense Banner</p>
-    <p style="font-size:13px;color:#d4709a;">Theme Editor &rarr; Incense Banner &rarr; Upload banner image</p>
-  </div>
+  <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+    <img
+      src="{{ 'incense.webp' | asset_url }}"
+      sizes="100vw"
+      alt="Anand Rasa Incense Sticks"
+      width="2000"
+      height="800"
+      loading="lazy"
+    >
+  </a>
 {%- endif -%}
