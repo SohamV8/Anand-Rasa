@@ -173,7 +173,7 @@
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_12_21_21_PM.png",
             "title": "Incense Sticks",
-            "link": "shopify://collections/insane-stick"
+            "link": "shopify://collections/incense-stick"
           }
         },
         "planet-8": {
@@ -301,7 +301,7 @@
         "blog_limit": 3,
         "blog_heading": "OUR BLOGS",
         "incense_url": "/collections/incense-sticks",
-        "inc_collection": "insane-stick",
+        "inc_collection": "incense-stick",
         "inc_heading": "Shop Incense Sticks"
       }
     },
