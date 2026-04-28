@@ -200,18 +200,26 @@
 .zx__orb {
   width: 60px; height: 60px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 30px; line-height: 1;
+  line-height: 1;
   background: rgba(255,255,255,0.52);
   border: 1.5px solid rgba(255,255,255,0.72);
   backdrop-filter: blur(6px);
   margin-bottom: 9px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   transition: transform var(--ts), box-shadow var(--te);
+  overflow: hidden;
 }
 .zx__card:hover .zx__orb,
 .zx__card.is-active .zx__orb {
   transform: scale(1.14) rotate(-8deg);
   box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+}
+
+.zx__orb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .zx__card-name {
@@ -324,6 +332,19 @@
   margin-bottom: 12px;
   position: relative; z-index: 1;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.10));
+  animation: zx-float 7s ease-in-out infinite;
+}
+
+.zx__sign-big-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.85);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
   animation: zx-float 7s ease-in-out infinite;
 }
 
@@ -543,6 +564,7 @@
   assign zx_emoji  = '🐏,🐂,👯,🦀,🦁,👸,⚖️,🦂,🏹,🐐,🏺,🐟' | split: ','
   assign zx_dates  = 'Mar 21–Apr 19,Apr 20–May 20,May 21–Jun 20,Jun 21–Jul 22,Jul 23–Aug 22,Aug 23–Sep 22,Sep 23–Oct 22,Oct 23–Nov 21,Nov 22–Dec 21,Dec 22–Jan 19,Jan 20–Feb 18,Feb 19–Mar 20' | split: ','
   assign zx_nums   = '01,02,03,04,05,06,07,08,09,10,11,12' | split: ','
+  assign zx_art    = 'Zodiac/1.webp,Zodiac/2.webp,Zodiac/3.webp,Zodiac/4.webp,Zodiac/5.webp,Zodiac/6.webp,Zodiac/7.webp,Zodiac/8.webp,Zodiac/9.webp,Zodiac/10.webp,Zodiac/11.webp,Zodiac/12.webp' | split: ','
   assign zx_elem   = 'Fire,Earth,Air,Water,Fire,Earth,Air,Water,Fire,Earth,Air,Water' | split: ','
   assign zx_mode   = 'Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable,Cardinal,Fixed,Mutable' | split: ','
   assign zx_ruler  = 'Mars,Venus,Mercury,Moon,Sun,Mercury,Venus,Pluto & Mars,Jupiter,Saturn,Uranus & Saturn,Neptune & Jupiter' | split: ','
@@ -593,7 +615,17 @@
           data-sign="{{ sk }}"
           id="zxt-{{ sk }}"
         >
-          <span class="zx__orb" aria-hidden="true">{{ zx_glyphs[i] }}</span>
+          <span class="zx__orb" aria-hidden="true">
+            <img
+              class="zx__orb-img"
+              src="{{ zx_art[i] | asset_url }}"
+              alt=""
+              width="240"
+              height="240"
+              loading="lazy"
+              decoding="async"
+            >
+          </span>
           <span class="zx__card-name">{{ zx_names[i] }}</span>
           <span class="zx__card-dates">{{ zx_dates[i] }}</span>
         </button>
@@ -669,7 +701,15 @@
               <span class="zx__orbit-ring" aria-hidden="true"></span>
               <span class="zx__orbit-ring" aria-hidden="true"></span>
 
-              <span class="zx__sign-big" aria-label="{{ zx_names[i] }} symbol" role="img">{{ zx_glyphs[i] }}</span>
+              <img
+                class="zx__sign-big-img"
+                src="{{ zx_art[i] | asset_url }}"
+                alt="{{ zx_names[i] }} zodiac sign"
+                width="480"
+                height="480"
+                loading="lazy"
+                decoding="async"
+              >
 
               {%- if zx_prod != blank and zx_prod != empty -%}
                 <a href="{{ zx_prod.url }}" class="zx__img-wrap" aria-label="{{ zx_prod.title | escape }}">
@@ -682,7 +722,15 @@
                       loading="lazy" decoding="async"
                     >
                   {%- else -%}
-                    <div class="zx__img-ph">{{ zx_glyphs[i] }}</div>
+                    <img
+                      class="zx__img"
+                      src="{{ zx_art[i] | asset_url }}"
+                      alt="{{ zx_names[i] }} zodiac sign"
+                      width="600"
+                      height="600"
+                      loading="lazy"
+                      decoding="async"
+                    >
                   {%- endif -%}
                 </a>
                 <p class="zx__prod-type">{{ zx_prod.type | default: 'Zodiac Attar' }}</p>
@@ -711,7 +759,17 @@
                   <button type="button" class="zx__atc" disabled>Sold Out</button>
                 {%- endif -%}
               {%- else -%}
-                <div class="zx__img-wrap"><div class="zx__img-ph">{{ zx_glyphs[i] }}</div></div>
+                <div class="zx__img-wrap">
+                  <img
+                    class="zx__img"
+                    src="{{ zx_art[i] | asset_url }}"
+                    alt="{{ zx_names[i] }} zodiac sign"
+                    width="600"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
                 <p class="zx__prod-type">Zodiac Attar</p>
                 <h3 class="zx__prod-name">{{ zx_names[i] }} Attar</h3>
                 <p style="font-size:12px;color:var(--ink-3);margin-top:8px;text-align:center;position:relative;z-index:1;">Assign product in Theme Editor</p>

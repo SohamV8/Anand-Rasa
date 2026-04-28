@@ -103,9 +103,66 @@
   <div class="arc">
   
     {%- comment -%} HERO {% endcomment %}
- //add incense.jpeg
-  
+    <div class="arc-hero">
+      {%- if section.settings.hero_image != blank -%}
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 2200 }}"
+          alt="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
+          width="2200"
+          height="1100"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="arc-hero__bg"
+        >
+      {%- else -%}
+        <img
+          src="{{ 'stress.webp' | asset_url }}"
+          alt="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
+          width="2200"
+          height="1100"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="arc-hero__bg"
+        >
+      {%- endif -%}
+      <div class="arc-hero__ov" aria-hidden="true"></div>
+      <div class="arc-hero__con">
+        <span class="arc-hero__label">{{ section.settings.hero_label | default: 'Calm & Balance' }}</span>
+        <h1 class="arc-hero__h">{{ collection.title | default: 'Stress Relief Attars' }}</h1>
+        <p class="arc-hero__p">{{ section.settings.hero_subtitle | default: 'Botanical attars chosen to quiet the mind, soften tension, and bring you back to center. A gentle ritual for hectic days.' }}</p>
+        <a href="#arc-products" class="arc-hero__btn">
+          {{ section.settings.hero_btn | default: 'Explore Collection' }}
+        </a>
+      </div>
+    </div>
 
+    {%- comment -%} USP STRIP {% endcomment -%}
+    <section class="arc-usp" aria-label="Stress relief highlights">
+      <div class="arc-usp__row">
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🌿</span>
+          <p class="arc-usp__title">Plant-based calm</p>
+          <p class="arc-usp__sub">Pure botanical profiles designed to soften stress without synthetic heaviness.</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🧘</span>
+          <p class="arc-usp__title">Daily grounding ritual</p>
+          <p class="arc-usp__sub">One drop on pulse points helps center your breath and focus in under a minute.</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🕊️</span>
+          <p class="arc-usp__title">Long, gentle projection</p>
+          <p class="arc-usp__sub">Smooth diffusion that stays close to skin for calm confidence all day.</p>
+        </div>
+        <div class="arc-usp__item">
+          <span class="arc-usp__emoji" aria-hidden="true">🫙</span>
+          <p class="arc-usp__title">Small-batch crafted</p>
+          <p class="arc-usp__sub">Traditional attar making with modern quality checks for consistency and purity.</p>
+        </div>
+      </div>
+    </section>
   
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
@@ -210,9 +267,51 @@
         </div>
       {%- endif -%}
     </div>
-  
-// add bulk incense form 
-// add FAQ
+
+    {%- comment -%} CONTENT BLOCK {% endcomment -%}
+    <section class="arc-content" aria-label="{{ section.settings.content_title | default: 'Fragrance as a Pause Button' | escape }}">
+      <div class="arc-content__img-wrap">
+        {%- if section.settings.content_image != blank -%}
+          <img
+            src="{{ section.settings.content_image | image_url: width: 1600 }}"
+            alt="{{ section.settings.content_title | default: collection.title | escape }}"
+            width="1600"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="arc-content__img"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'stress_calm.webp' | asset_url }}"
+            alt="{{ section.settings.content_title | default: collection.title | escape }}"
+            width="1600"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+            class="arc-content__img"
+          >
+        {%- endif -%}
+      </div>
+      <div>
+        <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Philosophy' }}</span>
+        <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Fragrance as a Pause Button' }}</h2>
+        <p class="arc-content__p">{{ section.settings.content_body | default: 'Stress Relief Attars are composed around botanicals traditionally valued for calm, clarity, and emotional ease. Wear them as a quiet anchor - one drop on the pulse points - to reset your nervous system and return to yourself.' }}</p>
+      </div>
+    </section>
+
+    {%- comment -%} CTA {% endcomment -%}
+    <section class="arc-cta" aria-label="{{ section.settings.cta_title | default: 'Find Your Calm in a Bottle' | escape }}">
+      <div class="arc-cta__ov" aria-hidden="true"></div>
+      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
+      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Find Your Calm in a Bottle' }}</h2>
+      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Explore attars that help you exhale, reset, and move through the day with a softer edge.' }}</p>
+      {%- if section.settings.cta_url != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
+      {%- else -%}
+        <a href="#arc-products" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
+      {%- endif -%}
+    </section>
   
   </div>
   

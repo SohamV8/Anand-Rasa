@@ -305,49 +305,9 @@
         "inc_collection": "incense-stick",
         "inc_heading": "Shop Incense Sticks"
       }
-    },
-    "anand-rasa-faq": {
-      "type": "collection-incense-faq",
-      "settings": {
-        "eyebrow": "Support",
-        "heading": "Frequently Asked Questions",
-        "subtext": "Everything you need to know about our pure, handcrafted agarbatti and attars.",
-        "bg_color": "#fafaf7",
-        "q1": "What makes Anand Rasa agarbatti different from regular incense sticks?",
-        "a1": "Anand Rasa agarbatti are 100% charcoal-free and handcrafted using traditional Kannauj methods. We use pure resins, dried flowers, sacred woods, and natural binders — no synthetic fragrances, no coal dust, no harmful chemicals. The result is cleaner smoke, longer burn time, and a fragrance that actually evolves as it burns.",
-        "q2": "How long do Anand Rasa incense sticks burn?",
-        "a2": "Each stick burns for 40–45 minutes, giving your space a consistent, evolving fragrance throughout. A single pack of 40 sticks typically lasts one month for daily use — one stick per morning or evening ritual.",
-        "q3": "Are your agarbatti safe for daily use, children, and pets?",
-        "a3": "Yes. Because our incense sticks contain no charcoal or synthetic binding agents, they produce significantly less smoke and toxic particulates than conventional agarbatti. We recommend burning them in a ventilated room. For very young children or pets sensitive to smoke, we suggest placing the holder near an open window.",
-        "q4": "Which Anand Rasa agarbatti is best for meditation and focus?",
-        "a4": "Our Chandan (Sandalwood) Agarbatti is most popular for deep meditation — it slows the mind and anchors focus. Loban Agarbatti is our top pick for purification and prayer. For a calming, sleep-ready environment we recommend Lavender Agarbatti or Chamomile Blend.",
-        "q5": "What is the difference between agarbatti and dhoop?",
-        "a5": "Agarbatti (incense sticks) are fragrance material rolled around a bamboo core and are easier to handle. Dhoop is a bamboo-free, dense incense cone or cylinder that burns slightly hotter and produces a thicker, more intense fragrance — preferred in temples and during havan. Both can be used for daily worship; the choice depends on the intensity of fragrance you prefer.",
-        "q6": "Are Anand Rasa products suitable for havan, puja, and religious rituals?",
-        "a6": "Absolutely. Our Havan Samagri blend is formulated specifically for fire rituals, containing camphor, guggul, cow ghee-coated herbs, and sacred woods. Our Loban and Chandan agarbatti are widely used for daily puja and aarti. All products are free from animal-derived non-sattvic ingredients.",
-        "q7": "Do you ship across India? How long does delivery take?",
-        "a7": "Yes — we ship to all 28 states and 8 Union Territories across India via tracked courier. Standard delivery takes 3–6 business days. Express delivery (1–2 days) is available for major metro cities. Free shipping is available on orders above ₹499.",
-        "q8": "Can I order Anand Rasa agarbatti in bulk for temples, hotels, or gifting?",
-        "a8": "Yes. We offer wholesale and bulk pricing for temples, Ayurvedic centres, yoga studios, hotels, wedding gifting, and corporate orders. Minimum bulk order starts at 50 packs. Please use our Bulk Inquiry form or call us directly for a custom quote with your GST details.",
-        "q9": "What is your return and replacement policy?",
-        "a9": "We offer a 7-day return window from the date of delivery for unopened products. If your order arrives damaged or you receive the wrong item, we will replace it at no cost — just send a photo to our support email within 48 hours of delivery. Opened packs can be returned if the product is genuinely defective or misrepresented.",
-        "q10": "How should I store agarbatti to preserve fragrance?",
-        "a10": "Store your agarbatti in a cool, dry place away from direct sunlight and humidity. Keep them in their original packaging or an airtight container. Avoid storing near strong-smelling substances as natural incense can absorb ambient odours. Properly stored agarbatti retain full fragrance potency for 18–24 months.",
-        "q11": "Are Anand Rasa products cruelty-free and eco-friendly?",
-        "a11": "Yes. We use no animal-derived ingredients (except pure cow ghee in selected havan blends where religiously significant), no synthetic dyes, and no plastic in our primary packaging. Our bamboo sticks are sustainably sourced. We are committed to reducing our packaging waste year-on-year.",
-        "q12": "Which fragrance is best for a good night's sleep?",
-        "a12": "Our Lavender Agarbatti and Chamomile blend are specifically crafted for evening and sleep rituals. Lavender is clinically studied for reducing anxiety and promoting deep sleep. Light one stick 20 minutes before bed in a ventilated room and allow the fragrance to settle before sleeping.",
-        "q13": "",
-        "a13": "",
-        "q14": "",
-        "a14": "",
-        "q15": "",
-        "a15": ""
-      }
     }
   },
   "order": [
-    "anand-rasa-homepage",
-    "anand-rasa-faq"
+    "anand-rasa-homepage"
   ]
 }

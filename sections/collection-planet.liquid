@@ -277,8 +277,10 @@
 
   </div>
 
-  {% render 'navagraha-attar-explorer' %}
-  {% render 'ask-mehak' %}
+  {%- unless template.suffix == 'bestseller' -%}
+    {% render 'navagraha-attar-explorer' %}
+    {% render 'ask-mehak' %}
+  {%- endunless -%}
   
   <script>
   (function(){

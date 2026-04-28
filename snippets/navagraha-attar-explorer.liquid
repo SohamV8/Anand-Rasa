@@ -915,9 +915,88 @@
         {%- liquid
           assign pk = pl_keys[i]
           assign block_index = i
-          assign ck_prod = nil
+          assign ck_prod = blank
           if section.blocks[block_index]
             assign ck_prod = section.blocks[block_index].settings.product
+          endif
+
+          if ck_prod == blank and collection != blank and collection.products_count > 0
+            for cp in collection.products
+              assign cp_handle = cp.handle | downcase
+              case pk
+                when 'surya'
+                  if cp_handle contains 'surya' or cp_handle contains 'sun'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'chandra'
+                  if cp_handle contains 'chandra' or cp_handle contains 'moon'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'mangal'
+                  if cp_handle contains 'mangal' or cp_handle contains 'mars'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'budha'
+                  if cp_handle contains 'budha' or cp_handle contains 'budh' or cp_handle contains 'mercury'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'guru'
+                  if cp_handle contains 'guru' or cp_handle contains 'jupiter' or cp_handle contains 'brihaspati'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'shukra'
+                  if cp_handle contains 'shukra' or cp_handle contains 'venus'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'shani'
+                  if cp_handle contains 'shani' or cp_handle contains 'saturn'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'rahu'
+                  if cp_handle contains 'rahu'
+                    assign ck_prod = cp
+                    break
+                  endif
+                when 'ketu'
+                  if cp_handle contains 'ketu'
+                    assign ck_prod = cp
+                    break
+                  endif
+              endcase
+            endfor
+          endif
+
+          if ck_prod == blank
+            case pk
+              when 'surya'
+                assign ck_prod = all_products['surya-attar']
+              when 'chandra'
+                assign ck_prod = all_products['chandra-attar']
+              when 'mangal'
+                assign ck_prod = all_products['mangal-attar']
+              when 'budha'
+                assign ck_prod = all_products['budha-attar']
+                if ck_prod == blank
+                  assign ck_prod = all_products['budh-attar']
+                endif
+              when 'guru'
+                assign ck_prod = all_products['guru-attar']
+              when 'shukra'
+                assign ck_prod = all_products['shukra-attar']
+              when 'shani'
+                assign ck_prod = all_products['shani-attar']
+              when 'rahu'
+                assign ck_prod = all_products['rahu-attar']
+              when 'ketu'
+                assign ck_prod = all_products['ketu-attar']
+            endcase
           endif
 
           case i

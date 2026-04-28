@@ -5,33 +5,57 @@
 
 <section class="ar-cat-video">
   <div class="ar-cat-video__wrap">
+    {%- liquid
+      assign incense_video_assets = 'incense/incense.webm,incense/dhoop.webm,incense/Havan.webm' | split: ','
+      assign incense_video_labels = 'Incense,Dhoop,Havan Samagri' | split: ','
+    -%}
 
     <h2 class="ar-cat-video__heading">
       {{ section.settings.heading | default: "Fragrances For Divine Experiences" }}
     </h2>
 
     <div class="ar-cat-video__grid">
-
-      {% for block in section.blocks %}
-        <div class="ar-cat-video__item">
-
-          <div class="ar-cat-video__media">
-            <video
-              src="{{ block.settings.video }}"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-            ></video>
+      {%- if section.blocks.size > 0 -%}
+        {% for block in section.blocks %}
+          <div class="ar-cat-video__item">
+            <div class="ar-cat-video__media">
+              <video
+                src="{{ block.settings.video }}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                width="1920"
+                height="1080"
+              ></video>
+            </div>
+            <p class="ar-cat-video__label">
+              {{ block.settings.label }}
+            </p>
           </div>
-
-          <p class="ar-cat-video__label">
-            {{ block.settings.label }}
-          </p>
-
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {%- else -%}
+        {%- for i in (0..2) -%}
+          <div class="ar-cat-video__item">
+            <div class="ar-cat-video__media">
+              <video
+                src="{{ incense_video_assets[i] | asset_url }}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                width="1920"
+                height="1080"
+              ></video>
+            </div>
+            <p class="ar-cat-video__label">
+              {{ incense_video_labels[i] }}
+            </p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
 
     </div>
   </div>

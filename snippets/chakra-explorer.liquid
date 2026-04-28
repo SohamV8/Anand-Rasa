@@ -696,6 +696,54 @@
         assign ck = all_ck_keys[i]
         assign product_setting_key = 'product_' | append: ck
         assign ck_prod = section.settings[product_setting_key]
+
+        if ck_prod == blank and collection != blank and collection.products_count > 0
+          for cp in collection.products
+            assign cp_handle = cp.handle | downcase
+            case ck
+              when 'muladhara'
+                if cp_handle contains 'muladhara' or cp_handle contains 'root-chakra' or cp_handle contains 'root'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'svadhisthana'
+                if cp_handle contains 'svadhisthana' or cp_handle contains 'swadhisthana' or cp_handle contains 'sacral-chakra' or cp_handle contains 'sacral'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'manipura'
+                if cp_handle contains 'manipura' or cp_handle contains 'solar-plexus-chakra' or cp_handle contains 'solar-plexus'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'anahata'
+                if cp_handle contains 'anahata' or cp_handle contains 'heart-chakra' or cp_handle contains 'heart'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'vishuddha'
+                if cp_handle contains 'vishuddha' or cp_handle contains 'vishudha' or cp_handle contains 'throat-chakra' or cp_handle contains 'throat'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'ajna'
+                if cp_handle contains 'ajna' or cp_handle contains 'agya' or cp_handle contains 'third-eye-chakra' or cp_handle contains 'third-eye'
+                  assign ck_prod = cp
+                  break
+                endif
+              when 'sahasrara'
+                if cp_handle contains 'sahasrara' or cp_handle contains 'crown-chakra' or cp_handle contains 'crown'
+                  assign ck_prod = cp
+                  break
+                endif
+            endcase
+          endfor
+        endif
+
+        if ck_prod == blank
+          assign ck_fallback_handle = ck | append: '-attar'
+          assign ck_prod = all_products[ck_fallback_handle]
+        endif
       -%}
       <div
         class="ack__panel{% if i == 0 %} is-active{% endif %}"

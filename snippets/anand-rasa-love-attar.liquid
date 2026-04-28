@@ -53,12 +53,17 @@
   z-index: 10;
   width: 100%;
   line-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 .ar-love__border-top img {
   width: 100%;
   height: auto;
   object-fit: contain;
   display: block;
+  margin: 0;
+  vertical-align: top;
 }
 
 /* ============================================================
@@ -218,6 +223,153 @@
 .ar-love__card:hover {
   transform: translateY(-6px) scale(1.01);
   box-shadow: 0 16px 48px rgba(232,121,154,0.18);
+}
+
+/* ── Product showcase between borders ── */
+.ar-love__product-showcase {
+  background: #FFF398;
+  margin: 0;
+  padding: 0 48px 64px;
+  line-height: normal;
+}
+
+.ar-love__product-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 0;
+}
+
+.ar-love__showcase-head {
+  text-align: center;
+  margin: 0 0 30px;
+  padding-top: 16px;
+}
+
+.ar-love__showcase-title {
+  font-family: var(--fh);
+  font-size: clamp(28px, 3.2vw, 44px);
+  font-weight: 400;
+  color: #222222;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.ar-love__showcase-sub {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #5A5A5A;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.ar-love__showcase-head::after {
+  content: '';
+  display: block;
+  width: 110px;
+  height: 2px;
+  margin: 16px auto 0;
+  background: linear-gradient(90deg, rgba(184,148,58,0), rgba(184,148,58,0.9), rgba(184,148,58,0));
+}
+
+.ar-love__product-showcase .ar-love__grid {
+  margin-bottom: 0;
+  gap: 20px;
+}
+
+.ar-love__product-showcase .ar-love__card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,252,228,0.96) 100%);
+  border: 1px solid rgba(184,148,58,0.22);
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(55,45,15,0.08);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.ar-love__product-showcase .ar-love__card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(184,148,58,0.15), rgba(184,148,58,0.95), rgba(184,148,58,0.15));
+  opacity: 0.6;
+}
+
+.ar-love__product-showcase .ar-love__card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(184,148,58,0.5);
+  box-shadow: 0 18px 40px rgba(55,45,15,0.14);
+}
+
+.ar-love__product-showcase .ar-love__card-img {
+  aspect-ratio: 4 / 5;
+  background: #FFFBE0;
+  padding: 18px 18px 10px;
+}
+
+.ar-love__product-showcase .ar-love__card-img img {
+  object-fit: contain;
+}
+
+.ar-love__product-showcase .ar-love__card-btn {
+  border-radius: 12px;
+  background: #1A1A1A;
+  color: #FFF9D1;
+  letter-spacing: 0.12em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.ar-love__product-showcase .ar-love__card-btn:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.2);
+}
+
+.ar-love__product-showcase .ar-love__card-body {
+  gap: 7px;
+  padding: 18px 18px 0;
+}
+
+.ar-love__product-showcase .ar-love__card-name {
+  font-size: 19px;
+  line-height: 1.28;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ar-love__product-showcase .ar-love__card-desc {
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ar-love__product-showcase .ar-love__card-price-row {
+  margin-top: 9px;
+}
+
+.ar-love__product-showcase .ar-love__card-foot {
+  padding: 14px 18px 18px;
+}
+
+.ar-love__border-top + .ar-love__product-showcase {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.ar-love__product-empty {
+  text-align: center;
+  font-size: 14px;
+  color: #666666;
+  padding: 26px 20px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(184,148,58,0.2);
+  border-radius: 12px;
 }
 
 .ar-love__card-img {
@@ -386,35 +538,20 @@
    ============================================================ */
 @media (max-width: 768px) {
   .ar-love__content { padding: 60px 24px 72px; }
+  .ar-love__product-showcase { padding: 0 20px 48px; }
+  .ar-love__product-inner { padding-top: 0; }
+  .ar-love__showcase-head { padding-top: 12px; }
+  .ar-love__product-showcase .ar-love__card-img { padding: 14px 14px 8px; }
 }
 @media (max-width: 480px) {
   .ar-love__content { padding: 48px 16px 60px; }
+  .ar-love__product-showcase { padding: 0 16px 40px; }
+  .ar-love__product-inner { padding-top: 0; }
+  .ar-love__showcase-head { padding-top: 10px; }
 }
 </style>
 
 <div class="ar-love" role="region" aria-label="Love Attar Collection">
-
-  {%- comment -%} ── TOP BORDER ── {%- endcomment -%}
-  <div class="ar-love__border-top">
-    {% if section.settings.border_top != blank %}
-      <img
-        src="{{ section.settings.border_top | image_url: width: 1920 }}"
-        alt=""
-        loading="eager"
-        decoding="async"
-        aria-hidden="true"
-      >
-    {% else %}
-      <img
-        src="{{ 'love/border1.webp' | asset_url }}"
-        alt=""
-        loading="eager"
-        decoding="async"
-        aria-hidden="true"
-      >
-    {% endif %}
-  </div>
-
   {%- comment -%} ── MAIN SHELL ── {%- endcomment -%}
   <div class="ar-love__shell">
 
@@ -490,12 +627,109 @@
     </div>
   </div>
 
+  
+  {%- comment -%} ── TOP BORDER ── {%- endcomment -%}
+  <div class="ar-love__border-top">
+    {% if section.settings.border_top != blank %}
+      <img
+        src="{{ section.settings.border_top | image_url: width: 1920 }}"
+        alt=""
+        width="{{ section.settings.border_top.width | default: 1920 }}"
+        height="{{ section.settings.border_top.height | default: 140 }}"
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+      >
+    {% else %}
+      <img
+        src="{{ 'love/border1.webp' | asset_url }}"
+        alt=""
+        width="1920"
+        height="140"
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+      >
+    {% endif %}
+  </div>
+
+  {%- comment -%} ── PRODUCT SHOWCASE (BETWEEN BORDERS) ── {%- endcomment -%}
+  <section class="ar-love__product-showcase" aria-label="Love attar product showcase">
+    <div class="ar-love__product-inner">
+      <header class="ar-love__showcase-head">
+        <h3 class="ar-love__showcase-title">Our love attar collection</h3>
+        <p class="ar-love__showcase-sub">
+          Handcrafted floral attars curated for romance, warmth, and timeless elegance.
+        </p>
+      </header>
+
+      {%- if collection != blank and collection.products_count > 0 -%}
+        <div class="ar-love__grid">
+          {%- for product in collection.products limit: 6 -%}
+            <article class="ar-love__card">
+              <a href="{{ product.url }}" class="ar-love__card-img">
+                {%- if product.featured_image -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 720 }}"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    width="720"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {%- endif -%}
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="ar-love__card-badge">Sale</span>
+                {%- endif -%}
+              </a>
+              <div class="ar-love__card-body">
+                <p class="ar-love__card-type">{{ product.type | default: 'Love attar' }}</p>
+                <h4 class="ar-love__card-name">{{ product.title }}</h4>
+                {%- if product.description != blank -%}
+                  <p class="ar-love__card-desc">{{ product.description | strip_html | truncate: 72 }}</p>
+                {%- endif -%}
+                <div class="ar-love__card-price-row">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="ar-love__card-compare">{{ product.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  <span class="ar-love__card-price">{{ product.price | money }}</span>
+                </div>
+              </div>
+              <div class="ar-love__card-foot">
+                {%- if product.available -%}
+                  <button
+                    type="button"
+                    class="ar-love__card-btn js-love-atc"
+                    data-id="{{ product.variants.first.id }}"
+                    aria-label="Add {{ product.title | escape }} to cart"
+                  >
+                    <span>Add to cart</span>
+                  </button>
+                {%- else -%}
+                  <button type="button" class="ar-love__card-btn" disabled>
+                    <span>Sold out</span>
+                  </button>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="ar-love__product-empty">No products available in this collection right now.</div>
+      {%- endif -%}
+    </div>
+  </section>
+
+
+
   {%- comment -%} ── BOTTOM BORDER ── {%- endcomment -%}
   <div class="ar-love__border-bot">
     {% if section.settings.border_bottom != blank %}
       <img
         src="{{ section.settings.border_bottom | image_url: width: 1920 }}"
         alt=""
+        width="{{ section.settings.border_bottom.width | default: 1920 }}"
+        height="{{ section.settings.border_bottom.height | default: 140 }}"
         loading="lazy"
         decoding="async"
         aria-hidden="true"
@@ -504,6 +738,8 @@
       <img
         src="{{ 'love/border.webp' | asset_url }}"
         alt=""
+        width="1920"
+        height="140"
         loading="lazy"
         decoding="async"
         aria-hidden="true"
