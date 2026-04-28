@@ -192,10 +192,61 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "17773746113f1c4937": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4dbb9e7_daNx8i": {
+          "type": "ai_gen_block_4dbb9e7",
+          "settings": {
+            "heading": "The Process of Incense Making",
+            "heading_font": "serif",
+            "heading_size": 36,
+            "heading_color": "#5C3A2E",
+            "header_spacing": 50,
+            "show_divider": true,
+            "divider_width": 60,
+            "divider_height": 2,
+            "divider_color": "#C9A34E",
+            "divider_spacing": 20,
+            "icon_size": 50,
+            "icon_color": "#C9A34E",
+            "icon_spacing": 20,
+            "description_font": "system_ui_n4",
+            "description_size": 14,
+            "description_color": "#666666",
+            "hover_effect": "scale(1.05)",
+            "step_1_enabled": true,
+            "step_1_text": "Flowers are collected from temples.",
+            "step_2_enabled": true,
+            "step_2_text": "The flowers are taken for sorting.",
+            "step_3_enabled": true,
+            "step_3_text": "They are handpicked and separated carefully.",
+            "step_4_enabled": true,
+            "step_4_text": "The dried flowers are turned into powder.",
+            "step_5_enabled": true,
+            "step_5_text": "A paste is made to prepare dhoop and incense sticks.",
+            "step_6_enabled": true,
+            "step_6_text": "The incense is blended and dipped in pure essential oils.",
+            "container_max_width": 1200,
+            "grid_gap": 30,
+            "grid_top_spacing": 40,
+            "section_padding_top": 40,
+            "section_padding_bottom": 40,
+            "background_color": "#FAF8F5"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4dbb9e7_daNx8i"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "17773746113f1c4937",
     "1777286995f45adf32",
     "related-products",
     "1777290678d5cd77e4"
