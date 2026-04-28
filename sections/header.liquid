@@ -118,14 +118,8 @@
           class="ar-nav__logo-img"
         >
       {%- else -%}
-        <img
-          src="{{ 'anand-rasa-logo-black.png' | asset_url }}"
-          alt="{{ shop.name | escape }}"
-          width="{{ section.settings.logo_width | default: 180 }}"
-          height="auto"
-          loading="eager"
-          class="ar-nav__logo-img"
-        >
+        <span class="ar-nav__logo-text">{{ section.settings.logo_text | default: shop.name }}</span>
+        {%- if section.settings.logo_subtext != blank -%}<span class="ar-nav__logo-sub">{{ section.settings.logo_subtext }}</span>{%- endif -%}
       {%- endif -%}
     </a>
 
