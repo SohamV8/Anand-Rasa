@@ -1,6 +1,639 @@
+{% doc %}
+  @prompt
+    Create a premium, minimal “Process Section” for an incense brand website.
+    
+    SECTION TITLE:
+    
+    * Heading: “The Process of Incense Making”
+    * Center aligned
+    * Elegant serif font (luxury feel)
+    * Color: deep maroon or dark brown
+    * Medium-large size with good spacing
+    
+    SECTION LAYOUT:
+    
+    * Horizontal 6-step process (grid layout)
+    * Desktop: 6 columns in one row
+    * Tablet: 3 columns per row
+    * Mobile: 2 columns per row
+    * Each step centered vertically and horizontally
+    
+    EACH STEP DESIGN:
+    
+    * Icon at top (line-style, minimal, gold color)
+    * Icon size: medium (not too large, clean spacing)
+    * Below icon: short description (1–2 lines)
+    * Font: simple sans-serif
+    * Color: dark grey or muted tone
+    
+    CONTENT (exact text for each step):
+    
+    1. “Flowers are collected from temples.”
+    2. “The flowers are taken for sorting.”
+    3. “They are handpicked and separated carefully.”
+    4. “The dried flowers are turned into powder.”
+    5. “A paste is made to prepare dhoop and incense sticks.”
+    6. “The incense is blended and dipped in pure essential oils.”
+    
+    STYLE & DESIGN:
+    
+    * Background: off-white / light beige
+    * Icons color: gold (#C9A34E or similar)
+    * Spacing: generous padding (top & bottom)
+    * Clean luxury Ayurvedic / spiritual brand aesthetic
+    * No borders, no shadows (keep minimal)
+    * Smooth alignment and equal spacing between items
+    
+    OPTIONAL ENHANCEMENTS:
+    
+    * Add subtle hover effect (icon slightly scales or color deepens)
+    * Add small divider line under heading
+    * Slight fade-in animation when scrolling
+    
+    TECH REQUIREMENTS:
+    
+    * Fully responsive
+    * Optimized for Shopify Dawn theme
+    * Section should be reusable and customizable
+    * Allow editing of text and icons from theme editor
+    
+    GOAL:
+    Design should feel premium, spiritual, and handcrafted — matching an incense or pooja product brand.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-process-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+  }
+
+  .ai-process-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-process-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-process-heading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-style: {{ block.settings.heading_font.style }};
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.divider_spacing }}px;
+    line-height: 1.3;
+  }
+
+  .ai-process-divider-{{ ai_gen_id }} {
+    width: {{ block.settings.divider_width }}px;
+    height: {{ block.settings.divider_height }}px;
+    background-color: {{ block.settings.divider_color }};
+    margin: 0 auto;
+  }
+
+  .ai-process-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    margin-top: {{ block.settings.grid_top_spacing }}px;
+  }
+
+  .ai-process-step-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-process-step-{{ ai_gen_id }}:hover {
+    transform: {{ block.settings.hover_effect }};
+  }
+
+  .ai-process-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    margin-bottom: {{ block.settings.icon_spacing }}px;
+    color: {{ block.settings.icon_color }};
+    flex-shrink: 0;
+  }
+
+  .ai-process-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ai-process-description-{{ ai_gen_id }} {
+    font-family: {{ block.settings.description_font.family }}, {{ block.settings.description_font.fallback_families }};
+    font-weight: {{ block.settings.description_font.weight }};
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-process-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ai-process-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.85);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-process-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ai-process-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.75);
+    }
+
+    .ai-process-icon-{{ ai_gen_id }} {
+      width: calc({{ block.settings.icon_size }}px * 0.85);
+      height: calc({{ block.settings.icon_size }}px * 0.85);
+    }
+
+    .ai-process-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<incense-process-{{ ai_gen_id }} class="ai-process-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-process-container-{{ ai_gen_id }}">
+    <div class="ai-process-header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-process-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      {% if block.settings.show_divider %}
+        <div class="ai-process-divider-{{ ai_gen_id }}"></div>
+      {% endif %}
+    </div>
+
+    <div class="ai-process-grid-{{ ai_gen_id }}">
+      {% if block.settings.step_1_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+              <path d="M12 6v6l4 2"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_1_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.step_2_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M3 3h18v18H3z"/>
+              <path d="M9 9h6v6H9z"/>
+              <path d="M3 9h6M15 9h6M9 3v6M9 15v6M15 3v6M15 15v6"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_2_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.step_3_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_3_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.step_4_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l4 2"/>
+              <path d="M16.24 7.76l-2.12 2.12M7.76 16.24l2.12-2.12"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_4_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.step_5_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
+              <polyline points="7.5 19.79 7.5 14.6 3 12"/>
+              <polyline points="21 12 16.5 14.6 16.5 19.79"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_5_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.step_6_enabled %}
+        <div class="ai-process-step-{{ ai_gen_id }}">
+          <div class="ai-process-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+          </div>
+          <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_6_text }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</incense-process-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class IncenseProcess{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.setupObserver();
+      }
+
+      setupObserver() {
+        const steps = this.querySelectorAll('.ai-process-step-{{ ai_gen_id }}');
+        
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+              }
+            });
+          }, {
+            threshold: 0.1
+          });
+
+          steps.forEach((step, index) => {
+            step.style.opacity = '0';
+            step.style.transform = 'translateY(20px)';
+            step.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(step);
+          });
+        }
+      }
+    }
+
+    customElements.define('incense-process-{{ ai_gen_id }}', IncenseProcess{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Incense process",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Process of Incense Making"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#5C3A2E"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing below heading",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Width",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Height",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Color",
+      "default": "#C9A34E"
+    },
+    {
+      "type": "range",
+      "id": "divider_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing above divider",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Process steps"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#C9A34E"
+    },
+    {
+      "type": "range",
+      "id": "icon_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Spacing below icon",
+      "default": 20
+    },
+    {
+      "type": "font_picker",
+      "id": "description_font",
+      "label": "Description font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "select",
+      "id": "hover_effect",
+      "label": "Hover effect",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "scale(1.05)",
+          "label": "Scale up"
+        },
+        {
+          "value": "translateY(-5px)",
+          "label": "Lift up"
+        }
+      ],
+      "default": "scale(1.05)"
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_1_enabled",
+      "label": "Enable step 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_1_text",
+      "label": "Text",
+      "default": "Flowers are collected from temples."
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_2_enabled",
+      "label": "Enable step 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_2_text",
+      "label": "Text",
+      "default": "The flowers are taken for sorting."
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_3_enabled",
+      "label": "Enable step 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_3_text",
+      "label": "Text",
+      "default": "They are handpicked and separated carefully."
+    },
+    {
+      "type": "header",
+      "content": "Step 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_4_enabled",
+      "label": "Enable step 4",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_4_text",
+      "label": "Text",
+      "default": "The dried flowers are turned into powder."
+    },
+    {
+      "type": "header",
+      "content": "Step 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_5_enabled",
+      "label": "Enable step 5",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_5_text",
+      "label": "Text",
+      "default": "A paste is made to prepare dhoop and incense sticks."
+    },
+    {
+      "type": "header",
+      "content": "Step 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "step_6_enabled",
+      "label": "Enable step 6",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "step_6_text",
+      "label": "Text",
+      "default": "The incense is blended and dipped in pure essential oils."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Container max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "grid_top_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid top spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding bottom",
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FAF8F5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Incense process"
+    }
+  ]
+}
 {% endschema %}
