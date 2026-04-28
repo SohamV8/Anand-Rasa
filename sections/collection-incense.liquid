@@ -1216,7 +1216,7 @@
   {%- if section.settings.bulk_enable != false -%}
     {%- liquid
       assign bulk_pid = 'BulkOrder-' | append: section.id
-      assign bulk_tel_href = section.settings.bulk_phone | default: '+919311336643' | strip | replace: ' ', '' | replace: '-', ''
+      assign bulk_tel_href = section.settings.bulk_phone | default: '+917206264199' | strip | replace: ' ', '' | replace: '-', ''
       unless bulk_tel_href contains '+'
         assign bulk_tel_href = bulk_tel_href | prepend: '+'
       endunless
@@ -1424,8 +1424,8 @@
     { "type": "text", "id": "bulk_heading", "label": "Heading", "default": "Bulk Incense Orders" },
     { "type": "textarea", "id": "bulk_description", "label": "Description", "default": "Partner with us for bulk incense supply — temples, retailers, events, or corporate gifting. Premium quality, consistent fragrance batches, direct sourcing." },
     { "type": "text", "id": "bulk_call_label", "label": "Phone label", "default": "Call us" },
-    { "type": "text", "id": "bulk_phone", "label": "Phone (E.164 format)", "default": "+919311336643", "info": "Include country code, e.g. +919311336643" },
-    { "type": "text", "id": "bulk_phone_display", "label": "Phone display text", "default": "+91 93113 36643" },
+    { "type": "text", "id": "bulk_phone", "label": "Phone (E.164 format)", "default": "+917206264199", "info": "Include country code, e.g. +917206264199" },
+    { "type": "text", "id": "bulk_phone_display", "label": "Phone display text", "default": "+91 7206264199" },
     { "type": "text", "id": "bulk_email_label", "label": "Email label", "default": "Email" },
     { "type": "text", "id": "bulk_email", "label": "Wholesale email", "default": "anandrasafragnance@gmail.com" },
     { "type": "text", "id": "bulk_call_btn", "label": "Call button text", "default": "Call Now" },

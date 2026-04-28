@@ -76,8 +76,14 @@
         >
         {%- if section.settings.logo_subtext != blank -%}<span class="arf__logo-sub">{{ section.settings.logo_subtext }}</span>{%- endif -%}
       {%- else -%}
-        <span class="arf__logo-text">{{ shop.name }}</span>
-        {%- if section.settings.logo_subtext != blank -%}<span class="arf__logo-sub">{{ section.settings.logo_subtext }}</span>{%- endif -%}
+        <img
+          src="{{ 'anand-rasa-logo-black.png' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ section.settings.logo_width | default: 160 }}"
+          height="auto"
+          loading="lazy"
+          class="arf__logo-img"
+        >
       {%- endif -%}
 
       <p class="arf__tagline">{{ section.settings.footer_tagline | default: 'Luxury spiritual attars inspired by Vedic tradition.' }}</p>
@@ -86,8 +92,8 @@
         <span class="arf__addr-line">{{ section.settings.footer_business | default: 'Anand Rasa Fragrance' }}</span>
         <span class="arf__addr-line">{{ section.settings.footer_address | default: 'Gurugram, Haryana, India' }}</span>
         <span class="arf__addr-line"><a href="mailto:{{ section.settings.footer_email | default: 'anandrasafragnance@gmail.com' }}">{{ section.settings.footer_email | default: 'anandrasafragnance@gmail.com' }}</a></span>
-        <span class="arf__addr-line"><a href="tel:{{ section.settings.footer_phone | default: '+919311336643' }}">{{ section.settings.footer_phone | default: '+91-93113-36643' }}</a></span>
-        <span class="arf__addr-line"><a href="https://wa.me/{{ section.settings.footer_whatsapp | default: '919311336643' }}" target="_blank" rel="noopener">WhatsApp: {{ section.settings.footer_whatsapp_display | default: '+91-93113-36643' }}</a></span>
+        <span class="arf__addr-line"><a href="tel:{{ section.settings.footer_phone | default: '+917206264199' }}">{{ section.settings.footer_phone | default: '+91 7206264199' }}</a></span>
+        <span class="arf__addr-line"><a href="https://wa.me/{{ section.settings.footer_whatsapp | default: '917206264199' }}" target="_blank" rel="noopener">WhatsApp: {{ section.settings.footer_whatsapp_display | default: '+91 7206264199' }}</a></span>
       </div>
     </div>
 
@@ -326,19 +332,19 @@
       "type": "text",
       "id": "footer_phone",
       "label": "Phone",
-      "default": "+91-93113-36643"
+      "default": "+91 7206264199"
     },
     {
       "type": "text",
       "id": "footer_whatsapp",
       "label": "WhatsApp number (digits only)",
-      "default": "919311336643"
+      "default": "917206264199"
     },
     {
       "type": "text",
       "id": "footer_whatsapp_display",
       "label": "WhatsApp display text",
-      "default": "+91-93113-36643"
+      "default": "+91 7206264199"
     },
     {
       "type": "header",
