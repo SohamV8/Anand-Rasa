@@ -19,6 +19,13 @@
             "text_style": "uppercase"
           }
         },
+        "text_XtgpFE": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
+            "text_style": "body"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {}
@@ -26,13 +33,6 @@
         "price": {
           "type": "price",
           "settings": {}
-        },
-        "text_XtgpFE": {
-          "type": "text",
-          "settings": {
-            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
-            "text_style": "body"
-          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -65,9 +65,9 @@
       },
       "block_order": [
         "vendor",
+        "text_XtgpFE",
         "title",
         "price",
-        "text_XtgpFE",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
@@ -77,11 +77,11 @@
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
-        "media_size": "large",
+        "media_size": "medium",
         "constrain_to_viewport": true,
         "media_fit": "contain",
         "gallery_layout": "stacked",
-        "mobile_thumbnails": "hide",
+        "mobile_thumbnails": "show",
         "media_position": "left",
         "image_zoom": "lightbox",
         "hide_variants": true,
@@ -106,7 +106,7 @@
             "spec_4_label": "Number of Sticks",
             "spec_4_value": "100 Sticks",
             "spec_5_label": "Burning Time",
-            "spec_5_value": "30-40 Minutes",
+            "spec_5_value": "1.5 to 2 Hours",
             "spec_6_label": "Length of Stick",
             "spec_6_value": "8 Inches",
             "feature_table_title": "Features Comparison",
@@ -176,26 +176,77 @@
     "1777290678d5cd77e4": {
       "type": "apps",
       "blocks": {
-        "judge_me_reviews_review_widget_MXUhLe": {
+        "judge_me_reviews_review_widget_4AnHCm": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
+            "review_data": "real_data",
+            "max_width": 1100,
             "show_shop_reviews": true,
             "empty_state": "empty_widget"
           }
         }
       },
       "block_order": [
-        "judge_me_reviews_review_widget_MXUhLe"
+        "judge_me_reviews_review_widget_4AnHCm"
       ],
       "settings": {
         "include_margins": true
       }
+    },
+    "17773746113f1c4937": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4dbb9e7_daNx8i": {
+          "type": "ai_gen_block_4dbb9e7",
+          "settings": {
+            "heading": "The Process of Incense Making",
+            "heading_font": "serif",
+            "heading_size": 36,
+            "heading_color": "#5C3A2E",
+            "header_spacing": 50,
+            "show_divider": true,
+            "divider_width": 60,
+            "divider_height": 2,
+            "divider_color": "#C9A34E",
+            "divider_spacing": 20,
+            "icon_size": 50,
+            "icon_color": "#C9A34E",
+            "icon_spacing": 20,
+            "description_font": "system_ui_n4",
+            "description_size": 14,
+            "description_color": "#666666",
+            "hover_effect": "scale(1.05)",
+            "step_1_enabled": true,
+            "step_1_text": "Flowers are collected from temples.",
+            "step_2_enabled": true,
+            "step_2_text": "The flowers are taken for sorting.",
+            "step_3_enabled": true,
+            "step_3_text": "They are handpicked and separated carefully.",
+            "step_4_enabled": true,
+            "step_4_text": "The dried flowers are turned into powder.",
+            "step_5_enabled": true,
+            "step_5_text": "A paste is made to prepare dhoop and incense sticks.",
+            "step_6_enabled": true,
+            "step_6_text": "The incense is blended and dipped in pure essential oils.",
+            "container_max_width": 1200,
+            "grid_gap": 30,
+            "grid_top_spacing": 40,
+            "section_padding_top": 40,
+            "section_padding_bottom": 40,
+            "background_color": "#FAF8F5"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4dbb9e7_daNx8i"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "17773746113f1c4937",
     "1777286995f45adf32",
     "related-products",
     "1777290678d5cd77e4"

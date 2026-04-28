@@ -1,0 +1,541 @@
+{% doc %}
+  @prompt
+    Create a minimal “USP / Features Strip” section for a premium incense brand website.
+    
+    SECTION LAYOUT:
+    
+    * A horizontal strip with 4 feature items
+    * Desktop: 4 columns in one row (equal width)
+    * Tablet: 2 columns per row
+    * Mobile: 2 columns per row
+    * Center all content (icons + text)
+    
+    FEATURE ITEMS (4 total):
+    Each item should include:
+    
+    * Circular icon at top
+    * Short title below icon (1–2 words or short phrase)
+    
+    CONTENT (exact text):
+    
+    1. “Low Smoke”
+    2. “Backed by Scriptures”
+    3. “Pure Fragrance”
+    4. “24 hours dispatch”
+    
+    ICON STYLE:
+    
+    * Line-style minimal icons inside a thin circular border
+    * Icon + border color: gold (#C9A34E or similar)
+    * Background inside circle: white or transparent
+    * Icon size: small to medium (balanced, not bulky)
+    
+    TYPOGRAPHY:
+    
+    * Font: clean sans-serif
+    * Text alignment: center
+    * Color: dark grey or muted brown
+    * Size: small-medium (subtle, elegant)
+    
+    SECTION DESIGN:
+    
+    * Background: light grey or off-white
+    * No shadows, no heavy borders
+    * Keep spacing airy and premium
+    * Equal spacing between all 4 items
+    
+    SPACING:
+    
+    * Padding top & bottom: medium-large
+    * Space between icon and text: small
+    * Equal margin between columns
+    
+    OPTIONAL EFFECTS:
+    
+    * Slight hover effect: icon color deepens or scales slightly
+    * Smooth fade-in animation on scroll
+    
+    TECH REQUIREMENTS:
+    
+    * Fully responsive
+    * Optimized for Shopify (Dawn theme compatible)
+    * Editable content (icons + text) via theme customizer
+    
+    GOAL:
+    Design should feel premium, spiritual, and trustworthy — highlighting key product benefits in a clean, minimal way.
+    
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-usp-strip-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_vertical }}px 20px;
+  }
+
+  .ai-usp-strip-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-usp-strip-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: {{ block.settings.gap }}px;
+  }
+
+  .ai-usp-strip-item-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-usp-strip-item-{{ ai_gen_id }}:hover {
+    transform: {{ block.settings.hover_effect }};
+  }
+
+  .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.icon_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: {{ block.settings.icon_text_gap }}px;
+    background-color: {{ block.settings.icon_background }};
+    transition: all 0.3s ease;
+  }
+
+  .ai-usp-strip-item-{{ ai_gen_id }}:hover .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} {
+    border-color: {{ block.settings.icon_hover_color }};
+  }
+
+  .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} svg {
+    width: calc({{ block.settings.icon_size }}px * 0.5);
+    height: calc({{ block.settings.icon_size }}px * 0.5);
+    stroke: {{ block.settings.icon_color }};
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s ease;
+  }
+
+  .ai-usp-strip-item-{{ ai_gen_id }}:hover .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} svg {
+    stroke: {{ block.settings.icon_hover_color }};
+  }
+
+  .ai-usp-strip-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    color: {{ block.settings.text_color }};
+    font-weight: {{ block.settings.text_weight }};
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-usp-strip-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: {{ block.settings.gap_mobile }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-usp-strip-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_vertical_mobile }}px 16px;
+    }
+
+    .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size_mobile }}px;
+      height: {{ block.settings.icon_size_mobile }}px;
+    }
+
+    .ai-usp-strip-icon-wrapper-{{ ai_gen_id }} svg {
+      width: calc({{ block.settings.icon_size_mobile }}px * 0.5);
+      height: calc({{ block.settings.icon_size_mobile }}px * 0.5);
+    }
+
+    .ai-usp-strip-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<usp-strip-{{ ai_gen_id }} class="ai-usp-strip-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-usp-strip-container-{{ ai_gen_id }}">
+    <div class="ai-usp-strip-grid-{{ ai_gen_id }}">
+      {% if block.settings.feature_1_enabled %}
+        <div class="ai-usp-strip-item-{{ ai_gen_id }}">
+          <div class="ai-usp-strip-icon-wrapper-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2C12 2 8 6 8 12C8 15.31 10.69 18 14 18C17.31 18 20 15.31 20 12C20 6 16 2 16 2C16 2 14 4 12 4C10 4 8 2 8 2"></path>
+              <path d="M12 22V18"></path>
+              <path d="M8 18L6 20"></path>
+              <path d="M16 18L18 20"></path>
+            </svg>
+          </div>
+          <p class="ai-usp-strip-text-{{ ai_gen_id }}">{{ block.settings.feature_1_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.feature_2_enabled %}
+        <div class="ai-usp-strip-item-{{ ai_gen_id }}">
+          <div class="ai-usp-strip-icon-wrapper-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <path d="M9 7h6"></path>
+              <path d="M9 11h6"></path>
+              <path d="M9 15h4"></path>
+            </svg>
+          </div>
+          <p class="ai-usp-strip-text-{{ ai_gen_id }}">{{ block.settings.feature_2_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.feature_3_enabled %}
+        <div class="ai-usp-strip-item-{{ ai_gen_id }}">
+          <div class="ai-usp-strip-icon-wrapper-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path>
+            </svg>
+          </div>
+          <p class="ai-usp-strip-text-{{ ai_gen_id }}">{{ block.settings.feature_3_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.feature_4_enabled %}
+        <div class="ai-usp-strip-item-{{ ai_gen_id }}">
+          <div class="ai-usp-strip-icon-wrapper-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <p class="ai-usp-strip-text-{{ ai_gen_id }}">{{ block.settings.feature_4_text }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</usp-strip-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class UspStrip{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const items = this.querySelectorAll('.ai-usp-strip-item-{{ ai_gen_id }}');
+        
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  entry.target.style.opacity = '1';
+                  entry.target.style.transform = 'translateY(0)';
+                }, index * 100);
+                observer.unobserve(entry.target);
+              }
+            });
+          }, {
+            threshold: 0.1
+          });
+
+          items.forEach((item) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(item);
+          });
+        }
+      }
+    }
+
+    customElements.define('usp-strip-{{ ai_gen_id }}', UspStrip{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "USP features strip",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Padding top and bottom",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_mobile",
+      "label": "Padding top and bottom (mobile)",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between items",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Space between items (mobile)",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon circle size",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Icon circle size (mobile)",
+      "min": 40,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Border thickness",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon and border color",
+      "default": "#C9A34E"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon hover color",
+      "default": "#A68539"
+    },
+    {
+      "type": "color",
+      "id": "icon_background",
+      "label": "Icon background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "label": "Space between icon and text",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Text size (mobile)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#5a5a5a"
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "header",
+      "content": "Effects"
+    },
+    {
+      "type": "select",
+      "id": "hover_effect",
+      "label": "Hover effect",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "scale(1.05)",
+          "label": "Scale up"
+        },
+        {
+          "value": "translateY(-5px)",
+          "label": "Lift up"
+        }
+      ],
+      "default": "scale(1.05)"
+    },
+    {
+      "type": "header",
+      "content": "Feature 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_1_enabled",
+      "label": "Enable feature 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_1_text",
+      "label": "Text",
+      "default": "Low Smoke"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_2_enabled",
+      "label": "Enable feature 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_2_text",
+      "label": "Text",
+      "default": "Backed by Scriptures"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_3_enabled",
+      "label": "Enable feature 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_3_text",
+      "label": "Text",
+      "default": "Pure Fragrance"
+    },
+    {
+      "type": "header",
+      "content": "Feature 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_4_enabled",
+      "label": "Enable feature 4",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "feature_4_text",
+      "label": "Text",
+      "default": "24 hours dispatch"
+    }
+  ],
+  "presets": [
+    {
+      "name": "USP features strip"
+    }
+  ]
+}
+{% endschema %}
