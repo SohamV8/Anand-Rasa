@@ -952,10 +952,16 @@
     </div>
   {%- else -%}
     <div class="arc-banner">
-      <div class="arc-banner__ph">
-        <p>Incense Banner</p>
-        <p>Theme Editor → Upload banner image</p>
-      </div>
+      <img
+        src="{{ 'incense.jpeg' | asset_url }}"
+        alt="Anand Rasa — Pure Incense Sticks, Sacred Fragrances"
+        width="2000"
+        height="700"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="arc-banner__img"
+      >
     </div>
   {%- endif -%}
 

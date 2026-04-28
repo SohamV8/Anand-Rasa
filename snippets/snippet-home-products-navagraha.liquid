@@ -1,4 +1,5 @@
 {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
+{%- capture ar_nav9_collection_url -%}{% render 'ar-collection-url', handle: 'planet-attars' %}{%- endcapture -%}
 <section class="ar-nav9">
   <style>
     #shopify-section-{{ section.id }} .ar-nav9__main { min-height: 100vh; background-color:#FFFFFF ;}
@@ -29,7 +30,7 @@
   </style>
   {%- liquid
     if collections['planet-attars'] != empty
-      assign ar_nav9_fallback = collections['planet-attars'].url
+      assign ar_nav9_fallback = ar_nav9_collection_url
     else
       assign ar_nav9_fallback = routes.collections_url | append: '/planet-attars'
     endif
@@ -38,7 +39,7 @@
     <div class="ar-nav9__intro-in">
       <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
       <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
-      <a href="{{ section.settings.nav9_url | default: '/collections/planet-attars' }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
+      <a href="{{ section.settings.nav9_url | default: ar_nav9_collection_url }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
     </div>
   </div>
   <div class="ar-nav9__main">

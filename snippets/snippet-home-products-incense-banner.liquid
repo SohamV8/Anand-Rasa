@@ -1,6 +1,7 @@
 {%- comment -%} 9. INCENSE BANNER {%- endcomment -%}
+{%- capture ar_incense_banner_url -%}{% render 'ar-collection-url', handle: 'incense-sticks' %}{%- endcapture -%}
 {%- if section.settings.incense_image != blank -%}
-  <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+  <a href="{{ section.settings.incense_url | default: ar_incense_banner_url }}" class="ar-incense" aria-label="Shop Incense Sticks">
     <img
       src="{{ section.settings.incense_image | image_url: width: 1600 }}"
       srcset="{{ section.settings.incense_image | image_url: width: 600 }} 600w, {{ section.settings.incense_image | image_url: width: 1000 }} 1000w, {{ section.settings.incense_image | image_url: width: 1600 }} 1600w, {{ section.settings.incense_image | image_url: width: 2400 }} 2400w"
@@ -12,7 +13,7 @@
     >
   </a>
 {%- else -%}
-  <a href="{{ section.settings.incense_url | default: '/collections/incense-sticks' }}" class="ar-incense" aria-label="Shop Incense Sticks">
+  <a href="{{ section.settings.incense_url | default: ar_incense_banner_url }}" class="ar-incense" aria-label="Shop Incense Sticks">
     <img
       src="{{ 'incense.jpeg' | asset_url }}"
       sizes="100vw"

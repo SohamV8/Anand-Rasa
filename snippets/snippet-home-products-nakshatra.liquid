@@ -1,10 +1,11 @@
 {%- comment -%} 7. NAKSHATRA ATTAR {%- endcomment -%}
+{%- capture ar_nakshatra_default_url -%}{% render 'ar-collection-url', handle: 'nakshatra-attars' %}{%- endcapture -%}
 <section class="ar-zh" style="background:#0F0F0F;">
   <div class="ar-zh__in">
     <div class="ar-zh__left">
       <h2 class="ar-zh__h">{{ section.settings.zh_heading | default: 'Nakshatra Attar for your soul.' }}</h2>
       <p class="ar-zh__p">{{ section.settings.zh_text | default: 'Twenty-seven Nakshatra attars crafted to mirror the mood and energy of each Vedic lunar mansion. Each attar is composed as a quiet, skin-close aura that echoes the symbolism, deity, and elemental nature of your birth star.' }}</p>
-      <a href="{{ section.settings.zh_url | default: '/collections/nakshatra-attars' }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
+      <a href="{{ section.settings.zh_url | default: ar_nakshatra_default_url }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
     </div>
     <div class="ar-zh__right">
       <video

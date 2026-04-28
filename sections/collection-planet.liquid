@@ -275,13 +275,10 @@
       {%- endif -%}
     </div>
 
-    {% render 'ask-mehak',
-      uid: 'ask-mehak-home',
-      left_image: section.settings.hero_image,
-      left_image_alt: 'Astro fragrance finder'
-    %}
-      {% render 'navagraha-attar-explorer', section: section %}
   </div>
+
+  {% render 'navagraha-attar-explorer' %}
+  {% render 'ask-mehak' %}
   
   <script>
   (function(){

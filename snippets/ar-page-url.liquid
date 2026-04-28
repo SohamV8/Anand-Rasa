@@ -1,12 +1,15 @@
 {% liquid
   assign key = handle | downcase | strip
   assign url = ''
+  assign template_suffix = ''
 
   case key
     when 'about', 'about-us', 'about-anand-rasa'
       assign url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url
+      assign template_suffix = 'about'
     when 'contact', 'contact-us'
       assign url = pages['contact'].url | default: pages['contact-us'].url
+      assign template_suffix = 'contact'
     when 'faq', 'faqs'
       assign url = pages['faq'].url | default: pages['faqs'].url
     when 'bulk-enquiry', 'bulk-enquiry-form', 'bulk-inquiry'
@@ -21,6 +24,14 @@
     assign url = pages[key].url | default: '/pages/' | append: key
   elsif url == blank
     assign url = routes.root_url
+  endif
+
+  if template_suffix != blank and url != blank
+    if url contains '?'
+      assign url = url | append: '&view=' | append: template_suffix
+    else
+      assign url = url | append: '?view=' | append: template_suffix
+    endif
   endif
 %}
 {{ url }}

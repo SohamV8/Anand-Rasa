@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "main": {
+      "type": "collection-incense",
+      "settings": {
+        "incense_image": "shopify://shop_images/incense_3c1395fd-341d-41d0-9a6f-8e0278e60546.jpg",
+        "hero_image": "shopify://shop_images/ChatGPT_Image_Mar_26_2026_12_18_37_PM.png",
+        "hero_label": "Sacred Fragrance",
+        "hero_subtitle": "Pure, natural incense crafted from sacred botanicals. Each stick carries the essence of ancient Indian rituals.",
+        "hero_btn": "Explore Collection",
+        "cta_label": "Anand Rasa",
+        "cta_title": "Transform Your Space into a Sacred Sanctuary",
+        "cta_subtitle": "Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet.",
+        "cta_btn": "Shop Now",
+        "cta_url": "",
+        "bulk_enable": true,
+        "bulk_eyebrow": "Wholesale",
+        "bulk_heading": "Bulk Incense Orders",
+        "bulk_description": "Partner with us for bulk incense supply for temples, retailers, events, or corporate gifting. Premium quality, direct sourcing, and consistent fragrance batches.",
+        "bulk_call_label": "Call us",
+        "bulk_phone": "+919311336643",
+        "bulk_phone_display": "+91 93113 36643",
+        "bulk_email_label": "Email",
+        "bulk_email": "anandrasafragnance@gmail.com",
+        "bulk_call_btn": "Call now",
+        "bulk_message_label": "Your inquiry",
+        "bulk_message_placeholder": "Quantity, timeline, delivery city, GST details…",
+        "bulk_submit": "Submit",
+        "bulk_success": "Thank you. Our team will contact you within 24 hours.",
+        "products_per_page": 16
+      }
+    },
+    "anand-rasa-faq": {
+      "type": "collection-incense-faq",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "anand-rasa-faq"
+  ]
+}

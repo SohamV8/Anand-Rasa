@@ -1,7 +1,8 @@
 {
   "sections": {
     "main": {
-      "type": "collection-planet"
+      "type": "collection-nakshatra",
+      "settings": {}
     }
   },
   "order": [

@@ -5,26 +5,36 @@
 {%- assign requested_handle = handle | strip -%}
 {%- assign lookup_handle = requested_handle | downcase -%}
 {%- assign candidate_handles = lookup_handle -%}
+{%- assign template_suffix = lookup_handle -%}
 
 {%- case lookup_handle -%}
   {%- when 'bestseller' -%}
     {%- assign candidate_handles = 'bestseller,Bestseller,best-seller,bestsellers,best-sellers' -%}
+    {%- assign template_suffix = 'bestseller' -%}
   {%- when 'planet-attars', 'planet-attar', 'planet' -%}
     {%- assign candidate_handles = 'planet-attars,planet-attar,planet,planetattar,planet-attarss' -%}
+    {%- assign template_suffix = 'planet' -%}
   {%- when 'zodiac-attars', 'zodiac-attar', 'zodiac' -%}
     {%- assign candidate_handles = 'zodiac-attars,zodiac-attar,zodiac,zodiacattar' -%}
+    {%- assign template_suffix = 'zodiac' -%}
   {%- when 'nakshatra-attars', 'nakshatra-attar', 'nakshatra', 'naksahtra' -%}
     {%- assign candidate_handles = 'nakshatra-attars,nakshatra-attar,nakshatra,naksahtra,naksahtra-attars,nakshtra-attars' -%}
+    {%- assign template_suffix = 'nakshatra' -%}
   {%- when 'chakra-attars', 'chakra-attar', 'chakra' -%}
     {%- assign candidate_handles = 'chakra-attars,chakra-attar,chakra,chakras' -%}
+    {%- assign template_suffix = 'chakra' -%}
   {%- when 'stressrelief', 'stress-relief' -%}
     {%- assign candidate_handles = 'stress-relief,stressrelief,stress-relief-attars,stress' -%}
+    {%- assign template_suffix = 'stressrelief' -%}
   {%- when 'love-attars', 'love-attar' -%}
     {%- assign candidate_handles = 'love-attar,love-attars,love,lov-attar' -%}
+    {%- assign template_suffix = 'love-attars' -%}
   {%- when 'incense-sticks', 'incense-stick', 'incense' -%}
     {%- assign candidate_handles = 'incense-sticks,incense-stick,incense,incenses,incense-products' -%}
+    {%- assign template_suffix = 'incense-sticks' -%}
   {%- when 'gift-sets', 'giftsets' -%}
     {%- assign candidate_handles = 'giftsets,gift-sets,gift-set,discovery-kit,discovery-kits' -%}
+    {%- assign template_suffix = 'gift-sets' -%}
 {%- endcase -%}
 
 {%- assign resolved_handle = '' -%}
@@ -40,7 +50,16 @@
 {%- if requested_handle == blank -%}
   {{- routes.collections_url -}}
 {%- elsif collections[resolved_handle] != empty -%}
-  {{- collections[resolved_handle].url -}}
+  {%- assign resolved_url = collections[resolved_handle].url -%}
+  {%- if template_suffix != blank -%}
+    {%- if resolved_url contains '?' -%}
+      {{- resolved_url | append: '&view=' | append: template_suffix -}}
+    {%- else -%}
+      {{- resolved_url | append: '?view=' | append: template_suffix -}}
+    {%- endif -%}
+  {%- else -%}
+    {{- resolved_url -}}
+  {%- endif -%}
 {%- else -%}
   {{- routes.collections_url -}}
 {%- endif -%}
