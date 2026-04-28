@@ -51,6 +51,18 @@
   </div>
 </section>
 
+{%- capture ar_combo_default_url -%}{% render 'ar-collection-url', handle: 'giftsets' %}{%- endcapture -%}
+{%- capture ar_story_default_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}
+{%- liquid
+  assign ar_combo_href = combo_url | strip
+  assign ar_story_href = story_url | strip
+  if ar_combo_href == blank or ar_combo_href contains 'collections' or ar_combo_href contains 'shopify://collections'
+    assign ar_combo_href = ar_combo_default_url
+  endif
+  if ar_story_href == blank or ar_story_href contains '/pages/about'
+    assign ar_story_href = ar_story_default_url
+  endif
+-%}
 
 <section class="ar-dk">
   <div class="ar-dk__container">
@@ -65,8 +77,8 @@
       <h2 class="ar-dk__heading">{{ combo_heading }}</h2>
       <p class="ar-dk__text">{{ combo_text }}</p>
 
-      {% if combo_url != blank %}
-        <a href="{{ combo_url }}" class="ar-dk__btn">
+      {% if ar_combo_href != blank %}
+        <a href="{{ ar_combo_href }}" class="ar-dk__btn">
           {{ combo_btn }}
         </a>
       {% endif %}
@@ -87,8 +99,8 @@
       {{ story_text }}
     </p>
 
-    {% if story_url != blank %}
-      <a href="{{ story_url }}" class="ar-story__btn">
+    {% if ar_story_href != blank %}
+      <a href="{{ ar_story_href }}" class="ar-story__btn">
         {{ story_btn }}
       </a>
     {% endif %}

@@ -12,6 +12,19 @@
     <div class="ar-sc__track js-zc-track">
       {%- assign zc = collections[section.settings.zc_collection] -%}
       {%- if zc != blank -%}
+        {%- assign zc_bucket_aries = '' -%}
+        {%- assign zc_bucket_taurus = '' -%}
+        {%- assign zc_bucket_gemini = '' -%}
+        {%- assign zc_bucket_cancer = '' -%}
+        {%- assign zc_bucket_leo = '' -%}
+        {%- assign zc_bucket_virgo = '' -%}
+        {%- assign zc_bucket_libra = '' -%}
+        {%- assign zc_bucket_scorpio = '' -%}
+        {%- assign zc_bucket_sagittarius = '' -%}
+        {%- assign zc_bucket_capricorn = '' -%}
+        {%- assign zc_bucket_aquarius = '' -%}
+        {%- assign zc_bucket_pisces = '' -%}
+        {%- assign zc_bucket_rest = '' -%}
         {%- for p in zc.products limit: 12 -%}
           {%- assign p_handle = p.handle | downcase -%}
           {%- assign p_title = p.title | downcase -%}
@@ -41,30 +54,72 @@
           {%- elsif p_handle contains 'pisces' -%}
             {%- assign zc_asset = 'Zodiac/pisces.webp' -%}
           {%- endif -%}
-          <article class="ar-sc__card">
-            <a href="{{ p.url }}" class="ar-sc__link">
-              <div class="ar-sc__imgw">
-                {%- if zc_asset != blank -%}
-                  <img src="{{ zc_asset | asset_url }}" alt="{{ p.title }}" width="400" height="533" loading="lazy" sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px" class="ar-sc__img">
-                {%- elsif p.featured_image -%}
-                  <img
-                    src="{{ p.featured_image | image_url: width: 400 }}"
-                    srcset="{{ p.featured_image | image_url: width: 240 }} 240w, {{ p.featured_image | image_url: width: 320 }} 320w, {{ p.featured_image | image_url: width: 400 }} 400w"
-                    sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
-                    alt="{{ p.featured_image.alt | default: p.title }}"
-                    width="400"
-                    height="533"
-                    loading="lazy"
-                    class="ar-sc__img"
-                  >
-                {%- endif -%}
-              </div>
-              <h3 class="ar-sc__name">{{ p.title }}</h3>
-              <p class="ar-sc__type">{{ p.type | default: 'Rashi Rasa' }}</p>
-              <p class="ar-sc__price">{{ p.price | money }}</p>
-            </a>
-          </article>
+          {%- capture zc_card -%}
+            <article class="ar-sc__card">
+              <a href="{{ p.url }}" class="ar-sc__link">
+                <div class="ar-sc__imgw">
+                  {%- if zc_asset != blank -%}
+                    <img src="{{ zc_asset | asset_url }}" alt="{{ p.title }}" width="400" height="533" loading="lazy" sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px" class="ar-sc__img">
+                  {%- elsif p.featured_image -%}
+                    <img
+                      src="{{ p.featured_image | image_url: width: 400 }}"
+                      srcset="{{ p.featured_image | image_url: width: 240 }} 240w, {{ p.featured_image | image_url: width: 320 }} 320w, {{ p.featured_image | image_url: width: 400 }} 400w"
+                      sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
+                      alt="{{ p.featured_image.alt | default: p.title }}"
+                      width="400"
+                      height="533"
+                      loading="lazy"
+                      class="ar-sc__img"
+                    >
+                  {%- endif -%}
+                </div>
+                <h3 class="ar-sc__name">{{ p.title }}</h3>
+                <p class="ar-sc__type">{{ p.type | default: 'Rashi Rasa' }}</p>
+                <p class="ar-sc__price">{{ p.price | money }}</p>
+              </a>
+            </article>
+          {%- endcapture -%}
+          {%- if p_handle contains 'aries' -%}
+            {%- assign zc_bucket_aries = zc_bucket_aries | append: zc_card -%}
+          {%- elsif p_handle contains 'taurus' -%}
+            {%- assign zc_bucket_taurus = zc_bucket_taurus | append: zc_card -%}
+          {%- elsif p_handle contains 'gemini' -%}
+            {%- assign zc_bucket_gemini = zc_bucket_gemini | append: zc_card -%}
+          {%- elsif p_handle contains 'cancer' -%}
+            {%- assign zc_bucket_cancer = zc_bucket_cancer | append: zc_card -%}
+          {%- elsif p_handle contains 'leo' -%}
+            {%- assign zc_bucket_leo = zc_bucket_leo | append: zc_card -%}
+          {%- elsif p_handle contains 'virgo' -%}
+            {%- assign zc_bucket_virgo = zc_bucket_virgo | append: zc_card -%}
+          {%- elsif p_handle contains 'libra' -%}
+            {%- assign zc_bucket_libra = zc_bucket_libra | append: zc_card -%}
+          {%- elsif p_handle contains 'scorpio' -%}
+            {%- assign zc_bucket_scorpio = zc_bucket_scorpio | append: zc_card -%}
+          {%- elsif p_handle contains 'sagittarius' -%}
+            {%- assign zc_bucket_sagittarius = zc_bucket_sagittarius | append: zc_card -%}
+          {%- elsif p_handle contains 'capricorn' or p_title contains 'capricorn' -%}
+            {%- assign zc_bucket_capricorn = zc_bucket_capricorn | append: zc_card -%}
+          {%- elsif p_handle contains 'aquarius' or p_title contains 'aquarius' -%}
+            {%- assign zc_bucket_aquarius = zc_bucket_aquarius | append: zc_card -%}
+          {%- elsif p_handle contains 'pisces' -%}
+            {%- assign zc_bucket_pisces = zc_bucket_pisces | append: zc_card -%}
+          {%- else -%}
+            {%- assign zc_bucket_rest = zc_bucket_rest | append: zc_card -%}
+          {%- endif -%}
         {%- endfor -%}
+        {{ zc_bucket_aries }}
+        {{ zc_bucket_taurus }}
+        {{ zc_bucket_gemini }}
+        {{ zc_bucket_cancer }}
+        {{ zc_bucket_leo }}
+        {{ zc_bucket_virgo }}
+        {{ zc_bucket_libra }}
+        {{ zc_bucket_scorpio }}
+        {{ zc_bucket_sagittarius }}
+        {{ zc_bucket_capricorn }}
+        {{ zc_bucket_aquarius }}
+        {{ zc_bucket_pisces }}
+        {{ zc_bucket_rest }}
       {%- else -%}
         <p style="padding:24px;color:#9ca3af;font-family:var(--fb);">Select zodiac collection in Theme Editor.</p>
       {%- endif -%}

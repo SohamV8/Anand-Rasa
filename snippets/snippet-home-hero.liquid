@@ -1,4 +1,15 @@
 {%- comment -%} 1. HERO {%- endcomment -%}
+{%- capture ar_hero_btn1_default_url -%}{% render 'ar-collection-url', handle: 'planet-attars' %}{%- endcapture -%}
+{%- liquid
+  assign ar_hero_btn1_url = section.settings.hero_btn1_url | strip
+  assign ar_hero_btn2_url = section.settings.hero_btn2_url | strip
+  if ar_hero_btn1_url == blank or ar_hero_btn1_url contains 'collections'
+    assign ar_hero_btn1_url = ar_hero_btn1_default_url
+  endif
+  if ar_hero_btn2_url == blank
+    assign ar_hero_btn2_url = routes.collections_url
+  endif
+-%}
 <section class="ar-hero">
   <div class="ar-hero__in">
 
@@ -21,11 +32,11 @@
       </p>
 
       <div class="ar-hero__cta">
-        <a href="{{ section.settings.hero_btn1_url | default: routes.all_products_collection_url }}" class="ar-hero__btn1">
+        <a href="{{ ar_hero_btn1_url }}" class="ar-hero__btn1">
           {{ section.settings.hero_btn1_label | default: 'Shop Now' }}
         </a>
 
-        <a href="{{ section.settings.hero_btn2_url | default: routes.collections_url }}" class="ar-hero__btn2">
+        <a href="{{ ar_hero_btn2_url }}" class="ar-hero__btn2">
           {{ section.settings.hero_btn2_label | default: 'Explore Collections' }}
         </a>
       </div>

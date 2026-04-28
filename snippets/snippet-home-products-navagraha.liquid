@@ -1,5 +1,11 @@
 {%- comment -%} 6. NAVAGRAHA ATTARS {%- endcomment -%}
 {%- capture ar_nav9_collection_url -%}{% render 'ar-collection-url', handle: 'planet-attars' %}{%- endcapture -%}
+{%- liquid
+  assign ar_nav9_intro_url = section.settings.nav9_url | strip
+  if ar_nav9_intro_url == blank or ar_nav9_intro_url contains 'collections' or ar_nav9_intro_url contains 'shopify://collections'
+    assign ar_nav9_intro_url = ar_nav9_collection_url
+  endif
+-%}
 <section class="ar-nav9">
   <style>
     #shopify-section-{{ section.id }} .ar-nav9__main { min-height: 100vh; background-color:#FFFFFF ;}
@@ -39,7 +45,7 @@
     <div class="ar-nav9__intro-in">
       <h2 class="ar-nav9__intro-h">{{ section.settings.nav9_heading | default: 'Navagraha Attars' }}</h2>
       <p class="ar-nav9__intro-p">{{ section.settings.nav9_text | default: 'Inspired by the nine celestial forces, each fragrance is crafted to harmonize your presence with planetary energy.' }}</p>
-      <a href="{{ section.settings.nav9_url | default: ar_nav9_collection_url }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
+      <a href="{{ ar_nav9_intro_url }}" class="ar-nav9__intro-btn">EXPLORE COLLECTION</a>
     </div>
   </div>
   <div class="ar-nav9__main">
@@ -92,12 +98,18 @@
             {%- assign ar_nav9_attar_image = 'Planet/ketu_attar.webp' | asset_url -%}
             {%- assign ar_nav9_card_image = 'Planet/ketu_card.webp' | asset_url -%}
           {%- endif -%}
+          {%- liquid
+            assign ar_nav9_block_url = block.settings.url | strip
+            if ar_nav9_block_url == blank or ar_nav9_block_url contains 'collections' or ar_nav9_block_url contains 'shopify://collections'
+              assign ar_nav9_block_url = ar_nav9_collection_url
+            endif
+          -%}
           <button
             type="button"
             class="ar-nav9__btn{% if ar_nav9_btn_first %} is-active{% endif %}"
             data-img="{%- if ar_nav9_attar_image != blank -%}{{ ar_nav9_attar_image }}{%- endif -%}"
             data-desc="{{ block.settings.description | default: '' | strip_newlines | escape }}"
-            data-url="{% if block.settings.url != blank %}{{ block.settings.url | escape }}{% endif %}"
+            data-url="{% if ar_nav9_block_url != blank %}{{ ar_nav9_block_url | escape }}{% endif %}"
             aria-label="{{ block.settings.name | default: 'Planet' | escape }}"
             {{ block.shopify_attributes }}
           >

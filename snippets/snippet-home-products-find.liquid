@@ -3,7 +3,14 @@
 
   assign find_heading = find_heading | default: 'Discover the fragrance written in your stars.'
   assign find_text = find_text | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.'
-  assign find_url = find_url | default: 'https://astrology.anandrasafragnance.com/find-fragrance'
+  capture ar_find_default_url
+    render 'ar-page-url', handle: 'find-fragrance'
+  endcapture
+  assign ar_find_default_url = ar_find_default_url | strip
+  assign find_url = find_url | strip
+  if find_url == blank
+    assign find_url = ar_find_default_url
+  endif
   assign find_btn = find_btn | default: 'Find Your Fragrance'
 
   assign ca_uid = ca_uid | default: 'clouds-aether' | handleize

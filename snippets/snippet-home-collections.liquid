@@ -14,6 +14,8 @@
       {%- if block.type == 'category' -%}
         {%- liquid
           assign ar_cat_href = block.settings.link | strip
+          assign ar_cat_handle = ''
+          assign ar_cat_title_key = block.settings.title | downcase | strip
           assign ar_cat_fallback_image = ''
           case block.settings.title
             when 'Planet Attar'
@@ -31,33 +33,39 @@
             when 'Incense Sticks'
               assign ar_cat_fallback_image = 'incense.jpeg'
           endcase
+
+          case block.settings.title
+            when 'Planet Attar'
+              assign ar_cat_handle = 'planet-attars'
+            when 'Zodiac Attar'
+              assign ar_cat_handle = 'zodiac-attars'
+            when 'Nakshatra Attar'
+              assign ar_cat_handle = 'nakshatra-attars'
+            when 'Chakra Attar'
+              assign ar_cat_handle = 'chakra-attars'
+            when 'Stress Relief Attar'
+              assign ar_cat_handle = 'stress-relief'
+            when 'Love Attar'
+              assign ar_cat_handle = 'love-attar'
+            when 'Incense Sticks'
+              assign ar_cat_handle = 'incense-sticks'
+            when 'Discovery Kit'
+              assign ar_cat_handle = 'giftsets'
+          endcase
+
+          if ar_cat_handle != blank
+            capture ar_cat_resolved_href
+              render 'ar-collection-url', handle: ar_cat_handle
+            endcapture
+            assign ar_cat_resolved_href = ar_cat_resolved_href | strip
+          endif
+
           if ar_cat_href == blank
-            assign ar_cat_handle = ''
-            case block.settings.title
-              when 'Planet Attar'
-                assign ar_cat_handle = 'planet-attars'
-              when 'Zodiac Attar'
-                assign ar_cat_handle = 'zodiac-attars'
-              when 'Nakshatra Attar'
-                assign ar_cat_handle = 'nakshatra-attars'
-              when 'Chakra Attar'
-                assign ar_cat_handle = 'chakra-attars'
-              when 'Stress Relief Attar'
-                assign ar_cat_handle = 'stress-relief'
-              when 'Love Attar'
-                assign ar_cat_handle = 'love-attar'
-              when 'Incense Sticks'
-                assign ar_cat_handle = 'incense-sticks'
-              when 'Discovery Kit'
-                assign ar_cat_handle = 'giftsets'
-            endcase
-            if ar_cat_handle != blank and collections[ar_cat_handle] != empty
-              assign ar_cat_href = collections[ar_cat_handle].url
-            elsif ar_cat_handle != blank
-              assign ar_cat_href = routes.collections_url | append: '/' | append: ar_cat_handle
-            else
-              assign ar_cat_href = routes.collections_url
-            endif
+            assign ar_cat_href = ar_cat_resolved_href | default: routes.collections_url
+          elsif ar_cat_handle != blank and ar_cat_href contains 'collections'
+            assign ar_cat_href = ar_cat_resolved_href | default: ar_cat_href
+          elsif ar_cat_handle != blank and ar_cat_href contains 'shopify://collections'
+            assign ar_cat_href = ar_cat_resolved_href | default: ar_cat_href
           endif
         -%}
         <a

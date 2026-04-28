@@ -31,9 +31,19 @@
         "related_heading": "You May Also Like",
         "related_sub": "More from our incense collection"
       }
+    },
+    "anand-rasa-faq": {
+      "type": "collection-incense-faq",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Frequently Asked Questions",
+        "subtext": "Everything you need to know about our pure, handcrafted agarbatti and incense sticks.",
+        "bg_color": "#FAFAF7"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "anand-rasa-faq"
   ]
 }
