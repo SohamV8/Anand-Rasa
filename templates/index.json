@@ -187,6 +187,7 @@
         "cat-8": {
           "type": "category",
           "settings": {
+            "image": "shopify://shop_images/gift-set-of-perfume-and-attar-indian-traditional-minimal-cream-color-modern-traditional-professional.png",
             "title": "Discovery Kit",
             "link": "/collections/giftsets"
           }
