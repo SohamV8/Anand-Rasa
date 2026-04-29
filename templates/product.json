@@ -102,7 +102,7 @@
         "hide_variants": true,
         "enable_video_looping": false,
         "padding_top": 36,
-        "padding_bottom": 12
+        "padding_bottom": 0
       }
     },
     "17773746113f1c4937": {
@@ -110,19 +110,20 @@
       "blocks": {
         "ai_gen_block_4dbb9e7_daNx8i": {
           "type": "ai_gen_block_4dbb9e7",
+          "disabled": true,
           "settings": {
             "heading": "The Process of Incense Making",
             "heading_font": "serif",
             "heading_size": 36,
-            "heading_color": "#5C3A2E",
+            "heading_color": "#5c3a2e",
             "header_spacing": 50,
             "show_divider": true,
             "divider_width": 60,
             "divider_height": 2,
-            "divider_color": "#C9A34E",
+            "divider_color": "#c9a34e",
             "divider_spacing": 20,
             "icon_size": 50,
-            "icon_color": "#C9A34E",
+            "icon_color": "#c9a34e",
             "icon_spacing": 20,
             "description_font": "system_ui_n4",
             "description_size": 14,
@@ -145,7 +146,7 @@
             "grid_top_spacing": 40,
             "section_padding_top": 40,
             "section_padding_bottom": 40,
-            "background_color": "#FAF8F5"
+            "background_color": "#faf8f5"
           },
           "blocks": {}
         }
