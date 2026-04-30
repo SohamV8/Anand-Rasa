@@ -1,6 +1,375 @@
+{% doc %}
+  @prompt
+    Create a fully responsive **marquee announcement bar section** for Shopify (Liquid + CSS + minimal JS if needed).
+    
+    ### Design Requirements:
+    
+    * A horizontal scrolling (marquee) bar at the top of the website
+    * Background color: muted sage green (#7A8F86 or similar premium tone)
+    * Text color: white
+    * Clean, modern, luxury feel (minimalist design)
+    * Font: Sans-serif (similar to DM Sans), medium weight
+    
+    ### Content Structure:
+    
+    * Repeating items in a loop:
+    
+      * ❤️ 15,000+ Happy Customers
+      * ✈️ Free Shipping Today
+    * Each item should be separated by spacing and small divider icons
+    * Smooth infinite scrolling from right to left
+    * No visible break in the loop (seamless infinite scroll)
+    
+    ### Functionality:
+    
+    * Auto-scrolling marquee animation (continuous, smooth)
+    * Pause animation on hover
+    * Fully responsive (mobile + desktop optimized)
+    * Speed should be adjustable via settings
+    
+    ### Shopify Section Features:
+    
+    * Add customizable settings in schema:
+    
+      * Announcement text (multiple blocks)
+      * Scroll speed
+      * Background color
+      * Text color
+      * Enable/disable icons
+    * Allow adding multiple announcement items dynamically
+    
+    ### Code Requirements:
+    
+    * Use Shopify Liquid section format
+    * Clean CSS (no external libraries)
+    * Use keyframes animation for smooth marquee
+    * Ensure no layout shift
+    * Optimize for performance
+    
+    ### Output:
+    
+    * Provide full Shopify section code (Liquid + CSS + schema)
+    * Code should be ready to paste into a new section file (e.g., marquee.liquid)
+    
+    Goal: Create a premium, high-converting announcement bar similar to modern D2C brands like Sadhna, with smooth scrolling and elegant spacing.
+    
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-marquee-bar-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    overflow: hidden;
+    position: relative;
+    padding: {{ block.settings.bar_height }}px 0;
+  }
+
+  .ai-marquee-bar-track-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.item_spacing }}px;
+    animation: ai-marquee-scroll-{{ ai_gen_id }} {{ block.settings.scroll_speed }}s linear infinite;
+    will-change: transform;
+  }
+
+  .ai-marquee-bar-{{ ai_gen_id }}:hover .ai-marquee-bar-track-{{ ai_gen_id }} {
+    animation-play-state: paused;
+  }
+
+  .ai-marquee-bar-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: {{ block.settings.icon_spacing }}px;
+    white-space: nowrap;
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    letter-spacing: 0.02em;
+  }
+
+  .ai-marquee-bar-icon-{{ ai_gen_id }} {
+    font-size: {{ block.settings.icon_size }}px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .ai-marquee-bar-divider-{{ ai_gen_id }} {
+    width: {{ block.settings.divider_size }}px;
+    height: {{ block.settings.divider_size }}px;
+    background-color: {{ block.settings.divider_color }};
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @keyframes ai-marquee-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-marquee-bar-item-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+
+    .ai-marquee-bar-icon-{{ ai_gen_id }} {
+      font-size: {{ block.settings.icon_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<marquee-bar-{{ ai_gen_id }} class="ai-marquee-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-marquee-bar-track-{{ ai_gen_id }}">
+    {% liquid
+      assign items_count = 0
+      for block_item in block.settings.announcement_items
+        if block_item.text != blank
+          assign items_count = items_count | plus: 1
+        endif
+      endfor
+    %}
+
+    {% if items_count > 0 %}
+      {% for i in (1..20) %}
+        {% for item in block.settings.announcement_items %}
+          {% if item.text != blank %}
+            <div class="ai-marquee-bar-item-{{ ai_gen_id }}">
+              {% if block.settings.show_icons and item.icon != blank %}
+                <span class="ai-marquee-bar-icon-{{ ai_gen_id }}">{{ item.icon }}</span>
+              {% endif %}
+              <span>{{ item.text }}</span>
+            </div>
+
+            {% unless forloop.last %}
+              {% if block.settings.show_dividers %}
+                <span class="ai-marquee-bar-divider-{{ ai_gen_id }}"></span>
+              {% endif %}
+            {% endunless %}
+          {% endif %}
+        {% endfor %}
+
+        {% if block.settings.show_dividers and items_count > 0 %}
+          <span class="ai-marquee-bar-divider-{{ ai_gen_id }}"></span>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% for i in (1..20) %}
+        <div class="ai-marquee-bar-item-{{ ai_gen_id }}">
+          <span class="ai-marquee-bar-icon-{{ ai_gen_id }}">❤️</span>
+          <span>15,000+ Happy Customers</span>
+        </div>
+        {% if block.settings.show_dividers %}
+          <span class="ai-marquee-bar-divider-{{ ai_gen_id }}"></span>
+        {% endif %}
+        <div class="ai-marquee-bar-item-{{ ai_gen_id }}">
+          <span class="ai-marquee-bar-icon-{{ ai_gen_id }}">✈️</span>
+          <span>Free Shipping Today</span>
+        </div>
+        {% if block.settings.show_dividers %}
+          <span class="ai-marquee-bar-divider-{{ ai_gen_id }}"></span>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</marquee-bar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class MarqueeBar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-marquee-bar-track-{{ ai_gen_id }}');
+        this.adjustSpeed();
+      }
+
+      adjustSpeed() {
+        if (!this.track) return;
+        
+        const trackWidth = this.track.scrollWidth / 2;
+        const speed = {{ block.settings.scroll_speed }};
+        const duration = (trackWidth / 100) * speed;
+        
+        this.track.style.animationDuration = duration + 's';
+      }
+    }
+
+    customElements.define('marquee-bar-{{ ai_gen_id }}', MarqueeBar{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Marquee announcement bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Announcement items"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add multiple announcement messages to display in the scrolling marquee"
+    },
+    {
+      "type": "text",
+      "id": "announcement_items",
+      "label": "Items",
+      "info": "Use the format: icon|text (e.g., ❤️|15,000+ Happy Customers). Add multiple items separated by commas."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#7A8F86"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Bar padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icons",
+      "label": "Show icons",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 10,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_spacing",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon spacing",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Dividers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "label": "Show dividers",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_size",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider size",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing and animation"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Item spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed",
+      "default": 30,
+      "info": "Lower values = faster scrolling"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee announcement bar"
+    }
+  ]
+}
 {% endschema %}
