@@ -103,10 +103,106 @@
   .lux-msg.ok  { display: block; background: var(--g10); color: var(--g4); border: 1px solid var(--g9); }
   .lux-msg.err { display: block; background: #fff0f0; color: #800; border: 1px solid #fcc; }
 
-  /* Trust lines */
-  .lux-trust { display: flex; flex-direction: column; gap: 8px; animation: luxUp .6s ease .4s both; }
-  .lux-trust__line { font-size: 11px; font-weight: 400; letter-spacing: .1em; color: var(--g6); text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-  .lux-trust__line::before { content: '—'; color: var(--g8); }
+  /* Collapsible description + trust badges */
+  .lux-collapse {
+    margin-top: 8px;
+    border: 1px solid var(--g9);
+    background: #f5f5f5;
+    animation: luxUp .6s ease .4s both;
+    overflow: hidden;
+  }
+  .lux-collapse summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--g4);
+    font-weight: 500;
+  }
+  .lux-collapse summary::-webkit-details-marker { display: none; }
+  .lux-collapse__chev {
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid var(--g5);
+    border-bottom: 1.5px solid var(--g5);
+    transform: rotate(45deg);
+    transition: transform .35s ease, margin-top .35s ease;
+    margin-top: -4px;
+    flex-shrink: 0;
+  }
+  .lux-collapse[open] .lux-collapse__chev {
+    transform: rotate(-135deg);
+    margin-top: 2px;
+  }
+  .lux-collapse__content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .45s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--white);
+    border-top: 1px solid var(--g9);
+  }
+  .lux-collapse[open] .lux-collapse__content { grid-template-rows: 1fr; }
+  .lux-collapse__inner { overflow: hidden; }
+  .lux-collapse__body {
+    padding: 16px 18px 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--g5);
+    font-weight: 300;
+    animation: luxFade .4s ease both;
+  }
+  .lux-collapse__body p,
+  .lux-collapse__body h1,
+  .lux-collapse__body h2,
+  .lux-collapse__body h3,
+  .lux-collapse__body h4,
+  .lux-collapse__body li,
+  .lux-collapse__body span {
+    color: var(--g5);
+  }
+  .lux-trust-badges {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    padding-top: 24px;
+    animation: luxUp .6s ease .45s both;
+  }
+  @media(max-width:960px) {
+    .lux-trust-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .lux-trust-badge {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: transform .5s ease, opacity .5s ease;
+  }
+  .lux-trust-badges.is-visible .lux-trust-badge { opacity: 1; transform: translateY(0); }
+  .lux-trust-badges.is-visible .lux-trust-badge:nth-child(2) { transition-delay: .06s; }
+  .lux-trust-badges.is-visible .lux-trust-badge:nth-child(3) { transition-delay: .12s; }
+  .lux-trust-badges.is-visible .lux-trust-badge:nth-child(4) { transition-delay: .18s; }
+  .lux-trust-badge__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #d9a96a;
+    color: #9f6a32;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lux-trust-badge__icon svg { width: 22px; height: 22px; stroke-width: 1.3; transition: transform .45s ease; }
+  .lux-trust-badge:hover .lux-trust-badge__icon svg { transform: scale(1.08) rotate(-4deg); }
+  .lux-trust-badge__text { font-size: 12px; line-height: 1.4; color: var(--g5); letter-spacing: .01em; }
 
   /* ── USP STRIP ── */
   .lux-usp { background: var(--black); padding: 48px 48px; border-top: 1px solid var(--g3); border-bottom: 1px solid var(--g3); }
@@ -344,18 +440,71 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Trust lines {%- endcomment -%}
-      <div class="lux-trust">
-        {%- if section.settings.trust_1 != blank -%}
-          <span class="lux-trust__line">{{ section.settings.trust_1 }}</span>
+      {%- liquid
+        assign is_incense_product = false
+        if template.suffix contains 'incense'
+          assign is_incense_product = true
+        endif
+        if is_incense_product == false and product.type != blank
+          assign p_type = product.type | downcase
+          if p_type contains 'incense'
+            assign is_incense_product = true
+          endif
+        endif
+      -%}
+      {%- capture lux_description_html -%}
+        {%- if product.description != blank -%}
+          {{ product.description }}
+        {%- elsif section.settings.story_text != blank -%}
+          {{ section.settings.story_text }}
+        {%- elsif section.settings.tagline != blank -%}
+          <p>{{ section.settings.tagline | escape }}</p>
         {%- endif -%}
-        {%- if section.settings.trust_2 != blank -%}
-          <span class="lux-trust__line">{{ section.settings.trust_2 }}</span>
-        {%- endif -%}
-        {%- if section.settings.trust_3 != blank -%}
-          <span class="lux-trust__line">{{ section.settings.trust_3 }}</span>
-        {%- endif -%}
+      {%- endcapture -%}
+      {%- assign lux_description_html = lux_description_html | strip -%}
+
+      {%- if is_incense_product and lux_description_html != blank -%}
+        <details class="lux-collapse" open>
+          <summary>
+            <span>Product Description</span>
+            <span class="lux-collapse__chev" aria-hidden="true"></span>
+          </summary>
+          <div class="lux-collapse__content">
+            <div class="lux-collapse__inner">
+              <div class="lux-collapse__body rte">{{ lux_description_html }}</div>
+            </div>
+          </div>
+        </details>
+      {%- endif -%}
+
+      {%- if is_incense_product -%}
+      <div class="lux-trust-badges" id="lux-trust-badges" aria-label="Product trust badges">
+        <div class="lux-trust-badge">
+          <span class="lux-trust-badge__icon" aria-hidden="true">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2 4 5 6 5 10a5 5 0 11-10 0c0-4 3-6 5-10z"/></svg>
+          </span>
+          <span class="lux-trust-badge__text">{{ section.settings.trust_1 | default: 'Low smoke' }}</span>
+        </div>
+        <div class="lux-trust-badge">
+          <span class="lux-trust-badge__icon" aria-hidden="true">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20h16M6 20V7l6-3 6 3v13M9 10h6M9 14h6"/></svg>
+          </span>
+          <span class="lux-trust-badge__text">{{ section.settings.trust_2 | default: 'Backed by scriptures' }}</span>
+        </div>
+        <div class="lux-trust-badge">
+          <span class="lux-trust-badge__icon" aria-hidden="true">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>
+          </span>
+          <span class="lux-trust-badge__text">{{ section.settings.trust_3 | default: 'Pure fragrance' }}</span>
+        </div>
+        <div class="lux-trust-badge">
+          <span class="lux-trust-badge__icon" aria-hidden="true">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l2.5 2.5"/></svg>
+          </span>
+          <span class="lux-trust-badge__text">{{ section.settings.trust_4 | default: '24 hours dispatch' }}</span>
+        </div>
       </div>
+      {%- endif -%}
     </div>
 
   </div>
@@ -707,6 +856,17 @@
     stickyBar.style.display = 'none';
   }
 
+  var trustBadges = document.getElementById('lux-trust-badges');
+  if (trustBadges) {
+    var trustIo = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        trustBadges.classList.add('is-visible');
+        trustIo.disconnect();
+      }
+    }, { threshold: 0.2 });
+    trustIo.observe(trustBadges);
+  }
+
 })();
 </script>
 
@@ -776,25 +936,31 @@
     },
     {
       "type": "header",
-      "content": "Trust Lines"
+      "content": "Trust badges"
     },
     {
       "type": "text",
       "id": "trust_1",
-      "label": "Trust line 1",
-      "default": "Limited batch crafted"
+      "label": "Badge text 1",
+      "default": "Low smoke"
     },
     {
       "type": "text",
       "id": "trust_2",
-      "label": "Trust line 2",
-      "default": "Ships within 24 hours"
+      "label": "Badge text 2",
+      "default": "Backed by scriptures"
     },
     {
       "type": "text",
       "id": "trust_3",
-      "label": "Trust line 3",
-      "default": "100% natural, chemical free"
+      "label": "Badge text 3",
+      "default": "Pure fragrance"
+    },
+    {
+      "type": "text",
+      "id": "trust_4",
+      "label": "Badge text 4",
+      "default": "24 hours dispatch"
     },
     {
       "type": "header",
