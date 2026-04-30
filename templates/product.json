@@ -176,6 +176,7 @@
       "blocks": {
         "ai_gen_block_0f5d8dd_N4q6yE": {
           "type": "ai_gen_block_0f5d8dd",
+          "disabled": true,
           "settings": {
             "spec_table_title": "Specifications",
             "spec_1_label": "Country of Origin",
