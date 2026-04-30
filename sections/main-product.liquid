@@ -245,11 +245,7 @@
                   {%- endif -%}
                 </p>
               {%- when 'description' -%}
-                {%- if product.description != blank -%}
-                  <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
-                    {{ product.description }}
-                  </div>
-                {%- endif -%}
+                
               {%- when 'sku' -%}
                 <p
                   class="product__sku{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.sku.size == 0 %} visibility-hidden{% endif %}"
@@ -508,9 +504,21 @@
                   {%- endif -%}
                 </div>
                 {%- liquid
-                  assign ingredients_text = product.metafields.custom.ingredients | metafield_text
-                  if ingredients_text == blank
-                    assign ingredients_text = product.metafields.custom.ingredient | metafield_text
+                  assign is_incense_product = false
+                  if template.suffix contains 'incense'
+                    assign is_incense_product = true
+                  endif
+                  if is_incense_product == false and product.type != blank
+                    assign pdp_product_type = product.type | downcase
+                    if pdp_product_type contains 'incense'
+                      assign is_incense_product = true
+                    endif
+                  endif
+                  if is_incense_product == false and product.handle != blank
+                    assign pdp_product_handle = product.handle | downcase
+                    if pdp_product_handle contains 'incense'
+                      assign is_incense_product = true
+                    endif
                   endif
 
                   assign use_storage_text = product.metafields.custom.use_and_storage | metafield_text
@@ -546,29 +554,49 @@
                   <details class="pdp-meta-accordion__item">
                     <summary>
                       <div class="pdp-meta-accordion__title-wrap">
-                        <h3 class="pdp-meta-accordion__title">Ingredients</h3>
-                      </div>
-                    </summary>
-                    <div class="pdp-meta-accordion__content rte">
-                      {%- if ingredients_text != blank -%}
-                        {{ ingredients_text }}
-                      {%- else -%}
-                        <p>Ingredients information will be added for this product.</p>
-                      {%- endif -%}
-                    </div>
-                  </details>
-
-                  <details class="pdp-meta-accordion__item">
-                    <summary>
-                      <div class="pdp-meta-accordion__title-wrap">
                         <h3 class="pdp-meta-accordion__title">Use &amp; Storage</h3>
                       </div>
                     </summary>
                     <div class="pdp-meta-accordion__content rte">
                       {%- if use_storage_text != blank -%}
                         {{ use_storage_text }}
+                      {%- elsif is_incense_product -%}
+                        <h4>How to Use Incense Sticks</h4>
+                        <p>Using incense sticks correctly enhances fragrance diffusion and ensures a safe, pleasant experience.</p>
+                        <p><strong>Light and Let It Burn Evenly</strong></p>
+                        <p>Hold the tip of the incense stick at an angle and light it. Allow it to burn for a few seconds, then gently blow out the flame so it releases fragrant smoke.</p>
+                        <p><strong>Place in a Proper Holder</strong></p>
+                        <p>Always use a stable incense holder to catch ash and keep the stick upright. This ensures a clean burn and prevents mess.</p>
+                        <p><strong>Use in a Ventilated Space</strong></p>
+                        <p>Burn incense in a well-ventilated area to allow the fragrance to spread naturally without becoming too intense.</p>
+                        <h4>How to Store Incense Sticks</h4>
+                        <p>Proper storage helps retain fragrance strength and ensures long-lasting quality.</p>
+                        <p><strong>Keep in a Cool, Dry Place</strong></p>
+                        <p>Store incense sticks away from moisture and humidity to prevent them from becoming damp or losing their aroma.</p>
+                        <p><strong>Avoid Direct Sunlight</strong></p>
+                        <p>Exposure to sunlight can weaken the fragrance oils and reduce the overall scent quality.</p>
+                        <p><strong>Store in Airtight Packaging</strong></p>
+                        <p>Keep incense sticks in sealed boxes or containers to preserve their natural fragrance and prevent external odors from affecting them.</p>
                       {%- else -%}
-                        <p>Use and storage details will be added for this product.</p>
+                        <h4>How to Use Attar (Perfume Oils)</h4>
+                        <p>Using attar correctly enhances its longevity and overall fragrance performance. As highly concentrated perfume oils, attars require minimal application for maximum effect.</p>
+                        <p><strong>Apply on Pulse Points</strong></p>
+                        <p>Apply a small amount of attar on key pulse points where the body generates natural heat:</p>
+                        <ul>
+                          <li>Wrists</li>
+                          <li>Behind the ears</li>
+                          <li>Neck</li>
+                          <li>Inner elbows</li>
+                        </ul>
+                        <p>These areas help the fragrance diffuse gradually, allowing the scent to develop and last longer throughout the day. For best results, use a light touch and let the attar settle naturally on the skin.</p>
+                        <h4>How to Store Attar Properly</h4>
+                        <p>Proper storage is essential to maintain the purity, strength, and longevity of attar over time.</p>
+                        <p><strong>Keep Away from Direct Sunlight</strong></p>
+                        <p>Exposure to heat and UV rays can degrade the fragrance composition and alter its natural aroma. Always store attar in a cool, dark place to preserve its quality.</p>
+                        <p><strong>Store in Airtight Bottles</strong></p>
+                        <p>Contact with air can lead to oxidation, which may weaken or change the scent profile. Ensure the bottle is tightly closed after every use to maintain freshness.</p>
+                        <p><strong>Avoid Heat and Humidity</strong></p>
+                        <p>Do not store attars in environments with high temperature or moisture, such as bathrooms, near windows, or close to heat sources. Excess heat can break down the fragrance structure and reduce its lifespan.</p>
                       {%- endif -%}
                     </div>
                   </details>

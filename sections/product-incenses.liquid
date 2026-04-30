@@ -531,21 +531,6 @@
     {%- endif -%}
   {%- endif -%}
 
-  {%- comment -%} ══ 3. STORY SECTION ══ {%- endcomment -%}
-  {%- if section.settings.story_text != blank -%}
-    <section class="lux-story">
-      <div class="lux-story__inner">
-        {%- if section.settings.story_pre != blank -%}
-          <span class="lux-story__pre">{{ section.settings.story_pre }}</span>
-        {%- endif -%}
-        {%- if section.settings.story_heading != blank -%}
-          <h2 class="lux-story__h">{{ section.settings.story_heading }}</h2>
-        {%- endif -%}
-        <div class="lux-story__body">{{ section.settings.story_text }}</div>
-      </div>
-    </section>
-  {%- endif -%}
-
   {%- comment -%} ══ 4. SCENT EXPERIENCE ══ {%- endcomment -%}
   {%- if section.settings.scent_top != blank or section.settings.scent_desc != blank -%}
     <section class="lux-scent">
