@@ -1,4 +1,5 @@
 
+
 {
   "sections": {
     "main": {
@@ -11,10 +12,9 @@
         "rating": 5,
         "review_count": "6",
         "show_buy_now": true,
-        "trust_1": "Low smoke",
-        "trust_2": "Backed by scriptures",
-        "trust_3": "Pure fragrance",
-        "trust_4": "24 hours dispatch",
+        "trust_1": "Natural ingredients",
+        "trust_2": "Slow, clean burn",
+        "trust_3": "Pooja & meditation",
         "strip_col1": "Classic spiritual aroma",
         "strip_col2": "Premium sandalwood incense for pooja and meditation",
         "strip_col3": "Luxury Attar",

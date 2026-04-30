@@ -1,0 +1,280 @@
+{% doc %}
+  @prompt
+    Create a **Shopify Liquid section** for a premium moving marquee (announcement bar).
+    
+    Requirements:
+    
+    * Full-width horizontal marquee at the top
+    * Smooth infinite scrolling from right to left
+    * Seamless loop (no gap or jump)
+    * Background: soft sage green (#7A8F86)
+    * Text: white, clean sans-serif (DM Sans style)
+    
+    Content (repeat in loop):
+    
+    * ❤️ 15,000+ Happy Customers
+    * ✈️ Free Shipping Today
+    
+    Design:
+    
+    * Minimal, premium D2C aesthetic
+    * Even spacing between items
+    * Subtle divider or spacing between texts
+    
+    Functionality:
+    
+    * Pause on hover
+    * Adjustable scroll speed via settings
+    * Fully responsive (mobile + desktop)
+    
+    Shopify Features:
+    
+    * Section schema with:
+    
+      * Multiple announcement blocks (editable text)
+      * Speed control (range slider)
+      * Color customization
+    * No external libraries
+    
+    Technical:
+    
+    * Use Liquid + CSS (keyframes animation preferred)
+    * Optimized performance
+    * No layout shift
+    
+    Output:
+    
+    * Complete working section code (Liquid + CSS + schema)
+    * Ready to paste into a new file: marquee.liquid
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-marquee-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+    position: relative;
+    display: block;
+  }
+
+  .ai-marquee-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    width: fit-content;
+    animation: ai-marquee-scroll-{{ ai_gen_id }} {{ block.settings.scroll_speed }}s linear infinite;
+  }
+
+  .ai-marquee-{{ ai_gen_id }}:hover .ai-marquee-wrapper-{{ ai_gen_id }} {
+    animation-play-state: paused;
+  }
+
+  .ai-marquee-content-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: {{ block.settings.vertical_padding }}px 0;
+  }
+
+  .ai-marquee-item-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.font_size }}px;
+    font-family: {{ block.settings.font_family.family }}, {{ block.settings.font_family.fallback_families }};
+    font-weight: {{ block.settings.font_family.weight }};
+    padding: 0 {{ block.settings.item_spacing }}px;
+  }
+
+  @keyframes ai-marquee-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-marquee-item-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+      padding: 0 {{ block.settings.item_spacing | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<marquee-announcement-{{ ai_gen_id }} class="ai-marquee-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-marquee-wrapper-{{ ai_gen_id }}">
+    <div class="ai-marquee-content-{{ ai_gen_id }}">
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+      {% endif %}
+    </div>
+    <div class="ai-marquee-content-{{ ai_gen_id }}" aria-hidden="true">
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+      {% endif %}
+    </div>
+  </div>
+</marquee-announcement-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class MarqueeAnnouncement{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.adjustAnimation();
+      }
+
+      adjustAnimation() {
+        const wrapper = this.querySelector('.ai-marquee-wrapper-{{ ai_gen_id }}');
+        const content = this.querySelector('.ai-marquee-content-{{ ai_gen_id }}');
+        
+        if (wrapper && content) {
+          const contentWidth = content.offsetWidth;
+          wrapper.style.width = `${contentWidth * 2}px`;
+        }
+      }
+    }
+
+    customElements.define('marquee-announcement-{{ ai_gen_id }}', MarqueeAnnouncement{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Marquee announcement",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Announcements"
+    },
+    {
+      "type": "text",
+      "id": "announcement_1",
+      "label": "Announcement 1",
+      "default": "❤️ 15,000+ Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "announcement_2",
+      "label": "Announcement 2",
+      "default": "✈️ Free Shipping Today"
+    },
+    {
+      "type": "text",
+      "id": "announcement_3",
+      "label": "Announcement 3"
+    },
+    {
+      "type": "text",
+      "id": "announcement_4",
+      "label": "Announcement 4"
+    },
+    {
+      "type": "text",
+      "id": "announcement_5",
+      "label": "Announcement 5"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#7A8F86"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_family",
+      "label": "Font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "label": "Vertical padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Item spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee announcement"
+    }
+  ]
+}
+{% endschema %}
