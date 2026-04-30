@@ -508,11 +508,6 @@
                   {%- endif -%}
                 </div>
                 {%- liquid
-                  assign ingredients_text = product.metafields.custom.ingredients | metafield_text
-                  if ingredients_text == blank
-                    assign ingredients_text = product.metafields.custom.ingredient | metafield_text
-                  endif
-
                   assign use_storage_text = product.metafields.custom.use_and_storage | metafield_text
                   if use_storage_text == blank
                     assign use_storage_text = product.metafields.custom.use_storage | metafield_text
@@ -539,21 +534,6 @@
                         {{ product.description }}
                       {%- else -%}
                         <p>Description here</p>
-                      {%- endif -%}
-                    </div>
-                  </details>
-
-                  <details class="pdp-meta-accordion__item">
-                    <summary>
-                      <div class="pdp-meta-accordion__title-wrap">
-                        <h3 class="pdp-meta-accordion__title">Ingredients</h3>
-                      </div>
-                    </summary>
-                    <div class="pdp-meta-accordion__content rte">
-                      {%- if ingredients_text != blank -%}
-                        {{ ingredients_text }}
-                      {%- else -%}
-                        <p>Ingredients information will be added for this product.</p>
                       {%- endif -%}
                     </div>
                   </details>
