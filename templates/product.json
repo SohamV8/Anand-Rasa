@@ -12,30 +12,19 @@
     "1777535904a27e40a3": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_7ae2ff8_NynRCm": {
-          "type": "ai_gen_block_7ae2ff8",
+        "ai_gen_block_5ea4c42_MyKYY6": {
+          "type": "ai_gen_block_5ea4c42",
           "settings": {
-            "item_1_icon": "❤️",
-            "item_1_text": "15,000+ Happy Customers",
-            "item_2_icon": "",
-            "item_2_text": "Chemical Free",
-            "item_3_icon": "",
-            "item_3_text": "",
-            "item_4_icon": "",
-            "item_4_text": "",
-            "item_5_icon": "",
-            "item_5_text": "",
+            "announcement_1": "❤️ 15,000+ Happy Customers",
+            "announcement_2": "✈️ 24 hoursdispatch",
+            "announcement_3": "🌳PureFragrance",
+            "announcement_4": "",
+            "announcement_5": "",
             "background_color": "#121212",
             "text_color": "#ffffff",
-            "bar_height": 12,
+            "font_family": "assistant_n4",
             "font_size": 14,
-            "font_weight": "500",
-            "show_icons": true,
-            "icon_size": 16,
-            "icon_spacing": 8,
-            "show_dividers": true,
-            "divider_size": 4,
-            "divider_color": "#ffffff",
+            "vertical_padding": 12,
             "item_spacing": 40,
             "scroll_speed": 30
           },
@@ -43,7 +32,7 @@
         }
       },
       "block_order": [
-        "ai_gen_block_7ae2ff8_NynRCm"
+        "ai_gen_block_5ea4c42_MyKYY6"
       ],
       "settings": {}
     },
