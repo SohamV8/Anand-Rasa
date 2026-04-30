@@ -312,27 +312,6 @@
   .aip-why__h { font-family: var(--serif); font-size: clamp(30px, 4.2vw, 44px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; color: var(--ink); }
   .aip-why__sub { font-size: 15px; color: var(--muted); line-height: 1.75; font-weight: 300; max-width: 48ch; margin: 0 auto; }
 
-  /* Specs + comparison */
-  .aip-spec-compare { max-width: 1320px; margin: 0 auto; padding: 100px 40px 112px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: start; }
-  @media (max-width: 900px) { .aip-spec-compare { grid-template-columns: 1fr; padding: 72px 20px 88px; } }
-
-  .aip-block__h { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 26px); font-weight: 400; margin-bottom: 28px; letter-spacing: -0.02em; color: var(--ink); }
-  .aip-specs-lux { width: 100%; border-collapse: collapse; font-size: 14px; }
-  .aip-specs-lux tr { border-bottom: 1px solid var(--line); }
-  .aip-specs-lux td { padding: 16px 0; vertical-align: top; }
-  .aip-specs-lux td:first-child { font-family: var(--sans); color: var(--muted); width: 42%; padding-right: 20px; font-weight: 500; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
-  .aip-specs-lux td:last-child { color: var(--ink); font-weight: 400; }
-
-  .aip-compare { border: 1px solid var(--line-strong); border-radius: 0; overflow: hidden; background: var(--surface); }
-  .aip-compare table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .aip-compare th, .aip-compare td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); }
-  .aip-compare th { font-family: var(--sans); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; background: rgba(30, 32, 35, 0.04); color: var(--muted); }
-  .aip-compare tr:last-child td { border-bottom: none; }
-  .aip-compare td:first-child { font-weight: 500; color: var(--ink); }
-  .aip-compare td { color: var(--muted); }
-  .aip-compare__ok { color: var(--ink); font-size: 15px; }
-  .aip-compare__no { color: #d1d5db; font-size: 15px; }
-
   /* Recommended */
   .aip-related { max-width: 1320px; margin: 0 auto; padding: 0 40px 120px; }
   @media (max-width: 768px) { .aip-related { padding: 0 20px 96px; } }
@@ -600,6 +579,8 @@
     </div>
   </div>
 
+  {% render 'incense-making-process', scope_id: section.id %}
+
   <section class="aip-strip">
     <div class="aip-strip__inner">
       <div class="aip-strip__cell">
@@ -622,63 +603,7 @@
     <p class="aip-why__sub">{{ section.settings.why_sub | default: 'Crafted for purity, fragrance and spiritual practice' }}</p>
   </section>
 
-  <section class="aip-spec-compare">
-    <div>
-      <h3 class="aip-block__h">Product specifications</h3>
-      <table class="aip-specs-lux">
-        <tbody>
-          <tr><td>Country of Origin</td><td>{{ section.settings.spec_origin | default: 'India' }}</td></tr>
-          <tr><td>Item Form</td><td>{{ section.settings.spec_item_form | default: 'Bamboo-less Incense' }}</td></tr>
-          <tr><td>Item Type</td><td>{{ section.settings.spec_item_type | default: 'Eco-friendly, Organic, Meditation, Vedic' }}</td></tr>
-          <tr><td>Number of Sticks</td><td>{{ section.settings.spec_sticks | default: '40' }}</td></tr>
-          <tr><td>Burning Time</td><td>{{ section.settings.spec_burn | default: '30+ minutes' }}</td></tr>
-          <tr><td>Length</td><td>{{ section.settings.spec_length | default: '3.5 inches' }}</td></tr>
-          {%- if section.settings.spec_fragrance != blank -%}
-            <tr><td>Fragrance</td><td>{{ section.settings.spec_fragrance }}</td></tr>
-          {%- endif -%}
-          {%- if section.settings.spec_ingredients != blank -%}
-            <tr><td>Key Ingredients</td><td>{{ section.settings.spec_ingredients }}</td></tr>
-          {%- endif -%}
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <h3 class="aip-block__h">How we compare</h3>
-      <div class="aip-compare">
-        <table>
-          <thead>
-            <tr>
-              <th>Features</th>
-              <th>Anand Rasa</th>
-              <th>Others</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Clean burning — low smoke</td>
-              <td class="aip-compare__ok">&#10003;</td>
-              <td class="aip-compare__no">&#10007;</td>
-            </tr>
-            <tr>
-              <td>Natural ingredients — chemical free</td>
-              <td class="aip-compare__ok">&#10003;</td>
-              <td class="aip-compare__no">&#10007;</td>
-            </tr>
-            <tr>
-              <td>Premium quality — handcrafted</td>
-              <td class="aip-compare__ok">&#10003;</td>
-              <td class="aip-compare__no">&#10007;</td>
-            </tr>
-            <tr>
-              <td>Vedic fragrance — authentic</td>
-              <td class="aip-compare__ok">&#10003;</td>
-              <td class="aip-compare__no">&#10007;</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+  {% render 'incense-spec-comparison-table-pro', section_ref: section %}
 
   {%- assign related_col = section.settings.related_collection -%}
   {%- if related_col != blank and related_col.products.size > 0 -%}
@@ -1112,14 +1037,48 @@
     { "type": "text", "id": "why_heading", "label": "Heading", "default": "Why Choose Our Incense" },
     { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "Crafted for purity, fragrance and spiritual practice" },
     { "type": "header", "content": "Specifications table" },
+    { "type": "text", "id": "spec_table_heading", "label": "Specifications table heading", "default": "Specification" },
+    { "type": "text", "id": "spec_label_origin", "label": "Specification label: country", "default": "Country Of Origin :" },
     { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
+    { "type": "text", "id": "spec_label_item_form", "label": "Specification label: item form", "default": "Item Form :" },
     { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Bamboo-less Incense" },
+    { "type": "text", "id": "spec_label_item_type", "label": "Specification label: item type", "default": "Item Type :" },
     { "type": "text", "id": "spec_item_type", "label": "Item Type", "default": "Eco-friendly, Organic, Meditation, Vedic" },
+    { "type": "text", "id": "spec_label_sticks", "label": "Specification label: stick count", "default": "Number of Sticks :" },
     { "type": "text", "id": "spec_sticks", "label": "Number of Sticks", "default": "40" },
+    { "type": "text", "id": "spec_label_burn", "label": "Specification label: burn time", "default": "Burning Time :" },
     { "type": "text", "id": "spec_burn", "label": "Burning Time", "default": "30+ minutes" },
+    { "type": "text", "id": "spec_label_length", "label": "Specification label: length", "default": "Length of Stick :" },
     { "type": "text", "id": "spec_length", "label": "Length", "default": "3.5 inches" },
+    { "type": "text", "id": "spec_label_fragrance", "label": "Specification label: fragrance", "default": "Fragrance :" },
     { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)" },
+    { "type": "text", "id": "spec_label_ingredients", "label": "Specification label: ingredients", "default": "Ingredients :" },
     { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)" },
+    { "type": "header", "content": "Comparison table" },
+    { "type": "text", "id": "compare_table_heading", "label": "Comparison table heading", "default": "Comparison" },
+    { "type": "text", "id": "compare_col_feature", "label": "Column 1 title", "default": "Features" },
+    { "type": "text", "id": "compare_col_brand", "label": "Column 2 title (your brand)", "default": "Sadhna.co™" },
+    { "type": "text", "id": "compare_col_others", "label": "Column 3 title", "default": "Others" },
+    { "type": "text", "id": "compare_feature_1", "label": "Feature row 1", "default": "Clean burning - Low smoke" },
+    { "type": "checkbox", "id": "compare_brand_yes_1", "label": "Brand value row 1 is yes", "default": true },
+    { "type": "text", "id": "compare_brand_text_1", "label": "Brand custom text row 1 (if not yes)" },
+    { "type": "checkbox", "id": "compare_others_yes_1", "label": "Others value row 1 is yes", "default": false },
+    { "type": "text", "id": "compare_feature_2", "label": "Feature row 2", "default": "Natural ingredients - Chemical and charcoal free" },
+    { "type": "checkbox", "id": "compare_brand_yes_2", "label": "Brand value row 2 is yes", "default": true },
+    { "type": "text", "id": "compare_brand_text_2", "label": "Brand custom text row 2 (if not yes)" },
+    { "type": "checkbox", "id": "compare_others_yes_2", "label": "Others value row 2 is yes", "default": false },
+    { "type": "text", "id": "compare_feature_3", "label": "Feature row 3", "default": "Premium quality - Handcrafted" },
+    { "type": "checkbox", "id": "compare_brand_yes_3", "label": "Brand value row 3 is yes", "default": true },
+    { "type": "text", "id": "compare_brand_text_3", "label": "Brand custom text row 3 (if not yes)" },
+    { "type": "checkbox", "id": "compare_others_yes_3", "label": "Others value row 3 is yes", "default": false },
+    { "type": "text", "id": "compare_feature_4", "label": "Feature row 4", "default": "Vedic fragrance - Authentic spiritual" },
+    { "type": "checkbox", "id": "compare_brand_yes_4", "label": "Brand value row 4 is yes", "default": true },
+    { "type": "text", "id": "compare_brand_text_4", "label": "Brand custom text row 4 (if not yes)" },
+    { "type": "checkbox", "id": "compare_others_yes_4", "label": "Others value row 4 is yes", "default": false },
+    { "type": "text", "id": "compare_feature_5", "label": "Feature row 5", "default": "Environment friendly - Sustainable and perfect for daily pooja" },
+    { "type": "checkbox", "id": "compare_brand_yes_5", "label": "Brand value row 5 is yes", "default": true },
+    { "type": "text", "id": "compare_brand_text_5", "label": "Brand custom text row 5 (if not yes)" },
+    { "type": "checkbox", "id": "compare_others_yes_5", "label": "Others value row 5 is yes", "default": false },
     { "type": "header", "content": "Recommended products" },
     { "type": "collection", "id": "related_collection", "label": "Collection" },
     { "type": "text", "id": "related_heading", "label": "Heading", "default": "Recommended" },

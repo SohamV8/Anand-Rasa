@@ -1,1 +1,24 @@
-{"sections":{"main":{"type":"anand-rasa-blog-page","settings":{"logo":"shopify:\/\/shop_images\/anand-rasa-logo-black.png","logo_width":120,"logo_text":"Anand Rasa","logo_subtext":"rasa","nav_l1":"Shop","nav_l1_url":"","nav_l2":"Blogs","nav_l2_url":"","nav_l3":"Gift Sets","nav_l3_url":"","nav_r1":"Collections","nav_r1_url":"","nav_r2":"About","nav_r2_url":"","footer_tagline":"Modern luxury attars crafted through timeless distillation. Pure oils, calm presence.","instagram":"https:\/\/www.instagram.com\/anand__rasa\/","facebook":"https:\/\/www.facebook.com\/profile.php?id=61584373649018","whatsapp":"917206264199","contact_email":"anandrasafragnance@gmail.com","contact_phone":"+91 7206264199","blog_desc":"Stories of scent, ritual, and the art of slow living. Explore the world of attar through our eyes.","newsletter_title":"The Scent Letter","newsletter_desc":"Monthly stories on fragrance, ritual, and the art of presence. No spam, ever."}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "anand-rasa-blog-page",
+      "settings": {
+        "blog_desc": "Stories of scent, ritual, and the art of slow living. Explore the world of attar through our eyes.",
+        "newsletter_title": "The Scent Letter",
+        "newsletter_desc": "Monthly stories on fragrance, ritual, and the art of presence. No spam, ever."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

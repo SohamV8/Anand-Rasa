@@ -31,6 +31,59 @@
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
     }
 
+    .pdp-meta-accordion {
+      margin-top: 1.6rem;
+      background: transparent;
+    }
+    .pdp-meta-accordion__item {
+      border-top: 1px solid rgba(17, 24, 39, 0.12);
+    }
+    .pdp-meta-accordion__item summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 1rem 0;
+    }
+    .pdp-meta-accordion__item summary::-webkit-details-marker {
+      display: none;
+    }
+    .pdp-meta-accordion__item summary::after {
+      content: "+";
+      color: #6b7280;
+      font-size: 1.8rem;
+      line-height: 1;
+      font-weight: 400;
+      flex-shrink: 0;
+    }
+    .pdp-meta-accordion__item[open] summary::after {
+      content: "−";
+    }
+    .pdp-meta-accordion__title-wrap {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+    .pdp-meta-accordion__title {
+      margin: 0;
+      font-family: "Poppins", var(--font-heading-family), var(--font-body-family), sans-serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #111827;
+      line-height: 1.2;
+    }
+    .pdp-meta-accordion__content {
+      padding: 0 0 1rem;
+      color: #374151;
+      font-size: 1.4rem;
+      line-height: 1.7;
+    }
+    .pdp-meta-accordion__content p {
+      margin: 0;
+    }
+
     @media screen and (min-width: 750px) {
       .section-{{ section.id }}-padding {
         padding-top: {{ section.settings.padding_top }}px;
@@ -454,6 +507,72 @@
                     </volume-pricing>
                   {%- endif -%}
                 </div>
+                {%- liquid
+                  assign ingredients_text = product.metafields.custom.ingredients | metafield_text
+                  if ingredients_text == blank
+                    assign ingredients_text = product.metafields.custom.ingredient | metafield_text
+                  endif
+
+                  assign use_storage_text = product.metafields.custom.use_and_storage | metafield_text
+                  if use_storage_text == blank
+                    assign use_storage_text = product.metafields.custom.use_storage | metafield_text
+                  endif
+                  if use_storage_text == blank
+                    assign use_storage_text = product.metafields.custom.usage_storage | metafield_text
+                  endif
+                  if use_storage_text == blank
+                    assign use_storage_text = product.metafields.custom.how_to_use | metafield_text
+                  endif
+                  if use_storage_text == blank
+                    assign use_storage_text = product.metafields.custom.usage | metafield_text
+                  endif
+                -%}
+                <div class="pdp-meta-accordion quick-add-hidden" id="PdpMetaAccordion-{{ section.id }}">
+                  <details class="pdp-meta-accordion__item" open>
+                    <summary>
+                      <div class="pdp-meta-accordion__title-wrap">
+                        <h3 class="pdp-meta-accordion__title">Description</h3>
+                      </div>
+                    </summary>
+                    <div class="pdp-meta-accordion__content rte">
+                      {%- if product.description != blank -%}
+                        {{ product.description }}
+                      {%- else -%}
+                        <p>Description here</p>
+                      {%- endif -%}
+                    </div>
+                  </details>
+
+                  <details class="pdp-meta-accordion__item">
+                    <summary>
+                      <div class="pdp-meta-accordion__title-wrap">
+                        <h3 class="pdp-meta-accordion__title">Ingredients</h3>
+                      </div>
+                    </summary>
+                    <div class="pdp-meta-accordion__content rte">
+                      {%- if ingredients_text != blank -%}
+                        {{ ingredients_text }}
+                      {%- else -%}
+                        <p>Ingredients information will be added for this product.</p>
+                      {%- endif -%}
+                    </div>
+                  </details>
+
+                  <details class="pdp-meta-accordion__item">
+                    <summary>
+                      <div class="pdp-meta-accordion__title-wrap">
+                        <h3 class="pdp-meta-accordion__title">Use &amp; Storage</h3>
+                      </div>
+                    </summary>
+                    <div class="pdp-meta-accordion__content rte">
+                      {%- if use_storage_text != blank -%}
+                        {{ use_storage_text }}
+                      {%- else -%}
+                        <p>Use and storage details will be added for this product.</p>
+                      {%- endif -%}
+                    </div>
+                  </details>
+                </div>
               {%- when 'popup' -%}
                 <modal-opener
                   class="product-popup-modal__opener quick-add-hidden"
@@ -737,6 +856,8 @@
     </script>
   </div>
 </product-info>
+{% render 'incense-making-process', scope_id: section.id %}
+{% render 'incense-spec-comparison-table-pro' %}
 
 {% schema %}
 {

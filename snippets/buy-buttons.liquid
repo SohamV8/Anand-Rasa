@@ -22,6 +22,9 @@
       if block.settings.show_dynamic_checkout and gift_card_recipient_feature_active == false
         assign show_dynamic_checkout = true
       endif
+      if request.host contains '127.0.0.1' or request.host contains 'localhost'
+        assign show_dynamic_checkout = false
+      endif
     -%}
 
     <product-form

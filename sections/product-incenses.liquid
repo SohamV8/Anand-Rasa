@@ -509,6 +509,9 @@
 
   </div>
 
+  {% render 'incense-making-process', scope_id: section.id %}
+  {% render 'incense-spec-comparison-table-pro', section_ref: section %}
+
   {%- comment -%} ══ 2. USP STRIP ══ {%- endcomment -%}
   {%- if section.blocks.size > 0 -%}
     {%- assign usp_blocks = section.blocks | where: 'type', 'usp' -%}
