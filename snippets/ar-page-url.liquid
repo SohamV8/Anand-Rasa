@@ -1,6 +1,7 @@
 {% liquid
   assign key = handle | downcase | strip
   assign url = ''
+  assign contact_fallback_url = pages['contact'].url | default: pages['contact-us'].url | default: routes.root_url
   assign template_suffix = ''
 
   case key
@@ -12,10 +13,19 @@
       assign template_suffix = 'contact'
     when 'faq', 'faqs'
       assign url = pages['faq'].url | default: pages['faqs'].url
+      if url == blank
+        assign url = contact_fallback_url
+      endif
     when 'bulk-enquiry', 'bulk-enquiry-form', 'bulk-inquiry'
       assign url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url
+      if url == blank
+        assign url = contact_fallback_url
+      endif
     when 'find-fragrance', 'find-your-fragrance', 'astro-fragrance-finder'
       assign url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url
+      if url == blank
+        assign url = contact_fallback_url
+      endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key
   endcase

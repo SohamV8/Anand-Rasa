@@ -97,7 +97,7 @@
             <li class="disclosure__item" tabindex="-1">
               <a
                 class="link link--text disclosure__link caption-large focus-inset"
-                href="#"
+                href="{{ request.path }}"
                 {% if country.iso_code == localization.country.iso_code %}
                   aria-current="true"
                 {% endif %}
@@ -126,7 +126,7 @@
           <li class="disclosure__item" tabindex="-1">
             <a
               class="link link--text disclosure__link caption-large focus-inset"
-              href="#"
+              href="{{ request.path }}"
               {% if country.iso_code == localization.country.iso_code %}
                 aria-current="true"
               {% endif %}

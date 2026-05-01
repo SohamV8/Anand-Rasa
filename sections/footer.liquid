@@ -138,15 +138,15 @@
   <div class="arf__social-row">
     <div class="arf__socials">
       {%- if section.settings.icon_instagram != blank -%}
-        <a href="{{ section.settings.instagram | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="{{ section.settings.instagram | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
           <img src="{{ section.settings.icon_instagram | image_url: width: 72 }}" srcset="{{ section.settings.icon_instagram | image_url: width: 36 }} 1x, {{ section.settings.icon_instagram | image_url: width: 72 }} 2x" alt="Instagram" width="18" height="18" loading="lazy">
         </a>
       {%- elsif section.settings.icon_instagram_url != blank -%}
-        <a href="{{ section.settings.instagram | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="{{ section.settings.instagram | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
           <img src="{{ section.settings.icon_instagram_url }}" alt="Instagram" width="18" height="18" loading="lazy">
         </a>
       {%- else -%}
-        <a href="{{ section.settings.instagram | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="{{ section.settings.instagram | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.75A4 4 0 0 0 3.75 7.75v8.5a4 4 0 0 0 4 4h8.5a4 4 0 0 0 4-4v-8.5a4 4 0 0 0-4-4h-8.5Zm9.4 1.9a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.75a3.25 3.25 0 1 0 0 6.5 3.25 3.25 0 0 0 0-6.5Z"/>
           </svg>
@@ -154,15 +154,15 @@
       {%- endif -%}
 
       {%- if section.settings.icon_facebook != blank -%}
-        <a href="{{ section.settings.facebook | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
+        <a href="{{ section.settings.facebook | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
           <img src="{{ section.settings.icon_facebook | image_url: width: 72 }}" srcset="{{ section.settings.icon_facebook | image_url: width: 36 }} 1x, {{ section.settings.icon_facebook | image_url: width: 72 }} 2x" alt="Facebook" width="18" height="18" loading="lazy">
         </a>
       {%- elsif section.settings.icon_facebook_url != blank -%}
-        <a href="{{ section.settings.facebook | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
+        <a href="{{ section.settings.facebook | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
           <img src="{{ section.settings.icon_facebook_url }}" alt="Facebook" width="18" height="18" loading="lazy">
         </a>
       {%- else -%}
-        <a href="{{ section.settings.facebook | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
+        <a href="{{ section.settings.facebook | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Facebook">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M13.5 22v-8.25h2.78l.42-3.22H13.5V8.47c0-.93.26-1.56 1.6-1.56h1.72V4.03A22.2 22.2 0 0 0 14.3 3.9c-2.5 0-4.22 1.53-4.22 4.34v2.29H7.25v3.22h2.83V22h3.42Z"/>
           </svg>
@@ -170,15 +170,15 @@
       {%- endif -%}
 
       {%- if section.settings.icon_youtube != blank -%}
-        <a href="{{ section.settings.youtube | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
+        <a href="{{ section.settings.youtube | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
           <img src="{{ section.settings.icon_youtube | image_url: width: 72 }}" srcset="{{ section.settings.icon_youtube | image_url: width: 36 }} 1x, {{ section.settings.icon_youtube | image_url: width: 72 }} 2x" alt="YouTube" width="18" height="18" loading="lazy">
         </a>
       {%- elsif section.settings.icon_youtube_url != blank -%}
-        <a href="{{ section.settings.youtube | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
+        <a href="{{ section.settings.youtube | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
           <img src="{{ section.settings.icon_youtube_url }}" alt="YouTube" width="18" height="18" loading="lazy">
         </a>
       {%- else -%}
-        <a href="{{ section.settings.youtube | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
+        <a href="{{ section.settings.youtube | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="YouTube">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M21.58 7.19a2.98 2.98 0 0 0-2.1-2.11C17.67 4.6 12 4.6 12 4.6s-5.67 0-7.48.48A2.98 2.98 0 0 0 2.42 7.2C1.94 9.01 1.94 12 1.94 12s0 2.99.48 4.8a2.98 2.98 0 0 0 2.1 2.11c1.81.48 7.48.48 7.48.48s5.67 0 7.48-.48a2.98 2.98 0 0 0 2.1-2.1c.48-1.82.48-4.81.48-4.81s0-2.99-.48-4.8Zm-11.4 8V8.8L15.7 12l-5.52 3.19Z"/>
           </svg>
@@ -186,15 +186,15 @@
       {%- endif -%}
 
       {%- if section.settings.icon_linkedin != blank -%}
-        <a href="{{ section.settings.linkedin | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="{{ section.settings.linkedin | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
           <img src="{{ section.settings.icon_linkedin | image_url: width: 72 }}" srcset="{{ section.settings.icon_linkedin | image_url: width: 36 }} 1x, {{ section.settings.icon_linkedin | image_url: width: 72 }} 2x" alt="LinkedIn" width="18" height="18" loading="lazy">
         </a>
       {%- elsif section.settings.icon_linkedin_url != blank -%}
-        <a href="{{ section.settings.linkedin | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="{{ section.settings.linkedin | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
           <img src="{{ section.settings.icon_linkedin_url }}" alt="LinkedIn" width="18" height="18" loading="lazy">
         </a>
       {%- else -%}
-        <a href="{{ section.settings.linkedin | default: '#' }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <a href="{{ section.settings.linkedin | default: routes.root_url }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="LinkedIn">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M6.56 8.98H3.3V20h3.26V8.98ZM4.93 3.75a1.89 1.89 0 1 0 0 3.78 1.89 1.89 0 0 0 0-3.78ZM20.7 13.68c0-3.32-1.77-4.86-4.13-4.86-1.9 0-2.76 1.05-3.24 1.79v-1.53h-3.25V20h3.25v-6.03c0-1.59.3-3.13 2.27-3.13 1.94 0 1.97 1.82 1.97 3.24V20h3.26l-.01-6.32Z"/>
           </svg>

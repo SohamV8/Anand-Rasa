@@ -9,7 +9,8 @@
   assign ccp_title   = product.title | default: 'your fragrance'
   assign ccp_url     = shop.url | append: product.url
   assign ccp_msg     = 'Hi Anand Rasa team, I would like help with your attars and incense collections. I am interested in: ' | append: ccp_title | append: '. Product: ' | append: ccp_url
-  assign ccp_wa      = 'https://wa.me/' | append: ccp_phone | append: '?text=' | append: ccp_msg | url_encode
+  assign ccp_msg_encoded = ccp_msg | url_encode
+  assign ccp_wa      = 'https://wa.me/' | append: ccp_phone | append: '?text=' | append: ccp_msg_encoded
 -%}
 
 <section class="arc-care" aria-label="Personalized fragrance assistance">

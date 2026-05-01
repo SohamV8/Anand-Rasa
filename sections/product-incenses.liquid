@@ -677,7 +677,7 @@
     {%- if section.settings.final_sub != blank -%}
       <p class="lux-final__sub">{{ section.settings.final_sub }}</p>
     {%- endif -%}
-    <a href="#" class="lux-final__btn" id="lux-final-btn">{{ section.settings.cta_primary | default: 'Begin Your Ritual' }}</a>
+    <a href="{{ product.url }}#lux-atc" class="lux-final__btn" id="lux-final-btn">{{ section.settings.cta_primary | default: 'Begin Your Ritual' }}</a>
   </section>
 
 </div>
