@@ -68,6 +68,12 @@
             "swatch_shape": "circle"
           }
         },
+        "custom_liquid_GRTktH": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<style>\n.icon-list-custom{\nmax-width: 44rem;\n}\n.icon-list-custom {\ndisplay: flex;\nflex-wrap: wrap;\nlist-style: none;\njustify-content: center;\nmargin: 0 0 10px 0;\ngap: 8px;\npadding: 10px 0px 0px 0px;\nmargin-top: -2rem;\nbackground-color: #f5f5f5;\nborder-radius: 6px;\n}\n</style>\n\n<ul class=\"icon-list-custom\" role=\"list\">\n{% assign enabled_payment_types = 'visa, master, paypal, apple_pay, google_pay, klarna' | remove: ' ' | split: ',' %}\n{% for type in enabled_payment_types %}\n<li>{{ type | payment_type_svg_tag: class: 'icon-svg' }}</li>\n{% endfor %}\n</ul>"
+          }
+        },
         "quantity_selector": {
           "type": "quantity_selector",
           "settings": {}
@@ -77,12 +83,6 @@
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
-          }
-        },
-        "custom_liquid_GRTktH": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<style>\n.icon-list-custom{\nmax-width: 44rem;\n}\n.icon-list-custom {\ndisplay: flex;\nflex-wrap: wrap;\nlist-style: none;\njustify-content: center;\nmargin: 0 0 10px 0;\ngap: 8px;\npadding: 10px 0px 0px 0px;\nmargin-top: -2rem;\nbackground-color: #f5f5f5;\nborder-radius: 6px;\n}\n</style>\n\n<ul class=\"icon-list-custom\" role=\"list\">\n{% assign enabled_payment_types = 'visa, master, paypal, apple_pay, google_pay, klarna' | remove: ' ' | split: ',' %}\n{% for type in enabled_payment_types %}\n<li>{{ type | payment_type_svg_tag: class: 'icon-svg' }}</li>\n{% endfor %}\n</ul>"
           }
         },
         "custom_liquid_fMNC73": {
@@ -122,9 +122,9 @@
         "title",
         "price",
         "variant_picker",
+        "custom_liquid_GRTktH",
         "quantity_selector",
         "buy_buttons",
-        "custom_liquid_GRTktH",
         "custom_liquid_fMNC73",
         "custom_liquid_EUGez7",
         "gsc_countdown_timer_countdown_t4Y7MF",
