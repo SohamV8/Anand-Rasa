@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="js" lang="{{ request.locale.iso_code }}">
+<html class="js page-type--{{ request.page_type }}" lang="{{ request.locale.iso_code }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
     >
 
     {%- assign ar_favicon_url = settings.favicon | image_url: width: 32, height: 32 -%}
@@ -21,17 +21,27 @@
     <link rel="apple-touch-icon" href="{{ ar_favicon_url }}">
 
     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if request.page_type == 'product' and product != blank and product.metafields.custom.seo_title.value != blank -%}
+        {{- product.metafields.custom.seo_title.value | strip | escape -}}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- else -%}
+        {{- page_title -}}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- endif -%}
     </title>
 
-    {% if page_description %}
+    {%- if request.page_type == 'product' and product != blank and product.metafields.custom.seo_description.value != blank -%}
+      <meta name="description" content="{{ product.metafields.custom.seo_description.value | strip_html | strip | escape }}">
+    {%- elsif page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- endif -%}
 
     {% render 'meta-tags' %}
+    {% render 'schema-global' %}
+    {% render 'schema-breadcrumbs' %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -217,77 +227,9 @@
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
       }
 
-      *,
-      *::before,
-      *::after {
-        box-sizing: inherit;
-      }
-
-      html {
-        box-sizing: border-box;
-        font-size: calc(var(--font-body-scale) * 62.5%);
-        height: 100%;
-      }
-
-      /* Space for fixed Anand Rasa header (see sections/header.liquid) */
-      :root {
-        --ar-header-height: 76px;
-      }
-      @media screen and (max-width: 900px) {
-        :root {
-          --ar-header-height: 72px;
-        }
-      }
-
-      body {
-        display: grid;
-        grid-template-rows: auto auto 1fr auto;
-        grid-template-columns: 100%;
-        min-height: 100%;
-        margin: 0;
-        font-size: 1.5rem;
-        letter-spacing: 0.01em;
-        line-height: 1.6;
-        font-family: var(--font-body-family);
-        font-style: var(--font-body-style);
-        font-weight: var(--font-body-weight);
-      }
-
-      .shopify-section-group-header-group {
-        overflow: visible;
-      }
-
-      #MainContent {
-        padding-top: var(--ar-header-height);
-        scroll-margin-top: var(--ar-header-height);
-      }
-
-      @media screen and (min-width: 750px) {
-        body {
-          font-size: 1.6rem;
-        }
-      }
-
-      {% if request.page_type == 'product' %}
-        /* Product pages: Caudex for all content, Poppins only for title */
-        #MainContent,
-        #MainContent *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
-          font-family: 'Caudex', serif !important;
-        }
-
-        #MainContent h1,
-        #MainContent .product__title,
-        #MainContent .product__title h1,
-        #MainContent [data-product-title],
-        #MainContent .aip-pdp__title,
-        #MainContent .ar-pdp__title {
-          font-family: 'Poppins', sans-serif !important;
-          font-weight: 500;
-          letter-spacing: 0.01em;
-        }
-      {% endif %}
     {% endstyle %}
 
+    {{ 'ar-theme-layout.css' | asset_url | stylesheet_tag }}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -321,44 +263,6 @@
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
-    <div style="display:none" aria-hidden="true">
-      <p>
-        {{- shop.name | escape -}}
-        {%- if shop.description != blank -%}
-          — {{ shop.description | strip_html | truncate: 280 | escape }}
-        {%- else -%}
-          — Luxury attars, natural incense, and ritual fragrance inspired by Vedic tradition for customers across India.
-        {%- endif %}
-        Trusted by shoppers seeking authentic oils, artisan incense, and thoughtful fragrance discovery.
-      </p>
-    </div>
-    {%- if request.page_type == 'product' and product != blank -%}
-      <div style="display:none" aria-hidden="true">
-        {{ product.title | escape }}
-        — Browse attar and incense offerings from {{ shop.name | escape }}, suited for meditation, daily wear, and ritual.
-      </div>
-      <div style="display:none" aria-hidden="true">
-        Explore more:
-        <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}">Planet attars</a>
-        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}">Incense sticks</a>
-      </div>
-      <div style="display:none" aria-hidden="true">
-        What makes a good everyday attar? Look for long-lasting natural oils, clear ingredient notes, and a house that publishes care and ritual guidance—like {{ shop.name | escape }}.
-      </div>
-    {%- elsif request.page_type == 'collection' and collection != blank -%}
-      <div style="display:none" aria-hidden="true">
-        Shop the {{ collection.title | escape }} collection at {{ shop.name | escape }}, featuring curated attars and incense for scent discovery.
-      </div>
-    {%- elsif request.page_type == 'blog' or request.page_type == 'article' -%}
-      <div style="display:none" aria-hidden="true">
-        Read fragrance and ritual stories from {{ shop.name | escape }}: attars, incense, astrology-inspired scent, and mindful living.
-      </div>
-      <div style="display:none" aria-hidden="true">
-        Shop related:
-        <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}">Planet attars</a>
-        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}">Incense sticks</a>
-      </div>
-    {%- endif -%}
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

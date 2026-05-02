@@ -1,0 +1,68 @@
+/* Extracted from layout/theme.liquid {% style %} — static rules only (theme settings variables still come from inline CSS). */
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: calc(var(--font-body-scale) * 62.5%);
+  height: 100%;
+}
+
+:root {
+  --ar-header-height: 76px;
+}
+
+@media screen and (max-width: 900px) {
+  :root {
+    --ar-header-height: 72px;
+  }
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-columns: 100%;
+  min-height: 100%;
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+}
+
+.shopify-section-group-header-group {
+  overflow: visible;
+}
+
+#MainContent {
+  padding-top: var(--ar-header-height);
+  scroll-margin-top: var(--ar-header-height);
+}
+
+@media screen and (min-width: 750px) {
+  body {
+    font-size: 1.6rem;
+  }
+}
+
+.page-type--product #MainContent,
+.page-type--product #MainContent *:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+  font-family: 'Caudex', serif !important;
+}
+
+.page-type--product #MainContent h1,
+.page-type--product #MainContent .product__title,
+.page-type--product #MainContent .product__title h1,
+.page-type--product #MainContent [data-product-title],
+.page-type--product #MainContent .aip-pdp__title,
+.page-type--product #MainContent .ar-pdp__title {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}

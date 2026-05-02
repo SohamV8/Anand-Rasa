@@ -4,6 +4,13 @@
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
 
+  if request.page_type == 'product' and product != blank and product.metafields.custom.seo_title.value != blank
+    assign og_title = product.metafields.custom.seo_title.value | strip
+  endif
+  if request.page_type == 'product' and product != blank and product.metafields.custom.seo_description.value != blank
+    assign og_description = product.metafields.custom.seo_description.value | strip_html | strip
+  endif
+
   if request.page_type == 'product'
     assign og_type = 'product'
   elsif request.page_type == 'article'

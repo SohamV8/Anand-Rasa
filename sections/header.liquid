@@ -100,7 +100,7 @@
 <nav class="ar-nav" aria-label="Main navigation">
   <div class="ar-nav__inner">
     <div class="ar-nav__left">
-      <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
+      <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
       <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
       <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
     </div>
@@ -297,7 +297,7 @@
 
 <div class="ar-nav__drawer js-ar-drawer" aria-hidden="true">
   <button class="ar-nav__drawer-close js-ar-close" aria-label="Close menu">&times;</button>
-  <a href="{{ section.settings.nav_l1_url | default: '/collections/all' }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
+  <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
   <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
   <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
   <button class="ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false">

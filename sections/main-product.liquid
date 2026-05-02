@@ -882,6 +882,7 @@
     <script type="application/ld+json">
       {{ product | structured_data }}
     </script>
+    {% render 'schema-product-supplemental', product: product %}
   </div>
 </product-info>
 {% render 'incense-making-process', scope_id: section.id %}

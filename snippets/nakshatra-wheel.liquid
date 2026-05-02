@@ -799,7 +799,7 @@ window.__NK_PRODUCTS__ = {
       btn.type = 'button';
       btn.className = 'nk__atc js-nk-atc';
       btn.dataset.id = p.id;
-      btn.setAttribute('aria-label', 'Add ' + p.title + ' to cart');
+      btn.setAttribute('aria-label', 'Add ' + escHtml(p.title) + ' to cart');
       btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg><span>Add to Cart</span>';
       pProdWrap.appendChild(btn);
 

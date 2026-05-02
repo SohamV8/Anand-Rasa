@@ -53,21 +53,6 @@
   {%- endfor -%}
 
   {%- liquid
-    assign schema_images = ''
-    assign schema_count  = 0
-    for media_item in card_product.media
-      if media_item.media_type == 'image' and schema_count < 3
-        assign schema_img = media_item | image_url: width: 600
-        if schema_images != blank
-          assign schema_images = schema_images | append: ','
-        endif
-        assign schema_images = schema_images | append: '"https:' | append: schema_img | append: '"'
-        assign schema_count = schema_count | plus: 1
-      endif
-    endfor
-  -%}
-
-  {%- liquid
     assign qty_rules = false
     assign qv = card_product.selected_or_first_available_variant
     if qv.quantity_rule.min > 1 or qv.quantity_rule.max != null or qv.quantity_rule.increment > 1
@@ -253,22 +238,6 @@
       </div>
     </article>
   </div>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": {{ card_product.title | json }},
-    "image": [{{ schema_images }}],
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": {{ cart.currency.iso_code | json }},
-      "price": {{ card_product.price | divided_by: 100.0 | json }},
-      "availability": "{% if card_product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
-      "url": {{ card_product.url | prepend: request.origin | json }}
-    }
-  }
-  </script>
 
 {%- else -%}
   <div class="card-wrapper product-card-wrapper ar-cw">

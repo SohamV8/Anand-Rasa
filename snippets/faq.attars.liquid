@@ -2,6 +2,7 @@
   assign afq_title = title | default: 'Frequently Asked Questions — Attars'
   assign afq_intro = intro | default: 'Everything you need to know about attars, usage, longevity, and care.'
   assign afq_product_title = product.title | default: 'this attar'
+  assign afq_q_apply = 'How do I apply ' | append: afq_product_title | append: ' for best results?'
 -%}
 
 <section class="afq" aria-label="Attar FAQs">
@@ -55,7 +56,7 @@
     },
     {
       "@type": "Question",
-      "name": "How do I apply {{ afq_product_title | escape }} for best results?",
+      "name": {{ afq_q_apply | json }},
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Apply 1-2 small dabs on pulse points like wrists, neck, and behind ears. For a softer trail, apply on inner elbows or on fabric edges after patch testing."

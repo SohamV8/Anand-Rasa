@@ -1,0 +1,114 @@
+{%- comment -%}
+  Product-level FAQPage (+ HowTo for incense) as JSON-LD only.
+  Skips attar PDPs: snippets/faq.attars.liquid already emits FAQPage + visible FAQs.
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign ar_pt = product.type | downcase
+    assign ar_ttl = product.title | downcase
+    assign ar_is_attar = false
+    if ar_pt contains 'attar' or ar_ttl contains 'attar'
+      assign ar_is_attar = true
+    endif
+    assign ar_is_incense = false
+    if ar_pt contains 'incense' or ar_ttl contains 'incense' or ar_ttl contains 'agarbatti'
+      assign ar_is_incense = true
+    endif
+
+    assign ar_pdesc = product.description | strip_html | strip | truncate: 420
+    if ar_pdesc == blank
+      assign ar_pdesc = product.title | append: ' is offered by ' | append: shop.name | append: '. Explore ingredients, usage, and care on the product page.'
+    endif
+
+    assign ar_ptype_disp = product.type | default: 'fragrance'
+    assign ar_tags_sample = product.tags | slice: 0, 5 | join: ', '
+
+    assign ar_q1 = 'What is ' | append: product.title | append: '?'
+    assign ar_a1 = ar_pdesc
+
+    if ar_is_incense
+      assign ar_q2 = 'How do I use ' | append: product.title | append: ' safely?'
+      assign ar_a2 = 'Light the coated tip until it glows, then blow out the flame and place the stick in a heat-safe holder over a non-flammable surface. Keep away from children, pets, and drafts. Never leave burning incense unattended.'
+    else
+      assign ar_q2 = 'How do I use ' | append: product.title | append: '?'
+      assign ar_a2 = 'Follow the usage guidance on the label and product page. Patch test on skin if applying as a personal fragrance. Store closed, away from heat and direct sunlight unless the product page says otherwise.'
+    endif
+
+    assign ar_q3 = 'Why choose ' | append: shop.name | append: ' for ' | append: ar_ptype_disp | append: '?'
+    assign ar_a3 = shop.name | append: ' focuses on thoughtfully crafted fragrance and ritual products'
+    if product.vendor != blank
+      assign ar_a3 = ar_a3 | append: ' from ' | append: product.vendor
+    endif
+    assign ar_a3 = ar_a3 | append: '. Category: '
+    assign ar_a3 = ar_a3 | append: ar_ptype_disp | append: '.'
+    if ar_tags_sample != blank
+      assign ar_a3 = ar_a3 | append: ' Related themes: ' | append: ar_tags_sample | append: '.'
+    endif
+  -%}
+
+  {%- unless ar_is_attar -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": {{ ar_q1 | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ ar_a1 | json }}
+            }
+          },
+          {
+            "@type": "Question",
+            "name": {{ ar_q2 | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ ar_a2 | json }}
+            }
+          },
+          {
+            "@type": "Question",
+            "name": {{ ar_q3 | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ ar_a3 | json }}
+            }
+          }
+        ]
+      }
+    </script>
+    {%- if ar_is_incense -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": {{ 'How to burn ' | append: product.title | json }},
+          "description": {{ 'Safe use instructions for incense sticks from ' | append: shop.name | json }},
+          "totalTime": "PT10M",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": {{ 'Prepare a safe space' | json }},
+              "text": {{ 'Choose a stable incense holder on a heat-resistant surface, away from curtains and flammables.' | json }}
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": {{ 'Light the stick' | json }},
+              "text": {{ 'Ignite the tip until it catches, wait a few seconds, then gently blow out the flame so the stick smoulders.' | json }}
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": {{ 'Ventilate' | json }},
+              "text": {{ 'Use in a well-ventilated room. Extinguish fully if smoke is strong or if you leave the area.' | json }}
+            }
+          ]
+        }
+      </script>
+    {%- endif -%}
+  {%- endunless -%}
+{%- endif -%}

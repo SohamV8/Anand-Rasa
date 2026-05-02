@@ -272,7 +272,7 @@
       <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
       <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Find a single attar to love' }}</h2>
       <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'After the set, many guests return for a full bottle — browse the full collection.' }}</p>
-      <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop All Attars' }}</a>
+      <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop All Attars' }}</a>
     </section>
   
   </div>
