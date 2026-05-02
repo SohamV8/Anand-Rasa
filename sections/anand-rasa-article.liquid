@@ -376,7 +376,7 @@
           <span class="aa-share__label">Share</span>
           <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ article.url }}&text={{ article.title | url_encode }}" target="_blank" rel="noopener" class="aa-share-btn" aria-label="Share on Twitter">X</a>
           <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" class="aa-share-btn" aria-label="Share on Facebook">f</a>
-          <a href="https://wa.me/?text={{ article.title | url_encode }}%20{{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" class="aa-share-btn" aria-label="Share on WhatsApp">W</a>
+          <a href="https://api.whatsapp.com/send?text={{ article.title | url_encode }}%20{{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" class="aa-share-btn" aria-label="Share on WhatsApp">W</a>
         </div>
       </div>
     </div>
