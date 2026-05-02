@@ -72,17 +72,17 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "custom_liquid_GRTktH": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<style>\n.icon-list-custom {\n  max-width: 44rem;\n  display: flex;\n  flex-wrap: wrap;\n  list-style: none;\n  justify-content: center;\n  margin: 0 0 10px 0;\n  gap: 6px;\n  padding: 14px 10px 8px 10px;\n  margin-top: -2rem;\n  background-color: #f5f5f5;\n  border-radius: 6px;\n}\n\n.icon-list-custom li {\n  display: flex;\n  align-items: center;\n}\n\n.icon-list-custom .icon-svg {\n  width: 36px;\n  height: 22px;\n  object-fit: contain;\n}\n</style>\n\n<ul class=\"icon-list-custom\" role=\"list\">\n  {% assign enabled_payment_types = 'visa, master, paypal, apple_pay, google_pay, klarna' | remove: ' ' | split: ',' %}\n  {% for type in enabled_payment_types %}\n    <li>{{ type | payment_type_svg_tag: class: 'icon-svg' }}</li>\n  {% endfor %}\n</ul>"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
-          }
-        },
-        "custom_liquid_GRTktH": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<style>\n.icon-list-custom{\nmax-width: 44rem;\n}\n.icon-list-custom {\ndisplay: flex;\nflex-wrap: wrap;\nlist-style: none;\njustify-content: center;\nmargin: 0 0 10px 0;\ngap: 8px;\npadding: 10px 0px 0px 0px;\nmargin-top: -2rem;\nbackground-color: #f5f5f5;\nborder-radius: 6px;\n}\n</style>\n\n<ul class=\"icon-list-custom\" role=\"list\">\n{% assign enabled_payment_types = 'visa, master, paypal, apple_pay, google_pay, klarna' | remove: ' ' | split: ',' %}\n{% for type in enabled_payment_types %}\n<li>{{ type | payment_type_svg_tag: class: 'icon-svg' }}</li>\n{% endfor %}\n</ul>"
           }
         },
         "custom_liquid_fMNC73": {
@@ -91,8 +91,15 @@
             "custom_liquid": "<div class=\"delivery-bar\" id=\"delivery-bar\">\n  <span class=\"delivery-bar__truck\">🚚</span>\n  <p class=\"delivery-bar__text\">\n    <strong>ORDER IN</strong>\n    <span class=\"delivery-bar__countdown delivery-bar__highlight\" id=\"delivery-countdown\">--H --M</span>\n    <strong>&amp; GET IT BY</strong>\n    <span class=\"delivery-bar__date delivery-bar__highlight\" id=\"delivery-date\">---, --- --</span>\n  </p>\n</div>\n\n<style>\n  .delivery-bar {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    padding: 12px 16px;\n    background: #ffffff;\n    border: 1px solid #e8e8e8;\n    border-radius: 6px;\n    margin: 16px 0;\n  }\n\n  .delivery-bar__truck {\n    font-size: 20px;\n    line-height: 1;\n    flex-shrink: 0;\n  }\n\n  .delivery-bar__text {\n    margin: 0;\n    font-size: 13px;\n    font-weight: 600;\n    color: #1a1a1a;\n    letter-spacing: 0.03em;\n    text-transform: uppercase;\n    line-height: 1;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n    flex-wrap: wrap;\n  }\n\n  .delivery-bar__highlight {\n    color: #E8450A;\n    font-weight: 700;\n  }\n\n  .delivery-bar__date {\n    color: #E8450A;\n    font-weight: 700;\n  }\n</style>\n\n<script>\n(function() {\n  // ─── CONFIG ───────────────────────────────────────────\n  const CUTOFF_HOUR_IST   = 17; // 5 PM IST cutoff\n  const CUTOFF_MINUTE_IST = 0;\n  const DELIVERY_DAYS     = 5;  // ← 5 days from order date\n  // ──────────────────────────────────────────────────────\n\n  const days   = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];\n  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];\n\n  function getNowIST() {\n    const now = new Date();\n    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);\n    return new Date(utc + (5.5 * 3600000));\n  }\n\n  function getCutoffToday(istNow) {\n    const cutoff = new Date(istNow);\n    cutoff.setHours(CUTOFF_HOUR_IST, CUTOFF_MINUTE_IST, 0, 0);\n    return cutoff;\n  }\n\n  function getDeliveryDate(istNow) {\n    const cutoff   = getCutoffToday(istNow);\n    const delivery = new Date(istNow);\n\n    if (istNow < cutoff) {\n      // Before cutoff → order dispatches today → +5 days from today\n      delivery.setDate(delivery.getDate() + DELIVERY_DAYS);\n    } else {\n      // After cutoff → order dispatches tomorrow → +5 days from tomorrow\n      delivery.setDate(delivery.getDate() + DELIVERY_DAYS + 1);\n    }\n\n    return delivery;\n  }\n\n  function formatDeliveryDate(date) {\n    return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();\n  }\n\n  function tick() {\n    const istNow      = getNowIST();\n    const cutoff      = getCutoffToday(istNow);\n    const countdownEl = document.getElementById('delivery-countdown');\n    const dateEl      = document.getElementById('delivery-date');\n\n    if (!countdownEl || !dateEl) return;\n\n    // Countdown target — today's cutoff or tomorrow's if already passed\n    let target;\n    if (istNow < cutoff) {\n      target = cutoff;\n    } else {\n      const tomorrow = new Date(istNow);\n      tomorrow.setDate(tomorrow.getDate() + 1);\n      tomorrow.setHours(CUTOFF_HOUR_IST, CUTOFF_MINUTE_IST, 0, 0);\n      target = tomorrow;\n    }\n\n    const diff    = target - istNow;\n    const hours   = Math.floor(diff / 3600000);\n    const minutes = Math.floor((diff % 3600000) / 60000);\n\n    countdownEl.textContent = hours + 'H ' + String(minutes).padStart(2, '0') + 'M';\n    dateEl.textContent      = formatDeliveryDate(getDeliveryDate(istNow));\n  }\n\n  tick();\n  setInterval(tick, 60000);\n})();\n</script>"
           }
         },
+        "custom_liquid_EUGez7": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"sof-wrap\">\n  <div class=\"sof-top\">\n    <span>🔥</span>\n    <strong>SELLING OUT FAST</strong>\n  </div>\n  <p class=\"sof-sub\">Due to high demand, limited quantities available</p>\n  <div class=\"sof-track\">\n    <div class=\"sof-fill\" id=\"sofFill\">\n      <span class=\"sof-pct\" id=\"sofPct\">67% SOLD</span>\n    </div>\n  </div>\n</div>\n\n<style>\n  .sof-wrap {\n    padding: 16px;\n    background: #fff;\n    font-family: inherit;\n  }\n\n  .sof-top {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 4px;\n  }\n\n  .sof-top strong {\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 0.08em;\n    text-transform: uppercase;\n    color: #1a1a1a;\n  }\n\n  .sof-sub {\n    font-size: 12px;\n    color: #888;\n    margin: 0 0 12px 0;\n  }\n\n  /* ── Track ── */\n  .sof-track {\n    width: 100%;\n    height: 28px;\n    background-color: #e0e0e0;\n    border-radius: 4px;\n    overflow: hidden;\n    position: relative;\n  }\n\n  /* ── Fill ── */\n  .sof-fill {\n    height: 100%;\n    width: 67%;               /* JS overrides this */\n    background-color: #1a1a1a;\n    border-radius: 4px;\n    display: flex;\n    align-items: center;\n    padding-left: 12px;\n    box-sizing: border-box;\n    transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);\n    position: relative;\n  }\n\n  /* glow when 85%+ */\n  .sof-fill.sof-hot {\n    background-color: #111;\n    box-shadow: inset 0 0 12px rgba(255,100,0,0.25);\n    animation: sofPulse 1.6s ease-in-out infinite;\n  }\n\n  @keyframes sofPulse {\n    0%,100% { opacity: 1; }\n    50%      { opacity: 0.88; }\n  }\n\n  /* ── Label inside bar ── */\n  .sof-pct {\n    font-size: 12px;\n    font-weight: 700;\n    color: #fff;\n    letter-spacing: 0.06em;\n    white-space: nowrap;\n    text-transform: uppercase;\n  }\n\n  @media (max-width: 480px) {\n    .sof-track { height: 26px; }\n    .sof-pct   { font-size: 11px; }\n  }\n</style>\n\n<script>\n(function () {\n  /* ── Config ── */\n  var START   = 67;\n  var RESET   = 70;\n  var MAX     = 90;\n  var STEP_MS = 400;   /* ms between each +0.1% tick  */\n\n  var pct    = START;\n  var paused = false;\n  var fill   = document.getElementById('sofFill');\n  var label  = document.getElementById('sofPct');\n\n  if (!fill || !label) return;\n\n  function render(p) {\n    fill.style.width  = p.toFixed(1) + '%';\n    label.textContent = Math.round(p) + '% SOLD';\n\n    if (p >= 85) {\n      fill.classList.add('sof-hot');\n    } else {\n      fill.classList.remove('sof-hot');\n    }\n  }\n\n  function tick() {\n    if (paused) return;\n\n    pct = parseFloat((pct + 0.1).toFixed(2));\n\n    if (pct >= MAX) {\n      /* instant snap back — kill transition, reset, re-enable */\n      fill.style.transition = 'none';\n      pct = RESET;\n      render(pct);\n\n      requestAnimationFrame(function () {\n        requestAnimationFrame(function () {\n          fill.style.transition = 'width 1.4s cubic-bezier(0.4, 0, 0.2, 1)';\n        });\n      });\n      return;\n    }\n\n    render(pct);\n  }\n\n  /* pause on hover */\n  var wrap = document.querySelector('.sof-wrap');\n  if (wrap) {\n    wrap.addEventListener('mouseenter', function () { paused = true;  });\n    wrap.addEventListener('mouseleave', function () { paused = false; });\n  }\n\n  /* kick off */\n  render(pct);\n  setInterval(tick, STEP_MS);\n\n})();\n</script>"
+          }
+        },
         "gsc_countdown_timer_countdown_t4Y7MF": {
           "type": "shopify://apps/gsc-countdown-timer/blocks/countdown/58dc5b1b-43d2-4209-b1f3-52aff31643ed",
+          "disabled": true,
           "settings": {
             "widget_id": "GSC-SMALL-psDojNpfeYrY"
           }
@@ -116,9 +123,10 @@
         "price",
         "variant_picker",
         "quantity_selector",
-        "buy_buttons",
         "custom_liquid_GRTktH",
+        "buy_buttons",
         "custom_liquid_fMNC73",
+        "custom_liquid_EUGez7",
         "gsc_countdown_timer_countdown_t4Y7MF",
         "description",
         "share"
