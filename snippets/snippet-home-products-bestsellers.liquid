@@ -13,6 +13,25 @@
       {%- assign bs = collections[section.settings.bs_collection] -%}
       {%- if bs != blank -%}
         {%- for p in bs.products limit: section.settings.bs_limit -%}
+          {%- liquid
+            assign title_key = p.title | handleize
+            assign bestseller_showcard = blank
+            if title_key contains 'kamalini'
+              assign bestseller_showcard = 'Bestseller/Kamalini.webp'
+            elsif title_key contains 'kesariya-ishq'
+              assign bestseller_showcard = 'Bestseller/Kesariya_Ishq.webp'
+            elsif title_key contains 'chandan-nandan'
+              assign bestseller_showcard = 'Bestseller/Chandan_Nandan.webp'
+            elsif title_key contains 'dev-priya'
+              assign bestseller_showcard = 'Bestseller/Dev_Priya.webp'
+            elsif title_key contains 'gulbadan'
+              assign bestseller_showcard = 'Bestseller/Gulbadan.webp'
+            elsif title_key contains 'oud-e-azam' or title_key contains 'oud'
+              assign bestseller_showcard = 'Bestseller/Oud-e-Azam.webp'
+            elsif title_key contains 'velora'
+              assign bestseller_showcard = 'Bestseller/Velora.webp'
+            endif
+          -%}
           <article class="ar-best__card">
             <a href="{{ p.url }}" class="ar-best__link">
               <div class="ar-best__imgw">
@@ -20,8 +39,10 @@
                 {%- elsif p.tags contains 'new' or p.tags contains 'New' -%}<span class="ar-best__badge">NEW</span>
                 {%- elsif p.tags contains 'limited' -%}<span class="ar-best__badge">LIMITED</span>
                 {%- elsif p.compare_at_price > p.price -%}<span class="ar-best__badge">SALE</span>{%- endif -%}
-                {%- if p.featured_image -%}
-                  <img src="{{ p.featured_image | image_url: width: 400 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="400" height="533" loading="lazy" class="ar-best__img">
+                {%- if bestseller_showcard != blank -%}
+                  <img src="{{ bestseller_showcard | asset_url }}" alt="{{ p.title | escape }}" width="600" height="800" loading="lazy" class="ar-best__img">
+                {%- elsif p.featured_image -%}
+                  <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="600" height="800" loading="lazy" class="ar-best__img">
                 {%- endif -%}
               </div>
               <h3 class="ar-best__name">{{ p.title }}</h3>

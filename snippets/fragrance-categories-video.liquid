@@ -6,8 +6,8 @@
 <section class="ar-cat-video">
   <div class="ar-cat-video__wrap">
     {%- liquid
-      assign incense_video_assets = 'incense/incense.webm,incense/dhoop.webm,incense/Havan.webm' | split: ','
-      assign incense_video_labels = 'Incense,Dhoop,Havan Samagri' | split: ','
+      assign incense_video_assets = 'incense/incense.webm,incense/dhoop.webm,incense/Havan.webm,incense/Sambrani_cup.webm' | split: ','
+      assign incense_video_labels = 'Incense,Dhoop,Havan Samagri,Sambrani Cup' | split: ','
     -%}
 
     <h2 class="ar-cat-video__heading">
@@ -36,11 +36,11 @@
           </div>
         {% endfor %}
       {%- else -%}
-        {%- for i in (0..2) -%}
+        {%- for video_path in incense_video_assets -%}
           <div class="ar-cat-video__item">
             <div class="ar-cat-video__media">
               <video
-                src="{{ incense_video_assets[i] | asset_url }}"
+                src="{{ video_path | asset_url }}"
                 autoplay
                 muted
                 loop
@@ -51,7 +51,7 @@
               ></video>
             </div>
             <p class="ar-cat-video__label">
-              {{ incense_video_labels[i] }}
+              {{ incense_video_labels[forloop.index0] }}
             </p>
           </div>
         {%- endfor -%}

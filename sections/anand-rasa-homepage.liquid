@@ -320,10 +320,10 @@
   .ar-best__track::-webkit-scrollbar { display:none; }
   .ar-best__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
   .ar-best__link { display:block; text-decoration:none; }
-  .ar-best__imgw { position:relative; aspect-ratio:3/4; width:160px; margin:0 auto; overflow:hidden; }
-  @media(min-width:640px){ .ar-best__imgw { width:180px; } }
-  .ar-best__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:transform .5s; }
-  .ar-best__link:hover .ar-best__img { transform:scale(1.05); }
+  .ar-best__imgw { position:relative; width:160px; height:210px; margin:0 auto; overflow:hidden; display:flex; align-items:center; justify-content:center;  }
+  @media(min-width:640px){ .ar-best__imgw { width:180px; height:240px; } }
+  .ar-best__img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; transition:transform .5s; }
+  .ar-best__link:hover .ar-best__img { transform:scale(1.04); }
   .ar-best__badge { position:absolute; top:8px; left:0; font-size:10px; font-weight:700; letter-spacing:.06em; padding:4px 10px; border-radius:3px; background:#1e2023; color:#fff; z-index:5; }
   .ar-best__name  { margin-top:20px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
   .ar-best__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
