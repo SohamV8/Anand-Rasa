@@ -23,11 +23,7 @@
         }
       },
       "block_order": [
-<<<<<<< HEAD
         "ai_gen_block_5ea4c42_MyKYY6"
-=======
-        "ai_gen_block_ab4e7e8_wYR7cd"
->>>>>>> b0e5e7f032215c96a1678fafcdfef93d5ebbd251
       ],
       "settings": {}
     },
@@ -198,17 +194,12 @@
       "blocks": {
         "ai_gen_block_0f5d8dd_N4q6yE": {
           "type": "ai_gen_block_0f5d8dd",
-<<<<<<< HEAD
           "disabled": false,
-=======
-          "disabled": true,
->>>>>>> b0e5e7f032215c96a1678fafcdfef93d5ebbd251
           "settings": {
             "spec_table_title": "Specifications",
             "spec_1_label": "Country of Origin",
             "spec_1_value": "India",
             "spec_2_label": "Item Form",
-<<<<<<< HEAD
             "spec_2_value": "Incense stick",
             "spec_3_label": "Item Type",
             "spec_3_value": "Handcrafted",
@@ -218,17 +209,6 @@
             "spec_5_value": "More than 1.5 hours",
             "spec_6_label": "Length of Stick",
             "spec_6_value": "6 inches",
-=======
-            "spec_2_value": "Incense Sticks",
-            "spec_3_label": "Item Type",
-            "spec_3_value": "Handcrafted",
-            "spec_4_label": "Number of Sticks",
-            "spec_4_value": "100 Sticks",
-            "spec_5_label": "Burning Time",
-            "spec_5_value": "1.5 to 2 Hours",
-            "spec_6_label": "Length of Stick",
-            "spec_6_value": "8 Inches",
->>>>>>> b0e5e7f032215c96a1678fafcdfef93d5ebbd251
             "feature_table_title": "Features Comparison",
             "feature_column_title": "Feature",
             "our_brand_title": "Anand Rasa's Incense Stick",
@@ -257,17 +237,10 @@
             "border_color": "#e8e8e8",
             "header_background": "#f5f5f5",
             "header_text_color": "#2c2c2c",
-<<<<<<< HEAD
             "check_bg_color": "#f3f4f6",
             "check_icon_color": "#111827",
             "cross_bg_color": "#f3f4f6",
             "cross_icon_color": "#6b7280",
-=======
-            "check_bg_color": "#e8f5e9",
-            "check_icon_color": "#2e7d32",
-            "cross_bg_color": "#ffebee",
-            "cross_icon_color": "#c62828",
->>>>>>> b0e5e7f032215c96a1678fafcdfef93d5ebbd251
             "sticky_bar_bg": "#ffffff",
             "sticky_text_color": "#2c2c2c",
             "button_bg_color": "#121212",
