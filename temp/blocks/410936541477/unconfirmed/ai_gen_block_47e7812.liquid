@@ -122,24 +122,88 @@
 <marquee-bar-{{ ai_gen_id }} class="ai-marquee-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-marquee-bar-wrapper-{{ ai_gen_id }}">
     <div class="ai-marquee-bar-content-{{ ai_gen_id }}">
-      {% for block_item in block.settings.announcements %}
-        {% if block_item.text != blank %}
-          <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block_item.text }}</span>
-          {% unless forloop.last %}
-            <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
-          {% endunless %}
+      {% assign announcements = '' | split: '' %}
+      {% if block.settings.announcement_1 != blank %}
+        {% assign announcements = announcements | concat: block.settings.announcement_1 | split: '||' %}
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        {% assign announcements = announcements | push: block.settings.announcement_2 %}
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        {% assign announcements = announcements | push: block.settings.announcement_3 %}
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        {% assign announcements = announcements | push: block.settings.announcement_4 %}
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        {% assign announcements = announcements | push: block.settings.announcement_5 %}
+      {% endif %}
+
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        {% if block.settings.announcement_2 != blank or block.settings.announcement_3 != blank or block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
         {% endif %}
-      {% endfor %}
+      {% endif %}
+
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        {% if block.settings.announcement_3 != blank or block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        {% if block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        {% if block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+      {% endif %}
     </div>
+
     <div class="ai-marquee-bar-content-{{ ai_gen_id }}" aria-hidden="true">
-      {% for block_item in block.settings.announcements %}
-        {% if block_item.text != blank %}
-          <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block_item.text }}</span>
-          {% unless forloop.last %}
-            <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
-          {% endunless %}
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        {% if block.settings.announcement_2 != blank or block.settings.announcement_3 != blank or block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
         {% endif %}
-      {% endfor %}
+      {% endif %}
+
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        {% if block.settings.announcement_3 != blank or block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        {% if block.settings.announcement_4 != blank or block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        {% if block.settings.announcement_5 != blank %}
+          <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+      {% endif %}
     </div>
   </div>
 </marquee-bar-{{ ai_gen_id }}>
