@@ -1,6 +1,909 @@
+{% doc %}
+  @prompt
+    Create a side filter bar on the left side of the collection/shop page that allows customers to filter products. The filter bar should include collapsible filter sections for common attributes like price range, product type, availability, and tags. It should have a clean, modern design that sits alongside the product grid, with the filters updating the product display dynamically.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-filter-sidebar-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: {{ block.settings.padding }}px;
+  }
+
+  .ai-filter-sidebar__header-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-filter-sidebar__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-filter-sidebar__clear-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    color: {{ block.settings.accent_color }};
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .ai-filter-sidebar__clear-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-filter-sidebar__section-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.divider_color }};
+    padding: 16px 0;
+  }
+
+  .ai-filter-sidebar__section-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-filter-sidebar__section-header-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px 0;
+  }
+
+  .ai-filter-sidebar__section-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_title_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-filter-sidebar__toggle-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}.collapsed {
+    transform: rotate(-90deg);
+  }
+
+  .ai-filter-sidebar__section-content-{{ ai_gen_id }} {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-top: 12px;
+  }
+
+  .ai-filter-sidebar__section-content-{{ ai_gen_id }}.collapsed {
+    max-height: 0;
+    padding-top: 0;
+  }
+
+  .ai-filter-sidebar__option-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+
+  .ai-filter-sidebar__checkbox-{{ ai_gen_id }} {
+    width: 18px;
+    height: 18px;
+    border: 2px solid {{ block.settings.checkbox_border_color }};
+    border-radius: 3px;
+    cursor: pointer;
+    accent-color: {{ block.settings.accent_color }};
+  }
+
+  .ai-filter-sidebar__label-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    cursor: pointer;
+    flex-grow: 1;
+  }
+
+  .ai-filter-sidebar__count-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: {{ block.settings.count_color }};
+  }
+
+  .ai-filter-sidebar__price-inputs-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 12px;
+  }
+
+  .ai-filter-sidebar__price-input-{{ ai_gen_id }} {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid {{ block.settings.input_border_color }};
+    border-radius: 4px;
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-filter-sidebar__price-separator-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-filter-sidebar__apply-button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 10px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+
+  .ai-filter-sidebar__apply-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-filter-sidebar__active-filters-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-filter-sidebar__active-filter-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: {{ block.settings.tag_background }};
+    color: {{ block.settings.text_color }};
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  .ai-filter-sidebar__remove-filter-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-filter-sidebar__remove-filter-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-filter-sidebar-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding | times: 0.7 }}px;
+    }
+
+    .ai-filter-sidebar__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<collection-filter-sidebar-{{ ai_gen_id }}
+  class="ai-filter-sidebar-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+  data-collection-url="{{ collection.url }}"
+>
+  <div class="ai-filter-sidebar__header-{{ ai_gen_id }}">
+    <h2 class="ai-filter-sidebar__title-{{ ai_gen_id }}">{{ block.settings.filter_title }}</h2>
+    <button
+      class="ai-filter-sidebar__clear-{{ ai_gen_id }}"
+      data-clear-filters
+      style="display: none;"
+    >
+      {{ block.settings.clear_text }}
+    </button>
+  </div>
+
+  {% if block.settings.show_price_filter %}
+    <div class="ai-filter-sidebar__section-{{ ai_gen_id }}">
+      <div
+        class="ai-filter-sidebar__section-header-{{ ai_gen_id }}"
+        data-toggle-section
+      >
+        <h3 class="ai-filter-sidebar__section-title-{{ ai_gen_id }}">{{ block.settings.price_label }}</h3>
+        <svg
+          class="ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="ai-filter-sidebar__section-content-{{ ai_gen_id }}">
+        <div class="ai-filter-sidebar__price-inputs-{{ ai_gen_id }}">
+          <input
+            type="number"
+            class="ai-filter-sidebar__price-input-{{ ai_gen_id }}"
+            placeholder="{{ block.settings.min_price_placeholder }}"
+            data-price-min
+            min="0"
+          >
+          <span class="ai-filter-sidebar__price-separator-{{ ai_gen_id }}">-</span>
+          <input
+            type="number"
+            class="ai-filter-sidebar__price-input-{{ ai_gen_id }}"
+            placeholder="{{ block.settings.max_price_placeholder }}"
+            data-price-max
+            min="0"
+          >
+        </div>
+        <button
+          class="ai-filter-sidebar__apply-button-{{ ai_gen_id }}"
+          data-apply-price
+        >
+          {{ block.settings.apply_button_text }}
+        </button>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if block.settings.show_availability_filter %}
+    <div class="ai-filter-sidebar__section-{{ ai_gen_id }}">
+      <div
+        class="ai-filter-sidebar__section-header-{{ ai_gen_id }}"
+        data-toggle-section
+      >
+        <h3 class="ai-filter-sidebar__section-title-{{ ai_gen_id }}">{{ block.settings.availability_label }}</h3>
+        <svg
+          class="ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="ai-filter-sidebar__section-content-{{ ai_gen_id }}">
+        <label class="ai-filter-sidebar__option-{{ ai_gen_id }}">
+          <input
+            type="checkbox"
+            class="ai-filter-sidebar__checkbox-{{ ai_gen_id }}"
+            data-filter-type="availability"
+            data-filter-value="in-stock"
+          >
+          <span class="ai-filter-sidebar__label-{{ ai_gen_id }}">{{ block.settings.in_stock_text }}</span>
+        </label>
+        <label class="ai-filter-sidebar__option-{{ ai_gen_id }}">
+          <input
+            type="checkbox"
+            class="ai-filter-sidebar__checkbox-{{ ai_gen_id }}"
+            data-filter-type="availability"
+            data-filter-value="out-of-stock"
+          >
+          <span class="ai-filter-sidebar__label-{{ ai_gen_id }}">{{ block.settings.out_of_stock_text }}</span>
+        </label>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if block.settings.show_type_filter and collection.all_types.size > 0 %}
+    <div class="ai-filter-sidebar__section-{{ ai_gen_id }}">
+      <div
+        class="ai-filter-sidebar__section-header-{{ ai_gen_id }}"
+        data-toggle-section
+      >
+        <h3 class="ai-filter-sidebar__section-title-{{ ai_gen_id }}">{{ block.settings.type_label }}</h3>
+        <svg
+          class="ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="ai-filter-sidebar__section-content-{{ ai_gen_id }}">
+        {% for product_type in collection.all_types %}
+          <label class="ai-filter-sidebar__option-{{ ai_gen_id }}">
+            <input
+              type="checkbox"
+              class="ai-filter-sidebar__checkbox-{{ ai_gen_id }}"
+              data-filter-type="type"
+              data-filter-value="{{ product_type | handle }}"
+            >
+            <span class="ai-filter-sidebar__label-{{ ai_gen_id }}">{{ product_type }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if block.settings.show_vendor_filter and collection.all_vendors.size > 0 %}
+    <div class="ai-filter-sidebar__section-{{ ai_gen_id }}">
+      <div
+        class="ai-filter-sidebar__section-header-{{ ai_gen_id }}"
+        data-toggle-section
+      >
+        <h3 class="ai-filter-sidebar__section-title-{{ ai_gen_id }}">{{ block.settings.vendor_label }}</h3>
+        <svg
+          class="ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="ai-filter-sidebar__section-content-{{ ai_gen_id }}">
+        {% for vendor in collection.all_vendors %}
+          <label class="ai-filter-sidebar__option-{{ ai_gen_id }}">
+            <input
+              type="checkbox"
+              class="ai-filter-sidebar__checkbox-{{ ai_gen_id }}"
+              data-filter-type="vendor"
+              data-filter-value="{{ vendor | handle }}"
+            >
+            <span class="ai-filter-sidebar__label-{{ ai_gen_id }}">{{ vendor }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if block.settings.show_tags_filter and collection.all_tags.size > 0 %}
+    <div class="ai-filter-sidebar__section-{{ ai_gen_id }}">
+      <div
+        class="ai-filter-sidebar__section-header-{{ ai_gen_id }}"
+        data-toggle-section
+      >
+        <h3 class="ai-filter-sidebar__section-title-{{ ai_gen_id }}">{{ block.settings.tags_label }}</h3>
+        <svg
+          class="ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+      <div class="ai-filter-sidebar__section-content-{{ ai_gen_id }}">
+        {% for tag in collection.all_tags %}
+          <label class="ai-filter-sidebar__option-{{ ai_gen_id }}">
+            <input
+              type="checkbox"
+              class="ai-filter-sidebar__checkbox-{{ ai_gen_id }}"
+              data-filter-type="tag"
+              data-filter-value="{{ tag | handle }}"
+            >
+            <span class="ai-filter-sidebar__label-{{ ai_gen_id }}">{{ tag }}</span>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div
+    class="ai-filter-sidebar__active-filters-{{ ai_gen_id }}"
+    data-active-filters
+    style="display: none;"
+  ></div>
+</collection-filter-sidebar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CollectionFilterSidebar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.activeFilters = {
+          price: { min: null, max: null },
+          availability: [],
+          type: [],
+          vendor: [],
+          tag: []
+        };
+      }
+
+      connectedCallback() {
+        this.setupToggleSections();
+        this.setupFilterCheckboxes();
+        this.setupPriceFilter();
+        this.setupClearFilters();
+        this.parseUrlFilters();
+      }
+
+      setupToggleSections() {
+        const toggleButtons = this.querySelectorAll('[data-toggle-section]');
+        toggleButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.ai-filter-sidebar__toggle-icon-{{ ai_gen_id }}');
+            
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+          });
+        });
+      }
+
+      setupFilterCheckboxes() {
+        const checkboxes = this.querySelectorAll('[data-filter-type]');
+        checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+            const filterType = checkbox.dataset.filterType;
+            const filterValue = checkbox.dataset.filterValue;
+
+            if (checkbox.checked) {
+              if (!this.activeFilters[filterType].includes(filterValue)) {
+                this.activeFilters[filterType].push(filterValue);
+              }
+            } else {
+              this.activeFilters[filterType] = this.activeFilters[filterType].filter(
+                v => v !== filterValue
+              );
+            }
+
+            this.applyFilters();
+          });
+        });
+      }
+
+      setupPriceFilter() {
+        const applyButton = this.querySelector('[data-apply-price]');
+        const minInput = this.querySelector('[data-price-min]');
+        const maxInput = this.querySelector('[data-price-max]');
+
+        if (applyButton && minInput && maxInput) {
+          applyButton.addEventListener('click', () => {
+            this.activeFilters.price.min = minInput.value || null;
+            this.activeFilters.price.max = maxInput.value || null;
+            this.applyFilters();
+          });
+        }
+      }
+
+      setupClearFilters() {
+        const clearButton = this.querySelector('[data-clear-filters]');
+        if (clearButton) {
+          clearButton.addEventListener('click', () => {
+            this.activeFilters = {
+              price: { min: null, max: null },
+              availability: [],
+              type: [],
+              vendor: [],
+              tag: []
+            };
+
+            this.querySelectorAll('[data-filter-type]').forEach(cb => {
+              cb.checked = false;
+            });
+
+            const minInput = this.querySelector('[data-price-min]');
+            const maxInput = this.querySelector('[data-price-max]');
+            if (minInput) minInput.value = '';
+            if (maxInput) maxInput.value = '';
+
+            this.applyFilters();
+          });
+        }
+      }
+
+      parseUrlFilters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        ['availability', 'type', 'vendor', 'tag'].forEach(filterType => {
+          const values = urlParams.getAll(filterType);
+          values.forEach(value => {
+            const checkbox = this.querySelector(
+              `[data-filter-type="${filterType}"][data-filter-value="${value}"]`
+            );
+            if (checkbox) {
+              checkbox.checked = true;
+              this.activeFilters[filterType].push(value);
+            }
+          });
+        });
+
+        const minPrice = urlParams.get('price_min');
+        const maxPrice = urlParams.get('price_max');
+        if (minPrice || maxPrice) {
+          this.activeFilters.price.min = minPrice;
+          this.activeFilters.price.max = maxPrice;
+          
+          const minInput = this.querySelector('[data-price-min]');
+          const maxInput = this.querySelector('[data-price-max]');
+          if (minInput && minPrice) minInput.value = minPrice;
+          if (maxInput && maxPrice) maxInput.value = maxPrice;
+        }
+
+        this.updateActiveFiltersDisplay();
+      }
+
+      applyFilters() {
+        const baseUrl = this.dataset.collectionUrl || window.location.pathname;
+        const params = new URLSearchParams();
+
+        if (this.activeFilters.price.min) {
+          params.append('price_min', this.activeFilters.price.min);
+        }
+        if (this.activeFilters.price.max) {
+          params.append('price_max', this.activeFilters.price.max);
+        }
+
+        ['availability', 'type', 'vendor', 'tag'].forEach(filterType => {
+          this.activeFilters[filterType].forEach(value => {
+            params.append(filterType, value);
+          });
+        });
+
+        const newUrl = params.toString() ? `${baseUrl}?${params.toString()}` : baseUrl;
+        window.location.href = newUrl;
+      }
+
+      updateActiveFiltersDisplay() {
+        const container = this.querySelector('[data-active-filters]');
+        const clearButton = this.querySelector('[data-clear-filters]');
+        
+        if (!container) return;
+
+        const hasActiveFilters = 
+          this.activeFilters.price.min ||
+          this.activeFilters.price.max ||
+          this.activeFilters.availability.length > 0 ||
+          this.activeFilters.type.length > 0 ||
+          this.activeFilters.vendor.length > 0 ||
+          this.activeFilters.tag.length > 0;
+
+        if (hasActiveFilters) {
+          container.style.display = 'flex';
+          if (clearButton) clearButton.style.display = 'block';
+        } else {
+          container.style.display = 'none';
+          if (clearButton) clearButton.style.display = 'none';
+        }
+
+        container.innerHTML = '';
+
+        if (this.activeFilters.price.min || this.activeFilters.price.max) {
+          const priceTag = this.createFilterTag(
+            `Price: ${this.activeFilters.price.min || '0'} - ${this.activeFilters.price.max || '∞'}`,
+            () => {
+              this.activeFilters.price = { min: null, max: null };
+              const minInput = this.querySelector('[data-price-min]');
+              const maxInput = this.querySelector('[data-price-max]');
+              if (minInput) minInput.value = '';
+              if (maxInput) maxInput.value = '';
+              this.applyFilters();
+            }
+          );
+          container.appendChild(priceTag);
+        }
+
+        ['availability', 'type', 'vendor', 'tag'].forEach(filterType => {
+          this.activeFilters[filterType].forEach(value => {
+            const checkbox = this.querySelector(
+              `[data-filter-type="${filterType}"][data-filter-value="${value}"]`
+            );
+            const label = checkbox ? checkbox.nextElementSibling.textContent : value;
+            
+            const tag = this.createFilterTag(label, () => {
+              this.activeFilters[filterType] = this.activeFilters[filterType].filter(
+                v => v !== value
+              );
+              if (checkbox) checkbox.checked = false;
+              this.applyFilters();
+            });
+            container.appendChild(tag);
+          });
+        });
+      }
+
+      createFilterTag(text, onRemove) {
+        const tag = document.createElement('div');
+        tag.className = 'ai-filter-sidebar__active-filter-{{ ai_gen_id }}';
+        tag.innerHTML = `
+          ${text}
+          <button class="ai-filter-sidebar__remove-filter-{{ ai_gen_id }}" type="button">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L13 13M1 13L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        `;
+        
+        tag.querySelector('button').addEventListener('click', onRemove);
+        return tag;
+      }
+    }
+
+    customElements.define('collection-filter-sidebar-{{ ai_gen_id }}', CollectionFilterSidebar{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Collection filter sidebar",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "filter_title",
+      "label": "Filter title",
+      "default": "Filters"
+    },
+    {
+      "type": "text",
+      "id": "clear_text",
+      "label": "Clear filters text",
+      "default": "Clear all"
+    },
+    {
+      "type": "text",
+      "id": "apply_button_text",
+      "label": "Apply button text",
+      "default": "Apply"
+    },
+    {
+      "type": "header",
+      "content": "Price filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_filter",
+      "label": "Show price filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "price_label",
+      "label": "Price label",
+      "default": "Price"
+    },
+    {
+      "type": "text",
+      "id": "min_price_placeholder",
+      "label": "Min price placeholder",
+      "default": "Min"
+    },
+    {
+      "type": "text",
+      "id": "max_price_placeholder",
+      "label": "Max price placeholder",
+      "default": "Max"
+    },
+    {
+      "type": "header",
+      "content": "Availability filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_availability_filter",
+      "label": "Show availability filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "availability_label",
+      "label": "Availability label",
+      "default": "Availability"
+    },
+    {
+      "type": "text",
+      "id": "in_stock_text",
+      "label": "In stock text",
+      "default": "In stock"
+    },
+    {
+      "type": "text",
+      "id": "out_of_stock_text",
+      "label": "Out of stock text",
+      "default": "Out of stock"
+    },
+    {
+      "type": "header",
+      "content": "Product type filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_type_filter",
+      "label": "Show product type filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "type_label",
+      "label": "Type label",
+      "default": "Product type"
+    },
+    {
+      "type": "header",
+      "content": "Vendor filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor_filter",
+      "label": "Show vendor filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "vendor_label",
+      "label": "Vendor label",
+      "default": "Brand"
+    },
+    {
+      "type": "header",
+      "content": "Tags filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags_filter",
+      "label": "Show tags filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tags_label",
+      "label": "Tags label",
+      "default": "Tags"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "checkbox_border_color",
+      "label": "Checkbox border",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input border",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "count_color",
+      "label": "Count",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tag_background",
+      "label": "Active filter tag background",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "section_title_size",
+      "label": "Section title size",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection filter sidebar"
+    }
+  ]
+}
 {% endschema %}
