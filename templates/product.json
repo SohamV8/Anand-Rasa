@@ -12,50 +12,28 @@
     "1777535904a27e40a3": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_4a25d0d_nBnW9z": {
-          "type": "ai_gen_block_4a25d0d",
+        "ai_gen_block_ab4e7e8_wYR7cd": {
+          "type": "ai_gen_block_ab4e7e8",
           "settings": {
             "announcement_1": "Get 10% off on your first order | Use Code: AnandRas10%",
-            "announcement_2": "Free Shipping On All Orders",
-            "announcement_3": "Shipping PAN India",
-            "announcement_4": "Buy 3 Get 1 Free",
-            "announcement_5": "",
+            "announcement_2": "Shipping PAN India",
+            "announcement_3": "Buy 3 Get 1 Free",
             "background_color": "#121212",
             "text_color": "#FFFFFF",
             "font_size": 14,
             "font_weight": "500",
             "bar_height": 12,
-            "scroll_speed": 30,
+            "scroll_speed": 40,
             "pause_on_hover": true,
             "separator": "|",
             "separator_spacing": 16,
             "item_spacing": 16
           },
           "blocks": {}
-        },
-        "ai_gen_block_5ea4c42_MyKYY6": {
-          "type": "ai_gen_block_5ea4c42",
-          "disabled": true,
-          "settings": {
-            "announcement_1": "15,000+ Happy Customers",
-            "announcement_2": "24 hoursdispatch",
-            "announcement_3": "PureFragrance",
-            "announcement_4": "",
-            "announcement_5": "",
-            "background_color": "#121212",
-            "text_color": "#ffffff",
-            "font_family": "assistant_n4",
-            "font_size": 14,
-            "vertical_padding": 12,
-            "item_spacing": 40,
-            "scroll_speed": 30
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_4a25d0d_nBnW9z",
-        "ai_gen_block_5ea4c42_MyKYY6"
+        "ai_gen_block_ab4e7e8_wYR7cd"
       ],
       "settings": {}
     },
