@@ -122,24 +122,48 @@
 <marquee-bar-{{ ai_gen_id }} class="ai-marquee-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-marquee-bar-wrapper-{{ ai_gen_id }}">
     <div class="ai-marquee-bar-content-{{ ai_gen_id }}">
-      {% for block_item in block.settings.announcements %}
-        {% if block_item.text != blank %}
-          <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block_item.text }}</span>
-          {% unless forloop.last %}
-            <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
-          {% endunless %}
-        {% endif %}
-      {% endfor %}
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
     </div>
     <div class="ai-marquee-bar-content-{{ ai_gen_id }}" aria-hidden="true">
-      {% for block_item in block.settings.announcements %}
-        {% if block_item.text != blank %}
-          <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block_item.text }}</span>
-          {% unless forloop.last %}
-            <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
-          {% endunless %}
-        {% endif %}
-      {% endfor %}
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
     </div>
   </div>
 </marquee-bar-{{ ai_gen_id }}>
