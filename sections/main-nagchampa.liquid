@@ -469,11 +469,11 @@
       <table class="aip-specs-lux">
         <tbody>
           <tr><td>Country of Origin</td><td>{{ section.settings.spec_origin | default: 'India' }}</td></tr>
-          <tr><td>Item Form</td><td>{{ section.settings.spec_item_form | default: 'Bamboo-less Incense' }}</td></tr>
+          <tr><td>Item Form</td><td>{{ section.settings.spec_item_form | default: 'Incense stick' }}</td></tr>
           <tr><td>Item Type</td><td>{{ section.settings.spec_item_type | default: 'Eco-friendly, Organic, Meditation, Vedic' }}</td></tr>
-          <tr><td>Number of Sticks</td><td>{{ section.settings.spec_sticks | default: '40' }}</td></tr>
-          <tr><td>Burning Time</td><td>{{ section.settings.spec_burn | default: '30+ minutes' }}</td></tr>
-          <tr><td>Length</td><td>{{ section.settings.spec_length | default: '3.5 inches' }}</td></tr>
+          <tr><td>Number of Sticks</td><td>{{ section.settings.spec_sticks | default: 'Around 80' }}</td></tr>
+          <tr><td>Burning Time</td><td>{{ section.settings.spec_burn | default: 'More than 1.5 hours' }}</td></tr>
+          <tr><td>Length</td><td>{{ section.settings.spec_length | default: '6 inches' }}</td></tr>
           {%- if section.settings.spec_fragrance != blank -%}
             <tr><td>Fragrance</td><td>{{ section.settings.spec_fragrance }}</td></tr>
           {%- endif -%}
@@ -942,11 +942,11 @@
     { "type": "textarea", "id": "why_sub", "label": "Subheading", "default": "The familiar golden warmth of nag champa—crafted for clean-burning ritual and steady fragrance." },
     { "type": "header", "content": "Specifications table" },
     { "type": "text", "id": "spec_origin", "label": "Country of Origin", "default": "India" },
-    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Bamboo-less Incense" },
+    { "type": "text", "id": "spec_item_form", "label": "Item Form", "default": "Incense stick" },
     { "type": "text", "id": "spec_item_type", "label": "Item Type", "default": "Eco-friendly, Organic, Meditation, Vedic" },
-    { "type": "text", "id": "spec_sticks", "label": "Number of Sticks", "default": "40" },
-    { "type": "text", "id": "spec_burn", "label": "Burning Time", "default": "30+ minutes" },
-    { "type": "text", "id": "spec_length", "label": "Length", "default": "3.5 inches" },
+    { "type": "text", "id": "spec_sticks", "label": "Number of Sticks", "default": "Around 80" },
+    { "type": "text", "id": "spec_burn", "label": "Burning Time", "default": "More than 1.5 hours" },
+    { "type": "text", "id": "spec_length", "label": "Length", "default": "6 inches" },
     { "type": "text", "id": "spec_fragrance", "label": "Fragrance (optional row)", "default": "Nag champa, sandalwood, champaca" },
     { "type": "text", "id": "spec_ingredients", "label": "Key ingredients (optional row)", "default": "Floral resins, traditional bases, wood powders" },
     { "type": "header", "content": "Recommended products" },

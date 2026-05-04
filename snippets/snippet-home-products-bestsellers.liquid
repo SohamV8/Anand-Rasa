@@ -12,7 +12,7 @@
     <div class="ar-best__track js-best-track">
       {%- assign bs = collections[section.settings.bs_collection] -%}
       {%- if bs != blank -%}
-        {%- for p in bs.products limit: section.settings.bs_limit -%}
+        {%- for p in bs.products -%}
           {%- liquid
             assign title_key = p.title | handleize
             assign bestseller_showcard = blank

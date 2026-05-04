@@ -32,11 +32,14 @@
     }
 
     .pdp-meta-accordion {
-      margin-top: 1.6rem;
+      margin-top: 2.8rem;
       background: transparent;
     }
     .pdp-meta-accordion__item {
       border-top: 1px solid rgba(17, 24, 39, 0.12);
+    }
+    .pdp-meta-accordion__item:last-child {
+      border-bottom: 1px solid rgba(17, 24, 39, 0.12);
     }
     .pdp-meta-accordion__item summary {
       list-style: none;
@@ -45,7 +48,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
-      padding: 1rem 0;
+      padding: 1.45rem 0;
     }
     .pdp-meta-accordion__item summary::-webkit-details-marker {
       display: none;
@@ -53,9 +56,9 @@
     .pdp-meta-accordion__item summary::after {
       content: "+";
       color: #6b7280;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       line-height: 1;
-      font-weight: 400;
+      font-weight: 500;
       flex-shrink: 0;
     }
     .pdp-meta-accordion__item[open] summary::after {
@@ -69,19 +72,95 @@
     .pdp-meta-accordion__title {
       margin: 0;
       font-family: "Poppins", var(--font-heading-family), var(--font-body-family), sans-serif;
-      font-size: 1.6rem;
-      font-weight: 500;
+      font-size: 1.9rem;
+      font-weight: 700;
       color: #111827;
       line-height: 1.2;
     }
     .pdp-meta-accordion__content {
-      padding: 0 0 1rem;
+      padding: 0.25rem 0 1.6rem;
       color: #374151;
-      font-size: 1.4rem;
-      line-height: 1.7;
+      font-size: 1.45rem;
+      line-height: 1.85;
     }
     .pdp-meta-accordion__content p {
       margin: 0;
+    }
+    .product__info-container > * {
+      margin-bottom: 1.4rem;
+    }
+    .product__info-container > *:last-child {
+      margin-bottom: 0;
+    }
+    .product__title {
+      margin-bottom: 2.1rem;
+    }
+    .product__title h1 {
+      line-height: 1.1;
+      margin: 0;
+    }
+    .price--large {
+      margin: 0.9rem 0 0.75rem;
+    }
+    .product__tax {
+      margin: 0.9rem 0 2rem;
+      line-height: 1.7;
+    }
+    .product-form__input.product-form__quantity {
+      margin: 1.2rem 0 2rem;
+    }
+    .product-form__input .quantity__label {
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .product-form__input .quantity {
+      min-height: 5rem;
+      border-radius: 0;
+    }
+    .product-form__input .quantity__button {
+      width: 4.8rem;
+    }
+    .product-form__input .quantity__input {
+      min-height: 5rem;
+      font-size: 2.2rem;
+    }
+    .icon-list-custom {
+      margin-top: 0.9rem !important;
+      margin-bottom: 1.75rem !important;
+      padding: 1.25rem 1rem !important;
+    }
+    .pdp-incense-offer {
+      margin: 1.2rem 0 1.8rem;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      border: 1px solid rgba(17, 24, 39, 0.12);
+      background: #fff;
+    }
+    .pdp-incense-offer__media {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .pdp-incense-offer__urgency {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      min-height: 3.4rem;
+      padding: 0.6rem 1rem;
+      background: #fff;
+      color: #111;
+      border-top: 1px solid rgba(17, 24, 39, 0.12);
+      font-size: 1.55rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .pdp-incense-offer__time {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
     }
 
     @media screen and (min-width: 750px) {
@@ -632,6 +711,58 @@
                   section_id: section.id,
                   show_pickup_availability: true
                 -%}
+                {%- liquid
+                  assign is_incense_product = false
+                  if template.suffix contains 'incense'
+                    assign is_incense_product = true
+                  elsif product.type != blank
+                    assign product_type_down = product.type | downcase
+                    if product_type_down contains 'incense'
+                      assign is_incense_product = true
+                    endif
+                  endif
+                  if is_incense_product == false and product.handle != blank
+                    assign product_handle_down = product.handle | downcase
+                    if product_handle_down contains 'incense' or product_handle_down contains 'musk-rose' or product_handle_down contains 'muskrose'
+                      assign is_incense_product = true
+                    endif
+                  endif
+                -%}
+                {%- if is_incense_product -%}
+                  <div class="pdp-incense-offer" id="PdpIncenseOffer-{{ section.id }}">
+                    <img
+                      src="{{ 'incense/discount.webp' | asset_url }}"
+                      alt="Incense discount offer"
+                      class="pdp-incense-offer__media"
+                      width="1400"
+                      height="700"
+                      loading="lazy"
+                    >
+                    <div class="pdp-incense-offer__urgency">
+                      <span>Offer ends in</span>
+                      <span class="pdp-incense-offer__time" id="PdpIncenseOfferTime-{{ section.id }}">--:--:--</span>
+                    </div>
+                  </div>
+                  <script>
+                    (function () {
+                      var counter = document.getElementById('PdpIncenseOfferTime-{{ section.id }}');
+                      if (!counter) return;
+                      function tickCountdown() {
+                        var now = new Date();
+                        var end = new Date(now);
+                        end.setHours(23, 59, 59, 999);
+                        var diff = end.getTime() - now.getTime();
+                        if (diff < 0) diff = 0;
+                        var hours = Math.floor(diff / 3600000);
+                        var minutes = Math.floor((diff % 3600000) / 60000);
+                        var seconds = Math.floor((diff % 60000) / 1000);
+                        counter.textContent = String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+                      }
+                      tickCountdown();
+                      window.setInterval(tickCountdown, 1000);
+                    })();
+                  </script>
+                {%- endif -%}
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">

@@ -82,12 +82,36 @@
     
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign ai_spec_4_value = block.settings.spec_4_value %}
+{% assign ai_spec_5_value = block.settings.spec_5_value %}
+{% assign ai_spec_6_value = block.settings.spec_6_value %}
+{% assign ai_product_handle = product.handle | downcase %}
+{% assign ai_show_for_incense = false %}
+{% if template.suffix contains 'incense' %}
+  {% assign ai_show_for_incense = true %}
+{% elsif product.type != blank %}
+  {% assign ai_product_type = product.type | downcase %}
+  {% if ai_product_type contains 'incense' %}
+    {% assign ai_show_for_incense = true %}
+  {% endif %}
+{% endif %}
+{% if ai_show_for_incense == false and ai_product_handle != blank %}
+  {% if ai_product_handle contains 'incense' or ai_product_handle contains 'musk-rose' or ai_product_handle contains 'muskrose' %}
+    {% assign ai_show_for_incense = true %}
+  {% endif %}
+{% endif %}
+{% if ai_product_handle contains 'muskrose' or ai_product_handle contains 'musk-rose' %}
+  {% assign ai_spec_4_value = '40 sticks' %}
+  {% assign ai_spec_5_value = '2.5 hours' %}
+  {% assign ai_spec_6_value = '8 inches' %}
+{% endif %}
+{% if ai_show_for_incense %}
 
 {% style %}
   .ai-product-comparison-{{ ai_gen_id }} {
     display: block;
     width: 100%;
-    padding: {{ block.settings.section_padding }}px 20px;
+    padding: {{ block.settings.section_padding | plus: 8 }}px 20px;
     background-color: {{ block.settings.background_color }};
   }
 
@@ -100,20 +124,23 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: {{ block.settings.table_gap }}px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .ai-product-comparison-table-{{ ai_gen_id }} {
     background-color: {{ block.settings.table_background }};
-    border-radius: {{ block.settings.border_radius }}px;
-    padding: {{ block.settings.table_padding }}px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    padding: {{ block.settings.table_padding | plus: 4 }}px;
+    border: 1.5px solid #d1d5db;
+    box-shadow: none;
   }
 
   .ai-product-comparison-table-title-{{ ai_gen_id }} {
-    font-size: {{ block.settings.title_size }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
+    font-size: {{ block.settings.title_size | plus: 2 }}px;
     font-weight: 600;
-    margin: 0 0 {{ block.settings.table_padding }}px;
+    letter-spacing: -0.01em;
+    margin: 0 0 {{ block.settings.table_padding | plus: 4 }}px;
     color: {{ block.settings.title_color }};
     text-align: center;
   }
@@ -121,8 +148,9 @@
   .ai-product-comparison-spec-row-{{ ai_gen_id }} {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: {{ block.settings.row_padding }}px 0;
+    padding: {{ block.settings.row_padding | plus: 4 }}px 0;
     border-bottom: 1px solid {{ block.settings.border_color }};
+    align-items: center;
   }
 
   .ai-product-comparison-spec-row-{{ ai_gen_id }}:last-child {
@@ -130,31 +158,40 @@
   }
 
   .ai-product-comparison-spec-label-{{ ai_gen_id }} {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
     font-weight: 600;
     color: {{ block.settings.label_color }};
-    font-size: {{ block.settings.text_size }}px;
+    font-size: {{ block.settings.text_size | plus: 1 }}px;
+    line-height: 1.45;
   }
 
   .ai-product-comparison-spec-value-{{ ai_gen_id }} {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
     color: {{ block.settings.value_color }};
-    font-size: {{ block.settings.text_size }}px;
+    font-size: {{ block.settings.text_size | plus: 1 }}px;
+    line-height: 1.45;
     text-align: right;
   }
 
   .ai-product-comparison-feature-table-{{ ai_gen_id }} {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+    overflow: hidden;
+    border-radius: 6px;
   }
 
   .ai-product-comparison-feature-header-{{ ai_gen_id }} {
-    background-color: {{ block.settings.header_background }};
-    border-radius: {{ block.settings.border_radius }}px {{ block.settings.border_radius }}px 0 0;
+    background-color: #f3f4f6;
   }
 
   .ai-product-comparison-feature-header-{{ ai_gen_id }} th {
-    padding: {{ block.settings.row_padding }}px;
+    padding: {{ block.settings.row_padding | plus: 3 }}px {{ block.settings.row_padding }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
     font-weight: 600;
-    font-size: {{ block.settings.text_size }}px;
+    font-size: {{ block.settings.text_size | plus: 1 }}px;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
     color: {{ block.settings.header_text_color }};
     text-align: center;
   }
@@ -172,9 +209,12 @@
   }
 
   .ai-product-comparison-feature-row-{{ ai_gen_id }} td {
-    padding: {{ block.settings.row_padding }}px;
-    font-size: {{ block.settings.text_size }}px;
+    padding: {{ block.settings.row_padding | plus: 4 }}px {{ block.settings.row_padding }}px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, sans-serif;
+    font-size: {{ block.settings.text_size | plus: 1 }}px;
+    line-height: 1.5;
     color: {{ block.settings.value_color }};
+    vertical-align: middle;
   }
 
   .ai-product-comparison-feature-name-{{ ai_gen_id }} {
@@ -190,34 +230,36 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background-color: {{ block.settings.check_bg_color }};
+    border: 1px solid #d1d5db;
   }
 
   .ai-product-comparison-check-icon-{{ ai_gen_id }} svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     stroke: {{ block.settings.check_icon_color }};
-    stroke-width: 3;
+    stroke-width: 2.6;
   }
 
   .ai-product-comparison-cross-icon-{{ ai_gen_id }} {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background-color: {{ block.settings.cross_bg_color }};
+    border: 1px solid #d1d5db;
   }
 
   .ai-product-comparison-cross-icon-{{ ai_gen_id }} svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     stroke: {{ block.settings.cross_icon_color }};
-    stroke-width: 3;
+    stroke-width: 2.6;
   }
 
   .ai-product-comparison-sticky-bar-{{ ai_gen_id }} {
@@ -289,20 +331,36 @@
   }
 
   @media screen and (max-width: 749px) {
+    .ai-product-comparison-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding }}px 14px;
+    }
+
     .ai-product-comparison-grid-{{ ai_gen_id }} {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 14px;
     }
 
     .ai-product-comparison-table-title-{{ ai_gen_id }} {
-      font-size: {{ block.settings.title_size | times: 0.9 }}px;
+      font-size: {{ block.settings.title_size }}px;
     }
 
     .ai-product-comparison-spec-label-{{ ai_gen_id }},
     .ai-product-comparison-spec-value-{{ ai_gen_id }},
     .ai-product-comparison-feature-header-{{ ai_gen_id }} th,
     .ai-product-comparison-feature-row-{{ ai_gen_id }} td {
-      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+      font-size: {{ block.settings.text_size }}px;
+    }
+
+    .ai-product-comparison-table-{{ ai_gen_id }} {
+      padding: {{ block.settings.table_padding | minus: 3 }}px;
+      border-radius: 10px;
+    }
+
+    .ai-product-comparison-feature-header-{{ ai_gen_id }} th:nth-child(2),
+    .ai-product-comparison-feature-header-{{ ai_gen_id }} th:nth-child(3),
+    .ai-product-comparison-feature-row-{{ ai_gen_id }} td:nth-child(2),
+    .ai-product-comparison-feature-row-{{ ai_gen_id }} td:nth-child(3) {
+      width: 24%;
     }
 
     .ai-product-comparison-sticky-content-{{ ai_gen_id }} {
@@ -350,21 +408,21 @@
         {% if block.settings.spec_4_label != blank %}
           <div class="ai-product-comparison-spec-row-{{ ai_gen_id }}">
             <div class="ai-product-comparison-spec-label-{{ ai_gen_id }}">{{ block.settings.spec_4_label }}</div>
-            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ block.settings.spec_4_value }}</div>
+            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ ai_spec_4_value }}</div>
           </div>
         {% endif %}
 
         {% if block.settings.spec_5_label != blank %}
           <div class="ai-product-comparison-spec-row-{{ ai_gen_id }}">
             <div class="ai-product-comparison-spec-label-{{ ai_gen_id }}">{{ block.settings.spec_5_label }}</div>
-            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ block.settings.spec_5_value }}</div>
+            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ ai_spec_5_value }}</div>
           </div>
         {% endif %}
 
         {% if block.settings.spec_6_label != blank %}
           <div class="ai-product-comparison-spec-row-{{ ai_gen_id }}">
             <div class="ai-product-comparison-spec-label-{{ ai_gen_id }}">{{ block.settings.spec_6_label }}</div>
-            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ block.settings.spec_6_value }}</div>
+            <div class="ai-product-comparison-spec-value-{{ ai_gen_id }}">{{ ai_spec_6_value }}</div>
           </div>
         {% endif %}
       </div>
@@ -550,6 +608,7 @@
     customElements.define('product-comparison-{{ ai_gen_id }}', ProductComparison{{ ai_gen_id }});
   })();
 </script>
+{% endif %}
 
 {% schema %}
 {

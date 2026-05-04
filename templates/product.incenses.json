@@ -1,12 +1,4 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
+
 
 {
   "sections": {
@@ -106,19 +98,19 @@
         },
         "spec-1": {
           "type": "spec",
-          "settings": { "label": "Sticks Per Pack", "value": "40 Sticks" }
+          "settings": { "label": "Sticks Per Pack", "value": "Around 80 sticks" }
         },
         "spec-2": {
           "type": "spec",
-          "settings": { "label": "Burn Time", "value": "2–3 Hours" }
+          "settings": { "label": "Burn Time", "value": "More than 1.5 hours" }
         },
         "spec-3": {
           "type": "spec",
-          "settings": { "label": "Stick Length", "value": "20 cm" }
+          "settings": { "label": "Stick Length", "value": "6 inches" }
         },
         "spec-4": {
           "type": "spec",
-          "settings": { "label": "Ingredients", "value": "Natural resins, essential oils, bamboo core" }
+          "settings": { "label": "Item Form", "value": "Incense stick" }
         },
         "spec-5": {
           "type": "spec",
