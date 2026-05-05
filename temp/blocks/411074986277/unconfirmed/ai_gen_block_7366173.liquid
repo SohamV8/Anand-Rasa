@@ -1,0 +1,336 @@
+{% doc %}
+  @prompt
+    Create a **Shopify Liquid marquee announcement bar section** that matches a high-converting ecommerce banner.
+    
+    ### Design Style:
+    
+    * Full-width top bar
+    * Background color: deep maroon/brown (#5A2D1F or similar)
+    * Text color: white
+    * Clean, minimal, premium look
+    * Medium font weight, modern sans-serif
+    
+    ### Content (scrolling continuously):
+    
+    * Get 10% off on your first order | Use Code: ET10
+    * Free Shipping On All Orders
+    * Shipping PAN India | COD Available
+    
+    These items should **repeat seamlessly in a loop** across the screen.
+    
+    ### Animation:
+    
+    * Continuous smooth scrolling from right to left
+    * Infinite loop (no visible break or gap)
+    * Speed should feel premium (not too fast)
+    * Pause scrolling on hover
+    
+    ### Layout:
+    
+    * Text separated by "|" or spacing
+    * Equal spacing between items
+    * No line breaks (single-line scrolling)
+    
+    ### Shopify Customization:
+    
+    * Add section schema with:
+    
+      * Editable text blocks (multiple announcements)
+      * Scroll speed control (range slider)
+      * Background color picker
+      * Text color picker
+    * Ability to add/remove announcements dynamically
+    
+    ### Technical Requirements:
+    
+    * Use Shopify Liquid section format
+    * Use CSS keyframes for marquee animation (no deprecated <marquee> tag)
+    * No external libraries
+    * Fully responsive (mobile + desktop)
+    * Optimized performance (no lag or jump)
+    
+    ### Output:
+    
+    * Provide full working code (Liquid + CSS + schema)
+    * Ready to paste into a new section file (marquee.liquid)
+    
+    Goal: Create a **smooth, luxury-feel moving announcement bar** like modern D2C brands, with seamless scrolling and strong readability.
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-marquee-bar-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    overflow: hidden;
+    position: relative;
+    padding: {{ block.settings.bar_height }}px 0;
+  }
+
+  .ai-marquee-bar-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    width: fit-content;
+    animation: ai-marquee-scroll-{{ ai_gen_id }} {{ block.settings.scroll_speed }}s linear infinite;
+  }
+
+  .ai-marquee-bar-{{ ai_gen_id }}:hover .ai-marquee-bar-wrapper-{{ ai_gen_id }} {
+    animation-play-state: paused;
+  }
+
+  .ai-marquee-bar-content-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: {{ block.settings.item_spacing }}px;
+    padding-right: {{ block.settings.item_spacing }}px;
+  }
+
+  .ai-marquee-bar-item-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: {{ block.settings.font_weight }};
+    letter-spacing: 0.5px;
+  }
+
+  .ai-marquee-bar-separator-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+  }
+
+  @keyframes ai-marquee-scroll-{{ ai_gen_id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-marquee-bar-item-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<marquee-bar-{{ ai_gen_id }} class="ai-marquee-bar-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-marquee-bar-wrapper-{{ ai_gen_id }}">
+    <div class="ai-marquee-bar-content-{{ ai_gen_id }}">
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+    </div>
+    <div class="ai-marquee-bar-content-{{ ai_gen_id }}">
+      {% if block.settings.announcement_1 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_1 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_2 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_2 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_3 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_3 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_4 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_4 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+      {% if block.settings.announcement_5 != blank %}
+        <span class="ai-marquee-bar-item-{{ ai_gen_id }}">{{ block.settings.announcement_5 }}</span>
+        <span class="ai-marquee-bar-separator-{{ ai_gen_id }}">{{ block.settings.separator }}</span>
+      {% endif %}
+    </div>
+  </div>
+</marquee-bar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class MarqueeBar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.adjustAnimation();
+      }
+
+      adjustAnimation() {
+        const wrapper = this.querySelector('.ai-marquee-bar-wrapper-{{ ai_gen_id }}');
+        const content = this.querySelector('.ai-marquee-bar-content-{{ ai_gen_id }}');
+        
+        if (wrapper && content) {
+          const contentWidth = content.offsetWidth;
+          wrapper.style.width = (contentWidth * 2) + 'px';
+        }
+      }
+    }
+
+    customElements.define('marquee-bar-{{ ai_gen_id }}', MarqueeBar{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Marquee announcement bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Announcements"
+    },
+    {
+      "type": "text",
+      "id": "announcement_1",
+      "label": "Announcement 1",
+      "default": "Get 10% off on your first order | Use Code: ET10"
+    },
+    {
+      "type": "text",
+      "id": "announcement_2",
+      "label": "Announcement 2",
+      "default": "Free Shipping On All Orders"
+    },
+    {
+      "type": "text",
+      "id": "announcement_3",
+      "label": "Announcement 3",
+      "default": "Shipping PAN India | COD Available"
+    },
+    {
+      "type": "text",
+      "id": "announcement_4",
+      "label": "Announcement 4"
+    },
+    {
+      "type": "text",
+      "id": "announcement_5",
+      "label": "Announcement 5"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "|"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Spacing between items",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#5A2D1F"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Bar height",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee announcement bar"
+    }
+  ]
+}
+{% endschema %}

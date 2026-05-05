@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "sections": {
     "anand-rasa-homepage": {
@@ -306,9 +305,14 @@
         "inc_collection": "incense-stick",
         "inc_heading": "Shop Incense Sticks"
       }
+    },
+    "1777975433977fe8f6": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
-    "anand-rasa-homepage"
+    "anand-rasa-homepage",
+    "1777975433977fe8f6"
   ]
 }

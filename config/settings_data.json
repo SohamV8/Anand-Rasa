@@ -150,14 +150,19 @@
         "disabled": false,
         "settings": {}
       },
-      "7147999719060634790": {
-        "type": "shopify://apps/gsc-countdown-timer/blocks/countdown-bar/58dc5b1b-43d2-4209-b1f3-52aff31643ed",
-        "disabled": false,
-        "settings": {}
-      },
       "6406956604159796213": {
         "type": "shopify://apps/smart-seo/blocks/smartseo/7b0a6064-ca2e-4392-9a1d-8c43c942357b",
         "disabled": false,
+        "settings": {}
+      },
+      "7147999719060634790": {
+        "type": "shopify://apps/gsc-countdown-timer/blocks/countdown-bar/58dc5b1b-43d2-4209-b1f3-52aff31643ed",
+        "disabled": true,
+        "settings": {}
+      },
+      "5918445685253060206": {
+        "type": "shopify://apps/bundler/blocks/bundler-script-append/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
+        "disabled": true,
         "settings": {}
       }
     },
