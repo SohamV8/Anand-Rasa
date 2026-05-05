@@ -78,6 +78,7 @@
     </span>
     {%- render 'loading-spinner' -%}
     <div class="product__media media media--transparent">
+      <!-- SEO Fix: Keep native thumbnail rendering to preserve existing UI/UX behavior -->
       {{
         media.preview_image
         | image_url: width: 1946

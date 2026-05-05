@@ -1,6 +1,7 @@
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
 
 <article class="article-template">
+  {%- assign ar_article_faq_items = article.metafields.custom.faq_items.value -%}
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -69,6 +70,21 @@
           {{ block.shopify_attributes }}
         >
           {{ article.content }}
+          {%- if ar_article_faq_items != blank -%}
+            <section class="article-template__faq" aria-label="Frequently asked questions">
+              <h2>Frequently asked questions</h2>
+              {%- for faq_item in ar_article_faq_items -%}
+                {%- assign ar_question = faq_item.question | default: faq_item.title | strip -%}
+                {%- assign ar_answer = faq_item.answer | default: faq_item.content | strip -%}
+                {%- if ar_question != blank and ar_answer != blank -%}
+                  <details>
+                    <summary>{{ ar_question }}</summary>
+                    <div class="rte">{{ ar_answer }}</div>
+                  </details>
+                {%- endif -%}
+              {%- endfor -%}
+            </section>
+          {%- endif -%}
         </div>
 
       {%- when 'share' -%}
@@ -291,6 +307,33 @@
 <script type="application/ld+json">
   {{ article | structured_data }}
 </script>
+{%- if ar_article_faq_items != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign ar_faq_first = true -%}
+        {%- for faq_item in ar_article_faq_items -%}
+          {%- assign ar_question = faq_item.question | default: faq_item.title | strip -%}
+          {%- assign ar_answer = faq_item.answer | default: faq_item.content | strip_html | strip -%}
+          {%- if ar_question != blank and ar_answer != blank -%}
+            {%- unless ar_faq_first -%},{%- endunless -%}
+            {
+              "@type": "Question",
+              "name": {{ ar_question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ ar_answer | json }}
+              }
+            }
+            {%- assign ar_faq_first = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

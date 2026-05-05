@@ -491,9 +491,6 @@
     endif
   -%}
 
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
   {% render 'schema-product-supplemental', product: product %}
 
   {% if product.media.size > 0 %}

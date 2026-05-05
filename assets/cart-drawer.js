@@ -3,34 +3,84 @@ class CartDrawer extends HTMLElement {
     super();
 
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
-    this.setHeaderCartIconAccessibility();
+    this.overlay = this.querySelector('#CartDrawer-Overlay');
+    if (this.overlay) this.overlay.addEventListener('click', this.close.bind(this));
+    this.setCartTriggerAccessibility();
+    this.bindGlobalCartTriggers();
+    this.bindGlobalAddToCartSubmit();
   }
 
-  setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
+  setCartTriggerAccessibility() {
+    const cartTriggers = document.querySelectorAll('[data-open-cart-drawer], #cart-icon-bubble');
+    if (!cartTriggers.length) return;
 
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
+    cartTriggers.forEach((trigger) => {
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.addEventListener('keydown', (event) => {
+        if (event.code.toUpperCase() === 'SPACE') {
+          event.preventDefault();
+          this.open(trigger);
+        }
+      });
     });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
-        event.preventDefault();
-        this.open(cartLink);
-      }
+  }
+
+  bindGlobalCartTriggers() {
+    if (window.__arCartDrawerClickBound) return;
+    window.__arCartDrawerClickBound = true;
+    document.addEventListener('click', (event) => {
+      const cartTrigger = event.target.closest('[data-open-cart-drawer], #cart-icon-bubble');
+      if (!cartTrigger) return;
+      event.preventDefault();
+      this.open(cartTrigger);
+    });
+  }
+
+  bindGlobalAddToCartSubmit() {
+    if (window.__arCartDrawerSubmitBound) return;
+    window.__arCartDrawerSubmitBound = true;
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      if (event.defaultPrevented) return;
+      if (form.closest('product-form')) return;
+
+      const action = form.getAttribute('action') || '';
+      if (!/\/cart\/add(?:$|\?)/.test(action)) return;
+
+      event.preventDefault();
+      const formData = new FormData(form);
+      formData.append(
+        'sections',
+        this.getSectionsToRender()
+          .map((section) => section.id)
+          .join(',')
+      );
+      formData.append('sections_url', window.location.pathname);
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((state) => {
+          if (state.status) return;
+          this.renderContents(state);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     });
   }
 
   open(triggeredBy) {
+    if (this.classList.contains('active')) return;
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
-    // here the animation doesn't seem to always get triggered. A timeout seem to help
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       this.classList.add('animate', 'active');
     });
 
@@ -83,8 +133,7 @@ class CartDrawer extends HTMLElement {
       sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
     });
 
-    setTimeout(() => {
-      this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
+    requestAnimationFrame(() => {
       this.open();
     });
   }

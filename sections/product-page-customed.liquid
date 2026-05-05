@@ -786,9 +786,6 @@
 </script>
 
 {%- if product != blank -%}
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
   {% render 'schema-product-supplemental', product: product %}
 {%- endif -%}
 

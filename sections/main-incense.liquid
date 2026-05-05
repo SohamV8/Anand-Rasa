@@ -603,7 +603,6 @@
     <p class="aip-why__sub">{{ section.settings.why_sub | default: 'Crafted for purity, fragrance and spiritual practice' }}</p>
   </section>
 
-  {% render 'incense-spec-comparison-table-pro', section_ref: section %}
 
   {%- assign related_col = section.settings.related_collection -%}
   {%- if related_col != blank and related_col.products.size > 0 -%}

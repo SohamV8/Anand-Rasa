@@ -61,16 +61,25 @@
                   {%- if zc_asset != blank -%}
                     <img src="{{ zc_asset | asset_url }}" alt="{{ p.title }}" width="400" height="533" loading="lazy" sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px" class="ar-sc__img">
                   {%- elsif p.featured_image -%}
-                    <img
-                      src="{{ p.featured_image | image_url: width: 400 }}"
-                      srcset="{{ p.featured_image | image_url: width: 240 }} 240w, {{ p.featured_image | image_url: width: 320 }} 320w, {{ p.featured_image | image_url: width: 400 }} 400w"
-                      sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
-                      alt="{{ p.featured_image.alt | default: p.title }}"
-                      width="400"
-                      height="533"
-                      loading="lazy"
-                      class="ar-sc__img"
-                    >
+                    <!-- SEO Fix: Zodiac product image optimized with WebP and explicit dimensions -->
+                    <picture>
+                      <source
+                        srcset="{{ p.featured_image | image_url: width: 320, format: 'webp' }} 320w, {{ p.featured_image | image_url: width: 640, format: 'webp' }} 640w"
+                        sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
+                        type="image/webp"
+                      >
+                      <img
+                        src="{{ p.featured_image | image_url: width: 640 }}"
+                        srcset="{{ p.featured_image | image_url: width: 320 }} 320w, {{ p.featured_image | image_url: width: 640 }} 640w"
+                        sizes="(max-width: 640px) 44vw, (max-width: 1024px) 180px, 200px"
+                        alt="{{ p.featured_image.alt | default: p.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+                        width="640"
+                        height="{{ 640 | divided_by: p.featured_image.aspect_ratio | round }}"
+                        loading="lazy"
+                        decoding="async"
+                        class="ar-sc__img"
+                      >
+                    </picture>
                   {%- endif -%}
                 </div>
                 <h3 class="ar-sc__name">{{ p.title }}</h3>

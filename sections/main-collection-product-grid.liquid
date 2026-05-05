@@ -34,6 +34,20 @@
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
   {%- paginate collection.products by 24 -%}
+    <!-- SEO Fix: Pagination rel prev/next links for collection pages -->
+    {%- if paginate.previous -%}
+      <link rel="prev" href="{{ shop.url }}{{ paginate.previous.url }}">
+    {%- endif -%}
+    {%- if paginate.next -%}
+      <link rel="next" href="{{ shop.url }}{{ paginate.next.url }}">
+    {%- endif -%}
+    <!-- SEO Fix: Collection SEO header copy above product grid -->
+    <div class="collection-seo-header page-width">
+      <h1>{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="collection-description">{{ collection.description }}</div>
+      {% endif %}
+    </div>
     {{ 'component-facets.css' | asset_url | stylesheet_tag }}
     {{ 'section-collection-filters.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
@@ -146,6 +160,15 @@
                 {%- endif -%}
               </div>
             {%- endif -%}
+            <!-- SEO Fix: Expandable collection SEO content from metafield -->
+            {% if collection.metafields.custom.seo_content != blank %}
+              <div class="collection-seo-footer">
+                <details>
+                  <summary>About {{ collection.title }}</summary>
+                  <div>{{ collection.metafields.custom.seo_content }}</div>
+                </details>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>

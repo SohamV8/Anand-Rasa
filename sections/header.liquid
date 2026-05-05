@@ -29,9 +29,27 @@
   .ar-nav__logo-text { font-family:var(--font-heading-family); font-size:30px; font-weight:700; color:#1e2023; display:block; line-height:1; letter-spacing:-.01em; }
   .ar-nav__logo-sub { font-size:11px; font-weight:300; letter-spacing:.22em; color:#6b7280; display:block; margin-top:3px; text-transform:lowercase; }
   .ar-nav__icon { display:flex; align-items:center; color:#1e2023; text-decoration:none; transition:opacity .2s; position:relative; }
+  button.ar-nav__icon { background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit; }
   .ar-nav__icon:hover { opacity:.55; }
-  .ar-nav__icon svg { width:22px; height:22px; }
-  .ar-nav__cart-count { position:absolute; top:-6px; right:-6px; background:#1e2023; color:#fff; font-size:9px; width:15px; height:15px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .ar-nav__icon .svg-wrapper { width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; }
+  .ar-nav__icon .svg-wrapper svg { width:26px; height:26px; stroke-width:2 !important; }
+  .ar-nav__icon .cart-count-bubble {
+    position:absolute;
+    top:-6px;
+    right:-6px;
+    background:#1e2023;
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    min-width:17px;
+    height:17px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 4px;
+    line-height:1;
+  }
 
   .ar-nav__burger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
   .ar-nav__burger span { display:block; width:22px; height:1.5px; background:#1e2023; transition:all .3s; }
@@ -40,6 +58,7 @@
   .ar-nav__drawer.is-open { display:flex; }
   .ar-nav__drawer-close { align-self:flex-end; background:none; border:none; font-size:30px; cursor:pointer; color:#1e2023; line-height:1; }
   .ar-nav__drawer-link { font-family:var(--font-body-family); font-size:20px; font-weight:400; color:#1e2023; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.08); padding-bottom:16px; }
+  button.ar-nav__drawer-link { background: transparent; border: 0; border-bottom:1px solid rgba(30,32,35,.08); text-align: left; width: 100%; cursor: pointer; padding: 0 0 16px; }
   .ar-nav__drawer-toggle { font-family:var(--font-body-family); font-size:20px; font-weight:400; color:#1e2023; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.08); padding-bottom:16px; background:none; border:none; cursor:pointer; text-align:left; width:100%; display:flex; align-items:center; justify-content:space-between; }
   .ar-nav__drawer-toggle svg { transition:transform .3s; }
   .ar-nav__drawer-toggle.is-open svg { transform:rotate(180deg); }
@@ -281,10 +300,9 @@
 
       <a href="{{ section.settings.nav_r2_url | default: ar_header_about_url }}" class="ar-nav__link">{{ section.settings.nav_r2 | default: 'About' }}</a>
 
-      <a href="{{ routes.cart_url }}" class="ar-nav__icon" aria-label="Cart">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.847-7.148a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.273"/></svg>
-        {%- if cart.item_count > 0 -%}<span class="ar-nav__cart-count">{{ cart.item_count }}</span>{%- endif -%}
-      </a>
+      <button type="button" class="ar-nav__icon" id="cart-icon-bubble" data-open-cart-drawer aria-label="Cart">
+        {% render 'cart-icon-bubble' %}
+      </button>
 
       <a href="{{ routes.account_url }}" class="ar-nav__icon" aria-label="Account">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>
@@ -368,7 +386,7 @@
     {%- endif -%}
   </div>
   <a href="{{ section.settings.nav_r2_url | default: ar_header_about_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>
-  <a href="{{ routes.cart_url }}" class="ar-nav__drawer-link">Cart ({{ cart.item_count }})</a>
+  <button type="button" class="ar-nav__drawer-link" data-open-cart-drawer>Cart ({{ cart.item_count }})</button>
   <a href="{{ routes.account_url }}" class="ar-nav__drawer-link">Account</a>
 </div>
 
@@ -397,6 +415,16 @@
     if (burger) burger.addEventListener('click', openDrawer);
     if (close) close.addEventListener('click', closeDrawer);
     if (drawer) drawer.addEventListener('click', function (e) { if (e.target === drawer) closeDrawer(); });
+    sectionRoot.querySelectorAll('.ar-nav__drawer-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeDrawer();
+      });
+    });
+    sectionRoot.querySelectorAll('[data-open-cart-drawer]').forEach(function (trigger) {
+      trigger.addEventListener('click', function () {
+        closeDrawer();
+      });
+    });
     window.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
     var drawerToggle = sectionRoot.querySelector('.js-ar-drawer-toggle');

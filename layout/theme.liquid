@@ -11,9 +11,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
-    <link rel="canonical" href="{{ canonical_url }}">
+    <!-- SEO Fix: Canonical normalization and pagination links -->
+    {%- if request.page_type == 'product' and product != blank -%}
+      <link rel="canonical" href="{{ shop.url }}/products/{{ product.handle }}">
+    {%- elsif request.page_type == 'collection' and collection != blank -%}
+      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
+      {%- assign ar_collection_seen = current_page | times: 24 -%}
+      {%- if current_page > 1 -%}
+        <link rel="prev" href="{{ shop.url }}{{ collection.url }}{% if current_page > 2 %}?page={{ current_page | minus: 1 }}{% endif %}">
+      {%- endif -%}
+      {%- if collection.products_count > ar_collection_seen -%}
+        <link rel="next" href="{{ shop.url }}{{ collection.url }}?page={{ current_page | plus: 1 }}">
+      {%- endif -%}
+    {%- elsif request.page_type == 'blog' and blog != blank -%}
+      <link rel="canonical" href="{{ shop.url }}{{ blog.url }}">
+      {%- assign ar_blog_seen = current_page | times: 12 -%}
+      {%- if current_page > 1 -%}
+        <link rel="prev" href="{{ shop.url }}{{ blog.url }}{% if current_page > 2 %}?page={{ current_page | minus: 1 }}{% endif %}">
+      {%- endif -%}
+      {%- if blog.articles_count > ar_blog_seen -%}
+        <link rel="next" href="{{ shop.url }}{{ blog.url }}?page={{ current_page | plus: 1 }}">
+      {%- endif -%}
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
+    <!-- SEO Fix: Security and robots meta hardening -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <!-- SEO Fix: DNS prefetch for critical origins -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdn.shopify.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- SEO Fix: Preload primary font -->
+    <link rel="preload" href="{{ settings.type_body_font | font_url }}" as="font" type="font/woff2" crossorigin>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
@@ -25,40 +57,112 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     <link rel="icon" type="image/png" href="{{ ar_favicon_url }}">
     <link rel="apple-touch-icon" href="{{ ar_favicon_url }}">
+    <!-- SEO Fix: Hreflang for Markets -->
+    {% if localization.available_countries.size > 1 %}
+      <link rel="alternate" hreflang="en-IN" href="{{ shop.url }}{{ request.path }}">
+      <link rel="alternate" hreflang="en-AE" href="{{ shop.url }}/en-ae{{ request.path }}">
+      <link rel="alternate" hreflang="en-GB" href="{{ shop.url }}/en-gb{{ request.path }}">
+      <link rel="alternate" hreflang="x-default" href="{{ shop.url }}{{ request.path }}">
+    {% endif %}
 
-    <title>
-      {%- if request.page_type == 'product' and product != blank and product.metafields.custom.seo_title.value != blank -%}
-        {{- product.metafields.custom.seo_title.value | strip | escape -}}
-        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- else -%}
-        {{- page_title -}}
-        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-      {%- endif -%}
-    </title>
+    {%- liquid
+      assign ar_seo_title = blank
+      assign ar_seo_description = blank
 
-    {%- if request.page_type == 'product' and product != blank and product.metafields.custom.seo_description.value != blank -%}
-      <meta name="description" content="{{ product.metafields.custom.seo_description.value | strip_html | strip | escape }}">
-    {%- elsif page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
-    {%- endif -%}
+      if request.page_type == 'product' and product != blank
+        if product.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = product.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = product.title | append: ' | ' | append: product.type | append: ' | Anandrasa'
+        endif
+        if product.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = product.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = product.title | append: ' ' | append: product.type | append: ' by Anandrasa. Shop handcrafted attar and perfume in India with pure ingredients and long-lasting fragrance delivery.'
+        endif
+      elsif request.page_type == 'collection' and collection != blank
+        if collection.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = collection.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = 'Buy ' | append: collection.title | append: ' Online India | Anandrasa'
+        endif
+        if collection.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = collection.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = 'Shop ' | append: collection.title | append: ' online in India at Anandrasa. Explore handcrafted attars, perfumes, and ritual fragrances with authentic quality and fast shipping.'
+        endif
+      elsif request.page_type == 'article' and article != blank
+        if article.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = article.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = article.title | append: ' | Anandrasa Fragrance Journal'
+        endif
+        if article.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = article.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = article.title | append: ' from the Anandrasa Fragrance Journal. Discover attar rituals, perfume notes, and practical fragrance tips for everyday mindful scenting.'
+        endif
+      elsif request.page_type == 'blog' and blog != blank
+        if blog.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = blog.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = blog.title | append: ' | Anandrasa Fragrance Journal'
+        endif
+        if blog.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = blog.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = 'Read the Anandrasa Fragrance Journal for expert stories on attar, perfume layering, and scent rituals. Learn how to choose fragrances that match your mood and style.'
+        endif
+      elsif request.page_type == 'page' and page != blank
+        if page.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = page.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = page.title | append: ' | Anandrasa'
+        endif
+        if page.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = page.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = page.title | append: ' at Anandrasa. Explore trusted details about our handcrafted attars, perfumes, shipping, support, and fragrance guidance for customers in India.'
+        endif
+      elsif request.page_type == 'index'
+        if shop.metafields.custom.seo_title.value != blank
+          assign ar_seo_title = shop.metafields.custom.seo_title.value | strip
+        else
+          assign ar_seo_title = 'Anandrasa | Handcrafted Attar & Perfume from India'
+        endif
+        if shop.metafields.custom.seo_description.value != blank
+          assign ar_seo_description = shop.metafields.custom.seo_description.value | strip_html | strip
+        else
+          assign ar_seo_description = 'Discover handcrafted attar and perfume from India at Anandrasa. Shop pure long-lasting fragrances inspired by tradition, crafted for modern everyday luxury.'
+        endif
+      elsif request.page_type == '404'
+        assign ar_seo_title = 'Page Not Found | Anandrasa'
+        assign ar_seo_description = 'The page you are looking for is unavailable. Explore handcrafted attar and perfume collections from Anandrasa and continue discovering authentic Indian fragrances.'
+      else
+        assign ar_seo_title = page_title
+        if page_description != blank
+          assign ar_seo_description = page_description
+        else
+          assign ar_seo_description = shop.description | default: shop.name
+        endif
+      endif
 
-    {% render 'meta-tags' %}
+      if current_page != 1
+        assign ar_seo_title = ar_seo_title | append: ' | Page ' | append: current_page
+      endif
+      assign ar_seo_description = ar_seo_description | strip | strip_html | strip_newlines | truncate: 155
+    -%}
+    <title>{{ ar_seo_title | escape }}</title>
+    <meta name="description" content="{{ ar_seo_description | escape }}">
+
+    {% render 'meta-tags', seo_title: ar_seo_title, seo_description: ar_seo_description %}
     {% render 'schema-global' %}
     {% render 'schema-breadcrumbs' %}
-
-    <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
-
-    {%- if settings.animations_reveal_on_scroll -%}
-      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- if request.page_type == 'product' and product != blank -%}
+      {% render 'schema-product-core', product: product %}
     {%- endif -%}
+
+    {%- comment -%} <!-- SEO Fix: Deferred non-critical scripts moved before closing body --> {%- endcomment -%}
 
     {{ content_for_header }}
 
@@ -239,17 +343,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
-    {%- endif -%}
+    {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+    {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+    {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+    {{ 'component-price.css' | asset_url | stylesheet_tag }}
+    {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
-      <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+      {%- assign ar_has_localization_form_script = true -%}
     {%- endif -%}
 
     {%- if settings.predictive_search_enabled -%}
@@ -276,9 +378,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHX4KC75"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-    {%- if settings.cart_type == 'drawer' -%}
-      {%- render 'cart-drawer' -%}
-    {%- endif -%}
+    {%- render 'cart-drawer' -%}
 
     {% sections 'header-group' %}
 
@@ -312,6 +412,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {%- if ar_product_type contains 'attar' or ar_product_title contains 'attar' -%}
           {% render 'faq.attars', product: product %}
         {%- endif -%}
+        <!-- SEO Fix: Product scent profile block -->
+        {% render 'scent-profile', product: product %}
         {% render 'customer-care-product', product: product %}
       {%- endif -%}
     </main>
@@ -372,8 +474,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if settings.cart_type == 'drawer' -%}
-      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    <!-- SEO Fix: Deferred theme scripts loaded near body end -->
+    <script src="{{ 'constants.js' | asset_url }}" defer></script>
+    <script src="{{ 'pubsub.js' | asset_url }}" defer></script>
+    <script src="{{ 'global.js' | asset_url }}" defer></script>
+    <script src="{{ 'details-disclosure.js' | asset_url }}" defer></script>
+    <script src="{{ 'details-modal.js' | asset_url }}" defer></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer></script>
+    {%- if settings.animations_reveal_on_scroll -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer></script>
+    {%- endif -%}
+    {%- if ar_has_localization_form_script -%}
+      <script src="{{ 'localization-form.js' | asset_url }}" defer></script>
     {%- endif -%}
 
     {% render 'floating-chat' %}

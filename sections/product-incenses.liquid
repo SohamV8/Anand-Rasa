@@ -510,7 +510,6 @@
   </div>
 
   {% render 'incense-making-process', scope_id: section.id %}
-  {% render 'incense-spec-comparison-table-pro', section_ref: section %}
 
   {%- comment -%} ══ 2. USP STRIP ══ {%- endcomment -%}
   {%- if section.blocks.size > 0 -%}
@@ -859,9 +858,6 @@
 </script>
 
 {%- if product != blank -%}
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
   {% render 'schema-product-supplemental', product: product %}
 {%- endif -%}
 

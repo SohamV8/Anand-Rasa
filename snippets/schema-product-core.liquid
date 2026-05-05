@@ -1,0 +1,88 @@
+{%- if product != blank -%}
+  <!-- SEO Fix: Product JSON-LD with offers, ratings, and scent metafields -->
+  {%- liquid
+    assign ar_variant = product.selected_or_first_available_variant | default: product.variants.first
+    assign ar_price = ar_variant.price | money_without_currency | replace: ',', ''
+    assign ar_availability = 'https://schema.org/OutOfStock'
+    if ar_variant.available
+      assign ar_availability = 'https://schema.org/InStock'
+    endif
+
+    assign ar_description = product.description | strip_html | strip
+    if ar_description == blank
+      assign ar_description = product.title | append: ' by Anandrasa.'
+    endif
+    assign ar_top_notes = product.metafields.custom.top_notes.value
+    assign ar_heart_notes = product.metafields.custom.heart_notes.value
+    assign ar_base_notes = product.metafields.custom.base_notes.value
+    assign ar_longevity = product.metafields.custom.longevity.value
+    assign ar_strength = product.metafields.custom.strength.value
+    assign ar_origin = product.metafields.custom.ingredient_origin.value
+    assign ar_occasions = product.metafields.custom.occasion_tags.value
+
+    assign ar_rating_value = blank
+    assign ar_rating_count = blank
+    assign ar_rating_best = 5
+    if product.metafields.reviews.rating.value != blank
+      if product.metafields.reviews.rating.value.rating != blank
+        assign ar_rating_value = product.metafields.reviews.rating.value.rating
+      else
+        assign ar_rating_value = product.metafields.reviews.rating.value
+      endif
+      if product.metafields.reviews.rating.value.scale_max != blank
+        assign ar_rating_best = product.metafields.reviews.rating.value.scale_max
+      endif
+    endif
+
+    if product.metafields.reviews.rating_count.value != blank
+      assign ar_rating_count = product.metafields.reviews.rating_count.value
+    elsif product.metafields.reviews.rating_count != blank
+      assign ar_rating_count = product.metafields.reviews.rating_count
+    endif
+  -%}
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": {{ request.origin | append: product.url | append: '#product' | json }},
+      "name": {{ product.title | strip | json }},
+      "description": {{ ar_description | json }},
+      "image": [
+        {%- for image in product.images -%}
+          {{ image | image_url: width: 2000 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Anandrasa"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": {{ request.origin | append: product.url | json }},
+        "priceCurrency": "INR",
+        "price": {{ ar_price | json }},
+        "availability": {{ ar_availability | json }},
+        "itemCondition": "https://schema.org/NewCondition"
+      },
+      "additionalProperty": [
+        {%- assign ar_prop_first = true -%}
+        {%- if ar_top_notes != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Top Notes", "value": {{ ar_top_notes | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_heart_notes != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Heart Notes", "value": {{ ar_heart_notes | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_base_notes != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Base Notes", "value": {{ ar_base_notes | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_longevity != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Longevity", "value": {{ ar_longevity | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_strength != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Strength", "value": {{ ar_strength | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_origin != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Ingredient Origin", "value": {{ ar_origin | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+        {%- if ar_occasions != blank -%}{%- unless ar_prop_first -%},{%- endunless -%}{ "@type":"PropertyValue", "name":"Occasion Tags", "value": {{ ar_occasions | join: ', ' | json }} }{%- assign ar_prop_first = false -%}{%- endif -%}
+      ]{%- if ar_rating_value != blank and ar_rating_count != blank and ar_rating_count > 0 -%},
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ ar_rating_value | json }},
+        "reviewCount": {{ ar_rating_count | json }},
+        "bestRating": {{ ar_rating_best | json }},
+        "worstRating": "1"
+      }
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}

@@ -1,33 +1,8 @@
-{%- comment -%}
-  Sitewide JSON-LD: Organization + WebSite (+ SearchAction).
-  Render once from layout/theme.liquid <head>.
-{%- endcomment -%}
 {%- liquid
-  assign ar_org_id = shop.url | append: '#organization'
-  assign ar_web_id = shop.url | append: '#website'
-  assign ar_search_target = shop.url | append: routes.search_url | append: '?q={search_term_string}'
-  assign ar_org_desc = shop.description | default: shop.name | strip_html
-
-  assign ar_sa_raw = ''
-  if settings.social_instagram_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_instagram_link | append: '||AR||'
+  assign ar_logo_url = blank
+  if settings.logo != blank
+    assign ar_logo_url = settings.logo | image_url: width: 600 | prepend: 'https:'
   endif
-  if settings.social_facebook_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_facebook_link | append: '||AR||'
-  endif
-  if settings.social_youtube_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_youtube_link | append: '||AR||'
-  endif
-  if settings.social_twitter_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_twitter_link | append: '||AR||'
-  endif
-  if settings.social_pinterest_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_pinterest_link | append: '||AR||'
-  endif
-  if settings.social_tiktok_link != blank
-    assign ar_sa_raw = ar_sa_raw | append: settings.social_tiktok_link | append: '||AR||'
-  endif
-  assign ar_sa_parts = ar_sa_raw | split: '||AR||'
 -%}
 <script type="application/ld+json">
   {
@@ -35,52 +10,31 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": {{ ar_org_id | json }},
-        "name": {{ shop.name | json }},
-        "url": {{ shop.url | json }}
-        {%- if settings.logo != blank -%}
-        ,
-        "logo": {
-          "@type": "ImageObject",
-          "url": {{ settings.logo | image_url: width: 512 | prepend: 'https:' | json }}
-        }
+        "@id": "https://www.anandrasa.com#organization",
+        "name": "Anandrasa",
+        "url": "https://www.anandrasa.com",
+        {%- if ar_logo_url != blank -%}
+        "logo": {{ ar_logo_url | json }},
         {%- endif -%}
-        {%- if ar_org_desc != blank -%}
-        ,
-        "description": {{ ar_org_desc | json }}
-        {%- endif -%}
-        {%- if ar_sa_raw != blank -%}
-        ,
         "sameAs": [
-          {%- assign ar_sa_first = true -%}
-          {%- for ar_sa_u in ar_sa_parts -%}
-            {%- if ar_sa_u != blank -%}
-              {%- unless ar_sa_first -%},{%- endunless -%}
-              {{ ar_sa_u | json }}
-              {%- assign ar_sa_first = false -%}
-            {%- endif -%}
-          {%- endfor -%}
-        ]
-        {%- endif -%}
-        ,
-        "knowsAbout": [
-          {{ "Traditional attars and concentrated fragrance oils" | json }},
-          {{ "Natural incense sticks and ritual fragrance" | json }},
-          {{ "Botanical ingredients and mindful everyday scenting" | json }}
-        ]
+          "https://www.instagram.com/your-handle",
+          "https://www.facebook.com/your-page",
+          "https://www.youtube.com/your-channel"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "Hindi"]
+        }
       },
       {
         "@type": "WebSite",
-        "@id": {{ ar_web_id | json }},
-        "url": {{ shop.url | json }},
-        "name": {{ shop.name | json }},
-        "publisher": { "@id": {{ ar_org_id | json }} },
+        "@id": "https://www.anandrasa.com#website",
+        "url": "https://www.anandrasa.com",
+        "name": "Anandrasa",
         "potentialAction": {
           "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": {{ ar_search_target | json }}
-          },
+          "target": "https://www.anandrasa.com/search?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
       }

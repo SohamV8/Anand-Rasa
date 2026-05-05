@@ -51,6 +51,7 @@
   aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
   data-desktop-layout="{{ section.settings.gallery_layout }}"
 >
+  <!-- SEO Fix: Product gallery thumbnail alts normalized and dimension-safe images -->
   <div id="GalleryStatus-{{ section.id }}" class="visually-hidden" role="status"></div>
   <slider-component id="GalleryViewer-{{ section.id }}" class="slider-mobile-gutter">
     <a class="skip-to-content-link button visually-hidden quick-add-hidden" href="#ProductInfo-{{ section.id }}">
@@ -245,7 +246,7 @@
                   sizes: sizes,
                   widths: '54, 74, 104, 162, 208, 324, 416',
                   id: thumbnail_id,
-                  alt: featured_media.alt
+                  alt: featured_media.alt | default: product.title | append: ' - handcrafted attar - Anandrasa'
                 | escape
               }}
             </button>
@@ -307,7 +308,7 @@
                     sizes: sizes,
                     widths: '54, 74, 104, 162, 208, 324, 416',
                     id: thumbnail_id,
-                    alt: media.alt
+                    alt: media.alt | default: product.title | append: ' - handcrafted attar - Anandrasa'
                   | escape
                 }}
               </button>

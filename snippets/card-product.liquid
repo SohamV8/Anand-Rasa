@@ -93,16 +93,26 @@
           aria-label="{{ card_product.title | escape }}"
         >
           {%- if first_image -%}
-            <img
-              class="ar-card__img"
-              src="{{ first_image | image_url: width: 600 }}"
-              alt="{{ first_image.alt | default: card_product.title | escape }}"
-              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-              {% if card_index == 0 %}fetchpriority="high"{% endif %}
-              width="{{ first_image.width }}"
-              height="{{ first_image.height }}"
-              decoding="async"
-            >
+            <!-- SEO Fix: Product card responsive image with WebP source and explicit dimensions -->
+            <picture>
+              <source
+                srcset="{{ first_image | image_url: width: 400, format: 'webp' }} 400w, {{ first_image | image_url: width: 800, format: 'webp' }} 800w"
+                sizes="(min-width: 990px) 25vw, 50vw"
+                type="image/webp"
+              >
+              <img
+                class="ar-card__img"
+                src="{{ first_image | image_url: width: 800 }}"
+                srcset="{{ first_image | image_url: width: 400 }} 400w, {{ first_image | image_url: width: 800 }} 800w"
+                sizes="(min-width: 990px) 25vw, 50vw"
+                alt="{{ first_image.alt | default: card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+                loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
+                {% if card_index == 0 %}fetchpriority="high"{% endif %}
+                width="800"
+                height="{{ 800 | divided_by: first_image.aspect_ratio | round }}"
+                decoding="async"
+              >
+            </picture>
           {%- else -%}
             <div class="ar-card__img-ph"></div>
           {%- endif -%}

@@ -42,7 +42,26 @@
                 {%- if bestseller_showcard != blank -%}
                   <img src="{{ bestseller_showcard | asset_url }}" alt="{{ p.title | escape }}" width="600" height="800" loading="lazy" class="ar-best__img">
                 {%- elsif p.featured_image -%}
-                  <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.featured_image.alt | default: p.title }}" width="600" height="800" loading="lazy" class="ar-best__img">
+                  <!-- SEO Fix: Homepage featured product image optimized with WebP and explicit dimensions -->
+                  <picture>
+                    <source
+                      srcset="{{ p.featured_image | image_url: width: 400, format: 'webp' }} 400w, {{ p.featured_image | image_url: width: 800, format: 'webp' }} 800w"
+                      sizes="(min-width: 1024px) 20vw, 45vw"
+                      type="image/webp"
+                    >
+                    <img
+                      src="{{ p.featured_image | image_url: width: 800 }}"
+                      srcset="{{ p.featured_image | image_url: width: 400 }} 400w, {{ p.featured_image | image_url: width: 800 }} 800w"
+                      sizes="(min-width: 1024px) 20vw, 45vw"
+                      alt="{{ p.featured_image.alt | default: p.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+                      width="800"
+                      height="{{ 800 | divided_by: p.featured_image.aspect_ratio | round }}"
+                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                      {% if forloop.first %}fetchpriority="high"{% endif %}
+                      decoding="async"
+                      class="ar-best__img"
+                    >
+                  </picture>
                 {%- endif -%}
               </div>
               <h3 class="ar-best__name">{{ p.title }}</h3>

@@ -5,6 +5,12 @@
   assign ar_root_item = request.origin | append: routes.root_url
 -%}
 {%- if request.page_type == 'product' and product != blank -%}
+  {%- liquid
+    assign ar_product_collection = collection
+    if ar_product_collection == blank
+      assign ar_product_collection = product.collections.first
+    endif
+  -%}
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -13,22 +19,22 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": {{ shop.name | json }},
+          "name": "Homepage",
           "item": {{ ar_root_item | json }}
         }
-        {%- if product.collections.first -%}
+        {%- if ar_product_collection -%}
         ,
         {
           "@type": "ListItem",
           "position": 2,
-          "name": {{ product.collections.first.title | json }},
-          "item": {{ request.origin | append: product.collections.first.url | json }}
+          "name": {{ ar_product_collection.title | json }},
+          "item": {{ request.origin | append: ar_product_collection.url | json }}
         }
         {%- endif -%}
         ,
         {
           "@type": "ListItem",
-          "position": {% if product.collections.first %}3{% else %}2{% endif %},
+          "position": {% if ar_product_collection %}3{% else %}2{% endif %},
           "name": {{ product.title | json }},
           "item": {{ request.origin | append: product.url | json }}
         }
@@ -44,7 +50,7 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": {{ shop.name | json }},
+          "name": "Homepage",
           "item": {{ ar_root_item | json }}
         },
         {
@@ -65,7 +71,7 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": {{ shop.name | json }},
+          "name": "Homepage",
           "item": {{ ar_root_item | json }}
         },
         {
@@ -86,7 +92,7 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": {{ shop.name | json }},
+          "name": "Homepage",
           "item": {{ ar_root_item | json }}
         },
         {

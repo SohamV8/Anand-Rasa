@@ -1,0 +1,44 @@
+{% comment %}<!-- SEO Fix: Structured scent profile from product metafields -->{% endcomment %}
+{%- if product != blank -%}
+  {%- liquid
+    assign ar_top_notes = product.metafields.custom.top_notes.value
+    assign ar_heart_notes = product.metafields.custom.heart_notes.value
+    assign ar_base_notes = product.metafields.custom.base_notes.value
+    assign ar_longevity = product.metafields.custom.longevity.value
+    assign ar_strength = product.metafields.custom.strength.value
+    assign ar_occasions = product.metafields.custom.occasion_tags.value
+    assign ar_origin = product.metafields.custom.ingredient_origin.value
+  -%}
+  {%- if ar_top_notes != blank or ar_heart_notes != blank or ar_base_notes != blank or ar_longevity != blank or ar_strength != blank or ar_occasions != blank or ar_origin != blank -%}
+    <section class="scent-profile" aria-label="Scent profile">
+      <h2 class="scent-profile__title">Scent profile</h2>
+      <div class="scent-profile__grid">
+        {%- if ar_top_notes != blank -%}<p><strong>Top Notes:</strong> {{ ar_top_notes }}</p>{%- endif -%}
+        {%- if ar_heart_notes != blank -%}<p><strong>Heart Notes:</strong> {{ ar_heart_notes }}</p>{%- endif -%}
+        {%- if ar_base_notes != blank -%}<p><strong>Base Notes:</strong> {{ ar_base_notes }}</p>{%- endif -%}
+        {%- if ar_longevity != blank or ar_strength != blank -%}
+          <p><strong>Longevity:</strong> {{ ar_longevity | default: '—' }} | <strong>Strength:</strong> {{ ar_strength | default: '—' }}</p>
+        {%- endif -%}
+        {%- if ar_occasions != blank -%}
+          <div class="scent-profile__badges-wrap">
+            <strong>Best for:</strong>
+            <div class="scent-profile__badges">
+              {%- for occasion in ar_occasions -%}
+                <span class="scent-profile__badge">{{ occasion }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+        {%- if ar_origin != blank -%}<p><strong>Source:</strong> {{ ar_origin }}</p>{%- endif -%}
+      </div>
+    </section>
+    <style>
+      .scent-profile { margin: 2rem auto; padding: 1rem 1.25rem; border: 1px solid rgba(0,0,0,.1); border-radius: 8px; max-width: 1100px; }
+      .scent-profile__title { margin: 0 0 .8rem; font-size: 1.4rem; }
+      .scent-profile__grid p { margin: .5rem 0; }
+      .scent-profile__badges-wrap { margin-top: .5rem; }
+      .scent-profile__badges { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .35rem; }
+      .scent-profile__badge { background: #f5f5f5; padding: .25rem .6rem; border-radius: 999px; font-size: .9rem; }
+    </style>
+  {%- endif -%}
+{%- endif -%}
