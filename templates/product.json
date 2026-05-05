@@ -1,29 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "1777535904a27e40a3": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_5ea4c42_MyKYY6": {
-          "type": "ai_gen_block_5ea4c42",
+        "ai_gen_block_41b9c0b_xLHWc4": {
+          "type": "ai_gen_block_41b9c0b",
           "settings": {
-            "announcement_1": "15,000+ Happy Customers",
-            "announcement_2": "24 hoursdispatch",
-            "announcement_3": "PureFragrance",
-            "announcement_4": "",
-            "announcement_5": "",
+            "announcement_1": "Get 10% off on your first order | Use Code: AnandRas10%",
+            "announcement_2": "Free Shipping On All Orders",
+            "announcement_3": "Buy 3 Get 1 Free",
+            "separator": "|",
+            "item_spacing": 40,
+            "scroll_speed": 30,
             "background_color": "#121212",
             "text_color": "#ffffff",
-            "font_family": "assistant_n4",
+            "bar_height": 12,
             "font_size": 14,
-            "vertical_padding": 12,
-            "item_spacing": 40,
-            "scroll_speed": 30
+            "font_weight": "500",
+            "desktop_width_percent": 100
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_5ea4c42_MyKYY6"
+        "ai_gen_block_41b9c0b_xLHWc4"
       ],
       "settings": {}
     },
@@ -194,7 +203,6 @@
       "blocks": {
         "ai_gen_block_0f5d8dd_N4q6yE": {
           "type": "ai_gen_block_0f5d8dd",
-          "disabled": false,
           "settings": {
             "spec_table_title": "Specifications",
             "spec_1_label": "Country of Origin",
