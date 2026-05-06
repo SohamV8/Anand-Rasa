@@ -1,0 +1,80 @@
+{%- comment -%}
+  Bestseller image lookup
+  -----------------------
+  Resolves a product to its corresponding showcase image inside
+  /assets/Bestseller/ based on the product's handle/title. Echoes the
+  asset filename (e.g. "Bestseller/Kamalini.webp") or empty string if
+  no match is found.
+
+  Usage:
+    {%- capture bestseller_showcard -%}
+      {%- render 'bestseller-image-lookup', bs_product: p -%}
+    {%- endcapture -%}
+    {%- assign bestseller_showcard = bestseller_showcard | strip -%}
+
+  Required parameter:
+    bs_product — a Shopify product object
+{%- endcomment -%}
+{%- liquid
+  assign title_key = bs_product.title | handleize
+  assign handle_key = bs_product.handle | default: title_key
+  assign img = ''
+
+  comment
+  Order matters: place multi-word/compound matches before single-word
+  matches so that, for example, "oud-e-azam" doesn't fall through to
+  the generic "oud" rule.
+  endcomment
+
+  if title_key contains 'kesariya-ishq' or handle_key contains 'kesariya-ishq'
+    assign img = 'Bestseller/Kesariya_Ishq.webp'
+  elsif title_key contains 'chandan-nandan' or handle_key contains 'chandan-nandan'
+    assign img = 'Bestseller/Chandan_Nandan.webp'
+  elsif title_key contains 'dev-priya' or handle_key contains 'dev-priya'
+    assign img = 'Bestseller/Dev_Priya.webp'
+  elsif title_key contains 'oud-e-azam' or handle_key contains 'oud-e-azam'
+    assign img = 'Bestseller/Oud-e-Azam.webp'
+  elsif title_key contains 'bela-amrit' or handle_key contains 'bela-amrit' or title_key contains 'amrit-bela' or handle_key contains 'amrit-bela'
+    assign img = 'Bestseller/Bela_Amrit.webp'
+  elsif title_key contains 'rajnigandha' or handle_key contains 'rajnigandha' or title_key contains 'rajni-gandha' or handle_key contains 'rajni-gandha'
+    assign img = 'Bestseller/RajniGandha.webp'
+  elsif title_key contains 'pushprasa' or handle_key contains 'pushprasa' or title_key contains 'pushp-rasa' or handle_key contains 'pushp-rasa'
+    assign img = 'Bestseller/pushprasa.webp'
+  elsif title_key contains 'whiteoudh' or handle_key contains 'whiteoudh' or title_key contains 'white-oudh' or handle_key contains 'white-oudh' or title_key contains 'white-oud' or handle_key contains 'white-oud'
+    assign img = 'Bestseller/whiteoudh.webp'
+  elsif title_key contains 'shamama' or handle_key contains 'shamama'
+    assign img = 'Bestseller/shamama.webp'
+  elsif title_key contains 'gulbadan' or handle_key contains 'gulbadan'
+    assign img = 'Bestseller/Gulbadan.webp'
+  elsif title_key contains 'kamalini' or handle_key contains 'kamalini'
+    assign img = 'Bestseller/Kamalini.webp'
+  elsif title_key contains 'kasturi' or handle_key contains 'kasturi'
+    assign img = 'Bestseller/Kasturi.webp'
+  elsif title_key contains 'velora' or handle_key contains 'velora'
+    assign img = 'Bestseller/Velora.webp'
+  elsif title_key contains 'mohini' or handle_key contains 'mohini'
+    assign img = 'Bestseller/mohini.webp'
+  elsif title_key contains 'parijat' or handle_key contains 'parijat'
+    assign img = 'Bestseller/parijat.webp'
+  elsif title_key contains 'motia' or handle_key contains 'motia'
+    assign img = 'Bestseller/motia.webp'
+  elsif title_key contains 'kewra' or handle_key contains 'kewra'
+    assign img = 'Bestseller/kewra.webp'
+  elsif title_key contains 'khus' or handle_key contains 'khus'
+    assign img = 'Bestseller/Khus.webp'
+  elsif title_key contains 'loban' or handle_key contains 'loban'
+    assign img = 'Bestseller/loban.webp'
+  elsif title_key contains 'genda' or handle_key contains 'genda'
+    assign img = 'Bestseller/Genda.webp'
+  elsif title_key contains 'jasmine' or handle_key contains 'jasmine'
+    assign img = 'Bestseller/Jasmine.webp'
+  elsif title_key contains 'champa' or handle_key contains 'champa'
+    assign img = 'Bestseller/champa.webp'
+  elsif title_key contains 'heena' or handle_key contains 'heena' or title_key contains 'hina' or handle_key contains 'hina'
+    assign img = 'Bestseller/heena.webp'
+  elsif title_key contains 'oud' or handle_key contains 'oud'
+    assign img = 'Bestseller/Oud-e-Azam.webp'
+  endif
+
+  echo img
+-%}

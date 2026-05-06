@@ -38,7 +38,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- SEO Fix: Security and robots meta hardening -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    {%- liquid
+      assign ar_should_noindex = false
+      if current_tags != blank
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == 'search'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == '404'
+        assign ar_should_noindex = true
+      endif
+    -%}
+    {%- if ar_should_noindex -%}
+      <meta name="robots" content="noindex, follow">
+    {%- else -%}
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    {%- endif -%}
     <!-- SEO Fix: DNS prefetch for critical origins -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdn.shopify.com">
@@ -368,6 +384,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
+
+    {%- comment -%}
+      Foundation scripts — MUST load before any section/snippet scripts.
+      Deferred scripts execute in document order, so by placing them in <head>
+      they're guaranteed to run before product-info.js, media-gallery.js,
+      cart.js, cart-drawer.js, product-modal.js etc. that live in body sections.
+      Order matters: constants → pubsub → global → details/* → search-form → predictive-search.
+    {%- endcomment -%}
+    <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
@@ -470,23 +503,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       };
     </script>
 
-    {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-
+    {%- comment -%}
+      cart-drawer.js depends on CartItems (defined in cart.js, loaded by the
+      cart-drawer snippet earlier in the body) — keep it here so it executes
+      after cart.js but after the head globals as well (defer = document order).
+    {%- endcomment -%}
     <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-    <!-- SEO Fix: Deferred theme scripts loaded near body end -->
-    <script src="{{ 'constants.js' | asset_url }}" defer></script>
-    <script src="{{ 'pubsub.js' | asset_url }}" defer></script>
-    <script src="{{ 'global.js' | asset_url }}" defer></script>
-    <script src="{{ 'details-disclosure.js' | asset_url }}" defer></script>
-    <script src="{{ 'details-modal.js' | asset_url }}" defer></script>
-    <script src="{{ 'search-form.js' | asset_url }}" defer></script>
     {%- if settings.animations_reveal_on_scroll -%}
-      <script src="{{ 'animations.js' | asset_url }}" defer></script>
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
     {%- if ar_has_localization_form_script -%}
-      <script src="{{ 'localization-form.js' | asset_url }}" defer></script>
+      <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
     {% render 'floating-chat' %}

@@ -41,9 +41,9 @@
     {%- if paginate.next -%}
       <link rel="next" href="{{ shop.url }}{{ paginate.next.url }}">
     {%- endif -%}
-    <!-- SEO Fix: Collection SEO header copy above product grid -->
-    <div class="collection-seo-header page-width">
-      <h1>{{ collection.title }}</h1>
+    {%- comment -%} SEO Fix: H1 lives in main-collection-banner; this block uses H2 to avoid duplicate H1. {%- endcomment -%}
+    <div class="collection-seo-header page-width visually-hidden">
+      <h2>{{ collection.title }}</h2>
       {% if collection.description != blank %}
         <div class="collection-description">{{ collection.description }}</div>
       {% endif %}

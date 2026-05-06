@@ -2,9 +2,17 @@ class CartDrawer extends HTMLElement {
   constructor() {
     super();
 
+    this._domParser = new DOMParser();
+
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
-    this.overlay = this.querySelector('#CartDrawer-Overlay');
-    if (this.overlay) this.overlay.addEventListener('click', this.close.bind(this));
+
+    this.addEventListener('click', (event) => {
+      if (event.target.closest('#CartDrawer-Overlay')) {
+        event.preventDefault();
+        this.close();
+      }
+    });
+
     this.setCartTriggerAccessibility();
     this.bindGlobalCartTriggers();
     this.bindGlobalAddToCartSubmit();
@@ -13,7 +21,6 @@ class CartDrawer extends HTMLElement {
   setCartTriggerAccessibility() {
     const cartTriggers = document.querySelectorAll('[data-open-cart-drawer], #cart-icon-bubble');
     if (!cartTriggers.length) return;
-
     cartTriggers.forEach((trigger) => {
       trigger.setAttribute('aria-haspopup', 'dialog');
       trigger.addEventListener('keydown', (event) => {
@@ -50,39 +57,55 @@ class CartDrawer extends HTMLElement {
       if (!/\/cart\/add(?:$|\?)/.test(action)) return;
 
       event.preventDefault();
-      const formData = new FormData(form);
-      formData.append(
-        'sections',
-        this.getSectionsToRender()
-          .map((section) => section.id)
-          .join(',')
-      );
-      formData.append('sections_url', window.location.pathname);
-
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((state) => {
-          if (state.status) return;
-          this.renderContents(state);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      this.addToCartFast(form);
     });
+  }
+
+  addToCartFast(form) {
+    this.open();
+    this.classList.add('is-loading');
+
+    const formData = new FormData(form);
+    formData.append(
+      'sections',
+      this.getSectionsToRender()
+        .map((section) => section.id)
+        .join(',')
+    );
+    formData.append('sections_url', window.location.pathname);
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/javascript' },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((state) => {
+        if (state.status) {
+          if (window.console) console.warn('Cart add error:', state.description || state.message);
+          return;
+        }
+        this.renderContents(state);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        this.classList.remove('is-loading');
+      });
   }
 
   open(triggeredBy) {
     if (this.classList.contains('active')) return;
     if (triggeredBy) this.setActiveElement(triggeredBy);
+
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
-    if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
-    requestAnimationFrame(() => {
-      this.classList.add('animate', 'active');
-    });
+    if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) {
+      this.setSummaryAccessibility(cartDrawerNote);
+    }
+
+    this.classList.add('animate', 'active');
+    document.body.classList.add('overflow-hidden');
 
     this.addEventListener(
       'transitionend',
@@ -91,17 +114,17 @@ class CartDrawer extends HTMLElement {
           ? this.querySelector('.drawer__inner-empty')
           : document.getElementById('CartDrawer');
         const focusElement = this.querySelector('.drawer__inner') || this.querySelector('.drawer__close');
-        trapFocus(containerToTrapFocusOn, focusElement);
+        if (containerToTrapFocusOn && focusElement && typeof trapFocus === 'function') {
+          trapFocus(containerToTrapFocusOn, focusElement);
+        }
       },
       { once: true }
     );
-
-    document.body.classList.add('overflow-hidden');
   }
 
   close() {
     this.classList.remove('active');
-    removeTrapFocus(this.activeElement);
+    if (typeof removeTrapFocus === 'function') removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');
   }
 
@@ -109,7 +132,7 @@ class CartDrawer extends HTMLElement {
     cartDrawerNote.setAttribute('role', 'button');
     cartDrawerNote.setAttribute('aria-expanded', 'false');
 
-    if (cartDrawerNote.nextElementSibling.getAttribute('id')) {
+    if (cartDrawerNote.nextElementSibling && cartDrawerNote.nextElementSibling.getAttribute('id')) {
       cartDrawerNote.setAttribute('aria-controls', cartDrawerNote.nextElementSibling.id);
     }
 
@@ -117,29 +140,36 @@ class CartDrawer extends HTMLElement {
       event.currentTarget.setAttribute('aria-expanded', !event.currentTarget.closest('details').hasAttribute('open'));
     });
 
-    cartDrawerNote.parentElement.addEventListener('keyup', onKeyUpEscape);
+    if (typeof onKeyUpEscape === 'function') {
+      cartDrawerNote.parentElement.addEventListener('keyup', onKeyUpEscape);
+    }
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
+    if (this.classList.contains('is-empty')) this.classList.remove('is-empty');
     this.productId = parsedState.id;
+
+    if (!parsedState.sections) return;
+
     this.getSectionsToRender().forEach((section) => {
-      const sectionElement = section.selector
+      const html = parsedState.sections[section.id];
+      if (!html) return;
+      const target = section.selector
         ? document.querySelector(section.selector)
         : document.getElementById(section.id);
-
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+      if (!target) return;
+      const parsed = this._domParser.parseFromString(html, 'text/html');
+      const sourceSelector = section.selector || '.shopify-section';
+      const source = parsed.querySelector(sourceSelector);
+      if (!source) return;
+      target.innerHTML = source.innerHTML;
     });
 
-    requestAnimationFrame(() => {
-      this.open();
-    });
+    document.dispatchEvent(new CustomEvent('cart-drawer:rendered'));
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    return this._domParser.parseFromString(html, 'text/html').querySelector(selector).innerHTML;
   }
 
   getSectionsToRender() {
@@ -155,7 +185,7 @@ class CartDrawer extends HTMLElement {
   }
 
   getSectionDOM(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector);
+    return this._domParser.parseFromString(html, 'text/html').querySelector(selector);
   }
 
   setActiveElement(element) {

@@ -18,7 +18,7 @@ html {
 
 @media screen and (max-width: 900px) {
   :root {
-    --ar-header-height: 72px;
+    --ar-header-height: 64px;
   }
 }
 

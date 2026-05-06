@@ -34,6 +34,8 @@
                 assign inc_tag = p.description | strip_html | truncate: 80
               endif
             -%}
+            {%- capture inc_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p -%}{%- endcapture -%}
+            {%- assign inc_showcard = inc_showcard | strip -%}
 
             <article class="ar-inc__card" style="--card-i: {{ forloop.index0 }}">
               <div class="ar-inc__card-inner">
@@ -51,7 +53,17 @@
                       <span class="ar-inc__badge ar-inc__badge--sale">SALE</span>
                     {%- endif -%}
 
-                    {%- if p.featured_image -%}
+                    {%- if inc_showcard != blank -%}
+                      <img
+                        src="{{ inc_showcard | asset_url }}"
+                        alt="{{ p.title | append: ' - handcrafted incense - Anandrasa' | escape }}"
+                        width="800"
+                        height="800"
+                        loading="lazy"
+                        decoding="async"
+                        class="ar-inc__img"
+                      >
+                    {%- elsif p.featured_image -%}
                       <!-- SEO Fix: Incense product image optimized with WebP and explicit dimensions -->
                       <picture>
                         <source

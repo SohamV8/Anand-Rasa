@@ -86,6 +86,9 @@ class PredictiveSearch extends SearchForm {
     event.preventDefault();
 
     switch (event.code) {
+      case 'Escape':
+        this.close();
+        break;
       case 'ArrowUp':
         this.switchOption('up');
         break;
@@ -168,13 +171,16 @@ class PredictiveSearch extends SearchForm {
   }
 
   getSearchResults(searchTerm) {
-    const queryKey = searchTerm.replace(' ', '-').toLowerCase();
+    const queryKey = searchTerm.trim().replace(/\s+/g, '-').toLowerCase();
     this.setLiveRegionLoadingState();
 
     if (this.cachedResults[queryKey]) {
       this.renderSearchResults(this.cachedResults[queryKey]);
       return;
     }
+
+    this.abortController.abort();
+    this.abortController = new AbortController();
 
     fetch(`${routes.predictive_search_url}?q=${encodeURIComponent(searchTerm)}&section_id=predictive-search`, {
       signal: this.abortController.signal,

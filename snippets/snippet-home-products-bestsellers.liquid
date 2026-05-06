@@ -13,25 +13,8 @@
       {%- assign bs = collections[section.settings.bs_collection] -%}
       {%- if bs != blank -%}
         {%- for p in bs.products -%}
-          {%- liquid
-            assign title_key = p.title | handleize
-            assign bestseller_showcard = blank
-            if title_key contains 'kamalini'
-              assign bestseller_showcard = 'Bestseller/Kamalini.webp'
-            elsif title_key contains 'kesariya-ishq'
-              assign bestseller_showcard = 'Bestseller/Kesariya_Ishq.webp'
-            elsif title_key contains 'chandan-nandan'
-              assign bestseller_showcard = 'Bestseller/Chandan_Nandan.webp'
-            elsif title_key contains 'dev-priya'
-              assign bestseller_showcard = 'Bestseller/Dev_Priya.webp'
-            elsif title_key contains 'gulbadan'
-              assign bestseller_showcard = 'Bestseller/Gulbadan.webp'
-            elsif title_key contains 'oud-e-azam' or title_key contains 'oud'
-              assign bestseller_showcard = 'Bestseller/Oud-e-Azam.webp'
-            elsif title_key contains 'velora'
-              assign bestseller_showcard = 'Bestseller/Velora.webp'
-            endif
-          -%}
+          {%- capture bestseller_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p -%}{%- endcapture -%}
+          {%- assign bestseller_showcard = bestseller_showcard | strip -%}
           <article class="ar-best__card">
             <a href="{{ p.url }}" class="ar-best__link">
               <div class="ar-best__imgw">

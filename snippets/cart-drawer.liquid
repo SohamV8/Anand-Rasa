@@ -21,7 +21,9 @@
     transition: opacity 0.3s ease;
   }
   .drawer.active { opacity: 1; pointer-events: auto; }
+  .drawer { will-change: opacity; }
   .drawer .drawer__inner {
+    position: relative;
     width: 42rem;
     max-width: 100vw;
     height: 100%;
@@ -35,6 +37,24 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    will-change: transform;
+    contain: layout paint;
+  }
+  /* Subtle in-flight indicator (no UI redesign, GPU-friendly) */
+  cart-drawer.is-loading .drawer__inner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #111827, transparent);
+    background-size: 200% 100%;
+    animation: ar-cart-loading 1s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+  }
+  @keyframes ar-cart-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
   .drawer.active .drawer__inner { transform: translateX(0); }
   .cart-drawer__overlay { cursor: pointer; }
@@ -810,6 +830,7 @@
     function addUpsellVariant(variantId, button) {
       if (!variantId) return;
       button.setAttribute('disabled', 'disabled');
+      cartDrawer.classList.add('is-loading');
       var formData = new FormData();
       formData.append('id', variantId);
       formData.append('quantity', '1');
@@ -817,9 +838,9 @@
       formData.append('sections', sections);
       formData.append('sections_url', window.location.pathname);
 
-      fetch(routes.cart_add_url, {
+      fetch('/cart/add.js', {
         method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/javascript' },
         body: formData
       })
         .then(function (response) { return response.json(); })
@@ -831,15 +852,19 @@
         .catch(function (error) { console.error(error); })
         .finally(function () {
           button.removeAttribute('disabled');
+          cartDrawer.classList.remove('is-loading');
         });
     }
 
-    document.addEventListener('click', function (event) {
-      var addButton = event.target.closest('.js-cart-drawer-upsell-add');
-      if (!addButton) return;
-      event.preventDefault();
-      addUpsellVariant(addButton.getAttribute('data-variant-id'), addButton);
-    });
+    if (!window.__arCartUpsellBound) {
+      window.__arCartUpsellBound = true;
+      document.addEventListener('click', function (event) {
+        var addButton = event.target.closest('.js-cart-drawer-upsell-add');
+        if (!addButton) return;
+        event.preventDefault();
+        addUpsellVariant(addButton.getAttribute('data-variant-id'), addButton);
+      });
+    }
 
     function mountRecommendations(container) {
       if (!container || container.dataset.loaded === 'true') return;
@@ -878,18 +903,32 @@
         .catch(function () {});
     }
 
-    var recoContainer = document.querySelector('.js-cart-drawer-reco');
-    if (!recoContainer) return;
-    if (!('IntersectionObserver' in window)) {
-      mountRecommendations(recoContainer);
-      return;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        mountRecommendations(recoContainer);
-        observer.disconnect();
+    function deferMount(container) {
+      if (!container || container.dataset.loaded === 'true') return;
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(function () { mountRecommendations(container); }, { timeout: 1500 });
+      } else {
+        setTimeout(function () { mountRecommendations(container); }, 600);
       }
-    }, { root: null, threshold: 0.1 });
-    observer.observe(recoContainer);
+    }
+
+    function bootstrapReco() {
+      var recoContainer = document.querySelector('.js-cart-drawer-reco');
+      if (!recoContainer) return;
+      if (!('IntersectionObserver' in window)) {
+        deferMount(recoContainer);
+        return;
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          deferMount(recoContainer);
+          observer.disconnect();
+        }
+      }, { root: null, threshold: 0.1 });
+      observer.observe(recoContainer);
+    }
+
+    bootstrapReco();
+    document.addEventListener('cart-drawer:rendered', bootstrapReco);
   })();
 </script>
