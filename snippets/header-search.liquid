@@ -40,8 +40,8 @@
         {%- else -%}
           <search-form class="search-modal__form">
         {%- endif -%}
-        <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
-          <div class="field">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form ar-search-form">
+          <div class="field ar-search-field">
             <input
               class="search__input field__input"
               id="{{ input_id }}"
@@ -82,6 +82,21 @@
 
           {%- if settings.predictive_search_enabled -%}
             <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+              <div class="predictive-search__discover" data-predictive-search-discover>
+                <div class="predictive-search__discover-group">
+                  <h2 class="predictive-search__heading text-body caption-with-letter-spacing">{{ 'templates.search.suggestions' | t }}</h2>
+                  <div class="predictive-search__chip-list" data-predictive-search-trending>
+                    <button type="button" class="predictive-search__chip predictive-search__item" data-term="Musk Rose">Musk Rose</button>
+                    <button type="button" class="predictive-search__chip predictive-search__item" data-term="Lavender">Lavender</button>
+                    <button type="button" class="predictive-search__chip predictive-search__item" data-term="Jasmine">Jasmine</button>
+                    <button type="button" class="predictive-search__chip predictive-search__item" data-term="Nag Champa">Nag Champa</button>
+                  </div>
+                </div>
+                <div class="predictive-search__discover-group" data-predictive-search-recent-wrapper hidden>
+                  <h2 class="predictive-search__heading text-body caption-with-letter-spacing">{{ 'general.search.search' | t }}</h2>
+                  <ul class="predictive-search__results-list list-unstyled" data-predictive-search-recent-list></ul>
+                </div>
+              </div>
               {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
             </div>
 

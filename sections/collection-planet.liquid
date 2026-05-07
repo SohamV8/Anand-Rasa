@@ -120,6 +120,7 @@
 
           {%- for product in collection.products -%}
             {%- assign ar_attar_img = '' -%}
+            {%- assign ar_showcase_img = '' -%}
             {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
             {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
               {%- assign ar_attar_img = 'Planet/surya_attar.webp' | asset_url -%}
@@ -140,10 +141,36 @@
             {%- elsif ar_key contains 'ketu' -%}
               {%- assign ar_attar_img = 'Planet/ketu_attar.webp' | asset_url -%}
             {%- endif -%}
+            {%- if template.suffix == 'bestseller' -%}
+              {%- capture ar_showcase_lookup -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
+              {%- assign ar_showcase_lookup = ar_showcase_lookup | strip -%}
+              {%- if ar_showcase_lookup != blank -%}
+                {%- assign ar_showcase_img = ar_showcase_lookup | asset_url -%}
+              {%- endif -%}
+            {%- endif -%}
             {%- capture ar_card_markup -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap">
-                {%- if ar_attar_img != blank -%}
+                {%- if ar_showcase_img != blank -%}
+                  <img
+                    src="{{ ar_showcase_img }}"
+                    alt="{{ product.title }}"
+                    width="1600"
+                    height="1067"
+                    loading="lazy"
+                    class="arc-card__img"
+                  >
+                  {%- if product.images.size > 1 -%}
+                    <img
+                      src="{{ product.images[1] | image_url: width: 1600 }}"
+                      alt="{{ product.title }} - alternate view"
+                      width="1600"
+                      height="1067"
+                      loading="lazy"
+                      class="arc-card__img-hover"
+                    >
+                  {%- endif -%}
+                {%- elsif ar_attar_img != blank -%}
                   <img
                     src="{{ ar_attar_img }}"
                     alt="{{ product.title }}"

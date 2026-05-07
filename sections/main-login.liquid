@@ -6,6 +6,94 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  .ar-login {
+    --ar-login-bg: #f5f5f7;
+    --ar-login-card: #ffffff;
+    --ar-login-text: #111827;
+    --ar-login-muted: #6b7280;
+    --ar-login-line: rgba(17, 24, 39, 0.12);
+    --ar-login-focus: #111827;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.88) 100%);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .ar-login h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.7rem, 3.8vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ar-login-text);
+  }
+  .ar-login p,
+  .ar-login small,
+  .ar-login .form__message {
+    color: var(--ar-login-muted);
+  }
+  .ar-login .field {
+    margin-bottom: 14px;
+  }
+  .ar-login .field input {
+    border-radius: 12px;
+    border: 1px solid var(--ar-login-line);
+    background: #fff;
+    min-height: 52px;
+    padding: 1.35rem 1rem 0.55rem;
+  }
+  .ar-login .field input:focus {
+    border-color: var(--ar-login-focus);
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+  }
+  .ar-login .field label {
+    left: 1rem;
+    color: var(--ar-login-muted);
+  }
+  .ar-login button {
+    width: 100%;
+    min-height: 50px;
+    border-radius: 12px;
+    border: 1px solid #111827;
+    background: #111827;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .ar-login button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(17, 24, 39, 0.2);
+  }
+  .ar-login a {
+    color: var(--ar-login-text);
+    text-underline-offset: 3px;
+    font-size: 13px;
+  }
+  .ar-login__links {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .ar-login__panel {
+    background: var(--ar-login-card);
+    border: 1px solid var(--ar-login-line);
+    border-radius: 16px;
+    padding: 18px;
+  }
+  .ar-login hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--ar-login-line);
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -19,10 +107,11 @@
 {%- endif -%}
 
 <div class="customer login section-{{ section.id }}-padding">
+  <div class="ar-login">
   <h1 id="recover" tabindex="-1">
     {{ 'customer.recover_password.title' | t }}
   </h1>
-  <div>
+  <div class="ar-login__panel">
     <p>
       {{ 'customer.recover_password.subtext' | t }}
     </p>
@@ -62,16 +151,18 @@
         {{ 'customer.login_page.submit' | t }}
       </button>
 
-      <a href="#login">
-        {{ 'customer.login_page.cancel' | t }}
-      </a>
+      <div class="ar-login__links">
+        <a href="#login">
+          {{ 'customer.login_page.cancel' | t }}
+        </a>
+      </div>
     {%- endform -%}
   </div>
 
   <h1 id="login" tabindex="-1">
     {{ 'customer.login_page.title' | t }}
   </h1>
-  <div>
+  <div class="ar-login__panel">
     {%- if recover_success == true -%}
       <h3 class="form__message" tabindex="-1" autofocus>
         <span class="svg-wrapper">
@@ -149,14 +240,16 @@
         {{ 'customer.login_page.sign_in' | t }}
       </button>
 
-      <a href="{{ routes.account_register_url }}">
-        {{ 'customer.login_page.create_account' | t }}
-      </a>
+      <div class="ar-login__links">
+        <a href="{{ routes.account_register_url }}">
+          {{ 'customer.login_page.create_account' | t }}
+        </a>
+      </div>
     {%- endform -%}
   </div>
 
   {%- if shop.checkout.guest_login -%}
-    <div>
+    <div class="ar-login__panel">
       <hr>
       <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
 
@@ -167,6 +260,7 @@
       {%- endform -%}
     </div>
   {%- endif -%}
+  </div>
 </div>
 
 {% schema %}

@@ -34,9 +34,6 @@
                 assign inc_tag = p.description | strip_html | truncate: 80
               endif
             -%}
-            {%- capture inc_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p -%}{%- endcapture -%}
-            {%- assign inc_showcard = inc_showcard | strip -%}
-
             <article class="ar-inc__card" style="--card-i: {{ forloop.index0 }}">
               <div class="ar-inc__card-inner">
 
@@ -53,17 +50,7 @@
                       <span class="ar-inc__badge ar-inc__badge--sale">SALE</span>
                     {%- endif -%}
 
-                    {%- if inc_showcard != blank -%}
-                      <img
-                        src="{{ inc_showcard | asset_url }}"
-                        alt="{{ p.title | append: ' - handcrafted incense - Anandrasa' | escape }}"
-                        width="800"
-                        height="800"
-                        loading="lazy"
-                        decoding="async"
-                        class="ar-inc__img"
-                      >
-                    {%- elsif p.featured_image -%}
+                    {%- if p.featured_image -%}
                       <!-- SEO Fix: Incense product image optimized with WebP and explicit dimensions -->
                       <picture>
                         <source
@@ -559,12 +546,18 @@
 }
 .ar-inc__arrow-l { left: -22px; }
 .ar-inc__arrow-r { right: -22px; }
+.ar-inc__arrow:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 .ar-inc__arrow:hover {
-  background: var(--inc-text);
-  color: #fff;
-  border-color: var(--inc-text);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  background: #fff;
+  color: var(--inc-text);
+  border-color: #D8D8D8;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transform: translateY(calc(-50% - 20px)) scale(1.04);
 }
 
 .ar-inc__arrow svg { display: block; }
@@ -622,8 +615,8 @@
 @media (max-width: 1024px) {
   .ar-inc__inner { padding: 0 32px; }
   .ar-inc { --inc-card-w: 270px; }
-  .ar-inc__arrow-l { left: -16px; }
-  .ar-inc__arrow-r { right: -16px; }
+  .ar-inc__arrow-l { left: 8px; }
+  .ar-inc__arrow-r { right: 8px; }
 }
 
 @media (max-width: 768px) {
@@ -694,18 +687,30 @@
         d.classList.toggle('is-active', i === current);
       });
     }
+    function syncArrows() {
+      var max = Math.max(0, track.scrollWidth - track.clientWidth);
+      var leftAtStart = track.scrollLeft <= 2;
+      var rightAtEnd = track.scrollLeft >= max - 2;
+      if (btnL) btnL.disabled = leftAtStart;
+      if (btnR) btnR.disabled = rightAtEnd;
+    }
 
     function goToPage(idx) {
       var cardW = cards[0] ? cards[0].offsetWidth + 20 : 300;
       track.scrollTo({ left: idx * cardW * getPerPage(), behavior: 'smooth' });
+      setTimeout(syncArrows, 140);
     }
 
     buildDots();
+    syncArrows();
 
     /* ── ARROWS ── */
     function scrollByCards(dir) {
       var cardW = cards[0] ? cards[0].offsetWidth + 20 : 300;
-      track.scrollBy({ left: dir * cardW * getPerPage(), behavior: 'smooth' });
+      var max = Math.max(0, track.scrollWidth - track.clientWidth);
+      var next = Math.max(0, Math.min(max, track.scrollLeft + (dir * cardW * getPerPage())));
+      track.scrollTo({ left: next, behavior: 'smooth' });
+      setTimeout(syncArrows, 140);
     }
 
     if (btnL) btnL.addEventListener('click', function () { scrollByCards(-1); });
@@ -715,7 +720,10 @@
     var scrollTimer;
     track.addEventListener('scroll', function () {
       clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(updateDots, 80);
+      scrollTimer = setTimeout(function () {
+        updateDots();
+        syncArrows();
+      }, 80);
     }, { passive: true });
 
     /* ── DRAG (mouse) ── */
@@ -743,7 +751,11 @@
     var resizeTimer;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(buildDots, 200);
+      resizeTimer = setTimeout(function () {
+        buildDots();
+        updateDots();
+        syncArrows();
+      }, 200);
     });
   });
 })();

@@ -3,12 +3,16 @@ class PredictiveSearch extends SearchForm {
     super();
     this.cachedResults = {};
     this.predictiveSearchResults = this.querySelector('[data-predictive-search]');
+    this.defaultMarkup = this.predictiveSearchResults?.innerHTML || '';
     this.allPredictiveSearchInstances = document.querySelectorAll('predictive-search');
     this.isOpen = false;
     this.abortController = new AbortController();
     this.searchTerm = '';
+    this.recentKey = 'ar_recent_searches';
+    this.maxRecent = 5;
 
     this.setupEventListeners();
+    this.bindDiscoverActions();
   }
 
   setupEventListeners() {
@@ -39,7 +43,8 @@ class PredictiveSearch extends SearchForm {
     this.searchTerm = newSearchTerm;
 
     if (!this.searchTerm.length) {
-      this.close(true);
+      this.showDiscover();
+      this.open();
       return;
     }
 
@@ -47,7 +52,13 @@ class PredictiveSearch extends SearchForm {
   }
 
   onFormSubmit(event) {
-    if (!this.getQuery().length || this.querySelector('[aria-selected="true"] a')) event.preventDefault();
+    if (this.getQuery().length) this.saveRecentSearch(this.getQuery());
+    if (
+      !this.getQuery().length ||
+      this.querySelector('[aria-selected="true"] a') ||
+      this.querySelector('button[aria-selected="true"][data-term]')
+    )
+      event.preventDefault();
   }
 
   onFormReset(event) {
@@ -63,7 +74,11 @@ class PredictiveSearch extends SearchForm {
   onFocus() {
     const currentSearchTerm = this.getQuery();
 
-    if (!currentSearchTerm.length) return;
+    if (!currentSearchTerm.length) {
+      this.showDiscover();
+      this.open();
+      return;
+    }
 
     if (this.searchTerm !== currentSearchTerm) {
       // Search term was changed from other search input, treat it as a user change
@@ -165,7 +180,9 @@ class PredictiveSearch extends SearchForm {
   }
 
   selectOption() {
-    const selectedOption = this.querySelector('[aria-selected="true"] a, button[aria-selected="true"]');
+    const selectedOption =
+      this.querySelector('[aria-selected="true"] a, button[aria-selected="true"]') ||
+      this.querySelector('li[aria-selected="true"] [data-term]');
 
     if (selectedOption) selectedOption.click();
   }
@@ -277,6 +294,72 @@ class PredictiveSearch extends SearchForm {
     this.input.setAttribute('aria-expanded', false);
     this.resultsMaxHeight = false;
     this.predictiveSearchResults.removeAttribute('style');
+  }
+
+  getRecentSearches() {
+    try {
+      const list = JSON.parse(window.localStorage.getItem(this.recentKey) || '[]');
+      return Array.isArray(list) ? list : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  saveRecentSearch(term) {
+    const value = String(term || '').trim();
+    if (!value) return;
+    const list = this.getRecentSearches().filter((item) => item.toLowerCase() !== value.toLowerCase());
+    list.unshift(value);
+    window.localStorage.setItem(this.recentKey, JSON.stringify(list.slice(0, this.maxRecent)));
+  }
+
+  bindDiscoverActions() {
+    if (!this.predictiveSearchResults) return;
+    this.predictiveSearchResults.addEventListener('click', (event) => {
+      const el = event.target.closest('[data-term]');
+      if (!el) return;
+      const term = el.getAttribute('data-term');
+      if (!term) return;
+      this.input.value = term;
+      this.toggleResetButton();
+      this.searchTerm = this.getQuery();
+      this.saveRecentSearch(this.searchTerm);
+      this.getSearchResults(this.searchTerm);
+      this.input.focus();
+    });
+  }
+
+  showDiscover() {
+    if (!this.predictiveSearchResults) return;
+    if (!this.predictiveSearchResults.querySelector('[data-predictive-search-discover]')) {
+      this.predictiveSearchResults.innerHTML = this.defaultMarkup;
+    }
+
+    const recentWrapper = this.predictiveSearchResults.querySelector('[data-predictive-search-recent-wrapper]');
+    const recentList = this.predictiveSearchResults.querySelector('[data-predictive-search-recent-list]');
+    const recent = this.getRecentSearches();
+
+    if (!recentWrapper || !recentList) return;
+    if (!recent.length) {
+      recentWrapper.hidden = true;
+      recentList.innerHTML = '';
+      this.setAttribute('results', true);
+      return;
+    }
+
+    recentList.innerHTML = recent
+      .map(
+        (term, i) => `
+          <li id="predictive-search-option-recent-${i}" class="predictive-search__list-item" role="option" aria-selected="false">
+            <button type="button" class="predictive-search__item predictive-search__item--term" data-term="${term.replace(/"/g, '&quot;')}">
+              <span>${term}</span>
+            </button>
+          </li>`
+      )
+      .join('');
+
+    recentWrapper.hidden = false;
+    this.setAttribute('results', true);
   }
 }
 

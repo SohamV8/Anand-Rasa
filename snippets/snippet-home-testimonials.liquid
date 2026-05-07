@@ -6,6 +6,7 @@
 {%- liquid
   assign text_testimonials  = section.blocks | where: 'type', 'testimonial'
   assign video_testimonials = section.blocks | where: 'type', 'video_testimonial'
+  assign yt_shorts          = 'a83ZMTyHU_8,vdZHW9Pat5k,cI9c-wvODzA,e3eIXVQbohc,TZvb2Y-EMsg,J1jiLBxlojU,ty8Bva0SCX4' | split: ','
 -%}
 
 <style>
@@ -29,6 +30,7 @@
   --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
   --tr:    0.45s var(--ease-smooth);
   --radius-video: 22px;
+  --arrow-offset: clamp(8px, 1.3vw, 18px);
   font-family: var(--fb);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -81,6 +83,8 @@
   overflow-x: clip;
   overflow-y: visible;
   position: relative;
+  content-visibility: auto;
+  contain-intrinsic-size: 920px;
 }
 
 /* Warm gold glow — barely visible (0.05) */
@@ -212,13 +216,15 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 4;
-  width: 44px; height: 44px;
+  width: 46px; height: 46px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.08);
   display: flex; align-items: center; justify-content: center;
   color: var(--ink);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: background var(--tr), border-color var(--tr), box-shadow var(--tr), transform var(--tr);
   cursor: pointer;
 }
@@ -233,6 +239,15 @@
 .ar-tst__arrow-l, .ar-vtm__arrow-l { left:  18px; }
 .ar-tst__arrow-r, .ar-vtm__arrow-r { right: 18px; }
 .ar-tst__arrow svg, .ar-vtm__arrow svg { display: block; }
+.ar-tst__arrow-l, .ar-vtm__arrow-l { left: var(--arrow-offset); }
+.ar-tst__arrow-r, .ar-vtm__arrow-r { right: var(--arrow-offset); }
+.ar-tst__arrow:disabled,
+.ar-vtm__arrow:disabled {
+  opacity: 0.38;
+  transform: translateY(-50%) scale(0.96);
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 /* Shared dots */
 .ar-tst__dots,
@@ -525,6 +540,133 @@
 .ar-vtm__mute-btn:not(.is-muted) .ar-vtm__icon--muted { display: none; }
 
 /* ============================================================
+   YOUTUBE CARD VARIANT
+   ============================================================ */
+.ar-vtm__card--yt { cursor: zoom-in; background: #000; }
+.ar-vtm__yt-frame {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+.ar-vtm__yt-frame iframe {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 100%;
+  border: 0;
+  transform: translate(-50%, -50%) scale(1.34);
+  transform-origin: center center;
+  pointer-events: none;
+  display: block;
+}
+.ar-vtm__yt-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  filter: blur(4px);
+  transform: scale(1.06);
+}
+.ar-vtm__yt-zoom {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  background: transparent;
+  border: none;
+  cursor: zoom-in;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background var(--tr);
+}
+.ar-vtm__yt-zoom-icon {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+  opacity: 0;
+  transform: scale(0.86);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.ar-vtm__card--yt:hover .ar-vtm__yt-zoom { background: rgba(0,0,0,0.18); }
+.ar-vtm__card--yt:hover .ar-vtm__yt-zoom-icon { opacity: 1; transform: scale(1); }
+
+/* ============================================================
+   YOUTUBE ZOOM MODAL
+   ============================================================ */
+.ar-vtm__modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(8, 8, 10, 0.86);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-smooth);
+}
+.ar-vtm__modal.is-open {
+  display: flex;
+  opacity: 1;
+}
+.ar-vtm__modal-stage {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  height: min(86vh, 760px);
+  height: min(86dvh, 760px);
+  max-width: 95vw;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.35);
+  transform: scale(0.86);
+  transition: transform 0.45s var(--ease-out);
+}
+.ar-vtm__modal.is-open .ar-vtm__modal-stage { transform: scale(1); }
+.ar-vtm__modal-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+}
+.ar-vtm__modal-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.ar-vtm__modal-close {
+  position: absolute;
+  top: 22px; right: 22px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.ar-vtm__modal-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.06);
+}
+body.ar-vtm-modal-open { overflow: hidden; }
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1100px) {
@@ -559,10 +701,10 @@
   .ar-tst__card   { flex: 0 0 min(82vw, 340px); padding: 24px 18px; }
   .ar-tst__track  { padding: 14px 52px; gap: 14px; scroll-padding-inline: 52px; }
   .ar-vtm__track  { padding: 14px 52px; gap: 10px; scroll-padding-inline: 52px; }
-  .ar-tst__arrow-l, .ar-vtm__arrow-l { left: 6px; }
-  .ar-tst__arrow-r, .ar-vtm__arrow-r { right: 6px; }
+  .ar-tst__arrow-l, .ar-vtm__arrow-l { left: 4px; }
+  .ar-tst__arrow-r, .ar-vtm__arrow-r { right: 4px; }
   .ar-tst__arrow,
-  .ar-vtm__arrow { width: 40px; height: 40px; }
+  .ar-vtm__arrow { width: 38px; height: 38px; }
   .ar-tst__fade,
   .ar-vtm__fade   { width: 48px; }
   .ar-vtm__card {
@@ -582,6 +724,8 @@
   }
   .ar-tst__track { padding: 12px 40px; gap: 12px; scroll-padding-inline: 40px; }
   .ar-vtm__track { padding: 12px 40px; gap: 8px; scroll-padding-inline: 40px; }
+  .ar-tst__arrow,
+  .ar-vtm__arrow { width: 34px; height: 34px; }
 }
 </style>
 
@@ -640,7 +784,7 @@
   </section>
   {%- endif -%}
 
-  {%- if video_testimonials.size > 0 -%}
+  {%- if video_testimonials.size > 0 or yt_shorts.size > 0 -%}
   <section class="ar-vtm" aria-label="Video Testimonials">
     <div class="ar-vtm__inner">
 
@@ -661,19 +805,41 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <div class="ar-vtm__track js-vtm-track" role="list">
+          {%- for yt_id in yt_shorts -%}
+            {%- assign yid = yt_id | strip -%}
+            {%- if yid != blank -%}
+            <article class="ar-vtm__card ar-vtm__card--yt" role="listitem" data-yt-id="{{ yid }}">
+              <div class="ar-vtm__video-wrap">
+                <div class="ar-vtm__yt-frame js-yt-frame" data-yt-id="{{ yid }}">
+                  <img class="ar-vtm__yt-thumb" src="https://i.ytimg.com/vi/{{ yid }}/hqdefault.jpg" alt="" loading="lazy" decoding="async" draggable="false">
+                </div>
+                <div class="ar-vtm__yt-zoom js-yt-zoom" role="button" tabindex="0" aria-label="Open video with sound" data-yt-id="{{ yid }}">
+                  <span class="ar-vtm__yt-zoom-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  </span>
+                </div>
+                <div class="ar-vtm__video-overlay" aria-hidden="true"></div>
+                <div class="ar-vtm__controls">
+                  <div class="ar-vtm__info">
+                    <span class="ar-vtm__card-name">Tap to play with sound</span>
+                    <span class="ar-vtm__card-tag">YouTube Short</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {%- endif -%}
+          {%- endfor -%}
           {%- for block in video_testimonials -%}
             {%- assign v     = block.settings.video -%}
             {%- assign v_url = block.settings.video_url | strip -%}
+            {%- if v != blank or v_url != blank -%}
             <article class="ar-vtm__card" role="listitem" {{ block.shopify_attributes }}>
               <div class="ar-vtm__video-wrap">
                 {%- if v != blank -%}
                   {{ v | video_tag: class: 'ar-vtm__video', image_size: '540x960', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
                 {%- elsif v_url != blank -%}
                   <video class="ar-vtm__video" src="{{ v_url }}" autoplay muted loop playsinline preload="metadata"></video>
-                {%- else -%}
-                  <div class="ar-vtm__video ar-vtm__ph">Upload a portrait video</div>
                 {%- endif -%}
-                {%- if v != blank or v_url != blank -%}
                   <div class="ar-vtm__video-overlay" aria-hidden="true"></div>
                   <button type="button" class="ar-vtm__mute-btn js-vtm-mute is-muted" aria-label="Unmute video" data-muted="true">
                     <span class="ar-vtm__icon ar-vtm__icon--muted" aria-hidden="true">
@@ -692,9 +858,9 @@
                       <svg class="js-vtm-play-icon" viewBox="0 0 24 24" width="13" height="13" fill="currentColor" stroke="none" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
                     </button>
                   </div>
-                {%- endif -%}
               </div>
             </article>
+            {%- endif -%}
           {%- endfor -%}
         </div>
       </div>
@@ -703,6 +869,17 @@
 
     </div>
   </section>
+  {%- endif -%}
+
+  {%- if yt_shorts.size > 0 -%}
+    <div class="ar-vtm__modal js-yt-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Video player">
+      <button type="button" class="ar-vtm__modal-close js-yt-close" aria-label="Close video">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="ar-vtm__modal-stage">
+        <div class="ar-vtm__modal-frame js-yt-modal-frame"></div>
+      </div>
+    </div>
   {%- endif -%}
 
 </div>
@@ -745,24 +922,31 @@
   }
   function addDrag(track) {
     if (!track) return;
-    var drag = false, sx = 0, ss = 0;
+    var drag = false, sx = 0, ss = 0, moved = false;
     track.addEventListener('mousedown', function (e) {
       if (e.button !== 0) return;
       if (e.target.closest('button, a, input, textarea, select')) return;
       e.preventDefault();
       drag = true;
+      moved = false;
       sx = e.pageX;
       ss = track.scrollLeft;
       track.classList.add('is-dragging');
     });
     document.addEventListener('mousemove', function (e) {
       if (!drag) return;
-      track.scrollLeft = ss - (e.pageX - sx);
+      var dx = e.pageX - sx;
+      if (Math.abs(dx) > 5) moved = true;
+      track.scrollLeft = ss - dx;
     });
     document.addEventListener('mouseup', function () {
       if (!drag) return;
       drag = false;
       track.classList.remove('is-dragging');
+      if (moved) {
+        track.dataset.justDragged = '1';
+        setTimeout(function () { delete track.dataset.justDragged; }, 60);
+      }
     });
   }
   function entrance(items, cls) {
@@ -787,15 +971,22 @@
       entrance(tc, 'is-visible'); addDrag(tt);
       var td = buildDots(tde, tc.length, 'ar-tst__dot', 'is-on');
       function tIdx() { return nearestSlideIndex(tt, tc); }
+      function tSyncArrows() {
+        var cur = tIdx();
+        if (tbl) tbl.disabled = cur <= 0;
+        if (tbr) tbr.disabled = cur >= tc.length - 1;
+      }
       td.forEach(function (b) { b.addEventListener('click', function () { scrollSlideIntoCenter(tt, tc, +b.dataset.idx); }); });
-      var tTimer; tt.addEventListener('scroll', function () { clearTimeout(tTimer); tTimer = setTimeout(function () { syncDots(td, tIdx(), 'is-on'); }, 80); }, { passive: true });
+      var tTimer; tt.addEventListener('scroll', function () { clearTimeout(tTimer); tTimer = setTimeout(function () { syncDots(td, tIdx(), 'is-on'); tSyncArrows(); }, 80); }, { passive: true });
       function tScroll(d) {
         var cur = nearestSlideIndex(tt, tc);
         var next = d < 0 ? Math.max(0, cur - 1) : Math.min(tc.length - 1, cur + 1);
         scrollSlideIntoCenter(tt, tc, next);
+        setTimeout(tSyncArrows, 120);
       }
       if (tbl) tbl.addEventListener('click', function () { tScroll(-1); });
       if (tbr) tbr.addEventListener('click', function () { tScroll(1); });
+      tSyncArrows();
     }
   }
 
@@ -817,7 +1008,16 @@
       });
       var vd = buildDots(vde, vc.length, 'ar-vtm__dot', 'is-on');
       function vIdx() { return nearestSlideIndex(vt, vc); }
-      function vActive(idx) { vc.forEach(function (c, i) { c.classList.toggle('ar-vtm__card--active', i === idx); }); syncDots(vd, idx, 'is-on'); }
+      function vSyncArrows() {
+        var cur = vIdx();
+        if (vbl) vbl.disabled = cur <= 0;
+        if (vbr) vbr.disabled = cur >= vc.length - 1;
+      }
+      function vActive(idx) {
+        vc.forEach(function (c, i) { c.classList.toggle('ar-vtm__card--active', i === idx); });
+        syncDots(vd, idx, 'is-on');
+        vSyncArrows();
+      }
       vd.forEach(function (b) { b.addEventListener('click', function () { scrollSlideIntoCenter(vt, vc, +b.dataset.idx); }); });
       var vTimer; vt.addEventListener('scroll', function () { clearTimeout(vTimer); vTimer = setTimeout(function () { vActive(vIdx()); }, 80); }, { passive: true });
       vActive(0);
@@ -828,6 +1028,7 @@
       }
       if (vbl) vbl.addEventListener('click', function () { vScroll(-1); });
       if (vbr) vbr.addEventListener('click', function () { vScroll(1); });
+      vSyncArrows();
 
       vtm.addEventListener('click', function (e) {
         var mb = e.target.closest('.js-vtm-mute');
@@ -866,6 +1067,105 @@
         }, { threshold: 0.25 });
         vc.forEach(function (c) { vio.observe(c); });
       }
+
+      /* ── YOUTUBE SHORTS — autoplay muted in card, click to zoom + audio ── */
+      var ytFrames = vtm.querySelectorAll('.js-yt-frame');
+      var ytModal  = document.querySelector('.js-yt-modal');
+      var ytModalFrame = ytModal && ytModal.querySelector('.js-yt-modal-frame');
+      var ytClose  = ytModal && ytModal.querySelector('.js-yt-close');
+
+      function ytEmbedSrc(id, withAudio) {
+        return 'https://www.youtube.com/embed/' + id +
+          '?autoplay=1&loop=1&playlist=' + id +
+          '&playsinline=1&modestbranding=1&rel=0&iv_load_policy=3' +
+          '&disablekb=1' +
+          '&vq=hd1080' +
+          '&controls=' + (withAudio ? '1' : '0') +
+          '&mute=' + (withAudio ? '0' : '1') +
+          '&fs=' + (withAudio ? '1' : '0');
+      }
+      function loadYtFrame(frameEl) {
+        if (!frameEl || frameEl.dataset.loaded === '1') return;
+        var id = frameEl.getAttribute('data-yt-id');
+        if (!id) return;
+        var iframe = document.createElement('iframe');
+        iframe.src = ytEmbedSrc(id, false);
+        iframe.title = 'YouTube short';
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        iframe.setAttribute('tabindex', '-1');
+        frameEl.appendChild(iframe);
+        frameEl.dataset.loaded = '1';
+      }
+      function unloadYtFrame(frameEl) {
+        if (!frameEl || frameEl.dataset.loaded !== '1') return;
+        var iframe = frameEl.querySelector('iframe');
+        if (iframe) iframe.parentNode.removeChild(iframe);
+        frameEl.dataset.loaded = '';
+      }
+
+      if (ytFrames.length) {
+        if ('IntersectionObserver' in window) {
+          var ytIo = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) loadYtFrame(e.target);
+              else unloadYtFrame(e.target);
+            });
+          }, { threshold: 0.2, rootMargin: '120px 200px' });
+          ytFrames.forEach(function (f) { ytIo.observe(f); });
+        } else {
+          ytFrames.forEach(loadYtFrame);
+        }
+      }
+
+      function openYtModal(id) {
+        if (!ytModal || !ytModalFrame || !id) return;
+        ytModalFrame.innerHTML =
+          '<iframe src="' + ytEmbedSrc(id, true) + '" ' +
+          'title="YouTube video player" ' +
+          'allow="autoplay; encrypted-media; picture-in-picture; fullscreen" ' +
+          'allowfullscreen frameborder="0" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+        ytModal.classList.add('is-open');
+        ytModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('ar-vtm-modal-open');
+      }
+      function closeYtModal() {
+        if (!ytModal || !ytModalFrame) return;
+        ytModalFrame.innerHTML = '';
+        ytModal.classList.remove('is-open');
+        ytModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('ar-vtm-modal-open');
+      }
+
+      vtm.addEventListener('click', function (e) {
+        var z = e.target.closest('.js-yt-zoom');
+        if (!z) return;
+        if (vt && vt.dataset.justDragged) return;
+        var id = z.getAttribute('data-yt-id') ||
+          (z.closest('[data-yt-id]') && z.closest('[data-yt-id]').getAttribute('data-yt-id'));
+        if (id) openYtModal(id);
+      });
+      vtm.addEventListener('keydown', function (e) {
+        var z = e.target.closest('.js-yt-zoom');
+        if (!z) return;
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          var id = z.getAttribute('data-yt-id');
+          if (id) openYtModal(id);
+        }
+      });
+
+      if (ytClose) ytClose.addEventListener('click', closeYtModal);
+      if (ytModal) {
+        ytModal.addEventListener('click', function (e) {
+          if (e.target === ytModal) closeYtModal();
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && ytModal && ytModal.classList.contains('is-open')) closeYtModal();
+      });
     }
   }
 })();
