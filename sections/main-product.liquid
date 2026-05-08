@@ -1,6 +1,14 @@
+{%- liquid
+  assign product_collection_handles = product.collections | map: 'handle' | join: ','
+  assign is_incense_stick_product = false
+  if product_collection_handles contains 'incense-stick'
+    assign is_incense_stick_product = true
+  endif
+-%}
+
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
+  class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}{% if is_incense_stick_product %} product-info--incense-stick{% endif %}"
   data-section="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-update-url="true"
@@ -163,10 +171,51 @@
       font-weight: 700;
     }
 
+    /* Incense-stick collection PDP only: professional 4:5 gallery, no crop, no stretch */
+    .product-info--incense-stick .product-media-container {
+      --aspect-ratio: 0.8;
+      --ratio-percent: 125%;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      background: #f7f3ec;
+    }
+    .product-info--incense-stick .product-media-container .media {
+      padding-top: 125% !important;
+    }
+    .product-info--incense-stick .product-media-container .media,
+    .product-info--incense-stick .product-media-container .product__modal-opener,
+    .product-info--incense-stick .product-media-container .deferred-media,
+    .product-info--incense-stick .product-media-container .deferred-media__poster {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      height: auto;
+    }
+    .product-info--incense-stick .product-media-container img,
+    .product-info--incense-stick .product-media-container video,
+    .product-info--incense-stick .product-media-container iframe,
+    .product-info--incense-stick .product-media-container model-viewer {
+      width: 100%;
+      height: 100%;
+      object-fit: contain !important;
+      object-position: center;
+      background: #f7f3ec;
+    }
+    .product-info--incense-stick .thumbnail,
+    .product-info--incense-stick .thumbnail img {
+      aspect-ratio: 4 / 5;
+      object-fit: contain;
+      background: #f7f3ec;
+    }
+
     @media screen and (min-width: 750px) {
       .section-{{ section.id }}-padding {
         padding-top: {{ section.settings.padding_top }}px;
         padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+
+      /* Desktop only: nudge product media list slightly left */
+      #MainProduct-{{ section.id }} .product__media-list {
+        margin-left: -0.8rem;
       }
     }
   {%- endstyle -%}
@@ -583,22 +632,7 @@
                   {%- endif -%}
                 </div>
                 {%- liquid
-                  assign is_incense_product = false
-                  if template.suffix contains 'incense'
-                    assign is_incense_product = true
-                  endif
-                  if is_incense_product == false and product.type != blank
-                    assign pdp_product_type = product.type | downcase
-                    if pdp_product_type contains 'incense'
-                      assign is_incense_product = true
-                    endif
-                  endif
-                  if is_incense_product == false and product.handle != blank
-                    assign pdp_product_handle = product.handle | downcase
-                    if pdp_product_handle contains 'incense'
-                      assign is_incense_product = true
-                    endif
-                  endif
+                  assign is_incense_product = is_incense_stick_product
 
                   assign use_storage_text = product.metafields.custom.use_and_storage | metafield_text
                   if use_storage_text == blank
@@ -712,24 +746,15 @@
                   show_pickup_availability: true
                 -%}
                 {%- liquid
-                  assign is_incense_product = false
-                  if template.suffix contains 'incense'
-                    assign is_incense_product = true
-                  elsif product.type != blank
-                    assign product_type_down = product.type | downcase
-                    if product_type_down contains 'incense'
-                      assign is_incense_product = true
-                    endif
-                  endif
-                  if is_incense_product == false and product.handle != blank
-                    assign product_handle_down = product.handle | downcase
-                    if product_handle_down contains 'incense' or product_handle_down contains 'musk-rose' or product_handle_down contains 'muskrose'
-                      assign is_incense_product = true
-                    endif
-                  endif
+                  assign is_incense_product = is_incense_stick_product
                 -%}
                 {%- if is_incense_product -%}
-                  <div class="pdp-incense-offer" id="PdpIncenseOffer-{{ section.id }}">
+                  <a
+                    class="pdp-incense-offer"
+                    id="PdpIncenseOffer-{{ section.id }}"
+                    href="/collections/incense-stick"
+                    aria-label="View incense offer collection"
+                  >
                     <img
                       src="{{ 'incense/discount.webp' | asset_url }}"
                       alt="Incense discount offer"
@@ -742,7 +767,7 @@
                       <span>Offer ends in</span>
                       <span class="pdp-incense-offer__time" id="PdpIncenseOfferTime-{{ section.id }}">--:--:--</span>
                     </div>
-                  </div>
+                  </a>
                   <script>
                     (function () {
                       var counter = document.getElementById('PdpIncenseOfferTime-{{ section.id }}');

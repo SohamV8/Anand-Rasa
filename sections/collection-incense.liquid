@@ -82,6 +82,143 @@
   position: relative;
 }
 
+.arc-banner__link {
+  display: block;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.arc-banner__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(184,148,58,0) 0%, rgba(184,148,58,0.10) 50%, rgba(184,148,58,0) 100%);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.arc-banner__link:hover::after,
+.arc-banner__link:focus-visible::after {
+  opacity: 1;
+}
+
+.arc-banner__link:focus-visible {
+  box-shadow: inset 0 0 0 3px var(--gold);
+}
+
+.arc-banner__cta {
+  position: absolute;
+  bottom: clamp(16px, 3vw, 32px);
+  right: clamp(16px, 3vw, 36px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  font-family: var(--fb);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+  opacity: 0;
+  transform: translateY(12px);
+  animation: arc-cta-in 0.7s cubic-bezier(0.25,1,0.5,1) 0.55s forwards;
+  transition: transform 0.35s cubic-bezier(0.25,1,0.5,1),
+              box-shadow 0.35s ease,
+              background 0.35s ease,
+              color 0.35s ease;
+}
+
+.arc-banner__cta-arrow {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #fff;
+  transition: transform 0.35s cubic-bezier(0.25,1,0.5,1);
+}
+
+.arc-banner__link:hover .arc-banner__cta {
+  transform: translateY(0) scale(1.04);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.32);
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+
+.arc-banner__link:hover .arc-banner__cta-arrow {
+  background: #fff;
+  color: var(--gold);
+  transform: translateX(3px);
+}
+
+.arc-banner__pulse {
+  position: absolute;
+  top: clamp(14px, 2.4vw, 24px);
+  left: clamp(14px, 2.4vw, 28px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px 7px 11px;
+  font-family: var(--fb);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(15,15,15,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 999px;
+  opacity: 0;
+  animation: arc-cta-in 0.7s cubic-bezier(0.25,1,0.5,1) 0.4s forwards;
+}
+
+.arc-banner__pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff5a5a;
+  box-shadow: 0 0 0 0 rgba(255,90,90,0.6);
+  animation: arc-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes arc-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,90,90,0.6); }
+  70%  { box-shadow: 0 0 0 9px rgba(255,90,90,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,90,90,0); }
+}
+
+@keyframes arc-cta-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .arc-banner__cta {
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+  .arc-banner__pulse {
+    font-size: 9px;
+    padding: 6px 11px 6px 9px;
+  }
+}
+
 .arc-banner__img {
   width: 100%;
   height: auto;
@@ -89,6 +226,11 @@
   display: block;
   opacity: 0;
   animation: arc-img-in 0.9s ease 0.1s forwards;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.arc-banner__link:hover .arc-banner__img {
+  transform: scale(1.02);
 }
 
 .arc-banner__ph {
@@ -936,38 +1078,93 @@
   <meta itemprop="description" content="{{ collection.description | strip_html | escape }}">
 
   {%- comment -%} ── TOP BANNER IMAGE ── {%- endcomment -%}
+  {%- liquid
+    assign banner_link    = section.settings.banner_url | default: '/collections/incense-stick'
+    assign banner_aria    = section.settings.banner_aria_label | default: 'View special incense bundle offer — buy any 3 for ₹599'
+    assign banner_pulse   = section.settings.banner_pulse_text | default: 'Limited Time'
+    assign banner_cta     = section.settings.banner_cta_text   | default: 'Shop the Offer'
+  -%}
+
   {%- if section.settings.incense_image != blank -%}
     <div class="arc-banner">
-      <img
-        src="{{ section.settings.incense_image | image_url: width: 2000 }}"
-        srcset="
-          {{ section.settings.incense_image | image_url: width: 900 }} 900w,
-          {{ section.settings.incense_image | image_url: width: 1400 }} 1400w,
-          {{ section.settings.incense_image | image_url: width: 1800 }} 1800w,
-          {{ section.settings.incense_image | image_url: width: 2400 }} 2400w
-        "
-        sizes="100vw"
-        alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa — Pure Incense Sticks, Sacred Fragrances' | escape }}"
-        width="{{ section.settings.incense_image.width | default: 2000 }}"
-        height="{{ section.settings.incense_image.height | default: 700 }}"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-        class="arc-banner__img"
+      <a
+        class="arc-banner__link"
+        href="{{ banner_link }}"
+        aria-label="{{ banner_aria | escape }}"
       >
+        {%- if banner_pulse != blank -%}
+          <span class="arc-banner__pulse" aria-hidden="true">
+            <span class="arc-banner__pulse-dot"></span>
+            <span>{{ banner_pulse }}</span>
+          </span>
+        {%- endif -%}
+
+        <img
+          src="{{ section.settings.incense_image | image_url: width: 2000 }}"
+          srcset="
+            {{ section.settings.incense_image | image_url: width: 900 }} 900w,
+            {{ section.settings.incense_image | image_url: width: 1400 }} 1400w,
+            {{ section.settings.incense_image | image_url: width: 1800 }} 1800w,
+            {{ section.settings.incense_image | image_url: width: 2400 }} 2400w
+          "
+          sizes="100vw"
+          alt="{{ section.settings.incense_image.alt | default: 'Anand Rasa — Pure Incense Sticks, Sacred Fragrances' | escape }}"
+          width="{{ section.settings.incense_image.width | default: 2000 }}"
+          height="{{ section.settings.incense_image.height | default: 700 }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="arc-banner__img"
+        >
+
+        {%- if banner_cta != blank -%}
+          <span class="arc-banner__cta" aria-hidden="true">
+            <span>{{ banner_cta }}</span>
+            <span class="arc-banner__cta-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </span>
+          </span>
+        {%- endif -%}
+      </a>
     </div>
   {%- else -%}
     <div class="arc-banner">
-      <img
-        src="{{ 'incense.jpeg' | asset_url }}"
-        alt="Anand Rasa — Pure Incense Sticks, Sacred Fragrances"
-        width="2000"
-        height="700"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-        class="arc-banner__img"
+      <a
+        class="arc-banner__link"
+        href="{{ banner_link }}"
+        aria-label="{{ banner_aria | escape }}"
       >
+        {%- if banner_pulse != blank -%}
+          <span class="arc-banner__pulse" aria-hidden="true">
+            <span class="arc-banner__pulse-dot"></span>
+            <span>{{ banner_pulse }}</span>
+          </span>
+        {%- endif -%}
+
+        <img
+          src="{{ 'incense.jpeg' | asset_url }}"
+          alt="Anand Rasa — Pure Incense Sticks, Sacred Fragrances"
+          width="2000"
+          height="700"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="arc-banner__img"
+        >
+
+        {%- if banner_cta != blank -%}
+          <span class="arc-banner__cta" aria-hidden="true">
+            <span>{{ banner_cta }}</span>
+            <span class="arc-banner__cta-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </span>
+          </span>
+        {%- endif -%}
+      </a>
     </div>
   {%- endif -%}
 
@@ -1416,6 +1613,10 @@
   "settings": [
     { "type": "header", "content": "Top Banner" },
     { "type": "image_picker", "id": "incense_image", "label": "Banner image" },
+    { "type": "url", "id": "banner_url", "label": "Banner click URL", "info": "Defaults to /collections/incense-stick when empty." },
+    { "type": "text", "id": "banner_pulse_text", "label": "Banner pulse badge text", "default": "Limited Time" },
+    { "type": "text", "id": "banner_cta_text", "label": "Banner CTA pill text", "default": "Shop the Offer" },
+    { "type": "text", "id": "banner_aria_label", "label": "Banner accessibility label", "default": "View special incense bundle offer — buy any 3 for ₹599" },
     { "type": "header", "content": "Content Block" },
     
     { "type": "header", "content": "CTA Section" },

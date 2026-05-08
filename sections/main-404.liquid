@@ -21,3 +21,19 @@
     {{ 'general.continue_shopping' | t }}
   </a>
 </div>
+
+<script>
+  (function () {
+    var path = (window.location.pathname || '').replace(/\/+$/, '');
+    if (!path) return;
+
+    var legacyPaths = {
+      '/pages/incense-bundle-offer': true,
+      '/collections/incense': true
+    };
+
+    if (legacyPaths[path]) {
+      window.location.replace('/collections/incense-stick');
+    }
+  })();
+</script>
