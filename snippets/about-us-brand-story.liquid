@@ -1,0 +1,32 @@
+{%- liquid
+  assign ar_logo_alt = logo_alt | default: shop.name
+-%}
+<section class="ar-about-brand" aria-labelledby="ar-about-brand-title">
+  <div class="ar-about-brand__pink">
+    <div class="ar-about-brand__hero-inner">
+      {%- if title != blank -%}
+        <h1 class="ar-about-brand__title" id="ar-about-brand-title">{{ title | escape }}</h1>
+      {%- endif -%}
+      {%- if subtitle != blank -%}
+        <p class="ar-about-brand__subtitle">{{ subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+    <div class="ar-about-brand__logo-disc">
+      <img
+        src="{{ 'logo.webp' | asset_url }}"
+        alt="{{ ar_logo_alt | escape }}"
+        width="1080"
+        height="1080"
+        class="ar-about-brand__logo-img"
+        loading="eager"
+        decoding="async"
+      >
+    </div>
+  </div>
+
+  <div class="ar-about-brand__cream">
+    {%- if body != blank -%}
+      <div class="ar-about-brand__body rte">{{ body }}</div>
+    {%- endif -%}
+  </div>
+</section>

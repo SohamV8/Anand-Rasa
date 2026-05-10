@@ -1,0 +1,159 @@
+{{ 'section-vip-club.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="vip-club section-{{ section.id }}-padding" style="background-color: {{ section.settings.background_color }};">
+  <div class="vip-club__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="vip-club__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+    <h1 class="vip-club__title">{{ section.settings.title | escape }}</h1>
+    {%- if section.settings.lead != blank -%}
+      <p class="vip-club__lead">{{ section.settings.lead | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="vip-club__perks" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' and block.settings.text != blank -%}
+            <li class="vip-club__perk" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <div class="vip-club__body rte">{{ section.settings.body }}</div>
+    {%- endif -%}
+
+    <div class="vip-club__actions">
+      {%- if section.settings.cta_label != blank and section.settings.cta_url != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="vip-club__btn">{{ section.settings.cta_label | escape }}</a>
+      {%- endif -%}
+      {%- if section.settings.secondary_label != blank and section.settings.secondary_url != blank -%}
+        <a href="{{ section.settings.secondary_url }}" class="vip-club__link">{{ section.settings.secondary_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "VIP Club",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#fafaf9"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "VIP Club"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "A quiet circle for those who live in scent — early access, private edits, and care that goes beyond the cart."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Extra detail",
+      "default": "<p>Details and perks can change; we will always share updates here. Thank you for being part of our world.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary button label",
+      "default": "Shop collections"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary link label",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Early access to limited releases"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "VIP Club",
+      "blocks": [
+        { "type": "perk", "settings": { "text": "Early access to limited releases and seasonal attars" } },
+        { "type": "perk", "settings": { "text": "Member-only notes on craft, ingredients, and ritual" } },
+        { "type": "perk", "settings": { "text": "Dedicated support for orders, gifting, and custom enquiries" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

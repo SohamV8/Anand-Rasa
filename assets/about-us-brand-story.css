@@ -1,0 +1,151 @@
+.ar-about-brand {
+  --ar-about-pink: #f48fb1;
+  --ar-about-cream: #f6f1e7;
+  --ar-about-ink: rgb(26, 24, 28);
+  --ar-about-muted: rgb(58, 54, 62);
+  --ar-about-font: var(--font-body-family);
+  --ar-about-logo-size: min(92vw, clamp(17rem, 52vw, 30rem));
+  position: relative;
+  overflow-x: clip;
+  font-family: var(--ar-about-font);
+  font-style: var(--font-body-style);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ar-about-brand__pink {
+  position: relative;
+  z-index: 2;
+  min-height: 50vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(2.5rem, 6.5vh, 4.75rem) 1.25rem 0;
+  background-color: var(--ar-about-pink);
+}
+
+.ar-about-brand__hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: min(52rem, 100%);
+  margin-inline: auto;
+  padding-bottom: calc(var(--ar-about-logo-size) * 0.52 + 0.5rem);
+  text-align: center;
+}
+
+.ar-about-brand__title {
+  margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
+  color: #fff;
+  font-family: var(--ar-about-font);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(3.25rem, 11vw, 6.25rem);
+  line-height: 1.06;
+  letter-spacing: 0.045em;
+  text-wrap: balance;
+}
+
+.ar-about-brand__subtitle {
+  margin: 0 auto;
+  max-width: 44rem;
+  padding: 0 clamp(0.5rem, 4vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.96);
+  font-family: var(--ar-about-font);
+  font-style: normal;
+  font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+  line-height: 1.62;
+  font-weight: 400;
+  letter-spacing: 0.018em;
+  text-wrap: balance;
+}
+
+.ar-about-brand__logo-disc {
+  position: absolute;
+  z-index: 50;
+  left: 50%;
+  bottom: 0;
+  width: var(--ar-about-logo-size);
+  height: var(--ar-about-logo-size);
+  box-sizing: border-box;
+  border-radius: 50%;
+  background-color: var(--ar-about-cream);
+  box-shadow: none;
+  border: none;
+  transform: translate(-50%, 50%);
+  display: grid;
+  place-items: center;
+  padding: clamp(0.55rem, 2.2vw, 1.1rem);
+}
+
+.ar-about-brand__logo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  filter: none;
+  -webkit-filter: none;
+}
+
+.ar-about-brand__cream {
+  position: relative;
+  z-index: 1;
+  background-color: var(--ar-about-cream);
+  padding: calc(var(--ar-about-logo-size) * 0.5 + clamp(2rem, 5.5vw, 3.5rem)) 1.25rem clamp(3rem, 8vw, 6rem);
+}
+
+.ar-about-brand__body {
+  max-width: min(52rem, 100%);
+  margin-inline: auto;
+  color: var(--ar-about-muted);
+  font-family: var(--ar-about-font);
+  font-size: clamp(1.15rem, 2.85vw, 1.45rem);
+  line-height: 1.88;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.ar-about-brand__body strong {
+  color: var(--ar-about-ink);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+.ar-about-brand__body p {
+  margin: 0 0 1.35em;
+}
+
+.ar-about-brand__body p:last-child {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 750px) {
+  .ar-about-brand__pink {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .ar-about-brand__cream {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .ar-about-brand {
+    --ar-about-logo-size: min(38rem, 46vw);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .ar-about-brand {
+    --ar-about-logo-size: min(42rem, 40vw);
+  }
+}

@@ -511,6 +511,34 @@
   {%- endfor -%}
 {%- endif -%}
 {%- capture ar_header_giftsets_url -%}{% render 'ar-collection-url', handle: 'giftsets' %}{%- endcapture -%}
+{%- assign ar_header_giftsets_url = ar_header_giftsets_url | strip -%}
+{%- liquid
+  assign ar_vip_club_view_url = routes.root_url | append: '?view=vip-club'
+  if section.settings.nav_l3_vip_url != blank
+    assign ar_header_vip_url = section.settings.nav_l3_vip_url
+  else
+    assign ar_header_vip_url = pages['vip-club'].url | default: pages['vip'].url
+    if ar_header_vip_url == blank
+      assign ar_header_vip_url = ar_vip_club_view_url
+    endif
+  endif
+  assign ar_nav_l3_label = section.settings.nav_l3 | strip
+  if ar_nav_l3_label == blank
+    assign ar_nav_l3_label = 'VIP CLUB'
+  endif
+  assign ar_nav_l3_down = ar_nav_l3_label | downcase
+  assign ar_nav_l3_was_gift_label = false
+  if ar_nav_l3_down == 'gift sets' or ar_nav_l3_down == 'gift set'
+    assign ar_nav_l3_was_gift_label = true
+    assign ar_nav_l3_label = 'VIP CLUB'
+  endif
+  assign ar_nav_l3_href = section.settings.nav_l3_url | strip
+  if ar_nav_l3_was_gift_label
+    assign ar_nav_l3_href = ar_header_vip_url
+  elsif ar_nav_l3_href == blank or ar_nav_l3_href == ar_header_giftsets_url
+    assign ar_nav_l3_href = ar_header_vip_url
+  endif
+%}
 {%- assign ar_header_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
 {%- if ar_header_about_url == blank -%}
   {%- capture ar_header_about_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}
@@ -526,7 +554,7 @@
     <div class="ar-nav__left">
       <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
       <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-      <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+      <a href="{{ ar_nav_l3_href }}" class="ar-nav__link">{{ ar_nav_l3_label }}</a>
     </div>
 
     <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
@@ -604,6 +632,8 @@
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'incense-sticks'
                         endcapture
+                      elsif ar_mega_title_key contains 'vip'
+                        assign ar_mega_link_url = ar_header_vip_url
                       elsif ar_mega_title_key contains 'gift' or ar_mega_title_key contains 'discovery'
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'giftsets'
@@ -632,6 +662,10 @@
                         assign ar_mega_hover_image = 'love.webp' | asset_url
                       elsif ar_mega_title_key contains 'incense' or ar_mega_link_key contains 'incense-sticks'
                         assign ar_mega_hover_image = 'incense.jpeg' | asset_url
+                      elsif ar_mega_title_key contains 'gift' or ar_mega_link_key contains 'giftsets'
+                        assign ar_mega_hover_image = 'logo.webp' | asset_url
+                      elsif ar_mega_title_key contains 'vip'
+                        assign ar_mega_hover_image = 'logo.webp' | asset_url
                       endif
                     endif
                     if ar_mega_hover_image == blank and mega_fallback_image != blank
@@ -663,6 +697,7 @@
                 <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" data-image="{{ 'chakra.webp' | asset_url }}">Chakra Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" data-image="{{ 'love.webp' | asset_url }}">Love Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" data-image="{{ 'incense.jpeg' | asset_url }}">Incense Sticks</a>
+                <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-mega__link" data-image="{{ 'logo.webp' | asset_url }}">Gift Sets</a>
               {%- endif -%}
             </div>
             <div class="ar-mega__feature">
@@ -827,7 +862,7 @@
   </div>
   <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
   <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-  <a href="{{ section.settings.nav_l3_url | default: ar_header_giftsets_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l3 | default: 'Gift Sets' }}</a>
+  <a href="{{ ar_nav_l3_href }}" class="ar-nav__drawer-link">{{ ar_nav_l3_label }}</a>
   <button class="ar-nav__drawer-link ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false" type="button">
     <span>{{ section.settings.nav_r1 | default: 'Collections' }}</span>
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -872,6 +907,8 @@
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'incense-sticks'
               endcapture
+            elsif ar_drawer_title_key contains 'vip'
+              assign ar_drawer_link_url = ar_header_vip_url
             elsif ar_drawer_title_key contains 'gift' or ar_drawer_title_key contains 'discovery'
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'giftsets'
@@ -894,6 +931,7 @@
       <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
+      <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gift Sets</a>
     {%- endif -%}
     </div>
   </div>
@@ -1196,12 +1234,19 @@
       "type": "text",
       "id": "nav_l3",
       "label": "Left link 3 label",
-      "default": "Gift Sets"
+      "default": "VIP CLUB"
     },
     {
       "type": "url",
       "id": "nav_l3_url",
-      "label": "Left link 3 URL"
+      "label": "Left link 3 URL",
+      "info": "Leave empty or clear an old Gift Sets URL to use the VIP Club destination below."
+    },
+    {
+      "type": "url",
+      "id": "nav_l3_vip_url",
+      "label": "VIP Club page URL (optional)",
+      "info": "Optional override. If empty: uses your Page with handle “vip-club” (or “vip”) when it exists; otherwise the VIP layout at the home URL with ?view=vip-club (works without creating a page)."
     },
     {
       "type": "text",

@@ -209,9 +209,9 @@
 .ar-tst__fade-r,
 .ar-vtm__fade-r { right: 0; background: linear-gradient(to left, #FFFFFF, rgba(255, 255, 255, 0)); }
 
-/* Shared arrows — pure white + light border (light theme; no dark fill on hover) */
-.ar-tst__arrow,
-.ar-vtm__arrow {
+/* Shared arrows — white fill (scoped under .ar-tm so .ar-tm button { background:none } does not win) */
+.ar-tm .ar-tst__arrow,
+.ar-tm .ar-vtm__arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -228,21 +228,21 @@
   transition: background var(--tr), border-color var(--tr), box-shadow var(--tr), transform var(--tr);
   cursor: pointer;
 }
-.ar-tst__arrow:hover,
-.ar-vtm__arrow:hover {
+.ar-tm .ar-tst__arrow:hover,
+.ar-tm .ar-vtm__arrow:hover {
   background: #FFFFFF;
   color: var(--ink);
   border-color: rgba(0, 0, 0, 0.12);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
   transform: translateY(-50%) scale(1.06);
 }
-.ar-tst__arrow-l, .ar-vtm__arrow-l { left:  18px; }
-.ar-tst__arrow-r, .ar-vtm__arrow-r { right: 18px; }
-.ar-tst__arrow svg, .ar-vtm__arrow svg { display: block; }
-.ar-tst__arrow-l, .ar-vtm__arrow-l { left: var(--arrow-offset); }
-.ar-tst__arrow-r, .ar-vtm__arrow-r { right: var(--arrow-offset); }
-.ar-tst__arrow:disabled,
-.ar-vtm__arrow:disabled {
+.ar-tm .ar-tst__arrow-l, .ar-tm .ar-vtm__arrow-l { left:  18px; }
+.ar-tm .ar-tst__arrow-r, .ar-tm .ar-vtm__arrow-r { right: 18px; }
+.ar-tm .ar-tst__arrow svg, .ar-tm .ar-vtm__arrow svg { display: block; }
+.ar-tm .ar-tst__arrow-l, .ar-tm .ar-vtm__arrow-l { left: var(--arrow-offset); }
+.ar-tm .ar-tst__arrow-r, .ar-tm .ar-vtm__arrow-r { right: var(--arrow-offset); }
+.ar-tm .ar-tst__arrow:disabled,
+.ar-tm .ar-vtm__arrow:disabled {
   opacity: 0.38;
   transform: translateY(-50%) scale(0.96);
   cursor: not-allowed;
@@ -701,10 +701,10 @@ body.ar-vtm-modal-open { overflow: hidden; }
   .ar-tst__card   { flex: 0 0 min(82vw, 340px); padding: 24px 18px; }
   .ar-tst__track  { padding: 14px 52px; gap: 14px; scroll-padding-inline: 52px; }
   .ar-vtm__track  { padding: 14px 52px; gap: 10px; scroll-padding-inline: 52px; }
-  .ar-tst__arrow-l, .ar-vtm__arrow-l { left: 4px; }
-  .ar-tst__arrow-r, .ar-vtm__arrow-r { right: 4px; }
-  .ar-tst__arrow,
-  .ar-vtm__arrow { width: 38px; height: 38px; }
+  .ar-tm .ar-tst__arrow-l, .ar-tm .ar-vtm__arrow-l { left: 4px; }
+  .ar-tm .ar-tst__arrow-r, .ar-tm .ar-vtm__arrow-r { right: 4px; }
+  .ar-tm .ar-tst__arrow,
+  .ar-tm .ar-vtm__arrow { width: 38px; height: 38px; }
   .ar-tst__fade,
   .ar-vtm__fade   { width: 48px; }
   .ar-vtm__card {
@@ -724,8 +724,8 @@ body.ar-vtm-modal-open { overflow: hidden; }
   }
   .ar-tst__track { padding: 12px 40px; gap: 12px; scroll-padding-inline: 40px; }
   .ar-vtm__track { padding: 12px 40px; gap: 8px; scroll-padding-inline: 40px; }
-  .ar-tst__arrow,
-  .ar-vtm__arrow { width: 34px; height: 34px; }
+  .ar-tm .ar-tst__arrow,
+  .ar-tm .ar-vtm__arrow { width: 34px; height: 34px; }
 }
 </style>
 

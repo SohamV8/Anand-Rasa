@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-vip-club",
+      "blocks": {
+        "perk_1": {
+          "type": "perk",
+          "settings": {
+            "text": "Early access to limited releases and seasonal attars"
+          }
+        },
+        "perk_2": {
+          "type": "perk",
+          "settings": {
+            "text": "Member-only notes on craft, ingredients, and ritual"
+          }
+        },
+        "perk_3": {
+          "type": "perk",
+          "settings": {
+            "text": "Dedicated support for orders, gifting, and custom enquiries"
+          }
+        }
+      },
+      "block_order": ["perk_1", "perk_2", "perk_3"],
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "title": "VIP Club",
+        "lead": "A quiet circle for those who live in scent — early access, private edits, and care that goes beyond the cart.",
+        "body": "<p>Membership details may evolve; we post updates here first. We are grateful you choose to stay close to the house.</p>",
+        "cta_label": "Shop collections",
+        "secondary_label": "Contact us",
+        "cta_url": "shopify://collections/all",
+        "secondary_url": "shopify://pages/contact",
+        "padding_top": 80,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": ["main"]
+}

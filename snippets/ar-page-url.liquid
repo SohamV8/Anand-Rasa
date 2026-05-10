@@ -26,6 +26,11 @@
       if url == blank
         assign url = contact_fallback_url
       endif
+    when 'vip-club', 'vip'
+      assign url = pages['vip-club'].url | default: pages['vip'].url
+      if url == blank
+        assign url = routes.root_url | append: '?view=vip-club'
+      endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key
   endcase

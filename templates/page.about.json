@@ -1,5 +1,14 @@
 {
   "sections": {
+    "about_brand_story": {
+      "type": "about-us-brand-story",
+      "settings": {
+        "title": "About Us",
+        "subtitle": "Crafting fragrances rooted in tradition, devotion, and timeless luxury.",
+        "body": "<p>Anand Rasa was born from a simple belief: fragrance is not just scent — it is identity, devotion, and cosmic connection. We are India's astrology-inspired fragrance house, handcrafting luxury alcohol-free attars, zodiac perfume oils, planet fragrances, agarbatti, and spiritual incense rooted in Vedic tradition. Every bottle carries the intention of its celestial alignment — from the fiery confidence of a Mars attar to the serene calm of a Moon fragrance. Our perfumers blend rare natural ingredients using time-honoured distillation methods, creating skin-close aromas designed for meditation, pooja, and daily ritual. Based in Gurugram, Haryana, we honour the ancient Indian art of attar-making while bringing it to a modern, design-conscious audience.</p>",
+        "padding_bottom": 0
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {
@@ -9,6 +18,7 @@
     }
   },
   "order": [
+    "about_brand_story",
     "main"
   ]
 }

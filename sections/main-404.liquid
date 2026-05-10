@@ -34,6 +34,12 @@
 
     if (legacyPaths[path]) {
       window.location.replace('/collections/incense-stick');
+      return;
+    }
+
+    var vipPath = path.replace(/\/pages\/vip-club$/, '');
+    if (vipPath !== path) {
+      window.location.replace((vipPath || '/') + '?view=vip-club');
     }
   })();
 </script>
