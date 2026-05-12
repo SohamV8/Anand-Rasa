@@ -106,7 +106,12 @@
     {%- comment -%} PRODUCT GRID {% endcomment %}
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
-        {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- if template.suffix == 'bestseller' -%}
+          {%- assign ar_per_page = 50 -%}
+        {%- else -%}
+          {%- assign ar_per_page = section.settings.products_per_page -%}
+        {%- endif -%}
+        {%- paginate collection.products by ar_per_page -%}
           {%- assign ar_bucket_surya = '' -%}
           {%- assign ar_bucket_chandra = '' -%}
           {%- assign ar_bucket_guru = '' -%}
@@ -276,7 +281,7 @@
           {{ ar_bucket_ketu }}
           {{ ar_bucket_rest }}
   
-          {%- if paginate.pages > 1 -%}
+          {%- if paginate.pages > 1 and template.suffix != 'bestseller' -%}
             <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
               {%- if paginate.previous -%}
                 <a href="{{ paginate.previous.url }}" style="width:40px;height:40px;border:1px solid rgba(30,32,35,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#1e2023;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#1e2023';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#1e2023'">&#8249;</a>
