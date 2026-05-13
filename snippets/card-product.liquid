@@ -18,6 +18,72 @@
     assign image_urls     = ''
     assign product_tags   = card_product.tags | join: ',' | downcase
 
+    comment
+      Anand Rasa — map Planet & Zodiac products to local asset thumbnails.
+      Detect by handle + title so it works wherever this card is rendered.
+    endcomment
+    assign ar_card_asset_img = ''
+    assign ar_card_key = card_product.handle | append: ' ' | append: card_product.title | downcase
+
+    if ar_card_key contains 'sun' or ar_card_key contains 'surya'
+      assign ar_card_asset_img = 'Planet/surya_attar.webp' | asset_url
+    elsif ar_card_key contains 'moon' or ar_card_key contains 'chandra'
+      assign ar_card_asset_img = 'Planet/chandra_attar.webp' | asset_url
+    elsif ar_card_key contains 'mars' or ar_card_key contains 'mangal'
+      assign ar_card_asset_img = 'Planet/mangal_attar.webp' | asset_url
+    elsif ar_card_key contains 'mercury' or ar_card_key contains 'budh'
+      assign ar_card_asset_img = 'Planet/budh_attar.webp' | asset_url
+    elsif ar_card_key contains 'jupiter' or ar_card_key contains 'guru'
+      assign ar_card_asset_img = 'Planet/guru_attar.webp' | asset_url
+    elsif ar_card_key contains 'venus' or ar_card_key contains 'shukra'
+      assign ar_card_asset_img = 'Planet/shukra_attar.webp' | asset_url
+    elsif ar_card_key contains 'saturn' or ar_card_key contains 'shani'
+      assign ar_card_asset_img = 'Planet/shani_attar.webp' | asset_url
+    elsif ar_card_key contains 'rahu'
+      assign ar_card_asset_img = 'Planet/rahu_attar.webp' | asset_url
+    elsif ar_card_key contains 'ketu'
+      assign ar_card_asset_img = 'Planet/ketu_attar.webp' | asset_url
+    elsif ar_card_key contains 'aries' or ar_card_key contains 'mesha'
+      assign ar_card_asset_img = 'Zodiac/aries.webp' | asset_url
+    elsif ar_card_key contains 'taurus' or ar_card_key contains 'vrishabha'
+      assign ar_card_asset_img = 'Zodiac/taurus.webp' | asset_url
+    elsif ar_card_key contains 'gemini' or ar_card_key contains 'mithuna'
+      assign ar_card_asset_img = 'Zodiac/gemini.webp' | asset_url
+    elsif ar_card_key contains 'cancer' or ar_card_key contains 'karka'
+      assign ar_card_asset_img = 'Zodiac/cancer.webp' | asset_url
+    elsif ar_card_key contains 'leo' or ar_card_key contains 'simha'
+      assign ar_card_asset_img = 'Zodiac/leo.webp' | asset_url
+    elsif ar_card_key contains 'virgo' or ar_card_key contains 'kanya'
+      assign ar_card_asset_img = 'Zodiac/virgo.webp' | asset_url
+    elsif ar_card_key contains 'libra' or ar_card_key contains 'tula'
+      assign ar_card_asset_img = 'Zodiac/libra.webp' | asset_url
+    elsif ar_card_key contains 'scorpio' or ar_card_key contains 'vrischika'
+      assign ar_card_asset_img = 'Zodiac/scorpio.webp' | asset_url
+    elsif ar_card_key contains 'sagittarius' or ar_card_key contains 'dhanu'
+      assign ar_card_asset_img = 'Zodiac/sagittarius.webp' | asset_url
+    elsif ar_card_key contains 'capricorn' or ar_card_key contains 'makara'
+      assign ar_card_asset_img = 'Zodiac/capricorn.webp' | asset_url
+    elsif ar_card_key contains 'aquarius' or ar_card_key contains 'kumbha'
+      assign ar_card_asset_img = 'Zodiac/aquarius.webp' | asset_url
+    elsif ar_card_key contains 'pisces' or ar_card_key contains 'meena'
+      assign ar_card_asset_img = 'Zodiac/pisces.webp' | asset_url
+    endif
+
+    comment
+      Bestseller showcase images from /assets/Bestseller/ (shared lookup).
+    endcomment
+    assign ar_card_bestseller_img = ''
+  -%}
+
+  {%- capture ar_bs_lookup -%}
+    {%- render 'bestseller-image-lookup', bs_product: card_product -%}
+  {%- endcapture -%}
+  {%- assign ar_bs_lookup = ar_bs_lookup | strip -%}
+  {%- if ar_card_asset_img == blank and ar_bs_lookup != blank -%}
+    {%- assign ar_card_bestseller_img = ar_bs_lookup | asset_url -%}
+  {%- endif -%}
+
+  {%- liquid
     assign rating_value   = 5
     if card_product.metafields.reviews.rating.value.rating
       assign rating_value = card_product.metafields.reviews.rating.value.rating
@@ -52,6 +118,11 @@
     {%- endif -%}
   {%- endfor -%}
 
+  {%- if ar_card_asset_img != blank or ar_card_bestseller_img != blank -%}
+    {%- assign image_count = 0 -%}
+    {%- assign image_urls = '' -%}
+  {%- endif -%}
+
   {%- liquid
     assign qty_rules = false
     assign qv = card_product.selected_or_first_available_variant
@@ -85,14 +156,32 @@
     >
 
       {%- comment -%} ── IMAGE BLOCK ── {%- endcomment -%}
-      <div class="ar-card__media">
+      <div class="ar-card__media{% if ar_card_asset_img != blank or ar_card_bestseller_img != blank %} ar-card__media--contain{% endif %}">
         <a
           href="{{ card_product.url }}"
           class="ar-card__media-link"
           tabindex="-1"
           aria-label="{{ card_product.title | escape }}"
         >
-          {%- if first_image -%}
+          {%- if ar_card_asset_img != blank -%}
+            <img
+              class="ar-card__img ar-card__img--contain"
+              src="{{ ar_card_asset_img }}"
+              alt="{{ card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
+              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              decoding="async"
+            >
+          {%- elsif ar_card_bestseller_img != blank -%}
+            <img
+              class="ar-card__img ar-card__img--contain"
+              src="{{ ar_card_bestseller_img }}"
+              alt="{{ card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
+              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              decoding="async"
+            >
+          {%- elsif first_image -%}
             <!-- SEO Fix: Product card responsive image with WebP source and explicit dimensions -->
             <picture>
               <source
@@ -313,13 +402,33 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
   transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
               opacity 0.3s ease;
 }
 
+/* Planet / zodiac / bestseller asset thumbnails: letterbox, no crop or stretch */
+.ar-card__media--contain .ar-card__media-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.ar-card__img--contain {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
 .ar-card:hover .ar-card__img {
   transform: scale(1.03);
+}
+.ar-card:hover .ar-card__img--contain {
+  transform: scale(1.02);
 }
 
 .ar-card__img-ph {
