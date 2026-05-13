@@ -55,6 +55,8 @@
       assign ar_same_as_json = ar_same_as_json | append: ar_link | json
     endif
   endfor
+
+  assign ar_search_target = shop.url | append: '/search?q=' | append: '{' | append: 'search_term_string' | append: '}'
 -%}
 <script type="application/ld+json">
   {
@@ -92,7 +94,7 @@
         },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": {{ shop.url | append: '/search?q={search_term_string}' | json }},
+          "target": {{ ar_search_target | json }},
           "query-input": "required name=search_term_string"
         }
       }

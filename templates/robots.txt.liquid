@@ -1,38 +1,13 @@
 {%- comment -%}
-  Anandrasa — robots.txt (production)
+  Anandrasa robots.txt production template.
 
-  Architecture
-  ------------
-  1) Render Shopify's default crawl rules first via `robots.default_groups`.
-     This emits the platform-managed Disallow list (admin, cart, checkout,
-     checkouts, orders, account, password, /search, policies API, etc.) and
-     the auto-generated Sitemap reference. Using the default groups keeps
-     this file aligned with Shopify platform updates without manual edits.
+  Default crawl rules come from robots.default_groups (Shopify-managed).
+  Then we append AI crawler Allow blocks. No duplicate Sitemap line after
+  those groups. Long documentation lives in theme docs or repo README.
 
-  2) Append explicit allow blocks for major AI / answer-engine crawlers so
-     this store is eligible for Google AI Overviews, ChatGPT Search,
-     Perplexity, Claude, Copilot, and DuckAssist. Each agent block ignores
-     the `User-agent: *` group per the Robots Exclusion Protocol, so we
-     intentionally do not restate the sensitive-route Disallows — those
-     routes are server-side protected (login redirects) and the AI bots
-     should be able to read every public surface (products, collections,
-     pages, blogs, articles).
-
-  3) Do not append extra `Sitemap:` lines after default_groups — Shopify already
-     emits the canonical sitemap URL inside those groups; duplicates confuse auditors.
-
-  Design notes
-  ------------
-  - We do NOT add aggressive Disallow rules for `?sort_by=`, `?filter.`,
-    `?variant=`, `?page=`, `?q=` etc. Canonical tags in <head> already
-    consolidate those URLs, and overblocking removes legitimate filtered
-    collection pages from discovery — costly for both SEO and AI search.
-  - Shopify defaults already cover /search; we deliberately do not unblock
-    it for AI bots either, because thin predictive search URLs add no
-    crawl value.
-  - All comments use `#` so they are emitted as valid robots.txt comments;
-    Liquid `{%- comment -%}` blocks (like this one) are stripped at render.
+  Do not put Liquid tag-like brace sequences inside this comment block.
 {%- endcomment -%}
+
 {%- for group in robots.default_groups -%}
   {{- group.user_agent }}
   {%- for rule in group.rules -%}
@@ -41,10 +16,9 @@
 
   {%- for sitemap in group.sitemaps -%}
     {{ sitemap }}
-  {%- endfor %}
+  {%- endfor -%}
 
-{% endfor -%}
-
+{%- endfor -%}
 # ---------------------------------------------------------------------------
 # Generative AI & answer-engine crawlers — full-site allow
 # ---------------------------------------------------------------------------
@@ -109,8 +83,3 @@ Allow: /
 
 User-agent: CCBot
 Allow: /
-
-{%- comment -%}
-  Sitemap URL(s) are already emitted inside `robots.default_groups` above.
-  Omitting a trailing duplicate `Sitemap:` line keeps robots.txt deterministic.
-{%- endcomment -%}
