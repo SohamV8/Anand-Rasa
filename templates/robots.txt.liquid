@@ -8,3 +8,37 @@ Disallow: /search
 Disallow: /account
 Allow: /
 Sitemap: https://www.anandrasa.com/sitemap.xml
+# ✅ ChatGPT / OpenAI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# ✅ Other AI crawlers (bonus visibility)
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# 🔒 Sensitive pages block karo (sab ke liye)
+User-agent: *
+Disallow: /admin/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+Disallow: /orders
+
+# ✅ Important pages allow karo
+Allow: /products/
+Allow: /collections/
+Allow: /blogs/
+Allow: /pages/
+
+# Sitemap
+Sitemap: https://www.anandrasa.com/sitemap.xml
+
