@@ -1,0 +1,53 @@
+{%- comment -%}
+  BlogPosting JSON-LD using sanitized plain-text body (AI/chat UI stripped upstream).
+
+  Parameters:
+  - article: required
+  - article_body_plain: required (strip_html of sanitized HTML)
+{%- endcomment -%}
+{%- liquid
+  assign ar_ld_image = blank
+  if article.image != blank
+    assign ar_ld_image = article.image | image_url: width: 1200 | prepend: 'https:'
+  endif
+  assign ar_ld_logo = blank
+  if settings.logo != blank
+    assign ar_ld_logo = settings.logo | image_url: width: 512 | prepend: 'https:'
+  endif
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ request.origin | append: article.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    "description": {{ article.excerpt | default: article_body_plain | truncate: 300 | strip | json }},
+    "datePublished": {{ article.published_at | json }},
+    "dateModified": {{ article.updated_at | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }}
+      {%- if ar_ld_logo != blank -%}
+      ,
+      "logo": {
+        "@type": "ImageObject",
+        "url": {{ ar_ld_logo | json }}
+      }
+      {%- endif -%}
+    }
+    {%- if ar_ld_image != blank -%}
+    ,
+    "image": {{ ar_ld_image | json }}
+    {%- endif -%}
+    ,
+    "articleBody": {{ article_body_plain | json }}
+  }
+</script>

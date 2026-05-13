@@ -2,6 +2,10 @@
 
 <article class="article-template">
   {%- assign ar_article_faq_items = article.metafields.custom.faq_items.value -%}
+  {%- capture ar_article_html -%}
+    {% render 'ar-sanitize-article-html', html: article.content %}
+  {%- endcapture -%}
+  {%- assign ar_article_plain = ar_article_html | strip_html | strip -%}
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- when '@app' -%}
@@ -69,7 +73,7 @@
           class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {{ article.content }}
+          {{ ar_article_html }}
           {%- if ar_article_faq_items != blank -%}
             <section class="article-template__faq" aria-label="Frequently asked questions">
               <h2>Frequently asked questions</h2>
@@ -304,9 +308,7 @@
   {%- endif -%}
 </article>
 
-<script type="application/ld+json">
-  {{ article | structured_data }}
-</script>
+{% render 'schema-article-blogposting', article: article, article_body_plain: ar_article_plain %}
 {%- if ar_article_faq_items != blank -%}
   <script type="application/ld+json">
     {

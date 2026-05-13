@@ -1,8 +1,60 @@
+{%- comment -%}
+  Global Organization + WebSite JSON-LD.
+
+  - Uses `shop.url` for entity identifiers so the schema stays correct
+    across preview / myshopify / custom domains.
+  - `sameAs` is built from theme settings (settings.social_*_link) and
+    only includes links that have actually been configured. This avoids
+    publishing placeholder URLs that fail Rich Results validation and
+    pollute knowledge-graph signals.
+  - WebSite.potentialAction declares the in-site search endpoint so
+    Google and AI engines can surface a Sitelinks Searchbox.
+{%- endcomment -%}
 {%- liquid
   assign ar_logo_url = blank
   if settings.logo != blank
     assign ar_logo_url = settings.logo | image_url: width: 600 | prepend: 'https:'
   endif
+
+  assign ar_social_links = ''
+  if settings.social_instagram_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_instagram_link | append: '|'
+  endif
+  if settings.social_facebook_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_facebook_link | append: '|'
+  endif
+  if settings.social_youtube_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_youtube_link | append: '|'
+  endif
+  if settings.social_twitter_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_twitter_link | append: '|'
+  endif
+  if settings.social_pinterest_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_pinterest_link | append: '|'
+  endif
+  if settings.social_tiktok_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_tiktok_link | append: '|'
+  endif
+  if settings.social_snapchat_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_snapchat_link | append: '|'
+  endif
+  if settings.social_tumblr_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_tumblr_link | append: '|'
+  endif
+  if settings.social_vimeo_link != blank
+    assign ar_social_links = ar_social_links | append: settings.social_vimeo_link | append: '|'
+  endif
+
+  assign ar_same_as = ar_social_links | split: '|' | uniq
+  assign ar_same_as_json = ''
+  for ar_link in ar_same_as
+    if ar_link != blank
+      if ar_same_as_json != blank
+        assign ar_same_as_json = ar_same_as_json | append: ','
+      endif
+      assign ar_same_as_json = ar_same_as_json | append: ar_link | json
+    endif
+  endfor
 -%}
 <script type="application/ld+json">
   {
@@ -10,17 +62,20 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://www.anandrasa.com#organization",
-        "name": "Anandrasa",
-        "url": "https://www.anandrasa.com",
+        "@id": {{ shop.url | append: '#organization' | json }},
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }}
         {%- if ar_logo_url != blank -%}
-        "logo": {{ ar_logo_url | json }},
+        ,
+        "logo": {{ ar_logo_url | json }}
         {%- endif -%}
+        {%- if ar_same_as_json != blank -%}
+        ,
         "sameAs": [
-          "https://www.instagram.com/your-handle",
-          "https://www.facebook.com/your-page",
-          "https://www.youtube.com/your-channel"
-        ],
+          {{- ar_same_as_json -}}
+        ]
+        {%- endif -%}
+        ,
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer service",
@@ -29,12 +84,15 @@
       },
       {
         "@type": "WebSite",
-        "@id": "https://www.anandrasa.com#website",
-        "url": "https://www.anandrasa.com",
-        "name": "Anandrasa",
+        "@id": {{ shop.url | append: '#website' | json }},
+        "url": {{ shop.url | json }},
+        "name": {{ shop.name | json }},
+        "publisher": {
+          "@id": {{ shop.url | append: '#organization' | json }}
+        },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://www.anandrasa.com/search?q={search_term_string}",
+          "target": {{ shop.url | append: '/search?q={search_term_string}' | json }},
           "query-input": "required name=search_term_string"
         }
       }

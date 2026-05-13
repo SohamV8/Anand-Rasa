@@ -12,33 +12,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="p:domain_verify" content="729e17ada181256478d0215a9f9a6020"/>
     <meta name="theme-color" content="">
-    <!-- SEO Fix: Canonical normalization and pagination links -->
-    {%- if request.page_type == 'product' and product != blank -%}
-      <link rel="canonical" href="{{ shop.url }}/products/{{ product.handle }}">
-    {%- elsif request.page_type == 'collection' and collection != blank -%}
-      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}">
-      {%- assign ar_collection_seen = current_page | times: 24 -%}
-      {%- if current_page > 1 -%}
-        <link rel="prev" href="{{ shop.url }}{{ collection.url }}{% if current_page > 2 %}?page={{ current_page | minus: 1 }}{% endif %}">
-      {%- endif -%}
-      {%- if collection.products_count > ar_collection_seen -%}
-        <link rel="next" href="{{ shop.url }}{{ collection.url }}?page={{ current_page | plus: 1 }}">
-      {%- endif -%}
-    {%- elsif request.page_type == 'blog' and blog != blank -%}
-      <link rel="canonical" href="{{ shop.url }}{{ blog.url }}">
-      {%- assign ar_blog_seen = current_page | times: 12 -%}
-      {%- if current_page > 1 -%}
-        <link rel="prev" href="{{ shop.url }}{{ blog.url }}{% if current_page > 2 %}?page={{ current_page | minus: 1 }}{% endif %}">
-      {%- endif -%}
-      {%- if blog.articles_count > ar_blog_seen -%}
-        <link rel="next" href="{{ shop.url }}{{ blog.url }}?page={{ current_page | plus: 1 }}">
-      {%- endif -%}
-    {%- else -%}
-      <link rel="canonical" href="{{ canonical_url }}">
-    {%- endif -%}
+    {%- comment -%}
+      Canonical + prev/next are emitted by Shopify via `content_for_header` so we avoid
+      duplicate/conflicting link tags (manual overrides drift from paginate counts).
+    {%- endcomment -%}
     <!-- SEO Fix: Security and robots meta hardening -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    {%- comment -%}
+      SEO: page-level robots directive.
+      `noindex, follow` is emitted for thin/duplicate/utility surfaces so
+      crawl budget is preserved without orphaning links. Indexable pages
+      get an enriched directive that opts in to large image previews and
+      unlimited snippets — required for rich AI Overviews / SERP cards.
+    {%- endcomment -%}
     {%- liquid
       assign ar_should_noindex = false
       if current_tags != blank
@@ -50,11 +37,60 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       if request.page_type == '404'
         assign ar_should_noindex = true
       endif
+      if request.page_type == 'cart'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == 'gift_card'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == 'password'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type contains 'customers/'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == 'captcha'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type contains 'challenge'
+        assign ar_should_noindex = true
+      endif
+      if request.page_type == 'collection' and collection != blank
+        if collection.current_vendor != blank or collection.current_type != blank
+          assign ar_should_noindex = true
+        endif
+        for ar_cf in collection.filters
+          if ar_cf.active_values.size > 0
+            assign ar_should_noindex = true
+          endif
+        endfor
+      endif
     -%}
     {%- if ar_should_noindex -%}
       <meta name="robots" content="noindex, follow">
     {%- else -%}
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    {%- endif -%}
+
+    {%- comment -%}
+      SEO: RSS/Atom feeds for blog and article surfaces. Improves discovery
+      by feed readers, news aggregators, and AI training pipelines that
+      preferentially crawl structured feeds.
+    {%- endcomment -%}
+    {%- if request.page_type == 'blog' and blog != blank -%}
+      <link
+        rel="alternate"
+        type="application/atom+xml"
+        title="{{ blog.title | escape }} — {{ shop.name | escape }}"
+        href="{{ shop.url }}{{ blog.url }}.atom"
+      >
+    {%- elsif request.page_type == 'article' and blog != blank -%}
+      <link
+        rel="alternate"
+        type="application/atom+xml"
+        title="{{ blog.title | escape }} — {{ shop.name | escape }}"
+        href="{{ shop.url }}{{ blog.url }}.atom"
+      >
     {%- endif -%}
     <!-- SEO Fix: DNS prefetch for critical origins -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -74,13 +110,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     <link rel="icon" type="image/png" href="{{ ar_favicon_url }}">
     <link rel="apple-touch-icon" href="{{ ar_favicon_url }}">
-    <!-- SEO Fix: Hreflang for Markets -->
-    {% if localization.available_countries.size > 1 %}
-      <link rel="alternate" hreflang="en-IN" href="{{ shop.url }}{{ request.path }}">
-      <link rel="alternate" hreflang="en-AE" href="{{ shop.url }}/en-ae{{ request.path }}">
-      <link rel="alternate" hreflang="en-GB" href="{{ shop.url }}/en-gb{{ request.path }}">
-      <link rel="alternate" hreflang="x-default" href="{{ shop.url }}{{ request.path }}">
-    {% endif %}
+    {%- comment -%}
+      SEO: hreflang alternates are emitted automatically by Shopify via
+      `content_for_header` (rendered further down in <head>) whenever
+      Markets / locale subfolders are configured for the store. We do not
+      hand-roll hreflang tags here, because manually concatenating
+      `request.path` with `shop.url` produces broken alternates whenever
+      a customer arrives on a locale-prefixed URL (e.g. /en-ae/...) and
+      can also point at markets that aren't actually published. Trusting
+      the Shopify-managed alternates keeps the tags accurate and avoids
+      Search Console hreflang errors.
+    {%- endcomment -%}
 
     {%- liquid
       assign ar_seo_title = blank

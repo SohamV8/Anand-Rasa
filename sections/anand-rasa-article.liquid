@@ -234,6 +234,10 @@
       assign overlay_deep = 1
     endif
   -%}
+  {%- capture ar_article_html -%}
+    {% render 'ar-sanitize-article-html', html: article.content %}
+  {%- endcapture -%}
+  {%- assign ar_article_plain = ar_article_html | strip_html | strip -%}
   {%- if layout != 'text_only' and featured_img != blank and layout == 'full_bleed' -%}
     <header class="aa-feature{% unless section.settings.full_bleed_overlay %} aa-feature--no-overlay{% endunless %}" aria-label="{{ article.title }}">
       <div class="aa-feature__media">
@@ -276,7 +280,7 @@
           <span class="aa-feature__dot" aria-hidden="true"></span>
           <span class="aa-feature__date">{{ article.published_at | date: '%B %d, %Y' }}</span>
           <span class="aa-feature__dot" aria-hidden="true"></span>
-          <span class="aa-feature__read">{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+          <span class="aa-feature__read">{{ ar_article_plain | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
         </div>
       </div>
     </header>
@@ -323,7 +327,7 @@
           <span class="aa-hero__dot" aria-hidden="true"></span>
           <span class="aa-hero__date">{{ article.published_at | date: '%B %d, %Y' }}</span>
           <span class="aa-hero__dot" aria-hidden="true"></span>
-          <span class="aa-hero__read-time">{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+          <span class="aa-hero__read-time">{{ ar_article_plain | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
         </div>
       </div>
     </header>
@@ -355,7 +359,7 @@
         <span class="aa-hero__dot" aria-hidden="true"></span>
         <span class="aa-hero__date">{{ article.published_at | date: '%B %d, %Y' }}</span>
         <span class="aa-hero__dot" aria-hidden="true"></span>
-        <span class="aa-hero__read-time">{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+        <span class="aa-hero__read-time">{{ ar_article_plain | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
       </div>
     </header>
   {%- endif -%}
@@ -365,8 +369,8 @@
 
     {%- comment -%} LEFT — article content {%- endcomment -%}
     <div class="aa-content">
-      <div class="aa-content__text">
-        {{ article.content }}
+      <div class="aa-content__text rte">
+        {{ ar_article_html }}
       </div>
       {%- if ar_article_faq_items != blank -%}
         <section class="aa-content__faq" aria-label="Frequently asked questions">
@@ -516,9 +520,7 @@
 </script>
 
 {%- if article != blank -%}
-  <script type="application/ld+json">
-    {{ article | structured_data }}
-  </script>
+  {% render 'schema-article-blogposting', article: article, article_body_plain: ar_article_plain %}
   {%- if ar_article_faq_items != blank -%}
     <script type="application/ld+json">
       {

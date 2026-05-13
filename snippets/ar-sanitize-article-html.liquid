@@ -1,0 +1,36 @@
+{%- comment -%}
+  Strips pasted AI chat UI shells from blog article HTML at render time.
+
+  Pass: html (string), typically article.content.
+
+  When `data-turn` + `markdown-new-styling` are present, extracts the inner markdown
+  body and drops outer section/message wrappers. Always strips high-signal noise
+  attributes from common ChatGPT HTML exports.
+{%- endcomment -%}
+{%- liquid
+  assign ar_out = html | default: ''
+  if ar_out contains 'data-turn=' and ar_out contains 'markdown-new-styling'
+    assign ar_chunks = ar_out | split: 'markdown-new-styling">'
+    if ar_chunks.size > 1
+      assign ar_after = ar_chunks[1]
+      assign ar_after = ar_after | split: '</section>' | first
+      if ar_after contains '</div></div>'
+        assign ar_after = ar_after | split: '</div></div>' | first
+      endif
+      assign ar_out = ar_after | strip
+    endif
+  endif
+
+  assign ar_out = ar_out | replace: ' data-turn="assistant"', '' | replace: " data-turn='assistant'", ''
+  assign ar_out = ar_out | replace: ' data-turn="user"', '' | replace: " data-turn='user'", ''
+  assign ar_out = ar_out | replace: ' data-turn="system"', '' | replace: " data-turn='system'", ''
+  assign ar_out = ar_out | replace: ' data-scroll-anchor="false"', ''
+  assign ar_out = ar_out | replace: ' data-scroll-anchor="true"', ''
+  assign ar_out = ar_out | replace: ' data-testid="conversation-turn-20"', ''
+  assign ar_out = ar_out | replace: ' data-turn-start-message="true"', ''
+  assign ar_out = ar_out | replace: ' data-message-author-role="assistant"', ''
+  assign ar_out = ar_out | replace: ' data-message-author-role="user"', ''
+  assign ar_out = ar_out | replace: ' tabindex="0"', ''
+  assign ar_out = ar_out | replace: ' dir="auto"', ''
+-%}
+{{- ar_out -}}
