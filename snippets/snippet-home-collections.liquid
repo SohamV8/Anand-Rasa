@@ -80,7 +80,9 @@
                 src="{{ block.settings.image | image_url: width: 1200 }}"
                 srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
                 sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
-                alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+                {%- capture ar_cat_img_alt -%}{%- render 'image-seo-alt', seo_label: block.settings.title, img_context: 'card' -%}{%- endcapture -%}
+                alt="{{ ar_cat_img_alt | strip | escape }}"
+                title="{{ block.settings.title | escape }}"
                 width="1200"
                 height="900"
                 loading="lazy"
@@ -102,7 +104,9 @@
             {%- elsif ar_cat_fallback_image != blank -%}
               <img
                 src="{{ ar_cat_fallback_image | asset_url }}"
-                alt="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
+                {%- capture ar_cat_img_alt -%}{%- render 'image-seo-alt', seo_label: block.settings.title, img_context: 'card' -%}{%- endcapture -%}
+                alt="{{ ar_cat_img_alt | strip | escape }}"
+                title="{{ block.settings.title | escape }}"
                 width="1200"
                 height="900"
                 loading="lazy"
@@ -125,7 +129,7 @@
     {%- liquid
       assign required_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|giftsets' | split: '|'
       assign required_titles = 'Planet Attar|Zodiac Attar|Nakshatra Attar|Chakra Attar|Stress Relief Attar|Love Attar|Incense Sticks|Discovery Kit' | split: '|'
-      assign required_fallbacks = 'PlanetHero.webp|PlanetHero.webp|NakshatraGif1.webm|chakra.webp|stress.webp|love.webp|incense.jpeg|giftsets.webp' | split: '|'
+      assign required_fallbacks = 'PlanetHero.webp|PlanetHero.webp|NakshatraGif1.webm|chakra.webp|stress.webp|love.webp|incense.jpeg|home.webp' | split: '|'
     -%}
     {%- for required_handle in required_handles -%}
       {%- liquid

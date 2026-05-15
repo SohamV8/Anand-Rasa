@@ -1,0 +1,29 @@
+{%- comment -%}
+  Hero / banner alt text — merchant override → Shopify image alt → semantic fallback.
+  Echoes one optimized alt string.
+
+  Parameters:
+    alt_override     — Theme Editor custom alt (section.settings.hero_image_alt)
+    hero_image       — image_picker object (uses .alt when set)
+    seo_collection   — collection object
+    seo_label        — fallback label when no collection (homepage blocks)
+    img_context      — hero | og (default: hero)
+{%- endcomment -%}
+{%- liquid
+  assign img_ctx = img_context | default: 'hero'
+  assign result = alt_override | strip
+
+  if result == blank and hero_image != blank and hero_image.alt != blank
+    assign result = hero_image.alt | strip
+  endif
+
+  if result == blank
+    capture result
+      render 'image-seo-alt', seo_collection: seo_collection, seo_label: seo_label, img_context: img_ctx
+    endcapture
+    assign result = result | strip
+  endif
+
+  assign result = result | strip | truncate: 250
+  echo result
+-%}

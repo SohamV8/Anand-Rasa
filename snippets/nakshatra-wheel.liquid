@@ -327,7 +327,7 @@
   width:80px;height:80px;border-radius:14px;
   overflow:hidden;background:#f5f0e8;flex-shrink:0;
 }
-.nk__prod-img img{width:100%;height:100%;object-fit:cover;}
+.nk__prod-img img{width:100%;height:100%;object-fit:contain;object-position:center;}
 .nk__prod-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.2;}
 .nk__prod-info{flex:1;min-width:0;}
 .nk__prod-type{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px;}
@@ -561,7 +561,22 @@ window.__NK_PRODUCTS__ = {
       "type":    {{ nk_p.type | default: 'Nakshatra Attar' | json }},
       "price":   {{ nk_p.price | money | json }},
       "compare": {% if nk_p.compare_at_price > nk_p.price %}{{ nk_p.compare_at_price | money | json }}{% else %}null{% endif %},
-      "img":     {% if nk_p.featured_image %}{{ nk_p.featured_image | image_url: width: 400 | json }}{% else %}null{% endif %},
+      "img":     {%- liquid
+        assign nk_asset_file = ''
+        if nk_p != blank
+          capture nk_asset_file
+            render 'nakshatra-image-lookup', nk_product: nk_p
+          endcapture
+          assign nk_asset_file = nk_asset_file | strip
+        endif
+        if nk_asset_file == blank
+          assign nk_name_at_i = nk_names[i]
+          capture nk_asset_file
+            render 'nakshatra-image-lookup', nk_name: nk_name_at_i
+          endcapture
+          assign nk_asset_file = nk_asset_file | strip
+        endif
+      -%}{% if nk_asset_file != blank %}{{ nk_asset_file | asset_url | json }}{% elsif nk_p.featured_image %}{{ nk_p.featured_image | image_url: width: 400 | json }}{% else %}null{% endif %},
       "imgAlt":  {{ nk_p.featured_image.alt | default: nk_p.title | escape | json }},
       "avail":   {{ nk_p.available | json }}
     }
@@ -766,7 +781,7 @@ window.__NK_PRODUCTS__ = {
     imgDiv.className = 'nk__prod-img';
     if (p.img) {
       var img = document.createElement('img');
-      img.src = 'https:' + p.img;
+      img.src = p.img.indexOf('//') === 0 ? ('https:' + p.img) : p.img;
       img.alt = p.imgAlt || '';
       img.width = 160; img.height = 160;
       img.loading = 'lazy'; img.decoding = 'async';

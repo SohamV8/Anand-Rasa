@@ -1,0 +1,61 @@
+{%- if collection != blank -%}
+  {%- liquid
+    assign col_desc = collection.description | strip_html | strip
+    if col_desc == blank
+      assign col_desc = 'Shop ' | append: collection.title | append: ' at Anand Rasa — handcrafted attars, perfumes, and spiritual fragrances from India.'
+    endif
+
+    capture col_img_url
+      render 'image-seo-url', seo_collection: collection, img_width: 1200
+    endcapture
+    assign col_img_url = col_img_url | strip
+    if col_img_url != blank
+      unless col_img_url contains 'https://' or col_img_url contains 'http://'
+        if col_img_url contains '//'
+          assign col_img_url = col_img_url | prepend: 'https:'
+        endif
+      endunless
+    endif
+
+    capture col_img_alt
+      render 'image-seo-alt', seo_collection: collection, img_context: 'og'
+    endcapture
+    assign col_img_alt = col_img_alt | strip
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": {{ request.origin | append: collection.url | append: '#collection' | json }},
+      "name": {{ collection.title | json }},
+      "description": {{ col_desc | json }},
+      "url": {{ request.origin | append: collection.url | json }}
+      {%- if col_img_url != blank -%}
+      ,
+      "image": {
+        "@type": "ImageObject",
+        "url": {{ col_img_url | json }},
+        "name": {{ collection.title | json }},
+        "description": {{ col_img_alt | json }}
+      }
+      {%- endif -%}
+      {%- if collection.products_count > 0 -%}
+      ,
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": {{ collection.products_count }},
+        "itemListElement": [
+          {%- for product in collection.products limit: 27 -%}
+            {
+              "@type": "ListItem",
+              "position": {{ forloop.index }},
+              "url": {{ request.origin | append: product.url | json }},
+              "name": {{ product.title | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}

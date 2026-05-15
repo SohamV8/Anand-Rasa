@@ -14,11 +14,6 @@
       "type": "collection-incense",
       "settings": {
         "incense_image": "shopify://shop_images/incense_3c1395fd-341d-41d0-9a6f-8e0278e60546.jpg",
-        "cta_label": "Anand Rasa",
-        "cta_title": "Transform Your Space into a Sacred Sanctuary",
-        "cta_subtitle": "Let the ancient fragrance of pure incense fill your home, your prayers, and your moments of quiet.",
-        "cta_btn": "Shop Now",
-        "cta_url": "",
         "bulk_enable": true,
         "bulk_eyebrow": "Wholesale",
         "bulk_heading": "Bulk Incense Orders",

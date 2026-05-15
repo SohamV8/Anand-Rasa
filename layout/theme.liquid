@@ -218,6 +218,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- if request.page_type == 'product' and product != blank -%}
       {% render 'schema-product-core', product: product %}
     {%- endif -%}
+    {%- if request.page_type == 'collection' and collection != blank -%}
+      {% render 'schema-collection', collection: collection %}
+    {%- endif -%}
 
     {%- comment -%} <!-- SEO Fix: Deferred non-critical scripts moved before closing body --> {%- endcomment -%}
 

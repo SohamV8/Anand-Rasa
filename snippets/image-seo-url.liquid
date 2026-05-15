@@ -1,0 +1,129 @@
+{%- comment -%}
+  Resolves the best showcase image URL for OG / JSON-LD (absolute https).
+  Prefers theme asset thumbnails (planet, zodiac, nakshatra) when mapped,
+  then Shopify product/collection images.
+
+  Parameters:
+    seo_product    — product object
+    seo_collection — collection object
+    img_width      — optional width (default 1200)
+{%- endcomment -%}
+{%- liquid
+  assign img_w = img_width | default: 1200
+  assign resolved = ''
+
+  if seo_product != blank
+    assign seo_key = seo_product.handle | append: ' ' | append: seo_product.title | downcase
+    assign asset_path = ''
+
+    capture nk_asset
+      render 'nakshatra-image-lookup', nk_product: seo_product
+    endcapture
+    assign nk_asset = nk_asset | strip
+    if nk_asset != blank
+      assign asset_path = nk_asset
+    endif
+
+    if asset_path == blank
+      if seo_key contains 'sun' or seo_key contains 'surya'
+        assign asset_path = 'Planet/surya_attar.webp'
+      elsif seo_key contains 'moon' or seo_key contains 'chandra'
+        assign asset_path = 'Planet/chandra_attar.webp'
+      elsif seo_key contains 'mars' or seo_key contains 'mangal'
+        assign asset_path = 'Planet/mangal_attar.webp'
+      elsif seo_key contains 'mercury' or seo_key contains 'budh'
+        assign asset_path = 'Planet/budh_attar.webp'
+      elsif seo_key contains 'jupiter' or seo_key contains 'guru'
+        assign asset_path = 'Planet/guru_attar.webp'
+      elsif seo_key contains 'venus' or seo_key contains 'shukra'
+        assign asset_path = 'Planet/shukra_attar.webp'
+      elsif seo_key contains 'saturn' or seo_key contains 'shani'
+        assign asset_path = 'Planet/shani_attar.webp'
+      elsif seo_key contains 'rahu'
+        assign asset_path = 'Planet/rahu_attar.webp'
+      elsif seo_key contains 'ketu'
+        assign asset_path = 'Planet/ketu_attar.webp'
+      elsif seo_key contains 'aries' or seo_key contains 'mesha'
+        assign asset_path = 'Zodiac/aries.webp'
+      elsif seo_key contains 'taurus' or seo_key contains 'vrishabha'
+        assign asset_path = 'Zodiac/taurus.webp'
+      elsif seo_key contains 'gemini' or seo_key contains 'mithuna'
+        assign asset_path = 'Zodiac/gemini.webp'
+      elsif seo_key contains 'cancer' or seo_key contains 'karka'
+        assign asset_path = 'Zodiac/cancer.webp'
+      elsif seo_key contains 'leo' or seo_key contains 'simha'
+        assign asset_path = 'Zodiac/leo.webp'
+      elsif seo_key contains 'virgo' or seo_key contains 'kanya'
+        assign asset_path = 'Zodiac/virgo.webp'
+      elsif seo_key contains 'libra' or seo_key contains 'tula'
+        assign asset_path = 'Zodiac/libra.webp'
+      elsif seo_key contains 'scorpio' or seo_key contains 'vrischika'
+        assign asset_path = 'Zodiac/scorpio.webp'
+      elsif seo_key contains 'sagittarius' or seo_key contains 'dhanu'
+        assign asset_path = 'Zodiac/sagittarius.webp'
+      elsif seo_key contains 'capricorn' or seo_key contains 'makara'
+        assign asset_path = 'Zodiac/capricorn.webp'
+      elsif seo_key contains 'aquarius' or seo_key contains 'kumbha'
+        assign asset_path = 'Zodiac/aquarius.webp'
+      elsif seo_key contains 'pisces' or seo_key contains 'meena'
+        assign asset_path = 'Zodiac/pisces.webp'
+      endif
+    endif
+
+    if asset_path == blank
+      capture bs_asset
+        render 'bestseller-image-lookup', bs_product: seo_product
+      endcapture
+      assign bs_asset = bs_asset | strip
+      if bs_asset != blank
+        assign asset_path = bs_asset
+      endif
+    endif
+
+    if asset_path != blank
+      assign resolved = asset_path | asset_url
+    elsif seo_product.featured_image
+      assign resolved = seo_product.featured_image | image_url: width: img_w
+    elsif seo_product.images.first
+      assign resolved = seo_product.images.first | image_url: width: img_w
+    endif
+
+  elsif seo_collection != blank
+    if seo_collection.image
+      assign resolved = seo_collection.image | image_url: width: img_w
+    else
+      assign col_key = seo_collection.handle | downcase
+      assign col_asset = ''
+      if col_key contains 'nakshatra' or col_key contains 'naksahtra'
+        assign col_asset = 'PlanetHero.webp'
+      elsif col_key contains 'zodiac'
+        assign col_asset = 'PlanetHero.webp'
+      elsif col_key contains 'planet' or col_key contains 'navagraha'
+        assign col_asset = 'PlanetHero.webp'
+      elsif col_key contains 'incense'
+        assign col_asset = 'incense.jpeg'
+      elsif col_key contains 'chakra'
+        assign col_asset = 'chakra.webp'
+      elsif col_key contains 'stress'
+        assign col_asset = 'stress.webp'
+      elsif col_key contains 'love'
+        assign col_asset = 'love.webp'
+      elsif col_key contains 'gift'
+        assign col_asset = 'home.webp'
+      endif
+      if col_asset != blank
+        assign resolved = col_asset | asset_url
+      endif
+    endif
+  endif
+
+  if resolved != blank
+    unless resolved contains 'https://' or resolved contains 'http://'
+      if resolved contains '//'
+        assign resolved = resolved | prepend: 'https:'
+      endif
+    endunless
+  endif
+
+  echo resolved
+-%}

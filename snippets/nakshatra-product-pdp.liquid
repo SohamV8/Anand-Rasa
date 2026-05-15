@@ -68,7 +68,7 @@
     border-radius: 0; cursor: pointer; background: var(--surface); padding: 0; transition: border-color 0.2s, box-shadow 0.2s;
   }
   .aip-gallery__thumb.is-active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
-  .aip-gallery__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .aip-gallery__thumb img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 
   .aip-gallery__stage {
     flex: 1; min-width: 0; width: 100%; background: var(--surface); border-radius: 0; overflow: hidden;
@@ -82,7 +82,7 @@
     .aip-gallery__main { min-height: min(92vw, 480px); }
   }
   .aip-gallery__main-img {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center;
     transition: opacity 0.45s ease, transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: block;
   }
@@ -236,7 +236,7 @@
   .aip-card { background: var(--surface); border: 1px solid var(--line); border-radius: 0; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.35s, box-shadow 0.35s; }
   .aip-card:hover { border-color: var(--line-strong); box-shadow: 0 24px 48px rgba(30, 32, 35, 0.08); }
   .aip-card__img-wrap { aspect-ratio: 1; overflow: hidden; background: #f3f4f6; }
-  .aip-card__img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.65s ease; }
+  .aip-card__img { width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform 0.65s ease; }
   .aip-card:hover .aip-card__img { transform: scale(1.03); }
   .aip-card__body { padding: 24px; display: flex; flex-direction: column; gap: 14px; flex: 1; }
   .aip-card__name { font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1.35; color: var(--ink); letter-spacing: -0.01em; }
@@ -298,6 +298,24 @@
   assign aip_atc_text = section.settings.cta_add_to_cart_text | default: 'Add to Cart' | strip
   assign aip_sold_out_text = section.settings.cta_sold_out_text | default: 'Sold Out' | strip
   assign aip_buy_now_text = section.settings.cta_buy_now_text | default: 'Buy Now' | strip
+
+  capture aip_nk_asset
+    render 'nakshatra-image-lookup', nk_product: product
+  endcapture
+  assign aip_nk_asset = aip_nk_asset | strip
+  assign aip_nk_asset_url = ''
+  if aip_nk_asset != blank
+    assign aip_nk_asset_url = aip_nk_asset | asset_url
+  endif
+
+  capture aip_pdp_img_alt
+    render 'image-seo-alt', seo_product: product, img_context: 'pdp'
+  endcapture
+  assign aip_pdp_img_alt = aip_pdp_img_alt | strip
+  capture aip_pdp_thumb_alt
+    render 'image-seo-alt', seo_product: product, img_context: 'thumb'
+  endcapture
+  assign aip_pdp_thumb_alt = aip_pdp_thumb_alt | strip
 -%}
 
 <div class="aip">
@@ -314,7 +332,7 @@
   <div class="aip-hero">
     <div class="aip-hero__grid">
       <div class="aip-gallery">
-        {%- if product.images.size > 1 -%}
+        {%- if aip_nk_asset_url == blank and product.images.size > 1 -%}
           <div class="aip-gallery__thumbs-scroll" role="list">
             {%- for image in product.images limit: 10 -%}
               <button
@@ -323,7 +341,7 @@
                 data-index="{{ forloop.index0 }}"
                 aria-label="View image {{ forloop.index }}"
               >
-                <img src="{{ image | image_url: width: 360 }}" alt="{{ image.alt | default: aip_display_title }}" width="72" height="72" loading="lazy">
+                <img src="{{ image | image_url: width: 360 }}" alt="{{ image.alt | default: aip_pdp_thumb_alt | escape }}" title="{{ aip_display_title | escape }}" width="72" height="72" loading="lazy">
               </button>
             {%- endfor -%}
           </div>
@@ -331,22 +349,37 @@
 
         <div class="aip-gallery__stage">
           <div class="aip-gallery__main" id="aip-main-img-wrap">
-            {%- for image in product.images -%}
+            {%- if aip_nk_asset_url != blank -%}
               <img
-                src="{{ image | image_url: width: 1800 }}"
-                srcset="{{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w, {{ image | image_url: width: 1800 }} 1800w, {{ image | image_url: width: 2400 }} 2400w"
-                sizes="(max-width: 1024px) 100vw, min(660px, 45vw)"
-                alt="{{ image.alt | default: aip_display_title }}"
-                width="{{ image.width | default: 1200 }}"
-                height="{{ image.height | default: 1200 }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                class="aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
-                data-index="{{ forloop.index0 }}"
-                id="aip-img-{{ forloop.index0 }}"
+                src="{{ aip_nk_asset_url }}"
+                alt="{{ aip_pdp_img_alt | escape }}"
+                title="{{ aip_display_title | escape }}"
+                width="1200"
+                height="1200"
+                loading="eager"
+                class="aip-gallery__main-img"
+                id="aip-img-0"
+                data-index="0"
               >
             {%- else -%}
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:13px;font-family:var(--sans);">No image</div>
-            {%- endfor -%}
+              {%- for image in product.images -%}
+                <img
+                  src="{{ image | image_url: width: 1800 }}"
+                  srcset="{{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w, {{ image | image_url: width: 1800 }} 1800w, {{ image | image_url: width: 2400 }} 2400w"
+                  sizes="(max-width: 1024px) 100vw, min(660px, 45vw)"
+                  alt="{{ image.alt | default: aip_pdp_img_alt | escape }}"
+                  title="{{ aip_display_title | escape }}"
+                  width="{{ image.width | default: 1200 }}"
+                  height="{{ image.height | default: 1200 }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  class="aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
+                  data-index="{{ forloop.index0 }}"
+                  id="aip-img-{{ forloop.index0 }}"
+                >
+              {%- else -%}
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:13px;font-family:var(--sans);">No image</div>
+              {%- endfor -%}
+            {%- endif -%}
 
             <div class="aip-gallery__badge">
               {%- if product.tags contains 'new' or product.tags contains 'New' -%}
@@ -581,8 +614,13 @@
           {%- unless rp.id == product.id -%}
             <article class="aip-card">
               <a href="{{ rp.url }}" class="aip-card__img-wrap">
-                {%- if rp.featured_image -%}
-                  <img src="{{ rp.featured_image | image_url: width: 900 }}" alt="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
+                {%- capture rp_nk_asset -%}{%- render 'nakshatra-image-lookup', nk_product: rp -%}{%- endcapture -%}
+                {%- assign rp_nk_asset = rp_nk_asset | strip -%}
+                {%- capture rp_seo_alt -%}{%- render 'image-seo-alt', seo_product: rp, img_context: 'card' -%}{%- endcapture -%}
+                {%- if rp_nk_asset != blank -%}
+                  <img src="{{ rp_nk_asset | asset_url }}" alt="{{ rp_seo_alt | strip | escape }}" title="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
+                {%- elsif rp.featured_image -%}
+                  <img src="{{ rp.featured_image | image_url: width: 900 }}" alt="{{ rp.featured_image.alt | default: rp_seo_alt | strip | escape }}" title="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
                 {%- endif -%}
               </a>
               <div class="aip-card__body">
@@ -622,6 +660,17 @@
 
 <div class="aip-zoom-modal" id="aip-zoom-modal" role="dialog" aria-modal="true" aria-label="Product image">
   <button type="button" class="aip-zoom-modal__close" id="aip-zoom-close" aria-label="Close">&times;</button>
+  {%- if aip_nk_asset_url != blank -%}
+    <img
+      src="{{ aip_nk_asset_url }}"
+      alt="{{ aip_pdp_img_alt | escape }}"
+      title="{{ aip_display_title | escape }}"
+      id="aip-zoom-img"
+      width="1200"
+      height="1200"
+      style="max-width:92vw;max-height:92vh;object-fit:contain;"
+    >
+  {%- else -%}
   {%- assign aip_zoom_src = product.featured_image | default: product.images.first -%}
   {%- if aip_zoom_src -%}
     <img
@@ -632,6 +681,7 @@
       height="{{ aip_zoom_src.height | default: 2000 }}"
       style="max-width:92vw;max-height:92vh;object-fit:contain;"
     >
+  {%- endif -%}
   {%- endif -%}
 </div>
 

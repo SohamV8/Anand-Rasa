@@ -1,0 +1,116 @@
+{%- comment -%}
+  Nakshatra image lookup
+  ----------------------
+  Resolves a product (or nakshatra name) to its showcase image in
+  /assets/Nakshatra/. Echoes the asset path (e.g. "Nakshatra/rohini.webp")
+  or an empty string when no match is found.
+
+  SAFE SEMANTIC RENAME PLAN (do not rename files until all refs updated):
+  Canonical slug              → Current asset path
+  nakshatra-ashwini-attar     → Nakshatra/Ashvini.webp
+  nakshatra-bharani-attar     → Nakshatra/bharani.webp
+  nakshatra-krittika-attar    → Nakshatra/krittika.webp
+  nakshatra-rohini-attar      → Nakshatra/rohini.webp
+  nakshatra-mrigashira-attar  → Nakshatra/Mrigashira.webp
+  nakshatra-ardra-attar       → Nakshatra/Ardra.webp
+  nakshatra-punarvasu-attar   → Nakshatra/Punarvasu.webp
+  nakshatra-pushya-attar      → Nakshatra/Pushya.webp
+  nakshatra-ashlesha-attar    → Nakshatra/Ashlesha.webp
+  nakshatra-magha-attar       → Nakshatra/Magha.webp
+  nakshatra-purva-phalguni    → Nakshatra/Purva-Phalguni.webp
+  nakshatra-uttara-phalguni   → Nakshatra/Uttara--Phanlhuni.webp
+  nakshatra-hasta-attar       → Nakshatra/Hasta.webp
+  nakshatra-chitra-attar      → Nakshatra/Chitra.webp
+  nakshatra-swati-attar       → Nakshatra/Swati.webp
+  nakshatra-vishakha-attar    → Nakshatra/Vishakha.webp
+  nakshatra-anuradha-attar    → Nakshatra/Anuradha.webp
+  nakshatra-jyeshtha-attar    → Nakshatra/Jyeshta.webp
+  nakshatra-mula-attar        → Nakshatra/Mula.webp
+  nakshatra-purva-ashadha     → Nakshatra/Purva-Ashadha.webp
+  nakshatra-uttara-ashadha    → Nakshatra/Uttara-ashadha.webp
+  nakshatra-shravana-attar    → Nakshatra/Shravana.webp
+  nakshatra-dhanishtha-attar  → Nakshatra/Dhanishta.webp
+  nakshatra-shatabhisha-attar → Nakshatra/Shatabhisha.webp
+  nakshatra-purva-bhadrapada  → Nakshatra/Purva-bha.webp
+  nakshatra-uttara-bhadrapada → Nakshatra/Uttra-bhadra.webp
+  nakshatra-revati-attar      → Nakshatra/revati.webp
+
+  Usage:
+    {%- capture nk_showcard -%}
+      {%- render 'nakshatra-image-lookup', nk_product: product -%}
+    {%- endcapture -%}
+
+  Parameters (one required):
+    nk_product — Shopify product object
+    nk_name    — Nakshatra name string (e.g. "Rohini") when no product
+{%- endcomment -%}
+{%- liquid
+  assign nk_key = ''
+  if nk_product != blank
+    assign nk_key = nk_product.handle | append: ' ' | append: nk_product.title | downcase
+  elsif nk_name != blank
+    assign nk_key = nk_name | downcase
+  endif
+
+  assign img = ''
+
+  if nk_key != blank
+    if nk_key contains 'purva-bhadra' or nk_key contains 'purva bhadra'
+      assign img = 'Nakshatra/Purva-bha.webp'
+    elsif nk_key contains 'uttara-bhadra' or nk_key contains 'uttara bhadra'
+      assign img = 'Nakshatra/Uttra-bhadra.webp'
+    elsif nk_key contains 'purva-ashadha' or nk_key contains 'purva ashadha'
+      assign img = 'Nakshatra/Purva-Ashadha.webp'
+    elsif nk_key contains 'uttara-ashadha' or nk_key contains 'uttara ashadha'
+      assign img = 'Nakshatra/Uttara-ashadha.webp'
+    elsif nk_key contains 'purva-phalguni' or nk_key contains 'purva phalguni'
+      assign img = 'Nakshatra/Purva-Phalguni.webp'
+    elsif nk_key contains 'uttara-phalguni' or nk_key contains 'uttara phalguni'
+      assign img = 'Nakshatra/Uttara--Phanlhuni.webp'
+    elsif nk_key contains 'mrigashira' or nk_key contains 'mriga-shira' or nk_key contains 'mriga shira'
+      assign img = 'Nakshatra/Mrigashira.webp'
+    elsif nk_key contains 'ashwini' or nk_key contains 'ashvini'
+      assign img = 'Nakshatra/Ashvini.webp'
+    elsif nk_key contains 'bharani'
+      assign img = 'Nakshatra/bharani.webp'
+    elsif nk_key contains 'krittika' or nk_key contains 'kritika'
+      assign img = 'Nakshatra/krittika.webp'
+    elsif nk_key contains 'rohini'
+      assign img = 'Nakshatra/rohini.webp'
+    elsif nk_key contains 'ardra'
+      assign img = 'Nakshatra/Ardra.webp'
+    elsif nk_key contains 'punarvasu'
+      assign img = 'Nakshatra/Punarvasu.webp'
+    elsif nk_key contains 'pushya'
+      assign img = 'Nakshatra/Pushya.webp'
+    elsif nk_key contains 'ashlesha'
+      assign img = 'Nakshatra/Ashlesha.webp'
+    elsif nk_key contains 'magha'
+      assign img = 'Nakshatra/Magha.webp'
+    elsif nk_key contains 'hasta'
+      assign img = 'Nakshatra/Hasta.webp'
+    elsif nk_key contains 'chitra'
+      assign img = 'Nakshatra/Chitra.webp'
+    elsif nk_key contains 'swati'
+      assign img = 'Nakshatra/Swati.webp'
+    elsif nk_key contains 'vishakha'
+      assign img = 'Nakshatra/Vishakha.webp'
+    elsif nk_key contains 'anuradha'
+      assign img = 'Nakshatra/Anuradha.webp'
+    elsif nk_key contains 'jyeshtha' or nk_key contains 'jyeshta'
+      assign img = 'Nakshatra/Jyeshta.webp'
+    elsif nk_key contains 'mula'
+      assign img = 'Nakshatra/Mula.webp'
+    elsif nk_key contains 'shravana'
+      assign img = 'Nakshatra/Shravana.webp'
+    elsif nk_key contains 'dhanishtha' or nk_key contains 'dhanishta'
+      assign img = 'Nakshatra/Dhanishta.webp'
+    elsif nk_key contains 'shatabhisha' or nk_key contains 'shatabisha'
+      assign img = 'Nakshatra/Shatabhisha.webp'
+    elsif nk_key contains 'revati'
+      assign img = 'Nakshatra/revati.webp'
+    endif
+  endif
+
+  echo img
+-%}

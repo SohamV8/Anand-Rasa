@@ -105,7 +105,8 @@
     {%- comment -%} HERO {% endcomment %}
     <div class="arc-hero">
       {%- if section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ collection.title }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
+        {%- capture ar_hero_alt -%}{%- render 'image-seo-hero-alt', seo_collection: collection, hero_image: section.settings.hero_image, alt_override: section.settings.hero_image_alt, img_context: 'hero' -%}{%- endcapture -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ ar_hero_alt | strip | escape }}" title="{{ collection.title | escape }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
       {%- endif -%}
       <div class="arc-hero__ov"></div>
       <div class="arc-hero__con">
@@ -206,13 +207,18 @@
             {%- elsif ar_key contains 'pisces' or ar_key contains 'meena' -%}
               {%- assign ar_zodiac_img = 'Zodiac/pisces.webp' | asset_url -%}
             {%- endif -%}
+            {%- capture ar_card_seo_alt -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'card' -%}{%- endcapture -%}
+            {%- assign ar_card_seo_alt = ar_card_seo_alt | strip -%}
+            {%- capture ar_card_seo_alt_hover -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'hover' -%}{%- endcapture -%}
+            {%- assign ar_card_seo_alt_hover = ar_card_seo_alt_hover | strip -%}
             {%- capture ar_card_markup -%}
             <div class="arc-card">
-              <a href="{{ product.url }}" class="arc-card__img-wrap">
+              <a href="{{ product.url }}" class="arc-card__img-wrap" title="{{ product.title | escape }}">
                 {%- if ar_zodiac_img != blank -%}
                   <img
                     src="{{ ar_zodiac_img }}"
-                    alt="{{ product.title }}"
+                    alt="{{ ar_card_seo_alt | escape }}"
+                    title="{{ product.title | escape }}"
                     width="1600"
                     height="1067"
                     loading="lazy"
@@ -221,7 +227,8 @@
                   {%- if product.images.size > 1 -%}
                     <img
                       src="{{ product.images[1] | image_url: width: 1600 }}"
-                      alt="{{ product.title }} - alternate view"
+                      alt="{{ ar_card_seo_alt_hover | escape }}"
+                      title="{{ product.title | escape }}"
                       width="1600"
                       height="1067"
                       loading="lazy"
@@ -231,7 +238,8 @@
                 {%- elsif product.images.size > 0 -%}
                   <img
                     src="{{ product.featured_image | image_url: width: 1600 }}"
-                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    alt="{{ product.featured_image.alt | default: ar_card_seo_alt | escape }}"
+                    title="{{ product.title | escape }}"
                     width="1600"
                     height="1067"
                     loading="lazy"
@@ -240,7 +248,8 @@
                   {%- if product.images.size > 1 -%}
                     <img
                       src="{{ product.images[1] | image_url: width: 1600 }}"
-                      alt="{{ product.title }} - alternate view"
+                      alt="{{ ar_card_seo_alt_hover | escape }}"
+                      title="{{ product.title | escape }}"
                       width="1600"
                       height="1067"
                       loading="lazy"
@@ -385,6 +394,7 @@
     "settings": [
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
+      {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Rashi Rasa Series"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Twelve attars, one for every rashi. Wear your zodiac energy as a fragrance."},
       {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},

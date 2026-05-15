@@ -76,16 +76,6 @@
     .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
     .arc-empty__p { font-size:14px; color:#6b7280; }
   
-    /* Content Block */
-    .arc-content { max-width:1440px; margin:0 auto; padding:80px 48px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    @media(max-width:900px){ .arc-content { grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
-    .arc-content__img-wrap { position:relative; aspect-ratio:4/3; overflow:hidden; }
-    .arc-content__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-    .arc-content__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; }
-    .arc-content__label { font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-content__h { font-family:var(--fh); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:var(--ink); line-height:1.15; margin-bottom:20px; letter-spacing:-.01em; }
-    .arc-content__p { font-size:15px; line-height:1.8; color:#4b5563; font-weight:300; }
-  
     /* CTA */
     .arc-cta { background:#1a1512; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
     @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
@@ -105,7 +95,8 @@
     {%- comment -%} HERO {% endcomment %}
     <div class="arc-hero">
       {%- if section.settings.hero_image != blank -%}
-        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ collection.title }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
+        {%- capture ar_hero_alt -%}{%- render 'image-seo-hero-alt', seo_collection: collection, hero_image: section.settings.hero_image, alt_override: section.settings.hero_image_alt, img_context: 'hero' -%}{%- endcapture -%}
+        <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ ar_hero_alt | strip | escape }}" title="{{ collection.title | escape }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
       {%- endif -%}
       <div class="arc-hero__ov"></div>
       <div class="arc-hero__con">
@@ -246,26 +237,6 @@
       {%- endif -%}
     </div>
   
-    {%- comment -%} CONTENT BLOCK {% endcomment %}
-    {%- if section.settings.content_image != blank or section.settings.content_title != blank -%}
-    <section style="background:#fff;border-top:1px solid rgba(30,32,35,.08);">
-      <div class="arc-content">
-        <div class="arc-content__img-wrap">
-          {%- if section.settings.content_image != blank -%}
-            <img src="{{ section.settings.content_image | image_url: width: 1200 }}" alt="{{ section.settings.content_title }}" width="1200" height="900" loading="lazy" class="arc-content__img">
-          {%- else -%}
-            <div class="arc-content__ph">Upload image in Theme Editor</div>
-          {%- endif -%}
-        </div>
-        <div>
-          <span class="arc-content__label">{{ section.settings.content_label | default: 'The Gift of Scent' }}</span>
-          <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Give more than a bottle — give a ritual' }}</h2>
-          <p class="arc-content__p">{{ section.settings.content_body | default: 'Our gift sets pair complementary attars and discovery formats so someone can explore Anand Rasa without choosing a single note. Each set is composed for balance: celebration, self-care, or a quiet introduction to pure oil perfumery.' }}</p>
-        </div>
-      </div>
-    </section>
-    {%- endif -%}
-  
     {%- comment -%} CTA SECTION {% endcomment %}
     <section class="arc-cta">
       <div class="arc-cta__ov"></div>
@@ -308,14 +279,10 @@
     "settings": [
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
+      {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Curated for Gifting"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Thoughtfully bundled attars and discovery sets — elegant to give, unforgettable to receive. Share the ritual of pure fragrance."},
       {"type":"text","id":"hero_btn","label":"Hero button text","default":"Browse Gift Sets"},
-      {"type":"header","content":"Content Block"},
-      {"type":"image_picker","id":"content_image","label":"Content image"},
-      {"type":"text","id":"content_label","label":"Label","default":"The Gift of Scent"},
-      {"type":"text","id":"content_title","label":"Title","default":"Give more than a bottle — give a ritual"},
-      {"type":"textarea","id":"content_body","label":"Body text","default":"Our gift sets pair complementary attars and discovery formats so someone can explore Anand Rasa without choosing a single note. Each set is composed for balance: celebration, self-care, or a quiet introduction to pure oil perfumery."},
       {"type":"header","content":"CTA Section"},
       {"type":"text","id":"cta_label","label":"CTA label","default":"Anand Rasa"},
       {"type":"text","id":"cta_title","label":"CTA heading","default":"Find a single attar to love"},

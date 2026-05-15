@@ -73,13 +73,31 @@
       Bestseller showcase images from /assets/Bestseller/ (shared lookup).
     endcomment
     assign ar_card_bestseller_img = ''
+    assign ar_card_nakshatra_img = ''
+
+    capture ar_card_img_alt
+      render 'image-seo-alt', seo_product: card_product, img_context: 'card'
+    endcapture
+    assign ar_card_img_alt = ar_card_img_alt | strip
+    capture ar_card_img_alt_hover
+      render 'image-seo-alt', seo_product: card_product, img_context: 'hover'
+    endcapture
+    assign ar_card_img_alt_hover = ar_card_img_alt_hover | strip
   -%}
+
+  {%- capture ar_nk_lookup -%}
+    {%- render 'nakshatra-image-lookup', nk_product: card_product -%}
+  {%- endcapture -%}
+  {%- assign ar_nk_lookup = ar_nk_lookup | strip -%}
+  {%- if ar_card_asset_img == blank and ar_nk_lookup != blank -%}
+    {%- assign ar_card_nakshatra_img = ar_nk_lookup | asset_url -%}
+  {%- endif -%}
 
   {%- capture ar_bs_lookup -%}
     {%- render 'bestseller-image-lookup', bs_product: card_product -%}
   {%- endcapture -%}
   {%- assign ar_bs_lookup = ar_bs_lookup | strip -%}
-  {%- if ar_card_asset_img == blank and ar_bs_lookup != blank -%}
+  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_bs_lookup != blank -%}
     {%- assign ar_card_bestseller_img = ar_bs_lookup | asset_url -%}
   {%- endif -%}
 
@@ -118,7 +136,7 @@
     {%- endif -%}
   {%- endfor -%}
 
-  {%- if ar_card_asset_img != blank or ar_card_bestseller_img != blank -%}
+  {%- if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_bestseller_img != blank -%}
     {%- assign image_count = 0 -%}
     {%- assign image_urls = '' -%}
   {%- endif -%}
@@ -156,18 +174,30 @@
     >
 
       {%- comment -%} ── IMAGE BLOCK ── {%- endcomment -%}
-      <div class="ar-card__media{% if ar_card_asset_img != blank or ar_card_bestseller_img != blank %} ar-card__media--contain{% endif %}">
+      <div class="ar-card__media{% if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_bestseller_img != blank %} ar-card__media--contain{% endif %}">
         <a
           href="{{ card_product.url }}"
           class="ar-card__media-link"
           tabindex="-1"
-          aria-label="{{ card_product.title | escape }}"
+          aria-label="{{ ar_card_img_alt | escape }}"
+          title="{{ card_product.title | escape }}"
         >
           {%- if ar_card_asset_img != blank -%}
             <img
               class="ar-card__img ar-card__img--contain"
               src="{{ ar_card_asset_img }}"
-              alt="{{ card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+              alt="{{ ar_card_img_alt | escape }}"
+              title="{{ card_product.title | escape }}"
+              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
+              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              decoding="async"
+            >
+          {%- elsif ar_card_nakshatra_img != blank -%}
+            <img
+              class="ar-card__img ar-card__img--contain"
+              src="{{ ar_card_nakshatra_img }}"
+              alt="{{ ar_card_img_alt | escape }}"
+              title="{{ card_product.title | escape }}"
               loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
               {% if card_index == 0 %}fetchpriority="high"{% endif %}
               decoding="async"
@@ -176,7 +206,8 @@
             <img
               class="ar-card__img ar-card__img--contain"
               src="{{ ar_card_bestseller_img }}"
-              alt="{{ card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+              alt="{{ ar_card_img_alt | escape }}"
+              title="{{ card_product.title | escape }}"
               loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
               {% if card_index == 0 %}fetchpriority="high"{% endif %}
               decoding="async"
@@ -194,7 +225,8 @@
                 src="{{ first_image | image_url: width: 800 }}"
                 srcset="{{ first_image | image_url: width: 400 }} 400w, {{ first_image | image_url: width: 800 }} 800w"
                 sizes="(min-width: 990px) 25vw, 50vw"
-                alt="{{ first_image.alt | default: card_product.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+                alt="{{ first_image.alt | default: ar_card_img_alt | escape }}"
+                title="{{ card_product.title | escape }}"
                 loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
                 {% if card_index == 0 %}fetchpriority="high"{% endif %}
                 width="800"

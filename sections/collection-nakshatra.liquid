@@ -65,8 +65,8 @@
     .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; position:relative; }
     .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
     .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#f5f0e8; }
-    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
-    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
+    .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; transition:transform .7s ease; }
+    .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; object-position:center; opacity:0; transition:opacity .5s ease,transform .7s ease; }
     .arc-card:hover .arc-card__img { transform:scale(1.06); }
     .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
     .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
@@ -141,12 +141,29 @@
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
         {%- for product in collection.products -%}
+            {%- capture ar_nk_img -%}{%- render 'nakshatra-image-lookup', nk_product: product -%}{%- endcapture -%}
+            {%- assign ar_nk_img = ar_nk_img | strip -%}
+            {%- capture ar_card_seo_alt -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'card' -%}{%- endcapture -%}
+            {%- assign ar_card_seo_alt = ar_card_seo_alt | strip -%}
+            {%- capture ar_card_seo_alt_hover -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'hover' -%}{%- endcapture -%}
+            {%- assign ar_card_seo_alt_hover = ar_card_seo_alt_hover | strip -%}
             <div class="arc-card">
-              <a href="{{ product.url }}" class="arc-card__img-wrap">
-                {%- if product.images.size > 0 -%}
+              <a href="{{ product.url }}" class="arc-card__img-wrap" title="{{ product.title | escape }}">
+                {%- if ar_nk_img != blank -%}
+                  <img
+                    src="{{ ar_nk_img | asset_url }}"
+                    alt="{{ ar_card_seo_alt | escape }}"
+                    title="{{ product.title | escape }}"
+                    width="800"
+                    height="1067"
+                    loading="lazy"
+                    class="arc-card__img"
+                  >
+                {%- elsif product.images.size > 0 -%}
                   <img
                     src="{{ product.featured_image | image_url: width: 800 }}"
-                    alt="{{ product.featured_image.alt | default: product.title }}"
+                    alt="{{ product.featured_image.alt | default: ar_card_seo_alt | escape }}"
+                    title="{{ product.title | escape }}"
                     width="800"
                     height="1067"
                     loading="lazy"
@@ -155,7 +172,8 @@
                   {%- if product.images.size > 1 -%}
                     <img
                       src="{{ product.images[1] | image_url: width: 800 }}"
-                      alt="{{ product.title }} - alternate view"
+                      alt="{{ ar_card_seo_alt_hover | escape }}"
+                      title="{{ product.title | escape }}"
                       width="800"
                       height="1067"
                       loading="lazy"
@@ -237,6 +255,7 @@
     "settings": [
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
+      {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Used when a hero image is added. Overrides auto-generated alt."},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Lunar Mansion Series"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Twenty-seven attars, one for each Vedic lunar mansion. A fragrance for your birth star."},
       {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},

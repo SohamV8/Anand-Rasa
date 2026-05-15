@@ -39,6 +39,23 @@
     elsif product.metafields.reviews.rating_count != blank
       assign ar_rating_count = product.metafields.reviews.rating_count
     endif
+
+    capture ar_schema_primary_url
+      render 'image-seo-url', seo_product: product, img_width: 2000
+    endcapture
+    assign ar_schema_primary_url = ar_schema_primary_url | strip
+    if ar_schema_primary_url != blank
+      unless ar_schema_primary_url contains 'https://' or ar_schema_primary_url contains 'http://'
+        if ar_schema_primary_url contains '//'
+          assign ar_schema_primary_url = ar_schema_primary_url | prepend: 'https:'
+        endif
+      endunless
+    endif
+
+    capture ar_schema_primary_alt
+      render 'image-seo-alt', seo_product: product, img_context: 'schema'
+    endcapture
+    assign ar_schema_primary_alt = ar_schema_primary_alt | strip
   -%}
 
   <script type="application/ld+json">
@@ -49,6 +66,14 @@
       "name": {{ product.title | strip | json }},
       "description": {{ ar_description | json }},
       "image": [
+        {%- if ar_schema_primary_url != blank -%}
+        {
+          "@type": "ImageObject",
+          "url": {{ ar_schema_primary_url | json }},
+          "name": {{ product.title | strip | json }},
+          "description": {{ ar_schema_primary_alt | json }}
+        }{%- if product.images.size > 0 -%},{%- endif -%}
+        {%- endif -%}
         {%- for image in product.images -%}
           {{ image | image_url: width: 2000 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
         {%- endfor -%}

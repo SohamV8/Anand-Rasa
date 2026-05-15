@@ -45,22 +45,26 @@
     <!-- RIGHT -->
     <div class="ar-hero__right">
       {%- if section.settings.hero_image != blank -%}
+        {%- capture ar_home_hero_alt -%}{%- render 'image-seo-hero-alt', hero_image: section.settings.hero_image, alt_override: section.settings.hero_image_alt, seo_label: section.settings.hero_headline, img_context: 'hero' -%}{%- endcapture -%}
         <img
           src="{{ section.settings.hero_image | image_url: width: 2400 }}"
           srcset="{{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
                   {{ section.settings.hero_image | image_url: width: 1800 }} 1800w,
                   {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
           sizes="(min-width:1024px) 55vw, 100vw"
-          alt="{{ section.settings.hero_image.alt | default: section.settings.hero_headline | default: shop.name | escape }}"
+          alt="{{ ar_home_hero_alt | strip | escape }}"
+          title="{{ section.settings.hero_headline | default: shop.name | escape }}"
           loading="eager"
           fetchpriority="high"
           decoding="async"
           class="ar-hero__img"
         >
       {%- else -%}
+        {%- capture ar_home_hero_alt -%}{%- render 'image-seo-hero-alt', alt_override: section.settings.hero_image_alt, seo_label: section.settings.hero_headline, img_context: 'hero' -%}{%- endcapture -%}
         <img
           src="{{ 'home.webp' | asset_url }}"
-          alt="{{ section.settings.hero_headline | default: shop.name | escape }}"
+          alt="{{ ar_home_hero_alt | strip | escape }}"
+          title="{{ section.settings.hero_headline | default: shop.name | escape }}"
           loading="eager"
           fetchpriority="high"
           decoding="async"

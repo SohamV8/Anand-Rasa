@@ -10,28 +10,85 @@
   endif
 
   assign og_image = blank
-  if request.page_type == 'product' and product.featured_image
-    assign og_image = product.featured_image | image_url: width: 1200
-  elsif request.page_type == 'collection' and collection.image
-    assign og_image = collection.image | image_url: width: 1200
+  assign og_image_alt = shop.name
+  assign og_image_width = 1200
+  assign og_image_height = 630
+
+  if request.page_type == 'product' and product != blank
+    capture og_image_resolved
+      render 'image-seo-url', seo_product: product, img_width: 1200
+    endcapture
+    assign og_image = og_image_resolved | strip
+    capture og_image_alt_resolved
+      render 'image-seo-alt', seo_product: product, img_context: 'og'
+    endcapture
+    assign og_image_alt = og_image_alt_resolved | strip
+    if product.featured_image
+      assign og_image_width = product.featured_image.width | default: 1200
+      assign og_image_height = product.featured_image.height | default: 1200
+      if og_image_width > 1200
+        assign og_image_width = 1200
+      endif
+    else
+      assign og_image_width = 1200
+      assign og_image_height = 1200
+    endif
+  elsif request.page_type == 'collection' and collection != blank
+    capture og_image_resolved
+      render 'image-seo-url', seo_collection: collection, img_width: 1200
+    endcapture
+    assign og_image = og_image_resolved | strip
+    capture og_image_alt_resolved
+      render 'image-seo-alt', seo_collection: collection, img_context: 'og'
+    endcapture
+    assign og_image_alt = og_image_alt_resolved | strip
+    if collection.image
+      assign og_image_width = collection.image.width | default: 1200
+      assign og_image_height = collection.image.height | default: 630
+    endif
   elsif request.page_type == 'article' and article.image
     assign og_image = article.image | image_url: width: 1200
-  else
-    assign og_image = 'anandrasa-og-default.jpg' | asset_url
+    assign og_image_alt = article.image.alt | default: article.title
+    assign og_image_width = article.image.width | default: 1200
+    assign og_image_height = article.image.height | default: 630
   endif
+
+  if og_image == blank
+    assign og_image = 'logo.webp' | asset_url
+    assign og_image_alt = shop.name | append: ' — luxury handcrafted attar and perfume from India'
+  endif
+
+  unless og_image contains 'https://' or og_image contains 'http://'
+    if og_image contains '//'
+      assign og_image = og_image | prepend: 'https:'
+    endif
+  endunless
 -%}
-<!-- SEO Fix: Open Graph and Twitter social cards -->
+<!-- SEO: Open Graph, Twitter, and Pinterest-rich social image metadata -->
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:title" content="{{ og_title | escape }}">
 <meta property="og:description" content="{{ og_description | escape }}">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:image" content="{{ og_image }}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:secure_url" content="{{ og_image }}">
+<meta property="og:image:alt" content="{{ og_image_alt | escape }}">
+<meta property="og:image:width" content="{{ og_image_width }}">
+<meta property="og:image:height" content="{{ og_image_height }}">
 <meta property="og:locale" content="en_IN">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
 <meta name="twitter:description" content="{{ og_description | escape }}">
 <meta name="twitter:image" content="{{ og_image }}">
+<meta name="twitter:image:alt" content="{{ og_image_alt | escape }}">
+
+{%- if request.page_type == 'product' -%}
+  <meta property="product:brand" content="Anandrasa">
+  <meta property="product:availability" content="{% if product.available %}in stock{% else %}out of stock{% endif %}">
+  <meta property="product:condition" content="new">
+  <meta property="product:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="product:price:currency" content="{{ cart.currency.iso_code | default: 'INR' }}">
+{%- endif -%}
+
+<meta name="pinterest-rich-pin" content="true">

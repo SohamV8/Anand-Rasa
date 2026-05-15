@@ -1,0 +1,120 @@
+{%- comment -%}
+  Semantic image alt text for products and collections.
+  Echoes a single optimized alt string (no HTML).
+
+  Parameters:
+    seo_product    — product object
+    seo_collection — collection object
+    img_context    — card | pdp | og | schema | thumb | hover | hero (default: card)
+    img_index      — optional image position hint
+    alt_override   — merchant-provided alt (skips auto-generation when set)
+{%- endcomment -%}
+{%- liquid
+  assign img_ctx = img_context | default: 'card'
+  assign alt_text = ''
+  assign brand_suffix = ' | Anand Rasa'
+
+  if alt_override != blank
+    assign alt_text = alt_override | strip | truncate: 250
+    echo alt_text
+  elsif seo_product != blank
+    assign seo_key = seo_product.handle | append: ' ' | append: seo_product.title | append: ' ' | append: seo_product.type | downcase
+    assign seo_title_clean = seo_product.title | strip
+    assign seo_type = seo_product.type | default: 'Attar' | strip
+
+    assign entity_label = ''
+    assign entity_phrase = ''
+
+    if seo_key contains 'nakshatra' or seo_key contains 'ashwini' or seo_key contains 'ashvini' or seo_key contains 'bharani' or seo_key contains 'krittika' or seo_key contains 'kritika' or seo_key contains 'rohini' or seo_key contains 'mrigashira' or seo_key contains 'ardra' or seo_key contains 'punarvasu' or seo_key contains 'pushya' or seo_key contains 'ashlesha' or seo_key contains 'magha' or seo_key contains 'phalguni' or seo_key contains 'hasta' or seo_key contains 'chitra' or seo_key contains 'swati' or seo_key contains 'vishakha' or seo_key contains 'anuradha' or seo_key contains 'jyeshtha' or seo_key contains 'jyeshta' or seo_key contains 'mula' or seo_key contains 'ashadha' or seo_key contains 'shravana' or seo_key contains 'dhanishtha' or seo_key contains 'dhanishta' or seo_key contains 'shatabhisha' or seo_key contains 'bhadrapada' or seo_key contains 'revati'
+      assign entity_label = 'Nakshatra attar'
+      assign entity_phrase = 'Vedic birth-star lunar mansion fragrance'
+    elsif seo_key contains 'aries' or seo_key contains 'taurus' or seo_key contains 'gemini' or seo_key contains 'cancer' or seo_key contains 'leo' or seo_key contains 'virgo' or seo_key contains 'libra' or seo_key contains 'scorpio' or seo_key contains 'sagittarius' or seo_key contains 'capricorn' or seo_key contains 'aquarius' or seo_key contains 'pisces' or seo_key contains 'mesha' or seo_key contains 'vrishabha' or seo_key contains 'mithuna' or seo_key contains 'karka' or seo_key contains 'simha' or seo_key contains 'kanya' or seo_key contains 'tula' or seo_key contains 'vrischika' or seo_key contains 'dhanu' or seo_key contains 'makara' or seo_key contains 'kumbha' or seo_key contains 'meena' or seo_key contains 'zodiac'
+      assign entity_label = 'Zodiac attar'
+      assign entity_phrase = 'astrology-aligned zodiac sign fragrance'
+    elsif seo_key contains 'surya' or seo_key contains 'sun' or seo_key contains 'chandra' or seo_key contains 'moon' or seo_key contains 'mangal' or seo_key contains 'mars' or seo_key contains 'budh' or seo_key contains 'mercury' or seo_key contains 'guru' or seo_key contains 'jupiter' or seo_key contains 'shukra' or seo_key contains 'venus' or seo_key contains 'shani' or seo_key contains 'saturn' or seo_key contains 'rahu' or seo_key contains 'ketu' or seo_key contains 'navagraha' or seo_key contains 'planet'
+      assign entity_label = 'Planet attar'
+      assign entity_phrase = 'Navagraha planetary energy perfume oil'
+    elsif seo_key contains 'incense' or seo_key contains 'agarbatti' or seo_key contains 'dhoop'
+      assign entity_label = 'Incense'
+      assign entity_phrase = 'natural incense sticks for meditation and ritual'
+    elsif seo_key contains 'chakra' or seo_key contains 'solar plexus' or seo_key contains 'third eye' or seo_key contains 'sacral' or seo_key contains 'root chakra' or seo_key contains 'heart chakra' or seo_key contains 'throat'
+      assign entity_label = 'Chakra attar'
+      assign entity_phrase = 'chakra-aligned spiritual perfume oil'
+    elsif seo_key contains 'stress' or seo_key contains 'calm' or seo_key contains 'relief'
+      assign entity_label = 'Wellness attar'
+      assign entity_phrase = 'stress-relief aromatherapy perfume oil'
+    elsif seo_key contains 'love' or seo_key contains 'romance'
+      assign entity_label = 'Love attar'
+      assign entity_phrase = 'romantic luxury perfume oil'
+    elsif seo_key contains 'gift' or seo_key contains 'discovery' or seo_key contains 'set'
+      assign entity_label = 'Gift set'
+      assign entity_phrase = 'curated luxury attar gift collection'
+    else
+      assign entity_label = seo_type
+      assign entity_phrase = 'handcrafted luxury Indian perfume oil'
+    endif
+
+    case img_ctx
+      when 'hover'
+        assign alt_text = seo_title_clean | append: ' — alternate view, ' | append: entity_phrase | append: brand_suffix
+      when 'pdp', 'schema'
+        assign alt_text = seo_title_clean | append: ' — luxury ' | append: entity_label | append: ' bottle, ' | append: entity_phrase | append: brand_suffix
+      when 'og'
+        assign alt_text = seo_title_clean | append: ' — ' | append: entity_label | append: ' by Anand Rasa, ' | append: entity_phrase
+      when 'thumb'
+        assign alt_text = seo_title_clean | append: ' thumbnail — ' | append: entity_label | append: brand_suffix
+      else
+        assign alt_text = seo_title_clean | append: ' — luxury ' | append: entity_label | append: ', ' | append: entity_phrase | append: brand_suffix
+    endcase
+
+    if seo_product.featured_image.alt != blank and img_ctx == 'pdp' and seo_product.featured_image.alt != seo_title_clean
+      assign alt_text = seo_product.featured_image.alt | strip
+    endif
+
+    assign alt_text = alt_text | strip | truncate: 250
+    echo alt_text
+
+  elsif seo_collection != blank or seo_label != blank
+    if seo_collection != blank
+      assign col_key = seo_collection.handle | append: ' ' | append: seo_collection.title | downcase
+      assign col_title = seo_collection.title | strip
+    else
+      assign col_key = seo_label | downcase
+      assign col_title = seo_label | strip
+    endif
+
+    if col_key contains 'nakshatra' or col_key contains 'naksahtra'
+      assign alt_text = col_title | append: ' — 27 Vedic nakshatra attar fragrances, birth-star perfume oils' | append: brand_suffix
+    elsif col_key contains 'zodiac'
+      assign alt_text = col_title | append: ' — zodiac sign attar collection, astrology perfume oils' | append: brand_suffix
+    elsif col_key contains 'planet' or col_key contains 'navagraha'
+      assign alt_text = col_title | append: ' — Navagraha planet attar collection, Vedic planetary fragrances' | append: brand_suffix
+    elsif col_key contains 'incense'
+      assign alt_text = col_title | append: ' — natural incense sticks for meditation and spiritual ritual' | append: brand_suffix
+    elsif col_key contains 'chakra'
+      assign alt_text = col_title | append: ' — chakra attar collection for energy alignment and meditation' | append: brand_suffix
+    elsif col_key contains 'stress'
+      assign alt_text = col_title | append: ' — stress relief attar collection for calm and wellness' | append: brand_suffix
+    elsif col_key contains 'love'
+      assign alt_text = col_title | append: ' — love and romance attar collection, luxury perfume oils' | append: brand_suffix
+    elsif col_key contains 'gift'
+      assign alt_text = col_title | append: ' — luxury attar gift sets and discovery collections' | append: brand_suffix
+    else
+      assign alt_text = col_title | append: ' — handcrafted attar and perfume collection' | append: brand_suffix
+    endif
+
+    case img_ctx
+      when 'hero'
+        assign alt_text = col_title | append: ' collection hero — luxury spiritual fragrances' | append: brand_suffix
+      when 'og'
+        assign alt_text = col_title | append: ' — shop handcrafted attars and perfumes at Anand Rasa India'
+    endcase
+
+    if seo_collection != blank and seo_collection.image.alt != blank and img_ctx != 'og'
+      assign alt_text = seo_collection.image.alt | strip
+    endif
+
+    assign alt_text = alt_text | strip | truncate: 250
+    echo alt_text
+  endif
+-%}

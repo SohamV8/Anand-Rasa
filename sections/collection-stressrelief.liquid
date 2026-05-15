@@ -107,7 +107,9 @@
       {%- if section.settings.hero_image != blank -%}
         <img
           src="{{ section.settings.hero_image | image_url: width: 2200 }}"
-          alt="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
+          {%- capture ar_hero_alt -%}{%- render 'image-seo-hero-alt', seo_collection: collection, hero_image: section.settings.hero_image, alt_override: section.settings.hero_image_alt, img_context: 'hero' -%}{%- endcapture -%}
+          alt="{{ ar_hero_alt | strip | escape }}"
+          title="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
           width="2200"
           height="1100"
           loading="eager"
@@ -116,9 +118,11 @@
           class="arc-hero__bg"
         >
       {%- else -%}
+        {%- capture ar_hero_alt -%}{%- render 'image-seo-hero-alt', seo_collection: collection, alt_override: section.settings.hero_image_alt, img_context: 'hero' -%}{%- endcapture -%}
         <img
           src="{{ 'stress.webp' | asset_url }}"
-          alt="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
+          alt="{{ ar_hero_alt | strip | escape }}"
+          title="{{ collection.title | default: 'Stress Relief Attars' | escape }}"
           width="2200"
           height="1100"
           loading="eager"
@@ -347,6 +351,7 @@
     "settings": [
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
+      {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Calm & Balance"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Botanical attars chosen to quiet the mind, soften tension, and bring you back to center. A gentle ritual for hectic days."},
       {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},
