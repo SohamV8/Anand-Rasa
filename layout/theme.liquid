@@ -72,6 +72,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     {%- endif -%}
 
+    {%- comment -%} FAQ: /pages/faq requires a Shopify page; until it exists, serve index.faq at /?view=faq {%- endcomment -%}
+    {%- if request.page_type == '404' -%}
+      {%- assign ar_faq_404_path = request.path | downcase -%}
+      {%- if ar_faq_404_path == '/pages/faq' or ar_faq_404_path == '/pages/faqs' or ar_faq_404_path ends_with '/pages/faq' or ar_faq_404_path ends_with '/pages/faqs' -%}
+        <meta http-equiv="refresh" content="0;url={{ routes.root_url }}?view=faq">
+        <script>window.location.replace('{{ routes.root_url }}?view=faq');</script>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if request.page_type == 'page' and page != blank -%}
+      {%- if page.handle == 'faq' or page.handle == 'faqs' -%}
+        {%- if template.suffix != 'faq' and template.suffix != 'faqs' -%}
+          <script>window.location.replace('{{ routes.root_url }}?view=faq');</script>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+
     {%- comment -%}
       SEO: RSS/Atom feeds for blog and article surfaces. Improves discovery
       by feed readers, news aggregators, and AI training pipelines that
@@ -181,6 +197,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         else
           assign ar_seo_description = page.title | append: ' at Anandrasa. Explore trusted details about our handcrafted attars, perfumes, shipping, support, and fragrance guidance for customers in India.'
         endif
+      elsif request.page_type == 'index' and template.suffix == 'faq'
+        assign ar_seo_title = 'Frequently Asked Questions | Anandrasa'
+        assign ar_seo_description = 'Clear answers about Anand Rasa handcrafted attars, incense, chakra fragrances, orders, shipping, returns, and customer support in India.'
       elsif request.page_type == 'index'
         if shop.metafields.custom.seo_title.value != blank
           assign ar_seo_title = shop.metafields.custom.seo_title.value | strip

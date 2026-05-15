@@ -1,0 +1,48 @@
+{%- comment -%}
+  Incense image lookup — maps incense stick products to /assets/incense/ showcase images.
+  Echoes asset path (e.g. "incense/Nag-Champa.webp") or empty string.
+
+  Usage:
+    {%- capture ar_incense_img -%}
+      {%- render 'incense-image-lookup', inc_product: product -%}
+    {%- endcapture -%}
+
+  Parameter: inc_product — Shopify product object
+{%- endcomment -%}
+{%- liquid
+  assign title_key = inc_product.title | downcase
+  assign handle_key = inc_product.handle | default: '' | downcase
+  assign type_key = inc_product.type | default: '' | downcase
+  assign img = ''
+
+  assign is_incense = false
+  if title_key contains 'incense' or handle_key contains 'incense' or type_key contains 'incense' or type_key contains 'agarbatti' or type_key contains 'dhoop'
+    assign is_incense = true
+  endif
+-%}
+{%- if is_incense -%}
+  {%- liquid
+    if title_key contains 'nag-champa' or title_key contains 'nag champa' or handle_key contains 'nag-champa'
+      assign img = 'incense/Nag-Champa.webp'
+    elsif title_key contains 'jasmine' or handle_key contains 'jasmine'
+      assign img = 'incense/Jasmine.webp'
+    elsif title_key contains 'lavender' or handle_key contains 'lavender'
+      assign img = 'incense/lavender.webp'
+    elsif title_key contains 'kesar' or title_key contains 'chandan' or handle_key contains 'kesar' or handle_key contains 'chandan'
+      assign img = 'incense/kesar-chandan.webp'
+    elsif title_key contains 'musk-rose' or title_key contains 'musk rose' or handle_key contains 'musk-rose'
+      assign img = 'incense/musk-rose.webp'
+    elsif title_key contains 'loban' or handle_key contains 'loban'
+      assign img = 'incense/incense2.webp'
+    elsif title_key contains 'sandalwood' or handle_key contains 'sandalwood'
+      assign img = 'incense/incense3.webp'
+    elsif title_key contains 'rose' or handle_key contains 'rose'
+      assign img = 'incense/musk-rose.webp'
+    elsif title_key contains 'champa' or handle_key contains 'champa'
+      assign img = 'incense/Nag-Champa.webp'
+    else
+      assign img = 'incense/incense1.webp'
+    endif
+  -%}
+{%- endif -%}
+{{- img -}}

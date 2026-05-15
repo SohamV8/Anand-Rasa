@@ -18,12 +18,20 @@
 {%- liquid
   assign title_key = bs_product.title | handleize
   assign handle_key = bs_product.handle | default: title_key
+  assign type_key = bs_product.type | default: '' | downcase
   assign img = ''
 
+  assign is_incense_product = false
+  if title_key contains 'incense' or handle_key contains 'incense' or type_key contains 'incense' or type_key contains 'agarbatti' or type_key contains 'dhoop'
+    assign is_incense_product = true
+  endif
+-%}
+{%- unless is_incense_product -%}
+{%- liquid
   comment
   Order matters: place multi-word/compound matches before single-word
   matches so that, for example, "oud-e-azam" doesn't fall through to
-  the generic "oud" rule.
+  the generic "oud" rule. Do not match jasmine/champa for incense sticks.
   endcomment
 
   if title_key contains 'kesariya-ishq' or handle_key contains 'kesariya-ishq'
@@ -78,3 +86,6 @@
 
   echo img
 -%}
+{%- else -%}
+{{- '' -}}
+{%- endunless -%}

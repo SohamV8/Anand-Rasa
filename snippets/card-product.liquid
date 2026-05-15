@@ -74,6 +74,7 @@
     endcomment
     assign ar_card_bestseller_img = ''
     assign ar_card_nakshatra_img = ''
+    assign ar_card_incense_img = ''
 
     capture ar_card_img_alt
       render 'image-seo-alt', seo_product: card_product, img_context: 'card'
@@ -93,11 +94,19 @@
     {%- assign ar_card_nakshatra_img = ar_nk_lookup | asset_url -%}
   {%- endif -%}
 
+  {%- capture ar_inc_lookup -%}
+    {%- render 'incense-image-lookup', inc_product: card_product -%}
+  {%- endcapture -%}
+  {%- assign ar_inc_lookup = ar_inc_lookup | strip -%}
+  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_inc_lookup != blank -%}
+    {%- assign ar_card_incense_img = ar_inc_lookup | asset_url -%}
+  {%- endif -%}
+
   {%- capture ar_bs_lookup -%}
     {%- render 'bestseller-image-lookup', bs_product: card_product -%}
   {%- endcapture -%}
   {%- assign ar_bs_lookup = ar_bs_lookup | strip -%}
-  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_bs_lookup != blank -%}
+  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_card_incense_img == blank and ar_bs_lookup != blank -%}
     {%- assign ar_card_bestseller_img = ar_bs_lookup | asset_url -%}
   {%- endif -%}
 
@@ -136,7 +145,7 @@
     {%- endif -%}
   {%- endfor -%}
 
-  {%- if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_bestseller_img != blank -%}
+  {%- if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_incense_img != blank or ar_card_bestseller_img != blank -%}
     {%- assign image_count = 0 -%}
     {%- assign image_urls = '' -%}
   {%- endif -%}
@@ -174,7 +183,7 @@
     >
 
       {%- comment -%} ── IMAGE BLOCK ── {%- endcomment -%}
-      <div class="ar-card__media{% if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_bestseller_img != blank %} ar-card__media--contain{% endif %}">
+      <div class="ar-card__media{% if ar_card_asset_img != blank or ar_card_nakshatra_img != blank or ar_card_incense_img != blank or ar_card_bestseller_img != blank %} ar-card__media--contain{% endif %}">
         <a
           href="{{ card_product.url }}"
           class="ar-card__media-link"
@@ -196,6 +205,16 @@
             <img
               class="ar-card__img ar-card__img--contain"
               src="{{ ar_card_nakshatra_img }}"
+              alt="{{ ar_card_img_alt | escape }}"
+              title="{{ card_product.title | escape }}"
+              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
+              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              decoding="async"
+            >
+          {%- elsif ar_card_incense_img != blank -%}
+            <img
+              class="ar-card__img ar-card__img--contain"
+              src="{{ ar_card_incense_img }}"
               alt="{{ ar_card_img_alt | escape }}"
               title="{{ card_product.title | escape }}"
               loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"

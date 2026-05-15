@@ -33,6 +33,10 @@
               if inc_tag == blank and p.description != blank
                 assign inc_tag = p.description | strip_html | truncate: 80
               endif
+              capture ar_incense_card_img
+                render 'incense-image-lookup', inc_product: p
+              endcapture
+              assign ar_incense_card_img = ar_incense_card_img | strip
             -%}
             <article class="ar-inc__card" style="--card-i: {{ forloop.index0 }}">
               <div class="ar-inc__card-inner">
@@ -50,8 +54,17 @@
                       <span class="ar-inc__badge ar-inc__badge--sale">SALE</span>
                     {%- endif -%}
 
-                    {%- if p.featured_image -%}
-                      <!-- SEO Fix: Incense product image optimized with WebP and explicit dimensions -->
+                    {%- if ar_incense_card_img != blank -%}
+                      <img
+                        src="{{ ar_incense_card_img | asset_url }}"
+                        alt="{{ p.title | escape }}"
+                        width="800"
+                        height="800"
+                        loading="lazy"
+                        decoding="async"
+                        class="ar-inc__img ar-inc__img--contain"
+                      >
+                    {%- elsif p.featured_image -%}
                       <picture>
                         <source
                           srcset="{{ p.featured_image | image_url: width: 400, format: 'webp' }} 400w, {{ p.featured_image | image_url: width: 800, format: 'webp' }} 800w"
@@ -62,7 +75,7 @@
                           src="{{ p.featured_image | image_url: width: 800 }}"
                           srcset="{{ p.featured_image | image_url: width: 400 }} 400w, {{ p.featured_image | image_url: width: 800 }} 800w"
                           sizes="(min-width: 1024px) 300px, 76vw"
-                          alt="{{ p.featured_image.alt | default: p.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
+                          alt="{{ p.featured_image.alt | default: p.title | escape }}"
                           width="800"
                           height="{{ 800 | divided_by: p.featured_image.aspect_ratio | round }}"
                           loading="lazy"
@@ -340,6 +353,12 @@
   object-fit: cover;
   display: block;
   transition: transform 0.55s cubic-bezier(0.25,1,0.5,1);
+}
+
+.ar-inc__img--contain {
+  object-fit: contain;
+  padding: 8px;
+  background: #F7F3EC;
 }
 
 .ar-inc__card:hover .ar-inc__img {

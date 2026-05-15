@@ -14,7 +14,7 @@
     when 'faq', 'faqs'
       assign url = pages['faq'].url | default: pages['faqs'].url
       if url == blank
-        assign url = contact_fallback_url
+        assign url = routes.root_url | append: '?view=faq'
       endif
     when 'bulk-enquiry', 'bulk-enquiry-form', 'bulk-inquiry'
       assign url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url

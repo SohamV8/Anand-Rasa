@@ -1176,6 +1176,10 @@
               assign has_sale = true
               assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
             endif
+            capture ar_incense_card_img
+              render 'incense-image-lookup', inc_product: product
+            endcapture
+            assign ar_incense_card_img = ar_incense_card_img | strip
           -%}
 
           <article
@@ -1186,14 +1190,27 @@
           >
             <meta itemprop="name" content="{{ product.title | escape }}">
             <meta itemprop="url" content="{{ product.url | prepend: request.origin }}">
-            {%- if product.featured_image -%}
+            {%- if ar_incense_card_img != blank -%}
+              <meta itemprop="image" content="{{ ar_incense_card_img | asset_url | prepend: 'https:' }}">
+            {%- elsif product.featured_image -%}
               <meta itemprop="image" content="{{ product.featured_image | image_url: width: 800 | prepend: 'https:' }}">
             {%- endif -%}
 
             {%- comment -%} IMAGE {%- endcomment -%}
-            <div class="arc-card__media">
+            <div class="arc-card__media{% if ar_incense_card_img != blank %} arc-card__media--contain{% endif %}">
               <a href="{{ product.url }}" class="arc-card__media-link" aria-label="{{ product.title | escape }}">
-                {%- if product.images.size > 0 -%}
+                {%- if ar_incense_card_img != blank -%}
+                  <img
+                    src="{{ ar_incense_card_img | asset_url }}"
+                    alt="{{ product.title | escape }}"
+                    width="800"
+                    height="800"
+                    loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                    {% if forloop.index == 1 %}fetchpriority="high"{% endif %}
+                    decoding="async"
+                    class="arc-card__img arc-card__img--contain"
+                  >
+                {%- elsif product.images.size > 0 -%}
                   <img
                     src="{{ product.featured_image | image_url: width: 800 }}"
                     alt="{{ product.featured_image.alt | default: product.title | escape }}"

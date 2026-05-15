@@ -40,6 +40,11 @@
     var vipPath = path.replace(/\/pages\/vip-club$/, '');
     if (vipPath !== path) {
       window.location.replace((vipPath || '/') + '?view=vip-club');
+      return;
+    }
+
+    if (path === '/pages/faq' || path === '/pages/faqs') {
+      window.location.replace('/?view=faq');
     }
   })();
 </script>

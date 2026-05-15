@@ -55,7 +55,7 @@
   {%- assign ar_footer_contact_url = pages['contact'].url | default: pages['contact-us'].url -%}
   {%- if ar_footer_contact_url == blank -%}{%- capture ar_footer_contact_url -%}{% render 'ar-page-url', handle: 'contact' %}{%- endcapture -%}{%- endif -%}
   {%- assign ar_footer_faq_url = pages['faq'].url | default: pages['faqs'].url -%}
-  {%- if ar_footer_faq_url == blank -%}{%- capture ar_footer_faq_url -%}{% render 'ar-page-url', handle: 'faq' %}{%- endcapture -%}{%- endif -%}
+  {%- if ar_footer_faq_url == blank -%}{%- capture ar_footer_faq_url -%}{% render 'ar-page-url', handle: 'faq' %}{%- endcapture -%}{%- assign ar_footer_faq_url = ar_footer_faq_url | strip -%}{%- endif -%}
   {%- assign ar_footer_bulk_url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url -%}
   {%- if ar_footer_bulk_url == blank -%}{%- capture ar_footer_bulk_url -%}{% render 'ar-page-url', handle: 'bulk-enquiry' %}{%- endcapture -%}{%- endif -%}
   {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url -%}
@@ -201,35 +201,20 @@
         </a>
       {%- endif -%}
 
-      {%- if section.settings.twitter != blank -%}
-        <a href="{{ section.settings.twitter }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="X (Twitter)">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.9 2H22l-6.78 7.75L23.2 22h-6.27l-4.9-6.85L5.9 22H2.8l7.25-8.29L.8 2h6.4l4.42 6.19L18.9 2Zm-1.1 18h1.74L6.25 3.9H4.38L17.8 20Z"/>
-          </svg>
-        </a>
-      {%- endif -%}
-
       {%- if section.settings.pinterest != blank -%}
-        <a href="{{ section.settings.pinterest }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Pinterest">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2a10 10 0 0 0-3.64 19.32c-.05-.82-.1-2.08.02-2.97l1.3-5.5s-.32-.63-.32-1.56c0-1.46.85-2.55 1.91-2.55.9 0 1.33.68 1.33 1.49 0 .9-.57 2.26-.87 3.52-.25 1.06.54 1.92 1.58 1.92 1.9 0 3.35-2 3.35-4.88 0-2.55-1.84-4.34-4.47-4.34-3.05 0-4.84 2.28-4.84 4.64 0 .92.36 1.91.8 2.45a.32.32 0 0 1 .08.3c-.08.33-.27 1.06-.3 1.2-.05.2-.17.24-.39.14-1.45-.67-2.36-2.79-2.36-4.49 0-3.65 2.65-7 7.64-7 4.01 0 7.13 2.86 7.13 6.68 0 3.98-2.51 7.19-6 7.19-1.17 0-2.28-.61-2.66-1.33l-.72 2.74c-.26 1-.97 2.25-1.45 3A10 10 0 1 0 12 2Z"/>
-          </svg>
-        </a>
-      {%- endif -%}
-
-      {%- if section.settings.reddit != blank -%}
-        <a href="{{ section.settings.reddit }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Reddit">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.18 13.32c0-.78-.63-1.41-1.41-1.41-.38 0-.72.15-.97.4-1.33-.9-3.1-1.47-5.05-1.53l.85-2.69 2.3.54a1.7 1.7 0 1 0 .31-1.12l-2.95-.69a.57.57 0 0 0-.68.38l-1.08 3.44c-2 .03-3.83.61-5.2 1.53a1.37 1.37 0 0 0-.94-.37c-.78 0-1.41.63-1.41 1.41 0 .57.33 1.05.81 1.28-.03.2-.04.4-.04.6 0 2.83 3.26 5.13 7.28 5.13s7.28-2.3 7.28-5.13c0-.18-.01-.36-.03-.53a1.4 1.4 0 0 0 .93-1.34Zm-11.6 1.23a1.17 1.17 0 1 1 2.34 0 1.17 1.17 0 0 1-2.34 0Zm6.95 2.79c-.81.82-2.35.89-3.53.89-1.18 0-2.72-.07-3.53-.89a.58.58 0 0 1 .82-.82c.45.45 1.4.55 2.71.55s2.26-.1 2.71-.55a.58.58 0 0 1 .82.82Zm-.11-1.62a1.17 1.17 0 1 1 0-2.34 1.17 1.17 0 0 1 0 2.34Z"/>
-          </svg>
-        </a>
-      {%- endif -%}
-
-      {%- if section.settings.quora != blank -%}
-        <a href="{{ section.settings.quora }}" class="arf__social-btn" target="_blank" rel="noopener" aria-label="Quora">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.2 19.2l-1.8-1.6a8.3 8.3 0 1 0-2.3 2l1.9 1.7a1.2 1.2 0 1 0 2.1-2.1ZM12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm2.7-4.1h-1v-3.5c0-1-.6-1.6-1.7-1.6-1 0-1.8.5-1.8 1.7v.2H9v-.2c0-1.8 1.3-2.8 3.1-2.8 1.9 0 3 .9 3 2.8v3.4Z"/>
-          </svg>
+        <a href="{{ section.settings.pinterest }}" class="arf__social-btn arf__social-btn--pinterest" target="_blank" rel="noopener" aria-label="Pinterest">
+          {%- if section.settings.icon_pinterest != blank -%}
+            <img
+              src="{{ section.settings.icon_pinterest | image_url: width: 72 }}"
+              srcset="{{ section.settings.icon_pinterest | image_url: width: 36 }} 1x, {{ section.settings.icon_pinterest | image_url: width: 72 }} 2x"
+              alt=""
+              width="18"
+              height="18"
+              loading="lazy"
+            >
+          {%- else -%}
+            {{- 'icon-pinterest.svg' | inline_asset_content -}}
+          {%- endif -%}
         </a>
       {%- endif -%}
     </div>
@@ -406,23 +391,9 @@
     },
     {
       "type": "text",
-      "id": "twitter",
-      "label": "X (Twitter) URL"
-    },
-    {
-      "type": "text",
       "id": "pinterest",
-      "label": "Pinterest URL"
-    },
-    {
-      "type": "text",
-      "id": "reddit",
-      "label": "Reddit URL"
-    },
-    {
-      "type": "text",
-      "id": "quora",
-      "label": "Quora URL"
+      "label": "Pinterest URL",
+      "default": "https://in.pinterest.com/Anand_Rasa/"
     },
     {
       "type": "header",
@@ -467,6 +438,11 @@
       "type": "url",
       "id": "icon_linkedin_url",
       "label": "LinkedIn icon URL fallback"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_pinterest",
+      "label": "Pinterest icon (optional — uses theme icon if empty)"
     },
     {
       "type": "header",

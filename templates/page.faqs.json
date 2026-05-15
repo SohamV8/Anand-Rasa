@@ -1,20 +1,1793 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
-      "type": "main-page",
+      "type": "main-faq",
       "settings": {
-        "padding_top": 28,
-        "padding_bottom": 28
-      }
+        "eyebrow": "Help Centre",
+        "heading": "Frequently Asked Questions",
+        "subtext": "Clear answers about Anand Rasa attars, incense, orders, shipping, astrology fragrances, and customer support.",
+        "show_contact_note": true,
+        "contact_note": "Still have a question?",
+        "contact_link_label": "Contact our team"
+      },
+      "blocks": {
+        "cat_orders": {
+          "type": "category",
+          "settings": {
+            "title": "Orders"
+          }
+        },
+        "q_orders_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I place an order on Anand Rasa?",
+            "answer": "<p>Browse our collections, add products to your cart, and complete checkout with your preferred payment method. You will receive an order confirmation email with your order number once the purchase is successful.</p>"
+          }
+        },
+        "q_orders_2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I modify or cancel my order after placing it?",
+            "answer": "<p>Contact us as soon as possible with your order number. If your order has not yet been packed or shipped, we will do our best to update or cancel it. Once dispatched, changes may not be possible.</p>"
+          }
+        },
+        "q_orders_3": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer gift wrapping or personal notes?",
+            "answer": "<p>Where available, you can add gift options at checkout or mention your request in the order notes. Our team will confirm availability before dispatch.</p>"
+          }
+        },
+        "cat_shipping": {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        "q_ship_1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take across India?",
+            "answer": "<p>Most orders are delivered within 3–7 business days depending on your location and courier partner. Remote areas may require additional transit time.</p>"
+          }
+        },
+        "q_ship_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>International shipping availability varies by product and destination. Please contact our support team with your country and items for a shipping quote before ordering.</p>"
+          }
+        },
+        "q_ship_3": {
+          "type": "question",
+          "settings": {
+            "question": "How can I track my order?",
+            "answer": "<p>When your order ships, you will receive a tracking link by email or SMS. You can also reach out to support with your order number for a status update.</p>"
+          }
+        },
+        "cat_attars": {
+          "type": "category",
+          "settings": {
+            "title": "Attars"
+          }
+        },
+        "q_attar_1": {
+          "type": "question",
+          "settings": {
+            "question": "What are attars and how are they different from perfume?",
+            "answer": "<p>Attars are concentrated natural fragrance oils traditionally distilled from botanicals and resins. Unlike many modern perfumes diluted with alcohol, attars are oil-based and worn in small amounts for a rich, lasting scent.</p>"
+          }
+        },
+        "q_attar_2": {
+          "type": "question",
+          "settings": {
+            "question": "How should I apply attar for best longevity?",
+            "answer": "<p>Apply a small amount to pulse points—wrists, neck, and behind the ears—on clean, moisturised skin. Oil-based attars develop slowly; avoid rubbing vigorously so the fragrance can unfold naturally.</p>"
+          }
+        },
+        "q_attar_3": {
+          "type": "question",
+          "settings": {
+            "question": "Are Anand Rasa attars alcohol-free?",
+            "answer": "<p>Our attars are crafted as oil-based concentrates without the alcohol carriers typical of mainstream eau de parfum. Always check the individual product description for full ingredient and formulation details.</p>"
+          }
+        },
+        "cat_incense": {
+          "type": "category",
+          "settings": {
+            "title": "Incense"
+          }
+        },
+        "q_incense_1": {
+          "type": "question",
+          "settings": {
+            "question": "Are your incense sticks charcoal-free?",
+            "answer": "<p>We prioritise clean-burning formulations. Refer to each incense product page for specific composition, burn time, and safety guidance.</p>"
+          }
+        },
+        "q_incense_2": {
+          "type": "question",
+          "settings": {
+            "question": "How long does each incense stick burn?",
+            "answer": "<p>Burn time depends on stick length and ambient airflow. Most sticks in our range burn approximately 30–45 minutes; exact duration is listed on the product page.</p>"
+          }
+        },
+        "q_incense_3": {
+          "type": "question",
+          "settings": {
+            "question": "Is incense safe for daily home use?",
+            "answer": "<p>Use incense in a well-ventilated space, on a heat-resistant holder, and never leave burning sticks unattended. Keep away from children, pets, and flammable materials.</p>"
+          }
+        },
+        "cat_returns": {
+          "type": "category",
+          "settings": {
+            "title": "Returns"
+          }
+        },
+        "q_returns_1": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>If you receive a damaged or incorrect item, contact us within 48 hours of delivery with photos and your order number. Eligible cases are resolved with replacement or refund as per our store policy.</p>"
+          }
+        },
+        "q_returns_2": {
+          "type": "question",
+          "settings": {
+            "question": "Can I exchange an opened attar or incense pack?",
+            "answer": "<p>For hygiene and safety, opened fragrance and incense products generally cannot be returned unless they arrived defective or not as described. Unopened, sealed items may qualify—contact support for review.</p>"
+          }
+        },
+        "cat_longevity": {
+          "type": "category",
+          "settings": {
+            "title": "Fragrance longevity"
+          }
+        },
+        "q_long_1": {
+          "type": "question",
+          "settings": {
+            "question": "How long does attar fragrance last on skin?",
+            "answer": "<p>Longevity varies by attar composition, skin chemistry, and climate. Oil-based attars typically last several hours to a full day; reapply sparingly if you prefer a stronger presence.</p>"
+          }
+        },
+        "q_long_2": {
+          "type": "question",
+          "settings": {
+            "question": "Why does the same attar smell different on two people?",
+            "answer": "<p>Body chemistry, diet, skin hydration, and temperature all interact with natural oils. This is normal and part of the personal character of attar wearing.</p>"
+          }
+        },
+        "cat_storage": {
+          "type": "category",
+          "settings": {
+            "title": "Storage"
+          }
+        },
+        "q_store_1": {
+          "type": "question",
+          "settings": {
+            "question": "How should I store attars and incense?",
+            "answer": "<p>Store attars upright in a cool, dark place away from direct sunlight and heat. Keep bottles tightly closed. Store incense in a dry, airtight container to preserve aroma and burn quality.</p>"
+          }
+        },
+        "q_store_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do attars expire?",
+            "answer": "<p>Well-stored natural attars can mature beautifully over time. Avoid extreme heat and contamination. If you notice off-notes or separation, discontinue use and contact support.</p>"
+          }
+        },
+        "cat_astro": {
+          "type": "category",
+          "settings": {
+            "title": "Astrology fragrances"
+          }
+        },
+        "q_astro_1": {
+          "type": "question",
+          "settings": {
+            "question": "What are Nakshatra, Planet, and Zodiac attars?",
+            "answer": "<p>These collections align traditional attar craftsmanship with Vedic astrology symbolism—each fragrance is curated to reflect nakshatra, planetary, or zodiac energies for ritual, meditation, or personal wear.</p>"
+          }
+        },
+        "q_astro_2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right astrology fragrance?",
+            "answer": "<p>Start with your birth nakshatra, ruling planet, or sun sign collection. You may also explore by scent family or intention. Our Find Your Fragrance guide and support team can help you narrow your choice.</p>"
+          }
+        },
+        "cat_payments": {
+          "type": "category",
+          "settings": {
+            "title": "Payments"
+          }
+        },
+        "q_pay_1": {
+          "type": "question",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept major credit and debit cards, UPI, net banking, and other methods shown at checkout via our secure payment partners.</p>"
+          }
+        },
+        "q_pay_2": {
+          "type": "question",
+          "settings": {
+            "question": "Is cash on delivery available?",
+            "answer": "<p>Cash on delivery may be offered for eligible pin codes at checkout. Availability can change based on order value and location.</p>"
+          }
+        },
+        "cat_support": {
+          "type": "category",
+          "settings": {
+            "title": "Contact & support"
+          }
+        },
+        "q_support_1": {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact customer support?",
+            "answer": "<p>Reach us through the Contact page on this store, or reply to your order confirmation email. Include your order number for faster assistance.</p>"
+          }
+        },
+        "q_support_2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer bulk or wholesale orders?",
+            "answer": "<p>Yes. Temples, retailers, events, and corporate gifting enquiries are welcome. Use our bulk enquiry form or contact page with quantity, timeline, and delivery city.</p>"
+          }
+        },
+        "sra_cat_0": {
+          "type": "category",
+          "settings": {
+            "title": "Beginner & Product Questions"
+          }
+        },
+        "sra_q_0": {
+          "type": "question",
+          "settings": {
+            "question": "What are natural stress relief attars made of in India?",
+            "answer": "<p>Natural stress relief attars are usually made from botanical extracts, essential oils, herbs, floral notes, resins, and natural perfume oil bases. Popular ingredients include lavender, rose, sandalwood, chamomile, vetiver, and jasmine.</p>"
+          }
+        },
+        "sra_q_1": {
+          "type": "question",
+          "settings": {
+            "question": "How do premium stress relief attars work and release fragrance?",
+            "answer": "<p>Premium stress relief attars work by slowly opening on the skin and releasing a soft, long-lasting aroma. The fragrance develops gradually and creates a calm, comforting scent trail.</p>"
+          }
+        },
+        "sra_q_2": {
+          "type": "question",
+          "settings": {
+            "question": "How long do luxury stress relief attars last on skin?",
+            "answer": "<p>Luxury stress relief attars can last for many hours on skin, depending on the ingredients, climate, and application area. Oil-based attars usually last longer than spray perfumes.</p>"
+          }
+        },
+        "sra_q_3": {
+          "type": "question",
+          "settings": {
+            "question": "What is the difference between stress relief attar and regular perfume?",
+            "answer": "<p>Stress relief attar is usually alcohol-free and oil-based, while regular perfume often contains alcohol and evaporates faster. Attars are more intimate, longer lasting, and often feel richer.</p>"
+          }
+        },
+        "sra_q_4": {
+          "type": "question",
+          "settings": {
+            "question": "What are the different types of stress relief attars available?",
+            "answer": "<p>Common types include lavender attar, rose attar, sandalwood attar, jasmine attar, chamomile attar, musk attar, vetiver attar, and herbal attar blends.</p>"
+          }
+        },
+        "sra_q_5": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars are best for beginners and daily use?",
+            "answer": "<p>Soft fragrances like lavender, rose, sandalwood, and jasmine are often best for beginners and daily use because they feel smooth and easy to wear.</p>"
+          }
+        },
+        "sra_q_6": {
+          "type": "question",
+          "settings": {
+            "question": "Why is sandalwood attar considered premium and calming?",
+            "answer": "<p>Sandalwood attar is considered premium because of its smooth, woody scent and its long association with peace, spirituality, and inner balance.</p>"
+          }
+        },
+        "sra_q_7": {
+          "type": "question",
+          "settings": {
+            "question": "What is herbal attar and why is it popular for stress relief?",
+            "answer": "<p>Herbal attar is made using natural plant-based ingredients and aromatic herbs. It is popular because it feels grounding, fresh, and gentle on the senses.</p>"
+          }
+        },
+        "sra_q_8": {
+          "type": "question",
+          "settings": {
+            "question": "Are natural stress relief attars better than synthetic attars?",
+            "answer": "<p>Natural stress relief attars are often preferred because they usually feel softer, more authentic, and more suitable for daily wear.</p>"
+          }
+        },
+        "sra_q_9": {
+          "type": "question",
+          "settings": {
+            "question": "How can you identify high-quality handmade stress relief attars?",
+            "answer": "<p>High-quality handmade attars usually smell balanced, stay close to the skin, develop slowly, and do not feel harsh or artificial.</p>"
+          }
+        },
+        "sra_cat_1": {
+          "type": "category",
+          "settings": {
+            "title": "Health & Safety SEO Questions"
+          }
+        },
+        "sra_q_10": {
+          "type": "question",
+          "settings": {
+            "question": "Are stress relief attars safe for daily use?",
+            "answer": "<p>Stress relief attars are generally used daily by many people because they are concentrated and require only a small amount. As with any fragrance, patch testing is a smart idea.</p>"
+          }
+        },
+        "sra_q_11": {
+          "type": "question",
+          "settings": {
+            "question": "Can stress relief attars help with anxiety and mood balance?",
+            "answer": "<p>Many people use calming attars like lavender, sandalwood, and rose to create a relaxing mood and a more peaceful personal atmosphere.</p>"
+          }
+        },
+        "sra_q_12": {
+          "type": "question",
+          "settings": {
+            "question": "Is attar safe for sensitive skin?",
+            "answer": "<p>Many attars are alcohol-free and can feel gentler than spray perfumes, but skin sensitivity varies, so testing on a small area first is always wise.</p>"
+          }
+        },
+        "sra_q_13": {
+          "type": "question",
+          "settings": {
+            "question": "Is it safe to wear attar every day?",
+            "answer": "<p>Yes, many people wear attar daily. A light application is usually best because attars are highly concentrated.</p>"
+          }
+        },
+        "sra_q_14": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for stress relief and relaxation?",
+            "answer": "<p>Lavender, sandalwood, rose, vetiver, jasmine, and chamomile are among the most popular stress relief attars.</p>"
+          }
+        },
+        "sra_q_15": {
+          "type": "question",
+          "settings": {
+            "question": "Can attars help with sleep and calmness?",
+            "answer": "<p>Soft attars like lavender, sandalwood, and chamomile are often chosen at night because they create a calm and comforting fragrance environment.</p>"
+          }
+        },
+        "sra_q_16": {
+          "type": "question",
+          "settings": {
+            "question": "Are natural attars safer than synthetic perfumes?",
+            "answer": "<p>Natural attars are often preferred for a softer, more traditional fragrance experience, especially by users who want alcohol-free perfume oils.</p>"
+          }
+        },
+        "sra_q_17": {
+          "type": "question",
+          "settings": {
+            "question": "Why do some attars cause headaches?",
+            "answer": "<p>Headaches can happen if the fragrance is too strong, too sweet, or not suited to a person’s sensitivity.</p>"
+          }
+        },
+        "sra_q_18": {
+          "type": "question",
+          "settings": {
+            "question": "What is the safest way to apply stress relief attar?",
+            "answer": "<p>Apply a very small amount on pulse points or lightly on clothes, and avoid overuse.</p>"
+          }
+        },
+        "sra_q_19": {
+          "type": "question",
+          "settings": {
+            "question": "Can attars be used in office and professional settings?",
+            "answer": "<p>Yes, soft stress relief attars are often ideal for office wear because they stay close to the body and do not project too aggressively.</p>"
+          }
+        },
+        "sra_cat_2": {
+          "type": "category",
+          "settings": {
+            "title": "Spiritual & Mindfulness SEO Questions"
+          }
+        },
+        "sra_q_20": {
+          "type": "question",
+          "settings": {
+            "question": "Why are stress relief attars used in meditation and yoga?",
+            "answer": "<p>Stress relief attars are used in meditation and yoga because calming fragrances can help create a focused and peaceful environment.</p>"
+          }
+        },
+        "sra_q_21": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars are best for meditation and spiritual practices?",
+            "answer": "<p>Sandalwood, rose, lavender, frankincense, musk, and vetiver are commonly chosen for meditation and spiritual use.</p>"
+          }
+        },
+        "sra_q_22": {
+          "type": "question",
+          "settings": {
+            "question": "Why are attars used in temples and prayer rituals?",
+            "answer": "<p>Attars are used in prayer and spiritual settings because they create a clean, sacred, and uplifting fragrance atmosphere.</p>"
+          }
+        },
+        "sra_q_23": {
+          "type": "question",
+          "settings": {
+            "question": "What does lavender stress relief attar smell like?",
+            "answer": "<p>Lavender attar usually has a soft floral, herbal, and calming scent that feels clean and soothing.</p>"
+          }
+        },
+        "sra_q_24": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for positive energy and spirituality?",
+            "answer": "<p>Sandalwood, rose, jasmine, musk, and herbal blends are often associated with positive energy and spiritual calm.</p>"
+          }
+        },
+        "sra_q_25": {
+          "type": "question",
+          "settings": {
+            "question": "Can attars support mindfulness and breathing practices?",
+            "answer": "<p>Many people use calming attars during mindfulness practices because fragrance can help anchor attention and create ritual.</p>"
+          }
+        },
+        "sra_q_26": {
+          "type": "question",
+          "settings": {
+            "question": "Can stress relief attars cleanse negative energy?",
+            "answer": "<p>In many traditional wellness and spiritual practices, fragrance is used to refresh the atmosphere and support a more positive mood.</p>"
+          }
+        },
+        "sra_q_27": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar fragrance is best for yoga and meditation?",
+            "answer": "<p>Lavender, sandalwood, and vetiver are often preferred for yoga and meditation because they feel grounding and peaceful.</p>"
+          }
+        },
+        "sra_q_28": {
+          "type": "question",
+          "settings": {
+            "question": "Why is rose attar so popular in spiritual traditions?",
+            "answer": "<p>Rose attar is loved for its soft floral richness and its long connection with devotion, beauty, and emotional balance.</p>"
+          }
+        },
+        "sra_q_29": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars are best for peace, positivity, and calmness?",
+            "answer": "<p>Lavender, sandalwood, rose, jasmine, and vetiver are among the most popular choices for a peaceful fragrance experience.</p>"
+          }
+        },
+        "sra_cat_3": {
+          "type": "category",
+          "settings": {
+            "title": "Fragrance & Usage SEO Questions"
+          }
+        },
+        "sra_q_30": {
+          "type": "question",
+          "settings": {
+            "question": "How do you properly use stress relief attar at home?",
+            "answer": "<p>Apply a tiny amount to pulse points or on clothes for a soft and long-lasting fragrance experience.</p>"
+          }
+        },
+        "sra_q_31": {
+          "type": "question",
+          "settings": {
+            "question": "Where should stress relief attar be applied for best fragrance?",
+            "answer": "<p>Apply attar on wrists, neck, behind the ears, or inner elbows for gentle scent diffusion.</p>"
+          }
+        },
+        "sra_q_32": {
+          "type": "question",
+          "settings": {
+            "question": "How can you make attar fragrance last longer?",
+            "answer": "<p>Apply attar on moisturized skin, use only a small amount, and store it properly away from heat.</p>"
+          }
+        },
+        "sra_q_33": {
+          "type": "question",
+          "settings": {
+            "question": "Why do some attars smell weak after application?",
+            "answer": "<p>Some attars need time to develop, and others may feel subtle because they are designed to stay close to the skin.</p>"
+          }
+        },
+        "sra_q_34": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars have the strongest long-lasting fragrance?",
+            "answer": "<p>Musk, sandalwood, rose, oud, and vetiver attars are often known for stronger longevity.</p>"
+          }
+        },
+        "sra_q_35": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars are best for home fragrance?",
+            "answer": "<p>Lavender, rose, sandalwood, and jasmine attars are often used to create a calm and welcoming home fragrance.</p>"
+          }
+        },
+        "sra_q_36": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for bedrooms and relaxation?",
+            "answer": "<p>Lavender and sandalwood are especially popular for bedrooms because they feel soft, warm, and restful.</p>"
+          }
+        },
+        "sra_q_37": {
+          "type": "question",
+          "settings": {
+            "question": "Which luxury attars are best for guests and welcoming spaces?",
+            "answer": "<p>Rose, jasmine, sandalwood, and musk attars are common choices for creating a premium and inviting atmosphere.</p>"
+          }
+        },
+        "sra_q_38": {
+          "type": "question",
+          "settings": {
+            "question": "How much attar should you wear at one time?",
+            "answer": "<p>A small amount is usually enough because attars are highly concentrated and designed for controlled fragrance release.</p>"
+          }
+        },
+        "sra_q_39": {
+          "type": "question",
+          "settings": {
+            "question": "Can attars refresh indoor air?",
+            "answer": "<p>Yes, attars can add a pleasant aromatic feel to a room and help create a fresher atmosphere.</p>"
+          }
+        },
+        "sra_cat_4": {
+          "type": "category",
+          "settings": {
+            "title": "Buying & Premium Product SEO Questions"
+          }
+        },
+        "sra_q_40": {
+          "type": "question",
+          "settings": {
+            "question": "Which are the best stress relief attar brands in India?",
+            "answer": "<p>People usually look for brands that offer natural ingredients, alcohol-free formulas, premium packaging, and long-lasting fragrance.</p>"
+          }
+        },
+        "sra_q_41": {
+          "type": "question",
+          "settings": {
+            "question": "Why are handmade stress relief attars considered premium?",
+            "answer": "<p>Handmade attars are often seen as premium because they feel more traditional, carefully crafted, and rich in character.</p>"
+          }
+        },
+        "sra_q_42": {
+          "type": "question",
+          "settings": {
+            "question": "Which luxury stress relief attars are best for fragrance lovers?",
+            "answer": "<p>Lavender, sandalwood, rose, musk, oud, and vetiver are especially popular with fragrance lovers.</p>"
+          }
+        },
+        "sra_q_43": {
+          "type": "question",
+          "settings": {
+            "question": "What are low-smoke stress relief fragrance products?",
+            "answer": "<p>Low-smoke fragrance products are designed to feel lighter and cleaner in the air while still giving a pleasant aroma.</p>"
+          }
+        },
+        "sra_q_44": {
+          "type": "question",
+          "settings": {
+            "question": "How should stress relief attars be stored properly?",
+            "answer": "<p>Store attars in a cool, dry place away from sunlight and keep the bottle tightly closed after use.</p>"
+          }
+        },
+        "sra_q_45": {
+          "type": "question",
+          "settings": {
+            "question": "Do stress relief attars expire over time?",
+            "answer": "<p>Attars can keep their quality for a long time if stored properly, though fragrance may gradually fade if exposed to heat or light.</p>"
+          }
+        },
+        "sra_q_46": {
+          "type": "question",
+          "settings": {
+            "question": "Why do attar bottles break or leak during storage?",
+            "answer": "<p>Poor handling, loose caps, or weak packaging can cause leakage, so storing the bottle upright is recommended.</p>"
+          }
+        },
+        "sra_q_47": {
+          "type": "question",
+          "settings": {
+            "question": "Can attars be worn outdoors for daily use?",
+            "answer": "<p>Yes, many stress relief attars are suitable for outdoor wear because they are compact, travel-friendly, and easy to reapply.</p>"
+          }
+        },
+        "sra_q_48": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for relaxation, stress relief, and calmness?",
+            "answer": "<p>Lavender, sandalwood, rose, jasmine, vetiver, and chamomile are popular among people looking for a calming scent.</p>"
+          }
+        },
+        "sra_q_49": {
+          "type": "question",
+          "settings": {
+            "question": "Why do people use attars for meditation, spirituality, and home fragrance?",
+            "answer": "<p>People use attars because they create a personal, soothing, and meaningful fragrance experience without feeling overpowering.</p>"
+          }
+        },
+        "sra_cat_5": {
+          "type": "category",
+          "settings": {
+            "title": "Herb & Botanical SEO Questions"
+          }
+        },
+        "sra_q_50": {
+          "type": "question",
+          "settings": {
+            "question": "What herbs are commonly used in stress relief attars?",
+            "answer": "<p>Common herbs and botanicals include lavender, vetiver, chamomile, sandalwood, rose, jasmine, and other natural aromatic extracts.</p>"
+          }
+        },
+        "sra_q_51": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbal attars are best for stress relief and calmness?",
+            "answer": "<p>Lavender, chamomile, vetiver, and sandalwood herbal blends are often chosen for relaxation.</p>"
+          }
+        },
+        "sra_q_52": {
+          "type": "question",
+          "settings": {
+            "question": "Are herbal attars better for daily wear?",
+            "answer": "<p>Herbal attars are often preferred for daily wear because they feel softer, more natural, and less aggressive than many synthetic scents.</p>"
+          }
+        },
+        "sra_q_53": {
+          "type": "question",
+          "settings": {
+            "question": "What is the difference between herbal attar and floral attar?",
+            "answer": "<p>Herbal attars usually feel earthy, grounding, and fresh, while floral attars feel softer, sweeter, and more romantic.</p>"
+          }
+        },
+        "sra_q_54": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbal notes are best for anxiety relief fragrance?",
+            "answer": "<p>Lavender, vetiver, sandalwood, and chamomile are among the most commonly used calming notes.</p>"
+          }
+        },
+        "sra_q_55": {
+          "type": "question",
+          "settings": {
+            "question": "What does vetiver attar smell like?",
+            "answer": "<p>Vetiver attar usually has an earthy, green, woody, and deeply grounding scent.</p>"
+          }
+        },
+        "sra_q_56": {
+          "type": "question",
+          "settings": {
+            "question": "Why is chamomile attar used for relaxation?",
+            "answer": "<p>Chamomile attar is loved for its soft, soothing character that helps create a calm fragrance atmosphere.</p>"
+          }
+        },
+        "sra_q_57": {
+          "type": "question",
+          "settings": {
+            "question": "Is rose attar good for stress relief?",
+            "answer": "<p>Yes, rose attar is often used for comfort, emotional balance, and a soft uplifting fragrance experience.</p>"
+          }
+        },
+        "sra_q_58": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbs are best for luxury attar blends?",
+            "answer": "<p>Sandalwood, vetiver, lavender, rose, jasmine, and musk are common in premium attar blends.</p>"
+          }
+        },
+        "sra_q_59": {
+          "type": "question",
+          "settings": {
+            "question": "What makes botanical attars popular in India?",
+            "answer": "<p>Botanical attars are popular because they connect traditional perfume culture with natural fragrance preferences.</p>"
+          }
+        },
+        "sra_cat_6": {
+          "type": "category",
+          "settings": {
+            "title": "Buying Intent, SEO, and Commercial Questions"
+          }
+        },
+        "sra_q_60": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best stress relief attar for women?",
+            "answer": "<p>Many users prefer rose, lavender, jasmine, and sandalwood attars for a soft and elegant daily fragrance.</p>"
+          }
+        },
+        "sra_q_61": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best stress relief attar for men?",
+            "answer": "<p>Sandalwood, vetiver, musk, and oud-style calming attars are often preferred for a deeper and more grounded profile.</p>"
+          }
+        },
+        "sra_q_62": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attar is best for gifting?",
+            "answer": "<p>A premium sandalwood, rose, or lavender attar makes a thoughtful gift because it feels personal and refined.</p>"
+          }
+        },
+        "sra_q_63": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for summer stress relief fragrance?",
+            "answer": "<p>Lavender, jasmine, vetiver, and fresh herbal attars are often chosen for warmer weather.</p>"
+          }
+        },
+        "sra_q_64": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for winter calmness and warmth?",
+            "answer": "<p>Sandalwood, musk, rose, and oud-style blends are often liked in colder months because they feel richer and warmer.</p>"
+          }
+        },
+        "sra_q_65": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for office and daily wear?",
+            "answer": "<p>Light lavender, sandalwood, vetiver, and soft herbal attars are often suitable for work settings.</p>"
+          }
+        },
+        "sra_q_66": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting stress relief attar?",
+            "answer": "<p>Musk, sandalwood, rose, oud, and vetiver are often chosen when longevity matters most.</p>"
+          }
+        },
+        "sra_q_67": {
+          "type": "question",
+          "settings": {
+            "question": "Are alcohol-free attars better for sensitive users?",
+            "answer": "<p>Alcohol-free attars are often preferred by users who want a softer, oil-based fragrance experience.</p>"
+          }
+        },
+        "sra_q_68": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for spiritual gifting and rituals?",
+            "answer": "<p>Sandalwood, rose, jasmine, and vetiver attars are common choices for spiritual gifting.</p>"
+          }
+        },
+        "sra_q_69": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best stress relief attar for home use?",
+            "answer": "<p>Lavender and sandalwood are among the most popular choices for a calm and comfortable home fragrance.</p>"
+          }
+        },
+        "sra_cat_7": {
+          "type": "category",
+          "settings": {
+            "title": "AI Search, Featured Snippet, and Voice Search Questions"
+          }
+        },
+        "sra_q_70": {
+          "type": "question",
+          "settings": {
+            "question": "What is the most searched stress relief attar fragrance in India?",
+            "answer": "<p>Lavender, sandalwood, rose, and vetiver are among the most commonly searched calming fragrance types.</p>"
+          }
+        },
+        "sra_q_71": {
+          "type": "question",
+          "settings": {
+            "question": "Which stress relief attars are trending for AI search and voice search?",
+            "answer": "<p>Lavender attar, sandalwood attar, rose attar, and herbal attars are strong trending terms for search discovery.</p>"
+          }
+        },
+        "sra_q_72": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best natural attar for stress relief and relaxation?",
+            "answer": "<p>Lavender and sandalwood are two of the most popular natural attars for relaxation and calmness.</p>"
+          }
+        },
+        "sra_q_73": {
+          "type": "question",
+          "settings": {
+            "question": "Why do people search for stress relief attars online?",
+            "answer": "<p>People search for stress relief attars because they want alcohol-free, natural, calming, and premium fragrance options for daily life.</p>"
+          }
+        },
+        "sra_cat_9": {
+          "type": "category",
+          "settings": {
+            "title": "Root Chakra Attar"
+          }
+        },
+        "sra_q_74": {
+          "type": "question",
+          "settings": {
+            "question": "What is Root Chakra attar for grounding and stability?",
+            "answer": "<p>Root Chakra attar is an earthy fragrance blend used to create a grounded, stable, and calm scent experience.</p>"
+          }
+        },
+        "sra_q_75": {
+          "type": "question",
+          "settings": {
+            "question": "Which is the best Root Chakra attar for grounding energy?",
+            "answer": "<p>The best Root Chakra attars usually feature sandalwood, vetiver, oud, or earthy herbal notes.</p>"
+          }
+        },
+        "sra_q_76": {
+          "type": "question",
+          "settings": {
+            "question": "What fragrance ingredients are used in Root Chakra attars?",
+            "answer": "<p>Root Chakra attars often include sandalwood, vetiver, patchouli, musk, and deep woody herbs.</p>"
+          }
+        },
+        "sra_q_77": {
+          "type": "question",
+          "settings": {
+            "question": "How does sandalwood attar help Root Chakra balancing?",
+            "answer": "<p>Sandalwood attar is widely used for its soothing, earthy aroma that supports a grounded fragrance profile.</p>"
+          }
+        },
+        "sra_q_78": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbal attars are best for Root Chakra meditation?",
+            "answer": "<p>Vetiver, sandalwood, cedarwood, and earthy herbal attars are popular for Root Chakra meditation.</p>"
+          }
+        },
+        "sra_q_79": {
+          "type": "question",
+          "settings": {
+            "question": "Are natural Root Chakra attars better than synthetic fragrance oils?",
+            "answer": "<p>Natural Root Chakra attars are often preferred because they feel softer, richer, and more authentic.</p>"
+          }
+        },
+        "sra_q_80": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best luxury Root Chakra attar in India?",
+            "answer": "<p>Luxury Root Chakra attars usually combine sandalwood, oud, vetiver, and premium herbal notes.</p>"
+          }
+        },
+        "sra_q_81": {
+          "type": "question",
+          "settings": {
+            "question": "Can Root Chakra attars be worn daily?",
+            "answer": "<p>Yes, Root Chakra attars are often worn daily because they give a calm and balanced fragrance feel.</p>"
+          }
+        },
+        "sra_q_82": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar notes are most grounding for Root Chakra energy?",
+            "answer": "<p>Earthy notes like vetiver, sandalwood, musk, and patchouli are commonly used for grounding.</p>"
+          }
+        },
+        "sra_q_83": {
+          "type": "question",
+          "settings": {
+            "question": "Why are earthy attars popular for Root Chakra perfume oils?",
+            "answer": "<p>Earthy attars are popular because they create a steady, calming, and deeply rooted scent experience.</p>"
+          }
+        },
+        "sra_q_84": {
+          "type": "question",
+          "settings": {
+            "question": "Which Root Chakra attar is best for stress relief and calmness?",
+            "answer": "<p>Sandalwood and vetiver-based Root Chakra attars are commonly chosen for a relaxing fragrance experience.</p>"
+          }
+        },
+        "sra_q_85": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long-lasting Root Chakra attar?",
+            "answer": "<p>Oud, musk, and sandalwood blends are often known for strong longevity in Root Chakra attars.</p>"
+          }
+        },
+        "sra_cat_10": {
+          "type": "category",
+          "settings": {
+            "title": "Sacral Chakra Attar"
+          }
+        },
+        "sra_q_86": {
+          "type": "question",
+          "settings": {
+            "question": "What is Sacral Chakra attar used for creativity and emotional balance?",
+            "answer": "<p>Sacral Chakra attar is used to create a warm, expressive, and emotionally uplifting fragrance mood.</p>"
+          }
+        },
+        "sra_q_87": {
+          "type": "question",
+          "settings": {
+            "question": "Which Sacral Chakra attar is best for feminine energy and confidence?",
+            "answer": "<p>Floral attars with jasmine, rose, and amber are often preferred for feminine energy and confidence.</p>"
+          }
+        },
+        "sra_q_88": {
+          "type": "question",
+          "settings": {
+            "question": "What fragrance activates the Sacral Chakra naturally?",
+            "answer": "<p>Warm floral and sweet herbal notes are commonly associated with Sacral Chakra fragrance blends.</p>"
+          }
+        },
+        "sra_q_89": {
+          "type": "question",
+          "settings": {
+            "question": "Can jasmine attar support Sacral Chakra energy?",
+            "answer": "<p>Yes, jasmine attar is often used for its soft floral character and emotionally uplifting fragrance feel.</p>"
+          }
+        },
+        "sra_q_90": {
+          "type": "question",
+          "settings": {
+            "question": "Which floral attars are best for Sacral Chakra healing fragrance?",
+            "answer": "<p>Jasmine, rose, ylang ylang, and orange floral attars are commonly used in Sacral Chakra blends.</p>"
+          }
+        },
+        "sra_q_91": {
+          "type": "question",
+          "settings": {
+            "question": "What herbs are connected to Sacral Chakra attars?",
+            "answer": "<p>Common herbs and notes include jasmine, rose, saffron, citrus peel, and sweet floral botanicals.</p>"
+          }
+        },
+        "sra_q_92": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for emotional healing and creativity?",
+            "answer": "<p>Rose, jasmine, and warm amber floral attars are often chosen for emotional balance and creativity.</p>"
+          }
+        },
+        "sra_q_93": {
+          "type": "question",
+          "settings": {
+            "question": "Why are orange floral attars linked with Sacral Chakra balancing?",
+            "answer": "<p>Orange floral blends are often associated with warmth, creativity, and emotional expression.</p>"
+          }
+        },
+        "sra_q_94": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best premium Sacral Chakra attar in India?",
+            "answer": "<p>The best premium Sacral Chakra attars usually feature jasmine, rose, saffron, and amber notes.</p>"
+          }
+        },
+        "sra_q_95": {
+          "type": "question",
+          "settings": {
+            "question": "Can chakra perfume oils improve mood naturally?",
+            "answer": "<p>Many people use chakra perfume oils to create a more uplifting and emotionally comforting fragrance experience.</p>"
+          }
+        },
+        "sra_q_96": {
+          "type": "question",
+          "settings": {
+            "question": "Which Sacral Chakra attar is best for daily wear?",
+            "answer": "<p>Soft floral attars like jasmine and rose are often suitable for daily wear.</p>"
+          }
+        },
+        "sra_q_97": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting Sacral Chakra attar?",
+            "answer": "<p>Amber, rose, and jasmine blends are often preferred for longer-lasting Sacral Chakra fragrance.</p>"
+          }
+        },
+        "sra_cat_11": {
+          "type": "category",
+          "settings": {
+            "title": "Solar Plexus Chakra Attar"
+          }
+        },
+        "sra_q_98": {
+          "type": "question",
+          "settings": {
+            "question": "What is Solar Plexus Chakra attar for confidence and motivation?",
+            "answer": "<p>Solar Plexus Chakra attar is a warm, bright fragrance style used to support a confident and empowered mood.</p>"
+          }
+        },
+        "sra_q_99": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar is best for self-confidence and personal power?",
+            "answer": "<p>Saffron, citrus, and warm spicy attars are often used for confidence-focused fragrance blends.</p>"
+          }
+        },
+        "sra_q_100": {
+          "type": "question",
+          "settings": {
+            "question": "What fragrance supports Solar Plexus Chakra healing?",
+            "answer": "<p>Warm spicy, citrus, and bright herbal fragrance notes are commonly associated with Solar Plexus energy.</p>"
+          }
+        },
+        "sra_q_101": {
+          "type": "question",
+          "settings": {
+            "question": "Can saffron attar help with Solar Plexus energy?",
+            "answer": "<p>Saffron attar is often used for its warm, radiant, and premium fragrance profile.</p>"
+          }
+        },
+        "sra_q_102": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbal perfume oils boost inner strength?",
+            "answer": "<p>Herbal blends with saffron, cardamom, ginger, and citrus notes are often chosen for strength and motivation.</p>"
+          }
+        },
+        "sra_q_103": {
+          "type": "question",
+          "settings": {
+            "question": "Why are warm spicy fragrances used for chakra balancing?",
+            "answer": "<p>Warm spicy fragrances create a lively, energizing, and bold scent profile that feels supportive of Solar Plexus energy.</p>"
+          }
+        },
+        "sra_q_104": {
+          "type": "question",
+          "settings": {
+            "question": "What are the best luxury Solar Plexus Chakra attars?",
+            "answer": "<p>Luxury Solar Plexus attars often combine saffron, amber, citrus, and refined spice notes.</p>"
+          }
+        },
+        "sra_q_105": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for positivity and daily motivation?",
+            "answer": "<p>Bright citrus and saffron-based attars are commonly used for a positive daily fragrance mood.</p>"
+          }
+        },
+        "sra_q_106": {
+          "type": "question",
+          "settings": {
+            "question": "Are natural Solar Plexus attars better than synthetic perfumes?",
+            "answer": "<p>Natural attars are often preferred because they feel smoother, richer, and more layered on skin.</p>"
+          }
+        },
+        "sra_q_107": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attar is best for focus and confidence at work?",
+            "answer": "<p>A clean saffron, amber, or citrus attar is often chosen for a focused and polished work fragrance.</p>"
+          }
+        },
+        "sra_q_108": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting Solar Plexus attar?",
+            "answer": "<p>Amber, saffron, and spicy woody blends usually offer stronger longevity.</p>"
+          }
+        },
+        "sra_q_109": {
+          "type": "question",
+          "settings": {
+            "question": "Can Solar Plexus attars be used in meditation and yoga?",
+            "answer": "<p>Yes, many people use them to create a bright, focused, and energizing meditation atmosphere.</p>"
+          }
+        },
+        "sra_cat_12": {
+          "type": "category",
+          "settings": {
+            "title": "Heart Chakra Attar"
+          }
+        },
+        "sra_q_110": {
+          "type": "question",
+          "settings": {
+            "question": "What is Heart Chakra attar and how does it smell?",
+            "answer": "<p>Heart Chakra attar usually smells soft, floral, warm, and emotionally comforting.</p>"
+          }
+        },
+        "sra_q_111": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar is best for love and emotional balance?",
+            "answer": "<p>Rose attar is one of the most popular choices for Heart Chakra fragrance and emotional softness.</p>"
+          }
+        },
+        "sra_q_112": {
+          "type": "question",
+          "settings": {
+            "question": "Is rose attar good for Heart Chakra balancing?",
+            "answer": "<p>Yes, rose attar is strongly associated with love, softness, and emotional warmth.</p>"
+          }
+        },
+        "sra_q_113": {
+          "type": "question",
+          "settings": {
+            "question": "Which floral perfume oils are best for self-love and calmness?",
+            "answer": "<p>Rose, jasmine, peony-style florals, and soft musk attars are often chosen for self-love fragrance routines.</p>"
+          }
+        },
+        "sra_q_114": {
+          "type": "question",
+          "settings": {
+            "question": "What herbs are linked to Heart Chakra attars?",
+            "answer": "<p>Rose, jasmine, sandalwood, chamomile, and gentle floral botanicals are common in Heart Chakra blends.</p>"
+          }
+        },
+        "sra_q_115": {
+          "type": "question",
+          "settings": {
+            "question": "Can Heart Chakra fragrances improve mood naturally?",
+            "answer": "<p>Many people use Heart Chakra fragrances to create a more peaceful and emotionally soothing atmosphere.</p>"
+          }
+        },
+        "sra_q_116": {
+          "type": "question",
+          "settings": {
+            "question": "Why are rose and jasmine connected to chakra healing perfumes?",
+            "answer": "<p>Rose and jasmine are traditionally associated with softness, beauty, compassion, and emotional openness.</p>"
+          }
+        },
+        "sra_q_117": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for emotional calmness and peace?",
+            "answer": "<p>Rose, sandalwood, and jasmine attars are popular for a calm and balanced scent experience.</p>"
+          }
+        },
+        "sra_q_118": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best luxury Heart Chakra attar in India?",
+            "answer": "<p>Luxury Heart Chakra attars often combine rose, jasmine, sandalwood, and musk.</p>"
+          }
+        },
+        "sra_q_119": {
+          "type": "question",
+          "settings": {
+            "question": "Which Chakra perfume oil is best for gifts and special occasions?",
+            "answer": "<p>Rose attar is often considered a timeless and elegant gifting fragrance.</p>"
+          }
+        },
+        "sra_q_120": {
+          "type": "question",
+          "settings": {
+            "question": "Can Heart Chakra attars be worn daily?",
+            "answer": "<p>Yes, soft floral attars are commonly worn daily because they feel gentle and wearable.</p>"
+          }
+        },
+        "sra_q_121": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting Heart Chakra attar?",
+            "answer": "<p>Rose musk and sandalwood rose blends are often chosen for longer wear.</p>"
+          }
+        },
+        "sra_cat_13": {
+          "type": "category",
+          "settings": {
+            "title": "Throat Chakra Attar"
+          }
+        },
+        "sra_q_122": {
+          "type": "question",
+          "settings": {
+            "question": "What is Throat Chakra attar used for communication and self-expression?",
+            "answer": "<p>Throat Chakra attar is used to create a fresh, clear, and expressive fragrance profile.</p>"
+          }
+        },
+        "sra_q_123": {
+          "type": "question",
+          "settings": {
+            "question": "Which fragrance helps with Throat Chakra balancing?",
+            "answer": "<p>Fresh herbal, minty, and cooling fragrance notes are commonly used for Throat Chakra blends.</p>"
+          }
+        },
+        "sra_q_124": {
+          "type": "question",
+          "settings": {
+            "question": "What herbs are linked with Throat Chakra attars?",
+            "answer": "<p>Eucalyptus, mint, basil, lavender, and other fresh herbs are often connected to the Throat Chakra.</p>"
+          }
+        },
+        "sra_q_125": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attars are best for confidence in speaking?",
+            "answer": "<p>Clean fresh attars with eucalyptus, mint, or lavender are often used for confident communication.</p>"
+          }
+        },
+        "sra_q_126": {
+          "type": "question",
+          "settings": {
+            "question": "Can eucalyptus attar support Throat Chakra energy?",
+            "answer": "<p>Eucalyptus attar is often chosen for its crisp, cooling, and refreshing fragrance feel.</p>"
+          }
+        },
+        "sra_q_127": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for clarity and communication?",
+            "answer": "<p>Fresh herbal attars and light floral-green blends are often used for clarity-focused fragrance rituals.</p>"
+          }
+        },
+        "sra_q_128": {
+          "type": "question",
+          "settings": {
+            "question": "Why are cooling herbal fragrances associated with the Throat Chakra?",
+            "answer": "<p>Cooling herbal scents often create a clean and open fragrance profile that feels balanced and fresh.</p>"
+          }
+        },
+        "sra_q_129": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best premium Throat Chakra attar?",
+            "answer": "<p>Premium Throat Chakra attars often include eucalyptus, mint, lavender, and light herbal notes.</p>"
+          }
+        },
+        "sra_q_130": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar is best for clear speech and focus?",
+            "answer": "<p>A fresh herbal attar is commonly selected for a clear and focused fragrance mood.</p>"
+          }
+        },
+        "sra_q_131": {
+          "type": "question",
+          "settings": {
+            "question": "Can chakra attars help with emotional expression?",
+            "answer": "<p>Many people use them as part of a mindful fragrance routine that feels expressive and centered.</p>"
+          }
+        },
+        "sra_q_132": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for office wear and communication?",
+            "answer": "<p>Fresh, clean attars are often a good fit for professional and office settings.</p>"
+          }
+        },
+        "sra_q_133": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting Throat Chakra attar?",
+            "answer": "<p>Fresh woody-herbal blends and light musk bases are often used for moderate longevity.</p>"
+          }
+        },
+        "sra_cat_14": {
+          "type": "category",
+          "settings": {
+            "title": "Third Eye Chakra Attar"
+          }
+        },
+        "sra_q_134": {
+          "type": "question",
+          "settings": {
+            "question": "What is Third Eye Chakra attar for intuition and focus?",
+            "answer": "<p>Third Eye Chakra attar is a calming fragrance blend used to support focus, reflection, and a meditative mood.</p>"
+          }
+        },
+        "sra_q_135": {
+          "type": "question",
+          "settings": {
+            "question": "Which attar is best for intuition and inner awareness?",
+            "answer": "<p>Lavender, sandalwood, and frankincense are commonly associated with Third Eye fragrance blends.</p>"
+          }
+        },
+        "sra_q_136": {
+          "type": "question",
+          "settings": {
+            "question": "What fragrance activates the Third Eye Chakra naturally?",
+            "answer": "<p>Soft herbal and meditative notes are often used for Third Eye Chakra scent profiles.</p>"
+          }
+        },
+        "sra_q_137": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbs are connected to intuition and meditation fragrances?",
+            "answer": "<p>Lavender, sandalwood, frankincense, myrrh, and rosemary-style herbal notes are common.</p>"
+          }
+        },
+        "sra_q_138": {
+          "type": "question",
+          "settings": {
+            "question": "Can lavender attar support Third Eye Chakra healing?",
+            "answer": "<p>Lavender attar is widely used for its calm, soft, and meditative fragrance character.</p>"
+          }
+        },
+        "sra_q_139": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra perfumes are best for mindfulness and meditation?",
+            "answer": "<p>Lavender and sandalwood-based attars are among the most popular for mindfulness routines.</p>"
+          }
+        },
+        "sra_q_140": {
+          "type": "question",
+          "settings": {
+            "question": "What are the best spiritual attars for meditation?",
+            "answer": "<p>Frankincense, sandalwood, lavender, and oud-style meditation attars are widely used.</p>"
+          }
+        },
+        "sra_q_141": {
+          "type": "question",
+          "settings": {
+            "question": "Which essential oils help mental clarity and focus?",
+            "answer": "<p>Lavender, sandalwood, frankincense, and rosemary are often used in focus-oriented fragrance blends.</p>"
+          }
+        },
+        "sra_q_142": {
+          "type": "question",
+          "settings": {
+            "question": "Why are herbal and calming fragrances used for the Third Eye Chakra?",
+            "answer": "<p>Calming herbal fragrances help create a quiet, reflective, and centered fragrance atmosphere.</p>"
+          }
+        },
+        "sra_q_143": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best luxury Third Eye Chakra attar?",
+            "answer": "<p>Luxury Third Eye attars often feature sandalwood, frankincense, lavender, and soft woods.</p>"
+          }
+        },
+        "sra_q_144": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for spiritual awareness and calmness?",
+            "answer": "<p>Meditative attars with sandalwood, lavender, and frankincense are commonly chosen.</p>"
+          }
+        },
+        "sra_q_145": {
+          "type": "question",
+          "settings": {
+            "question": "Can Third Eye Chakra attars be used before yoga or prayer?",
+            "answer": "<p>Yes, many people use them before prayer, yoga, or meditation for a peaceful scent routine.</p>"
+          }
+        },
+        "sra_cat_15": {
+          "type": "category",
+          "settings": {
+            "title": "Crown Chakra Attar"
+          }
+        },
+        "sra_q_146": {
+          "type": "question",
+          "settings": {
+            "question": "What is Crown Chakra attar used for spirituality and inner peace?",
+            "answer": "<p>Crown Chakra attar is a subtle, meditative fragrance style often used to create a serene and spiritual mood.</p>"
+          }
+        },
+        "sra_q_147": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for peace and calmness?",
+            "answer": "<p>Sandalwood, frankincense, lotus-style florals, and soft resins are often used for Crown Chakra blends.</p>"
+          }
+        },
+        "sra_q_148": {
+          "type": "question",
+          "settings": {
+            "question": "What fragrance is associated with the Crown Chakra?",
+            "answer": "<p>Soft spiritual notes like sandalwood, frankincense, lotus, and myrrh are commonly linked to the Crown Chakra.</p>"
+          }
+        },
+        "sra_q_149": {
+          "type": "question",
+          "settings": {
+            "question": "Which spiritual perfume oils help deep meditation?",
+            "answer": "<p>Meditation attars with sandalwood, frankincense, and gentle resin notes are often used for deep calm.</p>"
+          }
+        },
+        "sra_q_150": {
+          "type": "question",
+          "settings": {
+            "question": "Can sandalwood and frankincense support Crown Chakra balancing?",
+            "answer": "<p>Yes, sandalwood and frankincense are among the most popular Crown Chakra fragrance ingredients.</p>"
+          }
+        },
+        "sra_q_151": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbs are linked with spiritual chakra fragrances?",
+            "answer": "<p>Sandalwood, frankincense, myrrh, lotus, and soft herbal notes are often used in spiritual blends.</p>"
+          }
+        },
+        "sra_q_152": {
+          "type": "question",
+          "settings": {
+            "question": "What are the best luxury chakra attars for meditation and spirituality?",
+            "answer": "<p>Luxury chakra attars often combine sandalwood, oud, frankincense, and refined floral-resin notes.</p>"
+          }
+        },
+        "sra_q_153": {
+          "type": "question",
+          "settings": {
+            "question": "Why are incense-like fragrances connected to the Crown Chakra?",
+            "answer": "<p>Incense-like notes are often used because they feel sacred, soothing, and ideal for meditation.</p>"
+          }
+        },
+        "sra_q_154": {
+          "type": "question",
+          "settings": {
+            "question": "Which natural attars are best for spiritual rituals?",
+            "answer": "<p>Sandalwood, rose, lotus, and frankincense attars are often selected for spiritual use.</p>"
+          }
+        },
+        "sra_q_155": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best premium Crown Chakra attar in India?",
+            "answer": "<p>Premium Crown Chakra attars usually feature sandalwood, frankincense, lotus, and subtle woody notes.</p>"
+          }
+        },
+        "sra_q_156": {
+          "type": "question",
+          "settings": {
+            "question": "Can Crown Chakra attars be worn daily?",
+            "answer": "<p>Yes, soft spiritual attars can be worn daily when a subtle and elegant fragrance is preferred.</p>"
+          }
+        },
+        "sra_q_157": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best long lasting Crown Chakra attar?",
+            "answer": "<p>Sandalwood, oud, and resin-based blends often provide strong longevity.</p>"
+          }
+        },
+        "sra_cat_16": {
+          "type": "category",
+          "settings": {
+            "title": "General Chakra Attar SEO Questions"
+          }
+        },
+        "sra_q_158": {
+          "type": "question",
+          "settings": {
+            "question": "What are chakra attars and how do they work?",
+            "answer": "<p>Chakra attars are fragrance oils inspired by the energy and mood of each chakra, often designed to support meditation, calmness, and spiritual balance.</p>"
+          }
+        },
+        "sra_q_159": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attars are best for beginners?",
+            "answer": "<p>Lavender, sandalwood, and rose chakra attars are often best for beginners because they are soft and easy to wear.</p>"
+          }
+        },
+        "sra_q_160": {
+          "type": "question",
+          "settings": {
+            "question": "Are chakra attars natural and alcohol free?",
+            "answer": "<p>Many chakra attars are made as alcohol-free perfume oils with natural and botanical fragrance inspiration.</p>"
+          }
+        },
+        "sra_q_161": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra perfumes are best for stress relief?",
+            "answer": "<p>Lavender, sandalwood, rose, and vetiver-based chakra attars are commonly chosen for stress relief fragrance routines.</p>"
+          }
+        },
+        "sra_q_162": {
+          "type": "question",
+          "settings": {
+            "question": "How do you use chakra attars properly?",
+            "answer": "<p>Apply a small amount on pulse points, let the fragrance settle naturally, and avoid overapplying.</p>"
+          }
+        },
+        "sra_q_163": {
+          "type": "question",
+          "settings": {
+            "question": "Where should chakra attars be applied on the body?",
+            "answer": "<p>Common pulse points include wrists, neck, inner elbows, and behind the ears.</p>"
+          }
+        },
+        "sra_q_164": {
+          "type": "question",
+          "settings": {
+            "question": "How long do chakra attars last on skin?",
+            "answer": "<p>Chakra attars can last for many hours because they are oil-based and more concentrated than sprays.</p>"
+          }
+        },
+        "sra_q_165": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attars have the strongest long-lasting fragrance?",
+            "answer": "<p>Oud, musk, sandalwood, and amber-based chakra attars often have stronger longevity.</p>"
+          }
+        },
+        "sra_q_166": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attars are best for yoga and meditation?",
+            "answer": "<p>Sandalwood, lavender, frankincense, and vetiver are widely used for yoga and meditation.</p>"
+          }
+        },
+        "sra_q_167": {
+          "type": "question",
+          "settings": {
+            "question": "Can chakra attars help with mindfulness and calmness?",
+            "answer": "<p>Many people use chakra attars as part of a mindful routine because fragrance can support a calmer atmosphere.</p>"
+          }
+        },
+        "sra_q_168": {
+          "type": "question",
+          "settings": {
+            "question": "Which herbs are most commonly used in spiritual attars?",
+            "answer": "<p>Lavender, rose, sandalwood, vetiver, chamomile, frankincense, and jasmine are among the most common.</p>"
+          }
+        },
+        "sra_q_169": {
+          "type": "question",
+          "settings": {
+            "question": "Why are sandalwood and rose popular in chakra perfumes?",
+            "answer": "<p>Sandalwood and rose are popular because they feel timeless, spiritual, and emotionally comforting.</p>"
+          }
+        },
+        "sra_q_170": {
+          "type": "question",
+          "settings": {
+            "question": "Are chakra attars safe for daily use?",
+            "answer": "<p>Chakra attars are commonly worn daily in small amounts, especially when they are alcohol-free and gently formulated.</p>"
+          }
+        },
+        "sra_q_171": {
+          "type": "question",
+          "settings": {
+            "question": "What is the best chakra attar for gifting?",
+            "answer": "<p>Rose, sandalwood, and luxury mixed chakra attars are often chosen for gifting because they feel elegant and personal.</p>"
+          }
+        },
+        "sra_q_172": {
+          "type": "question",
+          "settings": {
+            "question": "Which chakra attars are best for home fragrance and meditation rooms?",
+            "answer": "<p>Sandalwood, lavender, frankincense, and rose attars are often used to create a peaceful home atmosphere.</p>"
+          }
+        },
+        "sra_q_173": {
+          "type": "question",
+          "settings": {
+            "question": "Why are natural chakra attars becoming popular worldwide?",
+            "answer": "<p>Natural chakra attars are gaining popularity because people want alcohol-free, meaningful, long-lasting, and premium fragrance experiences.</p>"
+          }
+        },
+        "sra_q_feat_snippets": {
+          "type": "question",
+          "settings": {
+            "question": "Which attars are best for featured snippets and FAQ SEO?",
+            "answer": "<p>Questions about usage, storage, longevity, ingredients, and best fragrance choices tend to perform well in FAQ SEO.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "cat_orders",
+        "q_orders_1",
+        "q_orders_2",
+        "q_orders_3",
+        "cat_shipping",
+        "q_ship_1",
+        "q_ship_2",
+        "q_ship_3",
+        "cat_attars",
+        "q_attar_1",
+        "q_attar_2",
+        "q_attar_3",
+        "cat_incense",
+        "q_incense_1",
+        "q_incense_2",
+        "q_incense_3",
+        "cat_returns",
+        "q_returns_1",
+        "q_returns_2",
+        "cat_longevity",
+        "q_long_1",
+        "q_long_2",
+        "cat_storage",
+        "q_store_1",
+        "q_store_2",
+        "cat_astro",
+        "q_astro_1",
+        "q_astro_2",
+        "cat_payments",
+        "q_pay_1",
+        "q_pay_2",
+        "cat_support",
+        "q_support_1",
+        "q_support_2",
+        "sra_cat_0",
+        "sra_q_0",
+        "sra_q_1",
+        "sra_q_2",
+        "sra_q_3",
+        "sra_q_4",
+        "sra_q_5",
+        "sra_q_6",
+        "sra_q_7",
+        "sra_q_8",
+        "sra_q_9",
+        "sra_cat_1",
+        "sra_q_10",
+        "sra_q_11",
+        "sra_q_12",
+        "sra_q_13",
+        "sra_q_14",
+        "sra_q_15",
+        "sra_q_16",
+        "sra_q_17",
+        "sra_q_18",
+        "sra_q_19",
+        "sra_cat_2",
+        "sra_q_20",
+        "sra_q_21",
+        "sra_q_22",
+        "sra_q_23",
+        "sra_q_24",
+        "sra_q_25",
+        "sra_q_26",
+        "sra_q_27",
+        "sra_q_28",
+        "sra_q_29",
+        "sra_cat_3",
+        "sra_q_30",
+        "sra_q_31",
+        "sra_q_32",
+        "sra_q_33",
+        "sra_q_34",
+        "sra_q_35",
+        "sra_q_36",
+        "sra_q_37",
+        "sra_q_38",
+        "sra_q_39",
+        "sra_cat_4",
+        "sra_q_40",
+        "sra_q_41",
+        "sra_q_42",
+        "sra_q_43",
+        "sra_q_44",
+        "sra_q_45",
+        "sra_q_46",
+        "sra_q_47",
+        "sra_q_48",
+        "sra_q_49",
+        "sra_cat_5",
+        "sra_q_50",
+        "sra_q_51",
+        "sra_q_52",
+        "sra_q_53",
+        "sra_q_54",
+        "sra_q_55",
+        "sra_q_56",
+        "sra_q_57",
+        "sra_q_58",
+        "sra_q_59",
+        "sra_cat_6",
+        "sra_q_60",
+        "sra_q_61",
+        "sra_q_62",
+        "sra_q_63",
+        "sra_q_64",
+        "sra_q_65",
+        "sra_q_66",
+        "sra_q_67",
+        "sra_q_68",
+        "sra_q_69",
+        "sra_cat_7",
+        "sra_q_70",
+        "sra_q_71",
+        "sra_q_72",
+        "sra_q_feat_snippets",
+        "sra_q_73",
+        "sra_cat_9",
+        "sra_q_74",
+        "sra_q_75",
+        "sra_q_76",
+        "sra_q_77",
+        "sra_q_78",
+        "sra_q_79",
+        "sra_q_80",
+        "sra_q_81",
+        "sra_q_82",
+        "sra_q_83",
+        "sra_q_84",
+        "sra_q_85",
+        "sra_cat_10",
+        "sra_q_86",
+        "sra_q_87",
+        "sra_q_88",
+        "sra_q_89",
+        "sra_q_90",
+        "sra_q_91",
+        "sra_q_92",
+        "sra_q_93",
+        "sra_q_94",
+        "sra_q_95",
+        "sra_q_96",
+        "sra_q_97",
+        "sra_cat_11",
+        "sra_q_98",
+        "sra_q_99",
+        "sra_q_100",
+        "sra_q_101",
+        "sra_q_102",
+        "sra_q_103",
+        "sra_q_104",
+        "sra_q_105",
+        "sra_q_106",
+        "sra_q_107",
+        "sra_q_108",
+        "sra_q_109",
+        "sra_cat_12",
+        "sra_q_110",
+        "sra_q_111",
+        "sra_q_112",
+        "sra_q_113",
+        "sra_q_114",
+        "sra_q_115",
+        "sra_q_116",
+        "sra_q_117",
+        "sra_q_118",
+        "sra_q_119",
+        "sra_q_120",
+        "sra_q_121",
+        "sra_cat_13",
+        "sra_q_122",
+        "sra_q_123",
+        "sra_q_124",
+        "sra_q_125",
+        "sra_q_126",
+        "sra_q_127",
+        "sra_q_128",
+        "sra_q_129",
+        "sra_q_130",
+        "sra_q_131",
+        "sra_q_132",
+        "sra_q_133",
+        "sra_cat_14",
+        "sra_q_134",
+        "sra_q_135",
+        "sra_q_136",
+        "sra_q_137",
+        "sra_q_138",
+        "sra_q_139",
+        "sra_q_140",
+        "sra_q_141",
+        "sra_q_142",
+        "sra_q_143",
+        "sra_q_144",
+        "sra_q_145",
+        "sra_cat_15",
+        "sra_q_146",
+        "sra_q_147",
+        "sra_q_148",
+        "sra_q_149",
+        "sra_q_150",
+        "sra_q_151",
+        "sra_q_152",
+        "sra_q_153",
+        "sra_q_154",
+        "sra_q_155",
+        "sra_q_156",
+        "sra_q_157",
+        "sra_cat_16",
+        "sra_q_158",
+        "sra_q_159",
+        "sra_q_160",
+        "sra_q_161",
+        "sra_q_162",
+        "sra_q_163",
+        "sra_q_164",
+        "sra_q_165",
+        "sra_q_166",
+        "sra_q_167",
+        "sra_q_168",
+        "sra_q_169",
+        "sra_q_170",
+        "sra_q_171",
+        "sra_q_172",
+        "sra_q_173"
+      ]
     }
   },
   "order": [
