@@ -24,7 +24,7 @@
 
 <script>
   (function () {
-    var path = (window.location.pathname || '').replace(/\/+$/, '');
+    var path = (window.location.pathname || '').replace(/\/+$/, '').toLowerCase();
     if (!path) return;
 
     var legacyPaths = {
@@ -43,8 +43,12 @@
       return;
     }
 
-    if (path === '/pages/faq' || path === '/pages/faqs') {
-      window.location.replace('/?view=faq');
+    if (path === '/pages/faq' || path === '/pages/faqs' || path.endsWith('/pages/faq') || path.endsWith('/pages/faqs')) {
+      {%- if pages['faq'] != blank -%}
+        window.location.replace({{ pages['faq'].url | json }});
+      {%- else -%}
+        window.location.replace({{ routes.root_url | append: '?view=faq' | json }});
+      {%- endif -%}
     }
   })();
 </script>

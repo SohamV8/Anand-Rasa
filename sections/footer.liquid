@@ -54,8 +54,8 @@
   {%- if ar_footer_about_url == blank -%}{%- capture ar_footer_about_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}{%- endif -%}
   {%- assign ar_footer_contact_url = pages['contact'].url | default: pages['contact-us'].url -%}
   {%- if ar_footer_contact_url == blank -%}{%- capture ar_footer_contact_url -%}{% render 'ar-page-url', handle: 'contact' %}{%- endcapture -%}{%- endif -%}
-  {%- assign ar_footer_faq_url = pages['faq'].url | default: pages['faqs'].url -%}
-  {%- if ar_footer_faq_url == blank -%}{%- capture ar_footer_faq_url -%}{% render 'ar-page-url', handle: 'faq' %}{%- endcapture -%}{%- assign ar_footer_faq_url = ar_footer_faq_url | strip -%}{%- endif -%}
+  {%- capture ar_footer_faq_url -%}{% render 'ar-faq-url' %}{%- endcapture -%}
+  {%- assign ar_footer_faq_url = ar_footer_faq_url | strip -%}
   {%- assign ar_footer_bulk_url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url -%}
   {%- if ar_footer_bulk_url == blank -%}{%- capture ar_footer_bulk_url -%}{% render 'ar-page-url', handle: 'bulk-enquiry' %}{%- endcapture -%}{%- endif -%}
   {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url -%}

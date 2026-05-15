@@ -1,0 +1,6 @@
+{%- comment -%}
+  Markdown line for llms.txt / agents.md overrides when you add theme templates.
+  Usage in templates/llms.txt.liquid: {% render 'ar-llms-faq-line' %}
+{%- endcomment -%}
+{%- capture ar_llms_faq_url -%}{% render 'ar-faq-url', absolute: true %}{%- endcapture -%}
+- Frequently asked questions: {{ ar_llms_faq_url | strip }}

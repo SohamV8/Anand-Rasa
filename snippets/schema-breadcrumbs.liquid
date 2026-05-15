@@ -83,6 +83,29 @@
       ]
     }
   </script>
+{%- elsif request.page_type == 'page' and page != blank and page.handle == 'faq' and template.suffix == 'faq' -%}
+  {%- capture ar_faq_breadcrumb_url -%}{% render 'ar-faq-url', absolute: true %}{%- endcapture -%}
+  {%- assign ar_faq_breadcrumb_url = ar_faq_breadcrumb_url | strip -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Homepage",
+          "item": {{ ar_root_item | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ page.title | default: 'Frequently Asked Questions' | json }},
+          "item": {{ ar_faq_breadcrumb_url | json }}
+        }
+      ]
+    }
+  </script>
 {%- elsif request.page_type == 'article' and article != blank and blog != blank -%}
   <script type="application/ld+json">
     {

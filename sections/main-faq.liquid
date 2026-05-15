@@ -6,8 +6,10 @@
 {%- liquid
   assign arf_heading = section.settings.heading | default: 'Frequently Asked Questions'
   assign arf_subtext = section.settings.subtext | default: 'Clear answers about our handcrafted attars, incense, orders, and spiritual fragrance collections.'
-  assign arf_schema_path = page.url | default: '/pages/faq'
-  assign arf_schema_url = request.origin | append: arf_schema_path
+  capture arf_schema_url
+    render 'ar-faq-url', absolute: true
+  endcapture
+  assign arf_schema_url = arf_schema_url | strip
   assign arf_contact_url = pages['contact'].url | default: pages['contact-us'].url
   if arf_contact_url == blank
     capture arf_contact_url

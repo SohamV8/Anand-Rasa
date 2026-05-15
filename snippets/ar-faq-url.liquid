@@ -1,0 +1,16 @@
+{%- comment -%}
+  Canonical FAQ path or absolute URL.
+  Prefer published page; stable /pages/faq when the page is not created yet.
+  Usage: {% render 'ar-faq-url' %} or {% render 'ar-faq-url', absolute: true %}
+{%- endcomment -%}
+{%- liquid
+  assign ar_faq_url = pages['faq'].url
+  if ar_faq_url == blank
+    assign ar_faq_url = '/pages/faq'
+  endif
+-%}
+{%- if absolute -%}
+  {{- request.origin | append: ar_faq_url -}}
+{%- else -%}
+  {{- ar_faq_url -}}
+{%- endif -%}
