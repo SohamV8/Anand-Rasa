@@ -68,8 +68,13 @@
   
   </style>
   
-  <div class="arc">
+  {%- liquid
+    assign arc_layout = section.settings.layout_mode | default: 'full'
+  -%}
+
+  <div class="arc"{% if template.suffix == 'bestseller' %} style="--arc-cream:#FAF8F4;background:var(--arc-cream,#FAF8F4);"{% endif %}>
   
+    {%- unless arc_layout == 'products_only' or template.suffix == 'bestseller' -%}
     {%- comment -%} HERO {% endcomment %}
     <div class="arc-hero">
       {%- if section.settings.hero_image != blank -%}
@@ -83,9 +88,8 @@
         <p class="arc-hero__p">{{ section.settings.hero_subtitle | default: 'Nine celestial attars, each resonating with the energy of a Vedic planet. Find the fragrance aligned with your cosmic blueprint.' }}</p>
       </div>
     </div>
+    {%- endunless -%}
 
-
-  
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
       <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
@@ -113,6 +117,7 @@
           {%- assign ar_per_page = section.settings.products_per_page -%}
         {%- endif -%}
         {%- paginate collection.products by ar_per_page -%}
+          {%- unless template.suffix == 'bestseller' -%}
           {%- assign ar_bucket_surya = '' -%}
           {%- assign ar_bucket_chandra = '' -%}
           {%- assign ar_bucket_guru = '' -%}
@@ -123,11 +128,13 @@
           {%- assign ar_bucket_rahu = '' -%}
           {%- assign ar_bucket_ketu = '' -%}
           {%- assign ar_bucket_rest = '' -%}
+          {%- endunless -%}
 
           {%- for product in collection.products -%}
             {%- assign ar_attar_img = '' -%}
             {%- assign ar_showcase_img = '' -%}
             {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
+            {%- unless template.suffix == 'bestseller' -%}
             {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
               {%- assign ar_attar_img = 'Planet/surya_attar.webp' | asset_url -%}
             {%- elsif ar_key contains 'moon' or ar_key contains 'chandra' -%}
@@ -147,6 +154,7 @@
             {%- elsif ar_key contains 'ketu' -%}
               {%- assign ar_attar_img = 'Planet/ketu_attar.webp' | asset_url -%}
             {%- endif -%}
+            {%- endunless -%}
             {%- if template.suffix == 'bestseller' -%}
               {%- capture ar_showcase_lookup -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
               {%- assign ar_showcase_lookup = ar_showcase_lookup | strip -%}
@@ -258,7 +266,9 @@
             </div>
             {%- endcapture -%}
 
-            {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
+            {%- if template.suffix == 'bestseller' -%}
+              {{ ar_card_markup }}
+            {%- elsif ar_key contains 'sun' or ar_key contains 'surya' -%}
               {%- assign ar_bucket_surya = ar_bucket_surya | append: ar_card_markup -%}
             {%- elsif ar_key contains 'moon' or ar_key contains 'chandra' -%}
               {%- assign ar_bucket_chandra = ar_bucket_chandra | append: ar_card_markup -%}
@@ -281,6 +291,7 @@
             {%- endif -%}
           {%- endfor -%}
 
+          {%- unless template.suffix == 'bestseller' -%}
           {{ ar_bucket_surya }}
           {{ ar_bucket_chandra }}
           {{ ar_bucket_guru }}
@@ -291,6 +302,7 @@
           {{ ar_bucket_rahu }}
           {{ ar_bucket_ketu }}
           {{ ar_bucket_rest }}
+          {%- endunless -%}
   
           {%- if paginate.pages > 1 and template.suffix != 'bestseller' -%}
             <div style="grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:8px;padding:24px 0 0;">
@@ -355,6 +367,16 @@
   {
     "name": "Planet Attars Collection",
     "settings": [
+      {
+        "type": "select",
+        "id": "layout_mode",
+        "label": "Layout mode",
+        "options": [
+          { "value": "full", "label": "Full (hero + products)" },
+          { "value": "products_only", "label": "Products only (use with dedicated hero section)" }
+        ],
+        "default": "full"
+      },
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
       {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},

@@ -1,0 +1,763 @@
+{% comment %}
+  Anand Rasa — Stress Relief Attar Rituals
+  Use on collection.stressrelief template only.
+{% endcomment %}
+
+{%- liquid
+  assign srl_id = section.id
+  assign srl_tips_lead = section.settings.tips_lead | default: 'From morning grounding to sleep preparation, our calming attars and natural aromatherapy perfume oils support nervous-system relaxation, meditation fragrance rituals, and emotional balance—so you can reach for luxury attars attuned to how you live, work, and restore.'
+-%}
+
+<style>
+  #shopify-section-{{ srl_id }} .srl {
+    --srl-bg: {{ section.settings.bg_color | default: '#FAF8F4' }};
+    --srl-surface: #FAF8F4;
+    --srl-ink: #1A1A1A;
+    --srl-ink-2: #4A4540;
+    --srl-ink-3: #7A746C;
+    --srl-gold: #B8943A;
+    --srl-line: rgba(26, 26, 26, 0.08);
+    --srl-ease: cubic-bezier(0.25, 1, 0.5, 1);
+    --srl-dur: 0.65s;
+    --srl-font-h: var(--font-heading-family, 'Cormorant Garamond', Georgia, serif);
+    --srl-font-b: var(--font-body-family, 'Poppins', system-ui, sans-serif);
+    font-family: var(--srl-font-b);
+    color: var(--srl-ink);
+    background: var(--srl-bg);
+  }
+
+  #shopify-section-{{ srl_id }} .srl *,
+  #shopify-section-{{ srl_id }} .srl *::before,
+  #shopify-section-{{ srl_id }} .srl *::after {
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: clamp(40px, 6vw, 64px) clamp(20px, 4vw, 48px) 0;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__inner--tips {
+    padding: clamp(40px, 6vw, 64px) clamp(20px, 4vw, 48px);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__title {
+    font-family: var(--srl-font-h);
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-align: center;
+    color: var(--srl-ink);
+    margin: 0 0 clamp(28px, 4vw, 40px);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--srl-dur) var(--srl-ease), transform var(--srl-dur) var(--srl-ease);
+  }
+
+  #shopify-section-{{ srl_id }} .srl.is-inview .srl__title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Editorial rows (full width) ── */
+  #shopify-section-{{ srl_id }} .srl__rows {
+    width: 100%;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: clamp(280px, 28vw, 360px);
+    max-height: 400px;
+    margin-bottom: 0;
+    border-radius: 0;
+    overflow: hidden;
+    background: var(--srl-surface);
+    box-shadow: none;
+    border-top: 1px solid var(--srl-line);
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity var(--srl-dur) var(--srl-ease), transform var(--srl-dur) var(--srl-ease);
+  }
+
+  #shopify-section-{{ srl_id }} .srl.is-inview .srl__row {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__row--delay-1 { transition-delay: 0.12s; }
+  #shopify-section-{{ srl_id }} .srl__row--delay-2 { transition-delay: 0.22s; }
+
+  #shopify-section-{{ srl_id }} .srl__row--reverse .srl__media { order: -1; }
+
+  #shopify-section-{{ srl_id }} .srl__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(28px, 4vw, 44px) clamp(32px, 5vw, 80px);
+    background: var(--srl-surface);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__heading {
+    font-family: var(--srl-font-h);
+    font-size: clamp(22px, 2.6vw, 32px);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    color: var(--srl-ink);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__text {
+    margin: 0;
+    font-size: clamp(13px, 1.25vw, 15px);
+    line-height: 1.75;
+    color: var(--srl-ink-2);
+    font-weight: 300;
+    max-width: 40ch;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__media {
+    position: relative;
+    overflow: hidden;
+    background: #EDE8DF;
+    min-height: 0;
+    height: 100%;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__media-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 1.1s var(--srl-ease);
+    will-change: transform;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__row:hover .srl__img {
+    transform: scale(1.03);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ph {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--srl-ink-3);
+    background: linear-gradient(145deg, #EDE8DF 0%, #E5DFD4 100%);
+  }
+
+  /* ── Premium ritual grid (Best Times to Use) ── */
+  #shopify-section-{{ srl_id }} .srl__ritual {
+    margin-top: clamp(48px, 7vw, 80px);
+    padding-top: clamp(40px, 6vw, 56px);
+    border-top: 1px solid var(--srl-line);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ritual-hdr {
+    max-width: 720px;
+    margin: 0 auto clamp(36px, 5vw, 52px);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--srl-dur) var(--srl-ease), transform var(--srl-dur) var(--srl-ease);
+  }
+
+  #shopify-section-{{ srl_id }} .srl.is-inview .srl__ritual-hdr {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ritual-eyebrow {
+    display: block;
+    margin: 0 0 14px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--srl-gold);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ritual-title {
+    font-family: var(--srl-font-h);
+    font-size: clamp(26px, 3.4vw, 40px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    color: var(--srl-ink);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ritual-lead {
+    margin: 0;
+    font-size: clamp(14px, 1.5vw, 17px);
+    line-height: 1.75;
+    font-weight: 300;
+    color: var(--srl-ink-2);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__ritual-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2.2vw, 24px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: clamp(24px, 3vw, 32px) clamp(20px, 2.8vw, 28px) clamp(26px, 3.2vw, 34px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    background:
+      linear-gradient(155deg, rgba(255, 255, 255, 0.92) 0%, rgba(250, 248, 244, 0.55) 48%, rgba(255, 252, 247, 0.78) 100%);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 20px 48px -16px rgba(26, 26, 26, 0.1),
+      0 4px 12px -4px rgba(26, 26, 26, 0.04);
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+      opacity 0.7s var(--srl-ease),
+      transform 0.7s var(--srl-ease),
+      box-shadow 0.45s var(--srl-ease),
+      border-color 0.45s ease;
+    will-change: transform, opacity;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(120% 80% at 50% -20%, rgba(184, 148, 58, 0.14) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(1) { transition-delay: 0.05s; }
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(2) { transition-delay: 0.1s; }
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(3) { transition-delay: 0.15s; }
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(4) { transition-delay: 0.2s; }
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(5) { transition-delay: 0.25s; }
+  #shopify-section-{{ srl_id }} .srl__card:nth-child(6) { transition-delay: 0.3s; }
+
+  #shopify-section-{{ srl_id }} .srl__card:hover,
+  #shopify-section-{{ srl_id }} .srl__card:focus-within {
+    transform: translate3d(0, -6px, 0);
+    border-color: rgba(184, 148, 58, 0.35);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 28px 56px -14px rgba(26, 26, 26, 0.14),
+      0 0 0 1px rgba(184, 148, 58, 0.08),
+      0 0 40px -8px rgba(184, 148, 58, 0.22);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card:hover::before,
+  #shopify-section-{{ srl_id }} .srl__card:focus-within::before {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-icon {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    margin-bottom: clamp(18px, 2.5vw, 22px);
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-icon-bg {
+    position: absolute;
+    inset: -8px;
+    border-radius: 18px;
+    background: radial-gradient(circle at 40% 35%, rgba(184, 148, 58, 0.22) 0%, rgba(184, 148, 58, 0.06) 55%, transparent 72%);
+    transform: scale(0.92);
+    transition: transform 0.5s var(--srl-ease), opacity 0.5s ease;
+    opacity: 0.85;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card:hover .srl__card-icon-bg,
+  #shopify-section-{{ srl_id }} .srl__card:focus-within .srl__card-icon-bg {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-icon-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(250, 245, 235, 0.75));
+    border: 1px solid rgba(184, 148, 58, 0.18);
+    color: var(--srl-gold);
+    box-shadow: 0 4px 16px rgba(184, 148, 58, 0.12);
+    transition: transform 0.45s var(--srl-ease);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card:hover .srl__card-icon-inner,
+  #shopify-section-{{ srl_id }} .srl__card:focus-within .srl__card-icon-inner {
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-icon-inner svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-tag {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--srl-gold);
+    background: rgba(184, 148, 58, 0.1);
+    border-radius: 999px;
+    border: 1px solid rgba(184, 148, 58, 0.15);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-title {
+    margin: 0 0 10px;
+    font-family: var(--srl-font-h);
+    font-size: clamp(17px, 1.6vw, 21px);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+    color: var(--srl-ink);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-benefit {
+    margin: 0 0 12px;
+    font-size: clamp(12px, 1.15vw, 13px);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--srl-ink-2);
+    letter-spacing: 0.01em;
+  }
+
+  #shopify-section-{{ srl_id }} .srl__card-text {
+    margin: 0;
+    font-size: clamp(13px, 1.25vw, 14px);
+    line-height: 1.72;
+    font-weight: 300;
+    color: var(--srl-ink-3);
+    flex-grow: 1;
+  }
+
+  @media (max-width: 900px) {
+    #shopify-section-{{ srl_id }} .srl__row,
+    #shopify-section-{{ srl_id }} .srl__row--reverse {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      max-height: none;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__row--reverse .srl__media {
+      order: 0;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__media {
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+      height: auto;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__copy {
+      padding: 28px 24px 32px;
+      max-width: none;
+      margin: 0;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__text {
+      max-width: none;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__ritual-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    #shopify-section-{{ srl_id }} .srl__ritual-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__card {
+      padding: 22px 20px 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ srl_id }} .srl__title,
+    #shopify-section-{{ srl_id }} .srl__row,
+    #shopify-section-{{ srl_id }} .srl__ritual-hdr,
+    #shopify-section-{{ srl_id }} .srl__card,
+    #shopify-section-{{ srl_id }} .srl__img {
+      opacity: 1;
+      transform: none;
+      transition: none !important;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__card:hover,
+    #shopify-section-{{ srl_id }} .srl__card:focus-within {
+      transform: none;
+    }
+  }
+</style>
+
+<section
+  class="srl"
+  id="srl-{{ srl_id }}"
+  aria-labelledby="srl-title-{{ srl_id }}"
+  data-srl-root
+>
+  <div class="srl__inner">
+    <h2 class="srl__title" id="srl-title-{{ srl_id }}">
+      {{ section.settings.section_title | default: 'How to Use Stress Relief Attars' }}
+    </h2>
+  </div>
+
+  <div class="srl__rows">
+    {%- comment -%} BLOCK 1 — text left, image right {%- endcomment -%}
+    <article class="srl__row srl__row--delay-1" data-srl-reveal>
+      <div class="srl__copy">
+        <h3 class="srl__heading">
+          {{ section.settings.block1_heading | default: 'Apply Around Your Surroundings' }}
+        </h3>
+        <p class="srl__text">
+          {{ section.settings.block1_text | default: 'Spray or apply attar lightly around your personal space—bedroom corners, pillows, meditation area, work desk, or yoga mat—to create a calming atmosphere that promotes relaxation and emotional balance.' }}
+        </p>
+      </div>
+      <div class="srl__media">
+        {%- if section.settings.block1_image != blank -%}
+          <img
+            src="{{ section.settings.block1_image | image_url: width: 1200 }}"
+            srcset="{{ section.settings.block1_image | image_url: width: 600 }} 600w, {{ section.settings.block1_image | image_url: width: 900 }} 900w, {{ section.settings.block1_image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 901px) 50vw, 100vw"
+            alt="{{ section.settings.block1_image.alt | default: section.settings.block1_heading | escape }}"
+            width="{{ section.settings.block1_image.width | default: 1200 }}"
+            height="{{ section.settings.block1_image.height | default: 900 }}"
+            loading="lazy"
+            decoding="async"
+            class="srl__img"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'stress/step1.webp' | asset_url }}"
+            alt="{{ section.settings.block1_heading | default: 'Apply stress relief attar in a calm space' | escape }}"
+            width="1200"
+            height="900"
+            loading="lazy"
+            decoding="async"
+            class="srl__img"
+          >
+        {%- endif -%}
+      </div>
+    </article>
+
+    {%- comment -%} BLOCK 2 — image left, text right {%- endcomment -%}
+    <article class="srl__row srl__row--reverse srl__row--delay-2" data-srl-reveal>
+      <div class="srl__copy">
+        <h3 class="srl__heading">
+          {{ section.settings.block2_heading | default: 'Practice Peaceful Breathing' }}
+        </h3>
+        <p class="srl__text">
+          {{ section.settings.block2_text | default: 'Take slow, deep breaths while experiencing the fragrance. This helps calm the nervous system, reduce stress, and bring mental clarity, mindfulness, and a sense of inner peace—especially before sleep or meditation.' }}
+        </p>
+      </div>
+      <div class="srl__media">
+        {%- if section.settings.block2_image != blank -%}
+          <img
+            src="{{ section.settings.block2_image | image_url: width: 1200 }}"
+            srcset="{{ section.settings.block2_image | image_url: width: 600 }} 600w, {{ section.settings.block2_image | image_url: width: 900 }} 900w, {{ section.settings.block2_image | image_url: width: 1200 }} 1200w"
+            sizes="(min-width: 901px) 50vw, 100vw"
+            alt="{{ section.settings.block2_image.alt | default: section.settings.block2_heading | escape }}"
+            width="{{ section.settings.block2_image.width | default: 1200 }}"
+            height="{{ section.settings.block2_image.height | default: 900 }}"
+            loading="lazy"
+            decoding="async"
+            class="srl__img"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'stress/step2.webp' | asset_url }}"
+            alt="{{ section.settings.block2_heading | default: 'Peaceful breathing with stress relief attar' | escape }}"
+            width="1200"
+            height="900"
+            loading="lazy"
+            decoding="async"
+            class="srl__img"
+          >
+        {%- endif -%}
+      </div>
+    </article>
+  </div>
+
+  {%- if section.settings.show_tips -%}
+    <div class="srl__inner srl__inner--tips">
+      <section
+        class="srl__ritual"
+        aria-labelledby="srl-ritual-title-{{ srl_id }}"
+        data-srl-ritual
+      >
+        <header class="srl__ritual-hdr">
+          {%- if section.settings.tips_eyebrow != blank -%}
+            <span class="srl__ritual-eyebrow">{{ section.settings.tips_eyebrow }}</span>
+          {%- endif -%}
+          <h3 class="srl__ritual-title" id="srl-ritual-title-{{ srl_id }}">
+            {{ section.settings.tips_heading | default: 'Best Times to Use Stress Relief Attars' }}
+          </h3>
+          <p class="srl__ritual-lead">{{ srl_tips_lead }}</p>
+        </header>
+
+        <ol class="srl__ritual-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tip' -%}
+              <li class="srl__card" data-srl-card {{ block.shopify_attributes }}>
+                <div class="srl__card-icon">
+                  <span class="srl__card-icon-bg" aria-hidden="true"></span>
+                  <div class="srl__card-icon-inner">
+                    {%- render 'srl-ritual-icon', icon: block.settings.icon -%}
+                  </div>
+                </div>
+                {%- if block.settings.benefit != blank -%}
+                  <span class="srl__card-tag">{{ block.settings.benefit }}</span>
+                {%- endif -%}
+                <h4 class="srl__card-title">{{ block.settings.title }}</h4>
+                {%- if block.settings.text != blank -%}
+                  <p class="srl__card-text">{{ block.settings.text }}</p>
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+      </section>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById('srl-{{ srl_id }}');
+  if (!root) return;
+
+  var cards = root.querySelectorAll('[data-srl-card]');
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function revealAll() {
+    root.classList.add('is-inview');
+    cards.forEach(function (c) { c.classList.add('is-visible'); });
+  }
+
+  if (reduced || !('IntersectionObserver' in window)) {
+    revealAll();
+    return;
+  }
+
+  var rootIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-inview');
+        rootIo.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+
+  rootIo.observe(root);
+
+  var cardIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        cardIo.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -4% 0px', threshold: 0.12 });
+
+  cards.forEach(function (card) { cardIo.observe(card); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Stress Relief Rituals",
+  "tag": "section",
+  "class": "section-stress-relief-rituals",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "How to Use Stress Relief Attars"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FAF8F4"
+    },
+    {
+      "type": "header",
+      "content": "Step 1 — Apply"
+    },
+    {
+      "type": "text",
+      "id": "block1_heading",
+      "label": "Heading",
+      "default": "Apply Around Your Surroundings"
+    },
+    {
+      "type": "textarea",
+      "id": "block1_text",
+      "label": "Description",
+      "default": "Spray or apply attar lightly around your personal space—bedroom corners, pillows, meditation area, work desk, or yoga mat—to create a calming atmosphere that promotes relaxation and emotional balance."
+    },
+    {
+      "type": "image_picker",
+      "id": "block1_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Step 2 — Breathe"
+    },
+    {
+      "type": "text",
+      "id": "block2_heading",
+      "label": "Heading",
+      "default": "Practice Peaceful Breathing"
+    },
+    {
+      "type": "textarea",
+      "id": "block2_text",
+      "label": "Description",
+      "default": "Take slow, deep breaths while experiencing the fragrance. This helps calm the nervous system, reduce stress, and bring mental clarity, mindfulness, and a sense of inner peace—especially before sleep or meditation."
+    },
+    {
+      "type": "image_picker",
+      "id": "block2_image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Ritual timing grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tips",
+      "label": "Show ritual timing grid",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tips_eyebrow",
+      "label": "Grid eyebrow",
+      "default": "Mindful Aromatherapy"
+    },
+    {
+      "type": "text",
+      "id": "tips_heading",
+      "label": "Grid heading",
+      "default": "Best Times to Use Stress Relief Attars"
+    },
+    {
+      "type": "textarea",
+      "id": "tips_lead",
+      "label": "Grid introduction (SEO)",
+      "default": "From morning grounding to sleep preparation, our calming attars and natural aromatherapy perfume oils support nervous-system relaxation, meditation fragrance rituals, and emotional balance—so you can reach for luxury attars attuned to how you live, work, and restore."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tip",
+      "name": "Tip card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "morning", "label": "Morning / sunrise" },
+            { "value": "work", "label": "Focus / work" },
+            { "value": "sleep", "label": "Sleep / moon" },
+            { "value": "meditation", "label": "Meditation" },
+            { "value": "breath", "label": "Breathwork" },
+            { "value": "yoga", "label": "Yoga" },
+            { "value": "heart", "label": "Emotional calm" },
+            { "value": "balance", "label": "Nervous system balance" }
+          ],
+          "default": "morning"
+        },
+        {
+          "type": "text",
+          "id": "benefit",
+          "label": "Benefit tag",
+          "default": "Emotional balance"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Morning Grounding"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Begin the day with calming attars on pulse points or fabric to steady cortisol rhythms, soften morning anxiety, and set a mindful fragrance tone before screens and demands accelerate."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stress Relief Rituals",
+      "blocks": [
+        { "type": "tip", "settings": { "icon": "morning", "benefit": "Mindful start", "title": "Morning Grounding", "text": "Begin the day with calming attars on pulse points or fabric to steady cortisol rhythms, soften morning anxiety, and set a mindful fragrance tone before screens and demands accelerate." } },
+        { "type": "tip", "settings": { "icon": "work", "benefit": "Mental clarity", "title": "Work Stress & Mental Fatigue", "text": "During intense focus, a trace of calming attar on pulse points can reduce sensory fatigue, soften anxiety into your workspace, and restore a steadier emotional environment through long hours of concentration." } },
+        { "type": "tip", "settings": { "icon": "sleep", "benefit": "Deep rest", "title": "Before Sleep", "text": "Layer sleep fragrance oils on pulse points, pillow edges, or bedding ten minutes before rest. Woody-floral notes signal the nervous system to downshift, supporting attar for relaxation and a slower transition into restorative sleep." } },
+        { "type": "tip", "settings": { "icon": "meditation", "benefit": "Inner focus", "title": "Meditation & Breathwork", "text": "Place meditation fragrance near your mat or inhale from palms between rounds. Natural calming perfume oils deepen breath cadence, quiet mental chatter, and extend mindfulness support without overpowering the senses." } },
+        { "type": "tip", "settings": { "icon": "yoga", "benefit": "Body-mind ease", "title": "Yoga & Nervous System Relaxation", "text": "A whisper of attar before asana helps parasympathetic tone rise—supporting slower movement, softer jaw and shoulders, and nervous system balance as luxury attars become part of your embodied practice." } },
+        { "type": "tip", "settings": { "icon": "heart", "benefit": "Emotional reset", "title": "Emotional Reset & Calmness", "text": "When emotions spike, pause for three slow breaths after applying attar to the sternum or wrists. Aromatherapy perfume oils can interrupt stress loops, invite compassion, and return you to a grounded, emotionally intelligent baseline." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

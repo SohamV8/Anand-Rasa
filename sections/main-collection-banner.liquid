@@ -1,4 +1,7 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{%- if template.suffix == 'stressrelief' or template.suffix == 'stress-relief' or template.suffix == 'bestseller' -%}
+  {%- comment -%} Premium hero on dedicated collection templates {%- endcomment -%}
+{%- else -%}
 {{ 'section-collection-banner.css' | asset_url | stylesheet_tag }}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
@@ -153,6 +156,7 @@
     </nav>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {

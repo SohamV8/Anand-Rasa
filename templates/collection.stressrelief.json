@@ -1,20 +1,89 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "main": {
+    "stress_hero": {
+      "type": "stress-relief-hero",
+      "settings": {
+        "eyebrow": "Calm & Wellness",
+        "heading": "Stress Relief Attars & Calming Fragrance Sprays",
+        "subheading": "Discover calming attars, therapeutic perfume oils, and relaxing fragrance sprays crafted to ease stress, quiet the mind, and create a peaceful atmosphere for sleep, meditation, yoga, and emotional balance.",
+        "supporting_text": "Made with soothing floral, woody, herbal, and Ayurvedic-inspired fragrance notes for everyday relaxation and mindful living.",
+        "bg_color": "#FAF8F4"
+      }
+    },
+    "stress_rituals": {
+      "type": "stress-relief-rituals",
+      "settings": {
+        "section_title": "How to Use Stress Relief Attars",
+        "show_tips": true,
+        "tips_eyebrow": "Mindful Aromatherapy",
+        "tips_heading": "Best Times to Use Stress Relief Attars",
+        "tips_lead": "From morning grounding to sleep preparation, our calming attars and natural aromatherapy perfume oils support nervous-system relaxation, meditation fragrance rituals, and emotional balance—so you can reach for luxury attars attuned to how you live, work, and restore.",
+        "bg_color": "#FAF8F4"
+      },
+      "blocks": {
+        "tip_1": {
+          "type": "tip",
+          "settings": {
+            "icon": "morning",
+            "benefit": "Mindful start",
+            "title": "Morning Grounding",
+            "text": "Begin the day with calming attars on pulse points or fabric to steady cortisol rhythms, soften morning anxiety, and set a mindful fragrance tone before screens and demands accelerate."
+          }
+        },
+        "tip_2": {
+          "type": "tip",
+          "settings": {
+            "icon": "work",
+            "benefit": "Mental clarity",
+            "title": "Work Stress & Mental Fatigue",
+            "text": "During intense focus, a trace of calming attar on pulse points can reduce sensory fatigue, soften anxiety relief fragrance into your workspace, and restore a steadier emotional environment through long hours of concentration."
+          }
+        },
+        "tip_3": {
+          "type": "tip",
+          "settings": {
+            "icon": "sleep",
+            "benefit": "Deep rest",
+            "title": "Before Sleep",
+            "text": "Layer sleep fragrance oils on pulse points, pillow edges, or bedding ten minutes before rest. Woody-floral notes signal the nervous system to downshift, supporting attar for relaxation and a slower transition into restorative sleep."
+          }
+        },
+        "tip_4": {
+          "type": "tip",
+          "settings": {
+            "icon": "meditation",
+            "benefit": "Inner focus",
+            "title": "Meditation & Breathwork",
+            "text": "Place meditation fragrance near your mat or inhale from palms between rounds. Natural calming perfume oils deepen breath cadence, quiet mental chatter, and extend mindfulness support without overpowering the senses."
+          }
+        },
+        "tip_5": {
+          "type": "tip",
+          "settings": {
+            "icon": "yoga",
+            "benefit": "Body-mind ease",
+            "title": "Yoga & Nervous System Relaxation",
+            "text": "A whisper of attar before asana helps parasympathetic tone rise—supporting slower movement, softer jaw and shoulders, and nervous system balance as luxury attars become part of your embodied practice."
+          }
+        },
+        "tip_6": {
+          "type": "tip",
+          "settings": {
+            "icon": "heart",
+            "benefit": "Emotional reset",
+            "title": "Emotional Reset & Calmness",
+            "text": "When emotions spike, pause for three slow breaths after applying attar to the sternum or wrists. Aromatherapy perfume oils can interrupt stress loops, invite compassion, and return you to a grounded, emotionally intelligent baseline."
+          }
+        }
+      },
+      "block_order": ["tip_1", "tip_2", "tip_3", "tip_4", "tip_5", "tip_6"]
+    },
+    "stress_products": {
       "type": "collection-stressrelief",
-      "settings": {}
+      "settings": {
+        "layout_mode": "products_only"
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["stress_hero", "stress_products", "stress_rituals"]
 }

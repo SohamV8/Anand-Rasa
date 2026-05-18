@@ -1,20 +1,21 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "main": {
+    "bestseller_hero": {
+      "type": "bestseller-hero",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Bestsellers",
+        "subheading": "Our most loved attars and fragrances—handpicked from across Anand Rasa for depth, longevity, and everyday ritual.",
+        "supporting_text": "Customer favorites you can trust, from signature attars to calming blends loved again and again.",
+        "bg_color": "#FAF8F4"
+      }
+    },
+    "bestseller_products": {
       "type": "collection-planet",
-      "settings": {}
+      "settings": {
+        "layout_mode": "products_only"
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["bestseller_hero", "bestseller_products"]
 }

@@ -6,7 +6,7 @@
 <style>
     /* ── COLLECTION PAGE ── */
     .arc * { box-sizing:border-box; margin:0; padding:0; }
-    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
+    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; --arc-cream:#FAF8F4; font-family:var(--fb); background:var(--arc-cream); color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
   
@@ -76,32 +76,17 @@
     .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
     .arc-empty__p { font-size:14px; color:#6b7280; }
   
-    /* Content Block */
-    .arc-content { max-width:1440px; margin:0 auto; padding:80px 48px; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    @media(max-width:900px){ .arc-content { grid-template-columns:1fr; padding:60px 24px; gap:40px; } }
-    .arc-content__img-wrap { position:relative; aspect-ratio:4/3; overflow:hidden; }
-    .arc-content__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-    .arc-content__ph { position:absolute; inset:0; background:#e5e7eb; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; }
-    .arc-content__label { font-size:10px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
-    .arc-content__h { font-family:var(--fh); font-size:clamp(28px,3.5vw,48px); font-weight:400; color:var(--ink); line-height:1.15; margin-bottom:20px; letter-spacing:-.01em; }
-    .arc-content__p { font-size:15px; line-height:1.8; color:#4b5563; font-weight:300; }
-  
-    /* CTA */
-    .arc-cta { background:#0e1f22; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
-    @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
-    .arc-cta__ov { position:absolute; inset:0; opacity:.12; background:radial-gradient(ellipse at 50% 0%,#c9a96e 0%,transparent 65%); pointer-events:none; }
-    .arc-cta__label { font-size:10px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; position:relative; }
-    .arc-cta__h { font-family:var(--fh); font-size:clamp(28px,4vw,56px); font-weight:400; color:#fff; margin-bottom:16px; letter-spacing:-.01em; line-height:1.15; position:relative; }
-    .arc-cta__p { font-size:15px; color:rgba(255,255,255,.7); font-weight:300; margin-bottom:36px; position:relative; max-width:520px; margin-left:auto; margin-right:auto; }
-    .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s,transform .2s; position:relative; }
-    .arc-cta__btn:hover { background:#b8943a; transform:translateY(-1px); }
-  
     @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   
   </style>
   
+  {%- liquid
+    assign arc_layout = section.settings.layout_mode | default: 'full'
+  -%}
+
   <div class="arc">
   
+    {%- unless arc_layout == 'products_only' -%}
     {%- comment -%} HERO {% endcomment %}
     <div class="arc-hero">
       {%- if section.settings.hero_image != blank -%}
@@ -167,7 +152,9 @@
         </div>
       </div>
     </section>
+    {%- endunless -%}
   
+    {%- unless arc_layout == 'intro_only' -%}
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
       <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
@@ -272,50 +259,7 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} CONTENT BLOCK {% endcomment -%}
-    <section class="arc-content" aria-label="{{ section.settings.content_title | default: 'Fragrance as a Pause Button' | escape }}">
-      <div class="arc-content__img-wrap">
-        {%- if section.settings.content_image != blank -%}
-          <img
-            src="{{ section.settings.content_image | image_url: width: 1600 }}"
-            alt="{{ section.settings.content_title | default: collection.title | escape }}"
-            width="1600"
-            height="1200"
-            loading="lazy"
-            decoding="async"
-            class="arc-content__img"
-          >
-        {%- else -%}
-          <img
-            src="{{ 'stress_calm.webp' | asset_url }}"
-            alt="{{ section.settings.content_title | default: collection.title | escape }}"
-            width="1600"
-            height="1200"
-            loading="lazy"
-            decoding="async"
-            class="arc-content__img"
-          >
-        {%- endif -%}
-      </div>
-      <div>
-        <span class="arc-content__label">{{ section.settings.content_label | default: 'Our Philosophy' }}</span>
-        <h2 class="arc-content__h">{{ section.settings.content_title | default: 'Fragrance as a Pause Button' }}</h2>
-        <p class="arc-content__p">{{ section.settings.content_body | default: 'Stress Relief Attars are composed around botanicals traditionally valued for calm, clarity, and emotional ease. Wear them as a quiet anchor - one drop on the pulse points - to reset your nervous system and return to yourself.' }}</p>
-      </div>
-    </section>
-
-    {%- comment -%} CTA {% endcomment -%}
-    <section class="arc-cta" aria-label="{{ section.settings.cta_title | default: 'Find Your Calm in a Bottle' | escape }}">
-      <div class="arc-cta__ov" aria-hidden="true"></div>
-      <span class="arc-cta__label">{{ section.settings.cta_label | default: 'Anand Rasa' }}</span>
-      <h2 class="arc-cta__h">{{ section.settings.cta_title | default: 'Find Your Calm in a Bottle' }}</h2>
-      <p class="arc-cta__p">{{ section.settings.cta_subtitle | default: 'Explore attars that help you exhale, reset, and move through the day with a softer edge.' }}</p>
-      {%- if section.settings.cta_url != blank -%}
-        <a href="{{ section.settings.cta_url }}" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
-      {%- else -%}
-        <a href="#arc-products" class="arc-cta__btn">{{ section.settings.cta_btn | default: 'Shop Now' }}</a>
-      {%- endif -%}
-    </section>
+    {%- endunless -%}
   
   </div>
   
@@ -349,23 +293,13 @@
   {
     "name": "Stress Relief Attars",
     "settings": [
+      {"type":"select","id":"layout_mode","label":"Section layout (template use)","options":[{"value":"full","label":"Full page"},{"value":"intro_only","label":"Intro only (hero + USP)"},{"value":"products_only","label":"Products only (grid)"}],"default":"full","info":"Used by collection.stressrelief template to split intro, rituals, and products."},
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
       {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},
       {"type":"text","id":"hero_label","label":"Eyebrow label","default":"Calm & Balance"},
       {"type":"textarea","id":"hero_subtitle","label":"Hero subtitle","default":"Botanical attars chosen to quiet the mind, soften tension, and bring you back to center. A gentle ritual for hectic days."},
       {"type":"text","id":"hero_btn","label":"Hero button text","default":"Explore Collection"},
-      {"type":"header","content":"Content Block"},
-      {"type":"image_picker","id":"content_image","label":"Content image"},
-      {"type":"text","id":"content_label","label":"Label","default":"Our Philosophy"},
-      {"type":"text","id":"content_title","label":"Title","default":"Fragrance as a Pause Button"},
-      {"type":"textarea","id":"content_body","label":"Body text","default":"Stress Relief Attars are composed around botanicals traditionally valued for calm, clarity, and emotional ease. Wear them as a quiet anchor—one drop on the pulse points—to reset your nervous system and return to yourself."},
-      {"type":"header","content":"CTA Section"},
-      {"type":"text","id":"cta_label","label":"CTA label","default":"Anand Rasa"},
-      {"type":"text","id":"cta_title","label":"CTA heading","default":"Find Your Calm in a Bottle"},
-      {"type":"textarea","id":"cta_subtitle","label":"CTA subtitle","default":"Explore attars that help you exhale, reset, and move through the day with a softer edge."},
-      {"type":"text","id":"cta_btn","label":"Button text","default":"Shop Now"},
-      {"type":"url","id":"cta_url","label":"Button URL"},
       {"type":"header","content":"Products"},
       {"type":"range","id":"products_per_page","label":"Products per page","min":8,"max":48,"step":4,"default":16}
     ],

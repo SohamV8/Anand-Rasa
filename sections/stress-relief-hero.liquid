@@ -1,0 +1,189 @@
+{% comment %}
+  Anand Rasa — Stress Relief Collection Hero
+  Use only on collection.stressrelief / collection.stress-relief templates.
+{% endcomment %}
+
+{%- liquid
+  assign srh_id = section.id
+  assign srh_heading = section.settings.heading | default: 'Stress Relief Attars & Calming Fragrance Sprays'
+  assign srh_subheading = section.settings.subheading | default: 'Discover calming attars, therapeutic perfume oils, and relaxing fragrance sprays crafted to ease stress, quiet the mind, and create a peaceful atmosphere for sleep, meditation, yoga, and emotional balance.'
+  assign srh_support = section.settings.supporting_text | default: 'Made with soothing floral, woody, herbal, and Ayurvedic-inspired fragrance notes for everyday relaxation and mindful living.'
+-%}
+
+<style>
+  #shopify-section-{{ srh_id }} .srh {
+    --srh-bg: {{ section.settings.bg_color | default: '#FAF8F4' }};
+    --srh-ink: #1A1A1A;
+    --srh-ink-2: #4A4540;
+    --srh-ink-3: #7A746C;
+    --srh-gold: #B8943A;
+    --srh-gold-soft: rgba(184, 148, 58, 0.35);
+    --srh-ease: cubic-bezier(0.25, 1, 0.5, 1);
+    --srh-font-h: var(--font-heading-family, 'Cormorant Garamond', Georgia, serif);
+    --srh-font-b: var(--font-body-family, 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    background: var(--srh-bg);
+    font-family: var(--srh-font-b);
+    color: var(--srh-ink);
+  }
+
+  #shopify-section-{{ srh_id }} .srh__inner {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: clamp(56px, 9vw, 96px) clamp(24px, 5vw, 48px) clamp(48px, 7vw, 72px);
+    text-align: center;
+  }
+
+  #shopify-section-{{ srh_id }} .srh__eyebrow {
+    display: block;
+    margin: 0 0 18px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--srh-gold);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: srh-up 0.7s var(--srh-ease) 0.05s forwards;
+  }
+
+  #shopify-section-{{ srh_id }} .srh__title {
+    margin: 0;
+    font-family: var(--srh-font-h);
+    font-size: clamp(32px, 4.8vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--srh-ink);
+    opacity: 0;
+    transform: translateY(18px);
+    animation: srh-up 0.75s var(--srh-ease) 0.12s forwards;
+  }
+
+  #shopify-section-{{ srh_id }} .srh__rule {
+    display: block;
+    width: 48px;
+    height: 1.5px;
+    margin: clamp(22px, 3vw, 28px) auto;
+    background: linear-gradient(90deg, transparent, var(--srh-gold) 20%, var(--srh-gold) 80%, transparent);
+    border-radius: 999px;
+    transform: scaleX(0);
+    animation: srh-line 0.8s var(--srh-ease) 0.28s forwards;
+  }
+
+  #shopify-section-{{ srh_id }} .srh__lead {
+    margin: 0 auto;
+    max-width: 640px;
+    font-size: clamp(15px, 1.65vw, 18px);
+    line-height: 1.8;
+    font-weight: 300;
+    color: var(--srh-ink-2);
+    letter-spacing: 0.01em;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: srh-up 0.75s var(--srh-ease) 0.34s forwards;
+  }
+
+  #shopify-section-{{ srh_id }} .srh__support {
+    margin: clamp(20px, 3vw, 28px) auto 0;
+    max-width: 560px;
+    font-size: clamp(13px, 1.35vw, 15px);
+    line-height: 1.7;
+    font-weight: 300;
+    color: var(--srh-ink-3);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: srh-up 0.75s var(--srh-ease) 0.46s forwards;
+  }
+
+  @keyframes srh-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes srh-line {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #shopify-section-{{ srh_id }} .srh__eyebrow,
+    #shopify-section-{{ srh_id }} .srh__title,
+    #shopify-section-{{ srh_id }} .srh__rule,
+    #shopify-section-{{ srh_id }} .srh__lead,
+    #shopify-section-{{ srh_id }} .srh__support {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
+
+<header class="srh" id="srh-{{ srh_id }}" data-srh-hero>
+  <div class="srh__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="srh__eyebrow">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+
+    <h1 class="srh__title">{{ srh_heading | escape }}</h1>
+
+    <span class="srh__rule" aria-hidden="true"></span>
+
+    <p class="srh__lead">{{ srh_subheading }}</p>
+
+    {%- if srh_support != blank -%}
+      <p class="srh__support">{{ srh_support }}</p>
+    {%- endif -%}
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Stress Relief Hero",
+  "tag": "section",
+  "class": "section-stress-relief-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow (optional)",
+      "default": "Calm & Wellness"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading (H1)",
+      "default": "Stress Relief Attars & Calming Fragrance Sprays"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover calming attars, therapeutic perfume oils, and relaxing fragrance sprays crafted to ease stress, quiet the mind, and create a peaceful atmosphere for sleep, meditation, yoga, and emotional balance."
+    },
+    {
+      "type": "textarea",
+      "id": "supporting_text",
+      "label": "Supporting text",
+      "default": "Made with soothing floral, woody, herbal, and Ayurvedic-inspired fragrance notes for everyday relaxation and mindful living."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#FAF8F4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stress Relief Hero"
+    }
+  ]
+}
+{% endschema %}
