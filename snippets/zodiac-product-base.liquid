@@ -616,6 +616,7 @@
       </div>
     </div>
   </section>
+  {% render 'product-note-banner', product: product %}
 
   {%- assign related_col = section.settings.related_collection -%}
   {%- if section.settings.show_related and related_col != blank and related_col.products.size > 0 -%}

@@ -1,0 +1,32 @@
+{%- comment -%}
+  Note banner lookup — maps product to flat assets (note-banner-*.webp).
+
+  Usage:
+    {%- render 'note-banner-lookup', nb_product: product -%}
+{%- endcomment -%}
+{%- liquid
+  assign title_key = nb_product.title | handleize
+  assign handle_key = nb_product.handle | default: title_key
+  assign search_key = title_key | append: ' ' | append: handle_key
+  assign img = ''
+
+  if search_key contains 'devalya'
+    assign img = 'note-banner-devalya.webp'
+  elsif search_key contains 'dilruba' or search_key contains 'dil-ruba'
+    assign img = 'note-banner-dilruba.webp'
+  elsif search_key contains 'fawakeh'
+    assign img = 'note-banner-fawakeh.webp'
+  elsif search_key contains 'firdaus'
+    assign img = 'note-banner-firdaus.webp'
+  elsif search_key contains 'pushprasa' or search_key contains 'pushp-rasa'
+    assign img = 'note-banner-pushprasa.webp'
+  elsif search_key contains 'shamama'
+    assign img = 'note-banner-shamama.webp'
+  elsif search_key contains 'velora' or search_key contains 'vellora'
+    assign img = 'note-banner-velora.webp'
+  elsif search_key contains 'mohini'
+    assign img = 'note-banner-mohini.webp'
+  endif
+
+  echo img
+-%}

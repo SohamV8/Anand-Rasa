@@ -12,18 +12,24 @@ if (!customElements.get('media-gallery')) {
         this.mql = window.matchMedia('(min-width: 750px)');
         if (!this.elements.thumbnails) return;
 
-        this.elements.viewer.addEventListener('slideChanged', debounce(this.onSlideChanged.bind(this), 500));
+        if (this.elements.viewer) {
+          this.elements.viewer.addEventListener('slideChanged', debounce(this.onSlideChanged.bind(this), 500));
+        }
         this.elements.thumbnails.querySelectorAll('[data-target]').forEach((mediaToSwitch) => {
-          mediaToSwitch
-            .querySelector('button')
-            .addEventListener('click', this.setActiveMedia.bind(this, mediaToSwitch.dataset.target, false));
+          const button = mediaToSwitch.querySelector('button');
+          const target = mediaToSwitch.dataset && mediaToSwitch.dataset.target;
+          if (!button || !target) return;
+          button.addEventListener('click', this.setActiveMedia.bind(this, target, false));
         });
-        if (this.dataset.desktopLayout.includes('thumbnail') && this.mql.matches) this.removeListSemantic();
+        const desktopLayout = this.dataset.desktopLayout || '';
+        if (desktopLayout.includes('thumbnail') && this.mql.matches) this.removeListSemantic();
       }
 
       onSlideChanged(event) {
+        const currentElement = event.detail && event.detail.currentElement;
+        if (!currentElement || !currentElement.dataset || !currentElement.dataset.mediaId) return;
         const thumbnail = this.elements.thumbnails.querySelector(
-          `[data-target="${event.detail.currentElement.dataset.mediaId}"]`
+          `[data-target="${currentElement.dataset.mediaId}"]`
         );
         this.setActiveThumbnail(thumbnail);
       }
@@ -67,7 +73,9 @@ if (!customElements.get('media-gallery')) {
         if (!this.elements.thumbnails) return;
         const activeThumbnail = this.elements.thumbnails.querySelector(`[data-target="${mediaId}"]`);
         this.setActiveThumbnail(activeThumbnail);
-        this.announceLiveRegion(activeMedia, activeThumbnail.dataset.mediaPosition);
+        if (activeThumbnail && activeThumbnail.dataset && activeThumbnail.dataset.mediaPosition) {
+          this.announceLiveRegion(activeMedia, activeThumbnail.dataset.mediaPosition);
+        }
       }
 
       setActiveThumbnail(thumbnail) {

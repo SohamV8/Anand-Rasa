@@ -1,0 +1,111 @@
+{%- comment -%}
+  Full-width fragrance notes banner — below product showcase, above recommendations.
+
+  Usage:
+    {% render 'product-note-banner', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign pnb_product = product
+  if pnb_product == blank
+    assign pnb_product = banner_product
+  endif
+  if pnb_product == blank
+    assign pnb_product = nb_product
+  endif
+-%}
+{%- if pnb_product != blank -%}
+  {%- liquid
+    assign title_key = pnb_product.title | handleize
+    assign handle_key = pnb_product.handle | default: title_key
+    assign search_key = title_key | append: ' ' | append: handle_key
+    assign pnb_asset = ''
+
+    if search_key contains 'devalya'
+      assign pnb_asset = 'note-banner-devalya.webp'
+    elsif search_key contains 'dilruba' or search_key contains 'dil-ruba'
+      assign pnb_asset = 'note-banner-dilruba.webp'
+    elsif search_key contains 'fawakeh'
+      assign pnb_asset = 'note-banner-fawakeh.webp'
+    elsif search_key contains 'firdaus'
+      assign pnb_asset = 'note-banner-firdaus.webp'
+    elsif search_key contains 'pushprasa' or search_key contains 'pushp-rasa'
+      assign pnb_asset = 'note-banner-pushprasa.webp'
+    elsif search_key contains 'shamama'
+      assign pnb_asset = 'note-banner-shamama.webp'
+    elsif search_key contains 'velora' or search_key contains 'vellora'
+      assign pnb_asset = 'note-banner-velora.webp'
+    elsif search_key contains 'mohini'
+      assign pnb_asset = 'note-banner-mohini.webp'
+    endif
+  -%}
+
+  {%- if pnb_asset != blank -%}
+    {%- liquid
+      assign pnb_id = pnb_product.id
+      assign pnb_title = pnb_product.title | escape
+      assign pnb_alt = pnb_title | append: ' fragrance notes'
+      assign pnb_src = pnb_asset | asset_url
+    -%}
+
+    {%- if pnb_src != blank -%}
+      <section
+        id="pnb-{{ pnb_id }}"
+        class="pnb pnb--bleed"
+        aria-label="{{ pnb_title }} fragrance notes"
+      >
+        <picture class="pnb__picture">
+          <img
+            src="{{ pnb_src }}"
+            alt="{{ pnb_alt | escape }}"
+            width="3840"
+            height="1600"
+            loading="lazy"
+            decoding="async"
+            class="pnb__img"
+          >
+        </picture>
+      </section>
+
+      <style>
+        #pnb-{{ pnb_id }}.pnb--bleed {
+          display: block;
+          width: 100vw;
+          max-width: 100%;
+          margin: clamp(32px, 5vw, 64px) 0 clamp(40px, 6vw, 80px);
+          margin-left: calc(50% - 50vw);
+          margin-right: calc(50% - 50vw);
+          padding: 0;
+          background: #fff;
+          overflow: visible;
+          box-sizing: border-box;
+          clear: both;
+        }
+
+        #pnb-{{ pnb_id }} .pnb__picture {
+          display: block;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          line-height: 0;
+        }
+
+        #pnb-{{ pnb_id }} .pnb__img {
+          display: block;
+          width: 100%;
+          height: auto;
+          max-width: 100%;
+          margin: 0 auto;
+          object-fit: contain;
+          object-position: center center;
+        }
+
+        @media (max-width: 749px) {
+          #pnb-{{ pnb_id }}.pnb--bleed {
+            margin-top: 28px;
+            margin-bottom: 36px;
+          }
+        }
+      </style>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
