@@ -628,6 +628,14 @@
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'love-attar'
                         endcapture
+                      elsif ar_mega_title_key contains 'apsara'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'apsara-attar'
+                        endcapture
+                      elsif ar_mega_title_key contains 'perfume'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'perfume-series'
+                        endcapture
                       elsif ar_mega_title_key contains 'incense'
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'incense-sticks'
@@ -660,6 +668,10 @@
                         assign ar_mega_hover_image = 'stress.webp' | asset_url
                       elsif ar_mega_title_key contains 'love' or ar_mega_link_key contains 'love-attar'
                         assign ar_mega_hover_image = 'love.webp' | asset_url
+                      elsif ar_mega_title_key contains 'apsara' or ar_mega_link_key contains 'apsara-attar'
+                        assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
+                      elsif ar_mega_title_key contains 'perfume' or ar_mega_link_key contains 'perfume-series'
+                        assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
                       elsif ar_mega_title_key contains 'incense' or ar_mega_link_key contains 'incense-sticks'
                         assign ar_mega_hover_image = 'incense.jpeg' | asset_url
                       elsif ar_mega_title_key contains 'gift' or ar_mega_link_key contains 'giftsets'
@@ -696,6 +708,8 @@
                 <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link" data-image="{{ 'stress.webp' | asset_url }}">Stress Relief Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" data-image="{{ 'chakra.webp' | asset_url }}">Chakra Attars</a>
                 <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" data-image="{{ 'love.webp' | asset_url }}">Love Attars</a>
+                <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-mega__link" data-image="{{ 'PlanetHero.webp' | asset_url }}">Apsara Attar</a>
+                <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-mega__link" data-image="{{ 'PlanetHero.webp' | asset_url }}">Perfume Series</a>
                 <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" data-image="{{ 'incense.jpeg' | asset_url }}">Incense Sticks</a>
                 <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-mega__link" data-image="{{ 'logo.webp' | asset_url }}">Gift Sets</a>
               {%- endif -%}
@@ -903,6 +917,14 @@
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'love-attar'
               endcapture
+            elsif ar_drawer_title_key contains 'apsara'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'apsara-attar'
+              endcapture
+            elsif ar_drawer_title_key contains 'perfume'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'perfume-series'
+              endcapture
             elsif ar_drawer_title_key contains 'incense'
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'incense-sticks'
@@ -930,6 +952,8 @@
       <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Stress Relief Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Chakra Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Love Attars</a>
+      <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Apsara Attar</a>
+      <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Perfume Series</a>
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
       <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gift Sets</a>
     {%- endif -%}

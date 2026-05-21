@@ -140,13 +140,44 @@
     {%- comment -%} PRODUCT GRID {% endcomment %}
     <div class="arc-grid" id="arc-products">
       {%- if collection.products.size > 0 -%}
-        {%- for product in collection.products -%}
+        {%- paginate collection.products by 50 -%}
+          {%- assign ar_nk_01 = '' -%}
+          {%- assign ar_nk_02 = '' -%}
+          {%- assign ar_nk_03 = '' -%}
+          {%- assign ar_nk_04 = '' -%}
+          {%- assign ar_nk_05 = '' -%}
+          {%- assign ar_nk_06 = '' -%}
+          {%- assign ar_nk_07 = '' -%}
+          {%- assign ar_nk_08 = '' -%}
+          {%- assign ar_nk_09 = '' -%}
+          {%- assign ar_nk_10 = '' -%}
+          {%- assign ar_nk_11 = '' -%}
+          {%- assign ar_nk_12 = '' -%}
+          {%- assign ar_nk_13 = '' -%}
+          {%- assign ar_nk_14 = '' -%}
+          {%- assign ar_nk_15 = '' -%}
+          {%- assign ar_nk_16 = '' -%}
+          {%- assign ar_nk_17 = '' -%}
+          {%- assign ar_nk_18 = '' -%}
+          {%- assign ar_nk_19 = '' -%}
+          {%- assign ar_nk_20 = '' -%}
+          {%- assign ar_nk_21 = '' -%}
+          {%- assign ar_nk_22 = '' -%}
+          {%- assign ar_nk_23 = '' -%}
+          {%- assign ar_nk_24 = '' -%}
+          {%- assign ar_nk_25 = '' -%}
+          {%- assign ar_nk_26 = '' -%}
+          {%- assign ar_nk_27 = '' -%}
+          {%- assign ar_nk_rest = '' -%}
+          {%- for product in collection.products -%}
+            {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
             {%- capture ar_nk_img -%}{%- render 'nakshatra-image-lookup', nk_product: product -%}{%- endcapture -%}
             {%- assign ar_nk_img = ar_nk_img | strip -%}
             {%- capture ar_card_seo_alt -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'card' -%}{%- endcapture -%}
             {%- assign ar_card_seo_alt = ar_card_seo_alt | strip -%}
             {%- capture ar_card_seo_alt_hover -%}{%- render 'image-seo-alt', seo_product: product, img_context: 'hover' -%}{%- endcapture -%}
             {%- assign ar_card_seo_alt_hover = ar_card_seo_alt_hover | strip -%}
+            {%- capture ar_card_markup -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap" title="{{ product.title | escape }}">
                 {%- if ar_nk_img != blank -%}
@@ -216,7 +247,67 @@
                 </button>
               </div>
             </div>
-        {%- endfor -%}
+            {%- endcapture -%}
+            {%- if ar_key contains 'purva-bhadra' or ar_key contains 'purva bhadra' -%}
+              {%- assign ar_nk_25 = ar_nk_25 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'uttara-bhadra' or ar_key contains 'uttara bhadra' -%}
+              {%- assign ar_nk_26 = ar_nk_26 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'purva-ashadha' or ar_key contains 'purva ashadha' -%}
+              {%- assign ar_nk_20 = ar_nk_20 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'uttara-ashadha' or ar_key contains 'uttara ashadha' -%}
+              {%- assign ar_nk_21 = ar_nk_21 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'purva-phalguni' or ar_key contains 'purva phalguni' -%}
+              {%- assign ar_nk_11 = ar_nk_11 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'uttara-phalguni' or ar_key contains 'uttara phalguni' -%}
+              {%- assign ar_nk_12 = ar_nk_12 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'mrigashira' or ar_key contains 'mriga-shira' or ar_key contains 'mriga shira' -%}
+              {%- assign ar_nk_05 = ar_nk_05 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'ashwini' or ar_key contains 'ashvini' -%}
+              {%- assign ar_nk_01 = ar_nk_01 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'bharani' -%}
+              {%- assign ar_nk_02 = ar_nk_02 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'krittika' or ar_key contains 'kritika' -%}
+              {%- assign ar_nk_03 = ar_nk_03 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'rohini' -%}
+              {%- assign ar_nk_04 = ar_nk_04 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'ardra' -%}
+              {%- assign ar_nk_06 = ar_nk_06 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'punarvasu' -%}
+              {%- assign ar_nk_07 = ar_nk_07 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'pushya' -%}
+              {%- assign ar_nk_08 = ar_nk_08 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'ashlesha' -%}
+              {%- assign ar_nk_09 = ar_nk_09 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'magha' -%}
+              {%- assign ar_nk_10 = ar_nk_10 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'hasta' -%}
+              {%- assign ar_nk_13 = ar_nk_13 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'chitra' -%}
+              {%- assign ar_nk_14 = ar_nk_14 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'vishakha' -%}
+              {%- assign ar_nk_16 = ar_nk_16 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'swati' -%}
+              {%- assign ar_nk_15 = ar_nk_15 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'anuradha' -%}
+              {%- assign ar_nk_17 = ar_nk_17 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'jyeshtha' or ar_key contains 'jyeshta' -%}
+              {%- assign ar_nk_18 = ar_nk_18 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'mula' -%}
+              {%- assign ar_nk_19 = ar_nk_19 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'shravana' -%}
+              {%- assign ar_nk_22 = ar_nk_22 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'dhanishtha' or ar_key contains 'dhanishta' -%}
+              {%- assign ar_nk_23 = ar_nk_23 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'shatabhisha' or ar_key contains 'shatabhish' -%}
+              {%- assign ar_nk_24 = ar_nk_24 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'revati' -%}
+              {%- assign ar_nk_27 = ar_nk_27 | append: ar_card_markup -%}
+            {%- else -%}
+              {%- assign ar_nk_rest = ar_nk_rest | append: ar_card_markup -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {{ ar_nk_01 }}{{ ar_nk_02 }}{{ ar_nk_03 }}{{ ar_nk_04 }}{{ ar_nk_05 }}{{ ar_nk_06 }}{{ ar_nk_07 }}{{ ar_nk_08 }}{{ ar_nk_09 }}{{ ar_nk_10 }}{{ ar_nk_11 }}{{ ar_nk_12 }}{{ ar_nk_13 }}{{ ar_nk_14 }}{{ ar_nk_15 }}{{ ar_nk_16 }}{{ ar_nk_17 }}{{ ar_nk_18 }}{{ ar_nk_19 }}{{ ar_nk_20 }}{{ ar_nk_21 }}{{ ar_nk_22 }}{{ ar_nk_23 }}{{ ar_nk_24 }}{{ ar_nk_25 }}{{ ar_nk_26 }}{{ ar_nk_27 }}{{ ar_nk_rest }}
+        {%- endpaginate -%}
       {%- else -%}
         <div class="arc-empty">
           <h2 class="arc-empty__h">No products yet</h2>

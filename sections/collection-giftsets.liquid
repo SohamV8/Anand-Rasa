@@ -6,7 +6,7 @@
 <style>
     /* ── COLLECTION PAGE ── */
     .arc * { box-sizing:border-box; margin:0; padding:0; }
-    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#faf9f7; color:var(--ink); }
+    .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#fff; color:var(--ink); }
     .arc a { text-decoration:none; color:inherit; }
     .arc img { display:block; max-width:100%; }
   
@@ -34,7 +34,8 @@
   
     /* Toolbar */
     .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-    @media(max-width:768px){ .arc-toolbar { padding:20px 20px 0; } }
+    .arc.arc--products-only .arc-toolbar { padding-top:clamp(16px,3vw,24px); }
+    @media(max-width:768px){ .arc-toolbar { padding:20px 20px 0; } .arc.arc--products-only .arc-toolbar { padding-top:16px; } }
     .arc-toolbar__count { font-size:13px; color:#6b7280; }
     .arc-toolbar__sort { display:flex; align-items:center; gap:10px; }
     .arc-toolbar__sort label { font-size:12px; color:#9ca3af; font-weight:400; }
@@ -89,9 +90,14 @@
     @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   
   </style>
+
+  {%- liquid
+    assign arc_layout = section.settings.layout_mode | default: 'full'
+  -%}
   
-  <div class="arc">
+  <div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}">
   
+    {%- unless arc_layout == 'products_only' -%}
     {%- comment -%} HERO {% endcomment %}
     <div class="arc-hero">
       {%- if section.settings.hero_image != blank -%}
@@ -132,6 +138,7 @@
         </div>
       </div>
     </div>
+    {%- endunless -%}
   
     {%- comment -%} TOOLBAR {% endcomment %}
     <div class="arc-toolbar">
@@ -256,6 +263,16 @@
   {
     "name": "Gift Sets Collection",
     "settings": [
+      {
+        "type": "select",
+        "id": "layout_mode",
+        "label": "Layout mode",
+        "options": [
+          { "value": "full", "label": "Full (hero + products)" },
+          { "value": "products_only", "label": "Products only (use with Collection Page Hero)" }
+        ],
+        "default": "full"
+      },
       {"type":"header","content":"Hero Section"},
       {"type":"image_picker","id":"hero_image","label":"Hero background image"},
       {"type":"text","id":"hero_image_alt","label":"Hero image alt text (SEO)","info":"Optional. Overrides auto-generated alt for accessibility and image search."},

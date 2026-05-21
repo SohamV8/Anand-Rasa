@@ -167,27 +167,14 @@
   .ar-sc__price { margin-top:12px; font-size:13px; font-weight:500; color:#1e2023; }
 
   /* ── NAVAGRAHA ── */
-  .ar-nav9 { background:#fff; border:2px solid #1e2023; font-family:var(--fb); }
-  .ar-nav9__intro { display:flex; align-items:center; justify-content:center; min-height:40vh; border-bottom:2px solid #1e2023; padding:48px 24px; }
-  .ar-nav9__intro-in { max-width:672px; text-align:center; }
-  .ar-nav9__intro-h { font-family:var(--fh); font-size:clamp(24px,3vw,36px); color:#1e2023; margin-bottom:16px; }
-  .ar-nav9__intro-p { font-size:14px; line-height:1.75; color:#4b5563; margin-bottom:24px; }
-  .ar-nav9__intro-btn { display:inline-block; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.18em; color:#1e2023; font-family:var(--fb); transition:background .3s,color .3s; }
-  .ar-nav9__intro-btn:hover { background:#1e2023; color:#fff; }
-  .ar-nav9__main { display:grid; grid-template-columns:1fr; min-height:90vh; }
-  @media(min-width:1024px){ .ar-nav9__main { grid-template-columns:minmax(0,1fr) minmax(300px,380px); align-items:stretch; } }
-  .ar-nav9__grid { display:grid; grid-template-columns:repeat(2,1fr); border:2px solid #1e2023; order:2; min-width:0; }
-  @media(min-width:640px){ .ar-nav9__grid { grid-template-columns:repeat(3,1fr); } }
-  @media(min-width:1024px){ .ar-nav9__grid { grid-template-columns:repeat(4,1fr); order:1; } }
-  .ar-nav9__btn { border:2px solid #1e2023; background:#fff; cursor:pointer; position:relative; min-height:160px; overflow:hidden; transition:background .2s; padding:0; width:100%; }
-  .ar-nav9__btn.is-active, .ar-nav9__btn:hover { background:rgba(0,0,0,.04); }
-  .ar-nav9__bimg { width:100%; height:100%; object-fit:contain; display:block; pointer-events:none; }
-  .ar-nav9__panel { border:2px solid #1e2023; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 16px; order:1; min-width:0; box-sizing:border-box; }
-  @media(min-width:1024px){ .ar-nav9__panel { order:2; } }
-  .ar-nav9__pimg { width:100%; max-width:280px; aspect-ratio:2/3; object-fit:contain; display:block; background:#fafafa; }
-  .ar-nav9__pdesc { margin-top:24px; max-width:280px; text-align:center; font-size:13px; color:#374151; line-height:1.6; }
-  .ar-nav9__pbtn { margin-top:24px; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.12em; color:#1e2023; display:inline-block; transition:background .3s,color .3s; }
-  .ar-nav9__pbtn:hover { background:#1e2023; color:#fff; }
+  .ar-nav9-wrap { background:#fff; border:2px solid #1e2023; font-family:var(--fb); }
+  .ar-nav9-wrap .ar-pl { border:none; overflow:visible; }
+  .ar-nav9-intro { display:flex; align-items:center; justify-content:center; min-height:28vh; padding:48px 24px 24px; border-bottom:none; }
+  .ar-nav9-intro__in { max-width:672px; text-align:center; }
+  .ar-nav9-intro__h { font-family:var(--fh); font-size:clamp(24px,3vw,36px); color:#1e2023; margin-bottom:16px; }
+  .ar-nav9-intro__p { font-size:14px; line-height:1.75; color:#4b5563; margin-bottom:24px; }
+  .ar-nav9-intro__btn { display:inline-block; border:2px solid #1e2023; padding:8px 24px; font-size:11px; letter-spacing:.18em; color:#1e2023; font-family:var(--fb); transition:background .3s,color .3s; text-decoration:none; }
+  .ar-nav9-intro__btn:hover { background:#1e2023; color:#fff; }
 
   /* ── ZODIAC HERO ── */
   .ar-zh { background:#0a0a0a; overflow:hidden; font-family:var(--fb); }
@@ -629,43 +616,6 @@
     window.addEventListener('resize', sync);
     sync();
   })();
-
-  document.querySelectorAll('.ar-nav9').forEach(function(nav9){
-    var pbtns = nav9.querySelectorAll('.ar-nav9__btn');
-    var pImg  = nav9.querySelector('.js-ar-nav9-pimg');
-    var pDesc = nav9.querySelector('.js-ar-nav9-pdesc');
-    var pLink = nav9.querySelector('.js-ar-nav9-plink');
-    if (!pbtns.length) return;
-
-    function activate(btn){
-      pbtns.forEach(function(b){ b.classList.remove('is-active'); });
-      btn.classList.add('is-active');
-      var img = btn.getAttribute('data-img') || '';
-      var desc = btn.getAttribute('data-desc') || '';
-      var url = btn.getAttribute('data-url') || '';
-      if (pImg) {
-        if (img) {
-          pImg.src = img;
-          pImg.alt = btn.getAttribute('aria-label') || 'Selected planet attar';
-        } else {
-          pImg.removeAttribute('src');
-          pImg.alt = '';
-        }
-      }
-      if (pDesc) pDesc.textContent = desc;
-      if (pLink) {
-        var fallbackUrl = pLink.getAttribute('data-fallback-url') || '';
-        pLink.href = url || fallbackUrl || '#';
-        if (url || fallbackUrl) pLink.removeAttribute('aria-disabled');
-        else pLink.setAttribute('aria-disabled', 'true');
-      }
-    }
-
-    activate(pbtns[0]);
-    pbtns.forEach(function(b){
-      b.addEventListener('click', function(){ activate(b); });
-    });
-  });
 
   var bp = document.querySelector('.js-ar-bp');
   if(bp) new IntersectionObserver(function(e){

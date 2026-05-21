@@ -1,0 +1,272 @@
+{% comment %}
+  Reusable collection page — hero, optional USP strip, product grid, CTA.
+  Used by Apsara Attar, Perfume Series, and other catalog collections.
+{% endcomment %}
+
+<style>
+  .arc * { box-sizing:border-box; margin:0; padding:0; }
+  .arc { --fh:var(--font-heading-family); --fb:var(--font-body-family); --gold:#c9a96e; --ink:#1e2023; font-family:var(--fb); background:#fff; color:var(--ink); }
+  .arc a { text-decoration:none; color:inherit; }
+  .arc img { display:block; max-width:100%; }
+
+  .arc-hero { position:relative; width:100%; min-height:480px; display:flex; align-items:center; overflow:hidden; background:#1a1512; }
+  .arc-hero__bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55; }
+  .arc-hero__ov { position:absolute; inset:0; background:linear-gradient(120deg,#1a1512ee 0%,#1a151288 55%,transparent 100%); }
+  .arc-hero__con { position:relative; z-index:10; max-width:700px; padding:80px 48px; animation:arUp .7s ease both; }
+  @media(max-width:768px){ .arc-hero__con { padding:60px 24px; } }
+  .arc-hero__label { font-size:10px; font-weight:600; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; }
+  .arc-hero__h { font-family:var(--fh); font-size:clamp(36px,5vw,72px); font-weight:400; color:#fff; line-height:1.08; letter-spacing:-.02em; margin-bottom:20px; }
+  .arc-hero__p { font-size:15px; line-height:1.75; color:rgba(255,255,255,.78); font-weight:300; max-width:520px; margin-bottom:32px; }
+  .arc-hero__btn { display:inline-flex; align-items:center; gap:10px; border:1.5px solid rgba(255,255,255,.7); padding:13px 32px; font-size:11px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:#fff; background:transparent; transition:all .3s; }
+  .arc-hero__btn:hover { background:#fff; color:#1a1512; border-color:#fff; }
+
+  .arc-usp { background:#fff; border-top:1px solid rgba(30,32,35,.1); border-bottom:1px solid rgba(30,32,35,.1); }
+  .arc-usp__row { max-width:1120px; margin:0 auto; padding:44px 32px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px 32px; align-items:start; }
+  @media(max-width:900px){ .arc-usp__row { grid-template-columns:repeat(2,1fr); padding:36px 24px; } }
+  @media(max-width:480px){ .arc-usp__row { grid-template-columns:1fr; padding:32px 24px; } }
+  .arc-usp__item { text-align:center; padding:0 8px; }
+  .arc-usp__emoji { display:block; font-size:clamp(22px,2.4vw,28px); line-height:1; margin-bottom:14px; }
+  .arc-usp__title { font-family:var(--fh); font-size:clamp(16px,1.5vw,19px); font-weight:400; color:var(--ink); line-height:1.35; }
+  .arc-usp__sub { margin-top:10px; font-size:12px; font-weight:300; color:#6b7280; line-height:1.55; max-width:28ch; margin-left:auto; margin-right:auto; }
+
+  .arc-toolbar { max-width:1400px; margin:0 auto; padding:28px 48px 0; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .arc.arc--products-only .arc-toolbar { padding-top:clamp(16px,3vw,24px); }
+  @media(max-width:768px){ .arc-toolbar { padding:20px 20px 0; } .arc.arc--products-only .arc-toolbar { padding-top:16px; } }
+  .arc-toolbar__count { font-size:13px; color:#6b7280; }
+  .arc-toolbar__sort { display:flex; align-items:center; gap:10px; }
+  .arc-toolbar__sort label { font-size:12px; color:#9ca3af; }
+  .arc-toolbar__select { font-family:var(--fb); font-size:13px; color:var(--ink); background:#fff; border:1px solid rgba(30,32,35,.15); padding:8px 32px 8px 14px; appearance:none; cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231e2023' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; }
+
+  .arc-grid { max-width:1400px; margin:0 auto; padding:32px 48px 80px; display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+  @media(max-width:1200px){ .arc-grid { grid-template-columns:repeat(3,1fr); } }
+  @media(max-width:900px){ .arc-grid { grid-template-columns:repeat(2,1fr); padding:24px 20px 60px; gap:16px; } }
+  @media(max-width:480px){ .arc-grid { grid-template-columns:1fr; } }
+
+  .arc-card { background:#fff; border:1px solid rgba(30,32,35,.07); overflow:hidden; display:flex; flex-direction:column; transition:box-shadow .3s,transform .3s; }
+  .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.1); transform:translateY(-4px); }
+  .arc-card__img-wrap { position:relative; aspect-ratio:3/4; overflow:hidden; background:#fff; }
+  .arc-card__img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+  .arc-card__img-hover { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .5s ease,transform .7s ease; }
+  .arc-card:hover .arc-card__img { transform:scale(1.06); }
+  .arc-card:hover .arc-card__img-hover { opacity:1; transform:scale(1.03); }
+  .arc-card__badge { position:absolute; top:12px; left:12px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 11px; z-index:5; }
+  .arc-card__badge--new { background:#1e2023; color:#fff; }
+  .arc-card__badge--sale { background:var(--gold); color:#fff; }
+  .arc-card__badge--bs { background:#c9a96e; color:#fff; }
+  .arc-card__quick { background:#1e2023; color:#fff; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:11px 16px; text-align:center; cursor:pointer; border:none; font-family:var(--fb); width:100%; border-radius:4px; margin-top:10px; display:block; transition:background .25s; }
+  .arc-card__quick:hover { background:#e8a0bd; color:#1e2023; }
+  .arc-card__body { padding:18px 18px 20px; flex:1; display:flex; flex-direction:column; gap:6px; }
+  .arc-card__type { font-size:10px; text-transform:uppercase; letter-spacing:.16em; color:#9ca3af; }
+  .arc-card__name { font-family:var(--fh); font-size:18px; font-weight:400; color:var(--ink); line-height:1.3; }
+  .arc-card__desc { font-size:12px; color:#6b7280; font-weight:300; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .arc-card__foot { margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(30,32,35,.06); }
+  .arc-card__price { font-size:15px; font-weight:600; color:var(--ink); }
+  .arc-card__compare { font-size:13px; color:#9ca3af; text-decoration:line-through; }
+  .arc-card__buy { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); border-bottom:1.5px solid var(--ink); padding-bottom:2px; }
+  .arc-card__buy:hover { color:var(--gold); border-color:var(--gold); }
+
+  .arc-empty { max-width:1400px; margin:0 auto; padding:80px 48px; text-align:center; grid-column:1/-1; }
+  .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
+  .arc-empty__p { font-size:14px; color:#6b7280; max-width:42ch; margin:0 auto; }
+
+  .arc-cta { background:#1a1512; padding:80px 48px; text-align:center; position:relative; overflow:hidden; }
+  @media(max-width:768px){ .arc-cta { padding:60px 24px; } }
+  .arc-cta__ov { position:absolute; inset:0; opacity:.12; background:radial-gradient(ellipse at 50% 0%,#c9a96e 0%,transparent 65%); pointer-events:none; }
+  .arc-cta__label { font-size:10px; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; display:block; position:relative; }
+  .arc-cta__h { font-family:var(--fh); font-size:clamp(28px,4vw,56px); font-weight:400; color:#fff; margin-bottom:16px; line-height:1.15; position:relative; }
+  .arc-cta__p { font-size:15px; color:rgba(255,255,255,.7); font-weight:300; margin-bottom:36px; position:relative; max-width:520px; margin-left:auto; margin-right:auto; }
+  .arc-cta__btn { display:inline-block; background:var(--gold); color:#fff; padding:15px 44px; font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; transition:background .3s; position:relative; }
+  .arc-cta__btn:hover { background:#b8943a; }
+
+  @keyframes arUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+</style>
+
+{%- liquid
+  assign arc_layout = section.settings.layout_mode | default: 'full'
+-%}
+
+<div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}">
+  {%- unless arc_layout == 'products_only' -%}
+  <div class="arc-hero">
+    {%- if section.settings.hero_image != blank -%}
+      {%- capture ar_hero_alt -%}{%- render 'image-seo-hero-alt', seo_collection: collection, hero_image: section.settings.hero_image, alt_override: section.settings.hero_image_alt, img_context: 'hero' -%}{%- endcapture -%}
+      <img src="{{ section.settings.hero_image | image_url: width: 2000 }}" alt="{{ ar_hero_alt | strip | escape }}" title="{{ collection.title | escape }}" width="2000" height="800" loading="eager" class="arc-hero__bg">
+    {%- endif -%}
+    <div class="arc-hero__ov"></div>
+    <div class="arc-hero__con">
+      <span class="arc-hero__label">{{ section.settings.hero_label | escape }}</span>
+      <h1 class="arc-hero__h">{{ collection.title }}</h1>
+      <p class="arc-hero__p">{{ section.settings.hero_subtitle }}</p>
+      <a href="#arc-products" class="arc-hero__btn">{{ section.settings.hero_btn | escape }}</a>
+    </div>
+  </div>
+
+  {%- if section.settings.show_usp -%}
+    <div class="arc-usp">
+      <div class="arc-usp__row">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign emoji_key = 'usp_' | append: i | append: '_emoji'
+            assign title_key = 'usp_' | append: i | append: '_title'
+            assign sub_key = 'usp_' | append: i | append: '_sub'
+            assign usp_emoji = section.settings[emoji_key]
+            assign usp_title = section.settings[title_key]
+            assign usp_sub = section.settings[sub_key]
+          -%}
+          {%- if usp_title != blank -%}
+            <div class="arc-usp__item">
+              {%- if usp_emoji != blank -%}<span class="arc-usp__emoji" aria-hidden="true">{{ usp_emoji }}</span>{%- endif -%}
+              <p class="arc-usp__title">{{ usp_title }}</p>
+              {%- if usp_sub != blank -%}<p class="arc-usp__sub">{{ usp_sub }}</p>{%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+  {%- endunless -%}
+
+  <div class="arc-toolbar">
+    <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
+    <div class="arc-toolbar__sort">
+      <label for="arc-sort-{{ section.id }}">Sort by</label>
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      <select id="arc-sort-{{ section.id }}" class="arc-toolbar__select" onchange="window.location.href=window.location.pathname+'?sort_by='+this.value">
+        <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
+        <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+        <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>A–Z</option>
+        <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Z–A</option>
+        <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price: Low–High</option>
+        <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price: High–Low</option>
+        <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="arc-grid" id="arc-products">
+    {%- if collection.products.size > 0 -%}
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- for product in collection.products -%}
+          <div class="arc-card">
+            <a href="{{ product.url }}" class="arc-card__img-wrap">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- if product.images.size > 1 -%}
+                  <img src="{{ product.images[1] | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img-hover">
+                {%- endif -%}
+              {%- endif -%}
+              {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
+                <span class="arc-card__badge arc-card__badge--bs">Bestseller</span>
+              {%- elsif product.tags contains 'new' or product.tags contains 'New' -%}
+                <span class="arc-card__badge arc-card__badge--new">New</span>
+              {%- elsif product.compare_at_price > product.price -%}
+                <span class="arc-card__badge arc-card__badge--sale">Sale</span>
+              {%- endif -%}
+            </a>
+            <div class="arc-card__body">
+              <p class="arc-card__type">{{ product.type | default: section.settings.default_product_type }}</p>
+              <a href="{{ product.url }}"><h3 class="arc-card__name">{{ product.title }}</h3></a>
+              {%- if product.description != blank -%}
+                <p class="arc-card__desc">{{ product.description | strip_html | truncate: 80 }}</p>
+              {%- endif -%}
+              <div class="arc-card__foot">
+                <div>
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="arc-card__compare">{{ product.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  <span class="arc-card__price">{{ product.price | money }}</span>
+                </div>
+                <a href="{{ product.url }}" class="arc-card__buy">View</a>
+              </div>
+              <button
+                type="button"
+                class="arc-card__quick js-arc-atc"
+                data-id="{{ product.selected_or_first_available_variant.id }}"
+                aria-label="Add {{ product.title | escape }} to cart"
+                {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        {%- endfor -%}
+        {%- if paginate.pages > 1 -%}
+          <nav class="arc-pagination" style="grid-column:1/-1;display:flex;justify-content:center;gap:8px;padding:24px 0 0;" aria-label="Pagination">
+            {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" style="padding:8px 14px;border:1px solid rgba(30,32,35,.2);">&#8249;</a>{%- endif -%}
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}<a href="{{ part.url }}" style="padding:8px 14px;border:1px solid rgba(30,32,35,.2);">{{ part.title }}</a>
+              {%- else -%}<span style="padding:8px 14px;{% if part.title == paginate.current_page %}background:#1e2023;color:#fff;{% endif %}border:1px solid rgba(30,32,35,.2);">{{ part.title }}</span>{%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}<a href="{{ paginate.next.url }}" style="padding:8px 14px;border:1px solid rgba(30,32,35,.2);">&#8250;</a>{%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="arc-empty">
+        <h2 class="arc-empty__h">{{ section.settings.empty_heading }}</h2>
+        <p class="arc-empty__p">{{ section.settings.empty_text }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_cta -%}
+    <section class="arc-cta">
+      <div class="arc-cta__ov"></div>
+      <span class="arc-cta__label">{{ section.settings.cta_label | escape }}</span>
+      <h2 class="arc-cta__h">{{ section.settings.cta_title }}</h2>
+      <p class="arc-cta__p">{{ section.settings.cta_subtitle }}</p>
+      <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="arc-cta__btn">{{ section.settings.cta_btn | escape }}</a>
+    </section>
+  {%- endif -%}
+</div>
+
+{%- schema -%}
+{
+  "name": "Collection Catalog",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_mode",
+      "label": "Layout mode",
+      "options": [
+        { "value": "full", "label": "Full (hero + products)" },
+        { "value": "products_only", "label": "Products only (use with Collection Page Hero)" }
+      ],
+      "default": "full"
+    },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "text", "id": "hero_image_alt", "label": "Hero image alt (SEO)" },
+    { "type": "text", "id": "hero_label", "label": "Eyebrow", "default": "Anand Rasa" },
+    { "type": "textarea", "id": "hero_subtitle", "label": "Hero subtitle", "default": "Explore our curated fragrance collection." },
+    { "type": "text", "id": "hero_btn", "label": "Hero button", "default": "Shop Collection" },
+    { "type": "header", "content": "USP strip" },
+    { "type": "checkbox", "id": "show_usp", "label": "Show USP strip", "default": true },
+    { "type": "text", "id": "usp_1_emoji", "label": "USP 1 emoji", "default": "✨" },
+    { "type": "text", "id": "usp_1_title", "label": "USP 1 title" },
+    { "type": "text", "id": "usp_1_sub", "label": "USP 1 subtitle" },
+    { "type": "text", "id": "usp_2_emoji", "label": "USP 2 emoji", "default": "🌿" },
+    { "type": "text", "id": "usp_2_title", "label": "USP 2 title" },
+    { "type": "text", "id": "usp_2_sub", "label": "USP 2 subtitle" },
+    { "type": "text", "id": "usp_3_emoji", "label": "USP 3 emoji", "default": "🪔" },
+    { "type": "text", "id": "usp_3_title", "label": "USP 3 title" },
+    { "type": "text", "id": "usp_3_sub", "label": "USP 3 subtitle" },
+    { "type": "text", "id": "usp_4_emoji", "label": "USP 4 emoji", "default": "💫" },
+    { "type": "text", "id": "usp_4_title", "label": "USP 4 title" },
+    { "type": "text", "id": "usp_4_sub", "label": "USP 4 subtitle" },
+    { "type": "header", "content": "Products" },
+    { "type": "text", "id": "default_product_type", "label": "Default product type label", "default": "Attar" },
+    { "type": "text", "id": "empty_heading", "label": "Empty state heading", "default": "Coming soon" },
+    { "type": "textarea", "id": "empty_text", "label": "Empty state text", "default": "Products are being added to this collection. Check back soon or explore our other ranges." },
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 16 },
+    { "type": "header", "content": "Bottom CTA" },
+    { "type": "checkbox", "id": "show_cta", "label": "Show bottom CTA", "default": true },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Anand Rasa" },
+    { "type": "text", "id": "cta_title", "label": "CTA heading", "default": "Explore more attars" },
+    { "type": "textarea", "id": "cta_subtitle", "label": "CTA subtitle", "default": "Discover our full range of handcrafted fragrances." },
+    { "type": "text", "id": "cta_btn", "label": "CTA button", "default": "Shop All Attars" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL" }
+  ],
+  "presets": [{ "name": "Collection Catalog" }]
+}
+{%- endschema -%}

@@ -1,7 +1,7 @@
 {
   "sections": {
     "bestseller_hero": {
-      "type": "bestseller-hero",
+      "type": "collection-page-hero",
       "settings": {
         "eyebrow": "Anand Rasa",
         "heading": "Bestsellers",

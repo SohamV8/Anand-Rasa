@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "collection_hero": {
+      "type": "collection-page-hero",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Apsara Attar",
+        "subheading": "Celestial attars inspired by the grace of the Apsaras — luminous, floral, and woven for everyday ritual and evening elegance.",
+        "supporting_text": "Soft florals and pure oils, handcrafted in small batches for a quiet, luminous presence.",
+        "bg_color": "#FFFFFF"
+      }
+    },
+    "main": {
+      "type": "collection-catalog",
+      "settings": {
+        "layout_mode": "products_only",
+        "show_usp": false,
+        "show_cta": true,
+        "default_product_type": "Apsara Attar",
+        "empty_heading": "Apsara attars coming soon",
+        "empty_text": "We are adding products to this collection. Check back soon or explore planet, zodiac, and bestseller collections.",
+        "cta_title": "Explore our full attar range",
+        "cta_subtitle": "While Apsara attars arrive, discover planet, zodiac, and bestseller collections.",
+        "cta_btn": "Shop All Attars"
+      }
+    }
+  },
+  "order": ["collection_hero", "main"]
+}

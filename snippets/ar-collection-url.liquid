@@ -35,6 +35,12 @@
   {%- when 'gift-sets', 'giftsets' -%}
     {%- assign candidate_handles = 'giftsets,gift-sets,gift-set,discovery-kit,discovery-kits' -%}
     {%- assign template_suffix = 'gift-sets' -%}
+  {%- when 'apsara-attar', 'apsara-attars', 'apsara' -%}
+    {%- assign candidate_handles = 'apsara-attar,apsara-attars,apsara,apsara-series' -%}
+    {%- assign template_suffix = 'apsara-attar' -%}
+  {%- when 'perfume-series', 'perfume', 'perfumes' -%}
+    {%- assign candidate_handles = 'perfume-series,perfume,perfumes,perfume-collection' -%}
+    {%- assign template_suffix = 'perfume-series' -%}
 {%- endcase -%}
 
 {%- assign resolved_handle = '' -%}

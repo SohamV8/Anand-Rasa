@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "collection_hero": {
+      "type": "collection-page-hero",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Perfume Series",
+        "subheading": "Modern perfume oils and attar blends — long-lasting, skin-safe, and crafted for daily wear from morning clarity to evening depth.",
+        "supporting_text": "Layered notes on a gentle oil base — alcohol-free, gift-worthy, made for everyday ritual.",
+        "bg_color": "#FFFFFF"
+      }
+    },
+    "main": {
+      "type": "collection-catalog",
+      "settings": {
+        "layout_mode": "products_only",
+        "show_usp": false,
+        "show_cta": true,
+        "default_product_type": "Perfume",
+        "empty_heading": "Perfume series coming soon",
+        "empty_text": "We are adding products to this collection. Check back soon or explore our other ranges.",
+        "cta_title": "Discover more fragrances",
+        "cta_subtitle": "Explore attars, incense, and gift sets while the perfume series grows.",
+        "cta_btn": "Browse Collections"
+      }
+    }
+  },
+  "order": ["collection_hero", "main"]
+}

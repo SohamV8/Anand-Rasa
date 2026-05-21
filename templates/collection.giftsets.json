@@ -1,9 +1,22 @@
 {
   "sections": {
+    "collection_hero": {
+      "type": "collection-page-hero",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Gift Sets",
+        "subheading": "Thoughtfully bundled attars and discovery sets — elegant to give, unforgettable to receive. Share the ritual of pure fragrance.",
+        "supporting_text": "Curated sets with gift-ready presentation — pure oils chosen to delight and be remembered.",
+        "bg_color": "#FFFFFF"
+      }
+    },
     "main": {
       "type": "collection-giftsets",
-      "settings": {}
+      "settings": {
+        "layout_mode": "products_only",
+        "products_per_page": 16
+      }
     }
   },
-  "order": ["main"]
+  "order": ["collection_hero", "main"]
 }
