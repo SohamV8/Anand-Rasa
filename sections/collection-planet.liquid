@@ -72,7 +72,7 @@
     assign arc_layout = section.settings.layout_mode | default: 'full'
   -%}
 
-  <div class="arc"{% if template.suffix == 'bestseller' %} style="--arc-cream:#FAF8F4;background:var(--arc-cream,#FAF8F4);"{% endif %}>
+  <div class="arc">
   
     {%- unless arc_layout == 'products_only' or template.suffix == 'bestseller' -%}
     {%- comment -%} HERO {% endcomment %}
@@ -256,10 +256,14 @@
                   </div>
                   <a href="{{ product.url }}" class="arc-card__buy">View</a>
                 </div>
-                <button class="arc-card__quick js-arc-atc"
-                  data-id="{{ product.variants.first.id }}"
+                <button
+                  type="button"
+                  class="arc-card__quick js-arc-atc"
+                  data-id="{{ product.selected_or_first_available_variant.id }}"
                   data-name="{{ product.title | escape }}"
-                  aria-label="Add {{ product.title | escape }} to cart">
+                  aria-label="Add {{ product.title | escape }} to cart"
+                  {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+                >
                   Add to Cart
                 </button>
               </div>
@@ -336,32 +340,6 @@
     {% render 'navagraha-attar-explorer' %}
     {% render 'ask-mehak' %}
   {%- endunless -%}
-  
-  <script>
-  (function(){
-    // Add to cart
-    document.querySelectorAll('.js-arc-atc').forEach(function(btn){
-      btn.addEventListener('click', function(e){
-        e.preventDefault(); e.stopPropagation();
-        var id = btn.dataset.id;
-        if(!id) return;
-        btn.textContent = 'Adding...';
-        btn.style.pointerEvents = 'none';
-        fetch('/cart/add.js',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({id:parseInt(id),quantity:1})
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(){
-          btn.textContent = '✓ Added';
-          setTimeout(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; }, 1800);
-        })
-        .catch(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; });
-      });
-    });
-  })();
-  </script>
   
   {%- schema -%}
   {

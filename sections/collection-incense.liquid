@@ -13,8 +13,8 @@
   --ink-2:    #3A3A3A;
   --ink-3:    #7A7A7A;
   --ink-4:    #ADADAD;
-  --bg:       #FAFAF7;
-  --bg-2:     #F3F0EB;
+  --bg:       #FFFFFF;
+  --bg-2:     #FFFFFF;
   --white:    #FFFFFF;
   --gold:     #B8943A;
   --gold-lt:  #D4AB5A;
@@ -1297,9 +1297,10 @@
                 <button
                   type="button"
                   class="arc-card__atc js-arc-atc"
-                  data-id="{{ product.variants.first.id }}"
+                  data-id="{{ product.selected_or_first_available_variant.id }}"
                   data-name="{{ product.title | escape }}"
                   aria-label="Add {{ product.title | escape }} to cart"
+                  {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
@@ -1461,51 +1462,6 @@
 <script>
 (function () {
   'use strict';
-
-  /* ── Add to Cart ─────────────────────────────────────── */
-  function handleATC(btn) {
-    var id = parseInt(btn.dataset.id, 10);
-    if (!id) return;
-    var span = btn.querySelector('span');
-    var originalHTML = btn.innerHTML;
-
-    btn.disabled = true;
-    btn.classList.remove('is-added');
-    if (span) span.textContent = 'Adding…';
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: id, quantity: 1 })
-    })
-    .then(function (r) {
-      if (!r.ok) throw new Error('Network response was not ok');
-      return r.json();
-    })
-    .then(function () {
-      btn.classList.add('is-added');
-      if (span) span.textContent = '✓ Added';
-      /* update cart count if Dawn's cart bubble exists */
-      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.classList.remove('is-added');
-        btn.innerHTML = originalHTML;
-      }, 2000);
-    })
-    .catch(function () {
-      btn.disabled = false;
-      btn.innerHTML = originalHTML;
-    });
-  }
-
-  /* Delegated listener — works after dynamic content changes */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.js-arc-atc');
-    if (!btn) return;
-    e.preventDefault();
-    handleATC(btn);
-  });
 
   /* ── Wishlist (toggle heart) ─────────────────────────── */
   document.addEventListener('click', function (e) {

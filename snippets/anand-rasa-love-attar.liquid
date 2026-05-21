@@ -700,7 +700,7 @@
                   <button
                     type="button"
                     class="ar-love__card-btn js-love-atc"
-                    data-id="{{ product.variants.first.id }}"
+                    data-id="{{ product.selected_or_first_available_variant.id }}"
                     aria-label="Add {{ product.title | escape }} to cart"
                   >
                     <span>Add to cart</span>
@@ -851,42 +851,6 @@
 
     try { sheet.insertRule(rule, sheet.cssRules.length); } catch (e) { /* ignore */ }
   }
-
-  /* ── Add to Cart ── */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.js-love-atc');
-    if (!btn) return;
-    e.preventDefault();
-
-    var id   = parseInt(btn.dataset.id, 10);
-    var span = btn.querySelector('span');
-    var orig = span ? span.textContent : 'Add to Cart';
-    if (!id) return;
-
-    btn.disabled = true;
-    if (span) span.textContent = 'Adding…';
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: id, quantity: 1 })
-    })
-    .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
-    .then(function () {
-      btn.classList.add('is-added');
-      if (span) span.textContent = '✓ Added';
-      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.classList.remove('is-added');
-        if (span) span.textContent = orig;
-      }, 2400);
-    })
-    .catch(function () {
-      btn.disabled = false;
-      if (span) span.textContent = orig;
-    });
-  });
 
   /* Init petals after DOM ready */
   if (document.readyState === 'loading') {

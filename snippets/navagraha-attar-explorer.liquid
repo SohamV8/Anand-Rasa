@@ -1081,7 +1081,7 @@
                   <button
                     type="button"
                     class="nav-x__atc js-nv-atc"
-                    data-id="{{ ck_prod.variants.first.id }}"
+                    data-id="{{ ck_prod.selected_or_first_available_variant.id }}"
                     aria-label="Add {{ ck_prod.title | escape }} to cart"
                   >
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39A2 2 0 0 0 9.62 16h9.76a2 2 0 0 0 1.97-1.67L23 6H6"/></svg>
@@ -1245,42 +1245,6 @@
       var idx     = allTabs.indexOf(tab);
       if (e.key === 'ArrowRight') { e.preventDefault(); activate(allTabs[(idx + 1) % allTabs.length].dataset.planet); allTabs[(idx + 1) % allTabs.length].focus(); }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); activate(allTabs[(idx - 1 + allTabs.length) % allTabs.length].dataset.planet); allTabs[(idx - 1 + allTabs.length) % allTabs.length].focus(); }
-    });
-  });
-
-  /* Add to Cart */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.js-nv-atc');
-    if (!btn) return;
-    e.preventDefault();
-
-    var id   = parseInt(btn.dataset.id, 10);
-    var span = btn.querySelector('span');
-    var orig = span ? span.textContent : 'Add to Cart';
-    if (!id) return;
-
-    btn.disabled = true;
-    if (span) span.textContent = 'Adding…';
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: id, quantity: 1 })
-    })
-    .then(function (r) { if (!r.ok) throw new Error('cart error'); return r.json(); })
-    .then(function () {
-      if (span) span.textContent = '✓ Added';
-      btn.style.opacity = '0.85';
-      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.style.opacity = '';
-        if (span) span.textContent = orig;
-      }, 2600);
-    })
-    .catch(function () {
-      btn.disabled = false;
-      if (span) span.textContent = orig;
     });
   });
 

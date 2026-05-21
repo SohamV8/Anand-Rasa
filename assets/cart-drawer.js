@@ -16,6 +16,7 @@ class CartDrawer extends HTMLElement {
     this.setCartTriggerAccessibility();
     this.bindGlobalCartTriggers();
     this.bindGlobalAddToCartSubmit();
+    this.bindCollectionQuickAdd();
   }
 
   setCartTriggerAccessibility() {
@@ -62,10 +63,24 @@ class CartDrawer extends HTMLElement {
   }
 
   addToCartFast(form) {
-    this.open();
+    const formData = new FormData(form);
+    this.postCartAdd(formData);
+  }
+
+  addVariantById(variantId, triggeredBy) {
+    const id = String(variantId || '').trim();
+    if (!id) return Promise.reject(new Error('Missing variant'));
+
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('quantity', '1');
+    return this.postCartAdd(formData, triggeredBy);
+  }
+
+  postCartAdd(formData, triggeredBy) {
+    this.open(triggeredBy);
     this.classList.add('is-loading');
 
-    const formData = new FormData(form);
     formData.append(
       'sections',
       this.getSectionsToRender()
@@ -74,25 +89,92 @@ class CartDrawer extends HTMLElement {
     );
     formData.append('sections_url', window.location.pathname);
 
-    fetch('/cart/add.js', {
+    return fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'X-Requested-With': 'XMLHttpRequest', Accept: 'application/javascript' },
       body: formData,
     })
-      .then((response) => response.json())
+      .then((response) =>
+        response.json().then((state) => {
+          if (!response.ok || state.status) {
+            const message = state.description || state.message || 'Could not add to cart';
+            throw new Error(message);
+          }
+          return state;
+        })
+      )
       .then((state) => {
-        if (state.status) {
-          if (window.console) console.warn('Cart add error:', state.description || state.message);
-          return;
-        }
         this.renderContents(state);
+        if (typeof publish === 'function' && window.PUB_SUB_EVENTS) {
+          publish(PUB_SUB_EVENTS.cartUpdate, { source: 'collection-atc', cartData: state });
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: state, bubbles: true }));
+        return state;
       })
       .catch((error) => {
-        console.error(error);
+        if (window.console) console.error(error);
+        throw error;
       })
       .finally(() => {
         this.classList.remove('is-loading');
       });
+  }
+
+  bindCollectionQuickAdd() {
+    if (window.__arCollectionAtcBound) return;
+    window.__arCollectionAtcBound = true;
+
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest(
+        '.js-arc-atc, .js-ck-atc, .js-love-atc, .js-zx-atc, .js-ack-atc, .js-nv-atc'
+      );
+      if (!btn || btn.disabled) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const variantId = btn.dataset.id || btn.dataset.variantId;
+      if (!variantId) return;
+
+      const labelEl = btn.querySelector('span');
+      const originalText = btn.dataset.arAtcLabel || (labelEl ? labelEl.textContent : btn.textContent);
+      btn.dataset.arAtcLabel = originalText;
+
+      btn.disabled = true;
+      if (labelEl) labelEl.textContent = 'Adding…';
+      else btn.textContent = 'Adding…';
+
+      const cartDrawer = document.querySelector('cart-drawer');
+      const addPromise = cartDrawer
+        ? cartDrawer.addVariantById(variantId, btn)
+        : fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 }),
+          }).then((r) =>
+            r.json().then((body) => {
+              if (!r.ok || body.status) throw new Error(body.description || body.message || 'Could not add to cart');
+              document.dispatchEvent(new CustomEvent('cart:updated', { detail: body, bubbles: true }));
+              return body;
+            })
+          );
+
+      addPromise
+        .then(() => {
+          if (labelEl) labelEl.textContent = '✓ Added';
+          else btn.textContent = '✓ Added';
+          setTimeout(() => {
+            btn.disabled = false;
+            if (labelEl) labelEl.textContent = originalText;
+            else btn.textContent = originalText;
+          }, 2000);
+        })
+        .catch(() => {
+          btn.disabled = false;
+          if (labelEl) labelEl.textContent = originalText;
+          else btn.textContent = originalText;
+        });
+    });
   }
 
   open(triggeredBy) {

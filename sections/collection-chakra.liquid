@@ -78,28 +78,3 @@
   ]
 }
 {%- endschema -%}
-  <script>
-  (function(){
-    // Add to cart
-    document.querySelectorAll('.js-arc-atc').forEach(function(btn){
-      btn.addEventListener('click', function(e){
-        e.preventDefault(); e.stopPropagation();
-        var id = btn.dataset.id;
-        if(!id) return;
-        btn.textContent = 'Adding...';
-        btn.style.pointerEvents = 'none';
-        fetch('/cart/add.js',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({id:parseInt(id),quantity:1})
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(){
-          btn.textContent = '✓ Added';
-          setTimeout(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; }, 1800);
-        })
-        .catch(function(){ btn.textContent = 'Add to Cart'; btn.style.pointerEvents = ''; });
-      });
-    });
-  })();
-  </script>
