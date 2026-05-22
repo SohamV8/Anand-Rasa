@@ -1,31 +1,63 @@
 {%- comment -%}
-  Note banner lookup — maps product to flat assets (note-banner-*.webp).
+  Note banner lookup — maps product handle/title to assets/NoteBanner/*.webp
 
   Usage:
-    {%- render 'note-banner-lookup', nb_product: product -%}
+    {%- capture nb_asset -%}{%- render 'note-banner-lookup', nb_product: product -%}{%- endcapture -%}
 {%- endcomment -%}
 {%- liquid
   assign title_key = nb_product.title | handleize
   assign handle_key = nb_product.handle | default: title_key
-  assign search_key = title_key | append: ' ' | append: handle_key
+  assign search_key = title_key | append: ' ' | append: handle_key | downcase
   assign img = ''
 
-  if search_key contains 'devalya'
-    assign img = 'note-banner-devalya.webp'
+  if search_key contains 'manmohini'
+    assign img = 'NoteBanner/manmohini.webp'
+  elsif search_key contains 'madhur-sena' or search_key contains 'madhur_sena' or search_key contains 'madhur sena'
+    assign img = 'NoteBanner/madhur_sena.webp'
+  elsif search_key contains 'shaam-mastani' or search_key contains 'shaam_mastani' or search_key contains 'shaam mastani'
+    assign img = 'NoteBanner/shaam_mastani.webp'
+  elsif search_key contains 'mast-magan' or search_key contains 'mast magan' or search_key contains 'mastmagan'
+    assign img = 'NoteBanner/Mast-magan.webp'
+  elsif search_key contains 'dard-e-disco' or search_key contains 'dard e disco' or search_key contains 'dard-e'
+    assign img = 'NoteBanner/dard-e-disco.webp'
+  elsif search_key contains 'ramta-jogi' or search_key contains 'ramta jogi'
+    assign img = 'NoteBanner/Ramta-jogi.webp'
+  elsif search_key contains 'shaahi-oud' or search_key contains 'shaahi oud' or search_key contains 'shahi-oud'
+    assign img = 'NoteBanner/shaahi-oud.webp'
+  elsif search_key contains 'kala-pathar' or search_key contains 'kala pathar' or search_key contains 'kalapathar'
+    assign img = 'NoteBanner/kala-pathar.webp'
+  elsif search_key contains 'pushprasa' or search_key contains 'pushp-rasa' or search_key contains 'pushp rasa'
+    assign img = 'NoteBanner/pushprasa.webp'
+  elsif search_key contains 'devalya'
+    assign img = 'NoteBanner/devalya.webp'
   elsif search_key contains 'dilruba' or search_key contains 'dil-ruba'
-    assign img = 'note-banner-dilruba.webp'
+    assign img = 'NoteBanner/dilruba.webp'
   elsif search_key contains 'fawakeh'
-    assign img = 'note-banner-fawakeh.webp'
+    assign img = 'NoteBanner/Fawakeh.webp'
   elsif search_key contains 'firdaus'
-    assign img = 'note-banner-firdaus.webp'
-  elsif search_key contains 'pushprasa' or search_key contains 'pushp-rasa'
-    assign img = 'note-banner-pushprasa.webp'
+    assign img = 'NoteBanner/Firdaus.webp'
   elsif search_key contains 'shamama'
-    assign img = 'note-banner-shamama.webp'
+    assign img = 'NoteBanner/shamama.webp'
   elsif search_key contains 'velora' or search_key contains 'vellora'
-    assign img = 'note-banner-velora.webp'
+    assign img = 'NoteBanner/velora.webp'
   elsif search_key contains 'mohini'
-    assign img = 'note-banner-mohini.webp'
+    assign img = 'NoteBanner/mohini.webp'
+  elsif search_key contains 'monarch'
+    assign img = 'NoteBanner/monarch.webp'
+  elsif search_key contains 'mridula'
+    assign img = 'NoteBanner/mridula.webp'
+  elsif search_key contains 'urvashi'
+    assign img = 'NoteBanner/urvashi.webp'
+  elsif search_key contains 'rangeela'
+    assign img = 'NoteBanner/rangeela.webp'
+  elsif search_key contains 'madhavi'
+    assign img = 'NoteBanner/madhavi.webp'
+  elsif search_key contains 'malang'
+    assign img = 'NoteBanner/malang.webp'
+  elsif search_key contains 'mirage'
+    assign img = 'NoteBanner/mirage.webp'
+  elsif search_key contains 'masakali' or search_key contains 'masa-kali'
+    assign img = 'NoteBanner/masakali.webp'
   endif
 
   echo img

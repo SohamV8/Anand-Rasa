@@ -204,27 +204,34 @@
   line-height: 1.5;
 }
 
-/* Homepage — horizontal carousel with side arrows (collection unchanged) */
+/* Homepage — wide carousel with a light edge inset (no 100vw — avoids page scrollbar) */
+.ar-pl--home {
+  --pl-pad-x: clamp(14px, 2.5vw, 28px);
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: clip;
+}
 .ar-pl--home.ar-pl--after-intro { padding-bottom: 0; }
 .ar-pl--home .ar-pl__carousel {
   --pl-slide-w: clamp(188px, 22vw, 236px);
   --pl-slide-gap: clamp(14px, 2vw, 22px);
-  --pl-pad-x: clamp(16px, 4vw, 48px);
   --pl-nav: clamp(40px, 5vw, 52px);
   position: relative;
   width: 100%;
-  max-width: 1360px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   padding: clamp(20px, 3vw, 32px) var(--pl-pad-x) clamp(28px, 4vw, 44px);
+  overflow-x: clip;
 }
 .ar-pl--home .ar-pl__slider {
-  display: grid;
-  grid-template-columns: var(--pl-nav) minmax(0, 1fr) var(--pl-nav);
-  align-items: center;
-  column-gap: clamp(8px, 1.5vw, 16px);
+  display: block;
+  position: relative;
 }
 .ar-pl--home .ar-pl__nav {
-  flex-shrink: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   width: var(--pl-nav);
   height: var(--pl-nav);
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -235,7 +242,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 4;
+  z-index: 5;
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
   transition:
     background 0.22s ease,
@@ -245,12 +252,18 @@
     opacity 0.22s ease,
     box-shadow 0.22s ease;
 }
+.ar-pl--home .ar-pl__nav--prev {
+  left: max(var(--pl-pad-x), env(safe-area-inset-left, 0px));
+}
+.ar-pl--home .ar-pl__nav--next {
+  right: max(var(--pl-pad-x), env(safe-area-inset-right, 0px));
+}
 .ar-pl--home .ar-pl__nav:hover:not(:disabled) {
   background: var(--pl-ink);
   color: #fff;
   border-color: var(--pl-ink);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
-  transform: scale(1.05);
+  transform: translateY(-50%) scale(1.05);
 }
 .ar-pl--home .ar-pl__nav:disabled {
   opacity: 0.32;
@@ -259,30 +272,10 @@
 }
 .ar-pl--home .ar-pl__viewport {
   position: relative;
+  width: 100%;
   min-width: 0;
   overflow: hidden;
 }
-.ar-pl--home .ar-pl__viewport::before,
-.ar-pl--home .ar-pl__viewport::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 28px;
-  z-index: 2;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-.ar-pl--home .ar-pl__viewport::before {
-  left: 0;
-  background: linear-gradient(90deg, #fff 15%, transparent);
-}
-.ar-pl--home .ar-pl__viewport::after {
-  right: 0;
-  background: linear-gradient(270deg, #fff 15%, transparent);
-}
-.ar-pl--home .ar-pl__viewport.is-at-start::before { opacity: 0; }
-.ar-pl--home .ar-pl__viewport.is-at-end::after { opacity: 0; }
 .ar-pl--home .ar-pl__track {
   display: flex;
   gap: var(--pl-slide-gap);
@@ -293,9 +286,9 @@
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  padding: 10px 4px 18px;
-  margin: 0 -4px;
-  scroll-padding-inline: 4px;
+  padding: 10px 0 18px;
+  margin: 0;
+  scroll-padding-inline: var(--pl-pad-x);
 }
 .ar-pl--home .ar-pl__track::-webkit-scrollbar { display: none; }
 .ar-pl--home .ar-pl__track:focus { outline: none; }
@@ -319,12 +312,13 @@
   opacity: 0.88;
 }
 .ar-pl--home .ar-pl__progress-wrap {
-  max-width: 520px;
-  margin: clamp(14px, 2vw, 20px) auto 0;
-  padding: 0 4px;
+  width: 100%;
+  max-width: none;
+  margin: clamp(14px, 2vw, 20px) 0 0;
+  padding: 0;
 }
 .ar-pl--home .ar-pl__progress {
-  height: 3px;
+  height: 2px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 99px;
   overflow: hidden;
@@ -338,20 +332,14 @@
   transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 @media (max-width: 720px) {
+  .ar-pl--home {
+    --pl-pad-x: clamp(12px, 4vw, 20px);
+  }
   .ar-pl--home .ar-pl__carousel {
     --pl-nav: 40px;
-    padding-left: clamp(12px, 4vw, 20px);
-    padding-right: clamp(12px, 4vw, 20px);
-  }
-  .ar-pl--home .ar-pl__slider {
-    column-gap: 6px;
   }
 }
 @media (max-width: 480px) {
-  .ar-pl--home .ar-pl__slider {
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
-    column-gap: 4px;
-  }
   .ar-pl--home .ar-pl__nav {
     width: 36px;
     height: 36px;
@@ -423,7 +411,7 @@
   .ar-pl--home .ar-pl__track { scroll-behavior: auto; }
   .ar-pl--home .ar-pl__progress-fill { transition: none; }
   .ar-pl--home .ar-pl__nav { transition: background 0.15s ease, opacity 0.15s ease; }
-  .ar-pl--home .ar-pl__nav:hover:not(:disabled) { transform: none; }
+  .ar-pl--home .ar-pl__nav:hover:not(:disabled) { transform: translateY(-50%); }
 }
 </style>
 

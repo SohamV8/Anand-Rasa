@@ -14,30 +14,8 @@
   endif
 -%}
 {%- if pnb_product != blank -%}
-  {%- liquid
-    assign title_key = pnb_product.title | handleize
-    assign handle_key = pnb_product.handle | default: title_key
-    assign search_key = title_key | append: ' ' | append: handle_key
-    assign pnb_asset = ''
-
-    if search_key contains 'devalya'
-      assign pnb_asset = 'note-banner-devalya.webp'
-    elsif search_key contains 'dilruba' or search_key contains 'dil-ruba'
-      assign pnb_asset = 'note-banner-dilruba.webp'
-    elsif search_key contains 'fawakeh'
-      assign pnb_asset = 'note-banner-fawakeh.webp'
-    elsif search_key contains 'firdaus'
-      assign pnb_asset = 'note-banner-firdaus.webp'
-    elsif search_key contains 'pushprasa' or search_key contains 'pushp-rasa'
-      assign pnb_asset = 'note-banner-pushprasa.webp'
-    elsif search_key contains 'shamama'
-      assign pnb_asset = 'note-banner-shamama.webp'
-    elsif search_key contains 'velora' or search_key contains 'vellora'
-      assign pnb_asset = 'note-banner-velora.webp'
-    elsif search_key contains 'mohini'
-      assign pnb_asset = 'note-banner-mohini.webp'
-    endif
-  -%}
+  {%- capture pnb_asset -%}{%- render 'note-banner-lookup', nb_product: pnb_product -%}{%- endcapture -%}
+  {%- assign pnb_asset = pnb_asset | strip -%}
 
   {%- if pnb_asset != blank -%}
     {%- liquid
