@@ -132,7 +132,7 @@
         "share"
       ],
       "custom_css": [
-        "@media (max-width: 500px) {.product__media-list, .slider--mobile, .flickity-slider, .swiper-wrapper {width: 100% !important; overflow: hidden !important; } .product__media-item, .slider__slide, .flickity-cell, .swiper-slide {width: 100% !important; min-width: 100% !important; flex: 0 0 100% !important; margin: 0 !important; } .product__media img, .slider__slide img, .flickity-cell img, .swiper-slide img {width: 100% !important; height: auto !important; border-radius: 8px; }}"
+        "@media(max-width:749px){.product__media-list,.slider--mobile,.flickity-slider,.swiper-wrapper{width:100%!important;overflow:hidden!important;text-align:center!important}.product__media-item,.slider__slide,.flickity-cell,.swiper-slide{width:100%!important;flex:0 0 100%!important;margin:0!important;text-align:center!important}.product__media img,.slider__slide img,.flickity-cell img,.swiper-slide img{width:85%!important;height:auto!important;margin:0 auto!important;display:block!important}}"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -146,7 +146,7 @@
         "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 12,
+        "padding_top": 0,
         "padding_bottom": 0
       }
     },
