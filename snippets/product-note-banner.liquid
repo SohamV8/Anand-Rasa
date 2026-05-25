@@ -16,6 +16,9 @@
 {%- if pnb_product != blank -%}
   {%- capture pnb_asset -%}{%- render 'note-banner-lookup', nb_product: pnb_product -%}{%- endcapture -%}
   {%- assign pnb_asset = pnb_asset | strip -%}
+  {%- unless pnb_asset contains 'NoteBanner/' -%}
+    {%- assign pnb_asset = '' -%}
+  {%- endunless -%}
 
   {%- if pnb_asset != blank -%}
     {%- liquid
@@ -47,14 +50,12 @@
       <style>
         #pnb-{{ pnb_id }}.pnb--bleed {
           display: block;
-          width: 100vw;
+          width: 100%;
           max-width: 100%;
           margin: clamp(32px, 5vw, 64px) 0 clamp(40px, 6vw, 80px);
-          margin-left: calc(50% - 50vw);
-          margin-right: calc(50% - 50vw);
           padding: 0;
           background: #fff;
-          overflow: visible;
+          overflow-x: clip;
           box-sizing: border-box;
           clear: both;
         }
