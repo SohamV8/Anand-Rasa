@@ -234,7 +234,7 @@
             "heading": "Product Reviews",
             "layout": "masonry",
             "star_color": "#000000",
-            "when_no_reviews": "show_from_related"
+            "when_no_reviews": "show"
           }
         }
       },
