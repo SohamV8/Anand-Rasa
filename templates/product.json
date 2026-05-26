@@ -224,18 +224,18 @@
     "17797829115362eb52": {
       "type": "apps",
       "blocks": {
-        "judge_me_reviews_review_widget_ARMMef": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "fera_product_reviews_hTwUmK": {
+          "type": "shopify://apps/fera/blocks/product_reviews/2fbfcfa7-8a04-479f-89a8-0621fa099c51",
           "settings": {
-            "review_data": "real_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
+            "heading": "Product Reviews",
+            "layout": "masonry",
+            "star_color": "#000000",
+            "when_no_reviews": "show_from_related"
           }
         }
       },
       "block_order": [
-        "judge_me_reviews_review_widget_ARMMef"
+        "fera_product_reviews_hTwUmK"
       ],
       "settings": {
         "include_margins": true

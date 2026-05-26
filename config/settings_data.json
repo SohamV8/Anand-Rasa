@@ -145,11 +145,6 @@
     },
     "content_for_index": [],
     "blocks": {
-      "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": false,
-        "settings": {}
-      },
       "6406956604159796213": {
         "type": "shopify://apps/smart-seo/blocks/smartseo/7b0a6064-ca2e-4392-9a1d-8c43c942357b",
         "disabled": false,
@@ -163,6 +158,11 @@
       "5918445685253060206": {
         "type": "shopify://apps/bundler/blocks/bundler-script-append/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
         "disabled": true,
+        "settings": {}
+      },
+      "4275615285897611771": {
+        "type": "shopify://apps/fera/blocks/embed/2fbfcfa7-8a04-479f-89a8-0621fa099c51",
+        "disabled": false,
         "settings": {}
       }
     },
