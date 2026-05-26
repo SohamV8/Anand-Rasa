@@ -223,58 +223,6 @@
     },
     "1779787285f7f2efa6": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_0cde84a_m9a7tX": {
-          "type": "ai_gen_block_0cde84a",
-          "settings": {
-            "heading": "What our customers say",
-            "subheading": "Trusted by thousands of happy customers",
-            "text_alignment": "center",
-            "desktop_width_percent": 100,
-            "section_padding": 50,
-            "header_spacing": 40,
-            "columns_desktop": "3",
-            "grid_gap": 30,
-            "card_padding": 30,
-            "card_border_radius": 0,
-            "card_border_thickness": 1,
-            "background_color": "#ffffff",
-            "card_background_color": "#f3f3f3",
-            "card_border_color": "#e0e0e0",
-            "heading_size": 36,
-            "subheading_size": 16,
-            "quote_size": 16,
-            "author_name_size": 14,
-            "author_title_size": 12,
-            "heading_color": "#121212",
-            "subheading_color": "#666666",
-            "quote_color": "#121212",
-            "show_stars": true,
-            "star_size": 18,
-            "star_color": "#FFD700",
-            "avatar_size": 50,
-            "testimonial_1_enabled": true,
-            "testimonial_1_quote": "Absolutely love this product! The quality exceeded my expectations and the customer service was outstanding.",
-            "testimonial_1_author": "Sarah Johnson",
-            "testimonial_1_title": "Verified Customer",
-            "testimonial_1_rating": 5,
-            "testimonial_2_enabled": true,
-            "testimonial_2_quote": "Best purchase I've made this year. Fast shipping and the product is exactly as described. Highly recommend!",
-            "testimonial_2_author": "Michael Chen",
-            "testimonial_2_title": "Verified Customer",
-            "testimonial_2_rating": 5,
-            "testimonial_3_enabled": true,
-            "testimonial_3_quote": "Outstanding quality and attention to detail. This has become my go-to brand. Will definitely order again!",
-            "testimonial_3_author": "Emily Rodriguez",
-            "testimonial_3_title": "Verified Customer",
-            "testimonial_3_rating": 5
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_0cde84a_m9a7tX"
-      ],
       "settings": {}
     },
     "17797829115362eb52": {
