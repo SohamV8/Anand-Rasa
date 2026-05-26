@@ -16,7 +16,7 @@
           "type": "ai_gen_block_41b9c0b",
           "settings": {
             "announcement_1": "Get 10% off on your first order | Use Code: AnandRas10%",
-            "announcement_2": "Free Shipping On Orders Above 500",
+            "announcement_2": "Free Shipping On All Orders",
             "announcement_3": "Buy 3 Get 1 Free",
             "separator": "|",
             "item_spacing": 40,
@@ -168,20 +168,6 @@
     },
     "1777290678d5cd77e4": {
       "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_4AnHCm": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "real_data",
-            "max_width": 1100,
-            "show_shop_reviews": true,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_4AnHCm"
-      ],
       "settings": {
         "include_margins": true
       }
