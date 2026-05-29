@@ -26,119 +26,244 @@
   .ar-trust__ph { width:64px; height:64px; background:#f3f4f6; border-radius:50%; margin-bottom:16px; }
   .ar-trust__lbl { font-size:14px; line-height:1.5; color:#4b5563; max-width:200px; }
 
-  /* ── CATEGORY GRID ── */
-  .ar-cat { background:#fff; padding:clamp(36px,5vw,64px) clamp(18px,3.5vw,40px); font-family:var(--fb); }
-  .ar-cat__grid {
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    max-width:1400px;
-    margin:0 auto;
+  /* ── FRAGRANCE DISCOVERY (minimal luxury cards) ── */
+  .ar-disc {
+    --ar-disc-ink: #141210;
+    --ar-disc-muted: #5c554c;
+    background: #fff;
+    padding: clamp(48px, 6vw, 96px) clamp(20px, 4vw, 48px);
+    font-family: var(--fb);
+    color: var(--ar-disc-ink);
   }
-  @media(min-width:1024px){
-    .ar-cat__grid { grid-template-columns:repeat(4,1fr); gap:10px; }
+  .ar-disc__hdr {
+    max-width: 48rem;
+    margin: 0 auto clamp(36px, 5vw, 56px);
+    text-align: center;
   }
-  .ar-cat__item {
-    display:block;
-    text-decoration:none;
-    color:inherit;
-    overflow:hidden;
-    border-radius:0;
-    -webkit-tap-highlight-color:transparent;
+  .ar-disc__h {
+    font-family: 'Poppins', var(--font-heading-family);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.12;
+    margin: 0;
+    color: var(--ar-disc-ink);
   }
-  .ar-cat__item:focus-visible {
-    outline:2px solid #1e2023;
-    outline-offset:3px;
+  .ar-disc__sub {
+    margin: clamp(14px, 2vw, 20px) auto 0;
+    font-family: 'Poppins', var(--font-heading-family);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ar-disc-muted);
+    max-width: 40rem;
   }
-  .ar-cat__wrap {
-    position:relative;
-    aspect-ratio:4/3;
-    overflow:hidden;
-    background:#1c1c1c;
-    isolation:isolate;
+  .ar-disc__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0;
   }
-  .ar-cat__wrap::after {
-    content:'';
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.08);
-    z-index:1;
-    pointer-events:none;
-    transition:background .5s cubic-bezier(0.25,0.1,0.25,1), opacity .5s cubic-bezier(0.25,0.1,0.25,1);
+  @media (min-width: 640px) {
+    .ar-disc__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
   }
-  .ar-cat__item:hover .ar-cat__wrap::after,
-  .ar-cat__item:focus-visible .ar-cat__wrap::after {
-    background:rgba(0,0,0,.12);
+  @media (min-width: 900px) {
+    .ar-disc__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
   }
-  .ar-cat__img {
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-    transition:transform .6s cubic-bezier(0.25,0.1,0.25,1);
-    z-index:0;
+  @media (min-width: 1200px) {
+    .ar-disc__list {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
   }
-  .ar-cat__item:hover .ar-cat__img,
-  .ar-cat__item:focus-visible .ar-cat__img {
-    transform:scale(1.06);
+  .ar-disc__card {
+    margin: 0;
+    opacity: 1;
+    transform: none;
   }
-  .ar-cat__ph {
-    position:absolute;
-    inset:0;
-    z-index:0;
-    background:#2d2d2d;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#9ca3af;
-    font-size:12px;
-    font-family:var(--fb);
+  @media (prefers-reduced-motion: no-preference) {
+    .js-ar-disc .ar-disc__card {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+      transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: var(--ar-disc-delay, 0ms);
+    }
+    .js-ar-disc.ar-disc--vis .ar-disc__card {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
-  .ar-cat__txt {
-    position:absolute;
-    inset:0;
-    z-index:2;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:clamp(14px,3vw,24px);
-    color:#fff;
-    pointer-events:none;
+  .ar-disc__link {
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #fff;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 10px rgba(20, 18, 16, 0.07);
+    transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .ar-cat__title {
-    font-family:var(--font-heading-family);
-    font-size:clamp(16px,2.4vw,24px);
-    font-weight:700;
-    letter-spacing:-0.02em;
-    line-height:1.2;
-    margin:0;
-    max-width:20ch;
-    color:#fff;
-    text-shadow:0 1px 3px rgba(0,0,0,.55), 0 8px 32px rgba(0,0,0,.35);
+  .ar-disc__link:focus-visible {
+    outline: 2px solid var(--ar-disc-ink);
+    outline-offset: 3px;
   }
-  .ar-cat__cta {
-    margin-top:12px;
-    font-family:var(--font-body-family);
-    font-size:clamp(13px,1.5vw,15px);
-    font-weight:400;
-    letter-spacing:0.04em;
-    color:#fff;
-    text-decoration:underline;
-    text-underline-offset:5px;
-    text-decoration-thickness:1px;
-    text-decoration-color:rgba(255,255,255,.92);
-    border-bottom:none;
-    padding-bottom:0;
-    transition:text-decoration-color .35s ease, opacity .35s ease;
-    text-shadow:0 1px 10px rgba(0,0,0,.45);
+  @media (prefers-reduced-motion: no-preference) {
+    .ar-disc__link:hover,
+    .ar-disc__link:focus-visible {
+      box-shadow:
+        0 4px 16px rgba(20, 18, 16, 0.1),
+        0 20px 48px rgba(20, 18, 16, 0.12);
+    }
   }
-  .ar-cat__item:hover .ar-cat__cta,
-  .ar-cat__item:focus-visible .ar-cat__cta {
-    text-decoration-color:#fff;
+  .ar-disc__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    min-height: 0;
+    background: linear-gradient(135deg, #2a2622 0%, #141210 100%);
+    isolation: isolate;
+  }
+  .ar-disc__img,
+  .ar-disc__ph {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    transform: translateZ(0);
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .ar-disc__ph {
+    display: block;
+    background: linear-gradient(120deg, #3d3832 0%, #1a1816 50%, #0d0c0b 100%);
+  }
+  .ar-disc__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(6, 5, 4, 0.92) 0%,
+      rgba(6, 5, 4, 0.55) 38%,
+      rgba(6, 5, 4, 0.2) 68%,
+      rgba(6, 5, 4, 0.08) 100%
+    );
+    transition: opacity 0.45s ease;
+  }
+  .ar-disc__link--light .ar-disc__shade {
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.72) 42%,
+      rgba(255, 255, 255, 0.25) 72%,
+      transparent 100%
+    );
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ar-disc__link:hover .ar-disc__img,
+    .ar-disc__link:focus-visible .ar-disc__img {
+      transform: scale3d(1.035, 1.035, 1);
+    }
+    .ar-disc__link:hover .ar-disc__shade,
+    .ar-disc__link:focus-visible .ar-disc__shade {
+      opacity: 0.92;
+    }
+  }
+  .ar-disc__copy {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 0;
+    padding: 10px 12px 12px;
+    pointer-events: none;
+  }
+  .ar-disc__link--dark .ar-disc__title {
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.45);
+  }
+  .ar-disc__link--light .ar-disc__title {
+    color: var(--ar-disc-ink);
+    text-shadow: none;
+  }
+  .ar-disc__title {
+    font-family: 'Poppins', var(--font-heading-family);
+    font-size: clamp(0.75rem, 2vw, 0.9375rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .ar-disc__btn {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 8px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-family: 'Poppins', var(--font-heading-family);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    background: transparent;
+    transition:
+      background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease,
+      color 0.35s ease;
+  }
+  @media (min-width: 900px) {
+    .ar-disc__copy { padding: 12px 14px 14px; }
+    .ar-disc__title { font-size: 0.9375rem; }
+    .ar-disc__btn {
+      margin-top: 10px;
+      padding: 6px 12px;
+      font-size: 0.625rem;
+    }
+  }
+  .ar-disc__link--dark .ar-disc__btn {
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    color: #fff;
+  }
+  .ar-disc__link--light .ar-disc__btn {
+    border: 1.5px solid var(--ar-disc-ink);
+    color: var(--ar-disc-ink);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ar-disc__link--dark:hover .ar-disc__btn,
+    .ar-disc__link--dark:focus-visible .ar-disc__btn {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: #fff;
+    }
+    .ar-disc__link--light:hover .ar-disc__btn,
+    .ar-disc__link--light:focus-visible .ar-disc__btn {
+      background: var(--ar-disc-ink);
+      border-color: var(--ar-disc-ink);
+      color: #fff;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ar-disc__img,
+    .ar-disc__shade,
+    .ar-disc__btn,
+    .ar-disc__link { transition: none; }
   }
 
   /* ── SHOWCASE ── */
@@ -545,6 +670,9 @@
   var tg = document.querySelector('.js-ar-trust');
   if(tg) new IntersectionObserver(function(e){ if(e[0].isIntersecting) tg.classList.add('ar-vis'); },{threshold:.15}).observe(tg);
 
+  var arDisc = document.querySelector('.js-ar-disc');
+  if(arDisc) new IntersectionObserver(function(e){ if(e[0].isIntersecting) arDisc.classList.add('ar-disc--vis'); },{threshold:.08}).observe(arDisc);
+
   function carousel(track, left, right){
     if(!track) return;
     function sc(d){ track.scrollBy({left:d*(track.clientWidth*(window.innerWidth<640?.7:.8)),behavior:'smooth'}); }
@@ -918,6 +1046,22 @@
       "type": "url",
       "id": "pure_url",
       "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Fragrance discovery"
+    },
+    {
+      "type": "text",
+      "id": "disc_heading",
+      "label": "Discovery section heading",
+      "default": "Find Your Fragrance Ritual"
+    },
+    {
+      "type": "textarea",
+      "id": "disc_subheading",
+      "label": "Discovery section subheading",
+      "default": "Discover handcrafted attars inspired by mood, spirituality, astrology, and emotional wellness."
     },
     {
       "type": "header",

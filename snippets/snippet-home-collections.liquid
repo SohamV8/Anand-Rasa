@@ -1,218 +1,120 @@
-{%- comment -%} 2. CATEGORY GRID {%- endcomment -%}
-<section class="ar-cat">
-  <div class="ar-cat__grid">
-    {%- liquid
-      assign has_category_blocks = false
-      for block in section.blocks
-        if block.type == 'category'
-          assign has_category_blocks = true
-          break
-        endif
-      endfor
-    -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'category' -%}
-        {%- liquid
-          assign ar_cat_href = block.settings.link | strip
-          assign ar_cat_handle = ''
-          assign ar_cat_title_key = block.settings.title | downcase | strip
-          assign ar_cat_fallback_image = ''
-          case block.settings.title
-            when 'Planet Attar'
-              assign ar_cat_fallback_image = 'PlanetHero.webp'
-            when 'Zodiac Attar'
-              assign ar_cat_fallback_image = 'PlanetHero.webp'
-            when 'Nakshatra Attar'
-              assign ar_cat_fallback_image = 'NakshatraGif1.webm'
-            when 'Chakra Attar'
-              assign ar_cat_fallback_image = 'chakra.webp'
-            when 'Stress Relief Attar'
-              assign ar_cat_fallback_image = 'stress.webp'
-            when 'Love Attar'
-              assign ar_cat_fallback_image = 'love.webp'
-            when 'Incense Sticks'
-              assign ar_cat_fallback_image = 'incense.jpeg'
-          endcase
+{%- comment -%}
+  Compact luxury collection cards — all collections in a responsive grid.
+  Images from theme editor category blocks; URLs via ar-collection-url.
+{%- endcomment -%}
+{%- liquid
+  assign ar_disc_heading = section.settings.disc_heading | default: 'Find Your Fragrance Ritual'
+  assign ar_disc_sub = section.settings.disc_subheading | default: 'Curated attars for ritual, balance, and discovery.'
 
-          case block.settings.title
-            when 'Planet Attar'
-              assign ar_cat_handle = 'planet-attars'
-            when 'Zodiac Attar'
-              assign ar_cat_handle = 'zodiac-attars'
-            when 'Nakshatra Attar'
-              assign ar_cat_handle = 'nakshatra-attars'
-            when 'Chakra Attar'
-              assign ar_cat_handle = 'chakra-attars'
-            when 'Stress Relief Attar'
-              assign ar_cat_handle = 'stress-relief'
-            when 'Love Attar'
-              assign ar_cat_handle = 'love-attar'
-            when 'Incense Sticks'
-              assign ar_cat_handle = 'incense-sticks'
-            when 'Discovery Kit'
-              assign ar_cat_handle = 'giftsets'
-          endcase
+  assign ar_feat_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|giftsets|giftsets|meditation-oils' | split: '|'
+  assign ar_feat_titles = 'Planet Attars|Zodiac Attars|Nakshatra Attars|Chakra Attars|Stress Relief Attars|Love Attars|Incense Sticks|Discovery Kits|Gift Sets|Meditation Oils' | split: '|'
+  assign ar_feat_matches = 'planet|zodiac|nakshatra|chakra|stress|love|incense|discovery|gift set|meditation' | split: '|'
+  assign ar_feat_ctas = 'Explore|Explore|Explore|Explore|Explore|Explore|Explore|Shop|Shop|Explore' | split: '|'
+  assign ar_feat_fallbacks = 'PlanetHero.webp|PlanetHero.webp|PlanetHero.webp|chakra.webp|stress.webp|love.webp|incense.jpeg|home.webp|home.webp|chakra.webp' | split: '|'
+  assign ar_feat_tones = 'dark|dark|dark|light|dark|dark|dark|dark|dark|dark' | split: '|'
+-%}
 
-          if ar_cat_handle != blank
-            capture ar_cat_resolved_href
-              render 'ar-collection-url', handle: ar_cat_handle
-            endcapture
-            assign ar_cat_resolved_href = ar_cat_resolved_href | strip
-          endif
+<section class="ar-disc js-ar-disc" aria-labelledby="ar-disc-heading">
+  <header class="ar-disc__hdr">
+    <h2 id="ar-disc-heading" class="ar-disc__h">{{ ar_disc_heading | escape }}</h2>
+    {%- if ar_disc_sub != blank -%}
+      <p class="ar-disc__sub">{{ ar_disc_sub | escape }}</p>
+    {%- endif -%}
+  </header>
 
-          if ar_cat_href == blank
-            assign ar_cat_href = ar_cat_resolved_href | default: routes.collections_url
-          elsif ar_cat_handle != blank and ar_cat_href contains 'collections'
-            assign ar_cat_href = ar_cat_resolved_href | default: ar_cat_href
-          elsif ar_cat_handle != blank and ar_cat_href contains 'shopify://collections'
-            assign ar_cat_href = ar_cat_resolved_href | default: ar_cat_href
-          endif
-        -%}
-        <a
-          href="{{ ar_cat_href }}"
-          class="ar-cat__item"
-          aria-label="{{ block.settings.title | escape }} — Explore"
-          {{ block.shopify_attributes }}
-        >
-          <div class="ar-cat__wrap">
-            {%- if block.settings.image != blank -%}
-              <img
-                src="{{ block.settings.image | image_url: width: 1200 }}"
-                srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
-                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
-                {%- capture ar_cat_img_alt -%}{%- render 'image-seo-alt', seo_label: block.settings.title, img_context: 'card' -%}{%- endcapture -%}
-                alt="{{ ar_cat_img_alt | strip | escape }}"
-                title="{{ block.settings.title | escape }}"
-                width="1200"
-                height="900"
-                loading="lazy"
-                class="ar-cat__img"
-                decoding="async"
-              >
-            {%- elsif ar_cat_fallback_image == 'NakshatraGif1.webm' -%}
-              <video
-                class="ar-cat__img"
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-                aria-label="{{ block.settings.title | escape }} | {{ shop.name | escape }}"
-              >
-                <source src="{{ ar_cat_fallback_image | asset_url }}" type="video/webm">
-              </video>
-            {%- elsif ar_cat_fallback_image != blank -%}
-              <img
-                src="{{ ar_cat_fallback_image | asset_url }}"
-                {%- capture ar_cat_img_alt -%}{%- render 'image-seo-alt', seo_label: block.settings.title, img_context: 'card' -%}{%- endcapture -%}
-                alt="{{ ar_cat_img_alt | strip | escape }}"
-                title="{{ block.settings.title | escape }}"
-                width="1200"
-                height="900"
-                loading="lazy"
-                class="ar-cat__img"
-                decoding="async"
-              >
-            {%- else -%}
-              <div class="ar-cat__ph">Upload image</div>
-            {%- endif -%}
-            <div class="ar-cat__txt">
-              <h3 class="ar-cat__title">{{ block.settings.title }}</h3>
-              <span class="ar-cat__cta">Explore</span>
-            </div>
-          </div>
-        </a>
-      {%- endif -%}
-    {%- endfor -%}
-
-    {%- comment -%} Auto-show required collections that are missing from category blocks {%- endcomment -%}
-    {%- liquid
-      assign required_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|giftsets' | split: '|'
-      assign required_titles = 'Planet Attar|Zodiac Attar|Nakshatra Attar|Chakra Attar|Stress Relief Attar|Love Attar|Incense Sticks|Discovery Kit' | split: '|'
-      assign required_fallbacks = 'PlanetHero.webp|PlanetHero.webp|NakshatraGif1.webm|chakra.webp|stress.webp|love.webp|incense.jpeg|home.webp' | split: '|'
-    -%}
-    {%- for required_handle in required_handles -%}
+  <div class="ar-disc__list">
+    {%- for ar_feat_handle in ar_feat_handles -%}
       {%- liquid
-        assign required_title = required_titles[forloop.index0]
-        assign required_fallback = required_fallbacks[forloop.index0]
-        assign already_present = false
+        assign ar_i = forloop.index0
+        assign ar_match = ar_feat_matches[ar_i]
+        assign ar_title = ar_feat_titles[ar_i]
+        assign ar_cta = ar_feat_ctas[ar_i]
+        assign ar_fallback = ar_feat_fallbacks[ar_i]
+        assign ar_card_tone = ar_feat_tones[ar_i]
+        assign ar_delay = ar_i | times: 45
+
+        assign ar_card_image = blank
+        assign ar_block_link = blank
         for block in section.blocks
           if block.type == 'category'
-            assign block_title_down = block.settings.title | downcase
-            assign block_link = block.settings.link | default: ''
-            if block_link contains required_handle
-              assign already_present = true
-              break
+            assign ar_bt = block.settings.title | downcase
+            assign ar_bl = block.settings.link | default: ''
+            assign ar_is_match = false
+            if ar_match == 'gift set'
+              if ar_bt contains 'gift set' or ar_bt == 'gift sets'
+                assign ar_is_match = true
+              endif
+            elsif ar_match == 'discovery'
+              if ar_bt contains 'discovery'
+                assign ar_is_match = true
+              endif
+            elsif ar_bt contains ar_match or ar_bl contains ar_feat_handle
+              assign ar_is_match = true
             endif
-            if required_handle == 'planet-attars' and block_title_down contains 'planet'
-              assign already_present = true
-              break
-            elsif required_handle == 'zodiac-attars' and block_title_down contains 'zodiac'
-              assign already_present = true
-              break
-            elsif required_handle == 'nakshatra-attars' and block_title_down contains 'nakshatra'
-              assign already_present = true
-              break
-            elsif required_handle == 'chakra-attars' and block_title_down contains 'chakra'
-              assign already_present = true
-              break
-            elsif required_handle == 'stress-relief' and block_title_down contains 'stress'
-              assign already_present = true
-              break
-            elsif required_handle == 'love-attar' and block_title_down contains 'love'
-              assign already_present = true
-              break
-            elsif required_handle == 'incense-sticks' and block_title_down contains 'incense'
-              assign already_present = true
-              break
-            elsif required_handle == 'giftsets' and block_title_down contains 'discovery'
-              assign already_present = true
+            if ar_is_match
+              if block.settings.image != blank
+                assign ar_card_image = block.settings.image
+              endif
+              assign ar_block_link = block.settings.link | strip
               break
             endif
           endif
         endfor
-        assign auto_href = routes.collections_url | append: '/' | append: required_handle
-        if collections[required_handle] != empty
-          assign auto_href = collections[required_handle].url
+
+        capture ar_card_url
+          render 'ar-collection-url', handle: ar_feat_handle
+        endcapture
+        assign ar_card_url = ar_card_url | strip
+        if ar_block_link != blank
+          if ar_block_link contains 'shopify://collections' or ar_block_link contains '/collections/'
+            assign ar_card_url = ar_card_url | default: ar_block_link
+          endif
+        endif
+        if ar_card_url == blank
+          assign ar_card_url = routes.collections_url
         endif
       -%}
-      {%- if already_present == false or has_category_blocks == false -%}
+
+      <article class="ar-disc__card" style="--ar-disc-delay: {{ ar_delay }}ms;">
         <a
-          href="{{ auto_href }}"
-          class="ar-cat__item"
-          aria-label="{{ required_title | escape }} — Explore"
+          href="{{ ar_card_url }}"
+          class="ar-disc__link ar-disc__link--{{ ar_card_tone }}"
+          aria-label="{{ ar_title | escape }} — {{ ar_cta | escape }}"
         >
-          <div class="ar-cat__wrap">
-            {%- if required_fallback == 'NakshatraGif1.webm' -%}
-              <video
-                class="ar-cat__img"
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-                aria-label="{{ required_title | escape }} | {{ shop.name | escape }}"
-              >
-                <source src="{{ required_fallback | asset_url }}" type="video/webm">
-              </video>
-            {%- else -%}
+          <div class="ar-disc__media">
+            {%- if ar_card_image != blank -%}
               <img
-                src="{{ required_fallback | asset_url }}"
-                alt="{{ required_title | escape }} | {{ shop.name | escape }}"
-                width="1200"
-                height="900"
+                class="ar-disc__img"
+                src="{{ ar_card_image | image_url: width: 800 }}"
+                srcset="{{ ar_card_image | image_url: width: 400 }} 400w, {{ ar_card_image | image_url: width: 600 }} 600w, {{ ar_card_image | image_url: width: 800 }} 800w"
+                sizes="(min-width: 1200px) 20vw, (min-width: 768px) 33vw, (min-width: 480px) 50vw, 100vw"
+                alt="{{ ar_title | escape }}"
+                width="800"
+                height="560"
                 loading="lazy"
-                class="ar-cat__img"
                 decoding="async"
               >
+            {%- elsif ar_fallback != blank -%}
+              <img
+                class="ar-disc__img"
+                src="{{ ar_fallback | asset_url }}"
+                alt=""
+                width="800"
+                height="560"
+                loading="lazy"
+                decoding="async"
+              >
+            {%- else -%}
+              <span class="ar-disc__ph" aria-hidden="true"></span>
             {%- endif -%}
-            <div class="ar-cat__txt">
-              <h3 class="ar-cat__title">{{ required_title }}</h3>
-              <span class="ar-cat__cta">Explore</span>
-            </div>
+            <span class="ar-disc__shade" aria-hidden="true"></span>
+          </div>
+          <div class="ar-disc__copy">
+            <h3 class="ar-disc__title">{{ ar_title | escape }}</h3>
+            <span class="ar-disc__btn">{{ ar_cta | escape }}</span>
           </div>
         </a>
-      {%- endif -%}
+      </article>
     {%- endfor -%}
   </div>
 </section>
