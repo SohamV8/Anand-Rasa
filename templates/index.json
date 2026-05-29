@@ -251,6 +251,7 @@
         "bp-phil-4"
       ],
       "settings": {
+        "hero_image_alt": "",
         "hero_eyebrow": "ANAND RAS",
         "hero_headline": "Perfume for your soul",
         "hero_body": "Modern luxury attars crafted through timeless distillation. Pure oils, calm presence, and minimal elegance designed for everyday ritual.",
@@ -306,6 +307,10 @@
         "inc_heading": "Shop Incense Sticks"
       }
     },
+    "1779784306d05da1a6": {
+      "type": "_blocks",
+      "settings": {}
+    },
     "1777975433977fe8f6": {
       "type": "_blocks",
       "settings": {}
@@ -313,6 +318,7 @@
   },
   "order": [
     "anand-rasa-homepage",
+    "1779784306d05da1a6",
     "1777975433977fe8f6"
   ]
 }
