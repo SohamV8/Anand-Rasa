@@ -545,7 +545,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           {% render 'ask-mehak', uid: product.handle %}
         {%- endif -%}
 
-        {%- if ar_product_type contains 'attar' or ar_product_title contains 'attar' -%}
+        {%- assign ar_product_handle = product.handle | downcase -%}
+        {%- assign ar_product_tags = product.tags | join: '|' | downcase -%}
+        {%- assign ar_product_collections = product.collections | map: 'handle' | join: '|' | downcase -%}
+        {%- assign ar_product_scope = ar_product_type | append: '|' | append: ar_product_title | append: '|' | append: ar_product_handle | append: '|' | append: ar_product_tags | append: '|' | append: ar_product_collections -%}
+        {%- assign ar_is_attar_product = false -%}
+        {%- if ar_product_scope contains 'attar' or ar_product_scope contains 'perfume oil' or ar_product_scope contains 'perfume-oil' or ar_product_scope contains 'fragrance oil' -%}
+          {%- assign ar_is_attar_product = true -%}
+        {%- endif -%}
+        {%- if ar_product_scope contains 'incense' or ar_product_scope contains 'agarbatti' or ar_product_scope contains 'dhoop' -%}
+          {%- assign ar_is_attar_product = false -%}
+        {%- endif -%}
+
+        {%- if ar_is_attar_product -%}
           {% render 'faq.attars', product: product %}
         {%- endif -%}
         <!-- SEO Fix: Product scent profile block -->

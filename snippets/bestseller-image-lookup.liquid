@@ -14,8 +14,12 @@
 
   Required parameter:
     bs_product — a Shopify product object
+
+  Optional:
+    bs_mockup_fallback — when true, returns Bestseller/mockup.jpg if no product match
 {%- endcomment -%}
 {%- liquid
+  assign bs_mockup_fallback = bs_mockup_fallback | default: false
   assign title_key = bs_product.title | handleize
   assign handle_key = bs_product.handle | default: title_key
   assign type_key = bs_product.type | default: '' | downcase
@@ -116,8 +120,16 @@
     assign img = 'Bestseller/Ramta_jogi.webp'
   elsif title_key contains 'shaam-mastani' or handle_key contains 'shaam-mastani' or title_key contains 'shaam_mastani' or handle_key contains 'shaam_mastani'
     assign img = 'Bestseller/shaam_mastani.webp'
+  elsif title_key contains 'mridula' or handle_key contains 'mridula'
+    assign img = 'Bestseller/Mridula.webp'
+  elsif title_key contains 'malang' or handle_key contains 'malang'
+    assign img = 'Bestseller/Malang.webp'
   elsif title_key contains 'oud' or handle_key contains 'oud'
     assign img = 'Bestseller/Oud-e-Azam.webp'
+  endif
+
+  if img == '' and bs_mockup_fallback
+    assign img = 'Bestseller/mockup.jpg'
   endif
 
   echo img
