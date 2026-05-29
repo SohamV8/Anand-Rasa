@@ -1,0 +1,86 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_perfume_quiz": {
+      "type": "custom-perfume-quiz",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Discover your signature attar",
+        "subheading": "Choose a fragrance that matches your mood and energy. Our personalised attar consultation curates the best matches from our existing premium Indian perfume oils — alcohol-free, handcrafted, and long-lasting.",
+        "catalog_collections": "bestseller,planet-attars,zodiac-attar,chakra-attar,nakshatra-attar,stress-relief-attar,love-attar,apsara-attars,perfume-series",
+        "show_trust": true,
+        "show_how": true,
+        "show_faq": true,
+        "padding_top": 40,
+        "padding_bottom": 60
+      },
+      "blocks": {
+        "trust_1": {
+          "type": "trust_badge",
+          "settings": { "label": "Alcohol-free" }
+        },
+        "trust_2": {
+          "type": "trust_badge",
+          "settings": { "label": "Handcrafted" }
+        },
+        "trust_3": {
+          "type": "trust_badge",
+          "settings": { "label": "Natural fragrance" }
+        },
+        "trust_4": {
+          "type": "trust_badge",
+          "settings": { "label": "Long-lasting" }
+        },
+        "trust_5": {
+          "type": "trust_badge",
+          "settings": { "label": "Premium quality" }
+        },
+        "trust_6": {
+          "type": "trust_badge",
+          "settings": { "label": "Astrology-inspired" }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "What is a personalised attar consultation?",
+            "answer": "<p>Our fragrance finder recommends existing premium attars from Anand Rasa based on your mood, purpose, notes, and optional astrology preferences — without creating new products.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Are recommendations limited to attars only?",
+            "answer": "<p>Yes. This experience showcases attars and natural perfume oils from our catalog. Incense products are excluded.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I match by zodiac, planet, nakshatra, or chakra?",
+            "answer": "<p>Yes. Step 6 lets you align with zodiac attars, planet attars, nakshatra attars, and chakra attars already listed in our store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "trust_1",
+        "trust_2",
+        "trust_3",
+        "trust_4",
+        "trust_5",
+        "trust_6",
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ]
+    }
+  },
+  "order": ["custom_perfume_quiz"]
+}

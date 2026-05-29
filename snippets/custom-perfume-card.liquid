@@ -1,0 +1,31 @@
+{%- comment -%}
+  Result card markup template — cloned by JS in custom-perfume-quiz.
+  Params: cpq_card_id (unique prefix)
+{%- endcomment -%}
+<template id="{{ cpq_card_id }}-tpl">
+  <article class="cpq-card" data-cpq-card>
+    <a class="cpq-card__media" data-cpq-link href="#" aria-label="">
+      <span class="cpq-card__rank" data-cpq-rank hidden>Best match</span>
+      <img class="cpq-card__img" data-cpq-img src="" alt="" width="600" height="800" loading="lazy" decoding="async">
+    </a>
+    <div class="cpq-card__body">
+      <p class="cpq-card__type" data-cpq-type></p>
+      <h3 class="cpq-card__title">
+        <a data-cpq-title-link href=""></a>
+      </h3>
+      <p class="cpq-card__desc" data-cpq-desc></p>
+      <p class="cpq-card__why" data-cpq-why></p>
+      <p class="cpq-card__use" data-cpq-use></p>
+      <div class="cpq-card__foot">
+        <div class="cpq-card__price-wrap">
+          <span class="cpq-card__compare" data-cpq-compare hidden></span>
+          <span class="cpq-card__price" data-cpq-price></span>
+        </div>
+        <div class="cpq-card__actions">
+          <a class="cpq-card__view" data-cpq-view href="">View attar</a>
+          <button type="button" class="cpq-card__atc" data-cpq-atc>Add to cart</button>
+        </div>
+      </div>
+    </div>
+  </article>
+</template>

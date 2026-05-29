@@ -157,7 +157,7 @@
             {%- endif -%}
             {%- endunless -%}
             {%- if template.suffix == 'bestseller' -%}
-              {%- capture ar_showcase_lookup -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
+              {%- capture ar_showcase_lookup -%}{%- render 'bestseller-image-lookup', bs_product: product, bs_mockup_fallback: true -%}{%- endcapture -%}
               {%- assign ar_showcase_lookup = ar_showcase_lookup | strip -%}
               {%- if ar_showcase_lookup != blank -%}
                 {%- assign ar_showcase_img = ar_showcase_lookup | asset_url -%}

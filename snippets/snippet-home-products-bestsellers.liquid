@@ -13,7 +13,7 @@
       {%- assign bs = collections[section.settings.bs_collection] -%}
       {%- if bs != blank -%}
         {%- for p in bs.products -%}
-          {%- capture bestseller_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p -%}{%- endcapture -%}
+          {%- capture bestseller_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p, bs_mockup_fallback: true -%}{%- endcapture -%}
           {%- assign bestseller_showcard = bestseller_showcard | strip -%}
           <article class="ar-best__card">
             <a href="{{ p.url }}" class="ar-best__link">

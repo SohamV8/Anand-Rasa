@@ -1,0 +1,117 @@
+{%- comment -%}
+  Builds JSON catalog for Custom Perfume Quiz (attars only, no incense).
+  Params: cpq_section_id, cpq_collections (comma-separated handles)
+{%- endcomment -%}
+{%- liquid
+  assign cpq_catalog_handles = cpq_collections | default: 'bestseller' | split: ','
+  assign cpq_seen_ids = ''
+  assign cpq_product_count = 0
+-%}
+<script type="application/json" id="cpq-catalog-{{ cpq_section_id }}">
+[
+{%- for cpq_handle_raw in cpq_catalog_handles -%}
+  {%- assign cpq_handle = cpq_handle_raw | strip -%}
+  {%- if cpq_handle != blank -%}
+    {%- assign cpq_col = collections[cpq_handle] -%}
+    {%- if cpq_col != blank -%}
+      {%- for cpq_product in cpq_col.products -%}
+        {%- liquid
+          assign cpq_type = cpq_product.type | downcase
+          assign cpq_title = cpq_product.title | downcase
+          assign cpq_handle_key = cpq_product.handle | downcase
+          assign cpq_tags = cpq_product.tags | join: '|' | downcase
+          assign cpq_scope = cpq_type | append: '|' | append: cpq_title | append: '|' | append: cpq_handle_key | append: '|' | append: cpq_tags
+
+          assign cpq_is_incense = false
+          if cpq_scope contains 'incense' or cpq_scope contains 'agarbatti' or cpq_scope contains 'dhoop'
+            assign cpq_is_incense = true
+          endif
+
+          assign cpq_is_attar = false
+          if cpq_scope contains 'attar' or cpq_scope contains 'perfume oil' or cpq_scope contains 'perfume-oil' or cpq_scope contains 'fragrance oil' or cpq_scope contains 'perfume'
+            assign cpq_is_attar = true
+          endif
+          if cpq_is_incense
+            assign cpq_is_attar = false
+          endif
+
+          assign cpq_id_str = cpq_product.id | append: ''
+          assign cpq_id_token = '|' | append: cpq_id_str | append: '|'
+        -%}
+        {%- if cpq_is_attar -%}
+        {%- unless cpq_seen_ids contains cpq_id_token -%}
+          {%- liquid
+            assign cpq_seen_ids = cpq_seen_ids | append: cpq_id_token
+            assign cpq_product_count = cpq_product_count | plus: 1
+
+            assign cpq_top = cpq_product.metafields.custom.top_notes.value | default: ''
+            assign cpq_heart = cpq_product.metafields.custom.heart_notes.value | default: ''
+            assign cpq_base = cpq_product.metafields.custom.base_notes.value | default: ''
+            assign cpq_occasions = cpq_product.metafields.custom.occasion_tags.value | join: ', '
+            assign cpq_notes = cpq_top
+            if cpq_heart != blank
+              if cpq_notes != blank
+                assign cpq_notes = cpq_notes | append: ', '
+              endif
+              assign cpq_notes = cpq_notes | append: cpq_heart
+            endif
+            if cpq_base != blank
+              if cpq_notes != blank
+                assign cpq_notes = cpq_notes | append: ', '
+              endif
+              assign cpq_notes = cpq_notes | append: cpq_base
+            endif
+
+            assign cpq_col_handles = ''
+            for cpq_pc in cpq_product.collections
+              if cpq_col_handles != blank
+                assign cpq_col_handles = cpq_col_handles | append: ','
+              endif
+              assign cpq_col_handles = cpq_col_handles | append: cpq_pc.handle
+            endfor
+
+            assign cpq_desc = cpq_product.description | strip_html | strip | truncate: 160
+            if cpq_desc == blank
+              assign cpq_desc = cpq_product.metafields.custom.tagline.value | default: '' | strip
+            endif
+
+            assign cpq_variant = cpq_product.selected_or_first_available_variant
+            assign cpq_price = cpq_variant.price
+            assign cpq_compare = cpq_variant.compare_at_price
+
+            capture cpq_showcase
+              render 'bestseller-image-lookup', bs_product: cpq_product, bs_mockup_fallback: true
+            endcapture
+            assign cpq_showcase = cpq_showcase | strip
+            assign cpq_image = cpq_product.featured_image | image_url: width: 900
+            if cpq_showcase != blank
+              assign cpq_image = cpq_showcase | asset_url
+            endif
+          -%}
+          {%- unless cpq_product_count == 1 -%},{%- endunless -%}
+          {
+            "id": {{ cpq_product.id | json }},
+            "handle": {{ cpq_product.handle | json }},
+            "title": {{ cpq_product.title | json }},
+            "url": {{ cpq_product.url | json }},
+            "type": {{ cpq_product.type | json }},
+            "tags": {{ cpq_product.tags | json }},
+            "collections": {{ cpq_col_handles | split: ',' | json }},
+            "description": {{ cpq_desc | json }},
+            "notes": {{ cpq_notes | json }},
+            "occasions": {{ cpq_occasions | json }},
+            "price": {{ cpq_price | json }},
+            "compareAtPrice": {{ cpq_compare | json }},
+            "available": {{ cpq_variant.available | json }},
+            "variantId": {{ cpq_variant.id | json }},
+            "image": {{ cpq_image | json }},
+            "keywords": {{ cpq_scope | append: '|' | append: cpq_col_handles | downcase | json }}
+          }
+        {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+]
+</script>

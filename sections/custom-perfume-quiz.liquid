@@ -1,0 +1,1313 @@
+{%- liquid
+  assign cpq_uid = section.id
+  assign cpq_collections = section.settings.catalog_collections | default: 'bestseller,planet-attars,zodiac-attar,chakra-attar,nakshatra-attar,stress-relief-attar,love-attar,apsara-attars,perfume-series'
+-%}
+
+{%- render 'custom-perfume-logic', cpq_section_id: cpq_uid, cpq_collections: cpq_collections -%}
+{%- assign cpq_card_tpl_id = 'cpq-' | append: cpq_uid -%}
+{%- render 'custom-perfume-card', cpq_card_id: cpq_card_tpl_id -%}
+
+<section
+  class="cpq section-{{ section.id }}-padding"
+  id="cpq-{{ cpq_uid }}"
+  data-cpq-quiz
+  aria-labelledby="cpq-title-{{ cpq_uid }}"
+>
+  <div class="cpq__cosmos" aria-hidden="true">
+    {%- for i in (1..28) -%}
+      <span class="cpq__star" style="--cpq-sx: {{ i | times: 37 | modulo: 100 }}%; --cpq-sy: {{ i | times: 53 | modulo: 100 }}%; --cpq-sd: {{ i | times: 0.7 | modulo: 5 | plus: 3 }}s;"></span>
+    {%- endfor -%}
+  </div>
+
+  <div class="cpq__shell">
+    <header class="cpq__header">
+      <p class="cpq__badge">✦ {{ section.settings.eyebrow | default: 'Anand Rasa' }}</p>
+      <h1 class="cpq__title" id="cpq-title-{{ cpq_uid }}">
+        {{ section.settings.heading | default: 'Discover your signature attar' }}
+      </h1>
+      <p class="cpq__lead">
+        {{ section.settings.subheading | default: 'A personalised fragrance consultation — curated from our existing luxury attars and natural perfume oils.' }}
+      </p>
+      <div class="cpq__progress" role="progressbar" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1" id="cpq-progress-{{ cpq_uid }}">
+        <div class="cpq__progress-track">
+          <div class="cpq__progress-fill" data-cpq-progress-fill style="width:12.5%"></div>
+        </div>
+        <p class="cpq__progress-label"><span data-cpq-step-label>Step 1</span> of 8</p>
+      </div>
+    </header>
+
+    {%- if section.settings.show_trust -%}
+      <ul class="cpq__trust" role="list">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_badge' -%}
+            <li class="cpq__trust-item" {{ block.shopify_attributes }}>{{ block.settings.label }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.blocks.size == 0 -%}
+          <li class="cpq__trust-item">Alcohol-free</li>
+          <li class="cpq__trust-item">Handcrafted</li>
+          <li class="cpq__trust-item">Natural fragrance</li>
+          <li class="cpq__trust-item">Long-lasting</li>
+          <li class="cpq__trust-item">Astrology-inspired</li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+
+    <form class="cpq__form" data-cpq-form novalidate>
+      <div class="cpq__steps" data-cpq-steps>
+        {%- comment -%} Step 1 {%- endcomment -%}
+        <fieldset class="cpq__step is-active" data-cpq-step="1">
+          <legend class="cpq__step-title">Your details</legend>
+          <p class="cpq__step-sub">Optional — helps us personalise your consultation.</p>
+          <div class="cpq__field">
+            <label class="cpq__label" for="cpq-name-{{ cpq_uid }}">Name <span class="cpq__opt">(optional)</span></label>
+            <input class="cpq__input" id="cpq-name-{{ cpq_uid }}" name="name" type="text" autocomplete="name" placeholder="Your name">
+          </div>
+          <div class="cpq__field">
+            <label class="cpq__label" for="cpq-email-{{ cpq_uid }}">Email or phone <span class="cpq__opt">(optional)</span></label>
+            <input class="cpq__input" id="cpq-email-{{ cpq_uid }}" name="contact" type="text" autocomplete="email" placeholder="For follow-up or gifting notes">
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 2 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="2" hidden>
+          <legend class="cpq__step-title">What are you looking for?</legend>
+          <p class="cpq__step-sub">Choose a fragrance type that matches your preference.</p>
+          <div class="cpq__choices cpq__choices--3" data-cpq-group="fragranceType" data-cpq-required>
+            {%- assign cpq_types = 'Attar|attar,Perfume oil|perfume-oil,Spray|spray,Unisex fragrance|unisex,Spiritual fragrance|spiritual,Luxury fragrance|luxury' | split: ',' -%}
+            {%- for cpq_t in cpq_types -%}
+              {%- assign cpq_tp = cpq_t | split: '|' -%}
+              <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_tp[1] }}" aria-pressed="false">{{ cpq_tp[0] }}</button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 3 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="3" hidden>
+          <legend class="cpq__step-title">Purpose</legend>
+          <p class="cpq__step-sub">When and why will you wear this fragrance?</p>
+          <div class="cpq__choices cpq__choices--3" data-cpq-group="purpose" data-cpq-required>
+            {%- assign cpq_purposes = 'Daily wear|daily,Office|office,Meditation|meditation,Sleep|sleep,Stress relief|stress,Spiritual use|spiritual,Gifting|gifting,Special occasions|special,Astrology-based|astrology' | split: ',' -%}
+            {%- for cpq_p in cpq_purposes -%}
+              {%- assign cpq_pp = cpq_p | split: '|' -%}
+              <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_pp[1] }}" aria-pressed="false">{{ cpq_pp[0] }}</button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 4 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="4" hidden>
+          <legend class="cpq__step-title">Mood & personality</legend>
+          <p class="cpq__step-sub">Choose a fragrance that matches your mood and energy.</p>
+          <div class="cpq__choices cpq__choices--2" data-cpq-group="mood" data-cpq-required>
+            {%- assign cpq_moods = 'Calm|calm,Romantic|romantic,Luxurious|luxurious,Fresh|fresh,Mysterious|mysterious,Spiritual|spiritual,Grounding|grounding,Uplifting|uplifting,Sensual|sensual,Minimal|minimal' | split: ',' -%}
+            {%- for cpq_m in cpq_moods -%}
+              {%- assign cpq_mp = cpq_m | split: '|' -%}
+              <button type="button" class="cpq__choice cpq__choice--tall" data-cpq-value="{{ cpq_mp[1] }}" aria-pressed="false">{{ cpq_mp[0] }}</button>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 5 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="5" hidden>
+          <legend class="cpq__step-title">Preferred fragrance families</legend>
+          <p class="cpq__step-sub">Select the notes you are naturally drawn to.</p>
+          <div class="cpq__choices cpq__choices--3" data-cpq-group="families" data-cpq-required data-cpq-multi>
+            {%- assign cpq_families = 'Rose|rose,Lavender|lavender,Sandalwood|sandalwood,Jasmine|jasmine,Mogra|mogra,Oud|oud,Vetiver|vetiver,Musk|musk,Amber|amber,Saffron|saffron,Citrus|citrus,Floral|floral,Woody|woody,Herbal|herbal' | split: ',' -%}
+            {%- for cpq_f in cpq_families -%}
+              {%- assign cpq_fp = cpq_f | split: '|' -%}
+              <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_fp[1] }}" aria-pressed="false">{{ cpq_fp[0] }}</button>
+            {%- endfor -%}
+          </div>
+          <p class="cpq__hint">Select one or more families.</p>
+        </fieldset>
+
+        {%- comment -%} Step 6 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="6" hidden>
+          <legend class="cpq__step-title">Astrology layer</legend>
+          <p class="cpq__step-sub">Optional cosmic alignment — refine your attar match.</p>
+          <div class="cpq__astro-grid">
+            <div class="cpq__field">
+              <label class="cpq__label" for="cpq-zodiac-{{ cpq_uid }}">Zodiac sign</label>
+              <select class="cpq__select" id="cpq-zodiac-{{ cpq_uid }}" name="zodiac" data-cpq-field="zodiac">
+                <option value="">Prefer not to say</option>
+                <option value="aries">Aries (Mesh)</option>
+                <option value="taurus">Taurus (Vrishabh)</option>
+                <option value="gemini">Gemini (Mithun)</option>
+                <option value="cancer">Cancer (Kark)</option>
+                <option value="leo">Leo (Simha)</option>
+                <option value="virgo">Virgo (Kanya)</option>
+                <option value="libra">Libra (Tula)</option>
+                <option value="scorpio">Scorpio (Vrishchik)</option>
+                <option value="sagittarius">Sagittarius (Dhanu)</option>
+                <option value="capricorn">Capricorn (Makar)</option>
+                <option value="aquarius">Aquarius (Kumbh)</option>
+                <option value="pisces">Pisces (Meen)</option>
+              </select>
+            </div>
+            <div class="cpq__field">
+              <label class="cpq__label" for="cpq-planet-{{ cpq_uid }}">Planet</label>
+              <select class="cpq__select" id="cpq-planet-{{ cpq_uid }}" name="planet" data-cpq-field="planet">
+                <option value="">Prefer not to say</option>
+                <option value="surya">Sun (Surya)</option>
+                <option value="chandra">Moon (Chandra)</option>
+                <option value="mangal">Mars (Mangal)</option>
+                <option value="budh">Mercury (Budh)</option>
+                <option value="guru">Jupiter (Guru)</option>
+                <option value="shukra">Venus (Shukra)</option>
+                <option value="shani">Saturn (Shani)</option>
+                <option value="rahu">Rahu</option>
+                <option value="ketu">Ketu</option>
+              </select>
+            </div>
+            <div class="cpq__field">
+              <label class="cpq__label" for="cpq-nakshatra-{{ cpq_uid }}">Nakshatra</label>
+              <select class="cpq__select" id="cpq-nakshatra-{{ cpq_uid }}" name="nakshatra" data-cpq-field="nakshatra">
+                <option value="">Prefer not to say</option>
+                <option value="ashwini">Ashwini</option>
+                <option value="bharani">Bharani</option>
+                <option value="krittika">Krittika</option>
+                <option value="rohini">Rohini</option>
+                <option value="mrigashira">Mrigashira</option>
+                <option value="ardra">Ardra</option>
+                <option value="punarvasu">Punarvasu</option>
+                <option value="pushya">Pushya</option>
+                <option value="ashlesha">Ashlesha</option>
+                <option value="magha">Magha</option>
+                <option value="phalguni">Phalguni</option>
+                <option value="hasta">Hasta</option>
+                <option value="chitra">Chitra</option>
+                <option value="swati">Swati</option>
+                <option value="vishakha">Vishakha</option>
+                <option value="anuradha">Anuradha</option>
+                <option value="jyeshtha">Jyeshtha</option>
+                <option value="mula">Mula</option>
+                <option value="ashadha">Ashadha</option>
+                <option value="shravana">Shravana</option>
+                <option value="dhanishtha">Dhanishtha</option>
+                <option value="shatabhisha">Shatabhisha</option>
+                <option value="bhadrapada">Bhadrapada</option>
+                <option value="revati">Revati</option>
+              </select>
+            </div>
+            <div class="cpq__field">
+              <label class="cpq__label" for="cpq-chakra-{{ cpq_uid }}">Chakra</label>
+              <select class="cpq__select" id="cpq-chakra-{{ cpq_uid }}" name="chakra" data-cpq-field="chakra">
+                <option value="">Prefer not to say</option>
+                <option value="root">Root (Muladhara)</option>
+                <option value="sacral">Sacral (Svadhisthana)</option>
+                <option value="solar">Solar Plexus (Manipura)</option>
+                <option value="heart">Heart (Anahata)</option>
+                <option value="throat">Throat (Vishuddha)</option>
+                <option value="third-eye">Third Eye (Ajna)</option>
+                <option value="crown">Crown (Sahasrara)</option>
+              </select>
+            </div>
+            <div class="cpq__field cpq__field--full">
+              <label class="cpq__label" for="cpq-dob-{{ cpq_uid }}">Date of birth <span class="cpq__opt">(optional)</span></label>
+              <input class="cpq__input" id="cpq-dob-{{ cpq_uid }}" name="dob" type="date" data-cpq-field="dob">
+            </div>
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 7 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="7" hidden>
+          <legend class="cpq__step-title">Intensity</legend>
+          <p class="cpq__step-sub">How strong should your fragrance feel on skin?</p>
+          <div class="cpq__pills" data-cpq-group="intensity" data-cpq-required>
+            <button type="button" class="cpq__pill" data-cpq-value="light" aria-pressed="false">Light</button>
+            <button type="button" class="cpq__pill" data-cpq-value="medium" aria-pressed="false">Medium</button>
+            <button type="button" class="cpq__pill" data-cpq-value="strong" aria-pressed="false">Strong</button>
+          </div>
+        </fieldset>
+
+        {%- comment -%} Step 8 {%- endcomment -%}
+        <fieldset class="cpq__step" data-cpq-step="8" hidden>
+          <legend class="cpq__step-title">Budget</legend>
+          <p class="cpq__step-sub">We will prioritise attars within your preferred range.</p>
+          <div class="cpq__pills" data-cpq-group="budget" data-cpq-required>
+            <button type="button" class="cpq__pill" data-cpq-value="entry" aria-pressed="false">Entry</button>
+            <button type="button" class="cpq__pill" data-cpq-value="mid" aria-pressed="false">Mid</button>
+            <button type="button" class="cpq__pill" data-cpq-value="premium" aria-pressed="false">Premium</button>
+            <button type="button" class="cpq__pill" data-cpq-value="luxury" aria-pressed="false">Luxury</button>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="cpq__nav">
+        <button type="button" class="cpq__btn cpq__btn--ghost" data-cpq-back hidden>Back</button>
+        <button type="button" class="cpq__btn cpq__btn--primary" data-cpq-next>Continue</button>
+      </div>
+    </form>
+
+    <section class="cpq__results" data-cpq-results hidden aria-live="polite">
+      <header class="cpq__results-head">
+        <p class="cpq__results-eyebrow">Your curated attars</p>
+        <h2 class="cpq__results-title" data-cpq-results-title>Your signature attar matches</h2>
+        <p class="cpq__results-lead" data-cpq-results-lead>Curated from our existing Anand Rasa attars — alcohol-free, handcrafted, and aligned with your scent story.</p>
+      </header>
+      <div class="cpq__results-grid" data-cpq-results-grid role="list"></div>
+      <div class="cpq__results-actions">
+        <button type="button" class="cpq__btn cpq__btn--ghost" data-cpq-restart>Start again</button>
+        <a class="cpq__btn cpq__btn--primary" href="{{ section.settings.collection_link | default: routes.all_products_collection_url }}">Explore all attars</a>
+      </div>
+    </section>
+
+    {%- if section.settings.show_how -%}
+      <section class="cpq__how" aria-labelledby="cpq-how-{{ cpq_uid }}">
+        <h2 class="cpq__how-title" id="cpq-how-{{ cpq_uid }}">{{ section.settings.how_title | default: 'How it works' }}</h2>
+        <ol class="cpq__how-list">
+          <li><strong>Answer guided questions</strong> about mood, purpose, notes, and cosmic alignment.</li>
+          <li><strong>We match your profile</strong> to existing attars in our Shopify catalog.</li>
+          <li><strong>Discover 3–6 best matches</strong> with reasons, notes, and quick add-to-cart.</li>
+        </ol>
+      </section>
+    {%- endif -%}
+
+    {%- if section.settings.show_faq -%}
+      <section class="cpq__faq" aria-labelledby="cpq-faq-{{ cpq_uid }}">
+        <h2 class="cpq__faq-title" id="cpq-faq-{{ cpq_uid }}">{{ section.settings.faq_title | default: 'Fragrance finder FAQ' }}</h2>
+        <div class="cpq__faq-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' -%}
+              <details class="cpq__faq-item" {{ block.shopify_attributes }}>
+                <summary class="cpq__faq-q">{{ block.settings.question }}</summary>
+                <div class="cpq__faq-a rte">{{ block.settings.answer }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign cpq_faq_count = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' -%}
+              {%- assign cpq_faq_count = cpq_faq_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if cpq_faq_count == 0 -%}
+            <details class="cpq__faq-item" open>
+              <summary class="cpq__faq-q">What is a personalised attar consultation?</summary>
+              <div class="cpq__faq-a"><p>Our fragrance finder recommends existing premium attars from Anand Rasa based on your mood, purpose, notes, and optional astrology preferences — without creating new products.</p></div>
+            </details>
+            <details class="cpq__faq-item">
+              <summary class="cpq__faq-q">Are these alcohol-free attars?</summary>
+              <div class="cpq__faq-a"><p>Yes. Our attars are natural perfume oils — concentrated, alcohol-free, and crafted for long-lasting wear.</p></div>
+            </details>
+            <details class="cpq__faq-item">
+              <summary class="cpq__faq-q">Can I use zodiac or chakra preferences?</summary>
+              <div class="cpq__faq-a"><p>Yes. You can align recommendations with zodiac attars, planet attars, nakshatra attars, and chakra attars from our catalog.</p></div>
+            </details>
+          {%- endif -%}
+        </div>
+      </section>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #cpq-{{ cpq_uid }} {
+    --cpq-deep: #1a0a2e;
+    --cpq-ink: #1e2023;
+    --cpq-muted: #6b7280;
+    --cpq-surface: #faf7f2;
+    --cpq-card: #fffdf8;
+    --cpq-gold: #b8860b;
+    --cpq-gold-mid: #d4a843;
+    --cpq-gold-light: #f5e6c0;
+    --cpq-border: rgba(184, 134, 11, 0.18);
+    position: relative;
+    overflow: hidden;
+    background: var(--cpq-surface);
+    color: var(--cpq-ink);
+    font-family: var(--font-body-family, system-ui, sans-serif);
+  }
+  #cpq-{{ cpq_uid }}.section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media (min-width: 750px) {
+    #cpq-{{ cpq_uid }}.section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  #cpq-{{ cpq_uid }} .cpq__cosmos {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #cpq-{{ cpq_uid }} .cpq__star {
+    position: absolute;
+    left: var(--cpq-sx);
+    top: var(--cpq-sy);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: var(--cpq-gold);
+    opacity: 0.2;
+    animation: cpqTwinkle var(--cpq-sd) ease-in-out infinite alternate;
+  }
+  @keyframes cpqTwinkle {
+    from { opacity: 0.08; transform: scale(0.8); }
+    to { opacity: 0.35; transform: scale(1.2); }
+  }
+  #cpq-{{ cpq_uid }} .cpq__shell {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 24px);
+  }
+  #cpq-{{ cpq_uid }} .cpq__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--cpq-border);
+    background: rgba(255, 253, 248, 0.8);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cpq-gold);
+    margin-bottom: 14px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__title {
+    margin: 0 0 10px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  #cpq-{{ cpq_uid }} .cpq__lead {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--cpq-muted);
+    max-width: 58ch;
+  }
+  #cpq-{{ cpq_uid }} .cpq__progress { margin-bottom: 18px; }
+  #cpq-{{ cpq_uid }} .cpq__progress-track {
+    height: 3px;
+    background: rgba(184, 134, 11, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  #cpq-{{ cpq_uid }} .cpq__progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cpq-gold), var(--cpq-gold-mid));
+    transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #cpq-{{ cpq_uid }} .cpq__progress-label {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: var(--cpq-muted);
+    text-align: right;
+  }
+  #cpq-{{ cpq_uid }} .cpq__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__trust-item {
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--cpq-border);
+    background: var(--cpq-card);
+    color: var(--cpq-muted);
+  }
+  #cpq-{{ cpq_uid }} .cpq__form {
+    background: rgba(255, 253, 248, 0.92);
+    border: 1px solid var(--cpq-border);
+    border-radius: 18px;
+    padding: clamp(18px, 3vw, 28px);
+    box-shadow: 0 18px 48px rgba(26, 10, 46, 0.06);
+    backdrop-filter: blur(8px);
+  }
+  #cpq-{{ cpq_uid }} .cpq__step {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    animation: cpqFadeIn 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #cpq-{{ cpq_uid }} .cpq__step[hidden] { display: none !important; }
+  @keyframes cpqFadeIn {
+    from { opacity: 0; transform: translateX(12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  #cpq-{{ cpq_uid }} .cpq__step-title {
+    margin: 0 0 6px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 400;
+  }
+  #cpq-{{ cpq_uid }} .cpq__step-sub {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--cpq-muted);
+  }
+  #cpq-{{ cpq_uid }} .cpq__field { margin-bottom: 14px; }
+  #cpq-{{ cpq_uid }} .cpq__field--full { grid-column: 1 / -1; }
+  #cpq-{{ cpq_uid }} .cpq__label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  #cpq-{{ cpq_uid }} .cpq__opt { color: var(--cpq-muted); font-weight: 400; }
+  #cpq-{{ cpq_uid }} .cpq__input,
+  #cpq-{{ cpq_uid }} .cpq__select {
+    width: 100%;
+    min-height: 46px;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 32, 35, 0.14);
+    background: #fff;
+    padding: 10px 14px;
+    font: inherit;
+    color: var(--cpq-ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  #cpq-{{ cpq_uid }} .cpq__input:focus-visible,
+  #cpq-{{ cpq_uid }} .cpq__select:focus-visible {
+    outline: 2px solid var(--cpq-gold);
+    outline-offset: 2px;
+    border-color: var(--cpq-gold-mid);
+  }
+  #cpq-{{ cpq_uid }} .cpq__choices {
+    display: grid;
+    gap: 10px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__choices--2 { grid-template-columns: repeat(2, 1fr); }
+  #cpq-{{ cpq_uid }} .cpq__choices--3 { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) {
+    #cpq-{{ cpq_uid }} .cpq__choices--3 { grid-template-columns: repeat(2, 1fr); }
+    #cpq-{{ cpq_uid }} .cpq__choices--2 { grid-template-columns: 1fr; }
+  }
+  #cpq-{{ cpq_uid }} .cpq__choice,
+  #cpq-{{ cpq_uid }} .cpq__pill {
+    min-height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--cpq-border);
+    background: #fff;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    position: relative;
+  }
+  #cpq-{{ cpq_uid }} .cpq__choice--tall { min-height: 52px; }
+  #cpq-{{ cpq_uid }} .cpq__choice:hover,
+  #cpq-{{ cpq_uid }} .cpq__pill:hover {
+    border-color: rgba(184, 134, 11, 0.45);
+    transform: translateY(-1px);
+  }
+  #cpq-{{ cpq_uid }} .cpq__choice[aria-pressed="true"],
+  #cpq-{{ cpq_uid }} .cpq__pill[aria-pressed="true"] {
+    border-color: var(--cpq-gold);
+    background: #fffbf0;
+    box-shadow: 0 8px 24px rgba(184, 134, 11, 0.12);
+  }
+  #cpq-{{ cpq_uid }} .cpq__choice[aria-pressed="true"]::after,
+  #cpq-{{ cpq_uid }} .cpq__pill[aria-pressed="true"]::after {
+    content: "✦";
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 11px;
+    color: var(--cpq-gold);
+  }
+  #cpq-{{ cpq_uid }} .cpq__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__pill { flex: 1 1 auto; text-align: center; min-width: 88px; }
+  #cpq-{{ cpq_uid }} .cpq__astro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 560px) {
+    #cpq-{{ cpq_uid }} .cpq__astro-grid { grid-template-columns: 1fr; }
+  }
+  #cpq-{{ cpq_uid }} .cpq__hint {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--cpq-muted);
+  }
+  #cpq-{{ cpq_uid }} .cpq__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__btn {
+    min-height: 46px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: transform 0.15s, background 0.2s, opacity 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #cpq-{{ cpq_uid }} .cpq__btn--primary {
+    background: var(--cpq-gold);
+    color: #fff;
+    margin-left: auto;
+  }
+  #cpq-{{ cpq_uid }} .cpq__btn--primary:hover { background: var(--cpq-gold-mid); transform: scale(1.02); }
+  #cpq-{{ cpq_uid }} .cpq__btn--ghost {
+    background: transparent;
+    border-color: var(--cpq-border);
+    color: var(--cpq-ink);
+  }
+  #cpq-{{ cpq_uid }} .cpq__btn.is-shake { animation: cpqShake 0.32s ease; }
+  @keyframes cpqShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  #cpq-{{ cpq_uid }} .cpq__results { margin-top: 28px; animation: cpqFadeIn 0.4s ease; }
+  #cpq-{{ cpq_uid }} .cpq__results[hidden] { display: none !important; }
+  #cpq-{{ cpq_uid }} .cpq__results-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cpq-gold);
+    margin-bottom: 8px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__results-title {
+    margin: 0 0 8px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 400;
+  }
+  #cpq-{{ cpq_uid }} .cpq__results-lead {
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--cpq-muted);
+  }
+  #cpq-{{ cpq_uid }} .cpq__results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 640px) {
+    #cpq-{{ cpq_uid }} .cpq__results-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 990px) {
+    #cpq-{{ cpq_uid }} .cpq__shell { max-width: 1100px; }
+    #cpq-{{ cpq_uid }} .cpq__results-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  #cpq-{{ cpq_uid }} .cpq-card {
+    background: var(--cpq-card);
+    border: 1px solid var(--cpq-border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(26, 10, 46, 0.08);
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__media {
+    display: block;
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: #fff;
+    overflow: hidden;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__rank {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: var(--cpq-deep);
+    color: var(--cpq-gold-light);
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  #cpq-{{ cpq_uid }} .cpq-card__type {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cpq-muted);
+    margin: 0;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__title {
+    margin: 0;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__title a { color: inherit; text-decoration: none; }
+  #cpq-{{ cpq_uid }} .cpq-card__desc,
+  #cpq-{{ cpq_uid }} .cpq-card__why,
+  #cpq-{{ cpq_uid }} .cpq-card__use {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--cpq-muted);
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__why { color: var(--cpq-ink); font-style: italic; }
+  #cpq-{{ cpq_uid }} .cpq-card__foot {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(30, 32, 35, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__price { font-size: 15px; font-weight: 600; }
+  #cpq-{{ cpq_uid }} .cpq-card__compare {
+    font-size: 12px;
+    color: var(--cpq-muted);
+    text-decoration: line-through;
+    margin-right: 6px;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__view,
+  #cpq-{{ cpq_uid }} .cpq-card__atc {
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__view {
+    border: 1px solid var(--cpq-border);
+    color: var(--cpq-ink);
+    background: #fff;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__atc {
+    border: 0;
+    background: var(--cpq-ink);
+    color: #fff;
+    flex: 1;
+  }
+  #cpq-{{ cpq_uid }} .cpq-card__atc:disabled { opacity: 0.45; cursor: not-allowed; }
+  #cpq-{{ cpq_uid }} .cpq-card__atc.is-added { background: var(--cpq-gold); }
+  #cpq-{{ cpq_uid }} .cpq__results-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__how,
+  #cpq-{{ cpq_uid }} .cpq__faq {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--cpq-border);
+  }
+  #cpq-{{ cpq_uid }} .cpq__how-title,
+  #cpq-{{ cpq_uid }} .cpq__faq-title {
+    margin: 0 0 14px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 22px;
+    font-weight: 400;
+  }
+  #cpq-{{ cpq_uid }} .cpq__how-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--cpq-muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  #cpq-{{ cpq_uid }} .cpq__faq-item { border-bottom: 1px solid rgba(30, 32, 35, 0.1); }
+  #cpq-{{ cpq_uid }} .cpq__faq-q {
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 0;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  #cpq-{{ cpq_uid }} .cpq__faq-q::-webkit-details-marker { display: none; }
+  #cpq-{{ cpq_uid }} .cpq__faq-a {
+    padding: 0 0 14px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--cpq-muted);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #cpq-{{ cpq_uid }} .cpq__step,
+    #cpq-{{ cpq_uid }} .cpq__progress-fill,
+    #cpq-{{ cpq_uid }} .cpq__star,
+    #cpq-{{ cpq_uid }} .cpq-card { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<script>
+(function () {
+  var root = document.getElementById('cpq-{{ cpq_uid }}');
+  if (!root) return;
+
+  var catalogEl = document.getElementById('cpq-catalog-{{ cpq_uid }}');
+  var catalog = [];
+  try { catalog = JSON.parse(catalogEl ? catalogEl.textContent : '[]'); } catch (e) { catalog = []; }
+
+  var cardTpl = document.getElementById('cpq-{{ cpq_uid }}-tpl');
+  var form = root.querySelector('[data-cpq-form]');
+  var stepsWrap = root.querySelector('[data-cpq-steps]');
+  var steps = Array.prototype.slice.call(root.querySelectorAll('[data-cpq-step]'));
+  var btnNext = root.querySelector('[data-cpq-next]');
+  var btnBack = root.querySelector('[data-cpq-back]');
+  var btnRestart = root.querySelector('[data-cpq-restart]');
+  var progressFill = root.querySelector('[data-cpq-progress-fill]');
+  var progressBar = document.getElementById('cpq-progress-{{ cpq_uid }}');
+  var stepLabel = root.querySelector('[data-cpq-step-label]');
+  var results = root.querySelector('[data-cpq-results]');
+  var resultsGrid = root.querySelector('[data-cpq-results-grid]');
+  var resultsTitle = root.querySelector('[data-cpq-results-title]');
+  var resultsLead = root.querySelector('[data-cpq-results-lead]');
+
+  var current = 1;
+  var total = 8;
+  var answers = {
+    name: '',
+    contact: '',
+    fragranceType: '',
+    purpose: '',
+    mood: '',
+    families: [],
+    zodiac: '',
+    planet: '',
+    nakshatra: '',
+    chakra: '',
+    dob: '',
+    intensity: '',
+    budget: ''
+  };
+
+  var SCORE_MAP = {
+    fragranceType: {
+      attar: ['attar'],
+      'perfume-oil': ['perfume', 'oil', 'attar'],
+      spray: ['spray', 'perfume'],
+      unisex: ['unisex', 'attar'],
+      spiritual: ['spiritual', 'meditation', 'chakra', 'planet', 'nakshatra', 'zodiac'],
+      luxury: ['luxury', 'premium', 'bestseller']
+    },
+    purpose: {
+      daily: ['daily', 'wear', 'office'],
+      office: ['office', 'daily', 'wear'],
+      meditation: ['meditation', 'spiritual', 'calm', 'chakra'],
+      sleep: ['sleep', 'calm', 'lavender', 'stress'],
+      stress: ['stress', 'calm', 'relief', 'lavender', 'sandalwood'],
+      spiritual: ['spiritual', 'chakra', 'planet', 'nakshatra', 'pooja'],
+      gifting: ['gift', 'love', 'romantic'],
+      special: ['luxury', 'oud', 'special', 'bestseller'],
+      astrology: ['zodiac', 'planet', 'nakshatra', 'chakra', 'mesh', 'vrishabh']
+    },
+    mood: {
+      calm: ['calm', 'lavender', 'sandalwood', 'shanta', 'stress'],
+      romantic: ['rose', 'love', 'mogra', 'jasmine', 'srungara'],
+      luxurious: ['luxury', 'oud', 'amber', 'saffron', 'premium'],
+      fresh: ['citrus', 'bergamot', 'green', 'neroli'],
+      mysterious: ['oud', 'musk', 'amber', 'dark'],
+      spiritual: ['sandalwood', 'frankincense', 'chakra', 'spiritual'],
+      grounding: ['vetiver', 'sandalwood', 'root', 'earth'],
+      uplifting: ['citrus', 'bergamot', 'joy', 'floral'],
+      sensual: ['musk', 'rose', 'amber', 'jasmine'],
+      minimal: ['musk', 'white', 'subtle', 'clean']
+    },
+    families: {
+      rose: ['rose'], lavender: ['lavender'], sandalwood: ['sandalwood', 'chandan'],
+      jasmine: ['jasmine'], mogra: ['mogra'], oud: ['oud'], vetiver: ['vetiver'],
+      musk: ['musk'], amber: ['amber'], saffron: ['saffron'], citrus: ['citrus'],
+      floral: ['floral', 'rose', 'jasmine', 'mogra'], woody: ['woody', 'sandalwood', 'cedar', 'vetiver'],
+      herbal: ['herbal', 'green']
+    },
+    zodiac: {
+      aries: ['aries', 'mesh', 'mars', 'mangal'], taurus: ['taurus', 'vrishabh', 'venus', 'shukra'],
+      gemini: ['gemini', 'mithun', 'mercury', 'budh'], cancer: ['cancer', 'kark', 'moon', 'chandra'],
+      leo: ['leo', 'simha', 'sun', 'surya'], virgo: ['virgo', 'kanya', 'mercury', 'budh'],
+      libra: ['libra', 'tula', 'venus', 'shukra'], scorpio: ['scorpio', 'mars', 'mangal'],
+      sagittarius: ['sagittarius', 'dhanu', 'jupiter', 'guru'], capricorn: ['capricorn', 'makar', 'saturn', 'shani'],
+      aquarius: ['aquarius', 'kumbh', 'saturn', 'shani'], pisces: ['pisces', 'meen', 'jupiter', 'guru']
+    },
+    planet: {
+      surya: ['surya', 'sun'], chandra: ['chandra', 'moon'], mangal: ['mangal', 'mars'],
+      budh: ['budh', 'mercury'], guru: ['guru', 'jupiter'], shukra: ['shukra', 'venus'],
+      shani: ['shani', 'saturn'], rahu: ['rahu'], ketu: ['ketu']
+    },
+    nakshatra: {
+      ashwini: ['ashwini'], bharani: ['bharani'], krittika: ['krittika', 'kritika'],
+      rohini: ['rohini'], mrigashira: ['mrigashira'], ardra: ['ardra'],
+      punarvasu: ['punarvasu'], pushya: ['pushya'], ashlesha: ['ashlesha'],
+      magha: ['magha'], phalguni: ['phalguni'], hasta: ['hasta'], chitra: ['chitra'],
+      swati: ['swati'], vishakha: ['vishakha'], anuradha: ['anuradha'],
+      jyeshtha: ['jyeshtha'], mula: ['mula'], ashadha: ['ashadha'],
+      shravana: ['shravana'], dhanishtha: ['dhanishtha'], shatabhisha: ['shatabhisha'],
+      bhadrapada: ['bhadrapada'], revati: ['revati']
+    },
+    chakra: {
+      root: ['root', 'muladhara'], sacral: ['sacral', 'svadhisthana'],
+      solar: ['solar', 'manipura'], heart: ['heart', 'anahata'],
+      throat: ['throat', 'vishuddha'], 'third-eye': ['third-eye', 'ajna'],
+      crown: ['crown', 'sahasrara']
+    },
+    intensity: {
+      light: ['light', 'soft', 'subtle'], medium: ['medium', 'balanced'],
+      strong: ['strong', 'intense', 'oud', 'long']
+    },
+    budget: {
+      entry: [], mid: [], premium: ['premium', 'luxury', 'bestseller'], luxury: ['luxury', 'premium', 'oud']
+    }
+  };
+
+  function formatMoney(cents) {
+    if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+      return Shopify.formatMoney(cents, {{ shop.money_format | json }});
+    }
+    return '₹' + (cents / 100).toFixed(0);
+  }
+
+  function updateProgress() {
+    var pct = (current / total) * 100;
+    if (progressFill) progressFill.style.width = pct + '%';
+    if (progressBar) progressBar.setAttribute('aria-valuenow', String(current));
+    if (stepLabel) stepLabel.textContent = 'Step ' + current;
+    if (btnBack) btnBack.hidden = current <= 1;
+    if (btnNext) btnNext.textContent = current >= total ? 'Reveal my attars' : 'Continue';
+  }
+
+  function showStep(n) {
+    steps.forEach(function (step) {
+      var num = parseInt(step.getAttribute('data-cpq-step'), 10);
+      var active = num === n;
+      step.classList.toggle('is-active', active);
+      step.hidden = !active;
+    });
+    current = n;
+    updateProgress();
+  }
+
+  function getGroupEl(stepNum) {
+    var step = steps.find(function (s) { return parseInt(s.getAttribute('data-cpq-step'), 10) === stepNum; });
+    return step;
+  }
+
+  function readAnswers() {
+    var nameEl = root.querySelector('#cpq-name-{{ cpq_uid }}');
+    var contactEl = root.querySelector('#cpq-email-{{ cpq_uid }}');
+    answers.name = nameEl ? nameEl.value.trim() : '';
+    answers.contact = contactEl ? contactEl.value.trim() : '';
+    ['zodiac', 'planet', 'nakshatra', 'chakra', 'dob'].forEach(function (key) {
+      var el = root.querySelector('[data-cpq-field="' + key + '"]');
+      answers[key] = el ? el.value : '';
+    });
+  }
+
+  function validateStep(n) {
+    if (n === 1) return true;
+    if (n === 6) return true;
+    var step = getGroupEl(n);
+    if (!step) return true;
+    var groups = step.querySelectorAll('[data-cpq-required]');
+    for (var i = 0; i < groups.length; i++) {
+      var g = groups[i];
+      var groupKey = g.getAttribute('data-cpq-group');
+      var isMulti = g.hasAttribute('data-cpq-multi');
+      if (isMulti) {
+        if (!answers[groupKey] || answers[groupKey].length === 0) return false;
+      } else if (!answers[groupKey]) return false;
+    }
+    return true;
+  }
+
+  function bindChoices() {
+    root.querySelectorAll('[data-cpq-group]').forEach(function (group) {
+      var key = group.getAttribute('data-cpq-group');
+      var isMulti = group.hasAttribute('data-cpq-multi');
+      if (!answers[key]) answers[key] = isMulti ? [] : '';
+      group.querySelectorAll('[data-cpq-value]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var val = btn.getAttribute('data-cpq-value');
+          if (isMulti) {
+            var idx = answers[key].indexOf(val);
+            if (idx >= 0) {
+              answers[key].splice(idx, 1);
+              btn.setAttribute('aria-pressed', 'false');
+            } else {
+              answers[key].push(val);
+              btn.setAttribute('aria-pressed', 'true');
+            }
+          } else {
+            group.querySelectorAll('[data-cpq-value]').forEach(function (b) {
+              b.setAttribute('aria-pressed', 'false');
+            });
+            btn.setAttribute('aria-pressed', 'true');
+            answers[key] = val;
+          }
+        });
+      });
+    });
+  }
+
+  function scoreProduct(p, a) {
+    var text = (p.keywords + '|' + (p.notes || '') + '|' + (p.title || '') + '|' + (p.collections || []).join('|')).toLowerCase();
+    var score = 0;
+    var reasons = [];
+
+    function addScore(mapKey, answerKey, weight, label) {
+      var val = a[answerKey];
+      if (!val) return;
+      var keys = Array.isArray(val) ? val : [val];
+      keys.forEach(function (k) {
+        var terms = (SCORE_MAP[mapKey] && SCORE_MAP[mapKey][k]) || [k];
+        terms.forEach(function (term) {
+          if (text.indexOf(term) >= 0) {
+            score += weight;
+            if (label && reasons.indexOf(label) === -1) reasons.push(label);
+          }
+        });
+      });
+    }
+
+    addScore('fragranceType', 'fragranceType', 2, 'Matches your fragrance type');
+    addScore('purpose', 'purpose', 4, 'Aligned with your purpose');
+    addScore('mood', 'mood', 4, 'Reflects your mood');
+    addScore('families', 'families', 5, 'Features your preferred notes');
+    addScore('zodiac', 'zodiac', 6, 'Aligned with your zodiac');
+    addScore('planet', 'planet', 6, 'Connected to your planet');
+    addScore('nakshatra', 'nakshatra', 6, 'Resonates with your nakshatra');
+    addScore('chakra', 'chakra', 6, 'Supports your chakra');
+    addScore('intensity', 'intensity', 2, 'Matches your intensity preference');
+
+    if (a.budget === 'premium' || a.budget === 'luxury') {
+      if (text.indexOf('luxury') >= 0 || text.indexOf('oud') >= 0 || text.indexOf('bestseller') >= 0) {
+        score += 3;
+        reasons.push('Premium positioning');
+      }
+    }
+
+    if (p.tags && p.tags.some(function (t) { return String(t).toLowerCase().indexOf('bestseller') >= 0; })) {
+      score += 1;
+    }
+
+    if (!reasons.length) reasons.push('Curated from our attar collection');
+
+    return { score: score, reasons: reasons };
+  }
+
+  function rankProducts() {
+    readAnswers();
+    var ranked = catalog.map(function (p) {
+      var r = scoreProduct(p, answers);
+      return { product: p, score: r.score, reasons: r.reasons };
+    }).filter(function (x) { return x.score > 0; });
+
+    ranked.sort(function (a, b) { return b.score - a.score; });
+    if (!ranked.length) {
+      ranked = catalog.slice(0, 6).map(function (p) {
+        return { product: p, score: 1, reasons: ['Popular attar from Anand Rasa'] };
+      });
+    }
+    return ranked.slice(0, 6);
+  }
+
+  function renderResults(matches) {
+    if (!resultsGrid || !cardTpl) return;
+    resultsGrid.innerHTML = '';
+    var greeting = answers.name ? answers.name + ', here are your signature attar matches' : 'Your signature attar matches';
+    if (resultsTitle) resultsTitle.textContent = greeting;
+    if (resultsLead) {
+      resultsLead.textContent = 'Find the attar that feels aligned with your scent story — curated from our premium attars and natural perfume oils.';
+    }
+
+    matches.forEach(function (match, index) {
+      var p = match.product;
+      var node = cardTpl.content.cloneNode(true);
+      var card = node.querySelector('[data-cpq-card]');
+      var link = node.querySelector('[data-cpq-link]');
+      var img = node.querySelector('[data-cpq-img]');
+      var rank = node.querySelector('[data-cpq-rank]');
+      var type = node.querySelector('[data-cpq-type]');
+      var titleLink = node.querySelector('[data-cpq-title-link]');
+      var desc = node.querySelector('[data-cpq-desc]');
+      var why = node.querySelector('[data-cpq-why]');
+      var use = node.querySelector('[data-cpq-use]');
+      var price = node.querySelector('[data-cpq-price]');
+      var compare = node.querySelector('[data-cpq-compare]');
+      var view = node.querySelector('[data-cpq-view]');
+      var atc = node.querySelector('[data-cpq-atc]');
+
+      if (index === 0 && rank) {
+        rank.hidden = false;
+        rank.textContent = 'Best match';
+      }
+      if (link) { link.href = p.url; link.setAttribute('aria-label', p.title); }
+      if (img) { img.src = p.image; img.alt = p.title; }
+      if (type) type.textContent = p.type || 'Attar';
+      if (titleLink) { titleLink.textContent = p.title; titleLink.href = p.url; }
+      if (desc) desc.textContent = p.description || 'Handcrafted luxury attar from Anand Rasa.';
+      if (why) why.textContent = 'Why this matches you: ' + match.reasons.slice(0, 2).join(' · ');
+      if (use) use.textContent = 'Recommended for: ' + (answers.purpose ? answers.purpose.replace('-', ' ') : 'daily ritual wear');
+      if (price) price.textContent = formatMoney(p.price);
+      if (compare && p.compareAtPrice && p.compareAtPrice > p.price) {
+        compare.hidden = false;
+        compare.textContent = formatMoney(p.compareAtPrice);
+      }
+      if (view) view.href = p.url;
+      if (atc) {
+        atc.disabled = !p.available;
+        atc.addEventListener('click', function () {
+          fetch((window.routes && window.routes.cart_add_url) || '/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ id: p.variantId, quantity: 1 })
+          }).then(function (res) { return res.json(); })
+            .then(function () {
+              atc.classList.add('is-added');
+              atc.textContent = 'Added';
+              document.dispatchEvent(new CustomEvent('cart:refresh'));
+            })
+            .catch(function () { atc.textContent = 'Try again'; });
+        });
+      }
+      resultsGrid.appendChild(node);
+    });
+  }
+
+  function shakeNext() {
+    if (btnNext) {
+      btnNext.classList.add('is-shake');
+      setTimeout(function () { btnNext.classList.remove('is-shake'); }, 350);
+    }
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener('click', function () {
+      readAnswers();
+      if (!validateStep(current)) {
+        shakeNext();
+        return;
+      }
+      if (current >= total) {
+        var matches = rankProducts();
+        form.hidden = true;
+        results.hidden = false;
+        renderResults(matches);
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      showStep(current + 1);
+    });
+  }
+
+  if (btnBack) {
+    btnBack.addEventListener('click', function () {
+      if (current > 1) showStep(current - 1);
+    });
+  }
+
+  if (btnRestart) {
+    btnRestart.addEventListener('click', function () {
+      results.hidden = true;
+      form.hidden = false;
+      showStep(1);
+    });
+  }
+
+  bindChoices();
+  updateProgress();
+})();
+</script>
+
+{%- if section.settings.show_faq -%}
+  {%- assign cpq_faq_schema_count = 0 -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'faq' and block.settings.question != blank -%}
+      {%- assign cpq_faq_schema_count = cpq_faq_schema_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if cpq_faq_schema_count > 0 -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- assign cpq_faq_first = true -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'faq' and block.settings.question != blank -%}
+              {%- unless cpq_faq_first -%},{%- endunless -%}
+              {
+                "@type": "Question",
+                "name": {{ block.settings.question | json }},
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": {{ block.settings.answer | strip_html | strip | json }}
+                }
+              }
+              {%- assign cpq_faq_first = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Custom Perfume Quiz",
+  "tag": "section",
+  "class": "section-custom-perfume-quiz",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Discover your signature attar"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A personalised fragrance consultation — curated from our existing luxury attars and natural perfume oils."
+    },
+    {
+      "type": "textarea",
+      "id": "catalog_collections",
+      "label": "Catalog collections (comma-separated handles)",
+      "default": "bestseller,planet-attars,zodiac-attar,chakra-attar,nakshatra-attar,stress-relief-attar,love-attar,apsara-attars,perfume-series",
+      "info": "Attar products are pulled from these collections. Incense is excluded automatically."
+    },
+    {
+      "type": "url",
+      "id": "collection_link",
+      "label": "Explore all link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust",
+      "label": "Show trust badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_how",
+      "label": "Show how it works",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "how_title",
+      "label": "How it works title",
+      "default": "How it works"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Show FAQ",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "FAQ title",
+      "default": "Fragrance finder FAQ"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Trust badge",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Alcohol-free" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How does the fragrance finder work?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>We match your answers to existing attars in our catalog.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Perfume Quiz",
+      "blocks": [
+        { "type": "trust_badge", "settings": { "label": "Alcohol-free" } },
+        { "type": "trust_badge", "settings": { "label": "Handcrafted" } },
+        { "type": "trust_badge", "settings": { "label": "Natural fragrance" } },
+        { "type": "trust_badge", "settings": { "label": "Long-lasting" } },
+        { "type": "trust_badge", "settings": { "label": "Astrology-inspired" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
