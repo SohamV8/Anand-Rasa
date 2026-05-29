@@ -58,7 +58,7 @@
   {%- assign ar_footer_faq_url = ar_footer_faq_url | strip -%}
   {%- assign ar_footer_bulk_url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url -%}
   {%- if ar_footer_bulk_url == blank -%}{%- capture ar_footer_bulk_url -%}{% render 'ar-page-url', handle: 'bulk-enquiry' %}{%- endcapture -%}{%- endif -%}
-  {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url -%}
+  {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url | default: pages['custom-perfume-quiz'].url -%}
   {%- if ar_footer_find_url == blank -%}{%- capture ar_footer_find_url -%}{% render 'ar-page-url', handle: 'find-fragrance' %}{%- endcapture -%}{%- endif -%}
 
   <div class="arf__main">

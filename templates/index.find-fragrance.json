@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "custom_perfume_quiz": {
+      "type": "custom-perfume-quiz",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "Discover your signature attar",
+        "subheading": "An astrology-inspired fragrance finder — curated from our existing luxury attars, zodiac perfumes, planet attars, and natural perfume oils.",
+        "catalog_collections": "bestseller,planet-attars,zodiac-attar,chakra-attar,nakshatra-attar,stress-relief-attar,love-attar,apsara-attars,perfume-series",
+        "show_trust": true,
+        "show_how": true,
+        "show_faq": true,
+        "padding_top": 40,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": ["custom_perfume_quiz"]
+}

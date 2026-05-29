@@ -1,12 +1,21 @@
 {%- comment -%}
-  Result card markup template — cloned by JS in custom-perfume-quiz.
-  Params: cpq_card_id (unique prefix)
+  Result card template — cloned by custom-perfume-quiz JS.
 {%- endcomment -%}
 <template id="{{ cpq_card_id }}-tpl">
   <article class="cpq-card" data-cpq-card>
     <a class="cpq-card__media" data-cpq-link href="#" aria-label="">
       <span class="cpq-card__rank" data-cpq-rank hidden>Best match</span>
-      <img class="cpq-card__img" data-cpq-img src="" alt="" width="600" height="800" loading="lazy" decoding="async">
+      <img
+        class="cpq-card__img"
+        data-cpq-img
+        src=""
+        alt=""
+        width="600"
+        height="800"
+        loading="lazy"
+        decoding="async"
+        sizes="(min-width: 990px) 320px, (min-width: 640px) 45vw, 92vw"
+      >
     </a>
     <div class="cpq-card__body">
       <p class="cpq-card__type" data-cpq-type></p>
@@ -14,7 +23,11 @@
         <a data-cpq-title-link href=""></a>
       </h3>
       <p class="cpq-card__desc" data-cpq-desc></p>
-      <p class="cpq-card__why" data-cpq-why></p>
+      <p class="cpq-card__notes" data-cpq-notes hidden></p>
+      <div class="cpq-card__match">
+        <p class="cpq-card__match-label">Why this suits you</p>
+        <p class="cpq-card__why" data-cpq-why></p>
+      </div>
       <p class="cpq-card__use" data-cpq-use></p>
       <div class="cpq-card__foot">
         <div class="cpq-card__price-wrap">
@@ -23,7 +36,7 @@
         </div>
         <div class="cpq-card__actions">
           <a class="cpq-card__view" data-cpq-view href="">View attar</a>
-          <button type="button" class="cpq-card__atc" data-cpq-atc>Add to cart</button>
+          <button type="button" class="cpq-card__atc" data-cpq-atc data-variant-id="">Add to cart</button>
         </div>
       </div>
     </div>

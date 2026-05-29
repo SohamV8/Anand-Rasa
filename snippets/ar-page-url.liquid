@@ -21,10 +21,10 @@
       if url == blank
         assign url = contact_fallback_url
       endif
-    when 'find-fragrance', 'find-your-fragrance', 'astro-fragrance-finder'
-      assign url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url
+    when 'find-fragrance', 'find-your-fragrance', 'astro-fragrance-finder', 'custom-perfume', 'custom-perfume-quiz'
+      assign url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url | default: pages['custom-perfume-quiz'].url | default: pages['custom-perfume'].url
       if url == blank
-        assign url = contact_fallback_url
+        assign url = routes.root_url | append: '?view=find-fragrance'
       endif
     when 'vip-club', 'vip'
       assign url = pages['vip-club'].url | default: pages['vip'].url
