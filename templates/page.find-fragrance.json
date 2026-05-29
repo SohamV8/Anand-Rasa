@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "custom_perfume_quiz": {
@@ -6,7 +15,6 @@
         "eyebrow": "Anand Rasa",
         "heading": "Discover your signature attar",
         "subheading": "Choose a fragrance that matches your mood and energy. Our personalised attar consultation curates the best matches from our existing premium Indian perfume oils — alcohol-free, handcrafted, and long-lasting.",
-        "catalog_collections": "bestseller,planet-attars,zodiac-attar,chakra-attar,nakshatra-attar,stress-relief-attar,love-attar,apsara-attars,perfume-series",
         "show_trust": true,
         "show_how": true,
         "show_faq": true,
@@ -15,5 +23,7 @@
       }
     }
   },
-  "order": ["custom_perfume_quiz"]
+  "order": [
+    "custom_perfume_quiz"
+  ]
 }
