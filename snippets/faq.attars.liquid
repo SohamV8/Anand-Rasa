@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {%- liquid
   assign afq_product = product
   if afq_product == blank
@@ -581,3 +582,588 @@
     </script>
   {%- endif -%}
 {%- endif -%}
+=======
+{%- liquid
+  assign afq_product = product
+  if afq_product == blank
+    assign afq_product = faq_product
+  endif
+-%}
+{%- if afq_product != blank -%}
+  {%- liquid
+    assign afq_title_input = title | default: 'Frequently Asked Questions — Attars'
+    assign afq_intro_input = intro | default: 'Explore fragrance notes, emotional use cases, ritual context, and wear guidance for this luxury attar.'
+
+    assign afq_type = afq_product.type | default: '' | downcase
+    assign afq_title_down = afq_product.title | default: '' | downcase
+    assign afq_handle = afq_product.handle | default: '' | downcase
+    assign afq_desc_down = afq_product.description | strip_html | downcase
+    assign afq_tags_down = afq_product.tags | join: '|' | downcase
+    assign afq_collections_down = afq_product.collections | map: 'handle' | join: '|' | downcase
+    assign afq_scope = afq_type | append: '|' | append: afq_title_down | append: '|' | append: afq_handle | append: '|' | append: afq_tags_down | append: '|' | append: afq_collections_down | append: '|' | append: afq_desc_down
+
+    assign afq_is_incense = false
+    if afq_scope contains 'incense' or afq_scope contains 'agarbatti' or afq_scope contains 'dhoop'
+      assign afq_is_incense = true
+    endif
+
+    assign afq_is_attar = false
+    if afq_scope contains 'attar' or afq_scope contains 'perfume oil' or afq_scope contains 'perfume-oil' or afq_scope contains 'fragrance oil'
+      assign afq_is_attar = true
+    endif
+    if afq_is_incense
+      assign afq_is_attar = false
+    endif
+
+    assign afq_stress = false
+    if afq_scope contains 'stress' or afq_scope contains 'calm' or afq_scope contains 'relief' or afq_scope contains 'anxiety'
+      assign afq_stress = true
+    endif
+    assign afq_zodiac = false
+    if afq_scope contains 'zodiac' or afq_scope contains 'aries' or afq_scope contains 'taurus' or afq_scope contains 'gemini' or afq_scope contains 'cancer' or afq_scope contains 'leo' or afq_scope contains 'virgo' or afq_scope contains 'libra' or afq_scope contains 'scorpio' or afq_scope contains 'sagittarius' or afq_scope contains 'capricorn' or afq_scope contains 'aquarius' or afq_scope contains 'pisces'
+      assign afq_zodiac = true
+    endif
+    assign afq_planet = false
+    if afq_scope contains 'planet' or afq_scope contains 'navagraha' or afq_scope contains 'surya' or afq_scope contains 'chandra' or afq_scope contains 'mangal' or afq_scope contains 'budh' or afq_scope contains 'guru' or afq_scope contains 'shukra' or afq_scope contains 'shani' or afq_scope contains 'rahu' or afq_scope contains 'ketu'
+      assign afq_planet = true
+    endif
+    assign afq_nakshatra = false
+    if afq_scope contains 'nakshatra' or afq_scope contains 'ashwini' or afq_scope contains 'bharani' or afq_scope contains 'kritika' or afq_scope contains 'krittika' or afq_scope contains 'rohini' or afq_scope contains 'mrigashira' or afq_scope contains 'ardra' or afq_scope contains 'punarvasu' or afq_scope contains 'pushya' or afq_scope contains 'ashlesha' or afq_scope contains 'magha' or afq_scope contains 'phalguni' or afq_scope contains 'hasta' or afq_scope contains 'chitra' or afq_scope contains 'swati' or afq_scope contains 'vishakha' or afq_scope contains 'anuradha' or afq_scope contains 'jyeshtha' or afq_scope contains 'mula' or afq_scope contains 'ashadha' or afq_scope contains 'shravana' or afq_scope contains 'dhanishtha' or afq_scope contains 'shatabhisha' or afq_scope contains 'bhadrapada' or afq_scope contains 'revati'
+      assign afq_nakshatra = true
+    endif
+    assign afq_chakra = false
+    if afq_scope contains 'chakra' or afq_scope contains 'muladhara' or afq_scope contains 'svadhisthana' or afq_scope contains 'manipura' or afq_scope contains 'anahata' or afq_scope contains 'vishuddha' or afq_scope contains 'ajna' or afq_scope contains 'sahasrara' or afq_scope contains 'third-eye' or afq_scope contains 'heart-chakra' or afq_scope contains 'root-chakra'
+      assign afq_chakra = true
+    endif
+    assign afq_love = false
+    if afq_scope contains 'love' or afq_scope contains 'romance' or afq_scope contains 'passion'
+      assign afq_love = true
+    endif
+    assign afq_meditation = false
+    if afq_scope contains 'meditation' or afq_scope contains 'yoga' or afq_scope contains 'spiritual' or afq_scope contains 'ritual' or afq_scope contains 'pooja' or afq_scope contains 'prayer'
+      assign afq_meditation = true
+    endif
+    assign afq_luxury = false
+    if afq_scope contains 'luxury' or afq_scope contains 'premium' or afq_scope contains 'royal' or afq_scope contains 'signature'
+      assign afq_luxury = true
+    endif
+
+    assign afq_top = afq_product.metafields.custom.top_notes.value | default: '' | strip
+    assign afq_heart = afq_product.metafields.custom.heart_notes.value | default: '' | strip
+    assign afq_base = afq_product.metafields.custom.base_notes.value | default: '' | strip
+    assign afq_longevity = afq_product.metafields.custom.longevity.value | default: '' | strip
+    assign afq_origin = afq_product.metafields.custom.ingredient_origin.value | default: '' | strip
+    assign afq_occasions = afq_product.metafields.custom.occasion_tags.value
+
+    capture afq_notes
+      if afq_top != blank
+        echo afq_top
+      endif
+      if afq_heart != blank
+        if afq_top != blank
+          echo ', '
+        endif
+        echo afq_heart
+      endif
+      if afq_base != blank
+        if afq_top != blank or afq_heart != blank
+          echo ', '
+        endif
+        echo afq_base
+      endif
+    endcapture
+    assign afq_notes = afq_notes | strip
+
+    if afq_notes == blank
+      capture afq_detected_notes
+        if afq_scope contains 'sandalwood'
+          echo 'sandalwood, '
+        endif
+        if afq_scope contains 'rose'
+          echo 'rose, '
+        endif
+        if afq_scope contains 'lavender'
+          echo 'lavender, '
+        endif
+        if afq_scope contains 'oud'
+          echo 'oud, '
+        endif
+        if afq_scope contains 'jasmine'
+          echo 'jasmine, '
+        endif
+        if afq_scope contains 'musk'
+          echo 'musk, '
+        endif
+        if afq_scope contains 'amber'
+          echo 'amber, '
+        endif
+        if afq_scope contains 'vetiver'
+          echo 'vetiver, '
+        endif
+      endcapture
+      assign afq_detected_notes = afq_detected_notes | strip
+      if afq_detected_notes != blank
+        assign afq_notes = afq_detected_notes | split: ', ' | uniq | join: ', '
+      endif
+    endif
+
+    if afq_notes == blank
+      assign afq_notes = 'natural perfume oils, aromatic botanicals, and traditional Indian attar accords'
+    endif
+
+    assign afq_primary_axis = 'daily wear and layering'
+    if afq_chakra
+      assign afq_primary_axis = 'chakra balancing rituals'
+    elsif afq_zodiac
+      assign afq_primary_axis = 'zodiac-aligned fragrance use'
+    elsif afq_planet
+      assign afq_primary_axis = 'planetary fragrance rituals'
+    elsif afq_nakshatra
+      assign afq_primary_axis = 'nakshatra-focused scent practice'
+    elsif afq_stress
+      assign afq_primary_axis = 'stress relief rituals and calming fragrance routines'
+    elsif afq_love
+      assign afq_primary_axis = 'romantic aura and emotional warmth'
+    elsif afq_meditation
+      assign afq_primary_axis = 'meditation and spiritual fragrance routines'
+    endif
+
+    assign afq_qa_blob = ''
+    assign afq_seen = ''
+
+    capture afq_q1
+      echo 'What does '
+      echo afq_product.title
+      echo ' smell like?'
+    endcapture
+    capture afq_a1
+      echo afq_product.title
+      echo ' is a luxury attar with a profile led by '
+      echo afq_notes
+      echo '. It wears as a natural perfume oil with a soft, evolving trail on skin.'
+    endcapture
+    assign afq_qa_blob = afq_qa_blob | append: afq_q1 | append: '|||' | append: afq_a1 | append: '%%'
+    assign afq_seen = afq_seen | append: '|' | append: afq_q1 | downcase | append: '|'
+
+    capture afq_q2
+      echo 'Is '
+      echo afq_product.title
+      echo ' alcohol free?'
+    endcapture
+    assign afq_a2 = 'Yes. This is an alcohol free attar crafted as a concentrated natural perfume oil, suitable for people who prefer non-spray fragrance formats.'
+    assign afq_qa_blob = afq_qa_blob | append: afq_q2 | append: '|||' | append: afq_a2 | append: '%%'
+
+    capture afq_q3
+      echo 'How long does '
+      echo afq_product.title
+      echo ' attar last?'
+    endcapture
+    if afq_longevity != blank
+      assign afq_a3 = 'Typical wear time is ' | append: afq_longevity | append: '. Longevity improves on moisturized skin and when applied on pulse points.'
+    else
+      assign afq_a3 = 'Most long lasting attars remain noticeable for 6 to 10 hours, depending on skin chemistry, weather, and dosage.'
+    endif
+    assign afq_qa_blob = afq_qa_blob | append: afq_q3 | append: '|||' | append: afq_a3 | append: '%%'
+
+    capture afq_q4
+      echo 'How should '
+      echo afq_product.title
+      echo ' be applied?'
+    endcapture
+    assign afq_a4 = 'Apply 1 to 2 small dabs on pulse points such as wrists, neck, and behind ears. Let the perfume oil settle naturally, and avoid rubbing to preserve note development.'
+    assign afq_qa_blob = afq_qa_blob | append: afq_q4 | append: '|||' | append: afq_a4 | append: '%%'
+
+    capture afq_q5
+      echo 'What are the fragrance notes in '
+      echo afq_product.title
+      echo '?'
+    endcapture
+    assign afq_a5 = 'Fragrance notes include ' | append: afq_notes | append: '. This profile supports long-tail searches such as sandalwood attar, rose attar, lavender attar, oud attar, and traditional Indian perfume oils when relevant.'
+    assign afq_qa_blob = afq_qa_blob | append: afq_q5 | append: '|||' | append: afq_a5 | append: '%%'
+
+    capture afq_q6
+      echo 'Can men and women both use '
+      echo afq_product.title
+      echo '?'
+    endcapture
+    assign afq_a6 = 'Yes. This is designed as a unisex fragrance and works well as a natural attar for men and women across daywear, ritual wear, and evening layering.'
+    assign afq_qa_blob = afq_qa_blob | append: afq_q6 | append: '|||' | append: afq_a6 | append: '%%'
+
+    capture afq_q7
+      echo 'Can '
+      echo afq_product.title
+      echo ' be layered with other fragrances?'
+    endcapture
+    assign afq_a7 = 'Yes. Start with this attar on pulse points, then add a complementary perfume mist if desired. Layering works best when combining related families such as floral with woody or resinous with spice.'
+    assign afq_qa_blob = afq_qa_blob | append: afq_q7 | append: '|||' | append: afq_a7 | append: '%%'
+
+    if afq_stress
+      capture afq_q8
+        echo 'Can this attar help with stress relief?'
+      endcapture
+      assign afq_a8 = 'This stress relief attar is often used in calming fragrance oil routines. While not a medical treatment, many users apply it during breathwork, journaling, or evening wind-down rituals.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q8 | append: '|||' | append: afq_a8 | append: '%%'
+    endif
+
+    if afq_meditation
+      capture afq_q9
+        echo 'Is '
+        echo afq_product.title
+        echo ' suitable for meditation?'
+      endcapture
+      assign afq_a9 = 'Yes. This meditation fragrance oil is designed for mindful wear and can be applied before meditation, yoga, prayer, or spiritual routines to support focus and presence.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q9 | append: '|||' | append: afq_a9 | append: '%%'
+    endif
+
+    if afq_chakra
+      assign afq_chakra_name = 'chakra alignment'
+      if afq_scope contains 'root' or afq_scope contains 'muladhara'
+        assign afq_chakra_name = 'Root Chakra (Muladhara)'
+      elsif afq_scope contains 'sacral' or afq_scope contains 'svadhisthana' or afq_scope contains 'swadhisthana'
+        assign afq_chakra_name = 'Sacral Chakra (Svadhisthana)'
+      elsif afq_scope contains 'solar' or afq_scope contains 'manipura'
+        assign afq_chakra_name = 'Solar Plexus Chakra (Manipura)'
+      elsif afq_scope contains 'heart' or afq_scope contains 'anahata'
+        assign afq_chakra_name = 'Heart Chakra (Anahata)'
+      elsif afq_scope contains 'throat' or afq_scope contains 'vishuddha' or afq_scope contains 'vishudha'
+        assign afq_chakra_name = 'Throat Chakra (Vishuddha)'
+      elsif afq_scope contains 'third-eye' or afq_scope contains 'ajna' or afq_scope contains 'agya'
+        assign afq_chakra_name = 'Third Eye Chakra (Ajna)'
+      elsif afq_scope contains 'crown' or afq_scope contains 'sahasrara'
+        assign afq_chakra_name = 'Crown Chakra (Sahasrara)'
+      endif
+      assign afq_q10 = 'Which chakra is this attar associated with?'
+      assign afq_a10 = 'This chakra attar is positioned for ' | append: afq_chakra_name | append: '. Use it in spiritual perfume oil rituals focused on grounding, clarity, compassion, or higher awareness depending on your practice.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q10 | append: '|||' | append: afq_a10 | append: '%%'
+    endif
+
+    if afq_zodiac
+      assign afq_q11 = 'Which zodiac sign is this attar best for?'
+      assign afq_a11 = 'This zodiac perfume is curated for astrology-aligned use. It is typically chosen by users who resonate with the sign themes connected to this attar collection.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q11 | append: '|||' | append: afq_a11 | append: '%%'
+    endif
+
+    if afq_planet
+      assign afq_q12 = 'Which planet is this attar aligned with?'
+      assign afq_a12 = 'This planet attar is part of a Navagraha-inspired fragrance ritual approach. It is generally worn during meditation, mantra, or intention-setting practices connected to planetary energy.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q12 | append: '|||' | append: afq_a12 | append: '%%'
+    endif
+
+    if afq_nakshatra
+      assign afq_q13 = 'Which nakshatra is this attar best for?'
+      assign afq_a13 = 'This nakshatra attar is selected for users exploring fragrance through Vedic birth-star qualities. It supports personalized scent rituals tied to lunar temperament and inner balance.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q13 | append: '|||' | append: afq_a13 | append: '%%'
+    endif
+
+    if afq_love
+      assign afq_q14 = 'Is this attar suitable for love and romantic occasions?'
+      assign afq_a14 = 'Yes. This love attar is commonly used for date nights, gifting, and emotional warmth. Apply lightly on pulse points for a close, intimate scent aura.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q14 | append: '|||' | append: afq_a14 | append: '%%'
+    endif
+
+    if afq_luxury
+      assign afq_q15 = 'Why is this considered a luxury attar?'
+      assign afq_a15 = 'This belongs to our luxury attars category because of concentrated oil format, nuanced note structure, and premium Indian attar craftsmanship inspired by traditional perfumery.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q15 | append: '|||' | append: afq_a15 | append: '%%'
+    endif
+
+    if afq_origin != blank
+      assign afq_q16 = 'Is this a traditional Indian attar?'
+      assign afq_a16 = 'Yes. This profile is rooted in traditional Indian perfume oil culture and references ingredient origin details: ' | append: afq_origin | append: '.'
+      assign afq_qa_blob = afq_qa_blob | append: afq_q16 | append: '|||' | append: afq_a16 | append: '%%'
+    endif
+
+    assign afq_items = afq_qa_blob | split: '%%'
+    assign afq_item_count = 0
+    for afq_item in afq_items
+      if afq_item != blank and afq_item contains '|||'
+        assign afq_item_count = afq_item_count | plus: 1
+      endif
+    endfor
+
+    assign afq_uid = 'afq-' | append: afq_product.id
+  -%}
+
+  {%- if afq_is_attar and afq_item_count > 0 -%}
+    <section class="afq" id="{{ afq_uid }}" aria-label="{{ afq_title_input | escape }}">
+      <div class="afq__inner">
+        <header class="afq__header">
+          <p class="afq__eyebrow">ATTAR KNOWLEDGE</p>
+          <h2 class="afq__title">{{ afq_title_input }}</h2>
+          <p class="afq__intro">{{ afq_intro_input }}</p>
+          <p class="afq__semantic">Built for {{ afq_primary_axis }}, long-tail discovery, AI-readable Q&A retrieval, and voice-search style queries.</p>
+        </header>
+
+        <ul class="afq__list" role="list">
+          {%- assign afq_i = 0 -%}
+          {%- for afq_item in afq_items -%}
+            {%- if afq_item != blank and afq_item contains '|||' -%}
+              {%- assign afq_parts = afq_item | split: '|||' -%}
+              {%- assign afq_q = afq_parts[0] | strip -%}
+              {%- assign afq_a = afq_parts[1] | strip -%}
+              {%- if afq_q != blank and afq_a != blank -%}
+                {%- assign afq_i = afq_i | plus: 1 -%}
+                {%- assign afq_panel_id = afq_uid | append: '-panel-' | append: afq_i -%}
+                {%- assign afq_btn_id = afq_uid | append: '-btn-' | append: afq_i -%}
+                <li class="afq__item{% if afq_i == 1 %} is-open{% endif %}" data-afq-item style="--afq-delay: {{ afq_i | times: 35 }}ms;">
+                  <h3 class="afq__question-wrap">
+                    <button
+                      id="{{ afq_btn_id }}"
+                      class="afq__trigger"
+                      type="button"
+                      aria-expanded="{% if afq_i == 1 %}true{% else %}false{% endif %}"
+                      aria-controls="{{ afq_panel_id }}"
+                      data-afq-trigger
+                    >
+                      <span class="afq__question">{{ afq_q }}</span>
+                      <span class="afq__icon" aria-hidden="true"></span>
+                    </button>
+                  </h3>
+                  <div
+                    id="{{ afq_panel_id }}"
+                    class="afq__panel"
+                    role="region"
+                    aria-labelledby="{{ afq_btn_id }}"
+                    data-afq-panel
+                    {% if afq_i == 1 %}
+                      style="max-height: none;"
+                    {% else %}
+                      style="max-height: 0px;"
+                    {% endif %}
+                  >
+                    <p class="afq__answer">{{ afq_a }}</p>
+                  </div>
+                </li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    </section>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- assign afq_schema_first = true -%}
+          {%- for afq_item in afq_items -%}
+            {%- if afq_item != blank and afq_item contains '|||' -%}
+              {%- assign afq_parts = afq_item | split: '|||' -%}
+              {%- assign afq_q = afq_parts[0] | strip -%}
+              {%- assign afq_a = afq_parts[1] | strip_html | strip -%}
+              {%- if afq_q != blank and afq_a != blank -%}
+                {%- unless afq_schema_first -%},{%- endunless -%}
+                {
+                  "@type": "Question",
+                  "name": {{ afq_q | json }},
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": {{ afq_a | json }}
+                  }
+                }
+                {%- assign afq_schema_first = false -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+
+    <style>
+      #{{ afq_uid }}.afq {
+        margin: clamp(24px, 3vw, 52px) auto 0;
+        padding: 0 clamp(12px, 2vw, 24px);
+        font-family: var(--font-body-family, system-ui, -apple-system, sans-serif);
+      }
+      #{{ afq_uid }} .afq__inner {
+        max-width: min(1240px, 100%);
+        margin: 0 auto;
+        border-radius: 22px;
+        padding: clamp(18px, 2.2vw, 30px);
+        background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(248,245,240,0.76));
+        border: 1px solid rgba(255,255,255,0.55);
+        box-shadow: 0 18px 42px rgba(17, 24, 39, 0.08);
+        backdrop-filter: blur(8px);
+      }
+      #{{ afq_uid }} .afq__header {
+        margin-bottom: clamp(12px, 1.6vw, 18px);
+      }
+      #{{ afq_uid }} .afq__eyebrow {
+        margin: 0 0 8px;
+        font-size: 11px;
+        letter-spacing: 0.19em;
+        color: rgba(71, 63, 54, 0.82);
+        font-weight: 600;
+      }
+      #{{ afq_uid }} .afq__title {
+        margin: 0;
+        color: #111827;
+        font-size: clamp(21px, 2.4vw, 34px);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+      }
+      #{{ afq_uid }} .afq__intro,
+      #{{ afq_uid }} .afq__semantic {
+        margin: 10px 0 0;
+        color: #4b5563;
+        font-size: clamp(13px, 1.18vw, 15px);
+        line-height: 1.72;
+        max-width: 88ch;
+      }
+      #{{ afq_uid }} .afq__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        border-top: 1px solid rgba(17, 24, 39, 0.14);
+      }
+      #{{ afq_uid }} .afq__item {
+        border-bottom: 1px solid rgba(17, 24, 39, 0.14);
+        opacity: 0;
+        transform: translateY(12px);
+        animation: afq-rise 0.52s cubic-bezier(.22, 1, .36, 1) forwards;
+        animation-delay: var(--afq-delay, 0ms);
+      }
+      #{{ afq_uid }} .afq__question-wrap {
+        margin: 0;
+      }
+      #{{ afq_uid }} .afq__trigger {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+        padding: 16px 4px;
+        color: #111827;
+        transition: color 0.24s ease, background-color 0.24s ease;
+      }
+      #{{ afq_uid }} .afq__trigger:hover,
+      #{{ afq_uid }} .afq__trigger:focus-visible {
+        color: #7c2d12;
+      }
+      #{{ afq_uid }} .afq__question {
+        font-size: clamp(14px, 1.26vw, 16px);
+        line-height: 1.55;
+        font-weight: 500;
+      }
+      #{{ afq_uid }} .afq__icon {
+        width: 19px;
+        height: 19px;
+        position: relative;
+        flex-shrink: 0;
+      }
+      #{{ afq_uid }} .afq__icon::before,
+      #{{ afq_uid }} .afq__icon::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 13px;
+        height: 1.8px;
+        border-radius: 999px;
+        background: currentColor;
+        transform: translate(-50%, -50%);
+        transition: transform 0.26s ease, opacity 0.26s ease;
+      }
+      #{{ afq_uid }} .afq__icon::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+      #{{ afq_uid }} .afq__item.is-open .afq__icon::after {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(90deg) scaleX(0.35);
+      }
+      #{{ afq_uid }} .afq__panel {
+        overflow: hidden;
+        transition: max-height 0.34s cubic-bezier(.22, 1, .36, 1);
+        will-change: max-height;
+      }
+      #{{ afq_uid }} .afq__answer {
+        margin: 0;
+        padding: 0 4px 16px;
+        font-size: clamp(13px, 1.15vw, 15px);
+        line-height: 1.76;
+        color: #374151;
+      }
+      @keyframes afq-rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @media (max-width: 749px) {
+        #{{ afq_uid }} .afq__inner {
+          border-radius: 18px;
+          padding: 16px 14px;
+        }
+        #{{ afq_uid }} .afq__trigger {
+          padding: 14px 2px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #{{ afq_uid }} .afq__item,
+        #{{ afq_uid }} .afq__panel,
+        #{{ afq_uid }} .afq__icon::before,
+        #{{ afq_uid }} .afq__icon::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+
+    <script>
+      (function () {
+        var root = document.getElementById('{{ afq_uid }}');
+        if (!root) return;
+        var items = root.querySelectorAll('[data-afq-item]');
+        if (!items.length) return;
+
+        function closeItem(item) {
+          var btn = item.querySelector('[data-afq-trigger]');
+          var panel = item.querySelector('[data-afq-panel]');
+          if (!btn || !panel) return;
+          item.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          panel.style.maxHeight = '0px';
+        }
+
+        function openItem(item) {
+          var btn = item.querySelector('[data-afq-trigger]');
+          var panel = item.querySelector('[data-afq-panel]');
+          if (!btn || !panel) return;
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+
+        items.forEach(function (item, index) {
+          var btn = item.querySelector('[data-afq-trigger]');
+          var panel = item.querySelector('[data-afq-panel]');
+          if (!btn || !panel) return;
+
+          if (index === 0) {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+          } else {
+            panel.style.maxHeight = '0px';
+          }
+
+          btn.addEventListener('click', function () {
+            var isOpen = item.classList.contains('is-open');
+            items.forEach(closeItem);
+            if (!isOpen) openItem(item);
+          });
+        });
+
+        window.addEventListener('resize', function () {
+          var active = root.querySelector('.afq__item.is-open');
+          if (!active) return;
+          var panel = active.querySelector('[data-afq-panel]');
+          if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+        });
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+>>>>>>> b4e26a46dee66f7babe3a303e4f708ad49d6a517
