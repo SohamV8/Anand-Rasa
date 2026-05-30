@@ -10,6 +10,15 @@
         "bg_color": "#FFFFFF"
       }
     },
+    "navagraha_mantras": {
+      "type": "navagraha-mantra",
+      "settings": {
+        "context": "collection",
+        "eyebrow": "Sacred Chant",
+        "title": "Navagraha Mantras",
+        "subtitle": "Authentic Vedic bija mantras for the nine grahas — recited with intention to harmonize planetary energy within your spiritual practice."
+      }
+    },
     "main": {
       "type": "collection-planet",
       "settings": {
@@ -17,5 +26,5 @@
       }
     }
   },
-  "order": ["collection_hero", "main"]
+  "order": ["collection_hero", "navagraha_mantras", "main"]
 }

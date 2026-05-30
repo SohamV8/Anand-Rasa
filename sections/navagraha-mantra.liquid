@@ -1,0 +1,26 @@
+{% comment %}
+  Collection template placeholder — product mantras render via snippets/navagraha-mantra.liquid only.
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Navagraha Mantra",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Product mantras appear automatically on Navagraha product pages. This section is intentionally inactive on collection pages."
+    },
+    {
+      "type": "select",
+      "id": "context",
+      "label": "Context",
+      "options": [
+        { "value": "collection", "label": "Collection (disabled)" },
+        { "value": "product", "label": "Product" }
+      ],
+      "default": "collection"
+    }
+  ],
+  "presets": [{ "name": "Navagraha Mantra" }]
+}
+{% endschema %}

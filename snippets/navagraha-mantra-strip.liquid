@@ -1,0 +1,40 @@
+<article
+  class="ng-mantra__strip{% if featured %} is-featured{% endif %}"
+  data-ng-planet="{{ planet_key }}"
+  data-ng-reveal
+  aria-labelledby="ng-mantra-heading-{{ planet_key }}"
+>
+  <div class="ng-mantra__ornament ng-mantra__ornament--left" aria-hidden="true">
+    <img
+      class="ng-mantra__icon"
+      src="{{ planet_icon | asset_url }}"
+      alt=""
+      width="64"
+      height="64"
+      loading="lazy"
+      decoding="async"
+    >
+  </div>
+
+  <div class="ng-mantra__body">
+    <p class="ng-mantra__eyebrow" id="ng-mantra-heading-{{ planet_key }}">{{ planet_label }} Mantra</p>
+    <p class="ng-mantra__sanskrit" lang="sa"><strong>{{ sanskrit }}</strong></p>
+    <div class="ng-mantra__divider" aria-hidden="true"></div>
+    <p class="ng-mantra__translit"><em>{{ translit }}</em></p>
+    {%- if meaning != blank -%}
+      <p class="ng-mantra__meaning">{{ meaning }}</p>
+    {%- endif -%}
+  </div>
+
+  <div class="ng-mantra__ornament ng-mantra__ornament--right" aria-hidden="true">
+    <img
+      class="ng-mantra__icon"
+      src="{{ planet_icon | asset_url }}"
+      alt=""
+      width="64"
+      height="64"
+      loading="lazy"
+      decoding="async"
+    >
+  </div>
+</article>
