@@ -1,0 +1,137 @@
+{%- comment -%}
+  Premium fragrance pyramid — Top / Heart (incl. Middle) / Base with ingredient cards.
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign fn_top = product.metafields.custom.top_notes.value | default: '' | strip
+    assign fn_heart_meta = product.metafields.custom.heart_notes.value | default: '' | strip
+    assign fn_middle_meta = product.metafields.custom.middle_notes.value | default: '' | strip
+    assign fn_base = product.metafields.custom.base_notes.value | default: '' | strip
+
+    assign fn_mid = ''
+    if fn_heart_meta != blank and fn_middle_meta != blank
+      assign fn_mid = fn_heart_meta | append: ', ' | append: fn_middle_meta
+    elsif fn_heart_meta != blank
+      assign fn_mid = fn_heart_meta
+    else
+      assign fn_mid = fn_middle_meta
+    endif
+
+    assign fn_desc = product.description | strip_html | strip
+    assign fn_desc = fn_desc | replace: 'TOP NOTES', 'Top Notes' | replace: 'Top notes', 'Top Notes' | replace: 'Top Note:', 'Top Notes:' | replace: 'HEART NOTES', 'Heart Notes' | replace: 'Heart notes', 'Heart Notes' | replace: 'Heart Note:', 'Heart Notes:' | replace: 'MIDDLE NOTES', 'Middle Notes' | replace: 'Middle notes', 'Middle Notes' | replace: 'Middle Note:', 'Middle Notes:' | replace: 'BASE NOTES', 'Base Notes' | replace: 'Base notes', 'Base Notes' | replace: 'Base Note:', 'Base Notes:' | replace: 'AROMA PROFILE', 'Aroma Profile' | replace: 'BENEFITS OF', 'Benefits of' | replace: 'KEY TRADITIONAL INGREDIENTS', 'Key Traditional Ingredients'
+
+    if fn_top == blank and fn_desc contains 'Top Notes'
+      assign fn_top_chunks = fn_desc | split: 'Top Notes'
+      if fn_top_chunks.size > 1
+        assign fn_top_raw = fn_top_chunks[1] | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
+        assign fn_top_parts = fn_top_raw | split: ':'
+        if fn_top_parts.size > 1
+          assign fn_top = fn_top_parts[1] | strip
+        else
+          assign fn_top = fn_top_raw | replace: ':', '' | strip
+        endif
+      endif
+    endif
+
+    if fn_mid == blank and fn_desc contains 'Middle Notes'
+      assign fn_mid_chunks = fn_desc | split: 'Middle Notes'
+      if fn_mid_chunks.size > 1
+        assign fn_mid_raw = fn_mid_chunks[1] | split: 'Heart Notes' | first | split: 'Base Notes' | first
+        assign fn_mid_parts = fn_mid_raw | split: ':'
+        if fn_mid_parts.size > 1
+          assign fn_mid = fn_mid_parts[1] | strip
+        else
+          assign fn_mid = fn_mid_raw | replace: ':', '' | strip
+        endif
+      endif
+    endif
+
+    if fn_mid == blank and fn_desc contains 'Heart Notes'
+      assign fn_mid_chunks = fn_desc | split: 'Heart Notes'
+      if fn_mid_chunks.size > 1
+        assign fn_mid_raw = fn_mid_chunks[1] | split: 'Middle Notes' | first | split: 'Base Notes' | first
+        assign fn_mid_parts = fn_mid_raw | split: ':'
+        if fn_mid_parts.size > 1
+          assign fn_mid = fn_mid_parts[1] | strip
+        else
+          assign fn_mid = fn_mid_raw | replace: ':', '' | strip
+        endif
+      endif
+    endif
+
+    if fn_base == blank and fn_desc contains 'Base Notes'
+      assign fn_base_chunks = fn_desc | split: 'Base Notes'
+      if fn_base_chunks.size > 1
+        assign fn_base_raw = fn_base_chunks[1] | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first
+        assign fn_base_parts = fn_base_raw | split: ':'
+        if fn_base_parts.size > 1
+          assign fn_base = fn_base_parts[1] | strip
+        else
+          assign fn_base = fn_base_raw | replace: ':', '' | strip
+        endif
+      endif
+    endif
+
+    if fn_top != blank
+      assign fn_top = fn_top | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | strip
+    endif
+    if fn_mid != blank
+      assign fn_mid = fn_mid | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | strip
+    endif
+    if fn_base != blank
+      assign fn_base = fn_base | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first | strip
+    endif
+
+    assign fn_count = 0
+    if fn_top != blank
+      assign fn_count = fn_count | plus: 1
+    endif
+    if fn_mid != blank
+      assign fn_count = fn_count | plus: 1
+    endif
+    if fn_base != blank
+      assign fn_count = fn_count | plus: 1
+    endif
+  -%}
+
+  {%- if fn_count > 0 -%}
+    {{ 'fragrance-notes.css' | asset_url | stylesheet_tag }}
+
+    <section
+      class="ar-fn ar-fn--full js-ar-fn"
+      aria-labelledby="ar-fn-title-{{ product.id }}"
+    >
+      <div class="ar-fn__header">
+        <h2 id="ar-fn-title-{{ product.id }}" class="ar-fn__title">Fragrance Notes</h2>
+        <p class="ar-fn__subtitle">A harmonious blend crafted with the finest natural notes.</p>
+      </div>
+
+      <div class="ar-fn__frame" style="--ar-fn-cols: {{ fn_count }};">
+        <div class="ar-fn__grid">
+          {%- if fn_top != blank -%}
+            <article class="ar-fn__cell ar-fn__cell--top">
+              <h3 class="ar-fn__label">Top Notes</h3>
+              {% render 'fragrance-note-cards', notes_text: fn_top, tier: 'top' %}
+            </article>
+          {%- endif -%}
+
+          {%- if fn_mid != blank -%}
+            <article class="ar-fn__cell ar-fn__cell--mid">
+              <h3 class="ar-fn__label">Heart Notes</h3>
+              {% render 'fragrance-note-cards', notes_text: fn_mid, tier: 'mid' %}
+            </article>
+          {%- endif -%}
+
+          {%- if fn_base != blank -%}
+            <article class="ar-fn__cell ar-fn__cell--base">
+              <h3 class="ar-fn__label">Base Notes</h3>
+              {% render 'fragrance-note-cards', notes_text: fn_base, tier: 'base' %}
+            </article>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+
+    <script src="{{ 'fragrance-notes.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,200 @@
+{% comment %}
+  Incense stick — specification + comparison tables.
+  Usage: {% render 'incense-spec-compare', section: section %}
+  Omit section to use defaults (e.g. from theme.liquid on default product template).
+{% endcomment %}
+
+{%- liquid
+  if section != blank
+    assign isc_spec_heading = section.settings.spec_table_heading | default: 'Specification'
+    assign isc_spec_origin = section.settings.spec_origin | default: 'India'
+    assign isc_spec_form = section.settings.spec_item_form | default: 'Incense stick'
+    assign isc_spec_type = section.settings.spec_item_type | default: 'Eco-friendly, Organic, Meditation, Vedic'
+    assign isc_spec_sticks = section.settings.spec_sticks | default: 'Around 80'
+    assign isc_spec_burn = section.settings.spec_burn | default: 'More than 1.5 hours'
+    assign isc_spec_length = section.settings.spec_length | default: '6 inches'
+    assign isc_spec_fragrance = section.settings.spec_fragrance
+    assign isc_spec_ingredients = section.settings.spec_ingredients
+    assign isc_compare_heading = section.settings.compare_table_heading | default: 'Comparison'
+    assign isc_col_feature = section.settings.compare_col_feature | default: 'Features'
+    assign isc_col_brand = section.settings.compare_col_brand | default: 'Anand Rasa'
+    assign isc_col_others = section.settings.compare_col_others | default: 'Others'
+    assign isc_f1 = section.settings.compare_feature_1
+    assign isc_f2 = section.settings.compare_feature_2
+    assign isc_f3 = section.settings.compare_feature_3
+    assign isc_f4 = section.settings.compare_feature_4
+    assign isc_f5 = section.settings.compare_feature_5
+  else
+    assign isc_spec_heading = 'Specification'
+    assign isc_spec_origin = 'India'
+    assign isc_spec_form = 'Incense stick'
+    assign isc_spec_type = 'Eco-friendly, Organic, Meditation, Vedic'
+    assign isc_spec_sticks = 'Around 80'
+    assign isc_spec_burn = 'More than 1.5 hours'
+    assign isc_spec_length = '6 inches'
+    assign isc_spec_fragrance = blank
+    assign isc_spec_ingredients = blank
+    assign isc_compare_heading = 'Comparison'
+    assign isc_col_feature = 'Features'
+    assign isc_col_brand = 'Anand Rasa'
+    assign isc_col_others = 'Others'
+    assign isc_f1 = blank
+    assign isc_f2 = blank
+    assign isc_f3 = blank
+    assign isc_f4 = blank
+    assign isc_f5 = blank
+  endif
+
+  if isc_f1 == blank and isc_f2 == blank and isc_f3 == blank
+    assign isc_f1 = 'Clean burning — low smoke'
+    assign isc_f2 = 'Natural ingredients — chemical free'
+    assign isc_f3 = 'Premium quality — handcrafted'
+    assign isc_f4 = 'Vedic fragrance — authentic'
+    assign isc_f5 = 'Environment friendly — sustainable for daily pooja'
+  endif
+-%}
+
+<style>
+  .ar-incense-spec {
+    --isc-ink: #1e2023;
+    --isc-muted: #6b7280;
+    --isc-line: rgba(30, 32, 35, 0.1);
+    --isc-line-strong: rgba(30, 32, 35, 0.16);
+    --isc-surface: #ffffff;
+    --isc-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --isc-sans: 'Jost', system-ui, sans-serif;
+    font-family: var(--isc-sans);
+    color: var(--isc-ink);
+    background: var(--isc-surface);
+  }
+
+  .ar-incense-spec__grid {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 72px 40px 88px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .ar-incense-spec__grid {
+      grid-template-columns: 1fr;
+      padding: 56px 20px 72px;
+    }
+  }
+
+  .ar-incense-spec__h {
+    font-family: var(--isc-serif);
+    font-size: clamp(22px, 2.2vw, 26px);
+    font-weight: 400;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+    color: var(--isc-ink);
+  }
+
+  .ar-incense-spec__specs {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .ar-incense-spec__specs tr { border-bottom: 1px solid var(--isc-line); }
+  .ar-incense-spec__specs td { padding: 16px 0; vertical-align: top; }
+  .ar-incense-spec__specs td:first-child {
+    font-family: var(--isc-sans);
+    color: var(--isc-muted);
+    width: 42%;
+    padding-right: 20px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ar-incense-spec__specs td:last-child { color: var(--isc-ink); font-weight: 400; }
+
+  .ar-incense-spec__compare {
+    border: 1px solid var(--isc-line-strong);
+    overflow: hidden;
+    background: var(--isc-surface);
+  }
+
+  .ar-incense-spec__compare table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .ar-incense-spec__compare th,
+  .ar-incense-spec__compare td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--isc-line);
+  }
+
+  .ar-incense-spec__compare th {
+    font-family: var(--isc-sans);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: rgba(30, 32, 35, 0.04);
+    color: var(--isc-muted);
+  }
+
+  .ar-incense-spec__compare tr:last-child td { border-bottom: none; }
+  .ar-incense-spec__compare td:first-child { font-weight: 500; color: var(--isc-ink); }
+  .ar-incense-spec__compare td { color: var(--isc-muted); }
+  .ar-incense-spec__ok { color: var(--isc-ink); font-size: 15px; }
+  .ar-incense-spec__no { color: #d1d5db; font-size: 15px; }
+</style>
+
+<section class="ar-incense-spec" aria-label="Incense product specifications and comparison">
+  <div class="ar-incense-spec__grid">
+    <div>
+      <h3 class="ar-incense-spec__h">{{ isc_spec_heading }}</h3>
+      <table class="ar-incense-spec__specs">
+        <tbody>
+          <tr><td>Country of Origin</td><td>{{ isc_spec_origin }}</td></tr>
+          <tr><td>Item Form</td><td>{{ isc_spec_form }}</td></tr>
+          <tr><td>Item Type</td><td>{{ isc_spec_type }}</td></tr>
+          <tr><td>Number of Sticks</td><td>{{ isc_spec_sticks }}</td></tr>
+          <tr><td>Burning Time</td><td>{{ isc_spec_burn }}</td></tr>
+          <tr><td>Length</td><td>{{ isc_spec_length }}</td></tr>
+          {%- if isc_spec_fragrance != blank -%}
+            <tr><td>Fragrance</td><td>{{ isc_spec_fragrance }}</td></tr>
+          {%- endif -%}
+          {%- if isc_spec_ingredients != blank -%}
+            <tr><td>Key Ingredients</td><td>{{ isc_spec_ingredients }}</td></tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3 class="ar-incense-spec__h">{{ isc_compare_heading }}</h3>
+      <div class="ar-incense-spec__compare">
+        <table>
+          <thead>
+            <tr>
+              <th>{{ isc_col_feature }}</th>
+              <th>{{ isc_col_brand }}</th>
+              <th>{{ isc_col_others }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for feature in isc_f1 | append: '||' | append: isc_f2 | append: '||' | append: isc_f3 | append: '||' | append: isc_f4 | append: '||' | append: isc_f5 | split: '||' -%}
+              {%- if feature != blank -%}
+                <tr>
+                  <td>{{ feature }}</td>
+                  <td><span class="ar-incense-spec__ok">&#10003;</span></td>
+                  <td><span class="ar-incense-spec__no">&#10007;</span></td>
+                </tr>
+              {%- endif -%}
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

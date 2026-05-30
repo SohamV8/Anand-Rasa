@@ -1,0 +1,301 @@
+/* Premium luxury fragrance notes — editorial composition */
+.ar-fn {
+  --ar-fn-ink: #1a1614;
+  --ar-fn-muted: #5c5650;
+  --ar-fn-gold: #b8956a;
+  --ar-fn-gold-soft: rgba(184, 149, 106, 0.18);
+  --ar-fn-line: rgba(0, 0, 0, 0.08);
+  --ar-fn-bg: #fff;
+  --ar-fn-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ar-fn-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  width: 100%;
+  max-width: 100%;
+  margin: clamp(40px, 5vw, 72px) 0;
+  padding: clamp(16px, 2.5vw, 32px) 0 clamp(24px, 3vw, 40px);
+  background: var(--ar-fn-bg);
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+.ar-fn--full {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ar-fn__header {
+  width: 100%;
+  padding: 0 clamp(20px, 5vw, 64px) clamp(28px, 4vw, 40px);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.ar-fn__title {
+  margin: 0;
+  font-family: 'Poppins', var(--font-heading-family, sans-serif);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ar-fn-ink);
+}
+
+.ar-fn__title::after {
+  content: '';
+  display: block;
+  width: clamp(56px, 10vw, 80px);
+  height: 2px;
+  margin: clamp(14px, 2vw, 18px) auto 0;
+  background: var(--ar-fn-gold);
+  border-radius: 2px;
+}
+
+.ar-fn__subtitle {
+  margin: clamp(14px, 2vw, 18px) auto 0;
+  max-width: 42ch;
+  font-family: 'Poppins', var(--font-heading-family, sans-serif);
+  font-size: clamp(0.9375rem, 1.6vw, 1.0625rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--ar-fn-muted);
+}
+
+.ar-fn__frame {
+  width: 100%;
+  background: var(--ar-fn-bg);
+  border-top: 1px solid var(--ar-fn-line);
+  border-bottom: 1px solid var(--ar-fn-line);
+}
+
+.ar-fn__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ar-fn-cols, 3), minmax(0, 1fr));
+  width: 100%;
+}
+
+@media (max-width: 899px) {
+  .ar-fn__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ar-fn__cell {
+  padding: clamp(28px, 4vw, 48px) clamp(20px, 4vw, 48px);
+  border-right: 1px solid var(--ar-fn-line);
+}
+
+.ar-fn__cell:last-child {
+  border-right: none;
+}
+
+@media (max-width: 899px) {
+  .ar-fn__cell {
+    border-right: none;
+    border-bottom: 1px solid var(--ar-fn-line);
+    padding: clamp(24px, 5vw, 36px) clamp(16px, 4vw, 24px);
+  }
+
+  .ar-fn__cell:last-child {
+    border-bottom: none;
+  }
+}
+
+/* Reveal animation */
+@media (prefers-reduced-motion: no-preference) {
+  .js-ar-fn .ar-fn__title,
+  .js-ar-fn .ar-fn__subtitle {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition:
+      opacity 0.85s var(--ar-fn-ease),
+      transform 0.85s var(--ar-fn-ease);
+  }
+
+  .js-ar-fn .ar-fn__subtitle {
+    transition-delay: 0.06s;
+  }
+
+  .js-ar-fn .ar-fn__frame {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    transition:
+      opacity 0.9s var(--ar-fn-ease) 0.1s,
+      transform 0.9s var(--ar-fn-ease) 0.1s;
+  }
+
+  .js-ar-fn .ar-fn__cell {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    transition:
+      opacity 0.9s var(--ar-fn-ease),
+      transform 0.9s var(--ar-fn-ease);
+    transition-delay: calc(0.18s + var(--ar-fn-i, 0) * 0.12s);
+  }
+
+  .js-ar-fn.ar-fn--vis .ar-fn__title,
+  .js-ar-fn.ar-fn--vis .ar-fn__subtitle,
+  .js-ar-fn.ar-fn--vis .ar-fn__frame,
+  .js-ar-fn.ar-fn--vis .ar-fn__cell {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .js-ar-fn .ar-fn__card {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition:
+      opacity 0.75s var(--ar-fn-ease),
+      transform 0.75s var(--ar-fn-ease),
+      box-shadow 0.45s var(--ar-fn-ease-out);
+    transition-delay: calc(0.28s + var(--ar-fn-i, 0) * 0.08s + var(--ar-fn-card-i, 0) * 0.05s);
+  }
+
+  .js-ar-fn.ar-fn--vis .ar-fn__card {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.ar-fn__cell--top { --ar-fn-i: 0; }
+.ar-fn__cell--mid { --ar-fn-i: 1; }
+.ar-fn__cell--base { --ar-fn-i: 2; }
+
+.ar-fn__label {
+  margin: 0 0 clamp(22px, 3vw, 28px);
+  font-family: 'Poppins', var(--font-heading-family, sans-serif);
+  font-size: clamp(0.8125rem, 1.3vw, 0.9375rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ar-fn-ink);
+}
+
+.ar-fn__label::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--ar-fn-gold);
+  border-radius: 2px;
+}
+
+/* Ingredient cards */
+.ar-fn__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 16px);
+}
+
+@media (max-width: 599px) {
+  .ar-fn__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(10px, 2.5vw, 14px);
+  }
+}
+
+.ar-fn__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: clamp(14px, 2vw, 18px) clamp(8px, 1.2vw, 12px) clamp(16px, 2vw, 20px);
+  border: 1px solid var(--ar-fn-line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  min-height: 0;
+}
+
+.ar-fn__card--text {
+  justify-content: center;
+  min-height: clamp(120px, 22vw, 148px);
+  padding: clamp(16px, 2.5vw, 20px) clamp(10px, 2vw, 14px);
+}
+
+.ar-fn__card-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: clamp(96px, 15vw, 128px);
+  margin: 0 0 clamp(12px, 1.8vw, 16px);
+  padding: clamp(4px, 0.8vw, 8px);
+  box-sizing: border-box;
+}
+
+.ar-fn__card-glow {
+  position: absolute;
+  inset: 8% 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ar-fn-gold-soft) 0%, transparent 72%);
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 0.45s var(--ar-fn-ease-out);
+}
+
+.ar-fn__card-img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  max-width: 92%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  transform: translateZ(0);
+  transition: transform 0.55s var(--ar-fn-ease-out);
+}
+
+.ar-fn__card-name {
+  margin: 0;
+  font-family: 'Poppins', var(--font-heading-family, sans-serif);
+  font-size: clamp(1rem, 1.75vw, 1.125rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ar-fn-ink);
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ar-fn__card:hover,
+  .ar-fn__card:focus-visible {
+    transform: translate3d(0, -4px, 0);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  }
+
+  .ar-fn__card:hover .ar-fn__card-glow,
+  .ar-fn__card:focus-visible .ar-fn__card-glow {
+    opacity: 0.75;
+  }
+
+  .ar-fn__card:hover .ar-fn__card-img,
+  .ar-fn__card:focus-visible .ar-fn__card-img {
+    transform: scale3d(1.05, 1.05, 1);
+  }
+}
+
+.ar-fn__card:focus-visible {
+  outline: 2px solid var(--ar-fn-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-ar-fn .ar-fn__title,
+  .js-ar-fn .ar-fn__subtitle,
+  .js-ar-fn .ar-fn__frame,
+  .js-ar-fn .ar-fn__cell,
+  .js-ar-fn .ar-fn__card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ar-fn__card-img {
+    transition: none;
+  }
+}

@@ -1,0 +1,95 @@
+{%- comment -%}
+  Luxury ambient sound — whitelisted product PDPs only.
+  Metafield: custom.ambient_sound_track (optional track override).
+{%- endcomment -%}
+{%- liquid
+  assign ar_ambient_track = blank
+  assign ar_handle = product.handle | downcase | strip
+  assign ar_title_down = product.title | downcase | strip
+
+  case ar_handle
+    when 'sham-mastani', 'shaam-mastani'
+      assign ar_ambient_track = 'Sham Mastani.mp3'
+    when 'urvashi'
+      assign ar_ambient_track = 'Urvashi.mp3'
+    when 'masakali', 'masa-kali'
+      assign ar_ambient_track = 'Masakali.mp3'
+    when 'baazigar'
+      assign ar_ambient_track = 'Baazigar.mp3'
+    when 'taal-se-taal', 'taal-se-taal-mil'
+      assign ar_ambient_track = 'Taal Se Taal.mp3'
+    when 'ramta-jogi', 'ramta_jogi'
+      assign ar_ambient_track = 'Ramta Jogi.mp3'
+    when 'dard-e-disco', 'dard_e_disco'
+      assign ar_ambient_track = 'Dard E Disco.mp3'
+  endcase
+
+  if ar_ambient_track == blank
+    if ar_title_down contains 'sham mastani' or ar_title_down contains 'shaam mastani'
+      assign ar_ambient_track = 'Sham Mastani.mp3'
+    elsif ar_title_down contains 'urvashi'
+      assign ar_ambient_track = 'Urvashi.mp3'
+    elsif ar_title_down contains 'masakali' or ar_title_down contains 'masa kali'
+      assign ar_ambient_track = 'Masakali.mp3'
+    elsif ar_title_down contains 'baazigar'
+      assign ar_ambient_track = 'Baazigar.mp3'
+    elsif ar_title_down contains 'taal se taal'
+      assign ar_ambient_track = 'Taal Se Taal.mp3'
+    elsif ar_title_down contains 'ramta jogi'
+      assign ar_ambient_track = 'Ramta Jogi.mp3'
+    elsif ar_title_down contains 'dard e disco' or ar_title_down contains 'dard-e-disco'
+      assign ar_ambient_track = 'Dard E Disco.mp3'
+    endif
+  endif
+
+  assign ar_mf_track = product.metafields.custom.ambient_sound_track.value | strip
+  if ar_mf_track != blank
+    assign ar_ambient_track = ar_mf_track
+  endif
+
+  unless ar_ambient_track contains '.mp3'
+    if ar_ambient_track != blank
+      assign ar_ambient_track = ar_ambient_track | append: '.mp3'
+    endif
+  endunless
+
+  assign ar_ambient_url = blank
+  if ar_ambient_track != blank
+    assign ar_ambient_url = 'Music/' | append: ar_ambient_track | asset_url
+  endif
+-%}
+
+{%- if ar_ambient_url != blank -%}
+  {{ 'ar-ambient-sound.css' | asset_url | stylesheet_tag }}
+
+  <div id="ar-ambient" class="ar-ambient" data-track="{{ ar_ambient_url | escape }}">
+    <span class="ar-ambient__live" data-ar-ambient-live aria-live="polite" aria-atomic="true"></span>
+
+    <button
+      type="button"
+      class="ar-ambient__fab is-idle"
+      data-ar-ambient-toggle
+      aria-label="Play ambient sound"
+      aria-pressed="false"
+    >
+      <span class="ar-ambient__ring" aria-hidden="true"></span>
+      <span class="ar-ambient__halo" aria-hidden="true"></span>
+      <span class="ar-ambient__icons" aria-hidden="true">
+        <svg class="ar-ambient__icon ar-ambient__icon--play is-active" data-icon="play" viewBox="0 0 24 24" focusable="false">
+          <path d="M8 5.8v12.4c0 .5.55.8 1 .55l10.2-6.2c.45-.28.45-.92 0-1.2L9 5.25c-.45-.27-1 .05-1 .55z" fill="currentColor"/>
+        </svg>
+        <svg class="ar-ambient__icon ar-ambient__icon--pause" data-icon="pause" viewBox="0 0 24 24" focusable="false">
+          <rect x="6" y="5" width="4.5" height="14" rx="1.2" fill="currentColor"/>
+          <rect x="13.5" y="5" width="4.5" height="14" rx="1.2" fill="currentColor"/>
+        </svg>
+        <svg class="ar-ambient__icon ar-ambient__icon--loader" data-icon="loader" viewBox="0 0 24 24" focusable="false">
+          <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-dasharray="26 52" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </button>
+
+    <audio class="ar-ambient__audio" preload="metadata" loop playsinline hidden></audio>
+  </div>
+
+  <script src="{{ 'ar-ambient-sound.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

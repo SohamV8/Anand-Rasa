@@ -562,8 +562,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {%- assign ar_product_type = product.type | downcase -%}
         {%- assign ar_product_title = product.title | downcase -%}
         {%- assign ar_is_incense = false -%}
-        {%- if ar_product_type contains 'incense' or ar_product_title contains 'incense' -%}
+        {%- if ar_product_type contains 'incense' or ar_product_title contains 'incense' or ar_product_title contains 'agarbatti' -%}
           {%- assign ar_is_incense = true -%}
+        {%- endif -%}
+        {%- if ar_is_incense == false and product.collections != blank -%}
+          {%- for ar_product_collection in product.collections -%}
+            {%- assign ar_collection_handle = ar_product_collection.handle | downcase -%}
+            {%- if ar_collection_handle contains 'incense' or ar_collection_handle contains 'agarbatti' or ar_collection_handle contains 'dhoop' -%}
+              {%- assign ar_is_incense = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
         {%- endif -%}
 
         {%- assign ar_is_planet_product = false -%}
@@ -598,9 +607,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {%- if ar_is_attar_product -%}
           {% render 'faq.attars', product: product %}
         {%- endif -%}
-        <!-- SEO Fix: Product scent profile block -->
-        {% render 'scent-profile', product: product %}
+
         {% render 'customer-care-product', product: product %}
+        {% render 'ambient-sound', product: product %}
       {%- endif -%}
     </main>
 
