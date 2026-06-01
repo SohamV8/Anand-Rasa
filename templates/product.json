@@ -45,14 +45,6 @@
             "custom_liquid": "<div class=\"ar-product-header\">\n\n  <div class=\"ar-trust-badge\">\n    <span class=\"stars\">★★★★★</span>\n    <span class=\"text\"><strong>Excellent</strong> 4.8/5</span>\n    <span class=\"dot\">•</span>\n    <span class=\"text\"><strong>2000+</strong> Reviews</span>\n  </div>\n\n</div>\n\n<style>\n/* Trust Badge */\n.ar-trust-badge{\n    display:flex;\n    align-items:center;\n    justify-content:flex-start; /* Left align */\n    gap:12px;\n    margin-bottom:8px; /* Reduce space below reviews */\n    font-size:16px;\n    color:#4A4038;\n    line-height:1;\n}\n\n.ar-trust-badge .stars{\n    color:#C8A03A;\n    font-size:18px;\n    letter-spacing:2px;\n}\n\n.ar-trust-badge .dot{\n    color:#C8A03A;\n    font-size:14px;\n}\n\n/* Remove top spacing from product title */\n.product__title,\n.product-title,\nh1.product__title,\n.product-single__title{\n    margin-top:0 !important;\n    padding-top:0 !important;\n    line-height:1.05;\n}\n\n/* Mobile */\n@media(max-width:768px){\n    .ar-trust-badge{\n        gap:8px;\n        font-size:14px;\n        margin-bottom:6px;\n    }\n\n    .ar-trust-badge .stars{\n        font-size:16px;\n    }\n}\n</style>"
           }
         },
-        "vendor": {
-          "type": "text",
-          "disabled": true,
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
         "title": {
           "type": "title",
           "settings": {}
@@ -60,6 +52,12 @@
         "price": {
           "type": "price",
           "settings": {}
+        },
+        "custom_liquid_hcBbnq": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"ar-story-block\">\n\n  <p class=\"ar-story-intro\">\n    The attar of magnetic radiance, distilled by hand for over six centuries.\n  </p>\n\n  <div class=\"ar-divider\">\n    <span>✺</span>\n  </div>\n\n  <p class=\"ar-story-text\">\n    Wild turmeric from Kerala highlands. Mysore sandalwood aged fifteen years.\n    Ambergris and Damascus rose. Eight-hour radiance, blessed at sunrise.\n  </p>\n\n</div>\n\n<style>\n.ar-story-block{\n    margin: 12px 0 18px;\n}\n\n.ar-story-intro{\n    font-family: Georgia, serif;\n    font-style: italic;\n    font-size: 16px;\n    line-height: 1.5;\n    color: #7A654C;\n    margin: 0 0 10px;\n}\n\n.ar-divider{\n    position: relative;\n    text-align: center;\n    margin: 8px 0 10px;\n}\n\n.ar-divider:before{\n    content:\"\";\n    position:absolute;\n    left:0;\n    right:0;\n    top:50%;\n    border-top:1px solid #D8C08A;\n}\n\n.ar-divider span{\n    position:relative;\n    background:#F7F5F0;\n    padding:0 8px;\n    color:#C8A03A;\n    font-size:12px;\n}\n\n.ar-story-text{\n    font-family: Georgia, serif;\n    font-size: 13px;\n    line-height: 1.6;\n    color: #6B5A46;\n    margin:0;\n}\n\n/* Mobile */\n@media screen and (max-width:749px){\n\n.ar-story-intro{\n    font-size:15px;\n    margin-bottom:8px;\n}\n\n.ar-story-text{\n    font-size:12px;\n    line-height:1.55;\n}\n\n.ar-divider{\n    margin:6px 0 8px;\n}\n\n}\n</style>"
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -119,9 +117,9 @@
       },
       "block_order": [
         "custom_liquid_6hwbAb",
-        "vendor",
         "title",
         "price",
+        "custom_liquid_hcBbnq",
         "variant_picker",
         "quantity_selector",
         "custom_liquid_GRTktH",
@@ -133,8 +131,8 @@
         "share"
       ],
       "custom_css": [
-        ".ar-trust-badge{color:#4a4038; font-size:15px; margin-bottom:8px; font-family:Georgia, serif;}",
-        ".ar-trust-badge strong{color:#C8A03A; font-weight:500;}"
+        ".ar-trust-badge {color: #4a4038; font-size: 15px; margin-bottom: 8px; font-family: Georgia, serif;}",
+        ".ar-trust-badge strong {color: #c8a03a; font-weight: 500;}"
       ],
       "settings": {
         "enable_sticky_info": true,
