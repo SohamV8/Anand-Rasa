@@ -481,3 +481,215 @@ if (Shopify.designMode) {
   });
 })();
 
+
+
+/* ===== theme-gift-impact.js ===== */
+(function () {
+  'use strict';
+
+  function initSection(root) {
+    if (!root || root.dataset.lgiInit === 'true') return;
+    root.dataset.lgiInit = 'true';
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      root.classList.add('is-visible');
+      return;
+    }
+
+    root.classList.add('lgi--ready');
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -6% 0px', threshold: 0.08 }
+      );
+      observer.observe(root);
+
+      var rect = root.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        root.classList.add('is-visible');
+      }
+    } else {
+      root.classList.add('is-visible');
+    }
+  }
+
+  function boot() {
+    document.querySelectorAll('[data-lgi-section]').forEach(initSection);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  document.addEventListener('shopify:section:load', function (e) {
+    var section = e.target.querySelector('[data-lgi-section]');
+    if (section) initSection(section);
+  });
+})();
+
+
+/* ===== theme-patron-reviews.js ===== */
+(function () {
+  'use strict';
+
+  function revealSection(root) {
+    root.classList.add('is-visible');
+  }
+
+  function initSection(root) {
+    if (!root || root.dataset.prvInit === 'true') return;
+    root.dataset.prvInit = 'true';
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      revealSection(root);
+      return;
+    }
+
+    root.classList.add('prv--ready');
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            revealSection(entry.target);
+            observer.unobserve(entry.target);
+          });
+        },
+        { rootMargin: '0px 0px -5% 0px', threshold: 0.12 }
+      );
+      observer.observe(root);
+
+      var rect = root.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+        requestAnimationFrame(function () {
+          revealSection(root);
+        });
+      }
+    } else {
+      revealSection(root);
+    }
+  }
+
+  function boot() {
+    document.querySelectorAll('[data-prv-section]').forEach(initSection);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  document.addEventListener('shopify:section:load', function (e) {
+    var section = e.target.querySelector('[data-prv-section]');
+    if (section) initSection(section);
+  });
+})();
+
+
+/* ===== theme-product-gallery.js ===== */
+(function () {
+  'use strict';
+
+  function zoomImageUrl(url) {
+    if (!url) return url;
+    var w = 2400;
+    if (/[?&]width=\d+/.test(url)) {
+      return url.replace(/([?&]width=)\d+/g, function (m, p1) {
+        return p1 + w;
+      });
+    }
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'width=' + w;
+  }
+
+  function setActiveIndex(root, index) {
+    if (!root || isNaN(index)) return;
+    var mainImgs = root.querySelectorAll('.aip-gallery__main-img');
+    var thumbs = root.querySelectorAll('.aip-gallery__thumb');
+    mainImgs.forEach(function (img) {
+      img.classList.add('is-hidden');
+    });
+    thumbs.forEach(function (t) {
+      t.classList.remove('is-active');
+      t.removeAttribute('aria-current');
+    });
+    var target = root.querySelector('#aip-img-' + index) || root.querySelector('[data-index="' + index + '"].aip-gallery__main-img');
+    if (target) target.classList.remove('is-hidden');
+    if (thumbs[index]) {
+      thumbs[index].classList.add('is-active');
+      thumbs[index].setAttribute('aria-current', 'true');
+    }
+  }
+
+  function initGallery(root) {
+    if (!root || root.dataset.lmgInit === 'true') return;
+    root.dataset.lmgInit = 'true';
+
+    var thumbs = root.querySelectorAll('.aip-gallery__thumb');
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        var idx = parseInt(thumb.getAttribute('data-index'), 10);
+        if (!isNaN(idx)) setActiveIndex(root, idx);
+      });
+    });
+
+    var zoomBtn = document.getElementById('aip-zoom-btn');
+    var zoomModal = document.getElementById('aip-zoom-modal');
+    var zoomClose = document.getElementById('aip-zoom-close');
+    var zoomImg = document.getElementById('aip-zoom-img');
+
+    if (zoomBtn && zoomModal) {
+      zoomBtn.addEventListener('click', function () {
+        var visible = root.querySelector('.aip-gallery__main-img:not(.is-hidden)');
+        if (visible && zoomImg) {
+          zoomImg.src = zoomImageUrl(visible.currentSrc || visible.src);
+          zoomImg.alt = visible.alt || '';
+        }
+        zoomModal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+
+    function closeZoom() {
+      if (zoomModal) zoomModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if (zoomClose) zoomClose.addEventListener('click', closeZoom);
+    if (zoomModal) {
+      zoomModal.addEventListener('click', function (e) {
+        if (e.target === zoomModal) closeZoom();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeZoom();
+    });
+  }
+
+  function boot() {
+    document.querySelectorAll('[data-aip-gallery]').forEach(initGallery);
+  }
+
+  window.AIPGallery = {
+    setActiveIndex: setActiveIndex,
+    zoomImageUrl: zoomImageUrl,
+    init: initGallery,
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();

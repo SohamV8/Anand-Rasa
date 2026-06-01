@@ -16,13 +16,13 @@
   --ame-sans: var(--font-body-family, system-ui, sans-serif);
   --ame-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ame-panel-h: clamp(300px, 52vh, 560px);
-  min-height: 80vh;
+  min-height: auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   font-family: var(--ame-sans);
   color: var(--ame-ink);
   background: var(--ame-white);
-  padding: clamp(48px, 7vh, 80px) clamp(20px, 4vw, 48px);
+  padding: clamp(32px, 5vh, 56px) clamp(20px, 4vw, 48px);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
@@ -398,8 +398,8 @@
   --ar-fn-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
   max-width: 100%;
-  margin: clamp(48px, 6vw, 88px) 0;
-  padding: clamp(24px, 3vw, 40px) 0 clamp(32px, 4vw, 56px);
+  margin: clamp(28px, 4vw, 48px) 0;
+  padding: clamp(16px, 2.5vw, 28px) 0 clamp(24px, 3vw, 40px);
   background: var(--ar-fn-bg);
   overflow-x: clip;
   box-sizing: border-box;
@@ -408,6 +408,10 @@
 .ar-fn--full {
   margin-left: 0;
   margin-right: 0;
+}
+
+.ame + .ar-fn {
+  margin-top: clamp(20px, 3vw, 32px);
 }
 
 .ar-fn__header {

@@ -643,31 +643,7 @@
     </section>
   {%- endif -%}
 
-  {%- comment -%} ══ 8. TESTIMONIALS ══ {%- endcomment -%}
-  {%- assign review_blocks = section.blocks | where: 'type', 'review' -%}
-  {%- if review_blocks.size > 0 -%}
-    <section class="lux-reviews">
-      <span class="lux-reviews__pre">{{ section.settings.reviews_pre | default: 'Testimonials' }}</span>
-      <h2 class="lux-reviews__h">{{ section.settings.reviews_heading | default: 'Words from Those Who Know' }}</h2>
-      <div class="lux-reviews__grid">
-        {%- for block in review_blocks -%}
-          <div class="lux-review" {{ block.shopify_attributes }}>
-            <div class="lux-review__stars">
-              {%- assign r = block.settings.rating | default: 5 -%}
-              {%- for i in (1..r) -%}<span class="lux-review__star">&#9733;</span>{%- endfor -%}
-            </div>
-            <p class="lux-review__text">&ldquo;{{ block.settings.text }}&rdquo;</p>
-            <p class="lux-review__author">{{ block.settings.author }}</p>
-            {%- if block.settings.location != blank -%}
-              <p class="lux-review__loc">{{ block.settings.location }}</p>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </div>
-    </section>
-  {%- endif -%}
-
-  {%- comment -%} ══ 9. FINAL CTA ══ {%- endcomment -%}
+  {%- comment -%} ══ 8. FINAL CTA ══ {%- endcomment -%}
   <section class="lux-final">
     {%- if section.settings.final_pre != blank -%}
       <span class="lux-final__pre">{{ section.settings.final_pre }}</span>

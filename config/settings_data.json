@@ -162,7 +162,7 @@
       },
       "4275615285897611771": {
         "type": "shopify://apps/fera/blocks/embed/2fbfcfa7-8a04-479f-89a8-0621fa099c51",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },

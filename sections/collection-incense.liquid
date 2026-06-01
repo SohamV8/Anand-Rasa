@@ -1168,9 +1168,6 @@
             if p_tagline == blank and product.description != blank
               assign p_tagline = product.description | strip_html | truncate: 70
             endif
-            assign rating_val   = product.metafields.reviews.rating.value.rating | default: 5
-            assign rating_count = product.metafields.reviews.rating_count | default: 0
-            assign rating_round = rating_val | round
             assign has_sale = false
             if product.compare_at_price > product.price
               assign has_sale = true
@@ -1262,19 +1259,6 @@
               {%- if p_tagline != blank -%}
                 <p class="arc-card__tagline">{{ p_tagline }}</p>
               {%- endif -%}
-
-              <div class="arc-card__stars" aria-label="{{ rating_val }} out of 5 stars">
-                <span class="arc-card__stars-row" aria-hidden="true">
-                  {%- for star in (1..5) -%}
-                    <svg class="arc-star{% if star <= rating_round %} on{% endif %}" viewBox="0 0 24 24">
-                      <path d="m12 2.6 2.97 6.02 6.64.97-4.8 4.68 1.13 6.61L12 17.73l-5.94 3.13 1.13-6.61-4.8-4.68 6.64-.97L12 2.6Z"/>
-                    </svg>
-                  {%- endfor -%}
-                </span>
-                {%- if rating_count > 0 -%}
-                  <span class="arc-card__rc">({{ rating_count }})</span>
-                {%- endif -%}
-              </div>
 
               <div class="arc-card__price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                 <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">

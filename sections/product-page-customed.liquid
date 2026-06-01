@@ -98,11 +98,6 @@
   }
   .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 38ch; margin-bottom: 32px; }
 
-  .aip-info__rating { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
-  .aip-info__stars { display: flex; gap: 4px; }
-  .aip-info__star { font-size: 13px; color: var(--ink); }
-  .aip-info__star-empty { color: #d1d5db; }
-  .aip-info__review-count { font-size: 11px; color: var(--muted-faint); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
 
   .aip-price { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
   .aip-price__now { font-family: var(--serif); font-size: clamp(30px, 3.8vw, 42px); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
@@ -305,15 +300,6 @@
         <h1 class="aip-info__title">{{ product.title }}</h1>
         <p class="aip-info__tagline">{{ section.settings.product_tagline | default: product.metafields.custom.tagline | default: product.description | strip_html | truncate: 140 }}</p>
 
-        {%- assign rating = section.settings.rating | default: 5 -%}
-        <div class="aip-info__rating">
-          <div class="aip-info__stars" aria-label="{{ rating }} out of 5 stars">
-            {%- for i in (1..5) -%}
-              <span class="{% if i > rating %}aip-info__star-empty{% else %}aip-info__star{% endif %}">&#9733;</span>
-            {%- endfor -%}
-          </div>
-          <span class="aip-info__review-count">{{ section.settings.review_count | default: '0' }} reviews</span>
-        </div>
 
         <div class="aip-price" id="aip-price-wrap">
           <span class="aip-price__was" id="aip-price-compare"{% unless product.compare_at_price > product.price %} style="display:none"{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</span>

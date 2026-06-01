@@ -136,9 +136,12 @@
   }
 
   /* Animated hamburger -> X */
+  .ar-nav__mobile-left { display:none; }
+
   .ar-nav__burger {
     display:none;
     position:relative;
+    flex-shrink:0;
     width:42px;
     height:42px;
     border-radius:999px;
@@ -455,17 +458,60 @@
   /* Mobile */
   @media(max-width:900px){
     :root { --ar-nav-h: var(--ar-nav-h-mobile); --ar-nav-h-scrolled: var(--ar-nav-h-mobile); }
-    .ar-nav__inner { grid-template-columns:auto 1fr auto; padding:0 14px; gap:8px; height:var(--ar-nav-h-mobile); }
-    .ar-nav__left  { display:none; }
+    .ar-nav__inner {
+      display:grid;
+      grid-template-columns:minmax(44px, auto) minmax(0, 1fr) minmax(84px, auto);
+      align-items:center;
+      column-gap:8px;
+      padding:0 12px;
+      height:var(--ar-nav-h-mobile);
+    }
+    .ar-nav__left { display:none; }
+    .ar-nav__mobile-left {
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      justify-self:start;
+      min-width:44px;
+      z-index:2;
+    }
+    .ar-nav__burger {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      margin-left:-4px;
+    }
+    .ar-nav__logo {
+      justify-self:center;
+      align-self:center;
+      z-index:1;
+      max-width:min(200px, calc(100vw - 168px));
+      pointer-events:auto;
+    }
+    .ar-nav__logo:hover { transform:translateY(-1px); }
+    .ar-nav__logo-img {
+      height:54px;
+      width:auto;
+      max-height:calc(var(--ar-nav-h-mobile) - 10px);
+    }
+    .ar-nav.is-scrolled .ar-nav__logo-img {
+      height:52px;
+      max-height:calc(var(--ar-nav-h-mobile) - 10px);
+    }
     .ar-nav__right .ar-nav__link,
     .ar-nav__right .ar-mega__trigger,
     .ar-nav__icon--account { display:none; }
-    .ar-nav__right { gap:2px; }
-    .ar-nav__burger { display:inline-flex; align-items:center; justify-content:center; }
-    .ar-nav__logo-img { height:42px; }
-    .ar-nav.is-scrolled .ar-nav__logo-img { height:38px; }
+    .ar-nav__right {
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      justify-self:end;
+      gap:0;
+      min-width:84px;
+      z-index:2;
+    }
     .ar-mega__dropdown { display:none !important; }
-    .ar-nav__icon { width:40px; height:40px; }
+    .ar-nav__icon { width:40px; height:40px; flex-shrink:0; }
     .ar-nav__icon--cart { width:44px; height:44px; }
     .ar-nav__icon--cart .svg-wrapper,
     .ar-nav__icon--cart .svg-wrapper svg { width:28px; height:28px; }
@@ -482,11 +528,21 @@
   }
 
   @media(max-width:480px){
-    .ar-nav__inner { padding:0 8px; }
-    .ar-nav__logo-img { height:38px; }
+    .ar-nav__inner {
+      padding:0 10px;
+      column-gap:6px;
+      grid-template-columns:minmax(40px, auto) minmax(0, 1fr) minmax(78px, auto);
+    }
+    .ar-nav__mobile-left { min-width:40px; }
+    .ar-nav__burger { margin-left:-6px; }
+    .ar-nav__logo { max-width:min(180px, calc(100vw - 152px)); }
+    .ar-nav__logo-img { height:52px; }
+    .ar-nav.is-scrolled .ar-nav__logo-img { height:50px; }
+    .ar-nav__right { min-width:78px; }
     .ar-nav__icon { width:38px; height:38px; }
     .ar-nav__icon .svg-wrapper,
     .ar-nav__icon .svg-wrapper svg { width:22px; height:22px; }
+    .ar-nav__icon--cart { width:40px; height:40px; }
     .ar-nav__icon--cart .svg-wrapper,
     .ar-nav__icon--cart .svg-wrapper svg { width:24px; height:24px; }
   }
@@ -555,6 +611,10 @@
       <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
       <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
       <a href="{{ ar_nav_l3_href }}" class="ar-nav__link">{{ ar_nav_l3_label }}</a>
+    </div>
+
+    <div class="ar-nav__mobile-left">
+      <button class="ar-nav__burger js-ar-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ar-mobile-drawer"><span></span><span></span><span></span></button>
     </div>
 
     <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
@@ -773,8 +833,6 @@
       <button type="button" class="ar-nav__icon ar-nav__icon--cart" id="cart-icon-bubble" data-open-cart-drawer aria-label="Cart">
         {% render 'cart-icon-bubble' %}
       </button>
-
-      <button class="ar-nav__burger js-ar-burger" aria-label="Open menu" aria-expanded="false" aria-controls="ar-mobile-drawer"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>

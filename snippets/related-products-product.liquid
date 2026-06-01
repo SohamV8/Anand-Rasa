@@ -1,0 +1,25 @@
+{%- comment -%}
+  Product page related products — rendered above customer care (layout).
+  Settings match templates/product.json related-products section.
+{%- endcomment -%}
+
+{%- if product != blank -%}
+  {% render 'related-products-render',
+    product: product,
+    rp_uid: 'related-products-pdp',
+    rp_section_id: 'related-products',
+    rp_heading: 'You may also like',
+    rp_heading_size: 'h2',
+    rp_products_to_show: 4,
+    rp_columns_desktop: 4,
+    rp_columns_mobile: '2',
+    rp_color_scheme: 'scheme-1',
+    rp_image_ratio: 'square',
+    rp_image_shape: 'default',
+    rp_show_secondary_image: true,
+    rp_show_vendor: false,
+    rp_show_rating: false,
+    rp_padding_top: 36,
+    rp_padding_bottom: 28
+  %}
+{%- endif -%}

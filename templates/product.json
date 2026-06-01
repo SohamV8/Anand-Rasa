@@ -41,8 +41,9 @@
       "blocks": {
         "custom_liquid_6hwbAb": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
-            "custom_liquid": "<div class=\"ar-product-header\">\n\n  <div class=\"ar-trust-badge\">\n    <span class=\"stars\">★★★★★</span>\n    <span class=\"text\"><strong>Excellent</strong> 4.8/5</span>\n    <span class=\"dot\">•</span>\n    <span class=\"text\"><strong>2000+</strong> Reviews</span>\n  </div>\n\n</div>\n\n<style>\n/* Trust Badge */\n.ar-trust-badge{\n    display:flex;\n    align-items:center;\n    justify-content:flex-start; /* Left align */\n    gap:12px;\n    margin-bottom:8px; /* Reduce space below reviews */\n    font-size:16px;\n    color:#4A4038;\n    line-height:1;\n}\n\n.ar-trust-badge .stars{\n    color:#C8A03A;\n    font-size:18px;\n    letter-spacing:2px;\n}\n\n.ar-trust-badge .dot{\n    color:#C8A03A;\n    font-size:14px;\n}\n\n/* Remove top spacing from product title */\n.product__title,\n.product-title,\nh1.product__title,\n.product-single__title{\n    margin-top:0 !important;\n    padding-top:0 !important;\n    line-height:1.05;\n}\n\n/* Mobile */\n@media(max-width:768px){\n    .ar-trust-badge{\n        gap:8px;\n        font-size:14px;\n        margin-bottom:6px;\n    }\n\n    .ar-trust-badge .stars{\n        font-size:16px;\n    }\n}\n</style>"
+            "custom_liquid": ""
           }
         },
         "title": {
@@ -52,7 +53,7 @@
         "custom_liquid_kXqzJU": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<div class=\"ar-story-block\">\n\n  <p class=\"ar-story-intro\">\n    The attar of magnetic radiance, distilled by hand for over six centuries.\n  </p>\n\n  <div class=\"ar-divider\">\n    <span>✺</span>\n  </div>\n\n  <p class=\"ar-story-text\">\n    Wild turmeric from Kerala highlands. Mysore sandalwood aged fifteen years.\n    Ambergris and Damascus rose. Eight-hour radiance, blessed at sunrise.\n  </p>\n\n</div>\n\n<style>\n.ar-story-block{\n    margin: 12px 0 18px;\n}\n\n.ar-story-intro{\n    font-family: Georgia, serif;\n    font-style: italic;\n    font-size: 16px;\n    line-height: 1.5;\n    color: #7A654C;\n    margin: 0 0 10px;\n}\n\n.ar-divider{\n    position: relative;\n    text-align: center;\n    margin: 8px 0 10px;\n}\n\n.ar-divider:before{\n    content:\"\";\n    position:absolute;\n    left:0;\n    right:0;\n    top:50%;\n    border-top:1px solid #D8C08A;\n}\n\n.ar-divider span{\n    position:relative;\n    background:#F7F5F0;\n    padding:0 8px;\n    color:#C8A03A;\n    font-size:12px;\n}\n\n.ar-story-text{\n    font-family: Georgia, serif;\n    font-size: 13px;\n    line-height: 1.6;\n    color: #6B5A46;\n    margin:0;\n}\n\n/* Mobile */\n@media screen and (max-width:749px){\n\n.ar-story-intro{\n    font-size:15px;\n    margin-bottom:8px;\n}\n\n.ar-story-text{\n    font-size:12px;\n    line-height:1.55;\n}\n\n.ar-divider{\n    margin:6px 0 8px;\n}\n\n}\n</style>"
+            "custom_liquid": "{% render 'attar-product-story', product: product, section: section %}"
           }
         },
         "price": {
@@ -116,7 +117,6 @@
         }
       },
       "block_order": [
-        "custom_liquid_6hwbAb",
         "title",
         "custom_liquid_kXqzJU",
         "price",
@@ -130,17 +130,14 @@
         "description",
         "share"
       ],
-      "custom_css": [
-        ".ar-trust-badge {color: #4a4038; font-size: 15px; margin-bottom: 8px; font-family: Georgia, serif;}",
-        ".ar-trust-badge strong {color: #c8a03a; font-weight: 500;}"
-      ],
+      "custom_css": [],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "media_size": "large",
         "constrain_to_viewport": false,
-        "media_fit": "cover",
-        "gallery_layout": "columns",
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
         "mobile_thumbnails": "show",
         "media_position": "left",
         "image_zoom": "lightbox",
@@ -148,24 +145,6 @@
         "enable_video_looping": false,
         "padding_top": 24,
         "padding_bottom": 0
-      }
-    },
-    "related-products": {
-      "type": "related-products",
-      "settings": {
-        "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "padding_top": 36,
-        "padding_bottom": 28
       }
     },
     "1777290678d5cd77e4": {
@@ -226,26 +205,6 @@
     "1779787285f7f2efa6": {
       "type": "_blocks",
       "settings": {}
-    },
-    "17797829115362eb52": {
-      "type": "apps",
-      "blocks": {
-        "fera_product_reviews_hTwUmK": {
-          "type": "shopify://apps/fera/blocks/product_reviews/2fbfcfa7-8a04-479f-89a8-0621fa099c51",
-          "settings": {
-            "heading": "Product Reviews",
-            "layout": "masonry",
-            "star_color": "#000000",
-            "when_no_reviews": "show"
-          }
-        }
-      },
-      "block_order": [
-        "fera_product_reviews_hTwUmK"
-      ],
-      "settings": {
-        "include_margins": true
-      }
     }
   },
   "order": [
@@ -253,8 +212,6 @@
     "main",
     "1777290678d5cd77e4",
     "17773752734e8faa13",
-    "1779787285f7f2efa6",
-    "17797829115362eb52",
-    "related-products"
+    "1779787285f7f2efa6"
   ]
 }

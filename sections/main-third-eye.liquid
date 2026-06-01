@@ -111,12 +111,6 @@
   }
   .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 40ch; margin-bottom: 20px; }
 
-  .aip-info__rating { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
-  .aip-info__stars { display: flex; gap: 4px; }
-  .aip-info__star { font-size: 13px; color: var(--ink); }
-  .aip-info__star-empty { color: #d1d5db; }
-  .aip-info__review-count { font-size: 11px; color: var(--muted-faint); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
-
   .aip-price { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
   .aip-price__now { font-family: var(--serif); font-size: clamp(30px, 3.8vw, 42px); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
   .aip-price__was { font-size: 17px; color: var(--muted-faint); text-decoration: line-through; font-family: var(--serif); font-weight: 300; }
@@ -365,16 +359,6 @@
         {%- if aip_short != blank -%}
           <p class="aip-info__tagline">{{ aip_short }}</p>
         {%- endif -%}
-
-        {%- assign rating = section.settings.rating | default: 5 -%}
-        <div class="aip-info__rating">
-          <div class="aip-info__stars" aria-label="{{ rating }} out of 5 stars">
-            {%- for i in (1..5) -%}
-              <span class="{% if i > rating %}aip-info__star-empty{% else %}aip-info__star{% endif %}">&#9733;</span>
-            {%- endfor -%}
-          </div>
-          <span class="aip-info__review-count">{{ section.settings.review_count | default: '0' }} reviews</span>
-        </div>
 
         <div class="aip-price" id="aip-price-wrap">
           <span class="aip-price__was" id="aip-price-compare"{% unless product.compare_at_price > product.price %} style="display:none"{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</span>
@@ -928,7 +912,8 @@
     { "type": "text", "id": "product_label", "label": "Product label (hidden in new layout; optional SEO)", "default": "Third Eye Chakra Attar" },
     { "type": "textarea", "id": "short_description", "label": "Short description (below title)", "info": "Shown under the product title. Quantity appears above Add to cart. Overrides the short line when set.", "default": "A focused attar for intuition and clarity — designed to support inner vision and a calm, aware mind during meditation and reflection." },
     { "type": "text", "id": "product_tagline", "label": "Short line (fallback)", "info": "Used if the textarea above is empty. Then metafield, then product excerpt.", "default": "Awareness • Insight • Perception" },
-    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "story_intro", "label": "Editorial intro (italic line)", "info": "Shown under the product title. Leave blank to use automatic copy for this attar." },
+    { "type": "textarea", "id": "story_detail", "label": "Editorial detail paragraph", "info": "Shown below the ✺ divider." },    { "type": "range", "id": "rating", "label": "Star rating (display)", "min": 1, "max": 5, "step": 1, "default": 5 },
     { "type": "text", "id": "review_count", "label": "Review count", "default": "0" },
     { "type": "checkbox", "id": "show_buy_now", "label": "Show Buy Now button", "default": true },
     { "type": "text", "id": "trust_1", "label": "Trust line 1 — Third Eye Chakra", "default": "Intuition & inner vision" },

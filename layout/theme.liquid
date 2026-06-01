@@ -496,6 +496,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {% endstyle %}
 
     {% render 'ar-theme-assets', bundle: 'components-css' %}
+    {%- if request.page_type == 'product' or request.page_type == 'collection' -%}
+      {% render 'ar-theme-assets', bundle: 'features-css' %}
+    {%- endif -%}
+    {%- if request.page_type == 'product' -%}
+      {% render 'ar-theme-assets', bundle: 'product-gallery-css' %}
+    {%- endif -%}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -606,8 +612,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {%- if ar_is_attar_product -%}
           {% render 'faq.attars', product: product, hide_ui: true %}
           {% render 'astro-faq-recommendations-auto' %}
+        {%- endif -%}
+
+        {% render 'patron-reviews', product: product %}
+
+        {%- if ar_is_attar_product -%}
           {% render 'luxury-gift-impact-auto' %}
         {%- endif -%}
+
+        {% render 'related-products-product', product: product %}
 
         {% render 'customer-care-product', product: product %}
         {% render 'ambient-sound', product: product %}

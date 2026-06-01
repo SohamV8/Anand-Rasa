@@ -1,0 +1,11 @@
+{%- comment -%}
+  Anand Rasa feature bundle — gift impact (.lgi) + patron reviews (.prv).
+
+  CSS: theme-features.css (via ar-theme-assets)
+  JS:  theme-interactions.js (loaded in layout on product/collection pages)
+
+  Usage: {% render 'ar-theme-feature-bundle' %}
+  Prefer layout-level load on product/collection; call this only when a section
+  renders outside those templates (e.g. theme editor preview).
+{%- endcomment -%}
+{% render 'ar-theme-assets', bundle: 'features-css' %}

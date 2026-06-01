@@ -74,9 +74,6 @@
     {%- assign lgi_gift_product = all_products[lgi_prod_handle] -%}
   {%- endif -%}
 
-  {% render 'ar-theme-assets', bundle: 'gift-impact-css' %}
-  {% render 'ar-theme-assets', bundle: 'gift-impact-js' %}
-
   {%- assign lgi_uid = 'lgi-auto-' | append: lgi_axis -%}
   {%- if product != blank -%}
     {%- assign lgi_uid = lgi_uid | append: '-' | append: product.id -%}

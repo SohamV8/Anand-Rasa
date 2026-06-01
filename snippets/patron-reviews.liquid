@@ -1,0 +1,76 @@
+{%- comment -%}
+  Patron Reviews — auto for attar & perfume product pages.
+  Usage: {% render 'patron-reviews', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign prv_show = false
+  assign prv_axis = 'generic'
+  assign prv_product_short = 'this attar'
+  assign prv_p = product
+
+  if prv_p == blank
+    assign prv_p = review_product
+  endif
+
+  if prv_p != blank
+    assign prv_type = prv_p.type | default: '' | downcase
+    assign prv_title = prv_p.title | default: '' | downcase
+    assign prv_handle = prv_p.handle | default: '' | downcase
+    assign prv_tags = prv_p.tags | join: '|' | downcase
+    assign prv_cols = prv_p.collections | map: 'handle' | join: '|' | downcase
+    assign prv_scope = prv_type | append: '|' | append: prv_title | append: '|' | append: prv_handle | append: '|' | append: prv_tags | append: '|' | append: prv_cols
+
+    assign prv_excluded = false
+    if prv_scope contains 'incense' or prv_scope contains 'agarbatti' or prv_scope contains 'dhoop'
+      assign prv_excluded = true
+    endif
+
+    assign prv_is_attar = false
+    if prv_scope contains 'attar' or prv_scope contains 'perfume oil' or prv_scope contains 'perfume-oil' or prv_scope contains 'fragrance oil' or prv_scope contains 'perfume' or prv_scope contains 'apsara'
+      assign prv_is_attar = true
+    endif
+    if prv_scope contains 'incense' or prv_scope contains 'agarbatti' or prv_scope contains 'dhoop'
+      assign prv_is_attar = false
+    endif
+
+    unless prv_excluded
+      if prv_is_attar
+        assign prv_show = true
+      endif
+    endunless
+
+    if prv_show
+      assign prv_product_short = prv_p.title | strip
+      assign prv_product_short = prv_product_short | replace: ' Nakshatra Attar', '' | replace: ' Zodiac Attar', '' | replace: ' Planet Attar', '' | replace: ' Chakra Attar', '' | replace: ' Attar', '' | replace: ' Perfume Oil', '' | replace: ' Perfume', '' | strip
+
+      if prv_scope contains 'planet' or prv_scope contains 'navagraha' or prv_scope contains 'navgraha' or prv_scope contains 'surya' or prv_scope contains 'chandra' or prv_scope contains 'mangal' or prv_scope contains 'budh' or prv_scope contains 'guru' or prv_scope contains 'shukra' or prv_scope contains 'shani' or prv_scope contains 'rahu' or prv_scope contains 'ketu'
+        assign prv_axis = 'planet'
+      elsif prv_scope contains 'zodiac' or prv_scope contains 'rashi' or prv_scope contains 'aries' or prv_scope contains 'taurus' or prv_scope contains 'gemini' or prv_scope contains 'cancer' or prv_scope contains 'leo' or prv_scope contains 'virgo' or prv_scope contains 'libra' or prv_scope contains 'scorpio' or prv_scope contains 'sagittarius' or prv_scope contains 'capricorn' or prv_scope contains 'aquarius' or prv_scope contains 'pisces'
+        assign prv_axis = 'zodiac'
+      elsif prv_scope contains 'stress' or prv_scope contains 'shanti' or prv_scope contains 'relief' or prv_scope contains 'anxiety' or prv_scope contains 'calm'
+        assign prv_axis = 'stress'
+      elsif prv_scope contains 'love' or prv_scope contains 'romance' or prv_scope contains 'passion' or prv_scope contains 'mohini'
+        assign prv_axis = 'love'
+      elsif prv_scope contains 'meditation' or prv_scope contains 'yoga' or prv_scope contains 'spiritual' or prv_scope contains 'ritual' or prv_scope contains 'pooja' or prv_scope contains 'prayer' or prv_scope contains 'sacred'
+        assign prv_axis = 'spiritual'
+      elsif prv_scope contains 'perfume-series' or prv_scope contains 'perfume collection' or prv_scope contains 'signature perfume' or prv_scope contains 'luxury perfume'
+        assign prv_axis = 'perfume'
+      elsif prv_scope contains 'luxury' or prv_scope contains 'signature' or prv_scope contains 'premium' or prv_scope contains 'oud' or prv_scope contains 'musk' or prv_scope contains 'sandal'
+        assign prv_axis = 'luxury'
+      else
+        assign prv_axis = 'generic'
+      endif
+    endif
+  endif
+-%}
+
+{%- if prv_show -%}
+  {%- assign prv_uid = 'prv-' | append: prv_p.id -%}
+  {%- render 'patron-reviews-render',
+    prv_uid: prv_uid,
+    prv_axis: prv_axis,
+    prv_product_short: prv_product_short,
+    prv_product_id: prv_p.id
+  -%}
+{%- endif -%}

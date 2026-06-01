@@ -111,13 +111,6 @@
   {%- endif -%}
 
   {%- liquid
-    assign rating_value   = 5
-    if card_product.metafields.reviews.rating.value.rating
-      assign rating_value = card_product.metafields.reviews.rating.value.rating
-    endif
-    assign rating_count   = card_product.metafields.reviews.rating_count | default: 0
-    assign rounded_rating = rating_value | round
-
     assign badge_text  = blank
     assign badge_class = blank
     if product_tags contains 'bestseller'
@@ -289,19 +282,6 @@
             {{ card_product.title | escape }}
           </a>
         </h3>
-
-        <div class="ar-card__rating" aria-label="{{ rating_value }} out of 5 stars">
-          <span class="ar-card__stars" aria-hidden="true">
-            {%- for star in (1..5) -%}
-              <svg class="ar-star{% if star <= rounded_rating %} is-on{% endif %}" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m12 2.6 2.97 6.02 6.64.97-4.8 4.68 1.13 6.61L12 17.73l-5.94 3.13 1.13-6.61-4.8-4.68 6.64-.97L12 2.6Z"/>
-              </svg>
-            {%- endfor -%}
-          </span>
-          {%- if rating_count > 0 -%}
-            <span class="ar-card__rc">({{ rating_count }})</span>
-          {%- endif -%}
-        </div>
 
         <div class="ar-card__price">
           {%- if card_product.compare_at_price > card_product.price -%}

@@ -1,0 +1,22 @@
+{% comment %}
+  Patron Reviews — optional manual section for product templates.
+{% endcomment %}
+
+{%- if product != blank -%}
+  {% render 'patron-reviews', product: product %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Patron Reviews",
+  "tag": "section",
+  "class": "section section-prv",
+  "templates": ["product"],
+  "settings": [],
+  "presets": [
+    {
+      "name": "Patron Reviews"
+    }
+  ]
+}
+{% endschema %}

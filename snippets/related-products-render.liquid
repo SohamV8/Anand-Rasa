@@ -1,0 +1,95 @@
+{%- comment -%}
+  Related products — "You may also like"
+
+  @param product {Product} required
+  @param rp_uid {string} unique id for scoped padding CSS
+  @param rp_section_id {string} section file id for recommendations API (default: related-products)
+  @param rp_heading, rp_heading_size, rp_products_to_show, rp_columns_desktop, rp_columns_mobile
+  @param rp_color_scheme, rp_image_ratio, rp_image_shape
+  @param rp_show_secondary_image, rp_show_vendor, rp_show_rating
+  @param rp_padding_top, rp_padding_bottom
+{%- endcomment -%}
+
+{%- liquid
+  assign rp_product = product
+  assign rp_uid = rp_uid | default: 'related-products-pdp'
+  assign rp_section_id = rp_section_id | default: 'related-products'
+  assign rp_heading = rp_heading | default: 'You may also like'
+  assign rp_heading_size = rp_heading_size | default: 'h2'
+  assign rp_products_to_show = rp_products_to_show | default: 4
+  assign rp_columns_desktop = rp_columns_desktop | default: 4
+  assign rp_columns_mobile = rp_columns_mobile | default: '2'
+  assign rp_color_scheme = rp_color_scheme | default: 'scheme-1'
+  assign rp_image_ratio = rp_image_ratio | default: 'square'
+  assign rp_image_shape = rp_image_shape | default: 'default'
+  assign rp_show_secondary_image = rp_show_secondary_image | default: true, allow_false: true
+  assign rp_show_vendor = rp_show_vendor | default: false, allow_false: true
+  assign rp_show_rating = rp_show_rating | default: false, allow_false: true
+  assign rp_padding_top = rp_padding_top | default: 36
+  assign rp_padding_bottom = rp_padding_bottom | default: 28
+-%}
+
+{%- if rp_product == blank -%}
+{%- else -%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+
+{%- if rp_image_shape == 'blob' -%}
+  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- style -%}
+  .section-{{ rp_uid }}-padding {
+    padding-top: {{ rp_padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ rp_padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ rp_uid }}-padding {
+      padding-top: {{ rp_padding_top }}px;
+      padding-bottom: {{ rp_padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ rp_color_scheme }} gradient">
+  <product-recommendations
+    class="related-products page-width section-{{ rp_uid }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+    data-url="{{ routes.product_recommendations_url }}?limit={{ rp_products_to_show }}"
+    data-section-id="{{ rp_section_id }}"
+    data-product-id="{{ rp_product.id }}"
+  >
+    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+      <h2 class="related-products__heading inline-richtext {{ rp_heading_size }}">
+        {{ rp_heading }}
+      </h2>
+      <ul
+        class="grid product-grid grid--{{ rp_columns_desktop }}-col-desktop grid--{{ rp_columns_mobile }}-col-tablet-down"
+        role="list"
+      >
+        {%- assign skip_card_product_styles = false -%}
+        {%- for recommendation in recommendations.products -%}
+          <li class="grid__item">
+            {% render 'card-product',
+              card_product: recommendation,
+              media_aspect_ratio: rp_image_ratio,
+              image_shape: rp_image_shape,
+              show_secondary_image: rp_show_secondary_image,
+              show_vendor: rp_show_vendor,
+              show_rating: rp_show_rating,
+              skip_styles: skip_card_product_styles
+            %}
+          </li>
+          {%- assign skip_card_product_styles = true -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </product-recommendations>
+  {%- if rp_image_shape == 'arch' -%}
+    {{ 'mask-arch.svg' | inline_asset_content }}
+  {%- endif -%}
+</div>
+
+{%- endif -%}

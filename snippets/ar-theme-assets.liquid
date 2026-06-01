@@ -2,7 +2,9 @@
   Consolidated Anand Rasa theme asset loader.
 
   @param bundle {string}
-    components-css | collections-css | product-css | product-js | interactions-js
+    components-css | collections-css | product-css | product-js | product-gallery-css
+    | interactions-js | features-css | features
+    | gift-impact-css | patron-reviews-css | gift-impact-js | patron-reviews-js (legacy aliases)
 {%- endcomment -%}
 
 {%- case bundle -%}
@@ -12,12 +14,14 @@
     {{ 'theme-collections.css' | asset_url | stylesheet_tag }}
   {%- when 'product-css' -%}
     {{ 'theme-product.css' | asset_url | stylesheet_tag }}
+  {%- when 'product-gallery-css' -%}
+    {{ 'theme-product-gallery.css' | asset_url | stylesheet_tag }}
   {%- when 'product-js' -%}
     <script src="{{ 'theme-product.js' | asset_url }}" defer="defer"></script>
   {%- when 'interactions-js' -%}
     <script src="{{ 'theme-interactions.js' | asset_url }}" defer="defer"></script>
-  {%- when 'gift-impact-css' -%}
-    {{ 'theme-gift-impact.css' | asset_url | stylesheet_tag }}
-  {%- when 'gift-impact-js' -%}
-    <script src="{{ 'theme-gift-impact.js' | asset_url }}" defer="defer"></script>
+  {%- when 'features', 'features-css', 'gift-impact-css', 'patron-reviews-css' -%}
+    {{ 'theme-features.css' | asset_url | stylesheet_tag }}
+  {%- when 'gift-impact-js', 'patron-reviews-js' -%}
+    {%- comment -%} Bundled in theme-interactions.js {%- endcomment -%}
 {%- endcase -%}

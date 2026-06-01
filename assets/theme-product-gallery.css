@@ -1,0 +1,513 @@
+/* Luxury editorial gallery — fixes Dawn aspect-ratio + scroll-trigger conflicts */
+
+.product__media-wrapper media-gallery.lmg-dawn {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+media-gallery.lmg-dawn {
+  --lmg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --lmg-ivory-soft: #faf8f5;
+  --lmg-gold: #b8943a;
+  --lmg-gold-soft: rgba(184, 148, 58, 0.35);
+  --lmg-gold-glow: rgba(184, 148, 58, 0.2);
+  --lmg-separator: rgba(30, 32, 35, 0.08);
+  --lmg-thumb: 60px;
+  --lmg-stage-max: min(80vh, 720px);
+  --lmg-stage-min: min(420px, 55vw);
+  --lmg-gap: 10px;
+  display: block;
+  width: 100%;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__shell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  gap: var(--lmg-gap);
+}
+
+/* CRITICAL: Dawn scroll-trigger hides hero until scroll — disable inside gallery */
+media-gallery.lmg-dawn .product__media-item.scroll-trigger,
+media-gallery.lmg-dawn .product__media-item.scroll-trigger.animate--fade-in {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Main viewer */
+media-gallery.lmg-dawn .lmg-dawn__viewer {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__viewer .global-media-settings,
+media-gallery.lmg-dawn .lmg-dawn__media.global-media-settings {
+  border: none !important;
+  box-shadow: none !important;
+  max-width: 100% !important;
+}
+
+/* Media list — must have height for absolute slides */
+media-gallery.lmg-dawn .product__media-list {
+  display: block !important;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  min-height: var(--lmg-stage-min);
+  position: relative;
+}
+
+media-gallery.lmg-dawn .product__media-item {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Active slide always visible (overrides Dawn display:none) */
+media-gallery.lmg-dawn .product__media-item.is-active {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 2;
+}
+
+@media screen and (min-width: 750px) {
+  media-gallery.lmg-dawn .lmg-dawn__shell {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumbs {
+    flex: 0 0 var(--lmg-thumb);
+    width: var(--lmg-thumb);
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    max-width: none;
+  }
+
+  media-gallery.lmg-dawn .product__media-list {
+    min-height: var(--lmg-stage-min);
+  }
+
+  /* Inactive slides stacked for fade; active holds layout height */
+  media-gallery.lmg-dawn .product__media-item:not(.is-active) {
+    position: absolute !important;
+    inset: 0;
+    width: 100% !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    display: block !important;
+    z-index: 1;
+  }
+
+  media-gallery.lmg-dawn .product__media-item.is-active {
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* CRITICAL: Reset Dawn aspect-ratio padding box — use natural image sizing */
+media-gallery.lmg-dawn .lmg-dawn__media .media,
+media-gallery.lmg-dawn .product-media-container .media {
+  padding-top: 0 !important;
+  height: auto !important;
+  min-height: var(--lmg-stage-min);
+  max-height: none;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  background: transparent;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__media .media > img,
+media-gallery.lmg-dawn .lmg-dawn__media .media > .lmg-dawn__img,
+media-gallery.lmg-dawn .product-media-container .media > img,
+media-gallery.lmg-dawn .product-media-container .media img {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: var(--lmg-stage-max) !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  margin: 0 auto;
+  display: block !important;
+  transition: opacity 0.55s var(--lmg-ease), transform 0.85s var(--lmg-ease);
+}
+
+media-gallery.lmg-dawn .lmg-dawn__media,
+media-gallery.lmg-dawn .product-media-container {
+  width: 100%;
+  max-width: 100% !important;
+  background: transparent !important;
+}
+
+media-gallery.lmg-dawn .product__modal-opener {
+  display: block;
+  width: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  media-gallery.lmg-dawn .product__media-item.is-active .product__media:hover img {
+    transform: scale(1.012);
+  }
+}
+
+media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons {
+  display: none !important;
+}
+
+/* Thumbnails */
+media-gallery.lmg-dawn .lmg-dawn__thumbs {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__thumbs > .slider-button {
+  display: none !important;
+}
+
+media-gallery.lmg-dawn .thumbnail-list {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+media-gallery.lmg-dawn .thumbnail-list::-webkit-scrollbar {
+  display: none;
+}
+
+media-gallery.lmg-dawn .thumbnail-list__item {
+  flex: 0 0 var(--lmg-thumb);
+  width: var(--lmg-thumb) !important;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 3px !important;
+  background: var(--lmg-ivory-soft) !important;
+  border: 1px solid var(--lmg-separator) !important;
+  border-radius: 3px !important;
+  overflow: hidden;
+  transition:
+    transform 0.4s var(--lmg-ease),
+    border-color 0.35s var(--lmg-ease),
+    box-shadow 0.35s var(--lmg-ease);
+}
+
+media-gallery.lmg-dawn .lmg-dawn__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__thumb[aria-current='true'] {
+  border-color: var(--lmg-gold) !important;
+  box-shadow: 0 0 0 1px var(--lmg-gold-glow);
+}
+
+@media screen and (min-width: 750px) {
+  media-gallery.lmg-dawn {
+    --lmg-thumb: clamp(92px, 6.25vw, 104px);
+    --lmg-gap: 14px;
+    --lmg-stage-min: min(460px, 50vh);
+    --lmg-stage-max: min(78vh, 680px);
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__shell {
+    gap: var(--lmg-gap);
+  }
+
+  media-gallery.lmg-dawn .thumbnail-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-height: var(--lmg-stage-max);
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  media-gallery.lmg-dawn .thumbnail-list__item {
+    width: var(--lmg-thumb) !important;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumb {
+    padding: 4px !important;
+    box-shadow: 0 1px 4px rgba(30, 32, 35, 0.06);
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumb[aria-current='true'] {
+    border-color: var(--lmg-gold) !important;
+    box-shadow:
+      0 0 0 1px var(--lmg-gold-soft),
+      0 4px 16px var(--lmg-gold-glow);
+    transform: scale(1.02);
+  }
+
+  media-gallery.lmg-dawn .product__media-item {
+    transition: opacity 0.7s var(--lmg-ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    media-gallery.lmg-dawn .lmg-dawn__thumb:hover {
+      border-color: var(--lmg-gold-soft) !important;
+      box-shadow: 0 4px 14px rgba(30, 32, 35, 0.1);
+      transform: scale(1.03);
+    }
+  }
+}
+
+/* Mobile — stacked hero + horizontal peek carousel + thumb row (reference layout) */
+@media screen and (max-width: 749px) {
+  media-gallery.lmg-dawn {
+    --lmg-thumb: 72px;
+    --lmg-mobile-active-border: #1e2023;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__shell {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer {
+    order: -1;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    width: calc(100% + 3rem);
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumbs {
+    order: 1;
+    width: 100%;
+    padding: 0 1.5rem;
+    margin: 0;
+  }
+
+  /* Restore Dawn horizontal peek slider (overrides desktop block/fade rules) */
+  media-gallery.lmg-dawn .product__media-list {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    width: 100% !important;
+    min-height: 0;
+    margin: 0 0 0.25rem !important;
+    padding: 0;
+    position: relative;
+  }
+
+  media-gallery.lmg-dawn .product__media-list .product__media-item {
+    width: calc(100% - 3rem - var(--grid-mobile-horizontal-spacing)) !important;
+    max-width: none !important;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    box-sizing: content-box;
+  }
+
+  media-gallery.lmg-dawn .product__media-list .product__media-item:first-of-type {
+    margin-left: 1.5rem;
+  }
+
+  media-gallery.lmg-dawn .product__media-item,
+  media-gallery.lmg-dawn .product__media-item.is-active,
+  media-gallery.lmg-dawn .product__media-item:not(.is-active) {
+    display: block !important;
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: auto;
+    transition: none;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer .product-media-container .media {
+    min-height: auto;
+    padding-top: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer .product-media-container .media > img,
+  media-gallery.lmg-dawn .lmg-dawn__viewer .product-media-container .media img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: min(100vw, 90vw) !important;
+    object-fit: contain !important;
+    margin: 0 auto;
+    transition: none;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons {
+    display: none !important;
+  }
+
+  /* Thumbnail row — square, left-aligned, black active border */
+  media-gallery.lmg-dawn .thumbnail-list {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  media-gallery.lmg-dawn .thumbnail-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  media-gallery.lmg-dawn .thumbnail-list__item {
+    flex: 0 0 var(--lmg-thumb);
+    width: var(--lmg-thumb) !important;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumb {
+    padding: 0 !important;
+    background: rgb(var(--color-background)) !important;
+    border: 1px solid transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: border-color 0.25s var(--lmg-ease);
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumb img {
+    object-fit: contain !important;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumb[aria-current='true'] {
+    border: 2px solid var(--lmg-mobile-active-border) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__thumbs > .slider-button {
+    display: none !important;
+  }
+}
+
+product-modal.lmg-dawn-modal .product-media-modal__content img {
+  max-height: 88vh;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  media-gallery.lmg-dawn *,
+  media-gallery.lmg-dawn *::before,
+  media-gallery.lmg-dawn *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Desktop PDP editorial balance — luxury gallery only; mobile (≤749px) unchanged */
+@media screen and (min-width: 990px) {
+  .product--lmg-pdp.product--large:not(.product--no-media) .product__media-wrapper {
+    max-width: 58%;
+    width: calc(58% - var(--grid-desktop-horizontal-spacing) / 2);
+    margin-right: auto;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: clamp(0.75rem, 1.5vw, 1.75rem);
+  }
+
+  .product--lmg-pdp.product--large:not(.product--no-media) .product__info-wrapper {
+    max-width: 42%;
+    width: calc(42% - var(--grid-desktop-horizontal-spacing) / 2);
+    padding-left: clamp(2rem, 2.8vw, 3.25rem);
+    padding-right: 0;
+  }
+
+  .product--lmg-pdp.product--large:not(.product--no-media).product--right .product__info-wrapper {
+    padding-left: 0;
+    padding-right: clamp(2rem, 2.8vw, 3.25rem);
+  }
+
+  .product--lmg-pdp.product--large:not(.product--no-media).product--right .product__media-wrapper {
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: clamp(0.75rem, 1.5vw, 1.75rem);
+    padding-right: 0;
+  }
+
+  .product--lmg-pdp.product--medium:not(.product--no-media) .product__media-wrapper,
+  .product--lmg-pdp.product--small:not(.product--no-media) .product__info-wrapper {
+    max-width: 52%;
+    width: calc(52% - var(--grid-desktop-horizontal-spacing) / 2);
+    margin-right: auto;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+
+  .product--lmg-pdp.product--medium:not(.product--no-media) .product__info-wrapper,
+  .product--lmg-pdp.product--small:not(.product--no-media) .product__media-wrapper {
+    max-width: 48%;
+    width: calc(48% - var(--grid-desktop-horizontal-spacing) / 2);
+    padding-left: clamp(1.75rem, 2.5vw, 3rem);
+  }
+
+  .product--lmg-pdp.product--medium:not(.product--no-media).product--right .product__media-wrapper,
+  .product--lmg-pdp.product--small:not(.product--no-media).product--right .product__info-wrapper {
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: clamp(0.75rem, 1.5vw, 1.5rem);
+    padding-right: 0;
+  }
+
+  .product--lmg-pdp.product--medium:not(.product--no-media).product--right .product__info-wrapper,
+  .product--lmg-pdp.product--small:not(.product--no-media).product--right .product__media-wrapper {
+    padding-left: 0;
+    padding-right: clamp(1.75rem, 2.5vw, 3rem);
+  }
+
+  .product--lmg-pdp .product__media-wrapper media-gallery.lmg-dawn {
+    margin-left: 0;
+  }
+
+  .product--lmg-pdp .product__media-wrapper media-gallery.lmg-dawn .lmg-dawn__shell {
+    justify-content: flex-start;
+  }
+}

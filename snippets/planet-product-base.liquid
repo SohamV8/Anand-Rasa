@@ -42,60 +42,11 @@
   .aip-hero__grid { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: clamp(48px, 7vw, 96px); align-items: start; }
   @media (max-width: 1024px) { .aip-hero__grid { grid-template-columns: 1fr; gap: 48px; } }
 
-  .aip-gallery { display: flex; flex-direction: row; gap: 24px; align-items: flex-start; width: 100%; }
-  @media (max-width: 600px) {
-    .aip-gallery { flex-direction: column; gap: 16px; }
-    .aip-gallery__stage { order: -1; width: 100%; max-width: 100%; }
-    .aip-gallery__thumbs-scroll { order: 1; }
-  }
-
-  .aip-gallery__thumbs-scroll {
-    display: flex; flex-direction: column; gap: 12px; width: 80px; flex-shrink: 0;
-    max-height: min(540px, 68vh); overflow-y: auto; overflow-x: hidden; padding-right: 4px;
-    scrollbar-width: thin;
-  }
-  .aip-gallery__thumbs-scroll::-webkit-scrollbar { width: 3px; }
-  .aip-gallery__thumbs-scroll::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
-  @media (max-width: 600px) {
-    .aip-gallery__thumbs-scroll { flex-direction: row; width: 100%; max-height: none; overflow-x: auto; padding-bottom: 6px; gap: 10px; }
-  }
-
-  .aip-gallery__thumb {
-    width: 72px; height: 72px; flex-shrink: 0; overflow: hidden; border: 1px solid var(--line);
-    border-radius: 0; cursor: pointer; background: var(--surface); padding: 0; transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .aip-gallery__thumb.is-active { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
-  .aip-gallery__thumb img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
-
-  .aip-gallery__stage {
-    flex: 1; min-width: 0; width: 100%; background: var(--surface); border-radius: 0; overflow: hidden;
-    border: 1px solid var(--line); box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
-  }
-  .aip-gallery__main {
-    position: relative; aspect-ratio: 1; width: 100%; overflow: hidden;
-    min-height: 280px;
-  }
-  @media (max-width: 600px) {
-    .aip-gallery__main { min-height: min(92vw, 480px); }
-  }
-  .aip-gallery__main-img {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center;
-    transition: opacity 0.45s ease, transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    display: block;
-  }
-  .aip-gallery__main-img.is-hidden { opacity: 0; pointer-events: none; }
-  .aip-gallery__stage:hover .aip-gallery__main-img:not(.is-hidden) { transform: scale(1.05); }
-
   .aip-gallery__badge { position: absolute; top: 20px; left: 20px; z-index: 5; display: flex; flex-direction: column; gap: 8px; }
   .aip-gallery__tag { font-family: var(--sans); font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 14px; background: var(--ink); color: #ffffff; }
   .aip-gallery__tag--sale { background: #2d2d2d; }
   .aip-gallery__tag--bs { background: #1a1a1a; }
 
-  .aip-gallery__zoom {
-    position: absolute; bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%;
-    background: rgba(255, 255, 255, 0.96); border: 1px solid var(--line-strong); display: flex; align-items: center; justify-content: center; z-index: 6; transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .aip-gallery__zoom:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
   .aip-gallery__zoom svg { width: 18px; height: 18px; color: var(--ink); }
 
   .aip-info { padding-top: 4px; animation: aipFade 0.85s ease both; }
@@ -106,12 +57,6 @@
     letter-spacing: -0.03em; margin-bottom: 20px; color: var(--ink);
   }
   .aip-info__tagline { font-size: 16px; line-height: 1.65; color: var(--muted); font-weight: 300; max-width: 40ch; margin-bottom: 20px; }
-  .aip-info__rating { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
-  .aip-info__stars { display: flex; gap: 4px; }
-  .aip-info__star { font-size: 13px; color: var(--ink); }
-  .aip-info__star-empty { color: #d1d5db; }
-  .aip-info__review-count { font-size: 11px; color: var(--muted-faint); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
-
   .aip-price { display: flex; align-items: baseline; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
   .aip-price__now { font-family: var(--serif); font-size: clamp(30px, 3.8vw, 42px); font-weight: 400; letter-spacing: -0.02em; color: var(--ink); }
   .aip-price__was { font-size: 17px; color: var(--muted-faint); text-decoration: line-through; font-family: var(--serif); font-weight: 300; }
@@ -272,85 +217,13 @@
 
   <div class="aip-hero">
     <div class="aip-hero__grid">
-      <div class="aip-gallery">
-        {%- if product.images.size > 1 -%}
-          <div class="aip-gallery__thumbs-scroll" role="list">
-            {%- for image in product.images limit: 10 -%}
-              <button type="button" class="aip-gallery__thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}">
-                <img src="{{ image | image_url: width: 360 }}" alt="{{ image.alt | default: product.title }}" width="72" height="72" loading="lazy">
-              </button>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        <div class="aip-gallery__stage">
-          <div class="aip-gallery__main" id="aip-main-img-wrap">
-            {%- for image in product.images -%}
-              <img
-                src="{{ image | image_url: width: 1800 }}"
-                srcset="{{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w, {{ image | image_url: width: 1800 }} 1800w, {{ image | image_url: width: 2400 }} 2400w"
-                sizes="(max-width: 1024px) 100vw, min(660px, 45vw)"
-                alt="{{ image.alt | default: product.title }}"
-                width="{{ image.width | default: 1200 }}"
-                height="{{ image.height | default: 1200 }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                class="aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
-                data-index="{{ forloop.index0 }}"
-                id="aip-img-{{ forloop.index0 }}"
-              >
-            {%- else -%}
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:13px;font-family:var(--sans);">No image</div>
-            {%- endfor -%}
-
-            <div class="aip-gallery__badge">
-              {%- if product.tags contains 'new' or product.tags contains 'New' -%}
-                <span class="aip-gallery__tag">New</span>
-              {%- endif -%}
-              {%- if product.compare_at_price > product.price -%}
-                {%- assign savings_pct = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
-                <span class="aip-gallery__tag aip-gallery__tag--sale">−{{ savings_pct }}%</span>
-              {%- endif -%}
-              {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}
-                <span class="aip-gallery__tag aip-gallery__tag--bs">Bestseller</span>
-              {%- endif -%}
-            </div>
-
-            <button type="button" class="aip-gallery__zoom" id="aip-zoom-btn" aria-label="Enlarge image">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0zm-3-3v6m-3-3h6"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      {% render 'aip-product-gallery', product: product, show_badges: true %}
 
       <div class="aip-info">
         <p class="aip-brand">{{ section.settings.brand_text | default: 'ANAND RAS' }}</p>
         <span class="aip-info__label">{{ section.settings.product_label | default: product.type }}</span>
         <h1 class="aip-info__title">{{ product.title }}</h1>
-        {%- liquid
-          assign aip_short = section.settings.short_description | strip
-          if aip_short == blank
-            assign aip_short = section.settings.product_tagline | strip
-          endif
-          if aip_short == blank
-            assign aip_short = product.metafields.custom.tagline.value | default: '' | strip
-          endif
-          if aip_short == blank and product.description != blank
-            assign aip_short = product.description | strip_html | truncate: 180
-          endif
-        -%}
-        {%- if aip_short != blank -%}
-          <p class="aip-info__tagline">{{ aip_short }}</p>
-        {%- endif -%}
-
-        {%- assign rating = section.settings.rating | default: 5 -%}
-        <div class="aip-info__rating">
-          <div class="aip-info__stars" aria-label="{{ rating }} out of 5 stars">
-            {%- for i in (1..5) -%}
-              <span class="{% if i > rating %}aip-info__star-empty{% else %}aip-info__star{% endif %}">&#9733;</span>
-            {%- endfor -%}
-          </div>
-          <span class="aip-info__review-count">{{ section.settings.review_count | default: '0' }} reviews</span>
-        </div>
+        {% render 'attar-product-story', product: product, section: section %}
 
         <div class="aip-price" id="aip-price-wrap">
           <span class="aip-price__was" id="aip-price-compare"{% unless product.compare_at_price > product.price %} style="display:none"{% endunless %}>{%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money }}{%- endif -%}</span>
@@ -586,41 +459,20 @@
     return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'width=' + w;
   }
 
-  var thumbs = document.querySelectorAll('.aip-gallery__thumb');
-  var mainImgs = document.querySelectorAll('.aip-gallery__main-img');
+  var aipGalleryRoot = document.querySelector('[data-aip-gallery]');
   function showImg(index) {
+    if (window.AIPGallery && aipGalleryRoot) {
+      window.AIPGallery.setActiveIndex(aipGalleryRoot, index);
+      return;
+    }
+    var mainImgs = document.querySelectorAll('.aip-gallery__main-img');
+    var thumbs = document.querySelectorAll('.aip-gallery__thumb');
     mainImgs.forEach(function (img) { img.classList.add('is-hidden'); });
     thumbs.forEach(function (t) { t.classList.remove('is-active'); });
     var target = document.getElementById('aip-img-' + index);
     if (target) target.classList.remove('is-hidden');
     if (thumbs[index]) thumbs[index].classList.add('is-active');
   }
-  thumbs.forEach(function (thumb) {
-    thumb.addEventListener('click', function () {
-      var idx = parseInt(thumb.getAttribute('data-index'), 10);
-      if (!isNaN(idx)) showImg(idx);
-    });
-  });
-
-  var zoomBtn = document.getElementById('aip-zoom-btn');
-  var zoomModal = document.getElementById('aip-zoom-modal');
-  var zoomClose = document.getElementById('aip-zoom-close');
-  var zoomImg = document.getElementById('aip-zoom-img');
-  if (zoomBtn && zoomModal) {
-    zoomBtn.addEventListener('click', function () {
-      var visible = document.querySelector('.aip-gallery__main-img:not(.is-hidden)');
-      if (visible && zoomImg) {
-        zoomImg.src = zoomImageUrl(visible.currentSrc || visible.src);
-        zoomImg.alt = visible.alt || '';
-      }
-      zoomModal.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-  function closeZoom() { if (zoomModal) zoomModal.classList.remove('is-open'); document.body.style.overflow = ''; }
-  if (zoomClose) zoomClose.addEventListener('click', closeZoom);
-  if (zoomModal) zoomModal.addEventListener('click', function (e) { if (e.target === zoomModal) closeZoom(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeZoom(); });
 
   var variantData = {{ product.variants | json }};
   var selectedOptions = [
