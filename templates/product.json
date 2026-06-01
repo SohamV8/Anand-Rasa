@@ -49,15 +49,15 @@
           "type": "title",
           "settings": {}
         },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "custom_liquid_hcBbnq": {
+        "custom_liquid_kXqzJU": {
           "type": "custom_liquid",
           "settings": {
             "custom_liquid": "<div class=\"ar-story-block\">\n\n  <p class=\"ar-story-intro\">\n    The attar of magnetic radiance, distilled by hand for over six centuries.\n  </p>\n\n  <div class=\"ar-divider\">\n    <span>✺</span>\n  </div>\n\n  <p class=\"ar-story-text\">\n    Wild turmeric from Kerala highlands. Mysore sandalwood aged fifteen years.\n    Ambergris and Damascus rose. Eight-hour radiance, blessed at sunrise.\n  </p>\n\n</div>\n\n<style>\n.ar-story-block{\n    margin: 12px 0 18px;\n}\n\n.ar-story-intro{\n    font-family: Georgia, serif;\n    font-style: italic;\n    font-size: 16px;\n    line-height: 1.5;\n    color: #7A654C;\n    margin: 0 0 10px;\n}\n\n.ar-divider{\n    position: relative;\n    text-align: center;\n    margin: 8px 0 10px;\n}\n\n.ar-divider:before{\n    content:\"\";\n    position:absolute;\n    left:0;\n    right:0;\n    top:50%;\n    border-top:1px solid #D8C08A;\n}\n\n.ar-divider span{\n    position:relative;\n    background:#F7F5F0;\n    padding:0 8px;\n    color:#C8A03A;\n    font-size:12px;\n}\n\n.ar-story-text{\n    font-family: Georgia, serif;\n    font-size: 13px;\n    line-height: 1.6;\n    color: #6B5A46;\n    margin:0;\n}\n\n/* Mobile */\n@media screen and (max-width:749px){\n\n.ar-story-intro{\n    font-size:15px;\n    margin-bottom:8px;\n}\n\n.ar-story-text{\n    font-size:12px;\n    line-height:1.55;\n}\n\n.ar-divider{\n    margin:6px 0 8px;\n}\n\n}\n</style>"
           }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -118,8 +118,8 @@
       "block_order": [
         "custom_liquid_6hwbAb",
         "title",
+        "custom_liquid_kXqzJU",
         "price",
-        "custom_liquid_hcBbnq",
         "variant_picker",
         "quantity_selector",
         "custom_liquid_GRTktH",
@@ -251,10 +251,10 @@
   "order": [
     "1777535904a27e40a3",
     "main",
-    "related-products",
     "1777290678d5cd77e4",
     "17773752734e8faa13",
     "1779787285f7f2efa6",
-    "17797829115362eb52"
+    "17797829115362eb52",
+    "related-products"
   ]
 }
