@@ -32,7 +32,7 @@ class CartItems extends HTMLElement {
       if (event.source === 'cart-items') {
         return;
       }
-      return this.onCartUpdate();
+      return this.onCartUpdate(event);
     });
   }
 
@@ -87,8 +87,14 @@ class CartItems extends HTMLElement {
     this.validateQuantity(event);
   }
 
-  onCartUpdate() {
+  onCartUpdate(event) {
     if (this.tagName === 'CART-DRAWER-ITEMS') {
+      // Perf: the add-to-cart response already includes the rendered cart-drawer
+      // section (applied via CartDrawer.renderContents). Skip the redundant
+      // network refetch + DOM replace when those sections are already present.
+      if (event && event.cartData && event.cartData.sections && event.cartData.sections['cart-drawer']) {
+        return Promise.resolve();
+      }
       return fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {

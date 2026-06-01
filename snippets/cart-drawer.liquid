@@ -382,13 +382,298 @@
   }
   .cart-drawer .cart-drawer__trust span { display: inline-block; }
 
-  /* === Empty state === */
-  .cart-drawer.is-empty .drawer__inner-empty {
-    flex: 1;
+  /* === Empty state — centered Apple-like layout === */
+  cart-drawer.is-empty cart-drawer-items,
+  cart-drawer.is-empty .drawer__header,
+  cart-drawer.is-empty .drawer__footer {
+    display: none !important;
+  }
+
+  cart-drawer.is-empty .drawer__inner {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  cart-drawer.is-empty .drawer__inner-empty {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 0;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-drawer__empty {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: min(100%, 100dvh);
+  }
+
+  .cart-drawer__empty-top {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: max(10px, env(safe-area-inset-top, 0px)) 20px 4px;
+    min-height: 56px;
+  }
+
+  .cart-drawer__empty-close.drawer__close {
+    position: static;
+    right: auto;
+    top: auto;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, 0.06);
+    color: #374151;
+    box-shadow: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .cart-drawer__empty-close.drawer__close::before,
+  .cart-drawer__empty-close.drawer__close::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .cart-drawer__empty-close.drawer__close:hover {
+    background: rgba(17, 24, 39, 0.1);
+    color: #111827;
+    transform: scale(1.03);
+  }
+
+  .cart-drawer__empty-close .svg-wrapper {
+    width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px 24px;
+  }
+
+  .cart-drawer__empty-close .svg-wrapper svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cart-drawer__empty-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 28px 36px;
+    margin: auto 0;
+  }
+
+  .cart-drawer__empty-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 0 22px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, #fafafa 0%, #f0f0f0 100%);
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+  }
+
+  .cart-drawer__empty-icon svg {
+    width: 32px;
+    height: 32px;
+    opacity: 0.85;
+  }
+
+  .cart-drawer__empty-title {
+    margin: 0 0 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: clamp(1.35rem, 4.5vw, 1.625rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: #111827;
+    text-transform: none;
+  }
+
+  .cart-drawer__empty-sub {
+    margin: 0 0 24px;
+    max-width: 22rem;
+    padding: 0 4px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: #6b7280;
+  }
+
+  /* No .button class — avoids Dawn ::before/::after border box */
+  .cart-drawer__empty-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: min(100%, 280px);
+    min-width: 0;
+    min-height: 48px;
+    padding: 0 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    text-decoration: none;
+    color: #fff;
+    background: #111827;
+    border: none;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background 0.2s ease,
+      transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.2s ease;
+  }
+
+  .cart-drawer__empty-cta::before,
+  .cart-drawer__empty-cta::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .cart-drawer__empty-cta:hover {
+    background: #000;
+    color: #fff;
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(17, 24, 39, 0.2);
+  }
+
+  .cart-drawer__empty-cta:focus-visible {
+    outline: 2px solid #111827;
+    outline-offset: 3px;
+  }
+
+  .cart-drawer__empty-login {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 16px 24px max(20px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+    background: #f9fafb;
+  }
+
+  .cart-drawer__empty-login .cart__login-title,
+  .cart-drawer__empty-login .cart__login-paragraph,
+  .cart-drawer__empty-login .cart__login-paragraph a {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-style: normal;
+  }
+
+  .cart-drawer__empty-login .cart__login-title {
+    margin: 0 0 4px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #9ca3af;
+  }
+
+  .cart-drawer__empty-login .cart__login-paragraph {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #6b7280;
+  }
+
+  .cart-drawer__empty-login .cart__login-paragraph a {
+    color: #111827;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.35);
+    padding-bottom: 1px;
+  }
+
+  .cart-drawer__empty-login .cart__login-paragraph a:hover {
+    border-bottom-color: #111827;
+  }
+
+  cart-drawer.is-empty .cart-drawer__collection {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0 20px 24px;
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+  }
+
+  @media (max-width: 749px) {
+    .cart-drawer__empty-top {
+      padding: max(8px, env(safe-area-inset-top, 0px)) 16px 2px;
+      min-height: 52px;
+    }
+
+    .cart-drawer__empty-close.drawer__close {
+      width: 44px;
+      height: 44px;
+    }
+
+    .cart-drawer__empty-body {
+      padding: 0 20px 24px;
+    }
+
+    .cart-drawer__empty-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+    }
+
+    .cart-drawer__empty-title {
+      font-size: 1.3125rem;
+    }
+
+    .cart-drawer__empty-sub {
+      font-size: 0.8125rem;
+      margin-bottom: 20px;
+    }
+
+    .cart-drawer__empty-cta {
+      max-width: 100%;
+      min-height: 48px;
+    }
+
+    .cart-drawer__empty-login {
+      padding: 14px 20px max(18px, env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (min-width: 750px) {
+    .cart-drawer__empty-top {
+      padding-right: 24px;
+      padding-left: 24px;
+    }
   }
 
   /* === Mobile === */
@@ -418,11 +703,10 @@
     >
       {%- if cart == empty -%}
         <div class="drawer__inner-empty">
-          <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
-            <div class="cart-drawer__empty-content">
-              <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
+          <div class="cart-drawer__empty{% if settings.cart_drawer_collection != blank %} cart-drawer__empty--has-collection{% endif %}">
+            <div class="cart-drawer__empty-top">
               <button
-                class="drawer__close"
+                class="drawer__close cart-drawer__empty-close"
                 type="button"
                 onclick="this.closest('cart-drawer').close()"
                 aria-label="{{ 'accessibility.close' | t }}"
@@ -431,18 +715,32 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
+            </div>
+
+            <div class="cart-drawer__empty-body">
+              <div class="cart-drawer__empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                  <path d="M6 7.5h12l-1.2 9.6a1.5 1.5 0 0 1-1.49 1.32H8.69a1.5 1.5 0 0 1-1.49-1.32L6 7.5Z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+                  <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h2 class="cart-drawer__empty-title">{{ 'sections.cart.empty' | t }}</h2>
+              <p class="cart-drawer__empty-sub">Browse our collection of handcrafted attars and ritual essentials.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="cart-drawer__empty-cta">
                 {{ 'general.continue_shopping' | t }}
               </a>
+            </div>
 
-              {%- if shop.customer_accounts_enabled and customer == null -%}
-                <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
+            {%- if shop.customer_accounts_enabled and customer == null -%}
+              <div class="cart-drawer__empty-login">
+                <p class="cart__login-title">{{ 'sections.cart.login.title' | t }}</p>
                 <p class="cart__login-paragraph">
                   {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
                 </p>
-              {%- endif -%}
-            </div>
+              </div>
+            {%- endif -%}
           </div>
+
           {%- if settings.cart_drawer_collection != blank -%}
             <div class="cart-drawer__collection">
               {% render 'card-collection', card_collection: settings.cart_drawer_collection, columns: 1 %}
