@@ -1,0 +1,285 @@
+{%- comment -%}
+  Astro FAQ + Recommendations markup (section or auto-render).
+
+  Params:
+    afr_uid, afr_mode, afr_collection, afr_col_url
+    afr_hindi, afr_en, afr_cta_label, afr_cta_url
+    afr_faq_heading, afr_limit, afr_bg, afr_show_om, afr_first_open
+    afr_empty_message, afr_shopify_attributes
+    afr_use_blocks — when true, read FAQ from section.blocks
+{%- endcomment -%}
+
+{%- liquid
+  assign afr_uid = afr_uid | default: 'afr-inline'
+  assign afr_mode = afr_mode | default: 'planet'
+  assign afr_limit = afr_limit | default: 4
+  assign afr_faq_heading = afr_faq_heading | default: 'Frequently Asked Questions'
+  assign afr_bg = afr_bg | default: '#ffffff'
+  assign afr_show_om = afr_show_om | default: true, allow_false: true
+  assign afr_first_open = afr_first_open | default: false
+  assign afr_empty_message = afr_empty_message | default: 'Explore our astrology attar collections to discover aligned fragrances.'
+  assign afr_faq_count = 0
+
+  if afr_collection == blank
+    case afr_mode
+      when 'zodiac'
+        assign afr_try_handles = 'zodiac-attars,zodiac-attar,zodiac' | split: ','
+      when 'nakshatra'
+        assign afr_try_handles = 'nakshatra-attars,nakshatra-attar,nakshatra,naksahtra-attars' | split: ','
+      when 'chakra'
+        assign afr_try_handles = 'chakra-attars,chakra-attar,chakra' | split: ','
+      when 'stress'
+        assign afr_try_handles = 'stress-relief,stressrelief,stress-relief-attars' | split: ','
+      when 'love'
+        assign afr_try_handles = 'love-attar,love-attars,love' | split: ','
+      when 'perfume'
+        assign afr_try_handles = 'perfume-series,perfume,perfumes' | split: ','
+      else
+        assign afr_try_handles = 'planet-attars,planet-attar,planet' | split: ','
+    endcase
+    for handle in afr_try_handles
+      assign clean_handle = handle | strip
+      if collections[clean_handle] != empty
+        assign afr_collection = collections[clean_handle]
+        break
+      endif
+    endfor
+  endif
+
+  if afr_col_url == blank
+    if afr_collection != blank
+      assign afr_col_url = afr_collection.url
+    endif
+  endif
+
+  if afr_cta_url == blank
+    assign afr_cta_url = afr_col_url
+  endif
+-%}
+
+{%- comment -%} Build FAQ list for JSON-LD {%- endcomment -%}
+{%- capture afr_schema_entities -%}
+  {%- if afr_use_blocks -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'faq' and block.settings.question != blank and block.settings.answer != blank -%}
+        {%- if afr_faq_count > 0 -%},{%- endif -%}
+        {"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block.settings.answer | strip_html | json }}}}
+        {%- assign afr_faq_count = afr_faq_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
+    {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+    {%- for q in afr_default_qs -%}
+      {%- assign qi = forloop.index0 -%}
+      {%- if afr_faq_count > 0 -%},{%- endif -%}
+      {"@type":"Question","name":{{ q | json }},"acceptedAnswer":{"@type":"Answer","text":{{ afr_default_as[qi] | strip_html | json }}}}
+      {%- assign afr_faq_count = afr_faq_count | plus: 1 -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if afr_faq_count > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": {{ afr_faq_heading | json }},
+  "mainEntity": [{{ afr_schema_entities | strip }}]
+}
+</script>
+{%- endif -%}
+
+{%- if afr_collection != blank and afr_collection.products.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": {{ afr_en | default: 'Astrology attar recommendations' | json }},
+  "itemListElement": [
+    {%- for product in afr_collection.products limit: afr_limit -%}
+      {%- unless forloop.first -%},{%- endunless -%}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.index }},
+        "url": {{ shop.url | append: product.url | json }},
+        "name": {{ product.title | json }}
+      }
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+
+<section
+  class="afr"
+  id="{{ afr_uid }}"
+  data-afr-section
+  itemscope
+  itemtype="https://schema.org/FAQPage"
+  aria-labelledby="{{ afr_uid }}-faq-heading"
+  style="background: {{ afr_bg }};"
+  {{ afr_shopify_attributes }}
+>
+  <div class="afr__grid">
+
+    <div class="afr__card afr__card--faq">
+      <div class="afr__card-inner">
+        <header class="afr__faq-hdr">
+          <h2 class="afr__faq-title" id="{{ afr_uid }}-faq-heading" itemprop="name">{{ afr_faq_heading }}</h2>
+          <div class="afr__ornament" aria-hidden="true">
+            <span class="afr__ornament-line"></span>
+            <span class="afr__ornament-dot"></span>
+            <span class="afr__ornament-line"></span>
+          </div>
+        </header>
+
+        <ul class="afr__faq-list" role="list">
+          {%- assign afr_rendered = 0 -%}
+
+          {%- if afr_use_blocks -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'faq' and block.settings.question != blank and block.settings.answer != blank -%}
+                {%- assign afr_item_id = afr_uid | append: '-faq-' | append: block.id -%}
+                <li
+                  class="afr__faq-item{% if afr_rendered == 0 and afr_first_open %} is-open{% endif %}"
+                  itemscope
+                  itemprop="mainEntity"
+                  itemtype="https://schema.org/Question"
+                  {{ block.shopify_attributes }}
+                >
+                  <button
+                    type="button"
+                    class="afr__faq-trigger"
+                    id="{{ afr_item_id }}-btn"
+                    aria-expanded="{% if afr_rendered == 0 and afr_first_open %}true{% else %}false{% endif %}"
+                    aria-controls="{{ afr_item_id }}-panel"
+                  >
+                    <span class="afr__faq-q" itemprop="name">{{ block.settings.question }}</span>
+                    <span class="afr__faq-icon" aria-hidden="true"></span>
+                  </button>
+                  <div
+                    class="afr__faq-panel"
+                    id="{{ afr_item_id }}-panel"
+                    role="region"
+                    aria-labelledby="{{ afr_item_id }}-btn"
+                    itemscope
+                    itemprop="acceptedAnswer"
+                    itemtype="https://schema.org/Answer"
+                    {% unless afr_rendered == 0 and afr_first_open %}hidden{% endunless %}
+                  >
+                    <div class="afr__faq-a" itemprop="text">{{ block.settings.answer }}</div>
+                  </div>
+                </li>
+                {%- assign afr_rendered = afr_rendered | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
+            {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+            {%- for q in afr_default_qs -%}
+              {%- assign qi = forloop.index0 -%}
+              {%- assign afr_item_id = afr_uid | append: '-faq-' | append: forloop.index -%}
+              <li
+                class="afr__faq-item"
+                itemscope
+                itemprop="mainEntity"
+                itemtype="https://schema.org/Question"
+              >
+                <button
+                  type="button"
+                  class="afr__faq-trigger"
+                  id="{{ afr_item_id }}-btn"
+                  aria-expanded="false"
+                  aria-controls="{{ afr_item_id }}-panel"
+                >
+                  <span class="afr__faq-q" itemprop="name">{{ q }}</span>
+                  <span class="afr__faq-icon" aria-hidden="true"></span>
+                </button>
+                <div
+                  class="afr__faq-panel"
+                  id="{{ afr_item_id }}-panel"
+                  role="region"
+                  aria-labelledby="{{ afr_item_id }}-btn"
+                  itemscope
+                  itemprop="acceptedAnswer"
+                  itemtype="https://schema.org/Answer"
+                  hidden
+                >
+                  <div class="afr__faq-a" itemprop="text">{{ afr_default_as[qi] }}</div>
+                </div>
+              </li>
+              {%- assign afr_rendered = afr_rendered | plus: 1 -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+
+    <aside class="afr__card afr__card--rec" aria-labelledby="{{ afr_uid }}-rec-heading">
+      <div class="afr__card-inner">
+        <header class="afr__rec-hdr">
+          {%- if afr_show_om -%}
+            <span class="afr__rec-om" aria-hidden="true">ॐ</span>
+          {%- endif -%}
+          <p class="afr__rec-hindi" id="{{ afr_uid }}-rec-heading" lang="hi">{{ afr_hindi }}</p>
+          <span class="afr__rec-en">— {{ afr_en }}</span>
+          <div class="afr__ornament" aria-hidden="true">
+            <span class="afr__ornament-line"></span>
+            <span class="afr__ornament-dot"></span>
+            <span class="afr__ornament-line"></span>
+          </div>
+        </header>
+
+        <div class="afr__track-wrap">
+          {%- if afr_collection != blank and afr_collection.products.size > 0 -%}
+            <button
+              type="button"
+              class="afr__track-btn afr__track-btn--prev"
+              aria-label="Previous products"
+              aria-controls="{{ afr_uid }}-track"
+            >
+              <span class="afr__track-btn-icon" aria-hidden="true">←</span>
+            </button>
+            <ul
+              class="afr__track"
+              id="{{ afr_uid }}-track"
+              aria-label="{{ afr_en | escape }}"
+              tabindex="0"
+            >
+              {%- assign afr_card_i = 0 -%}
+              {%- for product in afr_collection.products limit: afr_limit -%}
+                {%- assign afr_card_i = afr_card_i | plus: 1 -%}
+                {%- render 'astro-recommendation-card',
+                  card_product: product,
+                  card_index: afr_card_i,
+                  section_id: afr_uid
+                -%}
+              {%- endfor -%}
+            </ul>
+            <button
+              type="button"
+              class="afr__track-btn afr__track-btn--next"
+              aria-label="Next products"
+              aria-controls="{{ afr_uid }}-track"
+            >
+              <span class="afr__track-btn-icon" aria-hidden="true">→</span>
+            </button>
+          {%- else -%}
+            <p class="afr__empty">{{ afr_empty_message }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if afr_cta_url != blank -%}
+          <div class="afr__cta-wrap">
+            <a href="{{ afr_cta_url }}" class="afr__cta">
+              <span>{{ afr_cta_label }}</span>
+              <span class="afr__cta-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </aside>
+
+  </div>
+</section>

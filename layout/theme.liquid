@@ -495,7 +495,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     {% endstyle %}
 
-    {{ 'ar-theme-layout.css' | asset_url | stylesheet_tag }}
+    {% render 'ar-theme-assets', bundle: 'components-css' %}
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -558,6 +558,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
+
       {%- if request.page_type == 'product' and product != blank -%}
         {%- assign ar_product_type = product.type | downcase -%}
         {%- assign ar_product_title = product.title | downcase -%}
@@ -606,6 +607,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         {%- if ar_is_attar_product -%}
           {% render 'faq.attars', product: product %}
+          {% render 'astro-faq-recommendations-auto' %}
+          {% render 'luxury-gift-impact-auto' %}
         {%- endif -%}
 
         {% render 'customer-care-product', product: product %}
@@ -671,8 +674,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       after cart.js but after the head globals as well (defer = document order).
     {%- endcomment -%}
     <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-    {%- if settings.animations_reveal_on_scroll -%}
-      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- liquid
+      assign ar_load_interactions = false
+      if settings.animations_reveal_on_scroll
+        assign ar_load_interactions = true
+      endif
+      if request.page_type == 'collection'
+        assign ar_load_interactions = true
+      endif
+      if request.page_type == 'product'
+        assign ar_load_interactions = true
+      endif
+    -%}
+    {%- if ar_load_interactions -%}
+      {% render 'ar-theme-assets', bundle: 'interactions-js' %}
     {%- endif -%}
     {%- if ar_has_localization_form_script -%}
       <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>

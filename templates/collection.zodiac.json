@@ -16,7 +16,13 @@
         "layout_mode": "products_only",
         "products_per_page": 16
       }
+    },
+    "luxury_gift_impact": {
+      "type": "luxury-gift-impact",
+      "settings": {
+        "collection_mode": "zodiac"
+      }
     }
   },
-  "order": ["collection_hero", "main"]
+  "order": ["collection_hero", "main", "luxury_gift_impact"]
 }

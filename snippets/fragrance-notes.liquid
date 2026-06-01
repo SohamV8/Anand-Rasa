@@ -95,7 +95,6 @@
   -%}
 
   {%- if fn_count > 0 -%}
-    {{ 'fragrance-notes.css' | asset_url | stylesheet_tag }}
 
     <section
       class="ar-fn ar-fn--full js-ar-fn"
@@ -131,7 +130,5 @@
         </div>
       </div>
     </section>
-
-    <script src="{{ 'fragrance-notes.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
 {%- endif -%}

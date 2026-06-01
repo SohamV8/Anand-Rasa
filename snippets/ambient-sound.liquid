@@ -60,7 +60,7 @@
 -%}
 
 {%- if ar_ambient_url != blank -%}
-  {{ 'ar-ambient-sound.css' | asset_url | stylesheet_tag }}
+  {% render 'ar-theme-assets', bundle: 'product-js' %}
 
   <div id="ar-ambient" class="ar-ambient" data-track="{{ ar_ambient_url | escape }}">
     <span class="ar-ambient__live" data-ar-ambient-live aria-live="polite" aria-atomic="true"></span>
@@ -90,6 +90,4 @@
 
     <audio class="ar-ambient__audio" preload="metadata" loop playsinline hidden></audio>
   </div>
-
-  <script src="{{ 'ar-ambient-sound.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}

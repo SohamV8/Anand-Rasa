@@ -1,0 +1,124 @@
+{%- comment -%}
+  Resolves editorial image for attar meaning section.
+  Echoes: product | asset | empty
+
+  Usage:
+    {%- capture ame_img_kind -%}{%- render 'attar-meaning-image', ame_product: product -%}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign ame_p = ame_product
+  if ame_p == blank
+    assign ame_p = product
+  endif
+
+  assign ame_kind = ''
+  assign ame_asset = ''
+  assign ame_scope = ame_p.handle | append: ' ' | append: ame_p.title | append: ' ' | append: ame_p.type | downcase
+  assign ame_tags = ame_p.tags | join: ' ' | downcase
+  assign ame_scope = ame_scope | append: ' ' | append: ame_tags
+
+  if ame_p.metafields.custom.meaning_image != blank
+    assign ame_kind = 'product'
+  elsif ame_p.images.size > 1
+    assign ame_kind = 'product_alt'
+  elsif ame_p.featured_image
+    assign ame_kind = 'product'
+  endif
+
+  if ame_kind == blank
+    capture nk_asset
+      render 'nakshatra-image-lookup', nk_product: ame_p
+    endcapture
+    assign nk_asset = nk_asset | strip
+    if nk_asset != blank
+      assign ame_asset = nk_asset
+      assign ame_kind = 'asset'
+    endif
+  endif
+
+  if ame_kind == blank
+    if ame_scope contains 'surya' or ame_scope contains 'sun' or ame_scope contains 'tejas'
+      assign ame_asset = 'Planet/surya_attar.webp'
+    elsif ame_scope contains 'chandra' or ame_scope contains 'moon'
+      assign ame_asset = 'Planet/chandra_attar.webp'
+    elsif ame_scope contains 'mangal' or ame_scope contains 'mars'
+      assign ame_asset = 'Planet/mangal_attar.webp'
+    elsif ame_scope contains 'budh' or ame_scope contains 'mercury'
+      assign ame_asset = 'Planet/budh_attar.webp'
+    elsif ame_scope contains 'guru' or ame_scope contains 'jupiter'
+      assign ame_asset = 'Planet/guru_attar.webp'
+    elsif ame_scope contains 'shukra' or ame_scope contains 'venus'
+      assign ame_asset = 'Planet/shukra_attar.webp'
+    elsif ame_scope contains 'shani' or ame_scope contains 'saturn'
+      assign ame_asset = 'Planet/shani_card.webp'
+    elsif ame_scope contains 'rahu'
+      assign ame_asset = 'Planet/rahu_attar.webp'
+    elsif ame_scope contains 'ketu'
+      assign ame_asset = 'Planet/ketu_attar.webp'
+    elsif ame_scope contains 'aries'
+      assign ame_asset = 'Zodiac/aries.webp'
+    elsif ame_scope contains 'taurus' or ame_scope contains 'vrishabha'
+      assign ame_asset = 'Zodiac/taurus.webp'
+    elsif ame_scope contains 'gemini'
+      assign ame_asset = 'Zodiac/gemini.webp'
+    elsif ame_scope contains 'cancer'
+      assign ame_asset = 'Zodiac/cancer.webp'
+    elsif ame_scope contains 'leo'
+      assign ame_asset = 'Zodiac/leo.webp'
+    elsif ame_scope contains 'virgo'
+      assign ame_asset = 'Zodiac/virgo.webp'
+    elsif ame_scope contains 'libra'
+      assign ame_asset = 'Zodiac/libra.webp'
+    elsif ame_scope contains 'scorpio'
+      assign ame_asset = 'Zodiac/scorpio.webp'
+    elsif ame_scope contains 'sagittarius'
+      assign ame_asset = 'Zodiac/sagittarius.webp'
+    elsif ame_scope contains 'capricorn'
+      assign ame_asset = 'Zodiac/capricorn.webp'
+    elsif ame_scope contains 'aquarius'
+      assign ame_asset = 'Zodiac/aquarius.webp'
+    elsif ame_scope contains 'pisces'
+      assign ame_asset = 'Zodiac/pisces.webp'
+    elsif ame_scope contains 'stress' or ame_scope contains 'shanti' or ame_scope contains 'calm'
+      assign ame_asset = 'stress/stress_calm.webp'
+    elsif ame_scope contains 'love' or ame_scope contains 'romance' or ame_scope contains 'mohini'
+      assign ame_asset = 'love.webp'
+    elsif ame_scope contains 'chakra'
+      if ame_scope contains 'muladhara' or ame_scope contains 'root'
+        assign ame_asset = 'Chakra/Muladhara.webp'
+      elsif ame_scope contains 'svadhisthana' or ame_scope contains 'sacral'
+        assign ame_asset = 'Chakra/Svadhisthana.webp'
+      elsif ame_scope contains 'manipura' or ame_scope contains 'solar'
+        assign ame_asset = 'Chakra/Manipura.webp'
+      elsif ame_scope contains 'anahata' or ame_scope contains 'heart'
+        assign ame_asset = 'Chakra/Anahata.webp'
+      elsif ame_scope contains 'vishuddha' or ame_scope contains 'throat'
+        assign ame_asset = 'Chakra/Vishuddha.webp'
+      elsif ame_scope contains 'ajna' or ame_scope contains 'third'
+        assign ame_asset = 'Chakra/Ajna.webp'
+      elsif ame_scope contains 'sahasrara' or ame_scope contains 'crown'
+        assign ame_asset = 'Chakra/Sahasrara.webp'
+      endif
+    endif
+
+    if ame_asset != blank
+      assign ame_kind = 'asset'
+    endif
+  endif
+
+  if ame_kind == blank
+    capture bs_asset
+      render 'bestseller-image-lookup', bs_product: ame_p
+    endcapture
+    assign bs_asset = bs_asset | strip
+    if bs_asset != blank
+      assign ame_asset = bs_asset
+      assign ame_kind = 'asset'
+    endif
+  endif
+
+  if ame_kind == blank and ame_p.featured_image
+    assign ame_kind = 'product'
+  endif
+-%}
+{{- ame_kind -}}|{{- ame_asset -}}

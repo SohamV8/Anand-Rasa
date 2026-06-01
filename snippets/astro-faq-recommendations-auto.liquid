@@ -1,0 +1,132 @@
+{%- comment -%}
+  Auto-inject Astro FAQ + Recs on attar product pages only.
+  Called from layout/theme.liquid
+{%- endcomment -%}
+
+{%- liquid
+  assign afr_mode = 'planet'
+  assign afr_collection_ctx = blank
+  assign afr_show = false
+
+  if request.page_type == 'product' and product != blank
+    assign p_title_h = product.title | downcase
+    assign p_handle_h = product.handle | downcase
+    assign p_type_h = product.type | downcase
+    assign p_tags_h = product.tags | join: '|' | downcase
+    assign p_scope = p_type_h | append: '|' | append: p_title_h | append: '|' | append: p_handle_h | append: '|' | append: p_tags_h
+    assign p_is_incense = false
+    if p_scope contains 'incense' or p_scope contains 'agarbatti' or p_scope contains 'dhoop'
+      assign afr_show = false
+      assign p_is_incense = true
+    endif
+
+    unless p_is_incense
+      if p_scope contains 'attar' or p_scope contains 'perfume' or p_scope contains 'fragrance oil'
+        assign afr_show = true
+      endif
+    endunless
+
+    if afr_show and product.collections != blank
+      for c in product.collections
+        assign ch = c.handle | downcase
+        if ch contains 'zodiac'
+          assign afr_mode = 'zodiac'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'nakshatra' or ch contains 'naksahtra'
+          assign afr_mode = 'nakshatra'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'chakra'
+          assign afr_mode = 'chakra'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'stress'
+          assign afr_mode = 'stress'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'love'
+          assign afr_mode = 'love'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'perfume' or ch contains 'apsara'
+          assign afr_mode = 'perfume'
+          assign afr_collection_ctx = c
+          break
+        elsif ch contains 'planet' or ch contains 'navagraha'
+          assign afr_mode = 'planet'
+          assign afr_collection_ctx = c
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  case afr_mode
+    when 'zodiac'
+      assign afr_default_handle = 'zodiac-attars'
+      assign afr_default_hindi = 'राशि संग्रह'
+      assign afr_default_en = 'The Zodiac Collection'
+      assign afr_default_cta = 'View Zodiac Collection'
+    when 'nakshatra'
+      assign afr_default_handle = 'nakshatra-attars'
+      assign afr_default_hindi = 'नक्षत्र संग्रह'
+      assign afr_default_en = 'The Nakshatra Collection'
+      assign afr_default_cta = 'Explore Nakshatra Attars'
+    when 'chakra'
+      assign afr_default_handle = 'chakra-attars'
+      assign afr_default_hindi = 'चक्र संग्रह'
+      assign afr_default_en = 'The Chakra Collection'
+      assign afr_default_cta = 'Explore Chakra Attars'
+    when 'stress'
+      assign afr_default_handle = 'stress-relief'
+      assign afr_default_hindi = 'शांति संग्रह'
+      assign afr_default_en = 'The Stress Relief Collection'
+      assign afr_default_cta = 'Explore Calm Attars'
+    when 'love'
+      assign afr_default_handle = 'love-attar'
+      assign afr_default_hindi = 'प्रेम संग्रह'
+      assign afr_default_en = 'The Love Attar Collection'
+      assign afr_default_cta = 'Explore Love Attars'
+    when 'perfume'
+      assign afr_default_handle = 'perfume-series'
+      assign afr_default_hindi = 'सुगंध संग्रह'
+      assign afr_default_en = 'The Perfume Collection'
+      assign afr_default_cta = 'Explore Perfumes'
+    else
+      assign afr_default_handle = 'planet-attars'
+      assign afr_default_hindi = 'ग्रहीय संग्रह'
+      assign afr_default_en = 'The Planetary Collection'
+      assign afr_default_cta = 'Explore Navgraha Attars'
+  endcase
+
+  capture afr_col_url
+    render 'ar-collection-url', handle: afr_default_handle
+  endcapture
+  assign afr_col_url = afr_col_url | strip
+
+  assign afr_uid = 'afr-auto-' | append: afr_mode
+  if product != blank
+    assign afr_uid = afr_uid | append: '-' | append: product.id
+  endif
+-%}
+
+{%- if afr_show -%}
+  {% render 'ar-theme-assets', bundle: 'collections-css' %}
+  {%- render 'astro-faq-recommendations-render',
+    afr_uid: afr_uid,
+    afr_mode: afr_mode,
+    afr_collection: afr_collection_ctx,
+    afr_col_url: afr_col_url,
+    afr_hindi: afr_default_hindi,
+    afr_en: afr_default_en,
+    afr_cta_label: afr_default_cta,
+    afr_cta_url: blank,
+    afr_faq_heading: 'Frequently Asked Questions',
+    afr_limit: 4,
+    afr_bg: '#ffffff',
+    afr_show_om: true,
+    afr_first_open: false,
+    afr_use_blocks: false
+  -%}
+{%- endif -%}

@@ -1,0 +1,99 @@
+{%- comment -%}
+  Resolve gift set product for planet or zodiac axis.
+
+  Params:
+    lgi_axis — planet | zodiac
+    lgi_product_setting — optional product from section settings
+{%- endcomment -%}
+
+{%- liquid
+  assign lgi_axis = lgi_axis | default: 'planet'
+  assign lgi_resolved = blank
+  assign lgi_resolved_fallback = blank
+
+  if lgi_product_setting != blank
+    assign lgi_resolved = lgi_product_setting
+  endif
+
+  if lgi_resolved == blank
+    if lgi_axis == 'zodiac'
+      assign lgi_try_handles = 'zodiac-gift-set,zodiac-giftset,rashi-gift-set,zodiac-discovery-set,zodiac-attar-gift-set' | split: ','
+    else
+      assign lgi_try_handles = 'planet-gift-set,navagraha-gift-set,planet-attar-gift-set,navgraha-gift-set,planet-discovery-set,navgraha-gift-ritual' | split: ','
+    endif
+
+    for handle in lgi_try_handles
+      assign h = handle | strip
+      assign lgi_try_product = all_products[h]
+      if lgi_try_product != blank
+        if lgi_try_product.price > 0
+          assign lgi_resolved = lgi_try_product
+          break
+        elsif lgi_resolved_fallback == blank
+          assign lgi_resolved_fallback = lgi_try_product
+        endif
+      endif
+    endfor
+  endif
+
+  if lgi_resolved == blank
+    assign lgi_gift_col_handles = 'giftsets,gift-sets,gift-set' | split: ','
+    for col_handle in lgi_gift_col_handles
+      assign lgi_gift_col = collections[col_handle]
+      if lgi_gift_col != blank and lgi_gift_col.products.size > 0
+        for p in lgi_gift_col.products limit: 24
+          assign p_handle = p.handle | downcase
+          assign p_title = p.title | downcase
+          assign p_type = p.type | downcase
+          assign p_scope = p_handle | append: '|' | append: p_title | append: '|' | append: p_type
+
+          assign p_matches_axis = false
+          if lgi_axis == 'zodiac'
+            if p_scope contains 'zodiac' or p_scope contains 'rashi'
+              unless p_scope contains 'nakshatra' or p_scope contains 'chakra' or p_scope contains 'stress' or p_scope contains 'incense'
+                assign p_matches_axis = true
+              endunless
+            endif
+          else
+            if p_scope contains 'planet' or p_scope contains 'navagraha' or p_scope contains 'navgraha'
+              unless p_scope contains 'zodiac' or p_scope contains 'nakshatra' or p_scope contains 'chakra' or p_scope contains 'stress' or p_scope contains 'incense'
+                assign p_matches_axis = true
+              endunless
+            endif
+          endif
+
+          if p_matches_axis
+            if p.price > 0
+              assign lgi_resolved = p
+              break
+            elsif lgi_resolved_fallback == blank
+              assign lgi_resolved_fallback = p
+            endif
+          endif
+        endfor
+      endif
+      if lgi_resolved != blank
+        break
+      endif
+    endfor
+  endif
+
+  if lgi_resolved == blank and lgi_resolved_fallback != blank
+    assign lgi_resolved = lgi_resolved_fallback
+  endif
+
+  if lgi_resolved == blank
+    assign lgi_gift_col_handles = 'giftsets,gift-sets,gift-set' | split: ','
+    for col_handle in lgi_gift_col_handles
+      assign lgi_gift_col = collections[col_handle]
+      if lgi_gift_col != blank and lgi_gift_col.products.size > 0
+        assign lgi_resolved = lgi_gift_col.products.first
+        break
+      endif
+    endfor
+  endif
+
+  if lgi_resolved != blank
+    echo lgi_resolved.handle
+  endif
+-%}

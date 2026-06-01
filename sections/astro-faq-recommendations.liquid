@@ -1,0 +1,259 @@
+{% comment %}
+  ANAND RASA — Luxury Astrological FAQ + Recommendation Experience
+  sections/astro-faq-recommendations.liquid
+{% endcomment %}
+
+{% render 'ar-theme-assets', bundle: 'collections-css' %}
+
+{%- liquid
+  assign afr_mode = section.settings.collection_mode | default: 'planet'
+
+  case afr_mode
+    when 'zodiac'
+      assign afr_default_handle = 'zodiac-attars'
+      assign afr_default_hindi = 'राशि संग्रह'
+      assign afr_default_en = 'The Zodiac Collection'
+      assign afr_default_cta = 'View Zodiac Collection'
+    when 'nakshatra'
+      assign afr_default_handle = 'nakshatra-attars'
+      assign afr_default_hindi = 'नक्षत्र संग्रह'
+      assign afr_default_en = 'The Nakshatra Collection'
+      assign afr_default_cta = 'Explore Nakshatra Attars'
+    when 'chakra'
+      assign afr_default_handle = 'chakra-attars'
+      assign afr_default_hindi = 'चक्र संग्रह'
+      assign afr_default_en = 'The Chakra Collection'
+      assign afr_default_cta = 'Explore Chakra Attars'
+    when 'stress'
+      assign afr_default_handle = 'stress-relief'
+      assign afr_default_hindi = 'शांति संग्रह'
+      assign afr_default_en = 'The Stress Relief Collection'
+      assign afr_default_cta = 'Explore Calm Attars'
+    when 'love'
+      assign afr_default_handle = 'love-attar'
+      assign afr_default_hindi = 'प्रेम संग्रह'
+      assign afr_default_en = 'The Love Attar Collection'
+      assign afr_default_cta = 'Explore Love Attars'
+    when 'perfume'
+      assign afr_default_handle = 'perfume-series'
+      assign afr_default_hindi = 'सुगंध संग्रह'
+      assign afr_default_en = 'The Perfume Collection'
+      assign afr_default_cta = 'Explore Perfumes'
+    else
+      assign afr_default_handle = 'planet-attars'
+      assign afr_default_hindi = 'ग्रहीय संग्रह'
+      assign afr_default_en = 'The Planetary Collection'
+      assign afr_default_cta = 'Explore Navgraha Attars'
+  endcase
+
+  assign afr_collection = section.settings.collection
+  capture afr_col_url
+    render 'ar-collection-url', handle: afr_default_handle
+  endcapture
+  assign afr_col_url = afr_col_url | strip
+
+  assign afr_hindi = section.settings.rec_heading_hindi | default: afr_default_hindi
+  assign afr_en = section.settings.rec_heading_english | default: afr_default_en
+  assign afr_cta_label = section.settings.cta_label | default: afr_default_cta
+  assign afr_cta_url = section.settings.cta_url | strip
+-%}
+
+{%- liquid
+  assign afr_has_blocks = false
+  if section.blocks.size > 0
+    assign afr_has_blocks = true
+  endif
+-%}
+
+{%- render 'astro-faq-recommendations-render',
+  afr_uid: section.id,
+  afr_mode: afr_mode,
+  afr_collection: afr_collection,
+  afr_col_url: afr_col_url,
+  afr_hindi: afr_hindi,
+  afr_en: afr_en,
+  afr_cta_label: afr_cta_label,
+  afr_cta_url: afr_cta_url,
+  afr_faq_heading: section.settings.faq_heading,
+  afr_limit: section.settings.products_to_show,
+  afr_bg: section.settings.bg_color,
+  afr_show_om: section.settings.show_om,
+  afr_first_open: section.settings.first_faq_open,
+  afr_empty_message: section.settings.empty_message,
+  afr_shopify_attributes: section.shopify_attributes,
+  afr_use_blocks: afr_has_blocks
+-%}
+
+{% schema %}
+{
+  "name": "Astro FAQ & Recs",
+  "tag": "section",
+  "class": "section section-astro-faq-rec",
+  "enabled_on": {
+    "templates": ["collection", "product", "index", "page"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_faq_open",
+      "label": "Open first FAQ by default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Recommendations"
+    },
+    {
+      "type": "select",
+      "id": "collection_mode",
+      "label": "Astrology collection type",
+      "options": [
+        { "value": "planet", "label": "Planet Attars" },
+        { "value": "zodiac", "label": "Zodiac Attars" },
+        { "value": "nakshatra", "label": "Nakshatra Attars" },
+        { "value": "chakra", "label": "Chakra Attars" },
+        { "value": "stress", "label": "Stress Relief" },
+        { "value": "love", "label": "Love Attars" },
+        { "value": "perfume", "label": "Perfume Series" }
+      ],
+      "default": "planet"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Recommendation collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_om",
+      "label": "Show Om symbol",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rec_heading_hindi",
+      "label": "Collection heading (Hindi)"
+    },
+    {
+      "type": "text",
+      "id": "rec_heading_english",
+      "label": "Collection heading (English)"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button link"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_message",
+      "label": "Empty collection message",
+      "default": "Select a collection in the theme editor to display astrological attar recommendations."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is the difference between attar and perfume?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier, evaporate faster, and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Astro FAQ & Recs",
+      "category": "Anand Rasa",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What is the difference between attar and perfume?",
+            "answer": "<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier, evaporate faster, and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do Planet, Zodiac, and Nakshatra attars differ?",
+            "answer": "<p>Planet attars align with the nine Navagraha energies — Sun, Moon, Mars, and beyond. Zodiac attars reflect your rashi temperament and elemental nature. Nakshatra attars mirror the 27 lunar mansions, offering a finer, birth-star resonance. Each series is a distinct path into Vedic fragrance astrology.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How long does an astrology attar last?",
+            "answer": "<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days. A few drops on pulse points are sufficient for a full ritual day.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Is an astrology attar suitable for gifting?",
+            "answer": "<p>Yes — they arrive in elegant glass with gold accents, making them ideal for birthdays, weddings, festivals, and spiritual milestones. Pair a planet attar with a zodiac or nakshatra attar for a meaningful cosmic gift set.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How do I know my Anand Rasa attar is authentic?",
+            "answer": "<p>Every bottle is handcrafted in India using traditional distillation, natural ingredients, and no synthetic alcohol carriers. We share ingredient origins, batch craftsmanship, and Vedic alignment details on each product page.</p>"
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Where do you ship astrology attars?",
+            "answer": "<p>We ship across India and to select international destinations. Orders are carefully packed to preserve the integrity of each attar. Delivery timelines appear at checkout based on your location.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

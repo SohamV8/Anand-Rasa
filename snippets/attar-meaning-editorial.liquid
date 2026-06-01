@@ -1,0 +1,349 @@
+{%- comment -%}
+  Luxury "Meaning of the Attar" editorial — planet (Navgraha) attar product pages only.
+
+  Usage:
+    {% render 'attar-meaning-editorial', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign ame_p = product
+  if ame_p == blank
+    assign ame_p = meaning_product
+  endif
+-%}
+{%- if ame_p != blank -%}
+{%- liquid
+  assign ame_type = ame_p.type | default: '' | downcase
+  assign ame_title_down = ame_p.title | default: '' | downcase
+  assign ame_handle = ame_p.handle | default: '' | downcase
+  assign ame_desc_down = ame_p.description | strip_html | downcase
+  assign ame_tags_down = ame_p.tags | join: '|' | downcase
+  assign ame_collections_down = ame_p.collections | map: 'handle' | join: '|' | downcase
+  assign ame_scope = ame_type | append: '|' | append: ame_title_down | append: '|' | append: ame_handle | append: '|' | append: ame_tags_down | append: '|' | append: ame_collections_down | append: '|' | append: ame_desc_down
+
+  assign ame_is_incense = false
+  if ame_scope contains 'incense' or ame_scope contains 'agarbatti' or ame_scope contains 'dhoop'
+    assign ame_is_incense = true
+  endif
+
+  assign ame_is_attar = false
+  if ame_scope contains 'attar' or ame_scope contains 'perfume oil' or ame_scope contains 'perfume-oil' or ame_scope contains 'fragrance oil' or ame_scope contains 'perfume' or ame_scope contains 'apsara'
+    assign ame_is_attar = true
+  endif
+  if ame_is_incense
+    assign ame_is_attar = false
+  endif
+
+  assign ame_planet = false
+  if ame_scope contains 'planet' or ame_scope contains 'navagraha' or ame_scope contains 'surya' or ame_scope contains 'chandra' or ame_scope contains 'mangal' or ame_scope contains 'budh' or ame_scope contains 'guru' or ame_scope contains 'shukra' or ame_scope contains 'shani' or ame_scope contains 'rahu' or ame_scope contains 'ketu' or ame_scope contains 'sun ' or ame_scope contains 'moon ' or ame_scope contains 'mars' or ame_scope contains 'mercury' or ame_scope contains 'jupiter' or ame_scope contains 'venus' or ame_scope contains 'saturn'
+    assign ame_planet = true
+  endif
+
+  assign ame_zodiac = false
+  if ame_scope contains 'zodiac' or ame_scope contains 'aries' or ame_scope contains 'taurus' or ame_scope contains 'vrishabha' or ame_scope contains 'gemini' or ame_scope contains 'cancer' or ame_scope contains 'leo' or ame_scope contains 'virgo' or ame_scope contains 'libra' or ame_scope contains 'scorpio' or ame_scope contains 'sagittarius' or ame_scope contains 'capricorn' or ame_scope contains 'aquarius' or ame_scope contains 'pisces'
+    assign ame_zodiac = true
+  endif
+
+  assign ame_nakshatra = false
+  if ame_scope contains 'nakshatra' or ame_scope contains 'ashwini' or ame_scope contains 'bharani' or ame_scope contains 'kritika' or ame_scope contains 'krittika' or ame_scope contains 'rohini' or ame_scope contains 'mrigashira' or ame_scope contains 'ardra' or ame_scope contains 'punarvasu' or ame_scope contains 'pushya' or ame_scope contains 'ashlesha' or ame_scope contains 'magha' or ame_scope contains 'phalguni' or ame_scope contains 'hasta' or ame_scope contains 'chitra' or ame_scope contains 'swati' or ame_scope contains 'vishakha' or ame_scope contains 'anuradha' or ame_scope contains 'jyeshtha' or ame_scope contains 'mula' or ame_scope contains 'ashadha' or ame_scope contains 'shravana' or ame_scope contains 'dhanishtha' or ame_scope contains 'shatabhisha' or ame_scope contains 'bhadrapada' or ame_scope contains 'revati'
+    assign ame_nakshatra = true
+  endif
+
+  assign ame_chakra = false
+  if ame_scope contains 'chakra' or ame_scope contains 'muladhara' or ame_scope contains 'svadhisthana' or ame_scope contains 'manipura' or ame_scope contains 'anahata' or ame_scope contains 'vishuddha' or ame_scope contains 'ajna' or ame_scope contains 'sahasrara' or ame_scope contains 'third-eye' or ame_scope contains 'heart-chakra' or ame_scope contains 'root-chakra'
+    assign ame_chakra = true
+  endif
+
+  assign ame_stress = false
+  if ame_scope contains 'stress' or ame_scope contains 'shanti' or ame_scope contains 'relief' or ame_scope contains 'anxiety' or ame_scope contains 'calm'
+    assign ame_stress = true
+  endif
+
+  assign ame_love = false
+  if ame_scope contains 'love' or ame_scope contains 'romance' or ame_scope contains 'passion' or ame_scope contains 'mohini'
+    assign ame_love = true
+  endif
+
+  assign ame_spiritual = false
+  if ame_scope contains 'meditation' or ame_scope contains 'yoga' or ame_scope contains 'spiritual' or ame_scope contains 'ritual' or ame_scope contains 'pooja' or ame_scope contains 'prayer' or ame_scope contains 'sacred'
+    assign ame_spiritual = true
+  endif
+
+  assign ame_perfume = false
+  if ame_scope contains 'perfume-series' or ame_scope contains 'perfume collection' or ame_scope contains 'signature perfume' or ame_scope contains 'luxury perfume'
+    assign ame_perfume = true
+  endif
+
+  assign ame_axis = 'meaning'
+  if ame_planet
+    assign ame_axis = 'planet'
+  elsif ame_zodiac
+    assign ame_axis = 'zodiac'
+  elsif ame_nakshatra
+    assign ame_axis = 'nakshatra'
+  elsif ame_chakra
+    assign ame_axis = 'chakra'
+  elsif ame_stress
+    assign ame_axis = 'stress'
+  elsif ame_love
+    assign ame_axis = 'love'
+  elsif ame_spiritual
+    assign ame_axis = 'spiritual'
+  elsif ame_perfume
+    assign ame_axis = 'perfume'
+  endif
+
+  assign ame_display = ame_p.title | strip
+  assign ame_display = ame_display | replace: ' Nakshatra Attar', '' | replace: ' Zodiac Attar', '' | replace: ' Planet Attar', '' | replace: ' Chakra Attar', '' | replace: ' Attar', '' | strip
+
+  assign ame_short = ame_display
+  if ame_display contains ' Rasa'
+    assign ame_short = ame_display | replace: ' Rasa', '' | strip
+  endif
+
+  assign ame_hi_name = ame_short
+  if ame_scope contains 'tejas'
+    assign ame_hi_name = 'तेजस्'
+  elsif ame_scope contains 'surya' or ame_scope contains 'sun'
+    assign ame_hi_name = 'सूर्य'
+  elsif ame_scope contains 'chandra' or ame_scope contains 'moon'
+    assign ame_hi_name = 'चंद्र'
+  elsif ame_scope contains 'mangal' or ame_scope contains 'mars'
+    assign ame_hi_name = 'मंगल'
+  elsif ame_scope contains 'budh' or ame_scope contains 'mercury'
+    assign ame_hi_name = 'बुध'
+  elsif ame_scope contains 'guru' or ame_scope contains 'jupiter'
+    assign ame_hi_name = 'गुरु'
+  elsif ame_scope contains 'shukra' or ame_scope contains 'venus'
+    assign ame_hi_name = 'शुक्र'
+  elsif ame_scope contains 'shani' or ame_scope contains 'saturn'
+    assign ame_hi_name = 'शनि'
+  elsif ame_scope contains 'rahu'
+    assign ame_hi_name = 'राहु'
+  elsif ame_scope contains 'ketu'
+    assign ame_hi_name = 'केतु'
+  elsif ame_scope contains 'rohini'
+    assign ame_hi_name = 'रोहिणी'
+  elsif ame_scope contains 'vrishabha' or ame_scope contains 'taurus'
+    assign ame_hi_name = 'वृषभ'
+  elsif ame_scope contains 'shanti'
+    assign ame_hi_name = 'शांति'
+  endif
+
+  assign ame_headline_hi = ame_hi_name | append: ' का अर्थ'
+  assign ame_headline_en = 'The Meaning of ' | append: ame_short
+
+  case ame_axis
+    when 'zodiac'
+      assign ame_headline_en = 'The Spirit of ' | append: ame_short
+    when 'nakshatra'
+      assign ame_headline_en = 'The Energy of ' | append: ame_short
+    when 'chakra'
+      assign ame_headline_en = 'The Essence of ' | append: ame_short
+    when 'stress'
+      assign ame_headline_en = 'The Calm of ' | append: ame_short
+    when 'love'
+      assign ame_headline_en = 'The Aura of ' | append: ame_short
+    when 'spiritual'
+      assign ame_headline_en = 'The Sacred Essence of ' | append: ame_short
+  endcase
+
+  if ame_p.metafields.custom.meaning_heading_hi != blank
+    assign ame_headline_hi = ame_p.metafields.custom.meaning_heading_hi.value
+  endif
+  if ame_p.metafields.custom.meaning_heading_en != blank
+    assign ame_headline_en = ame_p.metafields.custom.meaning_heading_en.value
+  endif
+
+  assign ame_tagline = ame_p.metafields.custom.tagline.value | default: '' | strip
+  assign ame_top = ame_p.metafields.custom.top_notes.value | default: '' | strip
+  assign ame_heart = ame_p.metafields.custom.heart_notes.value | default: '' | strip
+  assign ame_base = ame_p.metafields.custom.base_notes.value | default: '' | strip
+  assign ame_origin = ame_p.metafields.custom.ingredient_origin.value | default: '' | strip
+
+  capture ame_notes
+    if ame_top != blank
+      echo ame_top
+    endif
+    if ame_heart != blank
+      if ame_top != blank
+        echo ', '
+      endif
+      echo ame_heart
+    endif
+    if ame_base != blank
+      if ame_top != blank or ame_heart != blank
+        echo ', '
+      endif
+      echo ame_base
+    endif
+  endcapture
+  assign ame_notes = ame_notes | strip
+  if ame_notes == blank
+    assign ame_notes = 'rare botanicals and traditional attar oils'
+  endif
+
+  assign ame_symbol = 'a quiet, skin-close aura of intention and grace'
+  assign ame_mood = 'calm confidence and inner clarity'
+  assign ame_craft = 'Handcrafted in India using time-honoured distillation, this alcohol-free attar wears close to the skin — evolving gently through the day like a private ritual.'
+
+  case ame_axis
+    when 'planet'
+      assign ame_symbol = 'planetary energy translated into fragrance — a Navagraha-inspired accord for ritual wear and daily alignment'
+      assign ame_mood = 'solar radiance, composed strength, and luminous presence'
+      if ame_scope contains 'chandra' or ame_scope contains 'moon'
+        assign ame_mood = 'lunar calm, intuitive depth, and gentle emotional balance'
+        assign ame_symbol = 'the Moon’s receptive grace — a fragrance for stillness, reflection, and inner tides'
+      elsif ame_scope contains 'mangal' or ame_scope contains 'mars'
+        assign ame_mood = 'courage, decisive action, and disciplined fire'
+        assign ame_symbol = 'Mars energy distilled into scent — bold, focused, and quietly commanding'
+      elsif ame_scope contains 'shani' or ame_scope contains 'saturn'
+        assign ame_mood = 'patience, endurance, and grounded wisdom'
+        assign ame_symbol = 'Saturn’s steady gravity — a fragrance for discipline, depth, and long-view intention'
+      elsif ame_scope contains 'shukra' or ame_scope contains 'venus'
+        assign ame_mood = 'beauty, harmony, and refined sensuality'
+        assign ame_symbol = 'Venusian grace in oil form — elegant, warm, and irresistibly composed'
+      endif
+    when 'zodiac'
+      assign ame_symbol = 'your rashi temperament expressed as scent — a zodiac attar for wearing your cosmic identity'
+      assign ame_mood = 'personality-aligned warmth and quiet self-assurance'
+    when 'nakshatra'
+      assign ame_symbol = 'the symbolism of your birth star — a nakshatra attar mirroring lunar mansion energy and inner rhythm'
+      assign ame_mood = 'personal resonance, subtle power, and star-aligned intention'
+    when 'chakra'
+      assign ame_symbol = 'a chakra-inspired fragrance for energetic alignment and mindful ritual'
+      assign ame_mood = 'grounded awareness, open-hearted presence, and spiritual balance'
+    when 'stress'
+      assign ame_symbol = 'a calming attar composed for release, breath, and emotional ease'
+      assign ame_mood = 'serenity, soft focus, and restorative quiet'
+    when 'love'
+      assign ame_symbol = 'a romantic attar for intimacy, warmth, and emotional magnetism'
+      assign ame_mood = 'tenderness, allure, and heart-forward presence'
+    when 'spiritual'
+      assign ame_symbol = 'a sacred attar for meditation, pooja, and spiritual practice'
+      assign ame_mood = 'devotional calm, centred awareness, and ritual depth'
+    when 'perfume'
+      assign ame_symbol = 'a premium perfume oil from Anand Rasa — luxury craftsmanship rooted in Indian perfumery'
+      assign ame_mood = 'sophisticated warmth, editorial elegance, and lasting aura'
+  endcase
+
+  assign ame_custom_body = ame_p.metafields.custom.meaning_story.value | default: '' | strip
+  assign ame_uid = 'ame-' | append: ame_p.id
+
+  capture ame_img_data
+    render 'attar-meaning-image', ame_product: ame_p
+  endcapture
+  assign ame_img_parts = ame_img_data | strip | split: '|'
+  assign ame_img_kind = ame_img_parts[0]
+  assign ame_img_asset = ame_img_parts[1]
+-%}
+
+{%- if ame_is_attar and ame_planet -%}
+
+<section
+  class="ame"
+  id="{{ ame_uid }}"
+  data-ame-section
+  aria-labelledby="{{ ame_uid }}-heading"
+>
+  <div class="ame__grid">
+
+    <div class="ame__media ame__panel ame__panel--media">
+      <figure class="ame__figure">
+        {%- if ame_p.metafields.custom.meaning_image != blank -%}
+          <img
+            class="ame__img"
+            src="{{ ame_p.metafields.custom.meaning_image | image_url: width: 1600 }}"
+            alt="{{ ame_p.title | escape }} — fragrance editorial"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- elsif ame_img_kind == 'product_alt' and ame_p.images[1] -%}
+          <img
+            class="ame__img"
+            src="{{ ame_p.images[1] | image_url: width: 1600 }}"
+            alt="{{ ame_p.title | escape }} — fragrance editorial"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- elsif ame_img_kind == 'product' and ame_p.featured_image -%}
+          <img
+            class="ame__img"
+            src="{{ ame_p.featured_image | image_url: width: 1600 }}"
+            alt="{{ ame_p.title | escape }} — fragrance editorial"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- elsif ame_img_kind == 'asset' and ame_img_asset != blank -%}
+          <img
+            class="ame__img"
+            src="{{ ame_img_asset | asset_url }}"
+            alt="{{ ame_p.title | escape }} — fragrance editorial"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- elsif ame_p.featured_image -%}
+          <img
+            class="ame__img"
+            src="{{ ame_p.featured_image | image_url: width: 1600 }}"
+            alt="{{ ame_p.title | escape }} — fragrance editorial"
+            width="1600"
+            height="900"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- endif -%}
+      </figure>
+    </div>
+
+    <div class="ame__content ame__panel ame__panel--content">
+      <article class="ame__card">
+        <header class="ame__headline">
+          <h2 class="ame__title-row" id="{{ ame_uid }}-heading">
+            <span class="ame__title-hi" lang="hi">{{ ame_headline_hi }}</span>
+            <span class="ame__title-sep" aria-hidden="true">—</span>
+            <span class="ame__title-en">{{ ame_headline_en }}.</span>
+          </h2>
+          <div class="ame__divider" aria-hidden="true"></div>
+        </header>
+
+        <div class="ame__body">
+          {%- if ame_custom_body != blank -%}
+            {{ ame_custom_body }}
+          {%- else -%}
+            <p>
+              {%- if ame_tagline != blank -%}
+                <strong>{{ ame_display }}</strong> opens with {{ ame_tagline | downcase }}. It is composed to evoke {{ ame_mood }} — a fragrance that feels intimate rather than loud, designed for those who wear scent as a private language of self.
+              {%- else -%}
+                <strong>{{ ame_display }}</strong> is composed to evoke {{ ame_mood }} — a fragrance that feels intimate rather than loud, designed for those who wear scent as a private language of self.
+              {%- endif -%}
+            </p>
+            <p>
+              At its heart lies {{ ame_symbol }}. Guided by {{ ame_notes }}, it carries the emotional texture of Indian luxury perfumery — devotional, refined, and deeply personal.
+            </p>
+            <p>
+              {{ ame_craft -}}
+              {%- if ame_origin != blank %} Sourced with care from {{ ame_origin }}.{% endif %}
+              A few drops on pulse points are enough to unfold its story through the day.
+            </p>
+          {%- endif -%}
+        </div>
+
+        <footer class="ame__footer">
+          <span class="ame__om" aria-hidden="true">ॐ</span>
+        </footer>
+      </article>
+    </div>
+
+  </div>
+</section>
+{%- endif -%}
+{%- endif -%}

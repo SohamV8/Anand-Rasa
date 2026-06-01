@@ -93,8 +93,6 @@
   -%}
 
   {%- if ng_key != blank -%}
-    {{ 'navagraha-mantra.css' | asset_url | stylesheet_tag }}
-    <script src="{{ 'navagraha-mantra.js' | asset_url }}" defer="defer"></script>
 
     <section class="ng-mantra" data-ng-planet="{{ ng_key }}" aria-labelledby="ng-mantra-heading-{{ product.id }}">
       <div class="ng-mantra__shell">

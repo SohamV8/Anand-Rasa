@@ -1,0 +1,224 @@
+{%- comment -%}
+  Luxury Gift Set + Social Impact editorial — shared markup.
+
+  Params:
+    lgi_uid, lgi_axis (planet|zodiac)
+    lgi_gift_product, lgi_gift_url
+    lgi_eyebrow, lgi_title, lgi_subtitle, lgi_desc, lgi_cta_label
+    lgi_impact_title, lgi_impact_p1, lgi_impact_p2
+    lgi_signature_label, lgi_signature_name
+    lgi_image (optional override)
+    lgi_shopify_attributes
+{%- endcomment -%}
+
+{%- liquid
+  assign lgi_axis = lgi_axis | default: 'planet'
+  assign lgi_gift = lgi_gift_product
+  assign lgi_url = lgi_gift_url
+
+  assign lgi_fallback_col = collections['giftsets']
+  if lgi_fallback_col == blank
+    assign lgi_fallback_col = collections['gift-sets']
+  endif
+  if lgi_fallback_col == blank
+    assign lgi_fallback_col = collections['gift-set']
+  endif
+
+  if lgi_gift != blank and lgi_url == blank
+    assign lgi_url = lgi_gift.url
+  endif
+  if lgi_url == blank and lgi_fallback_col != blank
+    assign lgi_url = lgi_fallback_col.url
+  endif
+
+  assign lgi_price = 0
+  assign lgi_compare = 0
+  assign lgi_show_price = false
+  if lgi_gift != blank
+    assign lgi_price = lgi_gift.price
+    assign lgi_compare = lgi_gift.compare_at_price
+    if lgi_price > 0
+      assign lgi_show_price = true
+    endif
+  endif
+
+  assign lgi_save_amount = 0
+  if lgi_compare > lgi_price
+    assign lgi_save_amount = lgi_compare | minus: lgi_price
+  endif
+
+  assign lgi_has_image = false
+  if lgi_image != blank
+    assign lgi_has_image = true
+  elsif lgi_gift != blank and lgi_gift.featured_image != blank
+    assign lgi_has_image = true
+  elsif lgi_fallback_col != blank and lgi_fallback_col.featured_image != blank
+    assign lgi_has_image = true
+  endif
+
+  assign lgi_img_alt = lgi_title | default: 'Gift set'
+  if lgi_gift != blank
+    assign lgi_img_alt = lgi_gift.title
+  elsif lgi_fallback_col != blank
+    assign lgi_img_alt = lgi_fallback_col.title
+  endif
+
+  assign lgi_uid = lgi_uid | default: 'lgi-block'
+  assign lgi_eyebrow = lgi_eyebrow | default: 'Handcrafted Gift Ritual'
+  assign lgi_cta_label = lgi_cta_label | default: 'Explore Gift Set'
+
+  if lgi_axis == 'zodiac'
+    if lgi_title == blank
+      assign lgi_title = 'The Zodiac Gift Collection'
+    endif
+    if lgi_subtitle == blank
+      assign lgi_subtitle = 'Twelve rashi essences, curated for meaningful gifting.'
+    endif
+    if lgi_desc == blank
+      assign lgi_desc = 'A refined discovery set celebrating Vedic rashi energy — presented for festivals, milestones, and soulful gestures of care.'
+    endif
+    if lgi_cta_label == 'Explore Gift Set'
+      assign lgi_cta_label = 'Discover the Ritual'
+    endif
+    if lgi_impact_title == blank
+      assign lgi_impact_title = 'Fragrance with intention.'
+    endif
+    if lgi_impact_p1 == blank
+      assign lgi_impact_p1 = 'Every Anand Rasa creation honours the hands that craft it. A portion of our proceeds supports artisan communities and initiatives that preserve traditional Indian perfumery.'
+    endif
+    if lgi_impact_p2 == blank
+      assign lgi_impact_p2 = 'When you gift a zodiac attar, you share more than scent — you carry forward heritage, dignity, and quiet spiritual wellness.'
+    endif
+  else
+    if lgi_title == blank
+      assign lgi_title = 'The Navgraha Gift Ritual'
+    endif
+    if lgi_subtitle == blank
+      assign lgi_subtitle = 'Nine planetary attars, composed for cosmic gifting.'
+    endif
+    if lgi_desc == blank
+      assign lgi_desc = 'An elegant gift set rooted in Navgraha tradition — crafted for those who gift with devotion, presence, and refined intention.'
+    endif
+    if lgi_cta_label == 'Explore Gift Set'
+      assign lgi_cta_label = 'Gift the Cosmos'
+    endif
+    if lgi_impact_title == blank
+      assign lgi_impact_title = 'Craft that gives back.'
+    endif
+    if lgi_impact_p1 == blank
+      assign lgi_impact_p1 = 'Every fragrance helps preserve traditional Indian craftsmanship and supports meaningful community initiatives across our artisan network.'
+    endif
+    if lgi_impact_p2 == blank
+      assign lgi_impact_p2 = 'We believe luxury should feel ethical — calm, authentic, and deeply connected to the land and people behind each bottle.'
+    endif
+  endif
+
+  assign lgi_signature_label = lgi_signature_label | default: 'With gratitude'
+  assign lgi_signature_name = lgi_signature_name | default: '— Anand Rasa'
+-%}
+
+<section
+  class="lgi is-visible"
+  id="{{ lgi_uid }}"
+  data-lgi-section
+  aria-labelledby="{{ lgi_uid }}-gift-title"
+  {{ lgi_shopify_attributes }}
+>
+  <div class="lgi__grid">
+
+    <article class="lgi__card lgi__card--gift">
+      <div class="lgi__card-inner">
+        <div class="lgi__gift-visual{% unless lgi_has_image %} lgi__gift-visual--empty{% endunless %}">
+          <div class="lgi__gift-img-frame">
+            {%- if lgi_image != blank -%}
+              <img
+                class="lgi__gift-img"
+                src="{{ lgi_image | image_url: width: 1200 }}"
+                alt="{{ lgi_img_alt | escape }}"
+                width="800"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              >
+            {%- elsif lgi_gift != blank and lgi_gift.featured_image -%}
+              <img
+                class="lgi__gift-img"
+                src="{{ lgi_gift.featured_image | image_url: width: 1200 }}"
+                alt="{{ lgi_img_alt | escape }}"
+                width="800"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              >
+            {%- elsif lgi_fallback_col != blank and lgi_fallback_col.featured_image != blank -%}
+              <img
+                class="lgi__gift-img"
+                src="{{ lgi_fallback_col.featured_image | image_url: width: 1200 }}"
+                alt="{{ lgi_img_alt | escape }}"
+                width="800"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              >
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="lgi__gift-copy">
+          <p class="lgi__eyebrow">{{ lgi_eyebrow }}</p>
+          <h2 class="lgi__title" id="{{ lgi_uid }}-gift-title">{{ lgi_title }}</h2>
+          <p class="lgi__subtitle">{{ lgi_subtitle }}</p>
+          <p class="lgi__desc">{{ lgi_desc }}</p>
+
+          {%- if lgi_show_price -%}
+            <div class="lgi__pricing">
+              <span class="lgi__price-now">{{ lgi_price | money }}</span>
+              {%- if lgi_compare > lgi_price -%}
+                <span class="lgi__price-compare">{{ lgi_compare | money }}</span>
+                <span class="lgi__save">Save {{ lgi_save_amount | money }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if lgi_url != blank -%}
+            <a href="{{ lgi_url }}" class="lgi__cta">
+              <span>{{ lgi_cta_label }}</span>
+              <span class="lgi__cta-arrow" aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </article>
+
+    <aside class="lgi__card lgi__card--impact" aria-labelledby="{{ lgi_uid }}-impact-title">
+      <div class="lgi__card-inner">
+        <div class="lgi__impact-body">
+          <div class="lgi__logo-wrap">
+            <img
+              class="lgi__logo"
+              src="{{ 'Paravidya_logo.png' | asset_url }}"
+              alt="Paravidya Foundation"
+              width="110"
+              height="32"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <h2 class="lgi__impact-title" id="{{ lgi_uid }}-impact-title">{{ lgi_impact_title }}</h2>
+          <div class="lgi__ornament" aria-hidden="true">
+            <span class="lgi__ornament-line"></span>
+            <span class="lgi__ornament-dot"></span>
+            <span class="lgi__ornament-line"></span>
+          </div>
+          <p class="lgi__impact-text">{{ lgi_impact_p1 }}</p>
+          <p class="lgi__impact-text">{{ lgi_impact_p2 }}</p>
+          <footer class="lgi__signature">
+            <p class="lgi__signature-label">{{ lgi_signature_label }}</p>
+            <p class="lgi__signature-name">{{ lgi_signature_name }}</p>
+          </footer>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</section>

@@ -15,6 +15,9 @@
   endif
 -%}
 {%- if pnb_product != blank -%}
+  {% render 'ar-theme-assets', bundle: 'product-css' %}
+  {% render 'attar-meaning-editorial', product: pnb_product %}
+
   {% render 'fragrance-notes', product: pnb_product %}
 
   {%- capture pnb_asset -%}{%- render 'note-banner-lookup', nb_product: pnb_product -%}{%- endcapture -%}

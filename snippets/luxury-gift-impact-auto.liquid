@@ -1,0 +1,97 @@
+{%- comment -%}
+  Auto-inject Luxury Gift Set + Social Impact on Planet & Zodiac pages only.
+{%- endcomment -%}
+
+{%- liquid
+  assign lgi_show = false
+  assign lgi_axis = 'planet'
+  assign lgi_gift_product = blank
+  assign lgi_gift_url = blank
+
+  if request.page_type == 'collection' and collection != blank
+    assign lgi_col_h = collection.handle | downcase
+    if lgi_col_h contains 'planet' or lgi_col_h contains 'navagraha' or lgi_col_h contains 'navgraha'
+      assign lgi_show = true
+      assign lgi_axis = 'planet'
+    elsif lgi_col_h contains 'zodiac' or lgi_col_h contains 'rashi'
+      assign lgi_show = true
+      assign lgi_axis = 'zodiac'
+    endif
+  endif
+
+  if request.page_type == 'product' and product != blank
+    assign lgi_p_type = product.type | downcase
+    assign lgi_p_title = product.title | downcase
+    assign lgi_p_handle = product.handle | downcase
+    assign lgi_p_tags = product.tags | join: '|' | downcase
+    assign lgi_p_scope = lgi_p_type | append: '|' | append: lgi_p_title | append: '|' | append: lgi_p_handle | append: '|' | append: lgi_p_tags
+
+    assign lgi_is_excluded = false
+    if lgi_p_scope contains 'incense' or lgi_p_scope contains 'agarbatti' or lgi_p_scope contains 'dhoop' or lgi_p_scope contains 'chakra' or lgi_p_scope contains 'nakshatra' or lgi_p_scope contains 'naksahtra' or lgi_p_scope contains 'stress' or lgi_p_scope contains 'love-attar'
+      assign lgi_is_excluded = true
+    endif
+
+    unless lgi_is_excluded
+      if product.collections != blank
+        for c in product.collections
+          assign ch = c.handle | downcase
+          if ch contains 'zodiac' or ch contains 'rashi'
+            assign lgi_show = true
+            assign lgi_axis = 'zodiac'
+            break
+          elsif ch contains 'planet' or ch contains 'navagraha' or ch contains 'navgraha'
+            assign lgi_show = true
+            assign lgi_axis = 'planet'
+            break
+          endif
+        endfor
+      endif
+
+      if lgi_show == false
+        if lgi_p_scope contains 'zodiac' or lgi_p_scope contains 'rashi'
+          assign lgi_show = true
+          assign lgi_axis = 'zodiac'
+        elsif lgi_p_scope contains 'planet' or lgi_p_scope contains 'navagraha' or lgi_p_scope contains 'navgraha'
+          assign lgi_show = true
+          assign lgi_axis = 'planet'
+        endif
+      endif
+    endunless
+  endif
+-%}
+
+{%- if lgi_show -%}
+  {%- capture lgi_prod_handle -%}
+    {%- render 'luxury-gift-impact-product',
+      lgi_axis: lgi_axis,
+      lgi_product_setting: blank
+    -%}
+  {%- endcapture -%}
+  {%- assign lgi_prod_handle = lgi_prod_handle | strip -%}
+
+  {%- assign lgi_gift_product = blank -%}
+  {%- if lgi_prod_handle != blank -%}
+    {%- assign lgi_gift_product = all_products[lgi_prod_handle] -%}
+  {%- endif -%}
+
+  {% render 'ar-theme-assets', bundle: 'gift-impact-css' %}
+  {% render 'ar-theme-assets', bundle: 'gift-impact-js' %}
+
+  {%- assign lgi_uid = 'lgi-auto-' | append: lgi_axis -%}
+  {%- if product != blank -%}
+    {%- assign lgi_uid = lgi_uid | append: '-' | append: product.id -%}
+  {%- elsif collection != blank -%}
+    {%- assign lgi_uid = lgi_uid | append: '-' | append: collection.id -%}
+  {%- endif -%}
+
+  {%- if lgi_gift_product != blank -%}
+    {%- assign lgi_gift_url = lgi_gift_product.url -%}
+  {%- endif -%}
+
+  {%- render 'luxury-gift-impact-render',
+    lgi_uid: lgi_uid,
+    lgi_axis: lgi_axis,
+    lgi_gift_product: lgi_gift_product,
+    lgi_gift_url: lgi_gift_url
+  -%}
+{%- endif -%}

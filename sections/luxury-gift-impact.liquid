@@ -1,0 +1,150 @@
+{% comment %}
+  ANAND RASA — Luxury Gift Set + Social Impact editorial
+  Planet & Zodiac only
+{% endcomment %}
+
+{%- liquid
+  assign lgi_axis = section.settings.collection_mode | default: 'planet'
+  assign lgi_setting_product = blank
+  assign lgi_uid = 'lgi-' | append: section.id
+
+  if lgi_axis == 'zodiac'
+    assign lgi_setting_product = section.settings.zodiac_gift_product
+  else
+    assign lgi_setting_product = section.settings.planet_gift_product
+  endif
+-%}
+
+{%- capture lgi_prod_handle -%}
+  {%- render 'luxury-gift-impact-product',
+    lgi_axis: lgi_axis,
+    lgi_product_setting: lgi_setting_product
+  -%}
+{%- endcapture -%}
+{%- assign lgi_prod_handle = lgi_prod_handle | strip -%}
+
+{%- assign lgi_gift_product = blank -%}
+{%- if lgi_prod_handle != blank -%}
+  {%- assign lgi_gift_product = all_products[lgi_prod_handle] -%}
+{%- endif -%}
+
+{% render 'ar-theme-assets', bundle: 'gift-impact-css' %}
+{% render 'ar-theme-assets', bundle: 'gift-impact-js' %}
+
+{%- render 'luxury-gift-impact-render',
+  lgi_uid: lgi_uid,
+  lgi_axis: lgi_axis,
+  lgi_gift_product: lgi_gift_product,
+  lgi_gift_url: section.settings.cta_url,
+  lgi_eyebrow: section.settings.eyebrow,
+  lgi_title: section.settings.gift_title,
+  lgi_subtitle: section.settings.gift_subtitle,
+  lgi_desc: section.settings.gift_description,
+  lgi_cta_label: section.settings.cta_label,
+  lgi_impact_title: section.settings.impact_title,
+  lgi_impact_p1: section.settings.impact_paragraph_1,
+  lgi_impact_p2: section.settings.impact_paragraph_2,
+  lgi_signature_label: section.settings.signature_label,
+  lgi_signature_name: section.settings.signature_name,
+  lgi_image: section.settings.gift_image,
+  lgi_shopify_attributes: section.shopify_attributes
+-%}
+
+{% schema %}
+{
+  "name": "Gift Set + Impact",
+  "tag": "section",
+  "class": "section section-lgi",
+  "settings": [
+    {
+      "type": "select",
+      "id": "collection_mode",
+      "label": "Collection type",
+      "default": "planet",
+      "options": [
+        { "value": "planet", "label": "Planet / Navgraha" },
+        { "value": "zodiac", "label": "Zodiac" }
+      ]
+    },
+    {
+      "type": "product",
+      "id": "planet_gift_product",
+      "label": "Planet gift set product"
+    },
+    {
+      "type": "product",
+      "id": "zodiac_gift_product",
+      "label": "Zodiac gift set product"
+    },
+    {
+      "type": "image_picker",
+      "id": "gift_image",
+      "label": "Gift image override"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Gift eyebrow",
+      "default": "Handcrafted Gift Ritual"
+    },
+    {
+      "type": "text",
+      "id": "gift_title",
+      "label": "Gift title"
+    },
+    {
+      "type": "text",
+      "id": "gift_subtitle",
+      "label": "Gift subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "gift_description",
+      "label": "Gift description"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Explore Gift Set"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA URL override"
+    },
+    {
+      "type": "text",
+      "id": "impact_title",
+      "label": "Impact heading"
+    },
+    {
+      "type": "textarea",
+      "id": "impact_paragraph_1",
+      "label": "Impact paragraph 1"
+    },
+    {
+      "type": "textarea",
+      "id": "impact_paragraph_2",
+      "label": "Impact paragraph 2"
+    },
+    {
+      "type": "text",
+      "id": "signature_label",
+      "label": "Signature label",
+      "default": "With gratitude"
+    },
+    {
+      "type": "text",
+      "id": "signature_name",
+      "label": "Signature name",
+      "default": "— Anand Rasa"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift Set + Impact"
+    }
+  ]
+}
+{% endschema %}

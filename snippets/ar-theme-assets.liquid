@@ -1,0 +1,23 @@
+{%- comment -%}
+  Consolidated Anand Rasa theme asset loader.
+
+  @param bundle {string}
+    components-css | collections-css | product-css | product-js | interactions-js
+{%- endcomment -%}
+
+{%- case bundle -%}
+  {%- when 'components-css' -%}
+    {{ 'theme-components.css' | asset_url | stylesheet_tag }}
+  {%- when 'collections-css' -%}
+    {{ 'theme-collections.css' | asset_url | stylesheet_tag }}
+  {%- when 'product-css' -%}
+    {{ 'theme-product.css' | asset_url | stylesheet_tag }}
+  {%- when 'product-js' -%}
+    <script src="{{ 'theme-product.js' | asset_url }}" defer="defer"></script>
+  {%- when 'interactions-js' -%}
+    <script src="{{ 'theme-interactions.js' | asset_url }}" defer="defer"></script>
+  {%- when 'gift-impact-css' -%}
+    {{ 'theme-gift-impact.css' | asset_url | stylesheet_tag }}
+  {%- when 'gift-impact-js' -%}
+    <script src="{{ 'theme-gift-impact.js' | asset_url }}" defer="defer"></script>
+{%- endcase -%}

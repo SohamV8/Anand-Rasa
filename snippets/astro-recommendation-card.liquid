@@ -1,0 +1,162 @@
+{%- comment -%}
+  Luxury astrological attar recommendation card.
+  Accepts: card_product, card_index, section_id
+{%- endcomment -%}
+
+{%- liquid
+  assign ar_key = card_product.handle | append: ' ' | append: card_product.title | append: ' ' | append: card_product.type | downcase
+  assign ar_tags = card_product.tags | join: ' ' | downcase
+  assign ar_scope = ar_key | append: ' ' | append: ar_tags
+
+  assign ar_subtitle = card_product.type | strip
+  if ar_subtitle == blank
+    assign ar_subtitle = 'Astrology Attar'
+  endif
+
+  assign ar_bg = ''
+  assign ar_img = card_product.featured_image
+  assign ar_showcase_asset = ''
+
+  if ar_scope contains 'surya' or ar_scope contains 'sun'
+    assign ar_subtitle = 'Sun Attar'
+    assign ar_bg = 'Planet/sun.webp'
+    assign ar_showcase_asset = 'Planet/surya_attar.webp'
+    if ar_img == blank
+      assign ar_img_fallback = 'Planet/surya_attar.webp'
+    endif
+  elsif ar_scope contains 'chandra' or ar_scope contains 'moon'
+    assign ar_subtitle = 'Moon Attar'
+    assign ar_bg = 'Planet/moon.webp'
+    assign ar_showcase_asset = 'Planet/chandra_attar.webp'
+    if ar_img == blank
+      assign ar_img_fallback = 'Planet/chandra_attar.webp'
+    endif
+  elsif ar_scope contains 'mangal' or ar_scope contains 'mars'
+    assign ar_subtitle = 'Mars Attar'
+    assign ar_bg = 'Planet/mangal_attar.webp'
+    assign ar_showcase_asset = 'Planet/mangal_attar.webp'
+  elsif ar_scope contains 'budh' or ar_scope contains 'mercury'
+    assign ar_subtitle = 'Mercury Attar'
+    assign ar_bg = 'Planet/Mercury.webp'
+    assign ar_showcase_asset = 'Planet/budh_attar.webp'
+  elsif ar_scope contains 'guru' or ar_scope contains 'jupiter'
+    assign ar_subtitle = 'Jupiter Attar'
+    assign ar_bg = 'Planet/guru_card.webp'
+    assign ar_showcase_asset = 'Planet/guru_attar.webp'
+  elsif ar_scope contains 'shukra' or ar_scope contains 'venus'
+    assign ar_subtitle = 'Venus Attar'
+    assign ar_bg = 'Planet/shukra_attar.webp'
+    assign ar_showcase_asset = 'Planet/shukra_attar.webp'
+  elsif ar_scope contains 'shani' or ar_scope contains 'saturn'
+    assign ar_subtitle = 'Saturn Attar'
+    assign ar_bg = 'Planet/shani_card.webp'
+    assign ar_showcase_asset = 'Planet/shani_attar.webp'
+  elsif ar_scope contains 'rahu'
+    assign ar_subtitle = 'Rahu Attar'
+    assign ar_bg = 'Planet/rahu_card.webp'
+    assign ar_showcase_asset = 'Planet/rahu_attar.webp'
+  elsif ar_scope contains 'ketu'
+    assign ar_subtitle = 'Ketu Attar'
+    assign ar_bg = 'Planet/ketu_card.webp'
+    assign ar_showcase_asset = 'Planet/ketu_attar.webp'
+  elsif ar_scope contains 'nakshatra' or ar_scope contains 'rohini' or ar_scope contains 'ashwini' or ar_scope contains 'bharani' or ar_scope contains 'kritika' or ar_scope contains 'mrigashira' or ar_scope contains 'ardra' or ar_scope contains 'punarvasu' or ar_scope contains 'pushya' or ar_scope contains 'ashlesha' or ar_scope contains 'magha' or ar_scope contains 'phalguni' or ar_scope contains 'hasta' or ar_scope contains 'chitra' or ar_scope contains 'swati' or ar_scope contains 'vishakha' or ar_scope contains 'anuradha' or ar_scope contains 'jyeshtha' or ar_scope contains 'mula' or ar_scope contains 'ashadha' or ar_scope contains 'shravana' or ar_scope contains 'dhanishtha' or ar_scope contains 'shatabhisha' or ar_scope contains 'bhadrapada' or ar_scope contains 'revati'
+    assign ar_subtitle = 'Nakshatra Attar'
+    if ar_scope contains 'rohini'
+      assign ar_bg = 'Nakshatra/Rohini.webp'
+    endif
+  elsif ar_scope contains 'zodiac' or ar_scope contains 'aries' or ar_scope contains 'taurus' or ar_scope contains 'gemini' or ar_scope contains 'cancer' or ar_scope contains 'leo' or ar_scope contains 'virgo' or ar_scope contains 'libra' or ar_scope contains 'scorpio' or ar_scope contains 'sagittarius' or ar_scope contains 'capricorn' or ar_scope contains 'aquarius' or ar_scope contains 'pisces'
+    assign ar_subtitle = 'Zodiac Attar'
+    if ar_scope contains 'scorpio'
+      assign ar_bg = 'Zodiac/scorpio.webp'
+    elsif ar_scope contains 'aries'
+      assign ar_bg = 'Zodiac/aries.webp'
+    elsif ar_scope contains 'taurus'
+      assign ar_bg = 'Zodiac/taurus.webp'
+    elsif ar_scope contains 'gemini'
+      assign ar_bg = 'Zodiac/gemini.webp'
+    elsif ar_scope contains 'cancer'
+      assign ar_bg = 'Zodiac/cancer.webp'
+    elsif ar_scope contains 'leo'
+      assign ar_bg = 'Zodiac/leo.webp'
+    elsif ar_scope contains 'virgo'
+      assign ar_bg = 'Zodiac/virgo.webp'
+    elsif ar_scope contains 'libra'
+      assign ar_bg = 'Zodiac/libra.webp'
+    elsif ar_scope contains 'sagittarius'
+      assign ar_bg = 'Zodiac/sagittarius.webp'
+    elsif ar_scope contains 'capricorn'
+      assign ar_bg = 'Zodiac/capricorn.webp'
+    elsif ar_scope contains 'aquarius'
+      assign ar_bg = 'Zodiac/aquarius.webp'
+    elsif ar_scope contains 'pisces'
+      assign ar_bg = 'Zodiac/pisces.webp'
+    endif
+  endif
+
+  if subtitle_override != blank
+    assign ar_subtitle = subtitle_override
+  endif
+
+  assign ar_lazy = true
+  if card_index <= 2
+    assign ar_lazy = false
+  endif
+
+  if ar_showcase_asset == blank
+    capture ar_bs_lookup
+      render 'bestseller-image-lookup', bs_product: card_product
+    endcapture
+    assign ar_bs_lookup = ar_bs_lookup | strip
+    if ar_bs_lookup != blank
+      assign ar_showcase_asset = ar_bs_lookup
+    endif
+  endif
+-%}
+
+<li class="afr__prod" style="--afr-i: {{ card_index | minus: 1 }};">
+  <a href="{{ card_product.url }}" class="afr__prod-link" aria-label="{{ card_product.title | escape }} — {{ ar_subtitle | escape }}">
+    <div class="afr__prod-visual">
+      <div class="afr__prod-img-frame">
+        {%- if ar_showcase_asset != blank -%}
+          <img
+            class="afr__prod-img"
+            src="{{ ar_showcase_asset | asset_url }}"
+            alt="{{ card_product.title | escape }}"
+            width="480"
+            height="480"
+            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
+          >
+        {%- elsif ar_img -%}
+          <img
+            class="afr__prod-img"
+            src="{{ ar_img | image_url: width: 800 }}"
+            alt="{{ card_product.title | escape }}"
+            width="480"
+            height="480"
+            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
+          >
+        {%- elsif ar_img_fallback != blank -%}
+          <img
+            class="afr__prod-img"
+            src="{{ ar_img_fallback | asset_url }}"
+            alt="{{ card_product.title | escape }}"
+            width="480"
+            height="480"
+            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
+          >
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="afr__prod-body">
+      <h3 class="afr__prod-name">{{ card_product.title }}</h3>
+      <p class="afr__prod-type">{{ ar_subtitle }}</p>
+      <p class="afr__prod-price">
+        <span class="afr__prod-price-now">{{ card_product.price | money }}</span>
+        {%- if card_product.compare_at_price > card_product.price -%}
+          <span class="afr__prod-compare">{{ card_product.compare_at_price | money }}</span>
+        {%- endif -%}
+      </p>
+    </div>
+  </a>
+</li>
