@@ -39,10 +39,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "custom_liquid_kzezCU": {
+        "custom_liquid_6hwbAb": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<div class=\"ar-trust-badge\">\n  <span class=\"stars\">★★★★★</span>\n  <span class=\"label\"><strong>Excellent</strong></span>\n  <span class=\"divider\">|</span>\n  <span class=\"rating\">4.8/5</span>\n  <span class=\"divider\">|</span>\n  <span class=\"reviews\"><strong>2000+</strong> Reviews</span>\n</div>\n\n<style>\n.ar-trust-badge {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    flex-wrap: wrap;\n    font-size: 16px;\n    line-height: 1.4;\n    color: #1a1a1a;\n    font-family: inherit;\n    margin: 10px 0;\n}\n\n.ar-trust-badge .stars {\n    color: #D4AF37; /* Luxury Gold */\n    font-size: 18px;\n    letter-spacing: 2px;\n}\n\n.ar-trust-badge .label strong,\n.ar-trust-badge .reviews strong {\n    font-weight: 600;\n}\n\n.ar-trust-badge .divider {\n    color: #b8a36b;\n}\n\n@media (max-width: 768px) {\n    .ar-trust-badge {\n        font-size: 14px;\n        gap: 6px;\n    }\n\n    .ar-trust-badge .stars {\n        font-size: 16px;\n    }\n}\n</style>"
+            "custom_liquid": "<div class=\"ar-luxury-trust\">\n  <span class=\"gold-stars\">★★★★★</span>\n  <span><strong>Excellent</strong> 4.8/5</span>\n  <span class=\"separator\">•</span>\n  <span><strong>2000+</strong> Reviews</span>\n</div>\n\n<style>\n.ar-luxury-trust{\n    display:flex;\n    justify-content:center;\n    align-items:center;\n    gap:12px;\n    font-size:15px;\n    color:#3D3228;\n    letter-spacing:.3px;\n    padding:10px 0;\n}\n\n.gold-stars{\n    color:#C9A227;\n    letter-spacing:2px;\n    font-size:18px;\n}\n\n.separator{\n    color:#C9A227;\n    opacity:.8;\n}\n\n@media(max-width:768px){\n    .ar-luxury-trust{\n        font-size:14px;\n        gap:8px;\n    }\n}\n</style>"
           }
         },
         "vendor": {
@@ -118,7 +118,7 @@
         }
       },
       "block_order": [
-        "custom_liquid_kzezCU",
+        "custom_liquid_6hwbAb",
         "vendor",
         "title",
         "price",
