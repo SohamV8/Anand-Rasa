@@ -1150,12 +1150,22 @@ class ProductRecommendations extends HTMLElement {
   }
 
   loadRecommendations(productId) {
-    fetch(`${this.dataset.url}&product_id=${productId}&section_id=${this.dataset.sectionId}`)
+    const sectionId = this.dataset.sectionId;
+    const baseUrl = this.dataset.url || '';
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    const fetchUrl = `${baseUrl}${separator}product_id=${productId}${sectionId ? `&section_id=${sectionId}` : ''}`;
+
+    fetch(fetchUrl)
       .then((response) => response.text())
       .then((text) => {
         const html = document.createElement('div');
         html.innerHTML = text;
-        const recommendations = html.querySelector('product-recommendations');
+        let recommendations = html.querySelector('product-recommendations');
+
+        if (!recommendations) {
+          const sectionRoot = html.querySelector('[id^="shopify-section-"]');
+          recommendations = sectionRoot?.querySelector('product-recommendations');
+        }
 
         if (recommendations?.innerHTML.trim().length) {
           this.innerHTML = recommendations.innerHTML;
@@ -1163,10 +1173,15 @@ class ProductRecommendations extends HTMLElement {
 
         if (!this.querySelector('slideshow-component') && this.classList.contains('complementary-products')) {
           this.remove();
+          return;
         }
 
-        if (html.querySelector('.grid__item')) {
+        if (this.querySelector('.grid__item')) {
           this.classList.add('product-recommendations--loaded');
+          this.classList.remove('scroll-trigger', 'animate--slide-in', 'scroll-trigger--offscreen');
+          this.classList.add('scroll-trigger--cancel');
+          this.style.opacity = '';
+          this.style.transform = '';
         }
       })
       .catch((e) => {

@@ -27,6 +27,25 @@
   assign rp_show_rating = rp_show_rating | default: false, allow_false: true
   assign rp_padding_top = rp_padding_top | default: 36
   assign rp_padding_bottom = rp_padding_bottom | default: 28
+
+  assign rp_show_grid = false
+  assign rp_fallback_collection = nil
+
+  if recommendations.performed and recommendations.products_count > 0
+    assign rp_show_grid = true
+  elsif recommendations.performed and recommendations.products_count == 0
+    for rp_coll in rp_product.collections
+      assign rp_coll_handle = rp_coll.handle | downcase
+      if rp_coll_handle == 'all' or rp_coll_handle == 'frontpage'
+        continue
+      endif
+      assign rp_fallback_collection = rp_coll
+      break
+    endfor
+    if rp_fallback_collection == nil and rp_product.collections.size > 0
+      assign rp_fallback_collection = rp_product.collections.first
+    endif
+  endif
 -%}
 
 {%- if rp_product == blank -%}
@@ -56,35 +75,71 @@
 
 <div class="color-{{ rp_color_scheme }} gradient">
   <product-recommendations
-    class="related-products page-width section-{{ rp_uid }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-    data-url="{{ routes.product_recommendations_url }}?limit={{ rp_products_to_show }}"
+    class="related-products page-width section-{{ rp_uid }}-padding isolate"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ rp_section_id }}&limit={{ rp_products_to_show }}&intent=related"
     data-section-id="{{ rp_section_id }}"
     data-product-id="{{ rp_product.id }}"
   >
-    {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    {%- if rp_show_grid -%}
       <h2 class="related-products__heading inline-richtext {{ rp_heading_size }}">
         {{ rp_heading }}
       </h2>
-      <ul
-        class="grid product-grid grid--{{ rp_columns_desktop }}-col-desktop grid--{{ rp_columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {%- assign skip_card_product_styles = false -%}
-        {%- for recommendation in recommendations.products -%}
-          <li class="grid__item">
-            {% render 'card-product',
-              card_product: recommendation,
-              media_aspect_ratio: rp_image_ratio,
-              image_shape: rp_image_shape,
-              show_secondary_image: rp_show_secondary_image,
-              show_vendor: rp_show_vendor,
-              show_rating: rp_show_rating,
-              skip_styles: skip_card_product_styles
-            %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
-        {%- endfor -%}
-      </ul>
+      {% render 'related-products-grid',
+        products: recommendations.products,
+        rp_columns_desktop: rp_columns_desktop,
+        rp_columns_mobile: rp_columns_mobile,
+        rp_image_ratio: rp_image_ratio,
+        rp_image_shape: rp_image_shape,
+        rp_show_secondary_image: rp_show_secondary_image,
+        rp_show_vendor: rp_show_vendor,
+        rp_show_rating: rp_show_rating
+      %}
+    {%- elsif rp_fallback_collection != nil -%}
+      {%- liquid
+        assign rp_fallback_count = 0
+        for coll_product in rp_fallback_collection.products
+          if coll_product.id == rp_product.id
+            continue
+          endif
+          assign rp_fallback_count = rp_fallback_count | plus: 1
+          if rp_fallback_count >= rp_products_to_show
+            break
+          endif
+        endfor
+      -%}
+      {%- if rp_fallback_count > 0 -%}
+        <h2 class="related-products__heading inline-richtext {{ rp_heading_size }}">
+          {{ rp_heading }}
+        </h2>
+        <ul
+          class="grid product-grid grid--{{ rp_columns_desktop }}-col-desktop grid--{{ rp_columns_mobile }}-col-tablet-down"
+          role="list"
+        >
+          {%- assign skip_card_product_styles = false -%}
+          {%- assign rp_rendered = 0 -%}
+          {%- for coll_product in rp_fallback_collection.products -%}
+            {%- if coll_product.id == rp_product.id -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- if rp_rendered >= rp_products_to_show -%}
+              {%- break -%}
+            {%- endif -%}
+            <li class="grid__item">
+              {% render 'card-product',
+                card_product: coll_product,
+                media_aspect_ratio: rp_image_ratio,
+                image_shape: rp_image_shape,
+                show_secondary_image: rp_show_secondary_image,
+                show_vendor: rp_show_vendor,
+                show_rating: rp_show_rating,
+                skip_styles: skip_card_product_styles
+              %}
+            </li>
+            {%- assign skip_card_product_styles = true -%}
+            {%- assign rp_rendered = rp_rendered | plus: 1 -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
     {%- endif -%}
   </product-recommendations>
   {%- if rp_image_shape == 'arch' -%}
