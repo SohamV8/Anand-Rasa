@@ -1,14 +1,8 @@
 {%- comment -%}
-  Luxury Gift Set + Social Impact editorial — shared markup.
+  Luxury Gift Ritual + Social Impact — premium 3-column editorial markup.
 
-  Params:
-    lgi_uid, lgi_axis (planet|zodiac)
-    lgi_gift_product, lgi_gift_url
-    lgi_eyebrow, lgi_title, lgi_subtitle, lgi_desc, lgi_cta_label
-    lgi_impact_title, lgi_impact_p1, lgi_impact_p2
-    lgi_signature_label, lgi_signature_name
-    lgi_image (optional override)
-    lgi_shopify_attributes
+  Params: lgi_uid, lgi_axis, lgi_gift_product, lgi_gift_url, copy fields, lgi_image,
+  mini_* fields, lgi_shopify_attributes
 {%- endcomment -%}
 
 {%- liquid
@@ -47,16 +41,16 @@
     assign lgi_save_amount = lgi_compare | minus: lgi_price
   endif
 
-  assign lgi_has_image = false
+  assign lgi_media = blank
   if lgi_image != blank
-    assign lgi_has_image = true
+    assign lgi_media = lgi_image
   elsif lgi_gift != blank and lgi_gift.featured_image != blank
-    assign lgi_has_image = true
+    assign lgi_media = lgi_gift.featured_image
   elsif lgi_fallback_col != blank and lgi_fallback_col.featured_image != blank
-    assign lgi_has_image = true
+    assign lgi_media = lgi_fallback_col.featured_image
   endif
 
-  assign lgi_img_alt = lgi_title | default: 'Gift set'
+  assign lgi_img_alt = 'Luxury gift set'
   if lgi_gift != blank
     assign lgi_img_alt = lgi_gift.title
   elsif lgi_fallback_col != blank
@@ -118,107 +112,97 @@
 -%}
 
 <section
-  class="lgi is-visible"
+  class="lgi"
   id="{{ lgi_uid }}"
   data-lgi-section
   aria-labelledby="{{ lgi_uid }}-gift-title"
   {{ lgi_shopify_attributes }}
 >
-  <div class="lgi__grid">
+  <div class="lgi__shell">
+    <div class="lgi__grid">
 
-    <article class="lgi__card lgi__card--gift">
-      <div class="lgi__card-inner">
-        <div class="lgi__gift-visual{% unless lgi_has_image %} lgi__gift-visual--empty{% endunless %}">
-          <div class="lgi__gift-img-frame">
-            {%- if lgi_image != blank -%}
-              <img
-                class="lgi__gift-img"
-                src="{{ lgi_image | image_url: width: 1200 }}"
-                alt="{{ lgi_img_alt | escape }}"
-                width="800"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              >
-            {%- elsif lgi_gift != blank and lgi_gift.featured_image -%}
-              <img
-                class="lgi__gift-img"
-                src="{{ lgi_gift.featured_image | image_url: width: 1200 }}"
-                alt="{{ lgi_img_alt | escape }}"
-                width="800"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              >
-            {%- elsif lgi_fallback_col != blank and lgi_fallback_col.featured_image != blank -%}
-              <img
-                class="lgi__gift-img"
-                src="{{ lgi_fallback_col.featured_image | image_url: width: 1200 }}"
-                alt="{{ lgi_img_alt | escape }}"
-                width="800"
-                height="640"
-                loading="lazy"
-                decoding="async"
-              >
+      {%- comment -%} CARD 1 — Gift set feature {%- endcomment -%}
+      <article class="lgi__card lgi__card--gift" data-lgi-reveal>
+        <div class="lgi__card-inner">
+          <div class="lgi__gift-visual{% if lgi_media == blank %} lgi__gift-visual--empty{% endif %}">
+            {%- if lgi_media != blank -%}
+              {{
+                lgi_media
+                | image_url: width: 1400
+                | image_tag:
+                  class: 'lgi__gift-img',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  widths: '400, 600, 800, 1000, 1200, 1400',
+                  sizes: '(min-width: 1100px) 34vw, (min-width: 750px) 48vw, 92vw',
+                  alt: lgi_img_alt
+              }}
+            {%- endif -%}
+          </div>
+
+          <div class="lgi__gift-copy">
+            <p class="lgi__eyebrow">{{ lgi_eyebrow | upcase }}</p>
+            <h2 class="lgi__title" id="{{ lgi_uid }}-gift-title">{{ lgi_title }}</h2>
+            <p class="lgi__subtitle">{{ lgi_subtitle }}</p>
+            <p class="lgi__desc">{{ lgi_desc }}</p>
+
+            {%- if lgi_show_price -%}
+              <div class="lgi__pricing" aria-label="Pricing">
+                <span class="lgi__price-now">{{ lgi_price | money }}</span>
+                {%- if lgi_compare > lgi_price -%}
+                  <span class="lgi__price-compare">{{ lgi_compare | money }}</span>
+                  <span class="lgi__save">Save {{ lgi_save_amount | money }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            {%- if lgi_url != blank -%}
+              <a href="{{ lgi_url }}" class="lgi__cta">
+                <span>{{ lgi_cta_label }}</span>
+                <span class="lgi__cta-arrow" aria-hidden="true">→</span>
+              </a>
             {%- endif -%}
           </div>
         </div>
+      </article>
 
-        <div class="lgi__gift-copy">
-          <p class="lgi__eyebrow">{{ lgi_eyebrow }}</p>
-          <h2 class="lgi__title" id="{{ lgi_uid }}-gift-title">{{ lgi_title }}</h2>
-          <p class="lgi__subtitle">{{ lgi_subtitle }}</p>
-          <p class="lgi__desc">{{ lgi_desc }}</p>
-
-          {%- if lgi_show_price -%}
-            <div class="lgi__pricing">
-              <span class="lgi__price-now">{{ lgi_price | money }}</span>
-              {%- if lgi_compare > lgi_price -%}
-                <span class="lgi__price-compare">{{ lgi_compare | money }}</span>
-                <span class="lgi__save">Save {{ lgi_save_amount | money }}</span>
-              {%- endif -%}
+      {%- comment -%} CARD 2 — Social impact editorial {%- endcomment -%}
+      <aside class="lgi__card lgi__card--impact" data-lgi-reveal aria-labelledby="{{ lgi_uid }}-impact-title">
+        <div class="lgi__card-inner lgi__impact-inner">
+          <div class="lgi__impact-body">
+            <div class="lgi__logo-wrap">
+              <img
+                class="lgi__logo"
+                src="{{ 'Paravidya_logo.png' | asset_url }}"
+                alt="Paravidya Foundation"
+                width="120"
+                height="36"
+                loading="lazy"
+                decoding="async"
+              >
             </div>
-          {%- endif -%}
 
-          {%- if lgi_url != blank -%}
-            <a href="{{ lgi_url }}" class="lgi__cta">
-              <span>{{ lgi_cta_label }}</span>
-              <span class="lgi__cta-arrow" aria-hidden="true">→</span>
-            </a>
-          {%- endif -%}
-        </div>
-      </div>
-    </article>
+            <h2 class="lgi__impact-title" id="{{ lgi_uid }}-impact-title">{{ lgi_impact_title }}</h2>
 
-    <aside class="lgi__card lgi__card--impact" aria-labelledby="{{ lgi_uid }}-impact-title">
-      <div class="lgi__card-inner">
-        <div class="lgi__impact-body">
-          <div class="lgi__logo-wrap">
-            <img
-              class="lgi__logo"
-              src="{{ 'Paravidya_logo.png' | asset_url }}"
-              alt="Paravidya Foundation"
-              width="110"
-              height="32"
-              loading="lazy"
-              decoding="async"
-            >
+            <div class="lgi__ornament" aria-hidden="true">
+              <span class="lgi__ornament-line"></span>
+              <span class="lgi__ornament-dot"></span>
+              <span class="lgi__ornament-line"></span>
+            </div>
+
+            <div class="lgi__impact-copy">
+              <p class="lgi__impact-text">{{ lgi_impact_p1 }}</p>
+              <p class="lgi__impact-text">{{ lgi_impact_p2 }}</p>
+            </div>
           </div>
-          <h2 class="lgi__impact-title" id="{{ lgi_uid }}-impact-title">{{ lgi_impact_title }}</h2>
-          <div class="lgi__ornament" aria-hidden="true">
-            <span class="lgi__ornament-line"></span>
-            <span class="lgi__ornament-dot"></span>
-            <span class="lgi__ornament-line"></span>
-          </div>
-          <p class="lgi__impact-text">{{ lgi_impact_p1 }}</p>
-          <p class="lgi__impact-text">{{ lgi_impact_p2 }}</p>
+
           <footer class="lgi__signature">
-            <p class="lgi__signature-label">{{ lgi_signature_label }}</p>
+            <p class="lgi__signature-label">{{ lgi_signature_label | upcase }}</p>
             <p class="lgi__signature-name">{{ lgi_signature_name }}</p>
           </footer>
         </div>
-      </div>
-    </aside>
+      </aside>
 
+    </div>
   </div>
 </section>

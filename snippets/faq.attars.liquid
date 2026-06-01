@@ -3,6 +3,15 @@
   if afq_product == blank
     assign afq_product = faq_product
   endif
+
+  comment
+    hide_ui: true — visually hidden on storefront; HTML + FAQPage JSON-LD remain for SEO.
+    Pass hide_ui: false in theme.liquid to show the accordion again.
+  endcomment
+  assign afq_hide_ui = hide_ui
+  if afq_hide_ui == nil
+    assign afq_hide_ui = true
+  endif
 -%}
 {%- if afq_product != blank -%}
   {%- liquid
@@ -300,7 +309,12 @@
   -%}
 
   {%- if afq_is_attar and afq_item_count > 0 -%}
-    <section class="afq" id="{{ afq_uid }}" aria-label="{{ afq_title_input | escape }}">
+    <section
+      class="afq{% if afq_hide_ui %} afq--seo-only{% endif %}"
+      id="{{ afq_uid }}"
+      aria-label="{{ afq_title_input | escape }}"
+      {% if afq_hide_ui %}aria-hidden="true"{% endif %}
+    >
       <div class="afq__inner">
         <header class="afq__header">
           <p class="afq__eyebrow">ATTAR KNOWLEDGE</p>
@@ -386,6 +400,28 @@
     </script>
 
     <style>
+      #{{ afq_uid }}.afq--seo-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        clip-path: inset(50%) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+        pointer-events: none !important;
+      }
+      #{{ afq_uid }}.afq--seo-only .afq__item {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+      #{{ afq_uid }}.afq--seo-only .afq__panel {
+        max-height: none !important;
+        overflow: visible !important;
+      }
       #{{ afq_uid }}.afq {
         margin: clamp(24px, 3vw, 52px) auto 0;
         padding: 0 clamp(12px, 2vw, 24px);
@@ -528,6 +564,7 @@
       }
     </style>
 
+    {%- unless afq_hide_ui -%}
     <script>
       (function () {
         var root = document.getElementById('{{ afq_uid }}');
@@ -579,5 +616,6 @@
         });
       })();
     </script>
+    {%- endunless -%}
   {%- endif -%}
 {%- endif -%}

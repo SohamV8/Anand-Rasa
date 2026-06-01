@@ -589,8 +589,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         {%- if ar_is_incense -%}
           {% render 'incense-product-gallery' %}
-        {%- elsif ar_is_planet_product -%}
-          {% render 'ask-mehak', uid: product.handle %}
         {%- endif -%}
 
         {%- assign ar_product_handle = product.handle | downcase -%}
@@ -606,7 +604,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         {%- endif -%}
 
         {%- if ar_is_attar_product -%}
-          {% render 'faq.attars', product: product %}
+          {% render 'faq.attars', product: product, hide_ui: true %}
           {% render 'astro-faq-recommendations-auto' %}
           {% render 'luxury-gift-impact-auto' %}
         {%- endif -%}
