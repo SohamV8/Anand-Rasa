@@ -132,7 +132,10 @@
         "description",
         "share"
       ],
-      "custom_css": [],
+      "custom_css": [
+        ".ar-trust-badge{color:#4a4038; font-size:15px; margin-bottom:8px; font-family:Georgia, serif;}",
+        ".ar-trust-badge strong{color:#C8A03A; font-weight:500;}"
+      ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
