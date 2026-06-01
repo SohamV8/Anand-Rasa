@@ -3691,3 +3691,9 @@ textarea,
 select {
   font-family: var(--font-body-family);
 }
+.product__tax,
+.tax-note,
+.product__tax-caption,
+.product__policies {
+    display: none !important;
+}
