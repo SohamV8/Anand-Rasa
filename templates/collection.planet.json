@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "collection_hero": {
@@ -13,10 +22,7 @@
     "navagraha_mantras": {
       "type": "navagraha-mantra",
       "settings": {
-        "context": "collection",
-        "eyebrow": "Sacred Chant",
-        "title": "Navagraha Mantras",
-        "subtitle": "Authentic Vedic bija mantras for the nine grahas — recited with intention to harmonize planetary energy within your spiritual practice."
+        "context": "collection"
       }
     },
     "main": {
@@ -32,5 +38,10 @@
       }
     }
   },
-  "order": ["collection_hero", "navagraha_mantras", "main", "luxury_gift_impact"]
+  "order": [
+    "collection_hero",
+    "navagraha_mantras",
+    "main",
+    "luxury_gift_impact"
+  ]
 }

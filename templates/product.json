@@ -39,23 +39,21 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "custom_liquid_6hwbAb": {
+          "type": "custom_liquid",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "text_XtgpFE": {
-          "type": "text",
-          "settings": {
-            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
-            "text_style": "body"
+            "custom_liquid": "<div class=\"ar-product-header\">\n\n  <div class=\"ar-trust-badge\">\n    <span class=\"stars\">★★★★★</span>\n    <span class=\"text\"><strong>Excellent</strong> 4.8/5</span>\n    <span class=\"dot\">•</span>\n    <span class=\"text\"><strong>2000+</strong> Reviews</span>\n  </div>\n\n</div>\n\n<style>\n/* Trust Badge */\n.ar-trust-badge{\n    display:flex;\n    align-items:center;\n    justify-content:flex-start; /* Left align */\n    gap:12px;\n    margin-bottom:8px; /* Reduce space below reviews */\n    font-size:16px;\n    color:#4A4038;\n    line-height:1;\n}\n\n.ar-trust-badge .stars{\n    color:#C8A03A;\n    font-size:18px;\n    letter-spacing:2px;\n}\n\n.ar-trust-badge .dot{\n    color:#C8A03A;\n    font-size:14px;\n}\n\n/* Remove top spacing from product title */\n.product__title,\n.product-title,\nh1.product__title,\n.product-single__title{\n    margin-top:0 !important;\n    padding-top:0 !important;\n    line-height:1.05;\n}\n\n/* Mobile */\n@media(max-width:768px){\n    .ar-trust-badge{\n        gap:8px;\n        font-size:14px;\n        margin-bottom:6px;\n    }\n\n    .ar-trust-badge .stars{\n        font-size:16px;\n    }\n}\n</style>"
           }
         },
         "title": {
           "type": "title",
           "settings": {}
+        },
+        "custom_liquid_kXqzJU": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"ar-story-block\">\n\n  <p class=\"ar-story-intro\">\n    The attar of magnetic radiance, distilled by hand for over six centuries.\n  </p>\n\n  <div class=\"ar-divider\">\n    <span>✺</span>\n  </div>\n\n  <p class=\"ar-story-text\">\n    Wild turmeric from Kerala highlands. Mysore sandalwood aged fifteen years.\n    Ambergris and Damascus rose. Eight-hour radiance, blessed at sunrise.\n  </p>\n\n</div>\n\n<style>\n.ar-story-block{\n    margin: 12px 0 18px;\n}\n\n.ar-story-intro{\n    font-family: Georgia, serif;\n    font-style: italic;\n    font-size: 16px;\n    line-height: 1.5;\n    color: #7A654C;\n    margin: 0 0 10px;\n}\n\n.ar-divider{\n    position: relative;\n    text-align: center;\n    margin: 8px 0 10px;\n}\n\n.ar-divider:before{\n    content:\"\";\n    position:absolute;\n    left:0;\n    right:0;\n    top:50%;\n    border-top:1px solid #D8C08A;\n}\n\n.ar-divider span{\n    position:relative;\n    background:#F7F5F0;\n    padding:0 8px;\n    color:#C8A03A;\n    font-size:12px;\n}\n\n.ar-story-text{\n    font-family: Georgia, serif;\n    font-size: 13px;\n    line-height: 1.6;\n    color: #6B5A46;\n    margin:0;\n}\n\n/* Mobile */\n@media screen and (max-width:749px){\n\n.ar-story-intro{\n    font-size:15px;\n    margin-bottom:8px;\n}\n\n.ar-story-text{\n    font-size:12px;\n    line-height:1.55;\n}\n\n.ar-divider{\n    margin:6px 0 8px;\n}\n\n}\n</style>"
+          }
         },
         "price": {
           "type": "price",
@@ -93,6 +91,7 @@
         },
         "custom_liquid_EUGez7": {
           "type": "custom_liquid",
+          "disabled": true,
           "settings": {
             "custom_liquid": "<div class=\"sof-wrap\">\n  <div class=\"sof-top\">\n    <span>🔥</span>\n    <strong>SELLING OUT FAST</strong>\n  </div>\n  <p class=\"sof-sub\">Due to high demand, limited quantities available</p>\n  <div class=\"sof-track\">\n    <div class=\"sof-fill\" id=\"sofFill\">\n      <span class=\"sof-pct\" id=\"sofPct\">67% SOLD</span>\n    </div>\n  </div>\n</div>\n\n<style>\n  .sof-wrap {\n    padding: 16px;\n    background: #fff;\n    font-family: inherit;\n  }\n\n  .sof-top {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-bottom: 4px;\n  }\n\n  .sof-top strong {\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 0.08em;\n    text-transform: uppercase;\n    color: #1a1a1a;\n  }\n\n  .sof-sub {\n    font-size: 12px;\n    color: #888;\n    margin: 0 0 12px 0;\n  }\n\n  /* ── Track ── */\n  .sof-track {\n    width: 100%;\n    height: 28px;\n    background-color: #e0e0e0;\n    border-radius: 4px;\n    overflow: hidden;\n    position: relative;\n  }\n\n  /* ── Fill ── */\n  .sof-fill {\n    height: 100%;\n    width: 67%;               /* JS overrides this */\n    background-color: #1a1a1a;\n    border-radius: 4px;\n    display: flex;\n    align-items: center;\n    padding-left: 12px;\n    box-sizing: border-box;\n    transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);\n    position: relative;\n  }\n\n  /* glow when 85%+ */\n  .sof-fill.sof-hot {\n    background-color: #111;\n    box-shadow: inset 0 0 12px rgba(255,100,0,0.25);\n    animation: sofPulse 1.6s ease-in-out infinite;\n  }\n\n  @keyframes sofPulse {\n    0%,100% { opacity: 1; }\n    50%      { opacity: 0.88; }\n  }\n\n  /* ── Label inside bar ── */\n  .sof-pct {\n    font-size: 12px;\n    font-weight: 700;\n    color: #fff;\n    letter-spacing: 0.06em;\n    white-space: nowrap;\n    text-transform: uppercase;\n  }\n\n  @media (max-width: 480px) {\n    .sof-track { height: 26px; }\n    .sof-pct   { font-size: 11px; }\n  }\n</style>\n\n<script>\n(function () {\n  /* ── Config ── */\n  var START   = 67;\n  var RESET   = 70;\n  var MAX     = 90;\n  var STEP_MS = 400;   /* ms between each +0.1% tick  */\n\n  var pct    = START;\n  var paused = false;\n  var fill   = document.getElementById('sofFill');\n  var label  = document.getElementById('sofPct');\n\n  if (!fill || !label) return;\n\n  function render(p) {\n    fill.style.width  = p.toFixed(1) + '%';\n    label.textContent = Math.round(p) + '% SOLD';\n\n    if (p >= 85) {\n      fill.classList.add('sof-hot');\n    } else {\n      fill.classList.remove('sof-hot');\n    }\n  }\n\n  function tick() {\n    if (paused) return;\n\n    pct = parseFloat((pct + 0.1).toFixed(2));\n\n    if (pct >= MAX) {\n      /* instant snap back — kill transition, reset, re-enable */\n      fill.style.transition = 'none';\n      pct = RESET;\n      render(pct);\n\n      requestAnimationFrame(function () {\n        requestAnimationFrame(function () {\n          fill.style.transition = 'width 1.4s cubic-bezier(0.4, 0, 0.2, 1)';\n        });\n      });\n      return;\n    }\n\n    render(pct);\n  }\n\n  /* pause on hover */\n  var wrap = document.querySelector('.sof-wrap');\n  if (wrap) {\n    wrap.addEventListener('mouseenter', function () { paused = true;  });\n    wrap.addEventListener('mouseleave', function () { paused = false; });\n  }\n\n  /* kick off */\n  render(pct);\n  setInterval(tick, STEP_MS);\n\n})();\n</script>"
           }
@@ -117,9 +116,9 @@
         }
       },
       "block_order": [
-        "vendor",
-        "text_XtgpFE",
+        "custom_liquid_6hwbAb",
         "title",
+        "custom_liquid_kXqzJU",
         "price",
         "variant_picker",
         "quantity_selector",
@@ -131,7 +130,10 @@
         "description",
         "share"
       ],
-      "custom_css": [],
+      "custom_css": [
+        ".ar-trust-badge {color: #4a4038; font-size: 15px; margin-bottom: 8px; font-family: Georgia, serif;}",
+        ".ar-trust-badge strong {color: #c8a03a; font-weight: 500;}"
+      ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
@@ -249,10 +251,10 @@
   "order": [
     "1777535904a27e40a3",
     "main",
-    "related-products",
     "1777290678d5cd77e4",
     "17773752734e8faa13",
     "1779787285f7f2efa6",
-    "17797829115362eb52"
+    "17797829115362eb52",
+    "related-products"
   ]
 }
