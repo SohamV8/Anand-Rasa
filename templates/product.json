@@ -39,18 +39,18 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "custom_liquid_kzezCU": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"ar-trust-badge\">\n  <span class=\"stars\">★★★★★</span>\n  <span class=\"label\"><strong>Excellent</strong></span>\n  <span class=\"divider\">|</span>\n  <span class=\"rating\">4.8/5</span>\n  <span class=\"divider\">|</span>\n  <span class=\"reviews\"><strong>2000+</strong> Reviews</span>\n</div>\n\n<style>\n.ar-trust-badge {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    flex-wrap: wrap;\n    font-size: 16px;\n    line-height: 1.4;\n    color: #1a1a1a;\n    font-family: inherit;\n    margin: 10px 0;\n}\n\n.ar-trust-badge .stars {\n    color: #D4AF37; /* Luxury Gold */\n    font-size: 18px;\n    letter-spacing: 2px;\n}\n\n.ar-trust-badge .label strong,\n.ar-trust-badge .reviews strong {\n    font-weight: 600;\n}\n\n.ar-trust-badge .divider {\n    color: #b8a36b;\n}\n\n@media (max-width: 768px) {\n    .ar-trust-badge {\n        font-size: 14px;\n        gap: 6px;\n    }\n\n    .ar-trust-badge .stars {\n        font-size: 16px;\n    }\n}\n</style>"
+          }
+        },
         "vendor": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
-          }
-        },
-        "text_XtgpFE": {
-          "type": "text",
-          "settings": {
-            "text": "<strong>★★★★★</strong> <strong>Excellent </strong>4.8/5 | <strong>2000+</strong>Reviews",
-            "text_style": "body"
           }
         },
         "title": {
@@ -118,8 +118,8 @@
         }
       },
       "block_order": [
+        "custom_liquid_kzezCU",
         "vendor",
-        "text_XtgpFE",
         "title",
         "price",
         "variant_picker",
