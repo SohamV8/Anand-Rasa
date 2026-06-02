@@ -401,7 +401,11 @@
           {%- unless rp.id == product.id -%}
             <article class="aip-card">
               <a href="{{ rp.url }}" class="aip-card__img-wrap">
-                {%- if rp.featured_image -%}
+                {%- capture aip_ck_img -%}{%- render 'chakra-image-lookup', ck_product: rp -%}{%- endcapture -%}
+                {%- assign aip_ck_img = aip_ck_img | strip -%}
+                {%- if aip_ck_img != blank -%}
+                  <img src="{{ aip_ck_img | asset_url }}" alt="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
+                {%- elsif rp.featured_image -%}
                   <img src="{{ rp.featured_image | image_url: width: 900 }}" alt="{{ rp.title | escape }}" width="600" height="600" loading="lazy" class="aip-card__img">
                 {%- endif -%}
               </a>

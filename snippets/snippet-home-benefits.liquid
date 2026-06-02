@@ -51,7 +51,7 @@
   </div>
 </section>
 
-{%- capture ar_combo_default_url -%}{% render 'ar-collection-url', handle: 'giftsets' %}{%- endcapture -%}
+{%- capture ar_combo_default_url -%}{% render 'ar-page-url', handle: 'build-your-box' %}{%- endcapture -%}
 {%- capture ar_story_default_url -%}{% render 'ar-page-url', handle: 'about' %}{%- endcapture -%}
 {%- liquid
   assign ar_combo_href = combo_url | strip
@@ -64,24 +64,49 @@
   endif
 -%}
 
-<section class="ar-dk">
+<section class="ar-dk" aria-labelledby="ar-dk-heading">
   <div class="ar-dk__container">
 
-    <div class="ar-dk__imageWrap">
-      {% if combo_image != blank %}
-        <img src="{{ combo_image }}" class="ar-dk__image" loading="lazy" alt="{{ combo_heading }}">
-      {% endif %}
+    <div class="ar-dk__media">
+      <div class="ar-dk__media-frame">
+        <div class="ar-dk__media-glow" aria-hidden="true"></div>
+        {%- if combo_image != blank -%}
+          <img
+            class="ar-dk__image"
+            src="{{ combo_image }}"
+            {% if combo_image_srcset != blank %}srcset="{{ combo_image_srcset }}" sizes="(min-width: 900px) 48vw, 92vw"{% endif %}
+            width="{{ combo_image_width | default: 1400 }}"
+            height="{{ combo_image_height | default: 1050 }}"
+            alt="{{ combo_heading | default: 'Build Your Attar Box' | escape }}"
+            loading="lazy"
+            decoding="async"
+          >
+        {%- endif -%}
+      </div>
     </div>
 
     <div class="ar-dk__content">
-      <h2 class="ar-dk__heading">{{ combo_heading }}</h2>
-      <p class="ar-dk__text">{{ combo_text }}</p>
+      {%- if combo_eyebrow != blank -%}
+        <p class="ar-dk__eyebrow">{{ combo_eyebrow }}</p>
+      {%- endif -%}
 
-      {% if ar_combo_href != blank %}
+      {%- if combo_heading != blank -%}
+        <h2 id="ar-dk-heading" class="ar-dk__heading">{{ combo_heading }}</h2>
+      {%- endif -%}
+
+      {%- if combo_text != blank -%}
+        <p class="ar-dk__text">{{ combo_text }}</p>
+      {%- endif -%}
+
+      {%- if combo_note != blank -%}
+        <p class="ar-dk__note">{{ combo_note }}</p>
+      {%- endif -%}
+
+      {%- if ar_combo_href != blank and combo_btn != blank -%}
         <a href="{{ ar_combo_href }}" class="ar-dk__btn">
-          {{ combo_btn }}
+          <span class="ar-dk__btn-label">{{ combo_btn }}</span>
         </a>
-      {% endif %}
+      {%- endif -%}
     </div>
 
   </div>
@@ -116,11 +141,43 @@
    ===================== */
 .ar-bp__item,
 .ar-story__container,
-.ar-dk__container {
+.ar-dk {
   opacity: 0;
   transform: translateY(36px) scale(0.98);
   transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar-dk__content > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar-dk.ar-animate .ar-dk__content > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ar-dk.ar-animate .ar-dk__eyebrow { transition-delay: 0.05s; }
+.ar-dk.ar-animate .ar-dk__heading { transition-delay: 0.12s; }
+.ar-dk.ar-animate .ar-dk__text { transition-delay: 0.2s; }
+.ar-dk.ar-animate .ar-dk__note { transition-delay: 0.28s; }
+.ar-dk.ar-animate .ar-dk__btn { transition-delay: 0.36s; }
+
+.ar-dk__media-frame {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar-dk.ar-animate .ar-dk__media-frame {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .ar-animate {
@@ -202,83 +259,194 @@
 }
 
 /* =====================
-   DISCOVERY KIT
+   BUILD YOUR ATTAR BOX
    ===================== */
 .ar-dk {
-  min-height: 80vh;
+  --ar-dk-ink: #1e2023;
+  --ar-dk-muted: #4a4540;
+  --ar-dk-soft: #6b6560;
+  --ar-dk-gold: #b8943a;
+  --ar-dk-gold-glow: rgba(184, 148, 58, 0.1);
+  --ar-dk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: min(88vh, 920px);
   display: flex;
   align-items: center;
-  background: #FFFFFF;
+  background: #ffffff;
+  font-family: var(--font-body-family, Georgia, serif);
+  overflow: hidden;
 }
 
 .ar-dk__container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 80px 32px;
+  padding: clamp(64px, 8vw, 104px) clamp(20px, 4vw, 40px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 72px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: clamp(40px, 6vw, 88px);
   align-items: center;
 }
 
-/* Image — sharp edges, constrained size */
-.ar-dk__imageWrap {
+.ar-dk__media {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 0;
+}
+
+.ar-dk__media-frame {
+  position: relative;
+  width: 100%;
+  max-width: min(540px, 100%);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  animation: ar-dk-float 9s var(--ar-dk-ease) infinite alternate;
+}
+
+.ar-dk__media-glow {
+  position: absolute;
+  inset: 8% 6% 4%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, var(--ar-dk-gold-glow), transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
 }
 
 .ar-dk__image {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 420px;
-  height: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
   display: block;
-  border-radius: 0;              /* sharp edges */
-  object-fit: cover;
+  filter: drop-shadow(0 28px 48px rgba(30, 32, 35, 0.14));
+  transform: translateZ(0) scale(1);
+  transition: transform 1.1s var(--ar-dk-ease), filter 1.1s var(--ar-dk-ease);
+  backface-visibility: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ar-dk__media-frame:hover .ar-dk__image {
+    transform: translateZ(0) scale(1.035);
+    filter: drop-shadow(0 34px 56px rgba(30, 32, 35, 0.18));
+  }
 }
 
 .ar-dk__content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
+  max-width: 38rem;
+  min-width: 0;
+}
+
+.ar-dk__eyebrow {
+  margin: 0 0 clamp(16px, 2.2vw, 22px);
+  font-family: var(--font-heading-family, 'Poppins', sans-serif);
+  font-size: clamp(11px, 1.35vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ar-dk-gold);
+  line-height: 1.4;
 }
 
 .ar-dk__heading {
-  font-size: clamp(28px, 3vw, 42px);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #111;
-  margin: 0 0 16px;
-  line-height: 1.15;
+  font-family: var(--font-heading-family, 'Poppins', sans-serif);
+  font-size: clamp(2.35rem, 5.2vw, 3.65rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--ar-dk-ink);
+  margin: 0 0 clamp(20px, 2.8vw, 28px);
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .ar-dk__text {
-  font-size: 16px;
-  line-height: 1.75;
-  color: #555;
-  margin: 0 0 32px;
+  font-family: var(--font-body-family, 'Caudex', Georgia, serif);
+  font-size: clamp(1.125rem, 1.85vw, 1.375rem);
+  line-height: 1.72;
+  color: var(--ar-dk-muted);
+  margin: 0 0 clamp(16px, 2.2vw, 22px);
+  max-width: 36rem;
 }
 
-/* Discovery Kit CTA button */
+.ar-dk__note {
+  font-family: var(--font-body-family, 'Caudex', Georgia, serif);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.62;
+  color: var(--ar-dk-soft);
+  margin: 0 0 clamp(32px, 4vw, 40px);
+  max-width: 32rem;
+}
+
 .ar-dk__btn {
-  display: inline-block;
-  padding: 13px 32px;
-  border: 1.5px solid #111;
-  background: transparent;
-  color: #111;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 16px 40px;
+  border: 1px solid rgba(30, 32, 35, 0.88);
+  border-radius: 2px;
+  background: #ffffff;
+  color: var(--ar-dk-ink);
+  font-family: var(--font-heading-family, 'Poppins', sans-serif);
+  font-size: clamp(11px, 1.1vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   text-decoration: none;
-  border-radius: 0;
-  transition: background 0.22s ease, color 0.22s ease;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 10px 28px rgba(30, 32, 35, 0.06);
+  transform: translateY(0) translateZ(0);
+  transition:
+    transform 0.45s var(--ar-dk-ease),
+    background 0.45s var(--ar-dk-ease),
+    color 0.45s var(--ar-dk-ease),
+    border-color 0.45s var(--ar-dk-ease),
+    box-shadow 0.45s var(--ar-dk-ease);
   cursor: pointer;
 }
 
-.ar-dk__btn:hover {
-  background: #111;
-  color: #fff;
+.ar-dk__btn-label {
+  position: relative;
+  z-index: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ar-dk__btn:hover,
+  .ar-dk__btn:focus-visible {
+    transform: translateY(-2px) translateZ(0);
+    background: var(--ar-dk-ink);
+    border-color: var(--ar-dk-ink);
+    color: #fff;
+    box-shadow:
+      0 14px 36px rgba(30, 32, 35, 0.14),
+      0 0 0 1px rgba(184, 148, 58, 0.12);
+  }
+}
+
+.ar-dk__btn:focus-visible {
+  outline: 2px solid var(--ar-dk-gold);
+  outline-offset: 3px;
+}
+
+@keyframes ar-dk-float {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -8px, 0);
+  }
 }
 
 /* =====================
@@ -379,22 +547,48 @@
 }
 
 @media (max-width: 900px) {
+  .ar-dk {
+    min-height: 0;
+  }
+
   .ar-dk__container {
     grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
+    gap: clamp(32px, 6vw, 48px);
+    padding-top: clamp(56px, 10vw, 72px);
+    padding-bottom: clamp(56px, 10vw, 72px);
+  }
+
+  .ar-dk__media {
+    order: -1;
+  }
+
+  .ar-dk__media-frame {
+    max-width: min(420px, 92vw);
+    margin: 0 auto;
   }
 
   .ar-dk__content {
     align-items: center;
+    text-align: center;
+    margin: 0 auto;
   }
 
-  .ar-dk__imageWrap {
-    justify-content: center;
+  .ar-dk__text,
+  .ar-dk__note {
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .ar-dk__image {
-    max-width: 340px;
+  .ar-dk__heading {
+    font-size: clamp(2.1rem, 8vw, 2.85rem);
+  }
+
+  .ar-dk__text {
+    font-size: clamp(1.1rem, 4.2vw, 1.25rem);
+  }
+
+  .ar-dk__note {
+    font-size: clamp(1rem, 3.8vw, 1.1rem);
   }
 }
 
@@ -408,7 +602,13 @@
   }
 
   .ar-dk__container {
-    padding: 60px 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .ar-dk__btn {
+    width: 100%;
+    max-width: 320px;
   }
 }
 
@@ -417,6 +617,23 @@
     animation: none;
     transform: none;
   }
+
+  .ar-dk,
+  .ar-dk__content > *,
+  .ar-dk__media-frame {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ar-dk__media-frame {
+    animation: none;
+  }
+
+  .ar-dk__image,
+  .ar-dk__btn {
+    transition: none;
+  }
 }
 
 </style>
@@ -424,7 +641,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const els = document.querySelectorAll(".ar-bp__item, .ar-story__container, .ar-dk__container");
+  const els = document.querySelectorAll(".ar-bp__item, .ar-story__container, .ar-dk");
   if (!els.length) return;
 
   const obs = new IntersectionObserver((entries) => {

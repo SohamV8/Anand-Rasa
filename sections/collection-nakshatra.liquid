@@ -292,6 +292,8 @@
               {%- assign ar_nk_17 = ar_nk_17 | append: ar_card_markup -%}
             {%- elsif ar_key contains 'jyeshtha' or ar_key contains 'jyeshta' -%}
               {%- assign ar_nk_18 = ar_nk_18 | append: ar_card_markup -%}
+            {%- elsif ar_key contains 'muladhara' or ar_key contains 'chakra' -%}
+              {%- assign ar_nk_rest = ar_nk_rest | append: ar_card_markup -%}
             {%- elsif ar_key contains 'mula' -%}
               {%- assign ar_nk_19 = ar_nk_19 | append: ar_card_markup -%}
             {%- elsif ar_key contains 'shravana' -%}

@@ -86,6 +86,14 @@
     assign ar_card_img_alt_hover = ar_card_img_alt_hover | strip
   -%}
 
+  {%- capture ar_ck_lookup -%}
+    {%- render 'chakra-image-lookup', ck_product: card_product -%}
+  {%- endcapture -%}
+  {%- assign ar_ck_lookup = ar_ck_lookup | strip -%}
+  {%- if ar_card_asset_img == blank and ar_ck_lookup != blank -%}
+    {%- assign ar_card_asset_img = ar_ck_lookup | asset_url -%}
+  {%- endif -%}
+
   {%- capture ar_nk_lookup -%}
     {%- render 'nakshatra-image-lookup', nk_product: card_product -%}
   {%- endcapture -%}

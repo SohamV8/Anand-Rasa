@@ -16,12 +16,22 @@
     assign seo_key = seo_product.handle | append: ' ' | append: seo_product.title | downcase
     assign asset_path = ''
 
-    capture nk_asset
-      render 'nakshatra-image-lookup', nk_product: seo_product
+    capture ck_asset
+      render 'chakra-image-lookup', ck_product: seo_product
     endcapture
-    assign nk_asset = nk_asset | strip
-    if nk_asset != blank
-      assign asset_path = nk_asset
+    assign ck_asset = ck_asset | strip
+    if ck_asset != blank
+      assign asset_path = ck_asset
+    endif
+
+    if asset_path == blank
+      capture nk_asset
+        render 'nakshatra-image-lookup', nk_product: seo_product
+      endcapture
+      assign nk_asset = nk_asset | strip
+      if nk_asset != blank
+        assign asset_path = nk_asset
+      endif
     endif
 
     if asset_path == blank

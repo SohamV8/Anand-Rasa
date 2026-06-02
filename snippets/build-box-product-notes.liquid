@@ -1,0 +1,51 @@
+{%- comment -%}
+  Outputs fragrance notes for Build Your Attar Box cards.
+  Echoes up to 3 note fragments separated by •
+
+  @param product {Product}
+{%- endcomment -%}
+{%- liquid
+  assign byb_notes = ''
+  assign byb_count = 0
+  assign byb_src_1 = product.metafields.custom.main_notes.value | default: ''
+  assign byb_src_2 = product.metafields.custom.top_notes.value | default: ''
+  assign byb_src_3 = product.metafields.custom.heart_notes.value | default: ''
+  assign byb_src_4 = product.metafields.custom.base_notes.value | default: ''
+
+  assign byb_raw = ''
+  if byb_src_1 != blank
+    assign byb_raw = byb_src_1
+  elsif byb_src_2 != blank
+    assign byb_raw = byb_src_2
+    if byb_src_3 != blank
+      assign byb_raw = byb_raw | append: ', ' | append: byb_src_3
+    endif
+    if byb_src_4 != blank
+      assign byb_raw = byb_raw | append: ', ' | append: byb_src_4
+    endif
+  endif
+
+  if byb_raw == blank
+    assign byb_raw = product.metafields.custom.tagline.value | default: '' | strip
+  endif
+
+  if byb_raw == blank
+    assign byb_raw = product.description | strip_html | strip | truncate: 90
+  endif
+
+  assign byb_raw = byb_raw | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
+  assign byb_parts = byb_raw | split: ','
+
+  for byb_part in byb_parts
+    assign byb_clean = byb_part | strip
+    if byb_clean != blank and byb_count < 3
+      if byb_notes != blank
+        assign byb_notes = byb_notes | append: ' • '
+      endif
+      assign byb_notes = byb_notes | append: byb_clean
+      assign byb_count = byb_count | plus: 1
+    endif
+  endfor
+
+  echo byb_notes
+-%}

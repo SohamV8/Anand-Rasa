@@ -8,9 +8,41 @@
   assign ar_tags = card_product.tags | join: ' ' | downcase
   assign ar_scope = ar_key | append: ' ' | append: ar_tags
 
-  assign ar_subtitle = card_product.type | strip
-  if ar_subtitle == blank
-    assign ar_subtitle = 'Astrology Attar'
+  assign ar_type_key = card_product.type | downcase | strip
+  assign ar_subtitle = 'Attar'
+
+  if ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'dhoop'
+    assign ar_subtitle = 'Incense Stick'
+  elsif ar_type_key contains 'gift'
+    assign ar_subtitle = 'Gift Set'
+  elsif ar_type_key contains 'perfume'
+    assign ar_subtitle = 'Perfume'
+  elsif ar_type_key contains 'stress'
+    assign ar_subtitle = 'Stress Relief Attar'
+  elsif ar_type_key contains 'love'
+    assign ar_subtitle = 'Love Attar'
+  elsif ar_type_key contains 'astrology' or ar_type_key == ''
+    assign ar_subtitle = 'Attar'
+  elsif card_product.type != blank
+    assign ar_subtitle = card_product.type | strip
+  endif
+
+  assign ar_is_bestseller = false
+  if card_product.tags contains 'bestseller' or card_product.tags contains 'Bestseller'
+    assign ar_is_bestseller = true
+  endif
+  for c in card_product.collections
+    assign ar_col_key = c.handle | downcase
+    if ar_col_key contains 'bestseller' or ar_col_key contains 'best-seller'
+      assign ar_is_bestseller = true
+      break
+    endif
+  endfor
+
+  if ar_is_bestseller
+    unless ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'perfume' or ar_type_key contains 'gift'
+      assign ar_subtitle = 'Attar'
+    endunless
   endif
 
   assign ar_bg = ''
@@ -59,7 +91,9 @@
     assign ar_subtitle = 'Ketu Attar'
     assign ar_bg = 'Planet/ketu_card.webp'
     assign ar_showcase_asset = 'Planet/ketu_attar.webp'
-  elsif ar_scope contains 'nakshatra' or ar_scope contains 'rohini' or ar_scope contains 'ashwini' or ar_scope contains 'bharani' or ar_scope contains 'kritika' or ar_scope contains 'mrigashira' or ar_scope contains 'ardra' or ar_scope contains 'punarvasu' or ar_scope contains 'pushya' or ar_scope contains 'ashlesha' or ar_scope contains 'magha' or ar_scope contains 'phalguni' or ar_scope contains 'hasta' or ar_scope contains 'chitra' or ar_scope contains 'swati' or ar_scope contains 'vishakha' or ar_scope contains 'anuradha' or ar_scope contains 'jyeshtha' or ar_scope contains 'mula' or ar_scope contains 'ashadha' or ar_scope contains 'shravana' or ar_scope contains 'dhanishtha' or ar_scope contains 'shatabhisha' or ar_scope contains 'bhadrapada' or ar_scope contains 'revati'
+  elsif ar_scope contains 'chakra' or ar_scope contains 'muladhara' or ar_scope contains 'svadhisthana' or ar_scope contains 'swadhisthana' or ar_scope contains 'manipura' or ar_scope contains 'anahata' or ar_scope contains 'vishuddha' or ar_scope contains 'vishudha' or ar_scope contains 'ajna' or ar_scope contains 'agya' or ar_scope contains 'sahasrara' or ar_scope contains 'root-chakra' or ar_scope contains 'sacral-chakra' or ar_scope contains 'heart-chakra' or ar_scope contains 'throat-chakra' or ar_scope contains 'third-eye' or ar_scope contains 'crown-chakra'
+    assign ar_subtitle = 'Chakra Attar'
+  elsif ar_scope contains 'nakshatra' or ar_scope contains 'rohini' or ar_scope contains 'ashwini' or ar_scope contains 'bharani' or ar_scope contains 'kritika' or ar_scope contains 'mrigashira' or ar_scope contains 'ardra' or ar_scope contains 'punarvasu' or ar_scope contains 'pushya' or ar_scope contains 'ashlesha' or ar_scope contains 'magha' or ar_scope contains 'phalguni' or ar_scope contains 'hasta' or ar_scope contains 'chitra' or ar_scope contains 'swati' or ar_scope contains 'vishakha' or ar_scope contains 'anuradha' or ar_scope contains 'jyeshtha' or ar_scope contains 'ashadha' or ar_scope contains 'shravana' or ar_scope contains 'dhanishtha' or ar_scope contains 'shatabhisha' or ar_scope contains 'bhadrapada' or ar_scope contains 'revati' or ar_scope contains 'nakshatra-mula' or ar_scope contains 'mula-attar' or ar_scope contains 'mula attar' or ar_scope contains 'mula nakshatra'
     assign ar_subtitle = 'Nakshatra Attar'
     if ar_scope contains 'rohini'
       assign ar_bg = 'Nakshatra/Rohini.webp'
@@ -100,6 +134,16 @@
   assign ar_lazy = true
   if card_index <= 2
     assign ar_lazy = false
+  endif
+
+  if ar_showcase_asset == blank
+    capture ar_ck_lookup
+      render 'chakra-image-lookup', ck_product: card_product
+    endcapture
+    assign ar_ck_lookup = ar_ck_lookup | strip
+    if ar_ck_lookup != blank
+      assign ar_showcase_asset = ar_ck_lookup
+    endif
   endif
 
   if ar_showcase_asset == blank

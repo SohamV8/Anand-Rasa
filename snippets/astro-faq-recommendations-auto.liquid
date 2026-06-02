@@ -53,6 +53,10 @@
           assign afr_mode = 'perfume'
           assign afr_collection_ctx = c
           break
+        elsif ch contains 'bestseller' or ch contains 'best-seller'
+          assign afr_mode = 'bestseller'
+          assign afr_collection_ctx = c
+          break
         elsif ch contains 'planet' or ch contains 'navagraha'
           assign afr_mode = 'planet'
           assign afr_collection_ctx = c
@@ -93,6 +97,11 @@
       assign afr_default_hindi = 'सुगंध संग्रह'
       assign afr_default_en = 'The Perfume Collection'
       assign afr_default_cta = 'Explore Perfumes'
+    when 'bestseller'
+      assign afr_default_handle = 'bestseller'
+      assign afr_default_hindi = 'सर्वाधिक प्रिय'
+      assign afr_default_en = 'Bestsellers'
+      assign afr_default_cta = 'Explore Bestsellers'
     else
       assign afr_default_handle = 'planet-attars'
       assign afr_default_hindi = 'ग्रहीय संग्रह'

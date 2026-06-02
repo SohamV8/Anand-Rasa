@@ -1,0 +1,312 @@
+{% comment %}
+  Build Your Attar Box — luxury ritual box builder.
+  Assign template "build-your-box" to a page with handle build-your-box.
+{% endcomment %}
+
+{%- liquid
+  assign byb_handles = section.settings.collection_handles | default: 'bestseller,Bestseller,best-seller,bestsellers,best-sellers' | split: ','
+  assign byb_collection = blank
+  for byb_h in byb_handles
+    assign byb_h_clean = byb_h | strip
+    if byb_h_clean != blank and collections[byb_h_clean] != empty
+      assign byb_collection = collections[byb_h_clean]
+      break
+    endif
+  endfor
+
+  assign byb_hero_eyebrow = section.settings.hero_eyebrow | default: 'Personal Fragrance Ritual'
+  assign byb_hero_title = section.settings.hero_title | default: 'Build Your Attar Box'
+  assign byb_hero_lead = section.settings.hero_lead | default: 'Curate your own handcrafted fragrance ritual from our bestselling luxury attars.'
+  assign byb_hero_sub = section.settings.hero_sub | default: 'Choose your favorites. Build your ritual. Experience Indian perfumery in its purest form.'
+  assign byb_hero_cta = section.settings.hero_cta | default: 'Start Building'
+  assign byb_plans_title = section.settings.plans_title | default: 'Choose Your Ritual Size'
+  assign byb_plans_sub = section.settings.plans_sub | default: 'Select how many 6ml attars you would like in your box. Pricing is fixed for each ritual size.'
+  assign byb_grid_title = section.settings.grid_title | default: 'Select Your Attars'
+  assign byb_grid_sub = section.settings.grid_sub | default: 'Our bestselling 6ml attars — tap to add each fragrance to your ritual box.'
+  assign byb_complete_msg = section.settings.complete_message | default: 'Your ritual box is complete.'
+  assign byb_plan_3_price = section.settings.plan_3_price | default: '₹1200 Ritual Box'
+  assign byb_plan_5_price = section.settings.plan_5_price | default: '₹2400 Ritual Box'
+  assign byb_cta_ready = section.settings.cta_ready | default: 'Add Ritual Box to Cart'
+  assign byb_msg_added = section.settings.msg_added | default: 'Your ritual box was added to cart.'
+-%}
+
+{{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
+
+<div class="byb" data-byb-root data-section-id="{{ section.id }}">
+  <script type="application/json" data-byb-config>
+    {
+      "plan3Price": {{ byb_plan_3_price | json }},
+      "plan5Price": {{ byb_plan_5_price | json }},
+      "ctaReady": {{ byb_cta_ready | json }},
+      "msgComplete": {{ byb_complete_msg | json }},
+      "msgAdded": {{ byb_msg_added | json }}
+    }
+  </script>
+
+  {%- comment -%} ── Hero ── {%- endcomment -%}
+  <header class="byb-hero" data-byb-reveal>
+    <div class="byb-hero__grid">
+      <div class="byb-hero__content">
+        <p class="byb-hero__eyebrow">{{ byb_hero_eyebrow }}</p>
+        <h1 class="byb-hero__title">{{ byb_hero_title }}</h1>
+        <p class="byb-hero__lead">{{ byb_hero_lead }}</p>
+        <p class="byb-hero__sub">{{ byb_hero_sub }}</p>
+        <button type="button" class="byb-hero__cta" data-byb-hero-cta>
+          {{ byb_hero_cta }}
+        </button>
+      </div>
+      <div class="byb-hero__media-frame" aria-hidden="true">
+        <span class="byb-hero__glow"></span>
+        <img
+          class="byb-hero__img"
+          src="{{ 'wooden_attar_box.webp' | asset_url }}"
+          alt="{{ byb_hero_title | escape }} — handcrafted wooden attar discovery box"
+          width="1400"
+          height="1050"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} ── Plans ── {%- endcomment -%}
+  <section class="byb-plans" id="build-box-plans" aria-labelledby="byb-plans-heading" data-byb-reveal>
+    <div class="byb-plans__inner">
+      <h2 id="byb-plans-heading" class="byb-plans__title">{{ byb_plans_title }}</h2>
+      <p class="byb-plans__sub">{{ byb_plans_sub }}</p>
+      <div class="byb-plans__grid" role="group" aria-label="Ritual box size">
+        <button
+          type="button"
+          class="byb-plan"
+          data-byb-plan
+          data-plan-size="3"
+          data-plan-price="{{ byb_plan_3_price | escape }}"
+          aria-pressed="false"
+        >
+          <span class="byb-plan__badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <h3 class="byb-plan__name">Choose Any 3</h3>
+          <p class="byb-plan__detail">3 × 6ml luxury attars</p>
+          <p class="byb-plan__price">{{ section.settings.plan_3_price_display | default: '₹1200' }}</p>
+        </button>
+        <button
+          type="button"
+          class="byb-plan"
+          data-byb-plan
+          data-plan-size="5"
+          data-plan-price="{{ byb_plan_5_price | escape }}"
+          aria-pressed="false"
+        >
+          <span class="byb-plan__badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+          <h3 class="byb-plan__name">Choose Any 5</h3>
+          <p class="byb-plan__detail">5 × 6ml luxury attars</p>
+          <p class="byb-plan__price">{{ section.settings.plan_5_price_display | default: '₹2400' }}</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ── Product grid ── {%- endcomment -%}
+  <section
+    class="byb-grid-section is-locked"
+    data-byb-grid-section
+    aria-labelledby="byb-grid-heading"
+    data-byb-reveal
+  >
+    <div class="byb-grid-section__head">
+      <h2 id="byb-grid-heading" class="byb-grid-section__title">{{ byb_grid_title }}</h2>
+      <p class="byb-grid-section__sub">{{ byb_grid_sub }}</p>
+      <p class="byb-grid-section__complete" aria-live="polite">{{ byb_complete_msg }}</p>
+    </div>
+
+    {%- if byb_collection != blank and byb_collection.products_count > 0 -%}
+      <div class="byb-grid" data-byb-grid role="list">
+        {%- for product in byb_collection.products -%}
+          {%- unless product.available -%}
+            {%- continue -%}
+          {%- endunless -%}
+          <div role="listitem">
+            {% render 'build-box-product-card', product: product, card_index: forloop.index %}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="byb-empty">
+        <p>
+          Bestseller attars are being prepared for this experience.
+          {%- if section.settings.empty_collection_url != blank -%}
+            <a href="{{ section.settings.empty_collection_url }}">Browse the collection</a>
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%} ── Sticky dock ── {%- endcomment -%}
+  <aside class="byb-dock" data-byb-dock aria-label="Ritual box builder">
+    <div class="byb-dock__panel">
+      <div class="byb-dock__previews" data-byb-dock-previews aria-hidden="true"></div>
+      <div class="byb-dock__meta">
+        <p class="byb-dock__count" data-byb-dock-count aria-live="polite">Select a plan</p>
+        <p class="byb-dock__label" data-byb-dock-label>Choose your ritual size to begin</p>
+      </div>
+      <button
+        type="button"
+        class="byb-dock__submit"
+        data-byb-dock-submit
+        disabled
+        aria-disabled="true"
+      >
+        <span data-byb-dock-submit-text>{{ byb_cta_ready }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="byb-toast" data-byb-toast role="status" aria-live="polite"></div>
+</div>
+
+<script src="{{ 'build-your-attar-box.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Build Your Attar Box",
+  "tag": "section",
+  "class": "section-build-your-attar-box",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "collection_handles",
+      "label": "Collection handles (comma-separated)",
+      "default": "bestseller,Bestseller,best-seller,bestsellers,best-sellers",
+      "info": "First existing collection is used. All products are shown — no pagination."
+    },
+    {
+      "type": "url",
+      "id": "empty_collection_url",
+      "label": "Fallback collection link"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "Personal Fragrance Ritual"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Headline",
+      "default": "Build Your Attar Box"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_lead",
+      "label": "Subheading",
+      "default": "Curate your own handcrafted fragrance ritual from our bestselling luxury attars."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Supporting copy",
+      "default": "Choose your favorites. Build your ritual. Experience Indian perfumery in its purest form."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Hero CTA",
+      "default": "Start Building"
+    },
+    {
+      "type": "header",
+      "content": "Plans"
+    },
+    {
+      "type": "text",
+      "id": "plans_title",
+      "label": "Plans heading",
+      "default": "Choose Your Ritual Size"
+    },
+    {
+      "type": "textarea",
+      "id": "plans_sub",
+      "label": "Plans subcopy",
+      "default": "Select how many 6ml attars you would like in your box. Pricing is fixed for each ritual size."
+    },
+    {
+      "type": "text",
+      "id": "plan_3_price_display",
+      "label": "Plan 3 display price",
+      "default": "₹1200"
+    },
+    {
+      "type": "text",
+      "id": "plan_3_price",
+      "label": "Plan 3 dock label",
+      "default": "₹1200 Ritual Box"
+    },
+    {
+      "type": "text",
+      "id": "plan_5_price_display",
+      "label": "Plan 5 display price",
+      "default": "₹2400"
+    },
+    {
+      "type": "text",
+      "id": "plan_5_price",
+      "label": "Plan 5 dock label",
+      "default": "₹2400 Ritual Box"
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type": "text",
+      "id": "grid_title",
+      "label": "Grid heading",
+      "default": "Select Your Attars"
+    },
+    {
+      "type": "textarea",
+      "id": "grid_sub",
+      "label": "Grid subcopy",
+      "default": "Our bestselling 6ml attars — tap to add each fragrance to your ritual box."
+    },
+    {
+      "type": "text",
+      "id": "complete_message",
+      "label": "Box complete message",
+      "default": "Your ritual box is complete."
+    },
+    {
+      "type": "text",
+      "id": "cta_ready",
+      "label": "Add to cart CTA",
+      "default": "Add Ritual Box to Cart"
+    },
+    {
+      "type": "text",
+      "id": "msg_added",
+      "label": "Success toast",
+      "default": "Your ritual box was added to cart."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Build Your Attar Box"
+    }
+  ]
+}
+{% endschema %}

@@ -430,18 +430,18 @@
   .ar-best__arrow-l { left:8px; } .ar-best__arrow-r { right:8px; }
   .ar-best__track { display:flex; gap:32px; overflow-x:auto; padding:0 24px; scroll-snap-type:x mandatory; scrollbar-width:none; }
   .ar-best__track::-webkit-scrollbar { display:none; }
-  .ar-best__card { min-width:200px; max-width:240px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
+  .ar-best__card { min-width:228px; max-width:272px; flex-shrink:0; scroll-snap-align:start; text-align:center; position:relative; }
   .ar-best__link { display:block; text-decoration:none; }
-  .ar-best__imgw { position:relative; width:160px; height:210px; margin:0 auto; overflow:hidden; display:flex; align-items:center; justify-content:center;  }
-  @media(min-width:640px){ .ar-best__imgw { width:180px; height:240px; } }
+  .ar-best__imgw { position:relative; width:188px; height:248px; margin:0 auto; overflow:hidden; display:flex; align-items:center; justify-content:center;  }
+  @media(min-width:640px){ .ar-best__imgw { width:208px; height:272px; } }
   .ar-best__img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; transition:transform .5s; }
   .ar-best__link:hover .ar-best__img { transform:scale(1.04); }
   .ar-best__badge { position:absolute; top:8px; left:0; font-size:10px; font-weight:700; letter-spacing:.06em; padding:4px 10px; border-radius:3px; background:#1e2023; color:#fff; z-index:5; }
-  .ar-best__name  { margin-top:20px; font-family:var(--fh); font-size:clamp(14px,1.5vw,18px); letter-spacing:.04em; color:#1e2023; }
-  .ar-best__type  { margin-top:4px; font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#9ca3af; }
-  .ar-best__price-row { margin-top:8px; display:flex; align-items:center; justify-content:center; gap:8px; }
-  .ar-best__price-old { font-size:12px; color:#9ca3af; text-decoration:line-through; }
-  .ar-best__price { font-size:14px; font-weight:600; color:#1e2023; }
+  .ar-best__name  { margin-top:18px; font-family:var(--fh); font-size:clamp(16px,1.65vw,20px); letter-spacing:.03em; line-height:1.25; color:#1e2023; }
+  .ar-best__type  { margin-top:6px; font-family:var(--fb); font-size:clamp(12px,1.2vw,13px); text-transform:uppercase; letter-spacing:.12em; color:#6b7280; }
+  .ar-best__price-row { margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .ar-best__price-old { font-size:clamp(12px,1.1vw,14px); color:#9ca3af; text-decoration:line-through; }
+  .ar-best__price { font-size:clamp(15px,1.35vw,17px); font-weight:600; color:#1e2023; }
 
   /* ── PHILOSOPHY ── */
   .ar-bp { background:#F9F6EF; width:100%; font-family: var(--font-body-family); }
@@ -618,13 +618,26 @@
       endif
     endfor
     assign combo_image = ''
+    assign combo_image_srcset = ''
+    assign combo_image_width = 1400
+    assign combo_image_height = 1050
     if section.settings.combo_image != blank
       assign combo_image = section.settings.combo_image | image_url: width: 1400
+      assign combo_image_width = section.settings.combo_image.width | default: 1400
+      assign combo_image_height = section.settings.combo_image.height | default: 1050
+      assign combo_src_700 = section.settings.combo_image | image_url: width: 700
+      assign combo_src_1050 = section.settings.combo_image | image_url: width: 1050
+      assign combo_src_1400 = section.settings.combo_image | image_url: width: 1400
+      assign combo_image_srcset = combo_src_700 | append: ' 700w, ' | append: combo_src_1050 | append: ' 1050w, ' | append: combo_src_1400 | append: ' 1400w'
     elsif section.settings.combo_image_url != blank
       assign combo_image = section.settings.combo_image_url
+    else
+      assign combo_image = 'wooden_attar_box.webp' | asset_url
     endif
+    assign combo_eyebrow = section.settings.combo_eyebrow
     assign combo_heading = section.settings.combo_heading
     assign combo_text = section.settings.combo_text
+    assign combo_note = section.settings.combo_note
     assign combo_url = section.settings.combo_url
     assign combo_btn = section.settings.combo_btn
     assign story_heading = section.settings.pure_heading
@@ -643,8 +656,13 @@
     card_title_4: card_title_4,
     card_text_4: card_text_4,
     combo_image: combo_image,
+    combo_image_srcset: combo_image_srcset,
+    combo_image_width: combo_image_width,
+    combo_image_height: combo_image_height,
+    combo_eyebrow: combo_eyebrow,
     combo_heading: combo_heading,
     combo_text: combo_text,
+    combo_note: combo_note,
     combo_url: combo_url,
     combo_btn: combo_btn,
     story_heading: story_heading,
@@ -1092,35 +1110,51 @@
     },
     {
       "type": "header",
-      "content": "Discovery Kit Section"
+      "content": "Build Your Attar Box"
+    },
+    {
+      "type": "paragraph",
+      "content": "Uses wooden_attar_box.webp from theme assets when no image is selected."
     },
     {
       "type": "image_picker",
       "id": "combo_image",
-      "label": "Product image"
+      "label": "Editorial image (optional override)"
     },
     {
       "type": "url",
       "id": "combo_image_url",
-      "label": "Product image URL fallback"
+      "label": "Image URL fallback"
+    },
+    {
+      "type": "text",
+      "id": "combo_eyebrow",
+      "label": "Eyebrow label",
+      "default": "PERSONAL FRAGRANCE RITUAL"
     },
     {
       "type": "text",
       "id": "combo_heading",
       "label": "Heading",
-      "default": "Discovery Kit"
+      "default": "Build Your Attar Box"
     },
     {
       "type": "textarea",
       "id": "combo_text",
       "label": "Description",
-      "default": "The Discovery Kit is your personal journey through scent."
+      "default": "Curate your own luxury attar collection with handcrafted fragrances inspired by mood, astrology, spirituality, and timeless Indian perfumery."
+    },
+    {
+      "type": "text",
+      "id": "combo_note",
+      "label": "Optional supporting line",
+      "default": "Create a personalized fragrance experience designed entirely around you."
     },
     {
       "type": "text",
       "id": "combo_btn",
       "label": "Button text",
-      "default": "SHOP NOW"
+      "default": "BUILD YOUR BOX"
     },
     {
       "type": "url",

@@ -15,6 +15,21 @@
         {%- for p in bs.products -%}
           {%- capture bestseller_showcard -%}{%- render 'bestseller-image-lookup', bs_product: p, bs_mockup_fallback: true -%}{%- endcapture -%}
           {%- assign bestseller_showcard = bestseller_showcard | strip -%}
+          {%- liquid
+            assign bs_type_key = p.type | downcase | strip
+            assign bs_type_label = 'Attar'
+            if bs_type_key contains 'incense' or bs_type_key contains 'agarbatti' or bs_type_key contains 'dhoop'
+              assign bs_type_label = 'Incense Stick'
+            elsif bs_type_key contains 'perfume'
+              assign bs_type_label = 'Perfume'
+            elsif bs_type_key contains 'gift'
+              assign bs_type_label = 'Gift Set'
+            elsif bs_type_key contains 'astrology' or bs_type_key == ''
+              assign bs_type_label = 'Attar'
+            elsif p.type != blank
+              assign bs_type_label = p.type
+            endif
+          -%}
           <article class="ar-best__card">
             <a href="{{ p.url }}" class="ar-best__link">
               <div class="ar-best__imgw">
@@ -48,7 +63,7 @@
                 {%- endif -%}
               </div>
               <h3 class="ar-best__name">{{ p.title }}</h3>
-              <p class="ar-best__type">{{ p.type | default: 'Attar' }}</p>
+              <p class="ar-best__type">{{ bs_type_label }}</p>
               <div class="ar-best__price-row">
                 {%- if p.compare_at_price > p.price -%}<span class="ar-best__price-old">{{ p.compare_at_price | money }}</span>{%- endif -%}
                 <span class="ar-best__price">{{ p.price | money }}</span>

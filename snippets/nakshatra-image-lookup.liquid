@@ -53,8 +53,12 @@
   endif
 
   assign img = ''
+  assign nk_is_chakra = false
+  if nk_key contains 'chakra' or nk_key contains 'muladhara' or nk_key contains 'svadhisthana' or nk_key contains 'swadhisthana' or nk_key contains 'manipura' or nk_key contains 'anahata' or nk_key contains 'vishuddha' or nk_key contains 'vishudha' or nk_key contains 'ajna' or nk_key contains 'agya' or nk_key contains 'sahasrara' or nk_key contains 'root-chakra' or nk_key contains 'sacral-chakra' or nk_key contains 'heart-chakra' or nk_key contains 'throat-chakra' or nk_key contains 'third-eye' or nk_key contains 'crown-chakra'
+    assign nk_is_chakra = true
+  endif
 
-  if nk_key != blank
+  if nk_key != blank and nk_is_chakra == false
     if nk_key contains 'purva-bhadra' or nk_key contains 'purva bhadra'
       assign img = 'Nakshatra/Purva-bha.webp'
     elsif nk_key contains 'uttara-bhadra' or nk_key contains 'uttara bhadra'
@@ -99,7 +103,7 @@
       assign img = 'Nakshatra/Anuradha.webp'
     elsif nk_key contains 'jyeshtha' or nk_key contains 'jyeshta'
       assign img = 'Nakshatra/Jyeshta.webp'
-    elsif nk_key contains 'mula'
+    elsif nk_key contains 'nakshatra-mula' or nk_key contains 'mula-attar' or nk_key contains 'mula attar' or nk_key contains 'mula nakshatra' or nk_key contains 'mula-' or nk_key contains '-mula' or nk_key contains ' mula ' or nk_key == 'mula'
       assign img = 'Nakshatra/Mula.webp'
     elsif nk_key contains 'shravana'
       assign img = 'Nakshatra/Shravana.webp'

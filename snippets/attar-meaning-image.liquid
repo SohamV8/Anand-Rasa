@@ -26,6 +26,17 @@
   endif
 
   if ame_kind == blank
+    capture ck_asset
+      render 'chakra-image-lookup', ck_product: ame_p
+    endcapture
+    assign ck_asset = ck_asset | strip
+    if ck_asset != blank
+      assign ame_asset = ck_asset
+      assign ame_kind = 'asset'
+    endif
+  endif
+
+  if ame_kind == blank
     capture nk_asset
       render 'nakshatra-image-lookup', nk_product: ame_p
     endcapture

@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "main": {
+      "type": "build-your-attar-box",
+      "settings": {
+        "collection_handles": "bestseller,Bestseller,best-seller,bestsellers,best-sellers",
+        "empty_collection_url": "shopify://collections/bestseller",
+        "hero_eyebrow": "Personal Fragrance Ritual",
+        "hero_title": "Build Your Attar Box",
+        "hero_lead": "Curate your own handcrafted fragrance ritual from our bestselling luxury attars.",
+        "hero_sub": "Choose your favorites. Build your ritual. Experience Indian perfumery in its purest form.",
+        "hero_cta": "Start Building",
+        "plans_title": "Choose Your Ritual Size",
+        "plans_sub": "Select how many 6ml attars you would like in your box. Pricing is fixed for each ritual size.",
+        "plan_3_price_display": "₹1200",
+        "plan_3_price": "₹1200 Ritual Box",
+        "plan_5_price_display": "₹2400",
+        "plan_5_price": "₹2400 Ritual Box",
+        "grid_title": "Select Your Attars",
+        "grid_sub": "Our bestselling 6ml attars — tap to add each fragrance to your ritual box.",
+        "complete_message": "Your ritual box is complete.",
+        "cta_ready": "Add Ritual Box to Cart",
+        "msg_added": "Your ritual box was added to cart."
+      }
+    }
+  },
+  "order": ["main"]
+}

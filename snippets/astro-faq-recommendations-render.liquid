@@ -34,6 +34,8 @@
         assign afr_try_handles = 'love-attar,love-attars,love' | split: ','
       when 'perfume'
         assign afr_try_handles = 'perfume-series,perfume,perfumes' | split: ','
+      when 'bestseller'
+        assign afr_try_handles = 'bestseller,best-seller,bestsellers,best-sellers' | split: ','
       else
         assign afr_try_handles = 'planet-attars,planet-attar,planet' | split: ','
     endcase

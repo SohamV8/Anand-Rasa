@@ -1,0 +1,35 @@
+{%- comment -%}
+  Chakra image lookup — maps chakra attar products to /assets/Chakra/ showcase images.
+  Echoes asset path (e.g. "Chakra/Muladhara.webp") or empty string.
+
+  Parameters:
+    ck_product — Shopify product object
+{%- endcomment -%}
+{%- liquid
+  assign ck_key = ''
+  if ck_product != blank
+    assign ck_key = ck_product.handle | append: ' ' | append: ck_product.title | downcase
+  endif
+
+  assign img = ''
+
+  if ck_key != blank
+    if ck_key contains 'muladhara' or ck_key contains 'root-chakra' or ck_key contains 'root chakra'
+      assign img = 'Chakra/Muladhara.webp'
+    elsif ck_key contains 'svadhisthana' or ck_key contains 'swadhisthana' or ck_key contains 'sacral-chakra' or ck_key contains 'sacral chakra'
+      assign img = 'Chakra/Svadhisthana.webp'
+    elsif ck_key contains 'manipura' or ck_key contains 'solar-plexus' or ck_key contains 'solar plexus'
+      assign img = 'Chakra/Manipura.webp'
+    elsif ck_key contains 'anahata' or ck_key contains 'heart-chakra' or ck_key contains 'heart chakra'
+      assign img = 'Chakra/Anahata.webp'
+    elsif ck_key contains 'vishuddha' or ck_key contains 'vishudha' or ck_key contains 'throat-chakra' or ck_key contains 'throat chakra'
+      assign img = 'Chakra/Vishuddha.webp'
+    elsif ck_key contains 'ajna' or ck_key contains 'agya' or ck_key contains 'third-eye' or ck_key contains 'third eye'
+      assign img = 'Chakra/Ajna.webp'
+    elsif ck_key contains 'sahasrara' or ck_key contains 'crown-chakra' or ck_key contains 'crown chakra'
+      assign img = 'Chakra/Sahasrara.webp'
+  endif
+  endif
+
+  echo img
+-%}

@@ -1,0 +1,85 @@
+{%- comment -%}
+  @param product {Product}
+  @param card_index {number} optional
+{%- endcomment -%}
+{%- liquid
+  assign byb_variant = product.selected_or_first_available_variant
+  assign byb_available = byb_variant.available
+  capture byb_notes
+    render 'build-box-product-notes', product: product
+  endcapture
+  assign byb_notes = byb_notes | strip
+
+  capture byb_img_asset
+    render 'bestseller-image-lookup', bs_product: product
+  endcapture
+  assign byb_img_asset = byb_img_asset | strip
+
+  if byb_img_asset != blank
+    assign byb_img = byb_img_asset | asset_url
+    assign byb_img_srcset = ''
+  elsif product.featured_image
+    assign byb_img = product.featured_image | image_url: width: 600
+    assign byb_img_w400 = product.featured_image | image_url: width: 400
+    assign byb_img_w600 = product.featured_image | image_url: width: 600
+    assign byb_img_w900 = product.featured_image | image_url: width: 900
+    assign byb_img_srcset = byb_img_w400 | append: ' 400w, ' | append: byb_img_w600 | append: ' 600w, ' | append: byb_img_w900 | append: ' 900w'
+  else
+    assign byb_img = ''
+    assign byb_img_srcset = ''
+  endif
+-%}
+
+<article
+  class="byb-card"
+  data-byb-card
+  data-variant-id="{{ byb_variant.id }}"
+  data-product-id="{{ product.id }}"
+  data-product-url="{{ product.url }}"
+  data-product-title="{{ product.title | escape }}"
+  data-product-image="{{ byb_img | escape }}"
+  data-available="{{ byb_available }}"
+  aria-pressed="false"
+>
+  <a href="{{ product.url }}" class="byb-card__media-link" tabindex="-1" aria-hidden="true">
+    <div class="byb-card__media">
+      {%- if byb_img != blank -%}
+        <img
+          class="byb-card__img"
+          src="{{ byb_img }}"
+          {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1024px) 240px, (min-width: 640px) 42vw, 46vw"{% endif %}
+          alt="{{ product.title | escape }}"
+          width="480"
+          height="480"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- endif -%}
+      <span class="byb-card__size">6ml</span>
+    </div>
+  </a>
+
+  <div class="byb-card__body">
+    <h3 class="byb-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    {%- if byb_notes != blank -%}
+      <p class="byb-card__notes">{{ byb_notes }}</p>
+    {%- endif -%}
+    <p class="byb-card__price">{{ byb_variant.price | money }}</p>
+  </div>
+
+  <button
+    type="button"
+    class="byb-card__toggle"
+    data-byb-toggle
+    {% unless byb_available %}disabled aria-disabled="true"{% endunless %}
+  >
+    <span class="byb-card__toggle-label" data-byb-toggle-add>Add to Box</span>
+    <span class="byb-card__toggle-label" data-byb-toggle-on hidden>In Your Box</span>
+  </button>
+
+  <span class="byb-card__check" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+</article>

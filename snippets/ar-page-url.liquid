@@ -31,6 +31,11 @@
       if url == blank
         assign url = routes.root_url | append: '?view=vip-club'
       endif
+    when 'build-your-box', 'build-your-attar-box', 'attar-box'
+      assign url = pages['build-your-box'].url | default: pages['build-your-attar-box'].url
+      if url == blank
+        assign url = '/pages/build-your-box'
+      endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key
   endcase
