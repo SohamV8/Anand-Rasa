@@ -102,8 +102,8 @@
         <p class="ar-dk__note">{{ combo_note }}</p>
       {%- endif -%}
 
-      {%- if combo_btn != blank -%}
-        <a href="/pages/build-your-box" class="ar-dk__btn">
+      {%- if ar_combo_href != blank and combo_btn != blank -%}
+        <a href="{{ ar_combo_href }}" class="ar-dk__btn">
           <span class="ar-dk__btn-label">{{ combo_btn }}</span>
         </a>
       {%- endif -%}

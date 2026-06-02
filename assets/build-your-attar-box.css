@@ -428,11 +428,16 @@
 }
 
 .byb-grid {
-  max-width: 1280px;
+  max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 2.8vw, 28px);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(20px, 2.6vw, 28px);
+}
+
+.byb-grid__item {
+  display: flex;
+  min-width: 0;
 }
 
 .byb.is-visible .byb-grid__item {
@@ -463,14 +468,16 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   height: 100%;
-  padding: clamp(16px, 2vw, 20px);
+  width: 100%;
+  padding: clamp(16px, 2vw, 22px);
   border: 1px solid rgba(30, 32, 35, 0.07);
-  border-radius: 20px;
+  border-radius: 18px;
   background: linear-gradient(165deg, #fff 0%, var(--byb-ivory) 100%);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 12px 32px rgba(30, 32, 35, 0.05);
+    0 10px 28px rgba(30, 32, 35, 0.05);
   overflow: hidden;
   transition:
     transform 0.55s var(--byb-ease),
@@ -490,18 +497,21 @@
 }
 
 .byb-card:hover:not(.is-disabled) {
-  transform: translate3d(0, -6px, 0);
+  transform: translate3d(0, -5px, 0);
+  border-color: rgba(184, 148, 58, 0.2);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.95) inset,
-    0 24px 48px rgba(30, 32, 35, 0.1);
+    0 20px 44px rgba(30, 32, 35, 0.09),
+    0 0 32px rgba(184, 148, 58, 0.08);
 }
 
 .byb-card.is-selected {
-  border-color: rgba(184, 148, 58, 0.45);
+  border-color: rgba(184, 148, 58, 0.5);
   background: #fff;
   box-shadow:
-    0 0 0 1px rgba(184, 148, 58, 0.18),
-    0 20px 48px rgba(184, 148, 58, 0.14);
+    0 0 0 1px rgba(184, 148, 58, 0.22),
+    0 18px 42px rgba(184, 148, 58, 0.16),
+    0 0 40px rgba(184, 148, 58, 0.1);
 }
 
 .byb-card.is-selected .byb-card__glow {
@@ -541,16 +551,34 @@
   filter: saturate(0.6);
 }
 
+.byb-card__media-link {
+  display: block;
+  width: 100%;
+  flex-shrink: 0;
+}
+
 .byb-card__media {
   position: relative;
+  width: 100%;
+  min-height: clamp(210px, 26vw, 248px);
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin: 0 0 16px;
+  padding: clamp(14px, 2vw, 20px);
   border-radius: 14px;
   overflow: hidden;
   background: linear-gradient(180deg, #fff 0%, #f7f3ed 100%);
+}
+
+.byb-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  flex: 1;
+  text-align: left;
 }
 
 .byb-card__media-glass {
@@ -564,15 +592,21 @@
 .byb-card__img {
   position: relative;
   z-index: 0;
+  flex: 1 1 auto;
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  object-position: center;
-  transition: transform 0.65s var(--byb-ease);
+  object-position: center center;
+  transition: transform 0.7s var(--byb-ease);
+  will-change: transform;
 }
 
 .byb-card:hover:not(.is-disabled) .byb-card__img {
-  transform: scale(1.04);
+  transform: scale(1.04) translate3d(0, -4px, 0);
 }
 
 .byb-card__size {
@@ -594,7 +628,7 @@
 }
 
 .byb-card__category {
-  margin: 0 0 6px;
+  margin: 0 0 5px;
   font-family: var(--font-heading-family, 'Poppins', sans-serif);
   font-size: 9px;
   font-weight: 600;
@@ -604,12 +638,13 @@
 }
 
 .byb-card__title {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   font-family: var(--font-heading-family, 'Poppins', sans-serif);
-  font-size: clamp(0.95rem, 1.35vw, 1.08rem);
+  font-size: clamp(1.25rem, 1.6vw, 1.65rem);
   font-weight: 600;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--byb-ink);
 }
 
 .byb-card__title a:hover {
@@ -617,40 +652,67 @@
 }
 
 .byb-card__notes {
-  margin: 0 0 12px;
-  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
-  line-height: 1.55;
-  color: var(--byb-soft);
+  margin: 0 0 14px;
+  font-family: var(--font-body-family, 'Caudex', Georgia, serif);
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  line-height: 1.7;
+  color: var(--byb-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .byb-card__price {
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   font-family: var(--font-heading-family, 'Poppins', sans-serif);
-  font-size: clamp(0.92rem, 1.1vw, 1rem);
+  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
   font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--byb-ink);
 }
 
 .byb-card__ritual {
+  position: relative;
+  overflow: hidden;
   margin-top: auto;
   width: 100%;
-  min-height: 48px;
-  padding: 12px 16px;
-  border: 1px solid rgba(30, 32, 35, 0.14);
+  min-height: 50px;
+  padding: 13px 16px;
+  border: 1px solid rgba(30, 32, 35, 0.16);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.72);
   font-family: var(--font-heading-family, 'Poppins', sans-serif);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
   transition:
-    transform 0.35s var(--byb-ease),
-    background 0.4s var(--byb-ease),
-    color 0.4s var(--byb-ease),
-    border-color 0.4s var(--byb-ease),
-    box-shadow 0.4s var(--byb-ease);
+    transform 0.4s var(--byb-ease),
+    background 0.45s var(--byb-ease),
+    color 0.45s var(--byb-ease),
+    border-color 0.45s var(--byb-ease),
+    box-shadow 0.45s var(--byb-ease);
+}
+
+.byb-card__ritual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.65s var(--byb-ease);
+  pointer-events: none;
+}
+
+.byb-card__ritual:hover::after {
+  transform: translateX(130%);
 }
 
 .byb-card__ritual:active {
@@ -1206,8 +1268,26 @@
     font-size: 11px;
   }
 
+  .byb-card__media {
+    min-height: 200px;
+    aspect-ratio: 1;
+  }
+
+  .byb-card__title {
+    font-size: 1.25rem;
+  }
+
+  .byb-card__notes {
+    font-size: 0.94rem;
+  }
+
+  .byb-card__price {
+    font-size: 1.35rem;
+  }
+
   .byb-card__ritual {
     min-height: 52px;
+    font-size: 10px;
   }
 }
 
@@ -1280,5 +1360,13 @@
   .byb-card.is-removing {
     animation: none !important;
     transition: none;
+  }
+
+  .byb-card__ritual::after {
+    display: none;
+  }
+
+  .byb-card:hover:not(.is-disabled) .byb-card__img {
+    transform: none;
   }
 }

@@ -36,6 +36,10 @@
     assign byb_img = ''
     assign byb_img_srcset = ''
   endif
+
+  if byb_notes != blank
+    assign byb_notes = byb_notes | truncate: 110
+  endif
 -%}
 
 <article
@@ -60,7 +64,7 @@
         <img
           class="byb-card__img"
           src="{{ byb_img }}"
-          {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1100px) 260px, (min-width: 640px) 44vw, 46vw"{% endif %}
+          {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1100px) 300px, (min-width: 640px) 46vw, 92vw"{% endif %}
           alt="{{ product.title | escape }} — 6ml luxury attar"
           width="480"
           height="480"
