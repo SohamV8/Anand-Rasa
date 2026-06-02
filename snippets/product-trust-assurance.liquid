@@ -1,0 +1,164 @@
+{%- comment -%}
+  Product PDP — luxury trust + assurance strip
+{%- endcomment -%}
+<div class="ar-trust-section" aria-label="Product assurance">
+  <div class="ar-trust-benefits">
+    <p class="ar-trust-benefits__row">
+      <span class="ar-trust-benefits__item">Free Shipping</span>
+      <span class="ar-trust-benefits__item">100% Natural</span>
+    </p>
+    <p class="ar-trust-benefits__row">
+      <span class="ar-trust-benefits__item">Alcohol-Free</span>
+      <span class="ar-trust-benefits__item">Hand-Distilled</span>
+    </p>
+  </div>
+
+  <p class="ar-trust-gift"><span class="ar-trust-gift__icon" aria-hidden="true">🎁</span> Gift-wrap available</p>
+
+  <div class="ar-guarantee-box">
+    <p class="ar-guarantee-title">100% Ritual Satisfaction Guarantee</p>
+    <p class="ar-guarantee-subtitle">Order By 6 PM • Delivered In 3–5 Days</p>
+  </div>
+</div>
+
+<style>
+  .ar-trust-section {
+    --ar-trust-gold: #c8a96e;
+    --ar-trust-ink: #5c4f3f;
+    --ar-trust-muted: #8a7a66;
+    --ar-trust-ivory: #faf8f4;
+    margin: clamp(18px, 3vw, 28px) 0 clamp(14px, 2.5vw, 22px);
+    text-align: center;
+    animation: ar-trust-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes ar-trust-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .ar-trust-benefits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.6vw, 11px);
+    margin: 0 0 clamp(10px, 1.8vw, 14px);
+  }
+
+  .ar-trust-benefits__row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0;
+  }
+
+  .ar-trust-benefits__item {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Poppins', var(--font-heading-family, sans-serif);
+    font-size: clamp(9px, 1.6vw, 10.5px);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ar-trust-ink);
+    line-height: 1.4;
+  }
+
+  .ar-trust-benefits__row .ar-trust-benefits__item:first-child::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    margin: 0 clamp(14px, 3vw, 22px);
+    border-radius: 50%;
+    background: var(--ar-trust-gold);
+    opacity: 0.75;
+    flex-shrink: 0;
+  }
+
+  .ar-trust-gift {
+    margin: 0 0 clamp(16px, 2.8vw, 22px);
+    font-family: 'Poppins', var(--font-heading-family, sans-serif);
+    font-size: clamp(9px, 1.6vw, 10.5px);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ar-trust-muted);
+    line-height: 1.4;
+  }
+
+  .ar-trust-gift__icon {
+    margin-right: 6px;
+    font-size: 1.05em;
+    opacity: 0.9;
+  }
+
+  .ar-guarantee-box {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: clamp(16px, 2.8vw, 22px) clamp(18px, 3vw, 28px);
+    background: var(--ar-trust-ivory);
+    border: 1px solid rgba(200, 169, 110, 0.38);
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(92, 79, 63, 0.06);
+    transition:
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: box-shadow, border-color;
+  }
+
+  .ar-guarantee-box:hover {
+    border-color: rgba(200, 169, 110, 0.58);
+    box-shadow: 0 10px 36px rgba(200, 169, 110, 0.12);
+  }
+
+  .ar-guarantee-title {
+    margin: 0 0 8px;
+    font-family: 'Poppins', var(--font-heading-family, sans-serif);
+    font-size: clamp(13px, 2.2vw, 14.5px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    color: var(--ar-trust-ink);
+  }
+
+  .ar-guarantee-subtitle {
+    margin: 0;
+    font-family: 'Caudex', var(--font-body-family, Georgia, serif);
+    font-size: clamp(12px, 2vw, 13px);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+    color: var(--ar-trust-muted);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ar-guarantee-box {
+      max-width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ar-trust-section {
+      animation: none;
+    }
+
+    .ar-guarantee-box {
+      transition: none;
+    }
+
+    .ar-guarantee-box:hover {
+      box-shadow: 0 6px 28px rgba(92, 79, 63, 0.06);
+      border-color: rgba(200, 169, 110, 0.38);
+    }
+  }
+</style>

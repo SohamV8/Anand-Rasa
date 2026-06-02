@@ -7,13 +7,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap');
 
 .shopify-section.section-lgi {
-  background: #ffffff;
+  background: #faf8f4;
 }
 
 .lgi {
-  --lgi-ivory: #ffffff;
+  --lgi-ivory: #faf8f4;
   --lgi-white: #ffffff;
-  --lgi-cream: #fafafa;
+  --lgi-cream: #faf8f4;
   --lgi-card-bg: transparent;
   --lgi-gold: #b8943a;
   --lgi-gold-soft: rgba(184, 148, 58, 0.24);
@@ -31,8 +31,8 @@
 
   font-family: var(--lgi-sans);
   color: var(--lgi-ink);
-  background: #ffffff;
-  padding: clamp(28px, 4vh, 48px) clamp(20px, 4vw, 40px);
+  background: var(--lgi-ivory);
+  padding: clamp(32px, 4vh, 52px) clamp(16px, 3vw, 36px);
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -53,7 +53,7 @@
 
 .lgi__shell {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -99,14 +99,49 @@
   .lgi__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(28px, 3.5vw, 48px);
-    align-items: stretch;
+    gap: clamp(28px, 3.5vw, 44px);
+    align-items: center;
     min-height: 0;
+  }
+
+  .lgi__card--gift .lgi__card-inner {
+    justify-content: flex-start;
+  }
+
+  .lgi__card--gift .lgi__gift-visual {
+    flex: 0 0 auto;
+    min-height: clamp(180px, 20vw, 260px);
+    max-height: 260px;
+  }
+
+  .lgi__card--gift .lgi__gift-copy {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: clamp(20px, 2.5vw, 28px);
   }
 
   .lgi__card--impact {
     border-left: 1px solid var(--lgi-border);
-    padding-left: clamp(28px, 3.5vw, 48px);
+    padding-left: clamp(28px, 3.5vw, 44px);
+  }
+
+  .lgi__impact-inner {
+    justify-content: center;
+    min-height: 100%;
+    padding-top: clamp(20px, 2.5vw, 28px);
+    padding-bottom: clamp(20px, 2.5vw, 28px);
+  }
+
+  .lgi__impact-body {
+    flex: 0 1 auto;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .lgi__signature {
+    margin-top: clamp(20px, 2.5vw, 28px);
   }
 }
 
@@ -120,8 +155,8 @@
 .lgi__gift-visual {
   position: relative;
   width: 100%;
-  flex: 1 1 auto;
-  min-height: clamp(220px, 32vw, 340px);
+  flex: 0 1 auto;
+  min-height: clamp(200px, 28vw, 280px);
   background: #ffffff;
   border: 1px solid var(--lgi-border);
   border-radius: 0;
@@ -151,46 +186,51 @@
 }
 
 .lgi__gift-copy {
-  padding: clamp(28px, 3.5vw, 40px);
+  padding: clamp(20px, 2.5vw, 28px) clamp(4px, 1vw, 8px) clamp(22px, 2.8vw, 28px);
   flex-shrink: 0;
 }
 
 .lgi__eyebrow {
   font-family: var(--lgi-sans);
-  font-size: clamp(0.72rem, 1.1vw, 0.8rem);
+  font-size: clamp(11px, 0.85vw, 12px);
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--lgi-gold);
-  margin-bottom: clamp(12px, 1.5vw, 16px);
+  margin-bottom: clamp(10px, 1.4vw, 14px);
 }
 
 .lgi__title {
   font-family: var(--lgi-serif);
-  font-size: clamp(1.65rem, 3vw, 2.15rem);
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: clamp(34px, 3vw, 48px);
+  font-weight: 600;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: var(--lgi-ink);
-  margin-bottom: clamp(10px, 1.2vw, 14px);
+  margin-bottom: clamp(10px, 1.3vw, 14px);
+  max-width: 10ch;
+  text-wrap: balance;
 }
 
 .lgi__subtitle {
   font-family: var(--lgi-serif);
-  font-size: clamp(1.1rem, 1.8vw, 1.28rem);
+  font-size: clamp(20px, 1.75vw, 24px);
   font-style: italic;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 1.35;
   color: var(--lgi-ink-2);
-  margin-bottom: clamp(16px, 2vw, 20px);
+  opacity: 0.88;
+  margin-bottom: clamp(14px, 1.8vw, 18px);
+  max-width: 24ch;
 }
 
 .lgi__desc {
   font-family: var(--lgi-serif);
-  font-size: clamp(1rem, 1.35vw, 1.125rem);
-  line-height: 1.75;
+  font-size: clamp(17px, 1.35vw, 19px);
+  line-height: 1.7;
   color: var(--lgi-ink-2);
-  margin-bottom: clamp(20px, 2.5vw, 28px);
-  max-width: 42ch;
+  margin-bottom: clamp(18px, 2.2vw, 24px);
+  max-width: 36ch;
 }
 
 .lgi__pricing {
@@ -231,17 +271,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 0 clamp(24px, 3vw, 32px);
-  border: 1.5px solid var(--lgi-gold);
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 clamp(22px, 2.8vw, 30px);
+  border: 1px solid var(--lgi-gold);
   border-radius: 0;
-  background: #ffffff;
+  background: var(--lgi-white);
   font-family: var(--lgi-sans);
-  font-size: clamp(0.8rem, 1.1vw, 0.875rem);
+  font-size: clamp(12px, 1vw, 13px);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--lgi-ink);
+  align-self: flex-start;
+  margin-top: 2px;
   transition:
     background 0.4s var(--lgi-ease),
     color 0.4s var(--lgi-ease),
@@ -257,8 +300,8 @@
   .lgi__cta:hover {
     background: var(--lgi-gold);
     color: #fff;
-    box-shadow: none;
-    transform: none;
+    box-shadow: 0 8px 24px var(--lgi-gold-glow);
+    transform: translate3d(0, -1px, 0);
   }
 
   .lgi__cta:hover .lgi__cta-arrow {
@@ -275,7 +318,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: clamp(32px, 4vw, 48px);
+  padding: clamp(22px, 2.8vw, 32px) clamp(16px, 2.5vw, 28px);
   text-align: center;
 }
 
@@ -285,32 +328,41 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 36ch;
+  margin: 0 auto;
 }
 
 .lgi__logo-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: clamp(20px, 2.5vw, 28px);
-  max-width: 160px;
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+  max-width: 140px;
 }
 
 .lgi img.lgi__logo {
   display: block;
   width: auto;
-  height: clamp(32px, 4vw, 40px);
-  max-width: 140px;
+  height: clamp(28px, 3.2vw, 34px);
+  max-width: 120px;
   object-fit: contain;
 }
 
 .lgi__impact-title {
   font-family: var(--lgi-serif);
-  font-size: clamp(1.65rem, 2.8vw, 2.1rem);
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: clamp(32px, 3vw, 44px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   color: var(--lgi-ink);
-  margin-bottom: clamp(16px, 2vw, 22px);
-  max-width: 16ch;
+  margin-bottom: clamp(12px, 1.5vw, 16px);
+  max-width: 12ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;
 }
 
 .lgi__ornament {
@@ -318,9 +370,9 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: clamp(24px, 3vw, 32px);
+  margin-bottom: clamp(16px, 2vw, 22px);
   width: 100%;
-  max-width: 200px;
+  max-width: 168px;
 }
 
 .lgi__ornament-line {
@@ -339,15 +391,16 @@
 }
 
 .lgi__impact-copy {
-  max-width: 38ch;
+  max-width: 36ch;
+  width: 100%;
 }
 
 .lgi__impact-text {
   font-family: var(--lgi-serif);
-  font-size: clamp(1.05rem, 1.4vw, 1.15rem);
-  line-height: 1.78;
+  font-size: clamp(17px, 1.35vw, 19px);
+  line-height: 1.7;
   color: var(--lgi-ink-2);
-  margin-bottom: 1.1em;
+  margin-bottom: 0.95em;
 }
 
 .lgi__impact-text:last-child {
@@ -355,18 +408,20 @@
 }
 
 .lgi__signature {
-  margin-top: clamp(28px, 3.5vw, 40px);
-  padding-top: clamp(20px, 2.5vw, 28px);
+  margin-top: clamp(18px, 2.2vw, 24px);
+  padding-top: clamp(16px, 2vw, 22px);
   border-top: 1px solid var(--lgi-border);
   text-align: left;
   width: 100%;
+  max-width: 36ch;
+  flex-shrink: 0;
 }
 
 .lgi__signature-label {
   font-family: var(--lgi-sans);
-  font-size: clamp(0.72rem, 1vw, 0.8rem);
+  font-size: clamp(11px, 0.85vw, 12px);
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--lgi-gold);
   margin-bottom: 6px;
@@ -374,9 +429,10 @@
 
 .lgi__signature-name {
   font-family: var(--lgi-serif);
-  font-size: clamp(1.05rem, 1.4vw, 1.15rem);
+  font-size: clamp(16px, 1.35vw, 17px);
   font-style: italic;
-  color: var(--lgi-ink);
+  line-height: 1.4;
+  color: var(--lgi-ink-2);
 }
 
 /* Tablet */
@@ -384,28 +440,93 @@
   .lgi__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(24px, 4vw, 36px);
+    gap: clamp(28px, 4vw, 40px);
+    align-items: stretch;
+  }
+
+  .lgi__title {
+    font-size: clamp(30px, 3.5vw, 40px);
+    max-width: 11ch;
+  }
+
+  .lgi__subtitle {
+    font-size: clamp(19px, 2.2vw, 22px);
+  }
+
+  .lgi__desc,
+  .lgi__impact-text {
+    font-size: clamp(16px, 1.6vw, 18px);
+  }
+
+  .lgi__impact-title {
+    font-size: clamp(30px, 3.5vw, 40px);
+    max-width: 13ch;
+  }
+
+  .lgi__card--gift .lgi__gift-visual {
+    min-height: clamp(180px, 28vw, 260px);
+    flex: 0 1 auto;
   }
 
   .lgi__card--impact {
     border-left: 1px solid var(--lgi-border);
-    padding-left: clamp(20px, 3vw, 32px);
+    padding-left: clamp(24px, 3.5vw, 36px);
   }
 }
 
 /* Mobile touch */
 @media (max-width: 749px) {
   .lgi {
-    padding: 28px 16px 32px;
+    padding: clamp(32px, 8vw, 44px) 16px clamp(36px, 8vw, 48px);
+  }
+
+  .lgi__gift-copy {
+    padding: 20px 4px 8px;
+  }
+
+  .lgi__title {
+    font-size: clamp(28px, 6.5vw, 34px);
+    max-width: 12ch;
+  }
+
+  .lgi__subtitle {
+    font-size: clamp(18px, 4.2vw, 21px);
+    max-width: 28ch;
+  }
+
+  .lgi__desc,
+  .lgi__impact-text {
+    font-size: clamp(16px, 3.8vw, 17px);
+    line-height: 1.7;
+    max-width: none;
+  }
+
+  .lgi__impact-title {
+    font-size: clamp(26px, 6.5vw, 32px);
+    max-width: 14ch;
+  }
+
+  .lgi__impact-inner {
+    padding: 24px 12px 20px;
+  }
+
+  .lgi__impact-body {
+    max-width: none;
   }
 
   .lgi__cta {
     width: 100%;
-    max-width: 320px;
+    max-width: 280px;
+    min-height: 44px;
+    align-self: stretch;
   }
 
   .lgi__signature {
     text-align: center;
+  }
+
+  .lgi__gift-visual {
+    min-height: clamp(200px, 52vw, 260px);
   }
 }
 

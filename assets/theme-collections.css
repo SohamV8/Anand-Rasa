@@ -247,15 +247,15 @@
 /* ── FAQ header ── */
 .afr__faq-hdr {
   text-align: center;
-  margin-bottom: clamp(28px, 4vw, 40px);
+  margin-bottom: clamp(32px, 4.5vw, 48px);
 }
 
 .afr__faq-title {
   font-family: 'Poppins', sans-serif !important;
-  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-size: clamp(28px, 3.2vw, 38px);
   font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.12;
   color: var(--afr-ink);
 }
 
@@ -286,35 +286,61 @@
 }
 
 /* ── FAQ list ── */
+@keyframes afr-faq-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .afr__faq-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(12px, 1.8vw, 16px);
 }
 
 .afr__faq-item {
-  border: 1px solid var(--afr-border);
+  border: 1px solid rgba(31, 28, 25, 0.08);
   border-radius: 999px;
-  background: var(--afr-white);
+  background: #faf8f4;
+  box-shadow: 0 2px 12px rgba(31, 28, 25, 0.04);
   transition:
-    border-color 0.35s var(--afr-ease),
-    background 0.35s var(--afr-ease),
-    box-shadow 0.35s var(--afr-ease),
-    border-radius 0.35s var(--afr-ease);
+    border-color 0.4s var(--afr-ease),
+    background 0.4s var(--afr-ease),
+    box-shadow 0.4s var(--afr-ease),
+    border-radius 0.4s var(--afr-ease),
+    transform 0.4s var(--afr-ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .afr__faq-item {
+    animation: afr-faq-rise 0.55s var(--afr-ease) both;
+  }
+
+  .afr__faq-item:nth-child(1) { animation-delay: 0.04s; }
+  .afr__faq-item:nth-child(2) { animation-delay: 0.08s; }
+  .afr__faq-item:nth-child(3) { animation-delay: 0.12s; }
+  .afr__faq-item:nth-child(4) { animation-delay: 0.16s; }
+  .afr__faq-item:nth-child(5) { animation-delay: 0.2s; }
+  .afr__faq-item:nth-child(6) { animation-delay: 0.24s; }
 }
 
 .afr__faq-item:hover {
-  border-color: var(--afr-gold-soft);
-  background: var(--afr-white);
-  box-shadow: 0 4px 16px rgba(31, 28, 25, 0.04);
+  border-color: rgba(184, 148, 58, 0.32);
+  background: #fffdf9;
+  box-shadow: 0 8px 24px rgba(184, 148, 58, 0.1);
 }
 
 .afr__faq-item.is-open {
   border-radius: 20px;
-  border-color: rgba(184, 148, 58, 0.4);
+  border-color: rgba(184, 148, 58, 0.42);
   background: #ffffff;
-  box-shadow: 0 6px 22px rgba(31, 28, 25, 0.05);
+  box-shadow: 0 10px 32px rgba(31, 28, 25, 0.07);
 }
 
 .afr__faq-trigger {
@@ -322,21 +348,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  min-height: 52px;
-  padding: clamp(16px, 2.2vw, 20px) clamp(20px, 2.8vw, 26px);
+  gap: clamp(16px, 2.5vw, 24px);
+  min-height: clamp(46px, 5.5vw, 54px);
+  padding: clamp(14px, 1.8vw, 18px) clamp(18px, 2.5vw, 24px);
   border: none;
   background: none;
   cursor: pointer;
   text-align: left;
   font-family: inherit;
   color: var(--afr-ink);
-  transition: color 0.3s var(--afr-ease);
+  transition: color 0.35s var(--afr-ease);
 }
 
 .afr__faq-trigger:hover,
 .afr__faq-item.is-open .afr__faq-trigger {
-  color: var(--afr-ink-2);
+  color: var(--afr-ink);
 }
 
 .afr__faq-trigger:focus-visible {
@@ -347,19 +373,21 @@
 
 .afr__faq-q {
   font-family: 'Poppins', sans-serif !important;
-  font-size: clamp(1rem, 1.85vw, 1.12rem);
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
+  font-size: clamp(15px, 1.2vw, 17px);
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--afr-ink);
   flex: 1;
-  padding-right: 4px;
+  min-width: 0;
+  padding-right: 8px;
 }
 
 .afr__faq-icon {
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin-top: 1px;
+  align-self: center;
+  width: 22px;
+  height: 22px;
   position: relative;
   color: var(--afr-gold);
 }
@@ -373,38 +401,43 @@
   top: 50%;
   left: 50%;
   transition:
-    transform 0.38s var(--afr-ease),
-    opacity 0.38s var(--afr-ease);
+    transform 0.4s var(--afr-ease),
+    opacity 0.4s var(--afr-ease);
 }
 
 .afr__faq-icon::before {
-  width: 13px;
-  height: 1.5px;
-  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 1.75px;
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .afr__faq-icon::after {
-  width: 1.5px;
-  height: 13px;
-  transform: translate(-50%, -50%);
+  width: 1.75px;
+  height: 14px;
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .afr__faq-item.is-open .afr__faq-icon::after {
   opacity: 0;
-  transform: translate(-50%, -50%) scaleY(0);
+  transform: translate3d(-50%, -50%, 0) scaleY(0);
 }
 
 .afr__faq-panel {
   overflow: hidden;
   max-height: 0;
-  transition: max-height 0.5s var(--afr-ease);
+  transition: max-height 0.5s var(--afr-ease), opacity 0.35s var(--afr-ease);
+  opacity: 0.92;
+}
+
+.afr__faq-item.is-open .afr__faq-panel {
+  opacity: 1;
 }
 
 .afr__faq-a {
-  padding: 2px clamp(20px, 2.8vw, 26px) clamp(18px, 2.5vw, 24px);
+  padding: 2px clamp(18px, 2.5vw, 24px) clamp(16px, 2.2vw, 22px);
   font-family: 'Caudex', serif !important;
-  font-size: clamp(1rem, 1.75vw, 1.08rem);
-  line-height: 1.8;
+  font-size: clamp(14px, 1.15vw, 15px);
+  line-height: 1.75;
   color: var(--afr-ink-2);
   font-weight: 400;
   max-width: 58ch;
@@ -615,7 +648,8 @@
   }
 
   .afr__card--faq .afr__faq-title {
-    font-size: clamp(1.65rem, 3.5vh, 2.25rem);
+    font-size: clamp(24px, 3vh, 32px);
+    line-height: 1.12;
   }
 }
 
@@ -868,26 +902,44 @@
   }
 
   .afr__faq-title {
-    font-size: clamp(1.75rem, 7vw, 2.15rem);
+    font-size: clamp(24px, 5.5vw, 30px);
+    line-height: 1.12;
   }
 
   .afr__faq-list {
-    gap: 10px;
+    gap: 12px;
   }
 
   .afr__faq-trigger {
-    min-height: 54px;
-    padding: 16px 18px;
+    min-height: 46px;
+    padding: 14px 16px;
+    gap: 12px;
   }
 
   .afr__faq-q {
-    font-size: clamp(0.95rem, 3.8vw, 1.02rem);
-    line-height: 1.48;
+    font-size: clamp(14px, 3.2vw, 15px);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .afr__faq-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .afr__faq-icon::before {
+    width: 13px;
+  }
+
+  .afr__faq-icon::after {
+    height: 13px;
   }
 
   .afr__faq-a {
-    font-size: 0.94rem;
+    font-size: clamp(13px, 3.2vw, 14px);
     line-height: 1.72;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
   .afr__rec-om {
