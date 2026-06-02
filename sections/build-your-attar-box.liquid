@@ -28,6 +28,8 @@
   assign byb_plan_5_price = section.settings.plan_5_price | default: '₹2400 Ritual Box'
   assign byb_cta_ready = section.settings.cta_ready | default: 'Add Ritual Box to Cart'
   assign byb_msg_added = section.settings.msg_added | default: 'Your ritual box was added to cart.'
+  assign byb_plan_3_cents = section.settings.plan_3_bundle_cents | default: 120000
+  assign byb_plan_5_cents = section.settings.plan_5_bundle_cents | default: 240000
 -%}
 
 {{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
@@ -35,38 +37,55 @@
 <div class="byb" data-byb-root data-section-id="{{ section.id }}">
   <script type="application/json" data-byb-config>
     {
-      "plan3Price": {{ byb_plan_3_price | json }},
-      "plan5Price": {{ byb_plan_5_price | json }},
+      "plans": {
+        "3": {
+          "bundleCents": {{ byb_plan_3_cents }},
+          "label": {{ byb_plan_3_price | json }},
+          "display": {{ section.settings.plan_3_price_display | default: '₹1200' | json }}
+        },
+        "5": {
+          "bundleCents": {{ byb_plan_5_cents }},
+          "label": {{ byb_plan_5_price | json }},
+          "display": {{ section.settings.plan_5_price_display | default: '₹2400' | json }}
+        }
+      },
       "ctaReady": {{ byb_cta_ready | json }},
       "msgComplete": {{ byb_complete_msg | json }},
-      "msgAdded": {{ byb_msg_added | json }}
+      "msgAdded": {{ byb_msg_added | json }},
+      "moneyFormat": {{ shop.money_format | json }},
+      "currency": {{ cart.currency.iso_code | default: shop.currency | json }}
     }
   </script>
 
   {%- comment -%} ── Hero ── {%- endcomment -%}
-  <header class="byb-hero" data-byb-reveal>
+  <header class="byb-hero byb-hero--cinematic">
+    <div class="byb-hero__wash" aria-hidden="true"></div>
+    <div class="byb-hero__orb byb-hero__orb--a" aria-hidden="true"></div>
+    <div class="byb-hero__orb byb-hero__orb--b" aria-hidden="true"></div>
     <div class="byb-hero__grid">
       <div class="byb-hero__content">
-        <p class="byb-hero__eyebrow">{{ byb_hero_eyebrow }}</p>
-        <h1 class="byb-hero__title">{{ byb_hero_title }}</h1>
-        <p class="byb-hero__lead">{{ byb_hero_lead }}</p>
-        <p class="byb-hero__sub">{{ byb_hero_sub }}</p>
-        <button type="button" class="byb-hero__cta" data-byb-hero-cta>
-          {{ byb_hero_cta }}
+        <p class="byb-hero__eyebrow" data-byb-hero-item>{{ byb_hero_eyebrow }}</p>
+        <h1 class="byb-hero__title" data-byb-hero-item>{{ byb_hero_title }}</h1>
+        <p class="byb-hero__lead" data-byb-hero-item>{{ byb_hero_lead }}</p>
+        <p class="byb-hero__sub" data-byb-hero-item>{{ byb_hero_sub }}</p>
+        <button type="button" class="byb-hero__cta" data-byb-hero-item data-byb-hero-cta>
+          <span class="byb-hero__cta-label">{{ byb_hero_cta }}</span>
         </button>
       </div>
-      <div class="byb-hero__media-frame" aria-hidden="true">
-        <span class="byb-hero__glow"></span>
-        <img
-          class="byb-hero__img"
-          src="{{ 'wooden_attar_box.webp' | asset_url }}"
-          alt="{{ byb_hero_title | escape }} — handcrafted wooden attar discovery box"
-          width="1400"
-          height="1050"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
+      <div class="byb-hero__media-wrap" data-byb-hero-media aria-hidden="true">
+        <div class="byb-hero__media-frame">
+          <span class="byb-hero__glow"></span>
+          <img
+            class="byb-hero__img"
+            src="{{ 'wooden_attar_box.webp' | asset_url }}"
+            alt="{{ byb_hero_title | escape }} — handcrafted wooden attar discovery box"
+            width="1400"
+            height="1050"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </div>
       </div>
     </div>
   </header>
@@ -125,16 +144,7 @@
     </div>
 
     {%- if byb_collection != blank and byb_collection.products_count > 0 -%}
-      <div class="byb-grid" data-byb-grid role="list">
-        {%- for product in byb_collection.products -%}
-          {%- unless product.available -%}
-            {%- continue -%}
-          {%- endunless -%}
-          <div role="listitem">
-            {% render 'build-box-product-card', product: product, card_index: forloop.index %}
-          </div>
-        {%- endfor -%}
-      </div>
+      {% render 'build-box-products-grid', collection: byb_collection %}
     {%- else -%}
       <div class="byb-empty">
         <p>
@@ -147,29 +157,12 @@
     {%- endif -%}
   </section>
 
-  {%- comment -%} ── Sticky dock ── {%- endcomment -%}
-  <aside class="byb-dock" data-byb-dock aria-label="Ritual box builder">
-    <div class="byb-dock__panel">
-      <div class="byb-dock__previews" data-byb-dock-previews aria-hidden="true"></div>
-      <div class="byb-dock__meta">
-        <p class="byb-dock__count" data-byb-dock-count aria-live="polite">Select a plan</p>
-        <p class="byb-dock__label" data-byb-dock-label>Choose your ritual size to begin</p>
-      </div>
-      <button
-        type="button"
-        class="byb-dock__submit"
-        data-byb-dock-submit
-        disabled
-        aria-disabled="true"
-      >
-        <span data-byb-dock-submit-text>{{ byb_cta_ready }}</span>
-      </button>
-    </div>
-  </aside>
+  {% render 'build-box-ritual-dock', cta_ready: byb_cta_ready %}
 
   <div class="byb-toast" data-byb-toast role="status" aria-live="polite"></div>
 </div>
 
+<script src="{{ 'build-box-confetti.js' | asset_url }}" defer></script>
 <script src="{{ 'build-your-attar-box.js' | asset_url }}" defer></script>
 
 {% schema %}
@@ -267,6 +260,20 @@
       "id": "plan_5_price",
       "label": "Plan 5 dock label",
       "default": "₹2400 Ritual Box"
+    },
+    {
+      "type": "number",
+      "id": "plan_3_bundle_cents",
+      "label": "Plan 3 bundle price (cents)",
+      "default": 120000,
+      "info": "₹1200 = 120000. Used for savings calculation in the ritual dock."
+    },
+    {
+      "type": "number",
+      "id": "plan_5_bundle_cents",
+      "label": "Plan 5 bundle price (cents)",
+      "default": 240000,
+      "info": "₹2400 = 240000. Used for savings calculation in the ritual dock."
     },
     {
       "type": "header",

@@ -16,6 +16,8 @@
         "plan_3_price": "₹1200 Ritual Box",
         "plan_5_price_display": "₹2400",
         "plan_5_price": "₹2400 Ritual Box",
+        "plan_3_bundle_cents": 120000,
+        "plan_5_bundle_cents": 240000,
         "grid_title": "Select Your Attars",
         "grid_sub": "Our bestselling 6ml attars — tap to add each fragrance to your ritual box.",
         "complete_message": "Your ritual box is complete.",

@@ -1,0 +1,37 @@
+{%- comment -%}
+  Luxury category label for Build Your Attar Box cards.
+
+  @param product {Product}
+{%- endcomment -%}
+{%- liquid
+  assign byb_cat = 'Bestseller Attar'
+  assign byb_key = product.handle | append: ' ' | append: product.title | downcase
+  assign byb_tags = product.tags | join: ' ' | downcase
+
+  for c in product.collections
+    assign byb_col = c.handle | downcase
+    assign byb_key = byb_key | append: ' ' | append: byb_col
+  endfor
+
+  assign byb_scope = byb_key | append: ' ' | append: byb_tags
+
+  if byb_scope contains 'zodiac' or byb_scope contains 'aries' or byb_scope contains 'taurus' or byb_scope contains 'gemini' or byb_scope contains 'cancer' or byb_scope contains 'leo' or byb_scope contains 'virgo' or byb_scope contains 'libra' or byb_scope contains 'scorpio' or byb_scope contains 'sagittarius' or byb_scope contains 'capricorn' or byb_scope contains 'aquarius' or byb_scope contains 'pisces'
+    assign byb_cat = 'Zodiac Attar'
+  elsif byb_scope contains 'planet' or byb_scope contains 'navagraha'
+    assign byb_cat = 'Planet Attar'
+  elsif byb_scope contains 'nakshatra'
+    assign byb_cat = 'Nakshatra Attar'
+  elsif byb_scope contains 'chakra'
+    assign byb_cat = 'Chakra Attar'
+  elsif byb_tags contains 'seasonal' or byb_tags contains 'summer' or byb_tags contains 'winter' or byb_tags contains 'monsoon'
+    assign byb_cat = 'Seasonal Attar'
+  elsif byb_tags contains 'signature' or byb_tags contains 'luxury' or byb_scope contains 'oud'
+    assign byb_cat = 'Signature Attar'
+  elsif byb_tags contains 'bestseller'
+    assign byb_cat = 'Bestseller Attar'
+  elsif product.type != blank
+    assign byb_cat = product.type | strip
+  endif
+
+  echo byb_cat
+-%}

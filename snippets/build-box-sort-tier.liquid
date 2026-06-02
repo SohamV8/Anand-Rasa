@@ -1,0 +1,32 @@
+{%- comment -%}
+  Outputs sort tier 1–5 for Build Your Attar Box grid ordering.
+  1 bestseller · 2 zodiac · 3 planet · 4 luxury signature · 5 seasonal / other
+
+  @param product {Product}
+{%- endcomment -%}
+{%- liquid
+  assign byb_tier = 5
+  assign byb_key = product.handle | append: ' ' | append: product.title | downcase
+  assign byb_tags = product.tags | join: ' ' | downcase
+
+  for c in product.collections
+    assign byb_col = c.handle | downcase
+    assign byb_key = byb_key | append: ' ' | append: byb_col
+  endfor
+
+  assign byb_scope = byb_key | append: ' ' | append: byb_tags
+
+  if byb_tags contains 'bestseller' or byb_tags contains 'best-seller' or byb_tags contains 'best seller'
+    assign byb_tier = 1
+  elsif byb_scope contains 'zodiac' or byb_scope contains 'aries' or byb_scope contains 'taurus' or byb_scope contains 'gemini' or byb_scope contains 'cancer' or byb_scope contains 'leo' or byb_scope contains 'virgo' or byb_scope contains 'libra' or byb_scope contains 'scorpio' or byb_scope contains 'sagittarius' or byb_scope contains 'capricorn' or byb_scope contains 'aquarius' or byb_scope contains 'pisces'
+    assign byb_tier = 2
+  elsif byb_scope contains 'planet' or byb_scope contains 'navagraha' or byb_scope contains 'surya' or byb_scope contains 'chandra' or byb_scope contains 'mangal' or byb_scope contains 'budh' or byb_scope contains 'guru' or byb_scope contains 'shukra' or byb_scope contains 'shani' or byb_scope contains 'rahu' or byb_scope contains 'ketu'
+    assign byb_tier = 3
+  elsif byb_tags contains 'signature' or byb_tags contains 'luxury' or byb_scope contains 'oud' or byb_scope contains 'musk' or byb_scope contains 'rose' or byb_scope contains 'saffron' or byb_tags contains 'icon'
+    assign byb_tier = 4
+  elsif byb_tags contains 'seasonal' or byb_tags contains 'summer' or byb_tags contains 'winter' or byb_tags contains 'monsoon' or byb_tags contains 'festive'
+    assign byb_tier = 5
+  endif
+
+  echo byb_tier
+-%}

@@ -1,14 +1,22 @@
 {%- comment -%}
+  Luxury fragrance card — Build Your Attar Box
+
   @param product {Product}
-  @param card_index {number} optional
 {%- endcomment -%}
 {%- liquid
   assign byb_variant = product.selected_or_first_available_variant
   assign byb_available = byb_variant.available
+  assign byb_price_cents = byb_variant.price
+
   capture byb_notes
     render 'build-box-product-notes', product: product
   endcapture
   assign byb_notes = byb_notes | strip
+
+  capture byb_category
+    render 'build-box-category', product: product
+  endcapture
+  assign byb_category = byb_category | strip
 
   capture byb_img_asset
     render 'bestseller-image-lookup', bs_product: product
@@ -38,17 +46,22 @@
   data-product-url="{{ product.url }}"
   data-product-title="{{ product.title | escape }}"
   data-product-image="{{ byb_img | escape }}"
+  data-variant-price="{{ byb_price_cents }}"
   data-available="{{ byb_available }}"
   aria-pressed="false"
+  tabindex="0"
 >
+  <div class="byb-card__glow" aria-hidden="true"></div>
+
   <a href="{{ product.url }}" class="byb-card__media-link" tabindex="-1" aria-hidden="true">
     <div class="byb-card__media">
+      <div class="byb-card__media-glass" aria-hidden="true"></div>
       {%- if byb_img != blank -%}
         <img
           class="byb-card__img"
           src="{{ byb_img }}"
-          {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1024px) 240px, (min-width: 640px) 42vw, 46vw"{% endif %}
-          alt="{{ product.title | escape }}"
+          {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1100px) 260px, (min-width: 640px) 44vw, 46vw"{% endif %}
+          alt="{{ product.title | escape }} — 6ml luxury attar"
           width="480"
           height="480"
           loading="lazy"
@@ -60,6 +73,9 @@
   </a>
 
   <div class="byb-card__body">
+    {%- if byb_category != blank -%}
+      <p class="byb-card__category">{{ byb_category }}</p>
+    {%- endif -%}
     <h3 class="byb-card__title">
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
@@ -71,15 +87,15 @@
 
   <button
     type="button"
-    class="byb-card__toggle"
+    class="byb-card__ritual"
     data-byb-toggle
     {% unless byb_available %}disabled aria-disabled="true"{% endunless %}
   >
-    <span class="byb-card__toggle-label" data-byb-toggle-add>Add to Box</span>
-    <span class="byb-card__toggle-label" data-byb-toggle-on hidden>In Your Box</span>
+    <span class="byb-card__ritual-label" data-byb-toggle-add>Add to Ritual</span>
+    <span class="byb-card__ritual-label" data-byb-toggle-on hidden>In Your Ritual</span>
   </button>
 
   <span class="byb-card__check" aria-hidden="true">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </span>
 </article>

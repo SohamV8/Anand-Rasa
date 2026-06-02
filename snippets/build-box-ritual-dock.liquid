@@ -1,0 +1,42 @@
+{%- comment -%}
+  Luxury floating ritual dock for Build Your Attar Box.
+
+  @param cta_ready {String}
+{%- endcomment -%}
+<aside class="byb-dock" data-byb-dock aria-label="Ritual box builder">
+  <div class="byb-dock__shell">
+    <div class="byb-dock__tray" data-byb-dock-tray>
+      <div class="byb-dock__previews" data-byb-dock-previews aria-hidden="true"></div>
+    </div>
+
+    <div class="byb-dock__center">
+      <p class="byb-dock__count" data-byb-dock-count aria-live="polite">Select a ritual size</p>
+      <p class="byb-dock__status" data-byb-dock-status>Choose your plan to begin curating</p>
+      <div class="byb-dock__progress" aria-hidden="true">
+        <span class="byb-dock__progress-fill" data-byb-dock-progress></span>
+      </div>
+    </div>
+
+    <div class="byb-dock__checkout">
+      <div class="byb-dock__pricing" data-byb-dock-pricing>
+        <div class="byb-dock__price-row">
+          <span class="byb-dock__compare" data-byb-dock-compare aria-hidden="true"></span>
+          <span class="byb-dock__ritual" data-byb-dock-ritual></span>
+        </div>
+        <p class="byb-dock__savings" data-byb-dock-savings hidden>
+          <span class="byb-dock__savings-badge">Bundle Ritual Savings Applied</span>
+        </p>
+      </div>
+      <button
+        type="button"
+        class="byb-dock__submit"
+        data-byb-dock-submit
+        disabled
+        aria-disabled="true"
+      >
+        <span class="byb-dock__submit-text" data-byb-dock-submit-text>{{ cta_ready }}</span>
+        <span class="byb-dock__submit-shine" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</aside>
