@@ -110,24 +110,6 @@
     {%- assign ar_card_bestseller_img = ar_bs_lookup | asset_url -%}
   {%- endif -%}
 
-  {%- liquid
-    assign badge_text  = blank
-    assign badge_class = blank
-    if product_tags contains 'bestseller'
-      assign badge_text  = 'BESTSELLER'
-      assign badge_class = 'is-bestseller'
-    elsif product_tags contains 'new'
-      assign badge_text  = 'NEW'
-      assign badge_class = 'is-new'
-    elsif product_tags contains 'limited'
-      assign badge_text  = 'LIMITED'
-      assign badge_class = 'is-limited'
-    elsif card_product.compare_at_price > card_product.price
-      assign badge_text  = 'SALE'
-      assign badge_class = 'is-sale'
-    endif
-  -%}
-
   {%- for media_item in card_product.media -%}
     {%- if media_item.media_type == 'image' -%}
       {%- assign image_count = image_count | plus: 1 -%}
@@ -251,31 +233,43 @@
           {%- endif -%}
         </a>
 
-        {%- if badge_text != blank -%}
-          <span class="ar-card__badge {{ badge_class }}">{{ badge_text }}</span>
-        {%- endif -%}
-
-        <button
-          type="button"
-          class="ar-card__wish"
-          aria-label="Add {{ card_product.title | escape }} to wishlist"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 20.727 3.818 12.545A5.5 5.5 0 1 1 11.6 4.763l.4.4.4-.4a5.5 5.5 0 0 1 7.778 7.782L12 20.727Z"/>
-          </svg>
-        </button>
-
-        {%- if image_count > 1 -%}
-          <div class="ar-card__dots" aria-hidden="true">
-            {%- for i in (1..image_count) -%}
-              <span class="ar-card__dot{% if forloop.first %} is-on{% endif %}"></span>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
       </div>
 
       {%- comment -%} ── BODY BLOCK ── {%- endcomment -%}
       <div class="ar-card__body">
+        {%- liquid
+          assign ar_raw_notes = ''
+          assign ar_main_notes = ''
+          assign ar_note_count = 0
+          assign ar_product_type = card_product.type | default: 'Attar'
+          assign ar_product_type_key = ar_product_type | downcase
+          assign ar_display_category = 'Attar'
+
+          if ar_product_type_key contains 'incense' or ar_product_type_key contains 'agarbatti'
+            assign ar_display_category = 'Incense Stick'
+          elsif ar_product_type_key contains 'perfume'
+            assign ar_display_category = 'Perfume'
+          endif
+
+          assign ar_notes_source_1 = card_product.metafields.custom.main_notes.value | default: ''
+          assign ar_notes_source_2 = card_product.metafields.custom.top_notes.value | default: ''
+          assign ar_notes_source_3 = card_product.metafields.custom.heart_notes.value | default: ''
+          assign ar_notes_source_4 = card_product.metafields.custom.base_notes.value | default: ''
+
+          if ar_notes_source_1 != blank
+            assign ar_raw_notes = ar_notes_source_1
+          elsif ar_notes_source_2 != blank
+            assign ar_raw_notes = ar_notes_source_2
+            if ar_notes_source_3 != blank
+              assign ar_raw_notes = ar_raw_notes | append: ', ' | append: ar_notes_source_3
+            endif
+            if ar_notes_source_4 != blank
+              assign ar_raw_notes = ar_raw_notes | append: ', ' | append: ar_notes_source_4
+            endif
+          endif
+
+          assign ar_raw_notes = ar_raw_notes | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' and ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
+        -%}
 
         <h3 class="ar-card__title">
           <a href="{{ card_product.url }}" class="ar-card__title-link">
@@ -283,85 +277,31 @@
           </a>
         </h3>
 
+        {%- if ar_raw_notes != blank -%}
+          {%- assign ar_note_items = ar_raw_notes | split: ',' -%}
+          {%- for ar_note in ar_note_items -%}
+            {%- assign ar_note_clean = ar_note | strip -%}
+            {%- if ar_note_clean != blank and ar_note_count < 3 -%}
+              {%- if ar_main_notes != blank -%}
+                {%- assign ar_main_notes = ar_main_notes | append: ' • ' -%}
+              {%- endif -%}
+              {%- assign ar_main_notes = ar_main_notes | append: ar_note_clean -%}
+              {%- assign ar_note_count = ar_note_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if ar_main_notes != blank -%}
+            <p class="ar-card__notes">{{ ar_main_notes | escape }}</p>
+          {%- endif -%}
+        {%- endif -%}
+
+        <p class="ar-card__category">{{ ar_display_category }}</p>
+
         <div class="ar-card__price">
           {%- if card_product.compare_at_price > card_product.price -%}
             <span class="ar-card__price-old">{{ card_product.compare_at_price | money }}</span>
             <span class="ar-card__price-sale">{{ card_product.price | money }}</span>
           {%- else -%}
             <span class="ar-card__price-reg">{{ card_product.price | money }}</span>
-          {%- endif -%}
-        </div>
-
-        <div class="ar-card__atc">
-          {%- if card_product.available == false -%}
-            <button type="button" class="ar-card__btn is-sold" disabled>SOLD OUT</button>
-
-          {%- elsif _needs_quick_add -%}
-            <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
-              <button
-                id="{{ product_form_id }}-submit"
-                type="button"
-                name="add"
-                class="ar-card__btn"
-                aria-haspopup="dialog"
-                aria-labelledby="{{ product_form_id }}-submit"
-                data-product-url="{{ card_product.url }}"
-              >ADD TO CART</button>
-            </modal-opener>
-            <quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
-              <div
-                role="dialog"
-                aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
-                aria-modal="true"
-                class="quick-add-modal__content global-settings-popup"
-                tabindex="-1"
-              >
-                <button
-                  id="ModalClose-{{ card_product.id }}"
-                  type="button"
-                  class="quick-add-modal__toggle"
-                  aria-label="{{ 'accessibility.close' | t }}"
-                >
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </button>
-                <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
-              </div>
-            </quick-add-modal>
-
-          {%- elsif quick_add == 'standard' -%}
-            <product-form data-section-id="{{ section.id }}">
-              {%- form 'product',
-                card_product,
-                id: product_form_id,
-                class: 'form',
-                novalidate: 'novalidate',
-                data-type: 'add-to-cart-form'
-              -%}
-                <input
-                  type="hidden"
-                  name="id"
-                  value="{{ card_product.selected_or_first_available_variant.id }}"
-                  class="product-variant-id"
-                  {% if card_product.selected_or_first_available_variant.available == false %}disabled{% endif %}
-                >
-                <button
-                  id="{{ product_form_id }}-submit"
-                  type="submit"
-                  name="add"
-                  class="ar-card__btn"
-                  aria-live="polite"
-                  data-sold-out-message="true"
-                  {% if card_product.selected_or_first_available_variant.available == false %}disabled{% endif %}
-                >
-                  <span>ADD TO CART</span>
-                  <span class="sold-out-message hidden">SOLD OUT</span>
-                  {%- render 'loading-spinner' -%}
-                </button>
-              {%- endform -%}
-            </product-form>
-
-          {%- else -%}
-            <a href="{{ card_product.url }}" class="ar-card__btn">ADD TO CART</a>
           {%- endif -%}
         </div>
 
@@ -382,45 +322,36 @@
 
 
 <style>
-/* ============================================================
-   AR PRODUCT CARD — Full Design System
-   ============================================================ */
-
-/* ── Entrance Animation ── */
+/* Minimal Luxury Collection Card */
 @keyframes ar-card-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 .ar-cw {
-  animation: ar-card-in 0.55s ease both;
-  animation-delay: calc(var(--card-i, 0) * 60ms);
+  animation: ar-card-in 0.45s ease both;
+  animation-delay: calc(var(--card-i, 0) * 45ms);
 }
 
-/* ── Card Shell ── */
 .ar-card {
-  position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   background: #fff;
-  border: 1px solid #EBEBEB;
-  border-radius: 0;                    /* sharp edges */
-  overflow: hidden;
-  transition: box-shadow 0.28s ease, transform 0.28s ease;
+  border: 1px solid #ece8df;
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.26s ease;
 }
 
 .ar-card:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
-  transform: translateY(-3px);
+  transform: translate3d(0, -2px, 0);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
 }
 
-/* ── Image Block ── */
 .ar-card__media {
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #fff;
-  flex-shrink: 0;
 }
 
 .ar-card__media-link {
@@ -435,133 +366,47 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1),
-              opacity 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Planet / zodiac / bestseller asset thumbnails: letterbox, no crop or stretch */
+.ar-card:hover .ar-card__img {
+  transform: scale3d(1.02, 1.02, 1);
+}
+
 .ar-card__media--contain .ar-card__media-link {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 0;
 }
+
 .ar-card__img--contain {
   width: auto;
   height: auto;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  object-position: center;
-}
-
-.ar-card:hover .ar-card__img {
-  transform: scale(1.03);
-}
-.ar-card:hover .ar-card__img--contain {
-  transform: scale(1.02);
 }
 
 .ar-card__img-ph {
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: #f5f2ec;
 }
 
-/* ── Badge ── */
-.ar-card__badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
-  padding: 5px 11px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #fff;
-  line-height: 1;
-  pointer-events: none;
-}
-.ar-card__badge.is-bestseller { background: #1A1A1A; }
-.ar-card__badge.is-new        { background: #2E7D32; }
-.ar-card__badge.is-limited    { background: #6B3FA0; }
-.ar-card__badge.is-sale       { background: #C62828; }
-
-/* ── Wishlist ── */
-.ar-card__wish {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #fff;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #888;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-  padding: 0;
-}
-
-.ar-card__wish:hover {
-  color: #E8799A;
-  background: #FFF0F4;
-  transform: scale(1.08);
-}
-
-.ar-card__wish svg {
-  display: block;
-  pointer-events: none;
-}
-
-/* ── Image Dots ── */
-.ar-card__dots {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 5px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.ar-card__dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.5);
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-
-.ar-card__dot.is-on {
-  background: #fff;
-  transform: scale(1.25);
-}
-
-/* ── Body ── */
 .ar-card__body {
-  padding: 16px 16px 0;
-  background: #fff;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
+  padding: 14px 14px 16px;
   flex: 1;
 }
 
-/* ── Title ── */
 .ar-card__title {
   margin: 0;
   font-size: 15px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -569,211 +414,74 @@
 }
 
 .ar-card__title-link {
-  color: #1A1A1A;
-  text-decoration: none;
-  display: block;
-}
-
-.ar-card__title-link:hover {
-  color: #1A1A1A;
+  color: #1a1a1a;
   text-decoration: none;
 }
 
-/* ── Stars ── */
-.ar-card__rating {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.ar-card__stars {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
-
-.ar-star {
-  width: 14px;
-  height: 14px;
-  fill: #DDD;
-  flex-shrink: 0;
-}
-
-.ar-star.is-on {
-  fill: #F5A623;
-}
-
-.ar-card__rc {
-  font-size: 12px;
-  color: #999;
-  line-height: 1;
-}
-
-/* ── Price ── */
-.ar-card__price {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.ar-card__price-reg {
-  font-size: 17px;
-  font-weight: 800;
-  color: #1A1A1A;
-}
-
-.ar-card__price-old {
-  font-size: 13px;
+.ar-card__notes {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #6b7280;
   font-weight: 400;
-  color: #ADADAD;
-  text-decoration: line-through;
-}
-
-.ar-card__price-sale {
-  font-size: 17px;
-  font-weight: 800;
-  color: #C8873A;
-}
-
-/* ── ATC Button ── */
-.ar-card__atc {
-  margin-top: auto;
-  padding: 14px 0 16px;
-}
-
-.ar-card__btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 14px;
-  background: #fff;
-  color: #1A1A1A;
-  border: 1.5px solid #1A1A1A;
-  border-radius: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: inherit;
-  line-height: 1;
-  transition: background 0.22s ease, color 0.22s ease;
-  position: relative;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.ar-card__btn:hover:not(:disabled) {
-  background: #1A1A1A;
-  color: #fff;
+.ar-card__category {
+  margin: 0;
+  font-size: 10.5px;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8b6f47;
+  font-weight: 600;
 }
 
-.ar-card__btn.is-sold,
-.ar-card__btn:disabled {
-  background: #F5F5F5;
-  color: #BBBBBB;
-  border-color: #E0E0E0;
-  cursor: not-allowed;
+.ar-card__price {
+  margin-top: 3px;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
 }
 
-/* ── Placeholder ── */
+.ar-card__price-reg,
+.ar-card__price-sale {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1a1a1a;
+}
+
+.ar-card__price-old {
+  font-size: 12px;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
 .ar-card--ph .ar-card__media {
   aspect-ratio: 1 / 1;
-  background: #EEEBE4;
 }
 
-/* ── Responsive ── */
 @media (max-width: 480px) {
-  .ar-card__body   { padding: 12px 12px 0; }
-  .ar-card__title  { font-size: 14px; }
+  .ar-card__body { padding: 12px; gap: 6px; }
+  .ar-card__title { font-size: 14px; }
+  .ar-card__notes { font-size: 12px; }
+  .ar-card__category { font-size: 10px; }
   .ar-card__price-reg,
   .ar-card__price-sale { font-size: 15px; }
-  .ar-card__btn    { font-size: 11px; padding: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-cw,
+  .ar-card,
+  .ar-card__img {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
 }
 </style>
-
-
-<script>
-/* ── Auto-slide images on hover ──────────────────────────── */
-(function () {
-  'use strict';
-
-  function initCard(card) {
-    var rawUrls  = card.dataset.images || '';
-    var count    = parseInt(card.dataset.imageCount, 10) || 0;
-    if (count < 2 || !rawUrls) return;
-
-    var img     = card.querySelector('.ar-card__img');
-    var dots    = Array.from(card.querySelectorAll('.ar-card__dot'));
-    if (!img) return;
-
-    var urls    = rawUrls.split(',');
-    var current = 0;
-    var timer   = null;
-
-    /* pre-load secondary images on first hover */
-    var preloaded = false;
-    function preload() {
-      if (preloaded) return;
-      preloaded = true;
-      urls.forEach(function (u, i) {
-        if (i === 0) return;
-        var pi = new Image();
-        pi.src = (u.startsWith('//') ? 'https:' : '') + u;
-      });
-    }
-
-    function show(idx) {
-      current = idx;
-      var src = urls[idx];
-      img.src = src.startsWith('//') ? 'https:' + src : src;
-      dots.forEach(function (d, i) {
-        d.classList.toggle('is-on', i === idx);
-      });
-    }
-
-    function next() {
-      show((current + 1) % urls.length);
-    }
-
-    card.addEventListener('mouseenter', function () {
-      preload();
-      timer = setInterval(next, 2500);
-    });
-
-    card.addEventListener('mouseleave', function () {
-      clearInterval(timer);
-      timer = null;
-      show(0);
-    });
-  }
-
-  /* Use IntersectionObserver so off-screen cards don't fire */
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        initCard(entry.target);
-        io.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '200px' });
-
-  function attachAll() {
-    document.querySelectorAll('[data-product-card]:not([data-slide-ready])').forEach(function (c) {
-      c.dataset.slideReady = '1';
-      io.observe(c);
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', attachAll);
-  } else {
-    attachAll();
-  }
-
-  /* Re-run when Shopify re-renders sections (theme editor) */
-  document.addEventListener('shopify:section:load', attachAll);
-})();
-</script>

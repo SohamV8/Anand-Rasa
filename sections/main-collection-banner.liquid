@@ -39,6 +39,7 @@
           aria-label="Search fragrances"
           autocomplete="off"
           spellcheck="false"
+          data-ar-collection-search
         >
         <button type="submit" class="ar-banner__search-btn" aria-label="Submit search">
           <svg
@@ -59,32 +60,89 @@
     </div>
 
     {%- comment -%} ── CATEGORY TABS ── {%- endcomment -%}
-    <nav class="ar-banner__tabs" role="navigation" aria-label="Browse by category">
+    {%- liquid
+      assign ar_active_tab_key = 'all'
+      assign ar_handle = collection.handle | downcase
+      if ar_handle contains 'best'
+        assign ar_active_tab_key = 'bestseller'
+      elsif ar_handle contains 'zodiac'
+        assign ar_active_tab_key = 'zodiac-attars'
+      elsif ar_handle contains 'planet'
+        assign ar_active_tab_key = 'planet-attars'
+      elsif ar_handle contains 'naksh'
+        assign ar_active_tab_key = 'nakshatra-attars'
+      elsif ar_handle contains 'chakra'
+        assign ar_active_tab_key = 'chakra-attars'
+      elsif ar_handle contains 'stress'
+        assign ar_active_tab_key = 'stress-relief'
+      elsif ar_handle contains 'love'
+        assign ar_active_tab_key = 'love-attars'
+      elsif ar_handle contains 'discover'
+        assign ar_active_tab_key = 'discovery-kit'
+      elsif ar_handle contains 'incense'
+        assign ar_active_tab_key = 'incense-sticks'
+      elsif ar_handle contains 'gift'
+        assign ar_active_tab_key = 'gift-sets'
+      elsif ar_handle contains 'meditation'
+        assign ar_active_tab_key = 'meditation-oils'
+      endif
+    -%}
+    <nav class="ar-banner__tabs" role="navigation" aria-label="Browse by category" data-ar-collection-tabs>
       <div class="ar-banner__tabs-inner">
         <a
           href="{{ routes.collections_url }}/all"
-          class="ar-banner__tab{% if collection.handle == 'all' %} is-active{% endif %}"
+          class="ar-banner__tab{% if ar_active_tab_key == 'all' %} is-active{% endif %}"
+          data-collection-url="{{ routes.collections_url }}/all"
+          data-tab-key="all"
         >
           ALL
         </a>
-
-        {%- comment -%}
-          Main sub-collections — edit handles to match Shopify Admin → Collections.
-        {%- endcomment -%}
-        {%- assign tab_handles = 'attar,chakra-attar,nakshatra-attar,planet-attar,stress-relief-attar,gift-sets,incense-sticks'
-          | split: ','
+        {%- liquid
+          assign ar_best = collections['bestseller'] | default: collections['best-seller'] | default: collections['bestsellers']
+          assign ar_zodiac = collections['zodiac-attars'] | default: collections['zodiac-attar'] | default: collections['zodiac']
+          assign ar_planet = collections['planet-attars'] | default: collections['planet-attar'] | default: collections['planet']
+          assign ar_nakshatra = collections['nakshatra-attars'] | default: collections['nakshatra-attar'] | default: collections['naksahtra']
+          assign ar_chakra = collections['chakra-attars'] | default: collections['chakra-attar'] | default: collections['chakra']
+          assign ar_stress = collections['stress-relief'] | default: collections['stressrelief'] | default: collections['stress-relief-attar']
+          assign ar_love = collections['love-attar'] | default: collections['love-attars'] | default: collections['love']
+          assign ar_discovery = collections['discovery-kit'] | default: collections['discovery-kits'] | default: collections['giftsets']
+          assign ar_incense = collections['incense-sticks'] | default: collections['incense-stick'] | default: collections['incense']
+          assign ar_gifts = collections['gift-sets'] | default: collections['giftsets']
+          assign ar_meditation = collections['meditation-oils'] | default: collections['meditation-oil'] | default: collections['meditation']
         -%}
-        {%- for handle in tab_handles -%}
-          {%- assign tab_col = collections[handle] -%}
-          {%- if tab_col != blank -%}
-            <a
-              href="{{ tab_col.url }}"
-              class="ar-banner__tab{% if collection.handle == handle %} is-active{% endif %}"
-            >
-              {{ tab_col.title | upcase }}
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if ar_best != blank -%}
+          <a href="{{ ar_best.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'bestseller' %} is-active{% endif %}" data-collection-url="{{ ar_best.url }}" data-tab-key="bestseller">BEST SELLERS</a>
+        {%- endif -%}
+        {%- if ar_zodiac != blank -%}
+          <a href="{{ ar_zodiac.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'zodiac-attars' %} is-active{% endif %}" data-collection-url="{{ ar_zodiac.url }}" data-tab-key="zodiac-attars">ZODIAC ATTARS</a>
+        {%- endif -%}
+        {%- if ar_planet != blank -%}
+          <a href="{{ ar_planet.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'planet-attars' %} is-active{% endif %}" data-collection-url="{{ ar_planet.url }}" data-tab-key="planet-attars">PLANET ATTARS</a>
+        {%- endif -%}
+        {%- if ar_nakshatra != blank -%}
+          <a href="{{ ar_nakshatra.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'nakshatra-attars' %} is-active{% endif %}" data-collection-url="{{ ar_nakshatra.url }}" data-tab-key="nakshatra-attars">NAKSHATRA ATTARS</a>
+        {%- endif -%}
+        {%- if ar_chakra != blank -%}
+          <a href="{{ ar_chakra.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'chakra-attars' %} is-active{% endif %}" data-collection-url="{{ ar_chakra.url }}" data-tab-key="chakra-attars">CHAKRA ATTARS</a>
+        {%- endif -%}
+        {%- if ar_stress != blank -%}
+          <a href="{{ ar_stress.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'stress-relief' %} is-active{% endif %}" data-collection-url="{{ ar_stress.url }}" data-tab-key="stress-relief">STRESS RELIEF ATTARS</a>
+        {%- endif -%}
+        {%- if ar_love != blank -%}
+          <a href="{{ ar_love.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'love-attars' %} is-active{% endif %}" data-collection-url="{{ ar_love.url }}" data-tab-key="love-attars">LOVE ATTARS</a>
+        {%- endif -%}
+        {%- if ar_discovery != blank -%}
+          <a href="{{ ar_discovery.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'discovery-kit' %} is-active{% endif %}" data-collection-url="{{ ar_discovery.url }}" data-tab-key="discovery-kit">DISCOVERY KITS</a>
+        {%- endif -%}
+        {%- if ar_incense != blank -%}
+          <a href="{{ ar_incense.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'incense-sticks' %} is-active{% endif %}" data-collection-url="{{ ar_incense.url }}" data-tab-key="incense-sticks">INCENSE STICKS</a>
+        {%- endif -%}
+        {%- if ar_gifts != blank -%}
+          <a href="{{ ar_gifts.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'gift-sets' %} is-active{% endif %}" data-collection-url="{{ ar_gifts.url }}" data-tab-key="gift-sets">GIFT SETS</a>
+        {%- endif -%}
+        {%- if ar_meditation != blank -%}
+          <a href="{{ ar_meditation.url }}" class="ar-banner__tab{% if ar_active_tab_key == 'meditation-oils' %} is-active{% endif %}" data-collection-url="{{ ar_meditation.url }}" data-tab-key="meditation-oils">MEDITATION OILS</a>
+        {%- endif -%}
       </div>
 
       {%- comment -%} ── SORT + COUNT (right side, desktop) ── {%- endcomment -%}
@@ -156,6 +214,127 @@
     </nav>
   </div>
 </div>
+
+<script>
+  (function () {
+    if (window.__arCollectionTabsEnhanced) return;
+    window.__arCollectionTabsEnhanced = true;
+
+    function parseHTML(text) {
+      return new DOMParser().parseFromString(text, 'text/html');
+    }
+
+    function smoothSwapProductGrid(nextDoc) {
+      var current = document.getElementById('ProductGridContainer');
+      var incoming = nextDoc.getElementById('ProductGridContainer');
+      if (!current || !incoming) return false;
+      current.style.transition = 'opacity 240ms ease, transform 280ms ease';
+      current.style.opacity = '0';
+      current.style.transform = 'translate3d(0, 10px, 0)';
+      window.requestAnimationFrame(function () {
+        setTimeout(function () {
+          current.innerHTML = incoming.innerHTML;
+          current.style.opacity = '1';
+          current.style.transform = 'translate3d(0, 0, 0)';
+        }, 120);
+      });
+      return true;
+    }
+
+    function syncBannerMeta(nextDoc) {
+      var titleCurrent = document.querySelector('.ar-banner__title');
+      var titleIncoming = nextDoc.querySelector('.ar-banner__title');
+      if (titleCurrent && titleIncoming) titleCurrent.innerHTML = titleIncoming.innerHTML;
+
+      var descCurrent = document.querySelector('.ar-banner__desc');
+      var descIncoming = nextDoc.querySelector('.ar-banner__desc');
+      if (descCurrent && descIncoming) descCurrent.innerHTML = descIncoming.innerHTML;
+
+      var countCurrent = document.getElementById('ProductCountDesktop');
+      var countIncoming = nextDoc.getElementById('ProductCountDesktop');
+      if (countCurrent && countIncoming) countCurrent.innerHTML = countIncoming.innerHTML;
+
+      var sortCurrent = document.getElementById('SortBy');
+      var sortIncoming = nextDoc.getElementById('SortBy');
+      if (sortCurrent && sortIncoming) sortCurrent.innerHTML = sortIncoming.innerHTML;
+    }
+
+    function setActiveTab(urlPath) {
+      document.querySelectorAll('[data-ar-collection-tabs] .ar-banner__tab').forEach(function (tab) {
+        var href = tab.getAttribute('data-collection-url') || tab.getAttribute('href') || '';
+        try {
+          var path = new URL(href, window.location.origin).pathname;
+          tab.classList.toggle('is-active', path === urlPath);
+        } catch (e) {}
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      var tab = event.target.closest('[data-ar-collection-tabs] .ar-banner__tab');
+      if (!tab) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+      var href = tab.getAttribute('data-collection-url') || tab.getAttribute('href');
+      if (!href) return;
+      var targetUrl = new URL(href, window.location.origin);
+      if (targetUrl.origin !== window.location.origin) return;
+
+      event.preventDefault();
+
+      var activeSort = document.getElementById('SortBy');
+      if (activeSort && activeSort.value && !targetUrl.searchParams.get('sort_by')) {
+        targetUrl.searchParams.set('sort_by', activeSort.value);
+      }
+
+      fetch(targetUrl.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(function (res) { return res.text(); })
+        .then(function (html) {
+          var doc = parseHTML(html);
+          var swapped = smoothSwapProductGrid(doc);
+          if (!swapped) {
+            window.location.href = targetUrl.toString();
+            return;
+          }
+          syncBannerMeta(doc);
+          setActiveTab(targetUrl.pathname);
+          var searchInput = document.querySelector('[data-ar-collection-search]');
+          if (searchInput) searchInput.value = '';
+          var countEl = document.getElementById('ProductCountDesktop');
+          if (countEl) countEl.dataset.baseCount = countEl.textContent.trim();
+          history.pushState({ searchParams: targetUrl.searchParams.toString() }, '', targetUrl.toString());
+          if (typeof initializeScrollAnimationTrigger === 'function') {
+            initializeScrollAnimationTrigger(document, false);
+          }
+        })
+        .catch(function () {
+          window.location.href = targetUrl.toString();
+        });
+    });
+
+    document.addEventListener('input', function (event) {
+      var input = event.target.closest('[data-ar-collection-search]');
+      if (!input) return;
+      var query = input.value.trim().toLowerCase();
+      var cards = document.querySelectorAll('#product-grid > li');
+      if (!cards.length) return;
+
+      var shown = 0;
+      cards.forEach(function (item) {
+        var titleNode = item.querySelector('[data-product-title], .card__heading, .arc-card__name, .card-information__text');
+        var hay = titleNode ? titleNode.textContent.toLowerCase() : item.textContent.toLowerCase();
+        var match = !query || hay.indexOf(query) !== -1;
+        item.style.display = match ? '' : 'none';
+        if (match) shown += 1;
+      });
+
+      var count = document.getElementById('ProductCountDesktop');
+      if (count) {
+        if (!count.dataset.baseCount) count.dataset.baseCount = count.textContent.trim();
+        if (query) count.textContent = shown + ' products';
+        else count.textContent = count.dataset.baseCount;
+      }
+    });
+  })();
+</script>
 {%- endif -%}
 
 {% schema %}

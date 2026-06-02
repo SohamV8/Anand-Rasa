@@ -1,0 +1,147 @@
+{%- comment -%}
+  Luxury curated navigation rail for /collections/all.
+
+  - "Shop by Collection" links to real collections (resolved via ar-collection-url).
+  - "Shop by Notes" use Shopify-native in-collection tag filtering
+    ({{ collection.url }}/<handleized-tag>), which integrates with the existing
+    grid, sort, and pagination, and degrades to the styled empty state.
+
+  Safe: pure navigation. Does not touch the facet system, cart, or product forms.
+  Render only on the all-products collection.
+{%- endcomment -%}
+
+{%- liquid
+  assign lux_collections = 'bestseller,planet-attars,zodiac-attars,nakshatra-attars,chakra-attars,stress-relief,love-attars,incense-sticks,gift-sets' | split: ','
+  assign lux_collection_labels = 'Best Sellers,Planet Attars,Zodiac Attars,Nakshatra Attars,Chakra Attars,Stress Relief,Love Attars,Incense,Gift Sets' | split: ','
+
+  assign lux_categories = 'Attar,Perfume,Incense Stick' | split: ','
+  assign lux_notes = 'Oud,Rose,Saffron,Sandalwood,Jasmine,Vetiver,Vanilla,Musk' | split: ','
+
+  assign lux_has_active_tags = false
+  if current_tags.size > 0
+    assign lux_has_active_tags = true
+  endif
+
+  assign lux_current_tags_downcase = current_tags | map: 'downcase'
+-%}
+
+<nav class="ar-lux-nav" aria-label="Browse fragrances">
+  <p class="ar-lux-nav__title" id="ar-lux-nav-title">Browse</p>
+
+  {%- comment -%} ── SHOP BY COLLECTION (navigation to real collections) ── {%- endcomment -%}
+  <details class="ar-lux-nav__group" open>
+    <summary class="ar-lux-nav__summary">
+      <span>Shop by Collection</span>
+      <span class="ar-lux-nav__chev" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <ul class="ar-lux-nav__list" role="list">
+      {%- for handle in lux_collections -%}
+        {%- capture lux_col_url -%}{% render 'ar-collection-url', handle: handle %}{%- endcapture -%}
+        {%- assign lux_col_url = lux_col_url | strip -%}
+        {%- assign lux_label = lux_collection_labels[forloop.index0] -%}
+        {%- if lux_col_url != blank and lux_col_url != routes.collections_url -%}
+          <li>
+            <a class="ar-lux-nav__link" href="{{ lux_col_url }}">{{ lux_label }}</a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </details>
+
+  {%- comment -%} ── CATEGORY (tag-based filter) ── {%- endcomment -%}
+  <details class="ar-lux-nav__group">
+    <summary class="ar-lux-nav__summary">
+      <span>Category</span>
+      <span class="ar-lux-nav__chev" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <ul class="ar-lux-nav__list" role="list">
+      {%- for cat in lux_categories -%}
+        {%- assign lux_tag_handle = cat | handleize -%}
+        {%- assign lux_is_active = false -%}
+        {%- assign lux_cat_down = cat | downcase -%}
+        {%- if lux_current_tags_downcase contains lux_cat_down -%}
+          {%- assign lux_is_active = true -%}
+        {%- endif -%}
+        <li>
+          <a
+            class="ar-lux-nav__link{% if lux_is_active %} is-active{% endif %}"
+            href="{{ collection.url }}/{{ lux_tag_handle }}"
+            {% if lux_is_active %}aria-current="true"{% endif %}
+          >{{ cat }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </details>
+
+  {%- comment -%} ── MAIN NOTES (native tag filter) ── {%- endcomment -%}
+  <details class="ar-lux-nav__group">
+    <summary class="ar-lux-nav__summary">
+      <span>Main Notes</span>
+      <span class="ar-lux-nav__chev" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <ul class="ar-lux-nav__list ar-lux-nav__list--tags" role="list">
+      {%- for tag in lux_notes -%}
+        {%- assign lux_tag_handle = tag | handleize -%}
+        {%- assign lux_is_active = false -%}
+        {%- assign lux_tag_down = tag | downcase -%}
+        {%- if lux_current_tags_downcase contains lux_tag_down -%}
+          {%- assign lux_is_active = true -%}
+        {%- endif -%}
+        <li>
+          <a
+            class="ar-lux-nav__tag{% if lux_is_active %} is-active{% endif %}"
+            href="{{ collection.url }}/{{ lux_tag_handle }}"
+            {% if lux_is_active %}aria-current="true"{% endif %}
+          >{{ tag }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </details>
+
+  {%- comment -%} ── PRICE (sort-based, Shopify-safe) ── {%- endcomment -%}
+  {%- assign lux_sort_low = '' -%}
+  {%- assign lux_sort_high = '' -%}
+  {%- if collection.sort_options.size > 0 -%}
+    {%- for option in collection.sort_options -%}
+      {%- if option.value == 'price-ascending' -%}{%- assign lux_sort_low = option.value -%}{%- endif -%}
+      {%- if option.value == 'price-descending' -%}{%- assign lux_sort_high = option.value -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  <details class="ar-lux-nav__group">
+    <summary class="ar-lux-nav__summary">
+      <span>Price</span>
+      <span class="ar-lux-nav__chev" aria-hidden="true">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <ul class="ar-lux-nav__list" role="list">
+      {%- if lux_sort_low != '' -%}
+        <li>
+          <a
+            class="ar-lux-nav__link{% if collection.sort_by == lux_sort_low %} is-active{% endif %}"
+            href="{{ collection.url }}?sort_by={{ lux_sort_low }}"
+          >Price: Low → High</a>
+        </li>
+      {%- endif -%}
+      {%- if lux_sort_high != '' -%}
+        <li>
+          <a
+            class="ar-lux-nav__link{% if collection.sort_by == lux_sort_high %} is-active{% endif %}"
+            href="{{ collection.url }}?sort_by={{ lux_sort_high }}"
+          >Price: High → Low</a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </details>
+
+  {%- if lux_has_active_tags -%}
+    <a class="ar-lux-nav__clear" href="{{ collection.url }}">Clear filter</a>
+  {%- endif -%}
+</nav>

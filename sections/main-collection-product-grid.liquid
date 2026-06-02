@@ -69,23 +69,38 @@
         <div class="ar-col-pills"></div>
       {%- endif -%}
 
-      <div class="ar-col-body{% unless section.settings.enable_filtering or section.settings.enable_sorting %} ar-col-body--full{% endunless %}">
-        {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      {%- liquid
+        assign ar_show_lux_nav = false
+        if collection.handle == 'all'
+          assign ar_show_lux_nav = true
+        endif
+        assign ar_show_sidebar = false
+        if section.settings.enable_filtering or section.settings.enable_sorting or ar_show_lux_nav
+          assign ar_show_sidebar = true
+        endif
+      -%}
+      <div class="ar-col-body{% unless ar_show_sidebar %} ar-col-body--full{% endunless %}">
+        {%- if ar_show_sidebar -%}
           <aside
             aria-labelledby="verticalTitle"
-            class="ar-col-sidebar facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
+            class="ar-col-sidebar facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if ar_show_lux_nav %} ar-col-sidebar--lux{% endif %}"
             id="main-collection-filters"
             data-id="{{ section.id }}"
           >
-            {% render 'facets',
-              results: collection,
-              enable_filtering: section.settings.enable_filtering,
-              enable_sorting: section.settings.enable_sorting,
-              filter_type: 'vertical',
-              paginate: paginate,
-              facets_portion: 'main',
-              ar_col_layout: true
-            %}
+            {%- if ar_show_lux_nav -%}
+              {% render 'collection-luxury-sidebar' %}
+            {%- endif -%}
+            {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+              {% render 'facets',
+                results: collection,
+                enable_filtering: section.settings.enable_filtering,
+                enable_sorting: section.settings.enable_sorting,
+                filter_type: 'vertical',
+                paginate: paginate,
+                facets_portion: 'main',
+                ar_col_layout: true
+              %}
+            {%- endif -%}
           </aside>
         {%- endif -%}
 
