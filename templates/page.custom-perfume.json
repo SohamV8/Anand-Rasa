@@ -13,8 +13,9 @@
       "type": "custom-perfume-quiz",
       "settings": {
         "eyebrow": "Anand Rasa",
-        "heading": "Discover your signature attar",
-        "subheading": "Share your preferences with our fragrance specialists for a curated attar consultation.",
+        "heading": "Find your fragrance",
+        "subheading": "Answer a few simple questions. Our team will suggest attars and perfume oils that suit your taste and daily routine.",
+        "contact_submit_label": "Send my preferences",
         "show_trust": true,
         "show_how": true,
         "show_faq": true,

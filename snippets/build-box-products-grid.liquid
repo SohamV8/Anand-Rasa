@@ -2,11 +2,13 @@
   Sorted bestseller grid for Build Your Attar Box.
 
   @param collection {Collection}
+  @param size_label {String} optional, e.g. "6ml" or "20ml"
 {%- endcomment -%}
 {%- liquid
   assign byb_rendered = ','
   assign byb_has_products = false
   assign byb_idx = 0
+  assign byb_size_label = size_label | default: '6ml'
 -%}
 
 <div class="byb-grid" data-byb-grid role="list">
@@ -39,14 +41,14 @@
       {%- assign byb_has_products = true -%}
       {%- assign byb_idx = byb_idx | plus: 1 -%}
       <div role="listitem" class="byb-grid__item" style="--byb-i: {{ byb_idx }};">
-        {% render 'build-box-product-card', product: product %}
+        {% render 'build-box-product-card', product: product, size_label: byb_size_label %}
       </div>
     {%- endfor -%}
   {%- endfor -%}
 
   {%- unless byb_has_products -%}
     <div class="byb-empty">
-      <p>No 6ml attars available for your ritual box right now.</p>
+      <p>No {{ byb_size_label }} fragrances available for your ritual box right now.</p>
     </div>
   {%- endunless -%}
 </div>

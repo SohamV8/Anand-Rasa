@@ -550,7 +550,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {% render 'sr-checkout' %}
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  {%- liquid
+    assign ar_body_find_fragrance = ar_is_find_fragrance_legacy_view
+    if request.page_type == 'page' and page != blank
+      if page.template_suffix == 'find-fragrance' or page.handle == 'find-fragrance' or page.handle == 'find-your-fragrance' or page.handle == 'astro-fragrance-finder' or page.handle == 'custom-perfume-quiz' or page.handle == 'custom-perfume'
+        assign ar_body_find_fragrance = true
+      endif
+    endif
+  -%}
+  <body class="gradient{% if ar_body_find_fragrance %} template-find-fragrance{% endif %}{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

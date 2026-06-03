@@ -4,23 +4,15 @@
   assign cpq_form_posted = false
 -%}
 
+{{ 'custom-perfume-quiz.css' | asset_url | stylesheet_tag }}
+
 <section
-  class="cpq section-{{ section.id }}-padding"
+  class="cpq cpq--premium section-{{ section.id }}-padding"
   id="cpq-{{ cpq_uid }}"
   data-cpq-quiz
+  data-cpq-step="1"
   aria-labelledby="cpq-title-{{ cpq_uid }}"
 >
-  <div class="cpq__cosmos" aria-hidden="true">
-    {%- for i in (1..28) -%}
-      <span class="cpq__star" style="--cpq-sx: {{ i | times: 37 | modulo: 100 }}%; --cpq-sy: {{ i | times: 53 | modulo: 100 }}%; --cpq-sd: {{ i | times: 0.7 | modulo: 5 | plus: 3 }}s;"></span>
-    {%- endfor -%}
-  </div>
-  <div class="cpq__ambient" aria-hidden="true">
-    <span class="cpq__glow cpq__glow--1"></span>
-    <span class="cpq__glow cpq__glow--2"></span>
-    <span class="cpq__grain"></span>
-  </div>
-
   <div class="cpq__shell">
     {%- form 'contact', id: cpq_contact_id, class: 'cpq__shopify-form' -%}
 
@@ -33,7 +25,7 @@
               <path class="cpq__success-path" fill="none" d="M14 27l8 8 16-18"/>
             </svg>
           </div>
-          <p class="cpq__success-eyebrow">✦ Anand Rasa</p>
+          <p class="cpq__success-eyebrow">Anand Rasa</p>
           <h2 class="cpq__success-title" id="cpq-success-title-{{ cpq_uid }}">
             {{ section.settings.success_heading | default: 'Thank You' }}
           </h2>
@@ -77,22 +69,13 @@
 
       <div class="cpq__consultation" data-cpq-consultation>
     <header class="cpq__header">
-      <p class="cpq__badge">✦ {{ section.settings.eyebrow | default: 'Anand Rasa' }}</p>
       <h1 class="cpq__title" id="cpq-title-{{ cpq_uid }}">
-        {{ section.settings.heading | default: 'Personalised fragrance consultation' }}
+        {{ section.settings.heading | default: 'Find your fragrance' }}
       </h1>
       <p class="cpq__lead">
-        {{ section.settings.subheading | default: 'Share your preferences with our fragrance specialists for a curated attar consultation — crafted around your taste, mood, and fragrance profile.' }}
+        {{ section.settings.subheading | default: 'Answer a few simple questions. Our team will suggest attars and perfume oils that suit you.' }}
       </p>
-      <div class="cpq__progress" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" aria-label="Quiz progress" id="cpq-progress-{{ cpq_uid }}">
-        <div class="cpq__progress-track">
-          <div class="cpq__progress-fill" data-cpq-progress-fill style="width:14.3%"></div>
-        </div>
-        <p class="cpq__progress-label"><span data-cpq-step-label>Step 1</span> <span class="cpq__progress-total">of 7</span></p>
-      </div>
-    </header>
-
-    {%- if section.settings.show_trust -%}
+      {%- if section.settings.show_trust -%}
       <ul class="cpq__trust" role="list">
         {%- for block in section.blocks -%}
           {%- if block.type == 'trust_badge' -%}
@@ -100,22 +83,28 @@
           {%- endif -%}
         {%- endfor -%}
         {%- if section.blocks.size == 0 -%}
-          <li class="cpq__trust-item"><span class="cpq__trust-dot" aria-hidden="true"></span>Alcohol-free attars</li>
-          <li class="cpq__trust-item"><span class="cpq__trust-dot" aria-hidden="true"></span>Handcrafted in India</li>
-          <li class="cpq__trust-item"><span class="cpq__trust-dot" aria-hidden="true"></span>Natural perfume oils</li>
-          <li class="cpq__trust-item"><span class="cpq__trust-dot" aria-hidden="true"></span>Long-lasting wear</li>
-          <li class="cpq__trust-item"><span class="cpq__trust-dot" aria-hidden="true"></span>Astrology-guided</li>
+          <li class="cpq__trust-item">Alcohol-free attars</li>
+          <li class="cpq__trust-item">Made in India</li>
+          <li class="cpq__trust-item">Natural oils</li>
+          <li class="cpq__trust-item">Long-lasting</li>
         {%- endif -%}
       </ul>
-    {%- endif -%}
+      {%- endif -%}
+      <div class="cpq__progress" role="progressbar" aria-valuemin="1" aria-valuemax="7" aria-valuenow="1" aria-label="Consultation progress" id="cpq-progress-{{ cpq_uid }}">
+        <div class="cpq__progress-track">
+          <div class="cpq__progress-fill" data-cpq-progress-fill style="width:14.3%"></div>
+        </div>
+        <p class="cpq__progress-label"><span data-cpq-step-label>Step 1 of 7</span></p>
+      </div>
+    </header>
 
-    <div class="cpq__form" data-cpq-form role="group" aria-label="Personalised attar consultation">
+    <div class="cpq__form" data-cpq-form role="group" aria-label="Fragrance consultation">
       <div class="cpq__steps-viewport" data-cpq-steps-viewport>
       <div class="cpq__steps" data-cpq-steps>
         {%- comment -%} Step 1 {%- endcomment -%}
         <fieldset class="cpq__step is-active" data-cpq-step="1">
-          <legend class="cpq__step-title">Begin your consultation</legend>
-          <p class="cpq__step-sub">Tell us how to reach you. Your responses are sent securely to our team — never in the page URL.</p>
+          <legend class="cpq__step-title">Your details</legend>
+          <p class="cpq__step-sub">We will email you personalised suggestions. About 2 minutes.</p>
           <div class="cpq__field">
             <label class="cpq__label" for="cpq-name-{{ cpq_uid }}">Name <span class="cpq__opt">(optional)</span></label>
             <input class="cpq__input" id="cpq-name-{{ cpq_uid }}" type="text" name="contact[name]" autocomplete="name" placeholder="Your name" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
@@ -156,21 +145,35 @@
         {%- comment -%} Step 2 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="2" hidden>
           <legend class="cpq__step-title">Attar or perfume oil</legend>
-          <p class="cpq__step-sub">Choose the format you prefer.</p>
-          <div class="cpq__choices cpq__choices--2" data-cpq-group="fragranceType" data-cpq-required>
-            {%- assign cpq_types = 'Attar|attar,Perfume oil|perfume-oil' | split: ',' -%}
+          <p class="cpq__step-sub">Pick the type you want.</p>
+          <div class="cpq__choices cpq__choices--2 cpq__choices--visual" data-cpq-group="fragranceType" data-cpq-required>
+            {%- assign cpq_types = 'Attar|attar|Planet/shukra_attar.webp,Perfume|perfume-oil|Perfume/Perfume_100ml.webp' | split: ',' -%}
             {%- for cpq_t in cpq_types -%}
               {%- assign cpq_tp = cpq_t | split: '|' -%}
-              <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_tp[1] }}" aria-pressed="false">{{ cpq_tp[0] }}</button>
+              <button type="button" class="cpq__choice cpq__choice--visual" data-cpq-value="{{ cpq_tp[1] }}" aria-pressed="false">
+                {%- if cpq_tp[2] != blank -%}
+                  <span class="cpq__choice-media">
+                    <img
+                      src="{{ cpq_tp[2] | asset_url }}"
+                      alt="{{ cpq_tp[0] | escape }}"
+                      width="280"
+                      height="280"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  </span>
+                {%- endif -%}
+                <span class="cpq__choice-label">{{ cpq_tp[0] }}</span>
+              </button>
             {%- endfor -%}
           </div>
         </fieldset>
 
         {%- comment -%} Step 3 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="3" hidden>
-          <legend class="cpq__step-title">When you wear it</legend>
-          <p class="cpq__step-sub">Pick what fits your routine.</p>
-          <div class="cpq__choices cpq__choices--3" data-cpq-group="purpose" data-cpq-required>
+          <legend class="cpq__step-title">Usage time</legend>
+          <p class="cpq__step-sub">When will you wear this fragrance?</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="purpose" data-cpq-required>
             {%- assign cpq_purposes = 'Everyday|daily,Work|office,Sports|sports,Meditation|meditation,Stress relief|stress,Spiritual|spiritual,Gift|gifting,Special event|special' | split: ',' -%}
             {%- for cpq_p in cpq_purposes -%}
               {%- assign cpq_pp = cpq_p | split: '|' -%}
@@ -181,9 +184,9 @@
 
         {%- comment -%} Step 4 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="4" hidden>
-          <legend class="cpq__step-title">Your mood</legend>
-          <p class="cpq__step-sub">How should your fragrance feel?</p>
-          <div class="cpq__choices cpq__choices--2" data-cpq-group="mood" data-cpq-required>
+          <legend class="cpq__step-title">Mood</legend>
+          <p class="cpq__step-sub">How should it feel on you?</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="mood" data-cpq-required>
             {%- assign cpq_moods = 'Calm|calm,Happy|happy,Fresh|fresh,Warm|warm,Romantic|romantic,Bold|bold,Relaxed|relaxed,Confident|confident' | split: ',' -%}
             {%- for cpq_m in cpq_moods -%}
               {%- assign cpq_mp = cpq_m | split: '|' -%}
@@ -194,22 +197,36 @@
 
         {%- comment -%} Step 5 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="5" hidden>
-          <legend class="cpq__step-title">Signature notes</legend>
-          <p class="cpq__step-sub">Choose the fragrance families that feel instinctively right — floral, woody, oud, spice, and more.</p>
-          <div class="cpq__choices cpq__choices--3" data-cpq-group="families" data-cpq-required data-cpq-multi>
-            {%- assign cpq_families = 'Rose|rose,Lavender|lavender,Sandalwood|sandalwood,Jasmine|jasmine,Mogra|mogra,Oud|oud,Vetiver|vetiver,Musk|musk,Amber|amber,Saffron|saffron,Citrus|citrus,Floral|floral,Woody|woody,Herbal|herbal' | split: ',' -%}
+          <legend class="cpq__step-title">Notes</legend>
+          <p class="cpq__step-sub">Tap the notes you like. You can pick more than one.</p>
+          <div class="cpq__choices cpq__choices--3 cpq__choices--visual cpq__choices--notes" data-cpq-group="families" data-cpq-required data-cpq-multi>
+            {%- assign cpq_families = 'Rose|rose|Notes/Rose.webp,Lavender|lavender|Notes/lavender.webp,Sandalwood|sandalwood|Notes/cedarwood.webp,Jasmine|jasmine|Notes/jasmine.webp,Mogra|mogra|Notes/motia.webp,Oud|oud|Notes/oud.webp,Vetiver|vetiver|Notes/vetiver.webp,Musk|musk|Notes/musk.webp,Amber|amber|Notes/amber.webp,Saffron|saffron|Notes/Saffron.webp,Citrus|citrus|Notes/citrus.webp,Floral|floral|Notes/Gardenia.webp,Woody|woody|Notes/wood.webp,Herbal|herbal|Notes/green_herbal.webp' | split: ',' -%}
             {%- for cpq_f in cpq_families -%}
               {%- assign cpq_fp = cpq_f | split: '|' -%}
-              <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_fp[1] }}" aria-pressed="false">{{ cpq_fp[0] }}</button>
+              <button type="button" class="cpq__choice cpq__choice--visual cpq__choice--note" data-cpq-value="{{ cpq_fp[1] }}" aria-pressed="false">
+                {%- if cpq_fp[2] != blank -%}
+                  <span class="cpq__choice-media">
+                    <img
+                      src="{{ cpq_fp[2] | asset_url }}"
+                      alt="{{ cpq_fp[0] | escape }}"
+                      width="120"
+                      height="120"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  </span>
+                {%- endif -%}
+                <span class="cpq__choice-label">{{ cpq_fp[0] }}</span>
+              </button>
             {%- endfor -%}
           </div>
-          <p class="cpq__hint">Select one or more families.</p>
+          <p class="cpq__hint">Pick at least one note.</p>
         </fieldset>
 
         {%- comment -%} Step 6 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="6" hidden>
           <legend class="cpq__step-title">Cosmic alignment</legend>
-          <p class="cpq__step-sub">Optional — share zodiac, planet, nakshatra, and birth details to refine your consultation.</p>
+          <p class="cpq__step-sub">Optional. Skip anything you do not know.</p>
           <div class="cpq__astro-grid">
             <div class="cpq__field">
               <label class="cpq__label" for="cpq-zodiac-{{ cpq_uid }}">Zodiac sign</label>
@@ -292,7 +309,7 @@
         {%- comment -%} Step 7 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="7" hidden>
           <legend class="cpq__step-title">Strength</legend>
-          <p class="cpq__step-sub">Light, medium, or strong on skin?</p>
+          <p class="cpq__step-sub">How strong should it be on skin?</p>
           <div class="cpq__pills" data-cpq-group="intensity" data-cpq-required>
             <button type="button" class="cpq__pill" data-cpq-value="light" aria-pressed="false">Light</button>
             <button type="button" class="cpq__pill" data-cpq-value="medium" aria-pressed="false">Medium</button>
@@ -306,8 +323,8 @@
       <div class="cpq__nav" data-cpq-nav>
         <button type="button" class="cpq__btn cpq__btn--ghost" data-cpq-back hidden>Back</button>
         <button type="button" class="cpq__btn cpq__btn--primary" data-cpq-next>Continue</button>
-        <button type="submit" class="cpq__btn cpq__btn--primary" data-cpq-submit hidden>
-          {{ section.settings.contact_submit_label | default: 'Submit' }}
+        <button type="submit" class="cpq__btn cpq__btn--primary cpq__btn--submit" data-cpq-submit hidden>
+          {{ section.settings.contact_submit_label | default: 'Send my preferences' }}
         </button>
       </div>
     </div>
@@ -317,20 +334,21 @@
     {%- endform -%}
 
     {%- unless cpq_form_posted -%}
+    <div class="cpq__below">
     {%- if section.settings.show_how -%}
       <section class="cpq__how" aria-labelledby="cpq-how-{{ cpq_uid }}">
-        <h2 class="cpq__how-title" id="cpq-how-{{ cpq_uid }}">{{ section.settings.how_title | default: 'Your consultation journey' }}</h2>
+        <h2 class="cpq__how-title" id="cpq-how-{{ cpq_uid }}">{{ section.settings.how_title | default: 'How it works' }}</h2>
         <ol class="cpq__how-list">
-          <li><strong>Share your preferences</strong> — mood, intention, signature notes, and optional birth details for zodiac or nakshatra attars.</li>
-          <li><strong>Our specialists review</strong> your preferences with care and intention.</li>
-          <li><strong>We contact you</strong> with curated attar recommendations tailored to your profile.</li>
+          <li>Answer a few short questions about your taste and routine.</li>
+          <li>Our fragrance team reviews your answers.</li>
+          <li>We email you attar and perfume oil suggestions from Anand Rasa.</li>
         </ol>
       </section>
     {%- endif -%}
 
     {%- if section.settings.show_faq -%}
       <section class="cpq__faq" aria-labelledby="cpq-faq-{{ cpq_uid }}">
-        <h2 class="cpq__faq-title" id="cpq-faq-{{ cpq_uid }}">{{ section.settings.faq_title | default: 'Attar consultation — frequently asked' }}</h2>
+        <h2 class="cpq__faq-title" id="cpq-faq-{{ cpq_uid }}">{{ section.settings.faq_title | default: 'Common questions' }}</h2>
         <div class="cpq__faq-list">
           {%- for block in section.blocks -%}
             {%- if block.type == 'faq' -%}
@@ -363,27 +381,12 @@
         </div>
       </section>
     {%- endif -%}
+    </div>
     {%- endunless -%}
   </div>
 </section>
 
 <style>
-  #cpq-{{ cpq_uid }} {
-    --cpq-deep: #1a0a2e;
-    --cpq-ink: #1e2023;
-    --cpq-muted: #6b7280;
-    --cpq-surface: #faf7f2;
-    --cpq-card: #fffdf8;
-    --cpq-gold: #b8860b;
-    --cpq-gold-mid: #d4a843;
-    --cpq-gold-light: #f5e6c0;
-    --cpq-border: rgba(184, 134, 11, 0.18);
-    position: relative;
-    overflow: hidden;
-    background: var(--cpq-surface);
-    color: var(--cpq-ink);
-    font-family: var(--font-body-family, system-ui, sans-serif);
-  }
   #cpq-{{ cpq_uid }}.section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -393,541 +396,6 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
-  }
-  #cpq-{{ cpq_uid }} .cpq__cosmos {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-  #cpq-{{ cpq_uid }} .cpq__star {
-    position: absolute;
-    left: var(--cpq-sx);
-    top: var(--cpq-sy);
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: var(--cpq-gold);
-    opacity: 0.2;
-    animation: cpqTwinkle var(--cpq-sd) ease-in-out infinite alternate;
-  }
-  @keyframes cpqTwinkle {
-    from { opacity: 0.08; transform: scale(0.8); }
-    to { opacity: 0.35; transform: scale(1.2); }
-  }
-  #cpq-{{ cpq_uid }} .cpq__shell {
-    position: relative;
-    z-index: 1;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 24px);
-  }
-  #cpq-{{ cpq_uid }}.cpq--success .cpq__shell {
-    max-width: 640px;
-    min-height: min(72vh, 720px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #cpq-{{ cpq_uid }} .cpq__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--cpq-border);
-    background: rgba(255, 253, 248, 0.8);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--cpq-gold);
-    margin-bottom: 14px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__title {
-    margin: 0 0 10px;
-    font-family: var(--font-heading-family, Georgia, serif);
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 400;
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-  }
-  #cpq-{{ cpq_uid }} .cpq__lead {
-    margin: 0 0 20px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--cpq-muted);
-    max-width: 58ch;
-  }
-  #cpq-{{ cpq_uid }} .cpq__progress { margin-bottom: 18px; }
-  #cpq-{{ cpq_uid }} .cpq__progress-track {
-    height: 3px;
-    background: rgba(184, 134, 11, 0.12);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  #cpq-{{ cpq_uid }} .cpq__progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--cpq-gold), var(--cpq-gold-mid));
-    transition: width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  #cpq-{{ cpq_uid }} .cpq__progress-label {
-    margin: 8px 0 0;
-    font-size: 12px;
-    color: var(--cpq-muted);
-    text-align: right;
-    letter-spacing: 0.02em;
-  }
-  #cpq-{{ cpq_uid }} .cpq__progress-total { opacity: 0.72; }
-  #cpq-{{ cpq_uid }} .cpq__trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 24px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__trust-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--cpq-border);
-    background: linear-gradient(180deg, #fffdf8 0%, rgba(255, 253, 248, 0.72) 100%);
-    color: var(--cpq-ink);
-    box-shadow: 0 4px 14px rgba(26, 10, 46, 0.04);
-  }
-  #cpq-{{ cpq_uid }} .cpq__trust-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--cpq-gold);
-    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.14);
-    flex-shrink: 0;
-  }
-  #cpq-{{ cpq_uid }} .cpq__form {
-    background: linear-gradient(165deg, rgba(255, 253, 248, 0.96) 0%, rgba(250, 247, 242, 0.88) 100%);
-    border: 1px solid var(--cpq-border);
-    border-radius: 20px;
-    padding: clamp(20px, 4vw, 32px);
-    box-shadow: 0 20px 56px rgba(26, 10, 46, 0.07), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
-    backdrop-filter: blur(10px);
-  }
-  #cpq-{{ cpq_uid }} .cpq__steps-viewport {
-    position: relative;
-    overflow: hidden;
-    min-height: min(52vh, 420px);
-  }
-  #cpq-{{ cpq_uid }} .cpq__steps { position: relative; }
-  #cpq-{{ cpq_uid }} .cpq__step {
-    border: 0;
-    margin: 0;
-    padding: 0;
-    min-width: 0;
-  }
-  #cpq-{{ cpq_uid }} .cpq__step[hidden] { display: none !important; }
-  #cpq-{{ cpq_uid }} .cpq__step.is-active.cpq__step--enter-right {
-    animation: cpqStepInRight 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  #cpq-{{ cpq_uid }} .cpq__step.is-active.cpq__step--enter-left {
-    animation: cpqStepInLeft 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  #cpq-{{ cpq_uid }} .cpq__step.is-active .cpq__choice,
-  #cpq-{{ cpq_uid }} .cpq__step.is-active .cpq__pill {
-    animation: cpqChoiceIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--cpq-choice-i, 0) * 0.04s + 0.06s);
-  }
-  @keyframes cpqStepInRight {
-    from { opacity: 0; transform: translate3d(18px, 0, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
-  }
-  @keyframes cpqStepInLeft {
-    from { opacity: 0; transform: translate3d(-18px, 0, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
-  }
-  @keyframes cpqChoiceIn {
-    from { opacity: 0; transform: translate3d(0, 8px, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
-  }
-  @keyframes cpqFadeIn {
-    from { opacity: 0; transform: translate3d(0, 10px, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
-  }
-  #cpq-{{ cpq_uid }} .cpq__step-title {
-    margin: 0 0 6px;
-    font-family: var(--font-heading-family, Georgia, serif);
-    font-size: clamp(20px, 2.5vw, 26px);
-    font-weight: 400;
-  }
-  #cpq-{{ cpq_uid }} .cpq__step-sub {
-    margin: 0 0 16px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--cpq-muted);
-  }
-  #cpq-{{ cpq_uid }} .cpq__field { margin-bottom: 14px; }
-  #cpq-{{ cpq_uid }} .cpq__field--full { grid-column: 1 / -1; }
-  #cpq-{{ cpq_uid }} .cpq__label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
-  #cpq-{{ cpq_uid }} .cpq__opt { color: var(--cpq-muted); font-weight: 400; }
-  #cpq-{{ cpq_uid }} .cpq__input,
-  #cpq-{{ cpq_uid }} .cpq__select {
-    width: 100%;
-    min-height: 46px;
-    border-radius: 10px;
-    border: 1px solid rgba(30, 32, 35, 0.14);
-    background: #fff;
-    padding: 10px 14px;
-    font: inherit;
-    color: var(--cpq-ink);
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  #cpq-{{ cpq_uid }} .cpq__input:focus-visible,
-  #cpq-{{ cpq_uid }} .cpq__select:focus-visible {
-    outline: 2px solid var(--cpq-gold);
-    outline-offset: 2px;
-    border-color: var(--cpq-gold-mid);
-  }
-  #cpq-{{ cpq_uid }} .cpq__choices {
-    display: grid;
-    gap: 10px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__choices--2 { grid-template-columns: repeat(2, 1fr); }
-  #cpq-{{ cpq_uid }} .cpq__choices--3 { grid-template-columns: repeat(3, 1fr); }
-  @media (max-width: 640px) {
-    #cpq-{{ cpq_uid }} .cpq__choices--3 { grid-template-columns: repeat(2, 1fr); }
-    #cpq-{{ cpq_uid }} .cpq__choices--2 { grid-template-columns: 1fr; }
-  }
-  #cpq-{{ cpq_uid }} .cpq__choice,
-  #cpq-{{ cpq_uid }} .cpq__pill {
-    min-height: 48px;
-    border-radius: 14px;
-    border: 1px solid var(--cpq-border);
-    background: #fff;
-    padding: 14px 16px;
-    font: inherit;
-    font-size: 14px;
-    line-height: 1.35;
-    text-align: left;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: border-color 0.22s, background 0.22s, transform 0.18s, box-shadow 0.22s;
-    position: relative;
-    will-change: transform;
-  }
-  #cpq-{{ cpq_uid }} .cpq__choice--tall { min-height: 52px; }
-  #cpq-{{ cpq_uid }} .cpq__choice:hover,
-  #cpq-{{ cpq_uid }} .cpq__pill:hover {
-    border-color: rgba(184, 134, 11, 0.45);
-    transform: translateY(-1px);
-  }
-  #cpq-{{ cpq_uid }} .cpq__choice[aria-pressed="true"],
-  #cpq-{{ cpq_uid }} .cpq__pill[aria-pressed="true"] {
-    border-color: var(--cpq-gold);
-    background: #fffbf0;
-    box-shadow: 0 8px 24px rgba(184, 134, 11, 0.12);
-  }
-  #cpq-{{ cpq_uid }} .cpq__choice[aria-pressed="true"]::after,
-  #cpq-{{ cpq_uid }} .cpq__pill[aria-pressed="true"]::after {
-    content: "✦";
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-size: 11px;
-    color: var(--cpq-gold);
-  }
-  #cpq-{{ cpq_uid }} .cpq__pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__pill { flex: 1 1 auto; text-align: center; min-width: 88px; }
-  #cpq-{{ cpq_uid }} .cpq__astro-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  @media (max-width: 560px) {
-    #cpq-{{ cpq_uid }} .cpq__astro-grid { grid-template-columns: 1fr; }
-  }
-  #cpq-{{ cpq_uid }} .cpq__hint {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--cpq-muted);
-  }
-  #cpq-{{ cpq_uid }} .cpq__nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-top: 20px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__nav [data-cpq-next][hidden],
-  #cpq-{{ cpq_uid }} .cpq__nav [data-cpq-submit][hidden] {
-    display: none !important;
-  }
-  #cpq-{{ cpq_uid }} .cpq__nav:not(.is-final) [data-cpq-submit] {
-    display: none !important;
-  }
-  #cpq-{{ cpq_uid }} .cpq__nav.is-final [data-cpq-next] {
-    display: none !important;
-  }
-  #cpq-{{ cpq_uid }} .cpq__nav.is-final [data-cpq-submit] {
-    display: inline-flex !important;
-    margin-left: auto;
-  }
-  #cpq-{{ cpq_uid }} .cpq__btn {
-    min-height: 46px;
-    padding: 0 20px;
-    border-radius: 999px;
-    border: 1px solid transparent;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    touch-action: manipulation;
-    transition: transform 0.15s, background 0.2s, opacity 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #cpq-{{ cpq_uid }} .cpq__btn--primary {
-    background: var(--cpq-gold);
-    color: #fff;
-    margin-left: auto;
-  }
-  #cpq-{{ cpq_uid }} .cpq__btn--primary:hover { background: var(--cpq-gold-mid); transform: translateY(-1px); }
-  #cpq-{{ cpq_uid }} .cpq__btn:focus-visible {
-    outline: 2px solid var(--cpq-gold);
-    outline-offset: 3px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__btn--ghost {
-    background: transparent;
-    border-color: var(--cpq-border);
-    color: var(--cpq-ink);
-  }
-  #cpq-{{ cpq_uid }} .cpq__btn.is-shake { animation: cpqShake 0.32s ease; }
-  @keyframes cpqShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-4px); }
-    75% { transform: translateX(4px); }
-  }
-  #cpq-{{ cpq_uid }} .cpq__req { color: var(--cpq-gold); }
-  #cpq-{{ cpq_uid }} .cpq__shopify-form { margin: 0; }
-  #cpq-{{ cpq_uid }} .cpq__body-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  #cpq-{{ cpq_uid }} .cpq__form-errors {
-    margin-bottom: 16px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(180, 40, 40, 0.22);
-    background: rgba(180, 40, 40, 0.05);
-    color: #8b2020;
-    font-size: 13px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__form-errors-title { margin: 0 0 8px; font-weight: 600; }
-  #cpq-{{ cpq_uid }} .cpq__form-errors .form__message { margin: 0; font-size: 13px; }
-  #cpq-{{ cpq_uid }} .cpq__ambient {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  #cpq-{{ cpq_uid }} .cpq__glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(72px);
-    opacity: 0.45;
-    animation: cpqGlowPulse 8s ease-in-out infinite alternate;
-  }
-  #cpq-{{ cpq_uid }} .cpq__glow--1 {
-    width: min(420px, 70vw);
-    height: min(420px, 70vw);
-    top: -12%;
-    right: -8%;
-    background: radial-gradient(circle, rgba(212, 168, 67, 0.35) 0%, transparent 70%);
-  }
-  #cpq-{{ cpq_uid }} .cpq__glow--2 {
-    width: min(360px, 60vw);
-    height: min(360px, 60vw);
-    bottom: -10%;
-    left: -10%;
-    background: radial-gradient(circle, rgba(44, 26, 74, 0.28) 0%, transparent 72%);
-    animation-delay: -3s;
-  }
-  #cpq-{{ cpq_uid }} .cpq__grain {
-    position: absolute;
-    inset: 0;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  @keyframes cpqGlowPulse {
-    from { opacity: 0.32; transform: scale(0.96); }
-    to { opacity: 0.5; transform: scale(1.04); }
-  }
-  #cpq-{{ cpq_uid }} .cpq__success {
-    position: relative;
-    z-index: 1;
-    max-width: 520px;
-    margin: clamp(32px, 8vh, 72px) auto;
-    padding: clamp(36px, 6vw, 52px) clamp(24px, 5vw, 40px);
-    text-align: center;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.55);
-    background: linear-gradient(165deg, rgba(255, 253, 248, 0.88) 0%, rgba(250, 247, 242, 0.72) 100%);
-    backdrop-filter: blur(20px) saturate(1.2);
-    box-shadow: 0 28px 80px rgba(26, 10, 46, 0.1), 0 1px 0 rgba(255, 255, 255, 0.65) inset;
-    animation: cpqSuccessIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  @keyframes cpqSuccessIn {
-    from { opacity: 0; transform: translate3d(0, 20px, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-icon {
-    width: 72px;
-    height: 72px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(145deg, rgba(184, 134, 11, 0.14) 0%, rgba(255, 253, 248, 0.9) 100%);
-    box-shadow: 0 0 0 1px rgba(184, 134, 11, 0.2), 0 12px 32px rgba(184, 134, 11, 0.12);
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-check { width: 52px; height: 52px; }
-  #cpq-{{ cpq_uid }} .cpq__success-circle {
-    stroke: var(--cpq-gold);
-    stroke-width: 2;
-    stroke-dasharray: 151;
-    stroke-dashoffset: 151;
-    animation: cpqCircleDraw 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-path {
-    stroke: var(--cpq-gold);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    animation: cpqCheckDraw 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.65s forwards;
-  }
-  @keyframes cpqCircleDraw { to { stroke-dashoffset: 0; } }
-  @keyframes cpqCheckDraw { to { stroke-dashoffset: 0; } }
-  #cpq-{{ cpq_uid }} .cpq__success-eyebrow {
-    margin: 0 0 12px;
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--cpq-gold);
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-title {
-    margin: 0 0 10px;
-    font-family: var(--font-heading-family, Georgia, serif);
-    font-size: clamp(32px, 5vw, 44px);
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--cpq-ink);
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-sub {
-    margin: 0 0 20px;
-    font-size: clamp(15px, 2vw, 17px);
-    line-height: 1.5;
-    color: var(--cpq-ink);
-    font-weight: 500;
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-divider {
-    width: 48px;
-    height: 1px;
-    margin: 0 auto 20px;
-    background: linear-gradient(90deg, transparent, var(--cpq-gold-mid), transparent);
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-body {
-    margin: 0 0 16px;
-    font-size: 14px;
-    line-height: 1.75;
-    color: var(--cpq-muted);
-    max-width: 42ch;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-foot {
-    margin: 0 0 24px;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    color: var(--cpq-gold);
-  }
-  #cpq-{{ cpq_uid }} .cpq__success-cta { margin-top: 4px; }
-  #cpq-{{ cpq_uid }} .cpq__btn--submit { min-width: min(100%, 280px); margin-left: auto; }
-  #cpq-{{ cpq_uid }}.cpq--success .cpq__how,
-  #cpq-{{ cpq_uid }}.cpq--success .cpq__faq { display: none; }
-  #cpq-{{ cpq_uid }} .cpq__how,
-  #cpq-{{ cpq_uid }} .cpq__faq {
-    margin-top: 36px;
-    padding-top: 28px;
-    border-top: 1px solid var(--cpq-border);
-  }
-  #cpq-{{ cpq_uid }} .cpq__how-title,
-  #cpq-{{ cpq_uid }} .cpq__faq-title {
-    margin: 0 0 14px;
-    font-family: var(--font-heading-family, Georgia, serif);
-    font-size: 22px;
-    font-weight: 400;
-  }
-  #cpq-{{ cpq_uid }} .cpq__how-list {
-    margin: 0;
-    padding-left: 18px;
-    color: var(--cpq-muted);
-    font-size: 14px;
-    line-height: 1.7;
-  }
-  #cpq-{{ cpq_uid }} .cpq__faq-item { border-bottom: 1px solid rgba(30, 32, 35, 0.1); }
-  #cpq-{{ cpq_uid }} .cpq__faq-q {
-    cursor: pointer;
-    list-style: none;
-    padding: 14px 0;
-    font-weight: 500;
-    font-size: 14px;
-  }
-  #cpq-{{ cpq_uid }} .cpq__faq-q::-webkit-details-marker { display: none; }
-  #cpq-{{ cpq_uid }} .cpq__faq-a {
-    padding: 0 0 14px;
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--cpq-muted);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #cpq-{{ cpq_uid }} .cpq__step,
-    #cpq-{{ cpq_uid }} .cpq__choice,
-    #cpq-{{ cpq_uid }} .cpq__pill,
-    #cpq-{{ cpq_uid }} .cpq__progress-fill,
-    #cpq-{{ cpq_uid }} .cpq__star,
-    #cpq-{{ cpq_uid }} .cpq__glow,
-    #cpq-{{ cpq_uid }} .cpq__success,
-    #cpq-{{ cpq_uid }} .cpq__success-circle,
-    #cpq-{{ cpq_uid }} .cpq__success-path { animation: none !important; }
-    #cpq-{{ cpq_uid }} .cpq__success-circle,
-    #cpq-{{ cpq_uid }} .cpq__success-path { stroke-dashoffset: 0; }
-    #cpq-{{ cpq_uid }} .cpq__choice,
-    #cpq-{{ cpq_uid }} .cpq__btn { transition: none !important; }
   }
 </style>
 
@@ -973,7 +441,7 @@
     var pct = Math.round((current / total) * 1000) / 10;
     if (progressFill) progressFill.style.width = pct + '%';
     if (progressBar) progressBar.setAttribute('aria-valuenow', String(current));
-    if (stepLabel) stepLabel.textContent = 'Step ' + current;
+    if (stepLabel) stepLabel.textContent = 'Step ' + current + ' of ' + total;
     if (btnBack) btnBack.hidden = current <= 1;
     var isFinal = current >= total;
     if (btnNext) btnNext.hidden = isFinal;
@@ -1005,8 +473,20 @@
       }
     });
     current = n;
+    root.setAttribute('data-cpq-step', String(n));
     updateProgress();
     if (stepsViewport) stepsViewport.scrollTop = 0;
+    if (!prefersReducedMotion && root.getBoundingClientRect) {
+      var top = root.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    }
+    var activeStep = steps.find(function (s) { return parseInt(s.getAttribute('data-cpq-step'), 10) === n; });
+    if (activeStep) {
+      var stepTitle = activeStep.querySelector('.cpq__step-title');
+      if (stepTitle && progressBar) {
+        progressBar.setAttribute('aria-valuetext', stepTitle.textContent.trim() + ', step ' + n + ' of ' + total);
+      }
+    }
   }
 
   function getGroupEl(stepNum) {
@@ -1029,10 +509,16 @@
 
   function humanizeValue(val) {
     if (!val) return '';
-    if (Array.isArray(val)) {
-      return val.map(function (v) { return String(v).replace(/-/g, ' '); }).join(', ');
+    var labelMap = { 'perfume-oil': 'Perfume oil', 'attar': 'Attar' };
+    function one(v) {
+      var s = String(v);
+      if (labelMap[s]) return labelMap[s];
+      return s.replace(/-/g, ' ');
     }
-    return String(val).replace(/-/g, ' ');
+    if (Array.isArray(val)) {
+      return val.map(one).join(', ');
+    }
+    return one(val);
   }
 
   function buildContactBody() {
@@ -1277,6 +763,39 @@
         ]
       }
     </script>
+  {%- else -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is this personalised attar consultation?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "This consultation captures your fragrance preferences and optional cosmic details. Our team reviews your submission and follows up with personalised attar guidance from Anand Rasa."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are these alcohol-free natural perfume oils?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Our attars are concentrated, alcohol-free perfume oils designed for intimate, long-lasting wear on skin."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use zodiac or birth details?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Optional zodiac, planet, nakshatra, date, time, and place of birth help surface zodiac attars, planet attars, and nakshatra attars that resonate with your profile."
+            }
+          }
+        ]
+      }
+    </script>
   {%- endif -%}
 {%- endif -%}
 
@@ -1296,13 +815,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Personalised fragrance consultation"
+      "default": "Find your fragrance"
     },
     {
       "type": "textarea",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Share your preferences with our fragrance specialists for a curated attar consultation — crafted around your taste, mood, and fragrance profile."
+      "default": "Answer a few simple questions. Our team will suggest attars and perfume oils that suit you."
     },
     {
       "type": "url",
@@ -1317,7 +836,7 @@
       "type": "text",
       "id": "contact_submit_label",
       "label": "Submit button label",
-      "default": "Submit"
+      "default": "Send my preferences"
     },
     {
       "type": "text",
@@ -1381,7 +900,7 @@
       "step": 4,
       "unit": "px",
       "label": "Padding top",
-      "default": 36
+      "default": 12
     },
     {
       "type": "range",

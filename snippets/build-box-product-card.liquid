@@ -2,8 +2,10 @@
   Luxury fragrance card — Build Your Attar Box
 
   @param product {Product}
+  @param size_label {String} optional, e.g. "6ml" or "20ml"
 {%- endcomment -%}
 {%- liquid
+  assign byb_size_label = size_label | default: '6ml'
   assign byb_variant = product.selected_or_first_available_variant
   assign byb_available = byb_variant.available
   assign byb_price_cents = byb_variant.price
@@ -65,14 +67,14 @@
           class="byb-card__img"
           src="{{ byb_img }}"
           {% if byb_img_srcset != blank %}srcset="{{ byb_img_srcset }}" sizes="(min-width: 1100px) 300px, (min-width: 640px) 46vw, 92vw"{% endif %}
-          alt="{{ product.title | escape }} — 6ml luxury attar"
+          alt="{{ product.title | escape }} — {{ byb_size_label }} luxury fragrance"
           width="480"
           height="480"
           loading="lazy"
           decoding="async"
         >
       {%- endif -%}
-      <span class="byb-card__size">6ml</span>
+      <span class="byb-card__size">{{ byb_size_label }}</span>
     </div>
   </a>
 

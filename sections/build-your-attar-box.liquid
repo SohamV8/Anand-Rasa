@@ -30,6 +30,31 @@
   assign byb_msg_added = section.settings.msg_added | default: 'Your ritual box was added to cart.'
   assign byb_plan_3_cents = section.settings.plan_3_bundle_cents | default: 120000
   assign byb_plan_5_cents = section.settings.plan_5_bundle_cents | default: 240000
+
+  comment
+    Configurable plans. Plan A is required; Plan B is optional (hidden when its
+    size is 0/blank). Defaults reproduce the original 3 + 5 dual-plan page.
+  endcomment
+  assign byb_size_label = section.settings.size_label | default: '6ml'
+
+  assign byb_plan_a_size = section.settings.plan_a_size | default: 3
+  assign byb_plan_a_name = section.settings.plan_a_name | default: 'Choose Any 3'
+  assign byb_plan_a_detail = section.settings.plan_a_detail | default: '3 × 6ml luxury attars'
+  assign byb_plan_a_display = section.settings.plan_a_price_display | default: '₹1200'
+  assign byb_plan_a_label = section.settings.plan_a_dock_label | default: byb_plan_3_price
+  assign byb_plan_a_cents = section.settings.plan_a_bundle_cents | default: byb_plan_3_cents
+
+  assign byb_plan_b_size = section.settings.plan_b_size | default: 5
+  assign byb_plan_b_name = section.settings.plan_b_name | default: 'Choose Any 5'
+  assign byb_plan_b_detail = section.settings.plan_b_detail | default: '5 × 6ml luxury attars'
+  assign byb_plan_b_display = section.settings.plan_b_price_display | default: '₹2400'
+  assign byb_plan_b_label = section.settings.plan_b_dock_label | default: byb_plan_5_price
+  assign byb_plan_b_cents = section.settings.plan_b_bundle_cents | default: byb_plan_5_cents
+
+  assign byb_plan_b_on = false
+  if byb_plan_b_size and byb_plan_b_size > 0
+    assign byb_plan_b_on = true
+  endif
 -%}
 
 {{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
@@ -38,16 +63,16 @@
   <script type="application/json" data-byb-config>
     {
       "plans": {
-        "3": {
-          "bundleCents": {{ byb_plan_3_cents }},
-          "label": {{ byb_plan_3_price | json }},
-          "display": {{ section.settings.plan_3_price_display | default: '₹1200' | json }}
-        },
-        "5": {
-          "bundleCents": {{ byb_plan_5_cents }},
-          "label": {{ byb_plan_5_price | json }},
-          "display": {{ section.settings.plan_5_price_display | default: '₹2400' | json }}
-        }
+        "{{ byb_plan_a_size }}": {
+          "bundleCents": {{ byb_plan_a_cents }},
+          "label": {{ byb_plan_a_label | json }},
+          "display": {{ byb_plan_a_display | json }}
+        }{% if byb_plan_b_on %},
+        "{{ byb_plan_b_size }}": {
+          "bundleCents": {{ byb_plan_b_cents }},
+          "label": {{ byb_plan_b_label | json }},
+          "display": {{ byb_plan_b_display | json }}
+        }{% endif %}
       },
       "ctaReady": {{ byb_cta_ready | json }},
       "msgComplete": {{ byb_complete_msg | json }},
@@ -95,37 +120,39 @@
     <div class="byb-plans__inner">
       <h2 id="byb-plans-heading" class="byb-plans__title">{{ byb_plans_title }}</h2>
       <p class="byb-plans__sub">{{ byb_plans_sub }}</p>
-      <div class="byb-plans__grid" role="group" aria-label="Ritual box size">
+      <div class="byb-plans__grid{% unless byb_plan_b_on %} byb-plans__grid--single{% endunless %}" role="group" aria-label="Ritual box size">
         <button
           type="button"
           class="byb-plan"
           data-byb-plan
-          data-plan-size="3"
-          data-plan-price="{{ byb_plan_3_price | escape }}"
+          data-plan-size="{{ byb_plan_a_size }}"
+          data-plan-price="{{ byb_plan_a_label | escape }}"
           aria-pressed="false"
         >
           <span class="byb-plan__badge" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
-          <h3 class="byb-plan__name">Choose Any 3</h3>
-          <p class="byb-plan__detail">3 × 6ml luxury attars</p>
-          <p class="byb-plan__price">{{ section.settings.plan_3_price_display | default: '₹1200' }}</p>
+          <h3 class="byb-plan__name">{{ byb_plan_a_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_plan_a_detail }}</p>
+          <p class="byb-plan__price">{{ byb_plan_a_display }}</p>
         </button>
+        {%- if byb_plan_b_on -%}
         <button
           type="button"
           class="byb-plan"
           data-byb-plan
-          data-plan-size="5"
-          data-plan-price="{{ byb_plan_5_price | escape }}"
+          data-plan-size="{{ byb_plan_b_size }}"
+          data-plan-price="{{ byb_plan_b_label | escape }}"
           aria-pressed="false"
         >
           <span class="byb-plan__badge" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
-          <h3 class="byb-plan__name">Choose Any 5</h3>
-          <p class="byb-plan__detail">5 × 6ml luxury attars</p>
-          <p class="byb-plan__price">{{ section.settings.plan_5_price_display | default: '₹2400' }}</p>
+          <h3 class="byb-plan__name">{{ byb_plan_b_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_plan_b_detail }}</p>
+          <p class="byb-plan__price">{{ byb_plan_b_display }}</p>
         </button>
+        {%- endif -%}
       </div>
     </div>
   </section>
@@ -144,7 +171,7 @@
     </div>
 
     {%- if byb_collection != blank and byb_collection.products_count > 0 -%}
-      {% render 'build-box-products-grid', collection: byb_collection %}
+      {% render 'build-box-products-grid', collection: byb_collection, size_label: byb_size_label %}
     {%- else -%}
       <div class="byb-empty">
         <p>
@@ -277,7 +304,94 @@
     },
     {
       "type": "header",
+      "content": "Ritual size plans (advanced)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Configure up to two ritual sizes. Set Plan B size to 0 for a single-plan page (e.g. a dedicated “Pick any 4” page)."
+    },
+    {
+      "type": "number",
+      "id": "plan_a_size",
+      "label": "Plan A — how many to pick",
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "plan_a_name",
+      "label": "Plan A — card title",
+      "default": "Choose Any 3"
+    },
+    {
+      "type": "text",
+      "id": "plan_a_detail",
+      "label": "Plan A — card detail",
+      "default": "3 × 6ml luxury attars"
+    },
+    {
+      "type": "text",
+      "id": "plan_a_price_display",
+      "label": "Plan A — display price",
+      "default": "₹1200"
+    },
+    {
+      "type": "text",
+      "id": "plan_a_dock_label",
+      "label": "Plan A — dock label",
+      "default": "₹1200 Ritual Box"
+    },
+    {
+      "type": "number",
+      "id": "plan_a_bundle_cents",
+      "label": "Plan A — bundle price (cents)",
+      "default": 120000
+    },
+    {
+      "type": "number",
+      "id": "plan_b_size",
+      "label": "Plan B — how many to pick (0 = hide)",
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "plan_b_name",
+      "label": "Plan B — card title",
+      "default": "Choose Any 5"
+    },
+    {
+      "type": "text",
+      "id": "plan_b_detail",
+      "label": "Plan B — card detail",
+      "default": "5 × 6ml luxury attars"
+    },
+    {
+      "type": "text",
+      "id": "plan_b_price_display",
+      "label": "Plan B — display price",
+      "default": "₹2400"
+    },
+    {
+      "type": "text",
+      "id": "plan_b_dock_label",
+      "label": "Plan B — dock label",
+      "default": "₹2400 Ritual Box"
+    },
+    {
+      "type": "number",
+      "id": "plan_b_bundle_cents",
+      "label": "Plan B — bundle price (cents)",
+      "default": 240000
+    },
+    {
+      "type": "header",
       "content": "Product grid"
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Product size label",
+      "default": "6ml",
+      "info": "Badge shown on each product card, e.g. 6ml or 20ml."
     },
     {
       "type": "text",

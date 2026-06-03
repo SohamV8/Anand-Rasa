@@ -592,5 +592,11 @@
     });
   }
 
+  // Single-plan pages: pre-select the only ritual size so the grid is unlocked.
+  if (planButtons.length === 1) {
+    var onlySize = parseInt(planButtons[0].getAttribute('data-plan-size'), 10);
+    if (onlySize > 0) state.planSize = onlySize;
+  }
+
   render();
 })();

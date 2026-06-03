@@ -263,6 +263,23 @@
   .ar-nav__drawer-sub-menu > .ar-nav__drawer-sub-inner { min-height:0; display:flex; flex-direction:column; }
   .ar-nav__drawer-link.ar-nav__drawer-sub { font-size:15px; font-weight:400; color:var(--ar-ink-soft); padding:14px 0; border-bottom:1px solid var(--ar-line); opacity:1; transform:none; }
   .ar-nav__drawer-link.ar-nav__drawer-sub:last-child { border-bottom:none; }
+  .ar-nav__drawer-group-title {
+    display:block;
+    font-family:var(--font-heading-family);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ar-muted);
+    padding:18px 0 6px;
+  }
+  .ar-nav__drawer-link.ar-nav__drawer-sub {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .ar-nav__drawer-tag { font-size:13px; font-weight:600; color:var(--ar-ink); flex-shrink:0; }
 
   /* Search panel - slides down below header */
   .ar-search-panel {
@@ -434,6 +451,88 @@
   .ar-mega__trigger.is-open .ar-mega__chevron { transform:rotate(180deg); }
   .ar-mega__dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 16px); right:-40px; background:#fff; border:1px solid rgba(30,32,35,.08); box-shadow:0 20px 60px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.05); border-radius:16px; min-width:640px; z-index:400; transform:translateY(-8px); transition:opacity .3s ease,transform .3s ease,visibility .3s; overflow:hidden; }
   .ar-mega__trigger.is-open .ar-mega__dropdown { visibility:visible; opacity:1; transform:translateY(0); }
+
+  /* Build Your Attar Box — Pitara logo dropdown (replaces VIP link) */
+  .ar-box { position:relative; display:flex; align-items:center; }
+  .ar-box__trigger {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2px 0;
+    border-radius:10px;
+    text-decoration:none;
+    transition:transform .3s var(--ar-easing);
+  }
+  .ar-box__trigger:hover { transform:translateY(-1px); }
+  .ar-box__trigger:focus-visible { outline:2px solid var(--ar-ink); outline-offset:3px; }
+  .ar-box__logo {
+    display:block;
+    width:auto;
+    height:42px;
+    max-height:calc(var(--ar-nav-h) - 26px);
+    object-fit:contain;
+    transition:height .35s var(--ar-easing);
+  }
+  .ar-nav.is-scrolled .ar-box__logo { height:36px; }
+
+  .ar-box__menu {
+    visibility:hidden;
+    opacity:0;
+    position:absolute;
+    top:calc(100% + 14px);
+    left:50%;
+    transform:translate(-50%, -8px);
+    min-width:268px;
+    background:#fff;
+    border:1px solid rgba(30,32,35,.08);
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,.1), 0 4px 16px rgba(0,0,0,.05);
+    padding:10px;
+    z-index:400;
+    transition:opacity .3s ease, transform .3s ease, visibility .3s;
+  }
+  /* Invisible hover bridge so the menu doesn't close in the gap */
+  .ar-box__menu::before {
+    content:"";
+    position:absolute;
+    left:0; right:0; top:-14px;
+    height:14px;
+  }
+  .ar-box:hover .ar-box__menu,
+  .ar-box:focus-within .ar-box__menu {
+    visibility:visible;
+    opacity:1;
+    transform:translate(-50%, 0);
+  }
+  .ar-box__menu-title {
+    display:block;
+    font-family:var(--font-heading-family);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ar-muted);
+    padding:6px 12px 10px;
+  }
+  .ar-box__item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:11px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--ar-ink);
+    transition:background .2s ease, padding-left .2s var(--ar-easing);
+  }
+  .ar-box__item:hover,
+  .ar-box__item:focus-visible {
+    background:rgba(30,32,35,.05);
+    padding-left:16px;
+    outline:none;
+  }
+  .ar-box__item-name { font-size:14px; font-weight:500; white-space:nowrap; }
+  .ar-box__item-price { font-size:13px; font-weight:600; color:var(--ar-ink-soft); }
   .ar-mega__inner { display:grid; grid-template-columns:1fr 1fr; min-height:380px; }
   .ar-mega__links { padding:32px 36px; display:flex; flex-direction:column; gap:2px; }
   .ar-mega__col-title { font-size:10px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#9ca3af; margin-bottom:16px; display:block; }
@@ -594,6 +693,30 @@
   elsif ar_nav_l3_href == blank or ar_nav_l3_href == ar_header_giftsets_url
     assign ar_nav_l3_href = ar_header_vip_url
   endif
+
+  comment
+    Build Your Attar Box menu — destinations for the Pitara dropdown.
+  endcomment
+  assign ar_box_main_url = section.settings.box_main_url | strip
+  if ar_box_main_url == blank
+    assign ar_box_main_url = pages['build-your-box'].url | default: pages['build-your-attar-box'].url | default: '/pages/build-your-box'
+  endif
+  assign ar_box_url_3 = section.settings.box_url_3 | strip
+  if ar_box_url_3 == blank
+    assign ar_box_url_3 = pages['build-3-attars'].url | default: '/pages/build-3-attars'
+  endif
+  assign ar_box_url_5 = section.settings.box_url_5 | strip
+  if ar_box_url_5 == blank
+    assign ar_box_url_5 = pages['build-5-attars'].url | default: '/pages/build-5-attars'
+  endif
+  assign ar_box_url_perfume = section.settings.box_url_perfume | strip
+  if ar_box_url_perfume == blank
+    assign ar_box_url_perfume = pages['build-4-perfumes'].url | default: '/pages/build-4-perfumes'
+  endif
+  assign ar_box_url_astro = section.settings.box_url_astro | strip
+  if ar_box_url_astro == blank
+    assign ar_box_url_astro = pages['astrology-ritual-set'].url | default: '/pages/astrology-ritual-set'
+  endif
 %}
 {%- assign ar_header_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
 {%- if ar_header_about_url == blank -%}
@@ -610,7 +733,37 @@
     <div class="ar-nav__left">
       <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
       <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-      <a href="{{ ar_nav_l3_href }}" class="ar-nav__link">{{ ar_nav_l3_label }}</a>
+
+      <div class="ar-box" id="ar-box-trigger-{{ section.id }}">
+        <a href="{{ ar_box_main_url }}" class="ar-box__trigger" aria-haspopup="true" aria-expanded="false" aria-label="Build Your Attar Box">
+          <img
+            class="ar-box__logo"
+            src="{{ 'Pitara_logo1.webp' | asset_url }}"
+            alt="Build Your Attar Box"
+            loading="eager"
+            decoding="async"
+          >
+        </a>
+        <div class="ar-box__menu" role="menu" aria-label="Build Your Attar Box">
+          <span class="ar-box__menu-title">Build Your Attar Box</span>
+          <a href="{{ ar_box_url_3 }}" class="ar-box__item" role="menuitem">
+            <span class="ar-box__item-name">Pick Any 3 &middot; 6ml Attars</span>
+            <span class="ar-box__item-price">₹1200</span>
+          </a>
+          <a href="{{ ar_box_url_5 }}" class="ar-box__item" role="menuitem">
+            <span class="ar-box__item-name">Pick Any 5 &middot; 6ml Attars</span>
+            <span class="ar-box__item-price">₹2400</span>
+          </a>
+          <a href="{{ ar_box_url_perfume }}" class="ar-box__item" role="menuitem">
+            <span class="ar-box__item-name">Pick Any 4 &middot; 20ml Perfumes</span>
+            <span class="ar-box__item-price">₹2100</span>
+          </a>
+          <a href="{{ ar_box_url_astro }}" class="ar-box__item" role="menuitem">
+            <span class="ar-box__item-name">Astrology Ritual Set</span>
+            <span class="ar-box__item-price">₹2500</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="ar-nav__mobile-left">
@@ -934,7 +1087,11 @@
   </div>
   <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
   <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-  <a href="{{ ar_nav_l3_href }}" class="ar-nav__drawer-link">{{ ar_nav_l3_label }}</a>
+  <span class="ar-nav__drawer-group-title">Build Your Attar Box</span>
+  <a href="{{ ar_box_url_3 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 3 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹1200</span></a>
+  <a href="{{ ar_box_url_5 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 5 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹2400</span></a>
+  <a href="{{ ar_box_url_perfume }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 4 &middot; 20ml Perfumes <span class="ar-nav__drawer-tag">₹2100</span></a>
+  <a href="{{ ar_box_url_astro }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Astrology Ritual Set <span class="ar-nav__drawer-tag">₹2500</span></a>
   <button class="ar-nav__drawer-link ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false" type="button">
     <span>{{ section.settings.nav_r1 | default: 'Collections' }}</span>
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1329,6 +1486,40 @@
       "id": "nav_l3_vip_url",
       "label": "VIP Club page URL (optional)",
       "info": "Optional override. If empty: uses your Page with handle “vip-club” (or “vip”) when it exists; otherwise the VIP layout at the home URL with ?view=vip-club (works without creating a page)."
+    },
+    {
+      "type": "header",
+      "content": "Build Your Attar Box (Pitara logo dropdown)"
+    },
+    {
+      "type": "url",
+      "id": "box_main_url",
+      "label": "Pitara logo link",
+      "info": "Where the Pitara logo links. Empty = page with handle “build-your-box”."
+    },
+    {
+      "type": "url",
+      "id": "box_url_3",
+      "label": "Pick any 3 · 6ml @1200 URL",
+      "info": "Empty = page with handle “build-3-attars”."
+    },
+    {
+      "type": "url",
+      "id": "box_url_5",
+      "label": "Pick any 5 · 6ml @2400 URL",
+      "info": "Empty = page with handle “build-5-attars”."
+    },
+    {
+      "type": "url",
+      "id": "box_url_perfume",
+      "label": "Pick any 4 · 20ml @2100 URL",
+      "info": "Empty = page with handle “build-4-perfumes”."
+    },
+    {
+      "type": "url",
+      "id": "box_url_astro",
+      "label": "Astrology Ritual Set @2500 URL",
+      "info": "Empty = page with handle “astrology-ritual-set”."
     },
     {
       "type": "text",

@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "main": {
+      "type": "build-your-attar-box",
+      "settings": {
+        "collection_handles": "zodiac-attars,planet-attars,nakshatra-attars,bestseller,Bestseller",
+        "empty_collection_url": "shopify://collections/zodiac-attars",
+        "hero_eyebrow": "Cosmic Fragrance Ritual",
+        "hero_title": "Astrology Ritual Set",
+        "hero_lead": "Curate your own astrology-inspired attar set aligned to your stars.",
+        "hero_sub": "Choose your favourites across zodiac, planet and nakshatra attars to complete your cosmic ritual.",
+        "hero_cta": "Start Building",
+        "plans_title": "Your ₹2500 Astrology Ritual Set",
+        "plans_sub": "Select any 4 astrology attars to complete your cosmic ritual set.",
+        "size_label": "6ml",
+        "plan_a_size": 4,
+        "plan_a_name": "Astrology Ritual Set",
+        "plan_a_detail": "4 × astrology-aligned attars",
+        "plan_a_price_display": "₹2500",
+        "plan_a_dock_label": "₹2500 Ritual Set",
+        "plan_a_bundle_cents": 250000,
+        "plan_b_size": 0,
+        "grid_title": "Select Your Astrology Attars",
+        "grid_sub": "Zodiac, planet and nakshatra attars — tap to add each fragrance to your ritual set.",
+        "complete_message": "Your astrology ritual set is complete.",
+        "cta_ready": "Add Ritual Set to Cart",
+        "msg_added": "Your astrology ritual set was added to cart."
+      }
+    }
+  },
+  "order": ["main"]
+}

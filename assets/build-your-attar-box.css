@@ -294,6 +294,12 @@
   gap: clamp(16px, 3vw, 24px);
 }
 
+.byb-plans__grid--single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 420px;
+  margin-inline: auto;
+}
+
 .byb-plan {
   position: relative;
   text-align: left;
