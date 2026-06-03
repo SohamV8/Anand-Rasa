@@ -51,6 +51,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       if ar_is_find_fragrance_legacy_view
         assign ar_should_noindex = true
       endif
+      if request.page_type == 'index'
+        if template.suffix == 'build-3-attars' or template.suffix == 'build-5-attars' or template.suffix == 'build-4-perfumes' or template.suffix == 'astrology-ritual-set'
+          assign ar_should_noindex = true
+        endif
+      endif
       if current_tags != blank
         assign ar_should_noindex = true
       endif
@@ -142,6 +147,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             {%- else -%}
               arGo({{ routes.root_url | append: '?view=find-fragrance' | json }});
             {%- endif -%}
+            return;
+          }
+          var buildBoxPaths = {
+            '/pages/build-3-attars': {{ routes.root_url | append: '?view=build-3-attars' | json }},
+            '/pages/build-5-attars': {{ routes.root_url | append: '?view=build-5-attars' | json }},
+            '/pages/build-4-perfumes': {{ routes.root_url | append: '?view=build-4-perfumes' | json }},
+            '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }}
+          };
+          if (buildBoxPaths[path]) {
+            arGo(buildBoxPaths[path]);
+            return;
           }
         })();
       </script>

@@ -1,0 +1,32 @@
+{
+  "sections": {
+    "main": {
+      "type": "build-your-attar-box",
+      "settings": {
+        "collection_handles": "perfume-series,perfume,perfumes,Perfume,perfume-oils,perfume-collection",
+        "empty_collection_url": "shopify://collections/perfume-series",
+        "hero_eyebrow": "Personal Fragrance Ritual",
+        "hero_title": "Pick Any 4 · 20ml Perfumes",
+        "hero_lead": "Curate four of our 20ml signature perfumes into one handcrafted ritual box.",
+        "hero_sub": "Choose your favourites. Build your ritual. Experience Indian perfumery in its purest form.",
+        "hero_cta": "Start Building",
+        "plans_title": "Your ₹2100 Perfume Box",
+        "plans_sub": "Select any 4 of our 20ml signature perfumes for one fixed price.",
+        "size_label": "20ml",
+        "plan_a_size": 4,
+        "plan_a_name": "Choose Any 4",
+        "plan_a_detail": "4 × 20ml signature perfumes",
+        "plan_a_price_display": "₹2100",
+        "plan_a_dock_label": "₹2100 Perfume Box",
+        "plan_a_bundle_cents": 210000,
+        "plan_b_size": 0,
+        "grid_title": "Select Your 4 Perfumes",
+        "grid_sub": "Our 20ml signature perfumes — tap to add each fragrance to your box.",
+        "complete_message": "Your perfume box is complete.",
+        "cta_ready": "Add Perfume Box to Cart",
+        "msg_added": "Your perfume box was added to cart."
+      }
+    }
+  },
+  "order": ["main"]
+}

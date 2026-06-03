@@ -3,9 +3,11 @@
 
   @param product {Product}
   @param size_label {String} optional, e.g. "6ml" or "20ml"
+  @param assets_only {Boolean} optional — Planet/Zodiac/Nakshatra theme assets only (no CDN product images)
 {%- endcomment -%}
 {%- liquid
   assign byb_size_label = size_label | default: '6ml'
+  assign byb_assets_only = assets_only | default: false
   assign byb_variant = product.selected_or_first_available_variant
   assign byb_available = byb_variant.available
   assign byb_price_cents = byb_variant.price
@@ -20,23 +22,32 @@
   endcapture
   assign byb_category = byb_category | strip
 
-  capture byb_img_asset
-    render 'bestseller-image-lookup', bs_product: product
-  endcapture
-  assign byb_img_asset = byb_img_asset | strip
+  assign byb_img = ''
+  assign byb_img_srcset = ''
 
-  if byb_img_asset != blank
-    assign byb_img = byb_img_asset | asset_url
-    assign byb_img_srcset = ''
-  elsif product.featured_image
-    assign byb_img = product.featured_image | image_url: width: 600
-    assign byb_img_w400 = product.featured_image | image_url: width: 400
-    assign byb_img_w600 = product.featured_image | image_url: width: 600
-    assign byb_img_w900 = product.featured_image | image_url: width: 900
-    assign byb_img_srcset = byb_img_w400 | append: ' 400w, ' | append: byb_img_w600 | append: ' 600w, ' | append: byb_img_w900 | append: ' 900w'
+  if byb_assets_only
+    capture byb_img_asset
+      render 'build-box-astro-image-lookup', product: product
+    endcapture
+    assign byb_img_asset = byb_img_asset | strip
+    if byb_img_asset != blank
+      assign byb_img = byb_img_asset | asset_url
+    endif
   else
-    assign byb_img = ''
-    assign byb_img_srcset = ''
+    capture byb_img_asset
+      render 'bestseller-image-lookup', bs_product: product
+    endcapture
+    assign byb_img_asset = byb_img_asset | strip
+
+    if byb_img_asset != blank
+      assign byb_img = byb_img_asset | asset_url
+    elsif product.featured_image
+      assign byb_img = product.featured_image | image_url: width: 600
+      assign byb_img_w400 = product.featured_image | image_url: width: 400
+      assign byb_img_w600 = product.featured_image | image_url: width: 600
+      assign byb_img_w900 = product.featured_image | image_url: width: 900
+      assign byb_img_srcset = byb_img_w400 | append: ' 400w, ' | append: byb_img_w600 | append: ' 600w, ' | append: byb_img_w900 | append: ' 900w'
+    endif
   endif
 
   if byb_notes != blank

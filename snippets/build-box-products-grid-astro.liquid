@@ -1,0 +1,98 @@
+{%- comment -%}
+  Astrology Ritual Set — products grouped by collection family (no mixing).
+
+  @param collection_handles {String} comma-separated collection handles
+  @param size_label {String}
+  @param assets_only {Boolean}
+{%- endcomment -%}
+{%- liquid
+  assign byb_rendered = ','
+  assign byb_has_products = false
+  assign byb_idx = 0
+  assign byb_size_label = size_label | default: '6ml'
+  assign byb_assets_only = assets_only | default: false
+  assign byb_handle_list = collection_handles | split: ','
+-%}
+
+<nav class="byb-astro-nav" aria-label="Attar categories">
+  <a class="byb-astro-nav__link" href="#byb-cat-planet">Planet Attars</a>
+  <a class="byb-astro-nav__link" href="#byb-cat-zodiac">Zodiac Attars</a>
+  <a class="byb-astro-nav__link" href="#byb-cat-nakshatra">Nakshatra Attars</a>
+</nav>
+
+<div class="byb-astro-groups" data-byb-grid>
+  {%- assign byb_astro_families = 'planet|zodiac|nakshatra' | split: '|' -%}
+  {%- assign byb_astro_titles = 'Planet Attars|Zodiac Attars|Nakshatra Attars' | split: '|' -%}
+  {%- assign byb_astro_ids = 'byb-cat-planet|byb-cat-zodiac|byb-cat-nakshatra' | split: '|' -%}
+
+  {%- for byb_astro_family in byb_astro_families -%}
+    {%- assign byb_fi = forloop.index0 -%}
+    {%- assign byb_cat_id = byb_astro_ids[byb_fi] -%}
+    {%- assign byb_cat_title = byb_astro_titles[byb_fi] -%}
+    {%- assign byb_cat_count = 0 -%}
+
+    {%- capture byb_cat_items -%}
+      {%- for byb_h in byb_handle_list -%}
+        {%- assign byb_h_clean = byb_h | strip | downcase -%}
+        {%- if byb_h_clean == blank or collections[byb_h_clean] == empty -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- assign byb_h_family = '' -%}
+        {%- if byb_h_clean contains 'nakshatra' or byb_h_clean contains 'naksahtra' -%}
+          {%- assign byb_h_family = 'nakshatra' -%}
+        {%- elsif byb_h_clean contains 'zodiac' -%}
+          {%- assign byb_h_family = 'zodiac' -%}
+        {%- elsif byb_h_clean contains 'planet' -%}
+          {%- assign byb_h_family = 'planet' -%}
+        {%- else -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- if byb_h_family != byb_astro_family -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- assign byb_col = collections[byb_h_clean] -%}
+        {%- for product in byb_col.products -%}
+          {%- unless product.available -%}
+            {%- continue -%}
+          {%- endunless -%}
+
+          {%- assign byb_title_down = product.title | downcase -%}
+          {%- if byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+            {%- continue -%}
+          {%- endif -%}
+
+          {%- assign byb_pid = product.id | prepend: ',' | append: ',' -%}
+          {%- if byb_rendered contains byb_pid -%}
+            {%- continue -%}
+          {%- endif -%}
+
+          {%- assign byb_rendered = byb_rendered | append: product.id | append: ',' -%}
+          {%- assign byb_has_products = true -%}
+          {%- assign byb_cat_count = byb_cat_count | plus: 1 -%}
+          {%- assign byb_idx = byb_idx | plus: 1 -%}
+          <div role="listitem" class="byb-grid__item" style="--byb-i: {{ byb_idx }};">
+            {% render 'build-box-product-card', product: product, size_label: byb_size_label, assets_only: byb_assets_only %}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if byb_cat_count > 0 -%}
+      <section class="byb-astro-cat" id="{{ byb_cat_id }}" aria-labelledby="{{ byb_cat_id }}-title">
+        <h3 class="byb-astro-cat__title" id="{{ byb_cat_id }}-title">{{ byb_cat_title }}</h3>
+        <div class="byb-grid byb-astro-cat__grid" role="list">
+          {{ byb_cat_items }}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+{%- unless byb_has_products -%}
+  <div class="byb-empty">
+    <p>No {{ byb_size_label }} fragrances available for your ritual box right now.</p>
+  </div>
+{%- endunless -%}

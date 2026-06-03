@@ -266,20 +266,32 @@
   .ar-nav__drawer-group-title {
     display:block;
     font-family:var(--font-heading-family);
-    font-size:11px;
+    font-size:10px;
     font-weight:600;
-    letter-spacing:.18em;
+    letter-spacing:.16em;
     text-transform:uppercase;
     color:var(--ar-muted);
-    padding:18px 0 6px;
+    padding:18px 0 8px;
+    border-bottom:1px solid rgba(30,32,35,.06);
+    margin-bottom:2px;
   }
   .ar-nav__drawer-link.ar-nav__drawer-sub {
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:14px;
+    gap:16px;
+    min-height:44px;
+    padding:12px 0;
+    line-height:1.4;
   }
-  .ar-nav__drawer-tag { font-size:13px; font-weight:600; color:var(--ar-ink); flex-shrink:0; }
+  .ar-nav__drawer-tag {
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    font-variant-numeric:tabular-nums;
+    color:var(--ar-ink);
+    flex-shrink:0;
+  }
 
   /* Search panel - slides down below header */
   .ar-search-panel {
@@ -453,86 +465,130 @@
   .ar-mega__trigger.is-open .ar-mega__dropdown { visibility:visible; opacity:1; transform:translateY(0); }
 
   /* Build Your Attar Box — Pitara logo dropdown (replaces VIP link) */
-  .ar-box { position:relative; display:flex; align-items:center; }
+  .ar-box {
+    --ar-box-dur: 220ms;
+    --ar-box-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
   .ar-box__trigger {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:2px 0;
-    border-radius:10px;
-    text-decoration:none;
-    transition:transform .3s var(--ar-easing);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 2px 0;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform var(--ar-box-dur) var(--ar-box-ease);
   }
-  .ar-box__trigger:hover { transform:translateY(-1px); }
-  .ar-box__trigger:focus-visible { outline:2px solid var(--ar-ink); outline-offset:3px; }
+  .ar-box__trigger:hover { transform: translateY(-1px); }
+  .ar-box__trigger:focus-visible { outline: 2px solid var(--ar-ink); outline-offset: 3px; }
   .ar-box__logo {
-    display:block;
-    width:auto;
-    height:42px;
-    max-height:calc(var(--ar-nav-h) - 26px);
-    object-fit:contain;
-    transition:height .35s var(--ar-easing);
+    display: block;
+    width: auto;
+    height: 42px;
+    max-height: calc(var(--ar-nav-h) - 26px);
+    object-fit: contain;
+    transition: height .35s var(--ar-easing);
   }
-  .ar-nav.is-scrolled .ar-box__logo { height:36px; }
+  .ar-nav.is-scrolled .ar-box__logo { height: 36px; }
 
   .ar-box__menu {
-    visibility:hidden;
-    opacity:0;
-    position:absolute;
-    top:calc(100% + 14px);
-    left:50%;
-    transform:translate(-50%, -8px);
-    min-width:268px;
-    background:#fff;
-    border:1px solid rgba(30,32,35,.08);
-    border-radius:16px;
-    box-shadow:0 20px 60px rgba(0,0,0,.1), 0 4px 16px rgba(0,0,0,.05);
-    padding:10px;
-    z-index:400;
-    transition:opacity .3s ease, transform .3s ease, visibility .3s;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 450;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: max(100%, 304px);
+    min-width: 304px;
+    max-width: min(336px, calc(100vw - 32px));
+    padding: 6px;
+    background: #fff;
+    border: 1px solid rgba(30, 32, 35, 0.1);
+    border-radius: 10px;
+    box-shadow:
+      0 14px 44px rgba(15, 16, 18, 0.07),
+      0 2px 10px rgba(15, 16, 18, 0.04);
+    transform: translateY(-6px);
+    transform-origin: top left;
+    transition:
+      opacity var(--ar-box-dur) var(--ar-box-ease),
+      transform var(--ar-box-dur) var(--ar-box-ease),
+      visibility var(--ar-box-dur);
+    overflow: hidden;
   }
-  /* Invisible hover bridge so the menu doesn't close in the gap */
   .ar-box__menu::before {
-    content:"";
-    position:absolute;
-    left:0; right:0; top:-14px;
-    height:14px;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    height: 10px;
   }
   .ar-box:hover .ar-box__menu,
   .ar-box:focus-within .ar-box__menu {
-    visibility:visible;
-    opacity:1;
-    transform:translate(-50%, 0);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
   .ar-box__menu-title {
-    display:block;
-    font-family:var(--font-heading-family);
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ar-muted);
-    padding:6px 12px 10px;
+    display: block;
+    margin: 0 0 2px;
+    padding: 10px 12px 8px;
+    font-family: var(--font-heading-family);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--ar-muted);
+    border-bottom: 1px solid rgba(30, 32, 35, 0.06);
   }
   .ar-box__item {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:18px;
-    padding:11px 12px;
-    border-radius:10px;
-    text-decoration:none;
-    color:var(--ar-ink);
-    transition:background .2s ease, padding-left .2s var(--ar-easing);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--ar-ink);
+    transition: background var(--ar-box-dur) var(--ar-box-ease);
   }
   .ar-box__item:hover,
   .ar-box__item:focus-visible {
-    background:rgba(30,32,35,.05);
-    padding-left:16px;
-    outline:none;
+    background: rgba(30, 32, 35, 0.045);
+    outline: none;
   }
-  .ar-box__item-name { font-size:14px; font-weight:500; white-space:nowrap; }
-  .ar-box__item-price { font-size:13px; font-weight:600; color:var(--ar-ink-soft); }
+  .ar-box__item:active {
+    background: rgba(30, 32, 35, 0.07);
+  }
+  .ar-box__item-name {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--ar-ink);
+  }
+  .ar-box__item-price {
+    flex-shrink: 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ar-ink);
+  }
   .ar-mega__inner { display:grid; grid-template-columns:1fr 1fr; min-height:380px; }
   .ar-mega__links { padding:32px 36px; display:flex; flex-direction:column; gap:2px; }
   .ar-mega__col-title { font-size:10px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#9ca3af; margin-bottom:16px; display:block; }
@@ -552,6 +608,10 @@
     .ar-nav__inner { padding:0 28px; gap:16px; }
     .ar-nav__left { gap:24px; }
     .ar-nav__right { gap:16px; }
+    .ar-box__menu {
+      min-width: min(304px, calc(100vw - 56px));
+      max-width: min(320px, calc(100vw - 56px));
+    }
   }
 
   /* Mobile */
@@ -648,9 +708,14 @@
 
   @media (prefers-reduced-motion: reduce) {
     .ar-nav, .ar-nav__inner, .ar-nav__logo-img, .ar-nav__icon, .ar-nav__burger span,
-    .ar-nav__drawer, .ar-nav__drawer-link, .ar-search-panel, .ar-nav__backdrop, .ar-nav__link::after {
+    .ar-nav__drawer, .ar-nav__drawer-link, .ar-search-panel, .ar-nav__backdrop, .ar-nav__link::after,
+    .ar-box__menu, .ar-box__item, .ar-box__trigger {
       transition: none !important;
       animation: none !important;
+    }
+    .ar-box:hover .ar-box__menu,
+    .ar-box:focus-within .ar-box__menu {
+      transform: none;
     }
   }
 </style>
@@ -697,25 +762,32 @@
   comment
     Build Your Attar Box menu — destinations for the Pitara dropdown.
   endcomment
+  comment
+    Build box links use ?view= so they work while pages are Hidden or templates are not yet on the live theme.
+    Set each page to Visible and assign its template; optional theme URL overrides use /pages/ handles instead.
+  endcomment
   assign ar_box_main_url = section.settings.box_main_url | strip
   if ar_box_main_url == blank
-    assign ar_box_main_url = pages['build-your-box'].url | default: pages['build-your-attar-box'].url | default: '/pages/build-your-box'
+    capture ar_box_main_url
+      render 'ar-page-url', handle: 'build-your-box'
+    endcapture
+    assign ar_box_main_url = ar_box_main_url | strip
   endif
-  assign ar_box_url_3 = section.settings.box_url_3 | strip
-  if ar_box_url_3 == blank
-    assign ar_box_url_3 = pages['build-3-attars'].url | default: '/pages/build-3-attars'
+  assign ar_box_url_3 = routes.root_url | append: '?view=build-3-attars'
+  assign ar_box_url_5 = routes.root_url | append: '?view=build-5-attars'
+  assign ar_box_url_perfume = routes.root_url | append: '?view=build-4-perfumes'
+  assign ar_box_url_astro = routes.root_url | append: '?view=astrology-ritual-set'
+  if section.settings.box_url_3 != blank
+    assign ar_box_url_3 = section.settings.box_url_3
   endif
-  assign ar_box_url_5 = section.settings.box_url_5 | strip
-  if ar_box_url_5 == blank
-    assign ar_box_url_5 = pages['build-5-attars'].url | default: '/pages/build-5-attars'
+  if section.settings.box_url_5 != blank
+    assign ar_box_url_5 = section.settings.box_url_5
   endif
-  assign ar_box_url_perfume = section.settings.box_url_perfume | strip
-  if ar_box_url_perfume == blank
-    assign ar_box_url_perfume = pages['build-4-perfumes'].url | default: '/pages/build-4-perfumes'
+  if section.settings.box_url_perfume != blank
+    assign ar_box_url_perfume = section.settings.box_url_perfume
   endif
-  assign ar_box_url_astro = section.settings.box_url_astro | strip
-  if ar_box_url_astro == blank
-    assign ar_box_url_astro = pages['astrology-ritual-set'].url | default: '/pages/astrology-ritual-set'
+  if section.settings.box_url_astro != blank
+    assign ar_box_url_astro = section.settings.box_url_astro
   endif
 %}
 {%- assign ar_header_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
@@ -1501,25 +1573,25 @@
       "type": "url",
       "id": "box_url_3",
       "label": "Pick any 3 · 6ml @1200 URL",
-      "info": "Empty = page with handle “build-3-attars”."
+      "info": "Optional. Leave empty to use /?view=build-3-attars (works while the page is Hidden). After publishing, you can paste the /pages/build-3-attars URL here."
     },
     {
       "type": "url",
       "id": "box_url_5",
       "label": "Pick any 5 · 6ml @2400 URL",
-      "info": "Empty = page with handle “build-5-attars”."
+      "info": "Optional. Leave empty to use /?view=build-5-attars (works while the page is Hidden)."
     },
     {
       "type": "url",
       "id": "box_url_perfume",
       "label": "Pick any 4 · 20ml @2100 URL",
-      "info": "Empty = page with handle “build-4-perfumes”."
+      "info": "Optional. Leave empty to use /?view=build-4-perfumes (works while the page is Hidden)."
     },
     {
       "type": "url",
       "id": "box_url_astro",
       "label": "Astrology Ritual Set @2500 URL",
-      "info": "Empty = page with handle “astrology-ritual-set”."
+      "info": "Optional. Leave empty to use /?view=astrology-ritual-set (works while the page is Hidden)."
     },
     {
       "type": "text",

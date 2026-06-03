@@ -55,11 +55,23 @@
   if byb_plan_b_size and byb_plan_b_size > 0
     assign byb_plan_b_on = true
   endif
+
+  assign byb_assets_only = section.settings.card_images_assets_only
+  assign byb_group_astro = section.settings.group_products_by_astro
+  if template.suffix == 'astrology-ritual-set'
+    assign byb_assets_only = true
+    assign byb_group_astro = true
+  endif
 -%}
 
 {{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
 
-<div class="byb" data-byb-root data-section-id="{{ section.id }}">
+<div
+  class="byb{% unless byb_plan_b_on %} byb--fixed-plan{% endunless %}"
+  data-byb-root
+  data-section-id="{{ section.id }}"
+  {% unless byb_plan_b_on %}data-byb-default-plan="{{ byb_plan_a_size }}"{% endunless %}
+>
   <script type="application/json" data-byb-config>
     {
       "plans": {
@@ -115,12 +127,13 @@
     </div>
   </header>
 
-  {%- comment -%} ── Plans ── {%- endcomment -%}
+  {%- comment -%} Plan picker — only when two ritual sizes are offered (e.g. main Build Your Box page). {%- endcomment -%}
+  {%- if byb_plan_b_on -%}
   <section class="byb-plans" id="build-box-plans" aria-labelledby="byb-plans-heading" data-byb-reveal>
     <div class="byb-plans__inner">
       <h2 id="byb-plans-heading" class="byb-plans__title">{{ byb_plans_title }}</h2>
       <p class="byb-plans__sub">{{ byb_plans_sub }}</p>
-      <div class="byb-plans__grid{% unless byb_plan_b_on %} byb-plans__grid--single{% endunless %}" role="group" aria-label="Ritual box size">
+      <div class="byb-plans__grid" role="group" aria-label="Ritual box size">
         <button
           type="button"
           class="byb-plan"
@@ -136,7 +149,6 @@
           <p class="byb-plan__detail">{{ byb_plan_a_detail }}</p>
           <p class="byb-plan__price">{{ byb_plan_a_display }}</p>
         </button>
-        {%- if byb_plan_b_on -%}
         <button
           type="button"
           class="byb-plan"
@@ -152,10 +164,10 @@
           <p class="byb-plan__detail">{{ byb_plan_b_detail }}</p>
           <p class="byb-plan__price">{{ byb_plan_b_display }}</p>
         </button>
-        {%- endif -%}
       </div>
     </div>
   </section>
+  {%- endif -%}
 
   {%- comment -%} ── Product grid ── {%- endcomment -%}
   <section
@@ -170,8 +182,12 @@
       <p class="byb-grid-section__complete" aria-live="polite">{{ byb_complete_msg }}</p>
     </div>
 
-    {%- if byb_collection != blank and byb_collection.products_count > 0 -%}
-      {% render 'build-box-products-grid', collection: byb_collection, size_label: byb_size_label %}
+    {%- if section.settings.collection_handles != blank and byb_group_astro -%}
+      {% render 'build-box-products-grid-astro', collection_handles: section.settings.collection_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
+    {%- elsif section.settings.collection_handles != blank -%}
+      {% render 'build-box-products-grid', collection_handles: section.settings.collection_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
+    {%- elsif byb_collection != blank and byb_collection.products_count > 0 -%}
+      {% render 'build-box-products-grid', collection: byb_collection, size_label: byb_size_label, assets_only: byb_assets_only %}
     {%- else -%}
       <div class="byb-empty">
         <p>
@@ -392,6 +408,20 @@
       "label": "Product size label",
       "default": "6ml",
       "info": "Badge shown on each product card, e.g. 6ml or 20ml."
+    },
+    {
+      "type": "checkbox",
+      "id": "card_images_assets_only",
+      "label": "Use Planet / Zodiac / Nakshatra theme assets for card images",
+      "default": false,
+      "info": "On for Astrology Ritual Set — showcards use /assets/Planet, /assets/Zodiac, and /assets/Nakshatra only (no product photos from Shopify CDN)."
+    },
+    {
+      "type": "checkbox",
+      "id": "group_products_by_astro",
+      "label": "Group products by Planet, Zodiac, and Nakshatra",
+      "default": false,
+      "info": "Astrology Ritual Set — separate headings per category; products only appear under their collection type."
     },
     {
       "type": "text",

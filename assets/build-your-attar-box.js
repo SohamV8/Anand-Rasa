@@ -20,7 +20,7 @@
   var planButtons = [].slice.call(root.querySelectorAll('[data-byb-plan]'));
   var gridSection = root.querySelector('[data-byb-grid-section]');
   var grid = root.querySelector('[data-byb-grid]');
-  var cards = grid ? [].slice.call(grid.querySelectorAll('[data-byb-card]')) : [];
+  var cards = [].slice.call(root.querySelectorAll('[data-byb-card]'));
   var dock = root.querySelector('[data-byb-dock]');
   var dockCount = root.querySelector('[data-byb-dock-count]');
   var dockStatus = root.querySelector('[data-byb-dock-status]');
@@ -554,9 +554,10 @@
 
   if (dockSubmit) dockSubmit.addEventListener('click', addToCart);
 
-  if (heroCta && plansAnchor) {
+  if (heroCta) {
     heroCta.addEventListener('click', function () {
-      plansAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var scrollTarget = plansAnchor || gridSection;
+      if (scrollTarget) scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
@@ -586,14 +587,15 @@
     root.classList.add('is-visible');
   }
 
-  if (grid) {
-    [].slice.call(grid.querySelectorAll('.byb-grid__item')).forEach(function (item, i) {
-      item.style.setProperty('--byb-i', String(i));
-    });
-  }
+  [].slice.call(root.querySelectorAll('.byb-grid__item')).forEach(function (item, i) {
+    item.style.setProperty('--byb-i', String(i));
+  });
 
-  // Single-plan pages: pre-select the only ritual size so the grid is unlocked.
-  if (planButtons.length === 1) {
+  // Fixed-plan pages (no picker): pre-select ritual size so the grid is unlocked immediately.
+  var defaultPlan = parseInt(root.getAttribute('data-byb-default-plan'), 10);
+  if (defaultPlan > 0 && planButtons.length === 0) {
+    state.planSize = defaultPlan;
+  } else if (planButtons.length === 1) {
     var onlySize = parseInt(planButtons[0].getAttribute('data-plan-size'), 10);
     if (onlySize > 0) state.planSize = onlySize;
   }

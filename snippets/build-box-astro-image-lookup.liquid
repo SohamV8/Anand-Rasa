@@ -1,0 +1,63 @@
+{%- comment -%}
+  Build box showcard — Planet, Zodiac, and Nakshatra assets only.
+  Echoes asset path (e.g. "Zodiac/leo.webp") or empty string.
+
+  @param product {Product}
+{%- endcomment -%}
+{%- liquid
+  assign byb_astro_key = product.handle | append: ' ' | append: product.title | downcase
+  assign byb_astro_img = ''
+
+  if byb_astro_key contains 'sun' or byb_astro_key contains 'surya'
+    assign byb_astro_img = 'Planet/surya_attar.webp'
+  elsif byb_astro_key contains 'moon' or byb_astro_key contains 'chandra'
+    assign byb_astro_img = 'Planet/chandra_attar.webp'
+  elsif byb_astro_key contains 'mars' or byb_astro_key contains 'mangal'
+    assign byb_astro_img = 'Planet/mangal_attar.webp'
+  elsif byb_astro_key contains 'mercury' or byb_astro_key contains 'budh'
+    assign byb_astro_img = 'Planet/budh_attar.webp'
+  elsif byb_astro_key contains 'jupiter' or byb_astro_key contains 'guru'
+    assign byb_astro_img = 'Planet/guru_attar.webp'
+  elsif byb_astro_key contains 'venus' or byb_astro_key contains 'shukra'
+    assign byb_astro_img = 'Planet/shukra_attar.webp'
+  elsif byb_astro_key contains 'saturn' or byb_astro_key contains 'shani'
+    assign byb_astro_img = 'Planet/shani_attar.webp'
+  elsif byb_astro_key contains 'rahu'
+    assign byb_astro_img = 'Planet/rahu_attar.webp'
+  elsif byb_astro_key contains 'ketu'
+    assign byb_astro_img = 'Planet/ketu_attar.webp'
+  elsif byb_astro_key contains 'aries' or byb_astro_key contains 'mesha'
+    assign byb_astro_img = 'Zodiac/aries.webp'
+  elsif byb_astro_key contains 'taurus' or byb_astro_key contains 'vrishabha'
+    assign byb_astro_img = 'Zodiac/taurus.webp'
+  elsif byb_astro_key contains 'gemini' or byb_astro_key contains 'mithuna'
+    assign byb_astro_img = 'Zodiac/gemini.webp'
+  elsif byb_astro_key contains 'cancer' or byb_astro_key contains 'karka'
+    assign byb_astro_img = 'Zodiac/cancer.webp'
+  elsif byb_astro_key contains 'leo' or byb_astro_key contains 'simha'
+    assign byb_astro_img = 'Zodiac/leo.webp'
+  elsif byb_astro_key contains 'virgo' or byb_astro_key contains 'kanya'
+    assign byb_astro_img = 'Zodiac/virgo.webp'
+  elsif byb_astro_key contains 'libra' or byb_astro_key contains 'tula'
+    assign byb_astro_img = 'Zodiac/libra.webp'
+  elsif byb_astro_key contains 'scorpio' or byb_astro_key contains 'vrischika'
+    assign byb_astro_img = 'Zodiac/scorpio.webp'
+  elsif byb_astro_key contains 'sagittarius' or byb_astro_key contains 'dhanu'
+    assign byb_astro_img = 'Zodiac/sagittarius.webp'
+  elsif byb_astro_key contains 'capricorn' or byb_astro_key contains 'makara'
+    assign byb_astro_img = 'Zodiac/capricorn.webp'
+  elsif byb_astro_key contains 'aquarius' or byb_astro_key contains 'kumbha'
+    assign byb_astro_img = 'Zodiac/aquarius.webp'
+  elsif byb_astro_key contains 'pisces' or byb_astro_key contains 'meena'
+    assign byb_astro_img = 'Zodiac/pisces.webp'
+  endif
+
+  if byb_astro_img == blank
+    capture byb_astro_nk
+      render 'nakshatra-image-lookup', nk_product: product
+    endcapture
+    assign byb_astro_img = byb_astro_nk | strip
+  endif
+
+  echo byb_astro_img
+-%}

@@ -43,5 +43,16 @@
       return;
     }
 
+    var buildBoxViews = {
+      '/pages/build-3-attars': {{ routes.root_url | append: '?view=build-3-attars' | json }},
+      '/pages/build-5-attars': {{ routes.root_url | append: '?view=build-5-attars' | json }},
+      '/pages/build-4-perfumes': {{ routes.root_url | append: '?view=build-4-perfumes' | json }},
+      '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }}
+    };
+    if (buildBoxViews[path]) {
+      window.location.replace(buildBoxViews[path]);
+      return;
+    }
+
   })();
 </script>

@@ -1,49 +1,94 @@
 {%- comment -%}
-  Sorted bestseller grid for Build Your Attar Box.
+  Sorted product grid for Build Your Attar Box.
 
-  @param collection {Collection}
+  @param collection {Collection} optional — single collection (legacy)
+  @param collection_handles {String} optional — comma-separated handles; merges all matching collections
   @param size_label {String} optional, e.g. "6ml" or "20ml"
+  @param assets_only {Boolean} optional — theme assets only for showcard images
 {%- endcomment -%}
 {%- liquid
   assign byb_rendered = ','
   assign byb_has_products = false
   assign byb_idx = 0
   assign byb_size_label = size_label | default: '6ml'
+  assign byb_assets_only = assets_only | default: false
 -%}
 
 <div class="byb-grid" data-byb-grid role="list">
   {%- for byb_tier_num in (1..5) -%}
-    {%- for product in collection.products -%}
-      {%- unless product.available -%}
-        {%- continue -%}
-      {%- endunless -%}
+    {%- if collection_handles != blank -%}
+      {%- assign byb_handle_list = collection_handles | split: ',' -%}
+      {%- for byb_h in byb_handle_list -%}
+        {%- assign byb_h_clean = byb_h | strip -%}
+        {%- if byb_h_clean == blank or collections[byb_h_clean] == empty -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- assign byb_col = collections[byb_h_clean] -%}
+        {%- for product in byb_col.products -%}
+          {%- unless product.available -%}
+            {%- continue -%}
+          {%- endunless -%}
 
-      {%- assign byb_title_down = product.title | downcase -%}
-      {%- if byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
-        {%- continue -%}
-      {%- endif -%}
+          {%- assign byb_title_down = product.title | downcase -%}
+          {%- if byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+            {%- continue -%}
+          {%- endif -%}
 
-      {%- assign byb_pid = product.id | prepend: ',' | append: ',' -%}
-      {%- if byb_rendered contains byb_pid -%}
-        {%- continue -%}
-      {%- endif -%}
+          {%- assign byb_pid = product.id | prepend: ',' | append: ',' -%}
+          {%- if byb_rendered contains byb_pid -%}
+            {%- continue -%}
+          {%- endif -%}
 
-      {%- capture byb_tier_raw -%}
-        {%- render 'build-box-sort-tier', product: product -%}
-      {%- endcapture -%}
-      {%- assign byb_tier_val = byb_tier_raw | strip | plus: 0 -%}
+          {%- capture byb_tier_raw -%}
+            {%- render 'build-box-sort-tier', product: product -%}
+          {%- endcapture -%}
+          {%- assign byb_tier_val = byb_tier_raw | strip | plus: 0 -%}
 
-      {%- if byb_tier_val != byb_tier_num -%}
-        {%- continue -%}
-      {%- endif -%}
+          {%- if byb_tier_val != byb_tier_num -%}
+            {%- continue -%}
+          {%- endif -%}
 
-      {%- assign byb_rendered = byb_rendered | append: product.id | append: ',' -%}
-      {%- assign byb_has_products = true -%}
-      {%- assign byb_idx = byb_idx | plus: 1 -%}
-      <div role="listitem" class="byb-grid__item" style="--byb-i: {{ byb_idx }};">
-        {% render 'build-box-product-card', product: product, size_label: byb_size_label %}
-      </div>
-    {%- endfor -%}
+          {%- assign byb_rendered = byb_rendered | append: product.id | append: ',' -%}
+          {%- assign byb_has_products = true -%}
+          {%- assign byb_idx = byb_idx | plus: 1 -%}
+          <div role="listitem" class="byb-grid__item" style="--byb-i: {{ byb_idx }};">
+            {% render 'build-box-product-card', product: product, size_label: byb_size_label, assets_only: byb_assets_only %}
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    {%- elsif collection != blank -%}
+      {%- for product in collection.products -%}
+        {%- unless product.available -%}
+          {%- continue -%}
+        {%- endunless -%}
+
+        {%- assign byb_title_down = product.title | downcase -%}
+        {%- if byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- assign byb_pid = product.id | prepend: ',' | append: ',' -%}
+        {%- if byb_rendered contains byb_pid -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- capture byb_tier_raw -%}
+          {%- render 'build-box-sort-tier', product: product -%}
+        {%- endcapture -%}
+        {%- assign byb_tier_val = byb_tier_raw | strip | plus: 0 -%}
+
+        {%- if byb_tier_val != byb_tier_num -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- assign byb_rendered = byb_rendered | append: product.id | append: ',' -%}
+        {%- assign byb_has_products = true -%}
+        {%- assign byb_idx = byb_idx | plus: 1 -%}
+        <div role="listitem" class="byb-grid__item" style="--byb-i: {{ byb_idx }};">
+          {% render 'build-box-product-card', product: product, size_label: byb_size_label, assets_only: byb_assets_only %}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
   {%- endfor -%}
 
   {%- unless byb_has_products -%}
