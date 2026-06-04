@@ -534,6 +534,19 @@
     });
   });
 
+  window.__bybApi = {
+    addToBox: function (card) {
+      toggleCard(card);
+    },
+    isInBox: function (variantId) {
+      return state.selected.indexOf(String(variantId)) > -1;
+    },
+    formatMoney: formatMoney,
+    hasPlan: function () {
+      return !!state.planSize;
+    },
+  };
+
   cards.forEach(function (card) {
     var toggle = card.querySelector('[data-byb-toggle]');
     if (toggle) {
@@ -543,13 +556,6 @@
         toggleCard(card);
       });
     }
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        if (e.target.closest('a')) return;
-        e.preventDefault();
-        toggleCard(card);
-      }
-    });
   });
 
   if (dockSubmit) dockSubmit.addEventListener('click', addToCart);

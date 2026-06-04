@@ -1,0 +1,37 @@
+{%- comment -%}
+  Quick view payload for Build Your Attar Box (loaded when modal opens).
+
+  @param product {Product}
+  @param variant {Variant}
+  @param category {String}
+  @param hero_image {String}
+  @param assets_only {Boolean}
+{%- endcomment -%}
+{%- liquid
+  assign byb_qv_variant = variant | default: product.selected_or_first_available_variant
+  assign byb_qv_tagline = product.metafields.custom.tagline.value | default: '' | strip
+  assign byb_qv_main = product.metafields.custom.main_notes.value | default: '' | strip
+  assign byb_qv_top = product.metafields.custom.top_notes.value | default: '' | strip
+  assign byb_qv_heart = product.metafields.custom.heart_notes.value | default: '' | strip
+  assign byb_qv_base = product.metafields.custom.base_notes.value | default: '' | strip
+  assign byb_qv_type = product.type | strip
+-%}
+{
+  "handle": {{ product.handle | json }},
+  "variantId": {{ byb_qv_variant.id | json }},
+  "productId": {{ product.id | json }},
+  "title": {{ product.title | json }},
+  "productType": {{ byb_qv_type | json }},
+  "category": {{ category | default: '' | json }},
+  "price": {{ byb_qv_variant.price | default: 0 }},
+  "compareAt": {{ byb_qv_variant.compare_at_price | default: 0 }},
+  "available": {{ byb_qv_variant.available | json }},
+  "heroImage": {{ hero_image | default: '' | json }},
+  "assetsOnly": {% if assets_only %}true{% else %}false{% endif %},
+  "tagline": {{ byb_qv_tagline | json }},
+  "mainNotes": {{ byb_qv_main | json }},
+  "topNotes": {{ byb_qv_top | json }},
+  "heartNotes": {{ byb_qv_heart | json }},
+  "baseNotes": {{ byb_qv_base | json }},
+  "tags": {{ product.tags | json }}
+}

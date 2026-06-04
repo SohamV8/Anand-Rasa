@@ -202,11 +202,14 @@
 
   {% render 'build-box-ritual-dock', cta_ready: byb_cta_ready %}
 
+  {% render 'build-box-quickview-modal' %}
+
   <div class="byb-toast" data-byb-toast role="status" aria-live="polite"></div>
 </div>
 
 <script src="{{ 'build-box-confetti.js' | asset_url }}" defer></script>
 <script src="{{ 'build-your-attar-box.js' | asset_url }}" defer></script>
+<script src="{{ 'build-your-attar-box-quickview.js' | asset_url }}" defer></script>
 
 {% schema %}
 {

@@ -60,6 +60,7 @@
   data-byb-card
   data-variant-id="{{ byb_variant.id }}"
   data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle }}"
   data-product-url="{{ product.url }}"
   data-product-title="{{ product.title | escape }}"
   data-product-image="{{ byb_img | escape }}"
@@ -68,9 +69,12 @@
   aria-pressed="false"
   tabindex="0"
 >
+  <script type="application/json" data-byb-qv-json>
+    {% render 'build-box-quickview-data', product: product, variant: byb_variant, category: byb_category, hero_image: byb_img, assets_only: byb_assets_only %}
+  </script>
   <div class="byb-card__glow" aria-hidden="true"></div>
 
-  <a href="{{ product.url }}" class="byb-card__media-link" tabindex="-1" aria-hidden="true">
+  <button type="button" class="byb-card__media-link" data-byb-open-qv aria-label="Quick view {{ product.title | escape }}">
     <div class="byb-card__media">
       <div class="byb-card__media-glass" aria-hidden="true"></div>
       {%- if byb_img != blank -%}
@@ -86,15 +90,16 @@
         >
       {%- endif -%}
       <span class="byb-card__size">{{ byb_size_label }}</span>
+      <span class="byb-card__qv-hint">Quick View</span>
     </div>
-  </a>
+  </button>
 
   <div class="byb-card__body">
     {%- if byb_category != blank -%}
       <p class="byb-card__category">{{ byb_category }}</p>
     {%- endif -%}
     <h3 class="byb-card__title">
-      <a href="{{ product.url }}">{{ product.title }}</a>
+      <button type="button" class="byb-card__title-btn" data-byb-open-qv>{{ product.title }}</button>
     </h3>
     {%- if byb_notes != blank -%}
       <p class="byb-card__notes">{{ byb_notes }}</p>

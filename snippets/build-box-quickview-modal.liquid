@@ -1,0 +1,89 @@
+{%- comment -%}
+  Quick view shell — Build Your Attar Box section only.
+{%- endcomment -%}
+<div class="byb-qv" data-byb-qv hidden aria-hidden="true">
+  <div class="byb-qv__backdrop" data-byb-qv-backdrop></div>
+  <div
+    class="byb-qv__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="byb-qv-title"
+    aria-describedby="byb-qv-desc"
+    data-byb-qv-dialog
+    tabindex="-1"
+  >
+    <button type="button" class="byb-qv__close" data-byb-qv-close aria-label="Close quick view">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="byb-qv__loader" data-byb-qv-loader aria-hidden="true">
+      <span class="byb-qv__loader-dot"></span>
+    </div>
+
+    <div class="byb-qv__body" data-byb-qv-body hidden>
+      <div class="byb-qv__gallery" data-byb-qv-gallery>
+        <div class="byb-qv__stage" data-byb-qv-stage>
+          <img
+            class="byb-qv__hero"
+            data-byb-qv-hero
+            alt=""
+            width="900"
+            height="900"
+            decoding="async"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </div>
+        <div class="byb-qv__thumbs" data-byb-qv-thumbs role="list" hidden></div>
+      </div>
+
+      <div class="byb-qv__panel">
+        <div class="byb-qv__scroll" data-byb-qv-scroll>
+          <div class="byb-qv__content-inner">
+            <header class="byb-qv__header">
+              <p class="byb-qv__category" data-byb-qv-category hidden></p>
+              <h2 class="byb-qv__title" id="byb-qv-title" data-byb-qv-title></h2>
+              <p class="byb-qv__tagline" id="byb-qv-desc" data-byb-qv-tagline hidden></p>
+            </header>
+
+            <div class="byb-qv__meta" data-byb-qv-meta>
+              <div class="byb-qv__price-row" data-byb-qv-prices>
+                <span class="byb-qv__price" data-byb-qv-price></span>
+                <span class="byb-qv__compare" data-byb-qv-compare hidden></span>
+              </div>
+              <div class="byb-qv__stock" data-byb-qv-stock hidden></div>
+            </div>
+
+            <div class="byb-qv__notes" data-byb-qv-notes hidden>
+              <h3 class="byb-qv__section-title">Fragrance profile</h3>
+              <div class="byb-qv__notes-grid" data-byb-qv-notes-grid></div>
+            </div>
+
+            <div class="byb-qv__story" data-byb-qv-story hidden>
+              <h3 class="byb-qv__section-title">Description</h3>
+              <div class="byb-qv__story-text byb-qv__description" data-byb-qv-story-text></div>
+            </div>
+
+            <div class="byb-qv__benefits" data-byb-qv-benefits hidden>
+              <h3 class="byb-qv__section-title">Key benefits</h3>
+              <ul class="byb-qv__benefits-list" data-byb-qv-benefits-list></ul>
+            </div>
+
+            <p class="byb-qv__full-link">
+              <a href="#" data-byb-qv-product-link>View full product page</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="byb-qv__cta">
+          <button type="button" class="byb-qv__add" data-byb-qv-add>
+            <span data-byb-qv-add-label>Add to Ritual</span>
+          </button>
+          <button type="button" class="byb-qv__qv-link" data-byb-qv-quick aria-label="Quick view (current product)">Quick View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
