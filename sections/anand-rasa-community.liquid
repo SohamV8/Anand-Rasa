@@ -1,0 +1,126 @@
+{% comment %}
+  Anand Rasa Community — standalone section (optional; homepage uses snippet-home-community)
+{% endcomment %}
+
+{% render 'snippet-home-community', section: section %}
+
+{% schema %}
+{
+  "name": "Anand Rasa Community",
+  "tag": "section",
+  "class": "section-anand-rasa-community",
+  "max_blocks": 24,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "community_logo",
+      "label": "Logo (optional)"
+    },
+    {
+      "type": "text",
+      "id": "community_heading_prefix",
+      "label": "Showcase heading prefix",
+      "default": "Join The"
+    },
+    {
+      "type": "text",
+      "id": "community_heading_suffix",
+      "label": "Showcase heading suffix",
+      "default": "Community"
+    },
+    {
+      "type": "text",
+      "id": "community_aria_label",
+      "label": "Showcase aria label",
+      "default": "Anand Rasa Community"
+    },
+    {
+      "type": "textarea",
+      "id": "community_subheading",
+      "label": "Showcase subheading",
+      "default": "A community of fragrance lovers, spiritual seekers, and modern ritualists."
+    },
+    {
+      "type": "range",
+      "id": "community_carousel_speed",
+      "label": "Carousel auto-scroll speed",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "community_join_heading",
+      "label": "Join heading",
+      "default": "Join The Anand Rasa Community"
+    },
+    {
+      "type": "textarea",
+      "id": "community_join_text",
+      "label": "Join supporting copy",
+      "default": "Receive exclusive launches, fragrance stories, early access, ritual guides, and special community-only offers."
+    },
+    {
+      "type": "text",
+      "id": "community_email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "community_submit_label",
+      "label": "Submit button label",
+      "default": "Join Community"
+    },
+    {
+      "type": "text",
+      "id": "community_success_message",
+      "label": "Success message",
+      "default": "Welcome to the Anand Rasa Community."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "community_member",
+      "name": "Community photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Instagram handle",
+          "default": "@anandrasa.community"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name (if no handle)"
+        },
+        {
+          "type": "text",
+          "id": "city",
+          "label": "City (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Anand Rasa Community",
+      "blocks": [
+        { "type": "community_member" },
+        { "type": "community_member" },
+        { "type": "community_member" },
+        { "type": "community_member" },
+        { "type": "community_member" },
+        { "type": "community_member" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -6,13 +6,14 @@
 {%- if mode == 'product' and request.page_type == 'product' and product != blank -%}
   {%- liquid
     assign ng_scope = product.handle | downcase | append: '|' | append: product.title | downcase | append: '|' | append: product.type | downcase
-    assign ng_key = ''
 
     if product.collections != blank
       for ng_col in product.collections
         assign ng_scope = ng_scope | append: '|' | append: ng_col.handle | downcase | append: '|' | append: ng_col.title | downcase
       endfor
     endif
+
+    assign ng_key = ''
 
     if ng_scope contains 'ketu'
       assign ng_key = 'ketu'
@@ -33,79 +34,11 @@
     elsif ng_scope contains 'saturn' or ng_scope contains 'shani'
       assign ng_key = 'shani'
     endif
-
-    case ng_key
-      when 'surya'
-        assign ng_label = 'Surya'
-        assign ng_icon = 'Planet/sun.webp'
-        assign ng_sanskrit = 'ॐ सूर्याय नमः । तेजोऽसि तेजो मयि धेहि । दीप्तिं मे धेहि सर्वथा ॥'
-        assign ng_translit = "Om Sūryāya namaḥ. Tejo'si tejo mayi dhehi. Dīptiṁ me dhehi sarvathā."
-        assign ng_meaning = 'Salutations to the Sun — grant me radiance, vitality, and luminous strength in every way.'
-      when 'chandra'
-        assign ng_label = 'Chandra'
-        assign ng_icon = 'Planet/moon.webp'
-        assign ng_sanskrit = 'ॐ श्रां श्रीं श्रौं सः चन्द्रमसे नमः ॥'
-        assign ng_translit = 'Om śrāṁ śrīṁ śrauṁ saḥ candramase namaḥ.'
-        assign ng_meaning = 'Salutations to Chandra — bring calm, intuition, and gentle emotional balance.'
-      when 'mangal'
-        assign ng_label = 'Mangal'
-        assign ng_icon = 'Planet/mars.webp'
-        assign ng_sanskrit = 'ॐ क्रां क्रीं क्रौं सः भौमाय नमः ॥'
-        assign ng_translit = 'Om krāṁ krīṁ krauṁ saḥ bhaumāya namaḥ.'
-        assign ng_meaning = 'Salutations to Mangal — awaken courage, discipline, and fearless action.'
-      when 'budh'
-        assign ng_label = 'Budh'
-        assign ng_icon = 'Planet/Mercury.webp'
-        assign ng_sanskrit = 'ॐ ब्रां ब्रीं ब्रौं सः बुधाय नमः ॥'
-        assign ng_translit = 'Om brāṁ brīṁ brauṁ saḥ budhāya namaḥ.'
-        assign ng_meaning = 'Salutations to Budh — sharpen clarity, speech, and intelligent expression.'
-      when 'guru'
-        assign ng_label = 'Guru'
-        assign ng_icon = 'Planet/Jupiter.webp'
-        assign ng_sanskrit = 'ॐ ग्रां ग्रीं ग्रौं सः गुरवे नमः ॥'
-        assign ng_translit = 'Om grāṁ grīṁ grauṁ saḥ gurave namaḥ.'
-        assign ng_meaning = 'Salutations to Guru — expand wisdom, grace, and auspicious guidance.'
-      when 'shukra'
-        assign ng_label = 'Shukra'
-        assign ng_icon = 'Planet/Venus.webp'
-        assign ng_sanskrit = 'ॐ द्रां द्रीं द्रौं सः शुक्राय नमः ॥'
-        assign ng_translit = 'Om drāṁ drīṁ drauṁ saḥ śukrāya namaḥ.'
-        assign ng_meaning = 'Salutations to Shukra — cultivate beauty, harmony, and refined pleasure.'
-      when 'shani'
-        assign ng_label = 'Shani'
-        assign ng_icon = 'Planet/Saturn.webp'
-        assign ng_sanskrit = 'ॐ प्रां प्रीं प्रौं सः शनैश्चराय नमः ॥'
-        assign ng_translit = 'Om prāṁ prīṁ prauṁ saḥ śanaiścarāya namaḥ.'
-        assign ng_meaning = 'Salutations to Shani — deepen patience, discipline, and karmic steadiness.'
-      when 'rahu'
-        assign ng_label = 'Rahu'
-        assign ng_icon = 'Planet/Rahu.webp'
-        assign ng_sanskrit = 'ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः ॥'
-        assign ng_translit = 'Om bhrāṁ bhrīṁ bhrauṁ saḥ rāhave namaḥ.'
-        assign ng_meaning = 'Salutations to Rahu — transform ambition with mindful focus and inner mastery.'
-      when 'ketu'
-        assign ng_label = 'Ketu'
-        assign ng_icon = 'Planet/Ketu.webp'
-        assign ng_sanskrit = 'ॐ स्रां स्रीं स्रौं सः केतवे नमः ॥'
-        assign ng_translit = 'Om srāṁ srīṁ srauṁ saḥ ketave namaḥ.'
-        assign ng_meaning = 'Salutations to Ketu — awaken liberation, intuition, and spiritual detachment.'
-    endcase
   -%}
 
   {%- if ng_key != blank -%}
-
-    <section class="ng-mantra" data-ng-planet="{{ ng_key }}" aria-labelledby="ng-mantra-heading-{{ product.id }}">
-      <div class="ng-mantra__shell">
-        {% render 'navagraha-mantra-strip',
-          planet_key: ng_key,
-          planet_label: ng_label,
-          planet_icon: ng_icon,
-          sanskrit: ng_sanskrit,
-          translit: ng_translit,
-          meaning: ng_meaning,
-          featured: true
-        %}
-      </div>
-    </section>
+    {{ 'planetary-mantra-experience.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'planetary-mantra-reel.js' | asset_url }}" defer="defer"></script>
+    {%- render 'planet-mantra-data', planet_key: ng_key, product_id: product.id -%}
   {%- endif -%}
 {%- endif -%}

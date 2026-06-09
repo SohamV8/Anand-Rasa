@@ -171,7 +171,13 @@ class FacetFiltersForm extends HTMLElement {
 
         const isTextInput = event.target.getAttribute('type') === 'text';
 
-        if (newElementToActivate && !isTextInput) newElementToActivate.focus();
+        if (newElementToActivate && !isTextInput) {
+          try {
+            newElementToActivate.focus({ preventScroll: true });
+          } catch (e) {
+            newElementToActivate.focus();
+          }
+        }
       }
     }
   }

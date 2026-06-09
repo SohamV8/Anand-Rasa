@@ -25,7 +25,7 @@ if (!customElements.get('product-modal')) {
         const activeMediaTemplate = activeMedia.querySelector('template');
         const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
         activeMedia.classList.add('active');
-        activeMedia.scrollIntoView();
+        activeMedia.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
         const container = this.querySelector('[role="document"]');
         container.scrollLeft = (activeMedia.width - container.clientWidth) / 2;

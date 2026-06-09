@@ -1,0 +1,238 @@
+{%- comment -%}
+  Luxury "How to Use Your Attar" ritual guide — all attar product pages.
+
+  Usage:
+    {% render 'attar-ritual-guide', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign atr_p = product
+  if atr_p == blank
+    assign atr_p = ritual_product
+  endif
+-%}
+
+{%- if atr_p != blank and request.page_type == 'product' -%}
+  {%- liquid
+    assign atr_type = atr_p.type | default: '' | downcase
+    assign atr_title = atr_p.title | default: '' | downcase
+    assign atr_handle = atr_p.handle | default: '' | downcase
+    assign atr_tags = atr_p.tags | join: '|' | downcase
+    assign atr_cols = atr_p.collections | map: 'handle' | join: '|' | downcase
+    assign atr_scope = atr_type | append: '|' | append: atr_title | append: '|' | append: atr_handle | append: '|' | append: atr_tags | append: '|' | append: atr_cols
+
+    assign atr_is_incense = false
+    if atr_scope contains 'incense' or atr_scope contains 'agarbatti' or atr_scope contains 'dhoop' or atr_scope contains 'sambrani' or atr_scope contains 'havan'
+      assign atr_is_incense = true
+    endif
+
+    assign atr_show = false
+    if atr_scope contains 'attar' or atr_scope contains 'perfume oil' or atr_scope contains 'fragrance oil' or atr_scope contains 'apsara' or atr_scope contains 'perfume'
+      assign atr_show = true
+    endif
+    if atr_is_incense
+      assign atr_show = false
+    endif
+  -%}
+
+  {%- if atr_show -%}
+    {%- capture atr_asset -%}{%- render 'attar-ritual-image-lookup', product: atr_p -%}{%- endcapture -%}
+    {%- assign atr_asset = atr_asset | strip -%}
+    {%- assign atr_id = atr_p.id -%}
+    {%- assign atr_img_alt = 'How to apply natural attar on pulse points and clothing for a long lasting fragrance — ' | append: atr_p.title | escape -%}
+
+    {{ 'attar-ritual-guide.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'attar-ritual-guide.js' | asset_url }}" defer="defer"></script>
+
+    <section
+      class="atr"
+      id="atr-{{ atr_id }}"
+      data-atr-section
+      aria-labelledby="atr-heading-{{ atr_id }}"
+    >
+      <div class="atr__shell">
+        <div class="atr__frame" data-atr-reveal>
+          <div class="atr__main">
+            <div class="atr__grid">
+              <div class="atr__media-col">
+                <div class="atr__media-wrap" data-atr-media>
+                  <div class="atr__skeleton" data-atr-skeleton aria-hidden="true"></div>
+
+                  {%- if atr_p.featured_image != blank -%}
+                    <img
+                      class="atr__img"
+                      data-atr-img
+                      src="{{ atr_p.featured_image | image_url: width: 1200 }}"
+                      srcset="{{ atr_p.featured_image | image_url: width: 600 }} 600w, {{ atr_p.featured_image | image_url: width: 900 }} 900w, {{ atr_p.featured_image | image_url: width: 1200 }} 1200w"
+                      sizes="(max-width: 749px) 100vw, 50vw"
+                      alt="{{ atr_img_alt }}"
+                      width="1200"
+                      height="1200"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                    {%- if atr_asset != blank -%}
+                      <img
+                        class="atr__img atr__img--alt"
+                        data-atr-img-alt
+                        src="{{ atr_asset | asset_url }}"
+                        alt=""
+                        width="1200"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async"
+                        hidden
+                      >
+                    {%- endif -%}
+                  {%- elsif atr_asset != blank -%}
+                    <img
+                      class="atr__img"
+                      data-atr-img
+                      src="{{ atr_asset | asset_url }}"
+                      alt="{{ atr_img_alt }}"
+                      width="1200"
+                      height="1200"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {%- else -%}
+                    <div class="atr__img-placeholder" role="img" aria-label="{{ atr_img_alt }}"></div>
+                  {%- endif -%}
+                </div>
+              </div>
+
+              <div class="atr__content-col">
+                <header class="atr__header">
+                  <h2 class="atr__heading" id="atr-heading-{{ atr_id }}">How to Use Your Attar</h2>
+                  <div class="atr__divider" aria-hidden="true">
+                    <span class="atr__divider-line"></span>
+                    <span class="atr__divider-lotus">
+                      {%- render 'attar-ritual-icon', icon: 'lotus' -%}
+                    </span>
+                    <span class="atr__divider-line"></span>
+                  </div>
+                  <p class="atr__intro">A simple guide to enjoy the depth and longevity of your natural attar.</p>
+                </header>
+
+                <ol class="atr__steps" aria-label="How to apply natural attar">
+                  <li class="atr__step" data-atr-step>
+                    <div class="atr__step-marker" aria-hidden="true">
+                      <span class="atr__step-num">01</span>
+                    </div>
+                    <span class="atr__step-icon" aria-hidden="true">
+                      {%- render 'attar-ritual-icon', icon: 'bowl' -%}
+                    </span>
+                    <div class="atr__step-body">
+                      <h3 class="atr__step-title">Prepare</h3>
+                      <p class="atr__step-text">Apply on clean and dry skin after bathing or getting ready.</p>
+                    </div>
+                  </li>
+
+                  <li class="atr__step" data-atr-step>
+                    <div class="atr__step-marker" aria-hidden="true">
+                      <span class="atr__step-num">02</span>
+                    </div>
+                    <span class="atr__step-icon" aria-hidden="true">
+                      {%- render 'attar-ritual-icon', icon: 'droplet' -%}
+                    </span>
+                    <div class="atr__step-body">
+                      <h3 class="atr__step-title">Apply</h3>
+                      <p class="atr__step-text">Roll gently onto pulse points:</p>
+                      <ul class="atr__step-list">
+                        <li>Wrists</li>
+                        <li>Behind ears</li>
+                        <li>Neck</li>
+                        <li>Heart centre</li>
+                      </ul>
+                      <div class="atr__clothing-box">
+                        <span class="atr__clothing-icon" aria-hidden="true">
+                          {%- render 'attar-ritual-icon', icon: 'shirt' -%}
+                        </span>
+                        <p class="atr__clothing-text">Best applied on clothing for a richer and longer-lasting fragrance experience.</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="atr__step" data-atr-step>
+                    <div class="atr__step-marker" aria-hidden="true">
+                      <span class="atr__step-num">03</span>
+                    </div>
+                    <span class="atr__step-icon" aria-hidden="true">
+                      {%- render 'attar-ritual-icon', icon: 'sparkle' -%}
+                    </span>
+                    <div class="atr__step-body">
+                      <h3 class="atr__step-title">Let It Bloom</h3>
+                      <p class="atr__step-text">Do not rub after application.</p>
+                      <p class="atr__step-text">Allow the fragrance to naturally develop with your skin and clothing throughout the day.</p>
+                      <p class="atr__step-text">Reapply whenever desired.</p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="atr__bottom">
+            <div class="atr__divider atr__divider--wide" aria-hidden="true">
+              <span class="atr__divider-line"></span>
+              <span class="atr__divider-lotus">
+                {%- render 'attar-ritual-icon', icon: 'lotus' -%}
+              </span>
+              <span class="atr__divider-line"></span>
+            </div>
+
+            <ul class="atr__tips" aria-label="Attar application tips">
+              <li class="atr__tip">Apply on pulse points</li>
+              <li class="atr__tip">Best applied on clothing</li>
+              <li class="atr__tip">Do not rub</li>
+              <li class="atr__tip">Layer naturally</li>
+              <li class="atr__tip">Reapply when needed</li>
+            </ul>
+
+            <div class="atr__footer-row">
+              <blockquote class="atr__footnote">
+                <span class="atr__footnote-icon" aria-hidden="true">
+                  {%- render 'attar-ritual-icon', icon: 'lotus' -%}
+                </span>
+                <p>Natural attars unfold gradually on skin and clothing, creating a fragrance unique to every wearer.</p>
+              </blockquote>
+
+              <ul class="atr__badges" aria-label="Natural attar qualities">
+                <li class="atr__badge">
+                  <span class="atr__badge-icon" aria-hidden="true">
+                    {%- render 'attar-ritual-icon', icon: 'drop-ring' -%}
+                  </span>
+                  <span class="atr__badge-text">Pure &amp; Alcohol Free</span>
+                </li>
+                <li class="atr__badge">
+                  <span class="atr__badge-icon" aria-hidden="true">
+                    {%- render 'attar-ritual-icon', icon: 'clock' -%}
+                  </span>
+                  <span class="atr__badge-text">Long Lasting</span>
+                </li>
+                <li class="atr__badge">
+                  <span class="atr__badge-icon" aria-hidden="true">
+                    {%- render 'attar-ritual-icon', icon: 'flask' -%}
+                  </span>
+                  <span class="atr__badge-text">Natural Oil</span>
+                </li>
+                <li class="atr__badge">
+                  <span class="atr__badge-icon" aria-hidden="true">
+                    {%- render 'attar-ritual-icon', icon: 'hands' -%}
+                  </span>
+                  <span class="atr__badge-text">Handcrafted</span>
+                </li>
+                <li class="atr__badge">
+                  <span class="atr__badge-icon" aria-hidden="true">
+                    {%- render 'attar-ritual-icon', icon: 'skin-drop' -%}
+                  </span>
+                  <span class="atr__badge-text">Skin Friendly</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}

@@ -65,6 +65,32 @@
   .arc-card__buy { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink); border-bottom:1.5px solid var(--ink); padding-bottom:2px; }
   .arc-card__buy:hover { color:var(--gold); border-color:var(--gold); }
 
+  /* Apsara Attar — decorative showcard frame (collection.apsara-attar only) */
+  .arc.arc--apsara .arc-card { border:none; }
+  .arc.arc--apsara .arc-card:hover { box-shadow:0 16px 48px rgba(0,0,0,.08); }
+  .arc.arc--apsara .arc-card__img-wrap--framed { background:#fff; }
+  .arc.arc--apsara .arc-card__img-wrap--framed .arc-card__img {
+    inset: 13%;
+    width: 74%;
+    height: 74%;
+    margin: auto;
+    top: 13%;
+    left: 13%;
+    right: 13%;
+    bottom: 13%;
+    object-fit: contain;
+  }
+  .arc.arc--apsara .arc-card:hover .arc-card__img-wrap--framed .arc-card__img { transform:scale(1.04); }
+  .arc.arc--apsara .arc-card__border {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:fill;
+    pointer-events:none;
+    z-index:2;
+  }
+
   .arc-empty { max-width:1400px; margin:0 auto; padding:80px 48px; text-align:center; grid-column:1/-1; }
   .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
   .arc-empty__p { font-size:14px; color:#6b7280; max-width:42ch; margin:0 auto; }
@@ -83,9 +109,13 @@
 
 {%- liquid
   assign arc_layout = section.settings.layout_mode | default: 'full'
+  assign arc_apsara = false
+  if template.suffix == 'apsara-attar'
+    assign arc_apsara = true
+  endif
 -%}
 
-<div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}">
+<div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}{% if arc_apsara %} arc--apsara{% endif %}">
   {%- unless arc_layout == 'products_only' -%}
   <div class="arc-hero">
     {%- if section.settings.hero_image != blank -%}
@@ -149,10 +179,17 @@
         {%- for product in collection.products -%}
           {%- capture ar_showcard -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
           {%- assign ar_showcard = ar_showcard | strip -%}
+          {%- assign ar_showcard_framed = false -%}
+          {%- if arc_apsara and ar_showcard != blank -%}
+            {%- assign ar_showcard_framed = true -%}
+          {%- endif -%}
           <div class="arc-card">
-            <a href="{{ product.url }}" class="arc-card__img-wrap">
+            <a href="{{ product.url }}" class="arc-card__img-wrap{% if ar_showcard_framed %} arc-card__img-wrap--framed{% endif %}">
               {%- if ar_showcard != blank -%}
                 <img src="{{ ar_showcard | asset_url }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- if ar_showcard_framed -%}
+                  <img class="arc-card__border" src="{{ 'Border.webp' | asset_url }}" alt="" width="800" height="1067" loading="lazy" decoding="async" aria-hidden="true">
+                {%- endif -%}
               {%- elsif product.featured_image -%}
                 <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
                 {%- if product.images.size > 1 -%}

@@ -1,0 +1,226 @@
+{%- comment -%}
+  Planetary Mantra Experience — presentation layer.
+  @param planet_key, label, icon, sanskrit, translit, meaning
+  @param reel_poster, reel_youtube (YouTube video ID)
+  @param meta_element, meta_chakra, meta_day, meta_ritual, meta_direction, meta_colour
+  @param blessing_1_title, blessing_1_desc, blessing_1_icon
+  @param blessing_2_title, blessing_2_desc, blessing_2_icon
+  @param blessing_3_title, blessing_3_desc, blessing_3_icon
+  @param meta_badge_title, meta_badge_desc, meta_badge_icon
+  @param product_id
+{%- endcomment -%}
+
+{%- assign pme_id = product_id | default: planet_key -%}
+{%- assign pme_yt_id = reel_youtube | default: 'lvEAWScYEzM' -%}
+
+<section
+  class="pme"
+  data-pme-section
+  data-pme-planet="{{ planet_key }}"
+  aria-labelledby="pme-heading-{{ pme_id }}"
+>
+  <div class="pme__shell">
+    <div class="pme__frame" data-pme-reveal>
+      <div class="pme__grid">
+        {%- comment -%} LEFT — Sacred Reel {%- endcomment -%}
+        <div class="pme__reel-col">
+          <div
+            class="pme__reel"
+            data-pme-reel
+            data-pme-youtube="{{ pme_yt_id }}"
+          >
+            <div class="pme__reel-ratio">
+              <img
+                class="pme__reel-poster"
+                src="{{ reel_poster | asset_url }}"
+                alt="{{ label }} mantra chanting — temple ritual reel"
+                width="540"
+                height="960"
+                loading="lazy"
+                decoding="async"
+              >
+
+              <div class="pme__reel-media" data-pme-media hidden></div>
+
+              <div class="pme__reel-scrim" aria-hidden="true"></div>
+
+              <div class="pme__reel-overlay">
+                <div class="pme__reel-top">
+                  <img
+                    class="pme__reel-planet-icon pme__reel-planet-icon--pulse"
+                    src="{{ icon | asset_url }}"
+                    alt=""
+                    width="32"
+                    height="32"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+
+                <div class="pme__reel-footer">
+                  <div class="pme__reel-brand">
+                    <span class="pme__reel-brand-mark" aria-hidden="true">AR</span>
+                    <span class="pme__reel-brand-name">Anand Rasa</span>
+                  </div>
+                  <span class="pme__reel-sound-hint" data-pme-sound-hint aria-live="polite">Tap for sound</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="pme__reel-sound"
+                data-pme-sound
+                aria-label="Enable sound for {{ label }} mantra reel"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        {%- comment -%} RIGHT — Planet Mantra {%- endcomment -%}
+        <div class="pme__mantra-col">
+          <div class="pme__mantra-inner">
+            <header class="pme__header">
+              <p class="pme__eyebrow" id="pme-heading-{{ pme_id }}">{{ label | upcase }} Mantra</p>
+              <h2 class="pme__planet-name">{{ label }}</h2>
+            </header>
+
+            <div class="pme__mantra-core">
+              <div class="pme__mantra-row">
+                <div class="pme__icon-wrap pme__icon-wrap--left" aria-hidden="true">
+                  <img
+                    class="pme__icon pme__icon--float"
+                    src="{{ icon | asset_url }}"
+                    alt=""
+                    width="56"
+                    height="56"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+
+                <p class="pme__sanskrit" lang="sa">{{ sanskrit }}</p>
+
+                <div class="pme__icon-wrap pme__icon-wrap--right" aria-hidden="true">
+                  <img
+                    class="pme__icon pme__icon--float pme__icon--float-delay"
+                    src="{{ icon | asset_url }}"
+                    alt=""
+                    width="56"
+                    height="56"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </div>
+              </div>
+
+              <p class="pme__translit"><em>{{ translit }}</em></p>
+
+              <div class="pme__meaning" data-pme-meaning>
+                <span class="pme__meaning-icon" aria-hidden="true">
+                  {%- render 'planet-mantra-icon', icon: 'lotus' -%}
+                </span>
+                <p class="pme__meaning-text">{{ meaning }}</p>
+              </div>
+
+              <ul class="pme__meta" aria-label="{{ label }} planetary attributes">
+                <li class="pme__meta-item">
+                  <span class="pme__meta-icon" aria-hidden="true">☀</span>
+                  <span class="pme__meta-label">Planet</span>
+                  <span class="pme__meta-value">{{ label }}</span>
+                </li>
+                {%- if meta_element != blank -%}
+                  <li class="pme__meta-item">
+                    <span class="pme__meta-icon" aria-hidden="true">🔥</span>
+                    <span class="pme__meta-label">Element</span>
+                    <span class="pme__meta-value">{{ meta_element }}</span>
+                  </li>
+                {%- endif -%}
+                {%- if meta_chakra != blank -%}
+                  <li class="pme__meta-item">
+                    <span class="pme__meta-icon" aria-hidden="true">📿</span>
+                    <span class="pme__meta-label">Chakra</span>
+                    <span class="pme__meta-value">{{ meta_chakra }}</span>
+                  </li>
+                {%- endif -%}
+                {%- if meta_day != blank -%}
+                  <li class="pme__meta-item">
+                    <span class="pme__meta-icon" aria-hidden="true">🪔</span>
+                    <span class="pme__meta-label">Best Day</span>
+                    <span class="pme__meta-value">{{ meta_day }}</span>
+                  </li>
+                {%- endif -%}
+                {%- if meta_ritual != blank -%}
+                  <li class="pme__meta-item">
+                    <span class="pme__meta-icon" aria-hidden="true">✨</span>
+                    <span class="pme__meta-label">Ritual Time</span>
+                    <span class="pme__meta-value">{{ meta_ritual }}</span>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
+
+            <div class="pme__blessings" data-pme-blessings>
+              <div class="pme__blessing">
+                <span class="pme__blessing-icon pme__blessing-icon--anim" aria-hidden="true">
+                  {%- render 'planet-mantra-icon', icon: blessing_1_icon -%}
+                </span>
+                <div class="pme__blessing-body">
+                  <p class="pme__blessing-title">{{ blessing_1_title }}</p>
+                  <p class="pme__blessing-desc">{{ blessing_1_desc }}</p>
+                </div>
+              </div>
+
+              <div class="pme__blessing">
+                <span class="pme__blessing-icon pme__blessing-icon--anim" aria-hidden="true">
+                  {%- render 'planet-mantra-icon', icon: blessing_2_icon -%}
+                </span>
+                <div class="pme__blessing-body">
+                  <p class="pme__blessing-title">{{ blessing_2_title }}</p>
+                  <p class="pme__blessing-desc">{{ blessing_2_desc }}</p>
+                </div>
+              </div>
+
+              <div class="pme__blessing">
+                <span class="pme__blessing-icon pme__blessing-icon--anim" aria-hidden="true">
+                  {%- render 'planet-mantra-icon', icon: blessing_3_icon -%}
+                </span>
+                <div class="pme__blessing-body">
+                  <p class="pme__blessing-title">{{ blessing_3_title }}</p>
+                  <p class="pme__blessing-desc">{{ blessing_3_desc }}</p>
+                </div>
+              </div>
+
+              {%- if meta_badge_title != blank -%}
+                <div class="pme__blessing pme__blessing--element">
+                  <span class="pme__blessing-icon pme__blessing-icon--anim" aria-hidden="true">
+                    {%- render 'planet-mantra-icon', icon: meta_badge_icon -%}
+                  </span>
+                  <div class="pme__blessing-body">
+                    <p class="pme__blessing-title">{{ meta_badge_title }}</p>
+                    <p class="pme__blessing-desc">{{ meta_badge_desc }}</p>
+                    {%- if meta_direction != blank or meta_colour != blank -%}
+                      <p class="pme__blessing-extra">
+                        {%- if meta_direction != blank -%}{{ meta_direction }}{%- endif -%}
+                        {%- if meta_direction != blank and meta_colour != blank -%} · {%- endif -%}
+                        {%- if meta_colour != blank -%}{{ meta_colour }}{%- endif -%}
+                      </p>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+
+            <div class="pme__cta-wrap">
+              <a
+                class="pme__cta"
+                href="{% render 'ar-collection-url', handle: 'planet-attars' %}"
+              >
+                Explore Planet Attars
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

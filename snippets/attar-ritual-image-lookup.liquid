@@ -1,0 +1,33 @@
+{%- comment -%}
+  Ritual guide image lookup — category-aware, future-compatible.
+  Returns asset path string (empty if none).
+
+  Usage:
+    {%- capture atr_img -%}{%- render 'attar-ritual-image-lookup', product: product -%}{%- endcapture -%}
+{%- endcomment -%}
+
+{%- liquid
+  assign atr_p = product
+  assign img = ''
+  assign scope = atr_p.handle | downcase | append: '|' | append: atr_p.title | downcase | append: '|' | append: atr_p.type | downcase
+
+  if atr_p.collections != blank
+    for col in atr_p.collections
+      assign scope = scope | append: '|' | append: col.handle | downcase
+    endfor
+  endif
+
+  if scope contains 'planet' or scope contains 'navagraha' or scope contains 'surya' or scope contains 'guru' or scope contains 'jupiter' or scope contains 'saturn' or scope contains 'mars' or scope contains 'venus' or scope contains 'mercury' or scope contains 'moon' or scope contains 'sun' or scope contains 'rahu' or scope contains 'ketu' or scope contains 'shani' or scope contains 'shukra' or scope contains 'budh' or scope contains 'mangal' or scope contains 'chandra'
+    assign img = 'attar/ritual-planet.webp'
+  elsif scope contains 'zodiac' or scope contains 'aries' or scope contains 'taurus' or scope contains 'gemini' or scope contains 'cancer' or scope contains 'leo' or scope contains 'virgo' or scope contains 'libra' or scope contains 'scorpio' or scope contains 'sagittarius' or scope contains 'capricorn' or scope contains 'aquarius' or scope contains 'pisces'
+    assign img = 'attar/ritual-zodiac.webp'
+  elsif scope contains 'nakshatra' or scope contains 'ashwini' or scope contains 'rohini' or scope contains 'magha' or scope contains 'pushya'
+    assign img = 'attar/ritual-nakshatra.webp'
+  elsif scope contains 'chakra'
+    assign img = 'attar/ritual-chakra.webp'
+  else
+    assign img = 'attar/ritual-guide.webp'
+  endif
+
+  echo img
+-%}

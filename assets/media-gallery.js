@@ -178,7 +178,11 @@ if (!customElements.get('media-gallery')) {
           if (!this.mql.matches || this.elements.thumbnails) {
             activeMedia.parentElement.scrollTo({ left: activeMedia.offsetLeft });
           }
+          // Never hijack page scroll during luxury autoplay or when gallery is off-screen.
+          if (this._lmgAutoplayAdvance) return;
           const activeMediaRect = activeMedia.getBoundingClientRect();
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          if (activeMediaRect.bottom < 0 || activeMediaRect.top > viewportHeight) return;
           if (activeMediaRect.top > -0.5) return;
           const top = activeMediaRect.top + window.scrollY;
           window.scrollTo({ top: top, behavior: 'smooth' });

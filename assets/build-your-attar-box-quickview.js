@@ -39,7 +39,33 @@
   var galleryImages = [];
   var galleryIndex = 0;
   var lastFocus = null;
+  var qvScrollY = 0;
   var productCache = {};
+
+  function lockPageScroll() {
+    qvScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + qvScrollY + 'px';
+    document.body.style.width = '100%';
+    document.body.classList.add('byb-qv-open');
+  }
+
+  function unlockPageScroll() {
+    document.body.classList.remove('byb-qv-open');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, qvScrollY);
+  }
+
+  function focusWithoutScroll(el) {
+    if (!el || !el.focus) return;
+    try {
+      el.focus({ preventScroll: true });
+    } catch (e) {
+      el.focus();
+    }
+  }
 
   function getApi() {
     return window.__bybApi || null;
@@ -480,10 +506,10 @@
     var last = focusable[focusable.length - 1];
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
-      last.focus();
+      focusWithoutScroll(last);
     } else if (!e.shiftKey && document.activeElement === last) {
       e.preventDefault();
-      first.focus();
+      focusWithoutScroll(first);
     }
   }
 
@@ -493,12 +519,12 @@
 
     lastFocus = document.activeElement;
     activeCard = card;
+    lockPageScroll();
     modalRoot.hidden = false;
     modalRoot.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('byb-qv-open');
     loader.hidden = false;
     body.hidden = true;
-    dialog.focus();
+    focusWithoutScroll(dialog);
 
     fetchProduct(data.handle)
       .then(function (product) {
@@ -516,14 +542,14 @@
   function close() {
     modalRoot.hidden = true;
     modalRoot.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('byb-qv-open');
+    unlockPageScroll();
     activeCard = null;
     activeData = null;
     heroImg.removeAttribute('src');
     heroImg.alt = '';
     thumbsWrap.innerHTML = '';
     storyText.innerHTML = '';
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    focusWithoutScroll(lastFocus);
   }
 
   function onAddClick() {

@@ -648,6 +648,7 @@ if (Shopify.designMode) {
     var zoomModal = document.getElementById('aip-zoom-modal');
     var zoomClose = document.getElementById('aip-zoom-close');
     var zoomImg = document.getElementById('aip-zoom-img');
+    var zoomScrollY = 0;
 
     if (zoomBtn && zoomModal) {
       zoomBtn.addEventListener('click', function () {
@@ -656,14 +657,22 @@ if (Shopify.designMode) {
           zoomImg.src = zoomImageUrl(visible.currentSrc || visible.src);
           zoomImg.alt = visible.alt || '';
         }
-        zoomModal.classList.add('is-open');
+        zoomScrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + zoomScrollY + 'px';
+        document.body.style.width = '100%';
         document.body.style.overflow = 'hidden';
+        zoomModal.classList.add('is-open');
       });
     }
 
     function closeZoom() {
       if (zoomModal) zoomModal.classList.remove('is-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       document.body.style.overflow = '';
+      window.scrollTo(0, zoomScrollY);
     }
 
     if (zoomClose) zoomClose.addEventListener('click', closeZoom);
@@ -692,4 +701,22 @@ if (Shopify.designMode) {
   } else {
     boot();
   }
+})();
+
+
+/* ===== design-mode scroll preserve (theme editor / localhost) ===== */
+(function () {
+  if (!window.Shopify || !Shopify.designMode) return;
+
+  var savedScrollY = 0;
+
+  document.addEventListener('shopify:section:unload', function () {
+    savedScrollY = window.scrollY;
+  });
+
+  document.addEventListener('shopify:section:load', function () {
+    requestAnimationFrame(function () {
+      window.scrollTo(0, savedScrollY);
+    });
+  });
 })();

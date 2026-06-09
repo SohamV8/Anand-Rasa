@@ -1,0 +1,447 @@
+{% comment %}
+  Anand Rasa Community — homepage showcase + email signup
+  @param section {Section}
+{% endcomment %}
+
+{%- liquid
+  assign arc_members = section.blocks | where: 'type', 'community_member'
+  assign arc_logo = section.settings.community_logo | default: blank
+  assign arc_logo_asset = 'anand-rasa-logo-black.png'
+  assign arc_form_id = 'arc-newsletter-' | append: section.id
+  assign arc_fallback_imgs = 'wooden_attar_box.webp,home.webp,chakra.webp,care.webp,love.webp,stress.webp' | split: ','
+  assign arc_handles = '@ritual.with.rasa|@attar.rituals|@spiritual.scent|@nakshatra.mood|@gifted.attars|@temple.fragrance' | split: '|'
+  assign arc_cities = 'Mumbai|Delhi|Bangalore|Jaipur|Pune|Chennai' | split: '|'
+  assign arc_speed = section.settings.community_carousel_speed | default: 5 | times: 0.1
+-%}
+
+<style>
+  .arc {
+    --arc-ink: #0f0f0f;
+    --arc-muted: #5a5a5a;
+    --arc-gold: #b8943a;
+    --arc-bdr: rgba(15, 15, 15, 0.12);
+    --arc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --arc-max: 1320px;
+    font-family: var(--font-body-family, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+    color: var(--arc-ink);
+    background: #fff;
+  }
+
+  .arc *, .arc *::before, .arc *::after { box-sizing: border-box; }
+
+  .arc-showcase {
+    padding: clamp(48px, 6vw, 88px) 0 clamp(40px, 5vw, 72px);
+    border-top: 1px solid var(--arc-bdr);
+  }
+
+  .arc-showcase__inner {
+    max-width: var(--arc-max);
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  .arc-showcase__head {
+    margin-bottom: clamp(32px, 4vw, 52px);
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+    transition: opacity 0.7s var(--arc-ease), transform 0.7s var(--arc-ease);
+  }
+
+  .arc.is-visible .arc-showcase__head { opacity: 1; transform: translate3d(0, 0, 0); }
+
+  .arc-showcase__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    margin: 0 0 clamp(14px, 2vw, 20px);
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(1.625rem, 3.8vw, 3.25rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--arc-ink);
+  }
+
+  .arc-showcase__logo {
+    display: inline-block;
+    height: clamp(44px, 6.5vw, 76px);
+    width: auto;
+    max-width: min(300px, 52vw);
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .arc-showcase__sub {
+    margin: 0;
+    max-width: 42rem;
+    font-size: clamp(1rem, 1.6vw, 1.375rem);
+    line-height: 1.55;
+    color: var(--arc-muted);
+  }
+
+  /* ── Carousel ── */
+  .arc-carousel {
+    position: relative;
+  }
+
+  /* Left/right arrows sit outside the track, vertically centred */
+  .arc-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    width: 36px;
+    height: 36px;
+    margin-top: -18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(15, 15, 15, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--arc-ink);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(15, 15, 15, 0.1);
+    transition: background 0.18s var(--arc-ease), box-shadow 0.18s var(--arc-ease), transform 0.18s var(--arc-ease);
+  }
+
+  .arc-carousel__arrow:hover {
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(15, 15, 15, 0.14);
+    transform: translate3d(0, -1px, 0);
+  }
+
+  .arc-carousel__arrow--l { left: 8px; }
+  .arc-carousel__arrow--r { right: 8px; }
+
+  /* No static fades — handled by the arrow positioning instead */
+  .arc-carousel__fade { display: none; }
+
+  .arc-carousel__viewport {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    border-radius: 0;
+  }
+
+  .arc-carousel__viewport:active { cursor: grabbing; }
+
+  .arc-carousel__track {
+    display: flex;
+    gap: 14px;
+    will-change: transform;
+    padding: 8px 4px 0;
+  }
+
+  /* ── Card ── */
+  .arc-card {
+    flex: 0 0 auto;
+    width: clamp(160px, 20vw, 240px);
+    background: #fff;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1.5px solid rgba(15, 15, 15, 0.1);
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition:
+      opacity 0.6s var(--arc-ease),
+      transform 0.6s var(--arc-ease),
+      box-shadow 0.3s var(--arc-ease);
+  }
+
+  .arc.is-visible .arc-card { opacity: 1; transform: translate3d(0, 0, 0); }
+
+  .arc-card:hover {
+    box-shadow: 0 10px 32px rgba(15, 15, 15, 0.1);
+    transform: translate3d(0, -3px, 0);
+  }
+
+  /* Square image frame */
+  .arc-card__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f2f0ed;
+  }
+
+  .arc-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 0.75s var(--arc-ease);
+    will-change: transform;
+  }
+
+  .arc-card:hover .arc-card__img { transform: scale3d(1.04, 1.04, 1); }
+
+  /* Pill label below image — no extra border on body */
+  .arc-card__body {
+    padding: 10px 12px 12px;
+    background: #fff;
+  }
+
+  .arc-card__handle {
+    display: inline-block;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--arc-ink);
+    background: #f2f1ef;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 15, 15, 0.09);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .arc-card__city { display: none; }
+
+  .arc-join {
+    border-top: 1px solid var(--arc-bdr);
+    padding: clamp(40px, 5vw, 72px) 0 clamp(48px, 6vw, 88px);
+    background: #fafaf9;
+  }
+
+  .arc-join__inner {
+    max-width: var(--arc-max);
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 48px);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .arc-join__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(40px, 5vw, 72px); }
+  }
+
+  .arc-join__copy {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: opacity 0.7s var(--arc-ease) 0.1s, transform 0.7s var(--arc-ease) 0.1s;
+  }
+
+  .arc.is-visible .arc-join__copy { opacity: 1; transform: translate3d(0, 0, 0); }
+
+  .arc-join__title {
+    margin: 0 0 clamp(16px, 2vw, 22px);
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .arc-join__text {
+    margin: 0;
+    max-width: 34rem;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--arc-muted);
+  }
+
+  .arc-join__form-wrap {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+    transition: opacity 0.7s var(--arc-ease) 0.2s, transform 0.7s var(--arc-ease) 0.2s;
+  }
+
+  .arc.is-visible .arc-join__form-wrap { opacity: 1; transform: translate3d(0, 0, 0); }
+
+  .arc-join__form {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    border: 1px solid var(--arc-bdr);
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .arc-join__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 56px;
+    padding: 0 20px;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+    color: var(--arc-ink);
+    outline: none;
+  }
+
+  .arc-join__input::placeholder { color: rgba(15, 15, 15, 0.42); }
+
+  .arc-join__submit {
+    flex: 0 0 auto;
+    min-height: 56px;
+    padding: 0 clamp(20px, 3vw, 28px);
+    border: 0;
+    border-left: 1px solid var(--arc-bdr);
+    background: var(--arc-ink);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.22s var(--arc-ease), transform 0.22s var(--arc-ease);
+  }
+
+  .arc-join__submit:hover { background: #000; transform: translate3d(0, -1px, 0); }
+
+  .arc-join__msg { margin: 12px 0 0; font-size: 14px; line-height: 1.5; }
+  .arc-join__msg--error { color: #8b3a3a; }
+  .arc-join__msg--success { color: #2d5a3d; }
+
+  @media (min-width: 900px) {
+    .arc-carousel__arrow--l { left: -18px; }
+    .arc-carousel__arrow--r { right: -18px; }
+  }
+
+  @media (max-width: 599px) {
+    .arc-join__form { flex-direction: column; }
+    .arc-join__submit { border-left: 0; border-top: 1px solid var(--arc-bdr); min-height: 52px; }
+    .arc-carousel__track { gap: 10px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arc-showcase__head, .arc-join__copy, .arc-join__form-wrap, .arc-card { opacity: 1; transform: none; transition: none; }
+    .arc-card:hover, .arc-card:hover .arc-card__img, .arc-carousel__arrow:hover, .arc-join__submit:hover { transform: none; }
+    .arc-card__img { transition: none; }
+  }
+</style>
+
+<section class="arc" data-arc-root aria-label="{{ section.settings.community_aria_label | default: 'Anand Rasa Community' | escape }}">
+  <div class="arc-showcase">
+    <div class="arc-showcase__inner">
+      <header class="arc-showcase__head">
+        <h2 class="arc-showcase__title">
+          <span>{{ section.settings.community_heading_prefix | default: 'Join The' }}</span>
+          {%- if arc_logo != blank -%}
+            <img
+              class="arc-showcase__logo"
+              src="{{ arc_logo | image_url: width: 560 }}"
+              alt="Anand Rasa"
+              width="280"
+              height="76"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- else -%}
+            <img class="arc-showcase__logo" src="{{ arc_logo_asset | asset_url }}" alt="Anand Rasa" width="280" height="76" loading="lazy" decoding="async">
+          {%- endif -%}
+          <span>{{ section.settings.community_heading_suffix | default: 'Community' }}</span>
+        </h2>
+        <p class="arc-showcase__sub">
+          {{ section.settings.community_subheading | default: 'A community of fragrance lovers, spiritual seekers, and modern ritualists.' }}
+        </p>
+      </header>
+
+      <div class="arc-carousel" data-arc-carousel data-arc-speed="{{ arc_speed }}">
+        <span class="arc-carousel__fade arc-carousel__fade--l" aria-hidden="true"></span>
+        <span class="arc-carousel__fade arc-carousel__fade--r" aria-hidden="true"></span>
+        <button type="button" class="arc-carousel__arrow arc-carousel__arrow--l" data-arc-prev aria-label="Previous community photos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="arc-carousel__arrow arc-carousel__arrow--r" data-arc-next aria-label="Next community photos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="arc-carousel__viewport" data-arc-viewport>
+          <div class="arc-carousel__track" data-arc-track role="list">
+            {%- if arc_members.size > 0 -%}
+              {%- for block in arc_members -%}
+                {%- assign member_img = block.settings.image -%}
+                {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
+                {%- assign arc_fb_asset = arc_fallback_imgs[arc_fb_idx] -%}
+                {%- assign arc_card_alt = block.settings.handle | default: block.settings.name | default: 'Anand Rasa community' -%}
+                <article class="arc-card" role="listitem" {{ block.shopify_attributes }} style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
+                  <div class="arc-card__media">
+                    {%- if member_img != blank -%}
+                      <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                    {%- else -%}
+                      <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                    {%- endif -%}
+                  </div>
+                  <div class="arc-card__body">
+                    {%- if block.settings.handle != blank -%}<span class="arc-card__handle">{{ block.settings.handle }}</span>
+                    {%- elsif block.settings.name != blank -%}<span class="arc-card__handle">{{ block.settings.name }}</span>{%- endif -%}
+                    {%- if block.settings.city != blank -%}<p class="arc-card__city">{{ block.settings.city }}</p>{%- endif -%}
+                  </div>
+                </article>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for handle in arc_handles -%}
+                {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
+                {%- assign arc_fb_asset = arc_fallback_imgs[arc_fb_idx] -%}
+                {%- assign arc_city = arc_cities[forloop.index0] -%}
+                <article class="arc-card" role="listitem" style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
+                  <div class="arc-card__media">
+                    <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                  </div>
+                  <div class="arc-card__body">
+                    <span class="arc-card__handle">{{ handle }}</span>
+                    <p class="arc-card__city">{{ arc_city }}</p>
+                  </div>
+                </article>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arc-join">
+    <div class="arc-join__inner">
+      <div class="arc-join__copy">
+        <h3 class="arc-join__title">{{ section.settings.community_join_heading | default: 'Join The Anand Rasa Community' }}</h3>
+        <p class="arc-join__text">
+          {{ section.settings.community_join_text | default: 'Receive exclusive launches, fragrance stories, early access, ritual guides, and special community-only offers.' }}
+        </p>
+      </div>
+      <div class="arc-join__form-wrap">
+        {% form 'customer', class: 'arc-join__form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter,community">
+          <label class="visually-hidden" for="arc-email-{{ section.id }}">Email address</label>
+          <input
+            id="arc-email-{{ section.id }}"
+            class="arc-join__input"
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="{{ section.settings.community_email_placeholder | default: 'Enter your email' }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            aria-required="true"
+            required
+            {% if form.errors %}aria-invalid="true" aria-describedby="arc-error-{{ section.id }}"
+            {% elsif form.posted_successfully? %}aria-describedby="arc-success-{{ section.id }}"{% endif %}
+          >
+          <button type="submit" class="arc-join__submit" name="commit">
+            {{ section.settings.community_submit_label | default: 'Join Community' }}
+          </button>
+        {% endform %}
+        {%- if form.errors -%}
+          <p class="arc-join__msg arc-join__msg--error" id="arc-error-{{ section.id }}" role="alert">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </p>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="arc-join__msg arc-join__msg--success" id="arc-success-{{ section.id }}" role="status">
+            {{ section.settings.community_success_message | default: 'Welcome to the Anand Rasa Community.' }}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'anand-rasa-community.js' | asset_url }}" defer></script>
