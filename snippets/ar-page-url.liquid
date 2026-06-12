@@ -38,27 +38,27 @@
       endif
     when 'build-3-attars'
       assign url = routes.root_url | append: '?view=build-3-attars'
-      if pages['build-3-attars'] != blank
+      if pages['build-3-attars'] != blank and pages['build-3-attars'].template_suffix == 'build-3-attars'
         assign url = pages['build-3-attars'].url
       endif
     when 'build-5-attars'
       assign url = routes.root_url | append: '?view=build-5-attars'
-      if pages['build-5-attars'] != blank
+      if pages['build-5-attars'] != blank and pages['build-5-attars'].template_suffix == 'build-5-attars'
         assign url = pages['build-5-attars'].url
       endif
     when 'build-4-perfumes'
       assign url = routes.root_url | append: '?view=build-4-perfumes'
-      if pages['build-4-perfumes'] != blank
+      if pages['build-4-perfumes'] != blank and pages['build-4-perfumes'].template_suffix == 'build-4-perfumes'
         assign url = pages['build-4-perfumes'].url
       endif
     when 'astrology-ritual-set'
       assign url = routes.root_url | append: '?view=astrology-ritual-set'
-      if pages['astrology-ritual-set'] != blank
+      if pages['astrology-ritual-set'] != blank and pages['astrology-ritual-set'].template_suffix == 'astrology-ritual-set'
         assign url = pages['astrology-ritual-set'].url
       endif
-    when 'build-3-incense'
+    when 'build-3-incense', 'incense-bundle-offer'
       assign url = routes.root_url | append: '?view=build-3-incense'
-      if pages['build-3-incense'] != blank
+      if pages['build-3-incense'] != blank and pages['build-3-incense'].template_suffix == 'build-3-incense'
         assign url = pages['build-3-incense'].url
       endif
     else

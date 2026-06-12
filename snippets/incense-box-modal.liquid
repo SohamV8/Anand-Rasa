@@ -1,0 +1,85 @@
+{%- comment -%} Product quick-view modal — Build Your Incense Box {%- endcomment -%}
+<div class="bib-modal" data-bib-modal hidden aria-hidden="true">
+  <div class="bib-modal__backdrop" data-bib-modal-close aria-hidden="true"></div>
+  <div
+    class="bib-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bib-modal-title"
+    data-bib-modal-dialog
+    tabindex="-1"
+  >
+    <button type="button" class="bib-modal__close" data-bib-modal-close aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="bib-modal__body" data-bib-modal-body hidden>
+      <div class="bib-modal__gallery" data-bib-modal-gallery>
+        <div class="bib-modal__stage">
+          <img class="bib-modal__hero" data-bib-modal-hero alt="" width="800" height="800" decoding="async" loading="eager">
+        </div>
+        <div class="bib-modal__thumbs" data-bib-modal-thumbs role="list" hidden></div>
+      </div>
+
+      <div class="bib-modal__panel">
+        <div class="bib-modal__scroll" data-bib-modal-scroll>
+          <header class="bib-modal__header">
+            <p class="bib-modal__cat" data-bib-modal-cat hidden></p>
+            <h2 class="bib-modal__title" id="bib-modal-title" data-bib-modal-title></h2>
+            <p class="bib-modal__note" data-bib-modal-note hidden></p>
+          </header>
+
+          <ul class="bib-modal__badges" aria-label="Product qualities">
+            <li>Handcrafted</li>
+            <li>Low smoke</li>
+            <li>Long burning</li>
+          </ul>
+
+          <div class="bib-modal__price-row">
+            <span class="bib-modal__price" data-bib-modal-price></span>
+            <span class="bib-modal__per">per pack</span>
+          </div>
+
+          <div class="bib-modal__highlights" data-bib-modal-highlights hidden>
+            <div class="bib-modal__highlight" data-bib-modal-profile-wrap hidden>
+              <span class="bib-modal__highlight-label">Fragrance</span>
+              <span data-bib-modal-profile></span>
+            </div>
+            <div class="bib-modal__highlight" data-bib-modal-burn-wrap hidden>
+              <span class="bib-modal__highlight-label">Burn time</span>
+              <span data-bib-modal-burn></span>
+            </div>
+            <div class="bib-modal__highlight" data-bib-modal-best-wrap hidden>
+              <span class="bib-modal__highlight-label">Best for</span>
+              <span data-bib-modal-best></span>
+            </div>
+            <div class="bib-modal__highlight" data-bib-modal-ing-wrap hidden>
+              <span class="bib-modal__highlight-label">Ingredients</span>
+              <span data-bib-modal-ing></span>
+            </div>
+          </div>
+
+          <div class="bib-modal__desc-wrap" data-bib-modal-desc-wrap hidden>
+            <h3 class="bib-modal__section-title">Product story</h3>
+            <div class="bib-modal__desc" data-bib-modal-desc></div>
+          </div>
+
+          <ul class="bib-modal__benefits" aria-label="Benefits">
+            <li>Handcrafted in India</li>
+            <li>Low smoke formula</li>
+            <li>Natural botanicals</li>
+            <li>Long, even burn</li>
+          </ul>
+        </div>
+
+        <div class="bib-modal__cta">
+          <button type="button" class="bib-modal__add" data-bib-modal-add>
+            <span data-bib-modal-add-label>Add to Box</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

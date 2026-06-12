@@ -608,11 +608,24 @@
   });
   }
 
-  initBuildYourAttarBoxQV();
-
-  document.addEventListener('shopify:section:load', function (event) {
-    if (event.target && event.target.querySelector('[data-byb-root]')) {
+  function bootBuildYourAttarBoxQV() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBuildYourAttarBoxQV);
+    } else {
       initBuildYourAttarBoxQV();
     }
-  });
+  }
+
+  bootBuildYourAttarBoxQV();
+
+  if (!window.__bybQvSectionLoadBound) {
+    window.__bybQvSectionLoadBound = true;
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.target && event.target.querySelector('[data-byb-root]')) {
+        var r = event.target.querySelector('[data-byb-root]');
+        if (r) r.dataset.bybQvInit = '';
+        initBuildYourAttarBoxQV();
+      }
+    });
+  }
 })();

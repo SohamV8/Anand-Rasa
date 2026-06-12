@@ -321,7 +321,7 @@
         "blog": "news",
         "blog_limit": 3,
         "blog_heading": "OUR BLOGS",
-        "incense_url": "shopify://collections/incense-stick",
+        "incense_url": "/pages/build-3-incense",
         "inc_collection": "incense-stick",
         "inc_heading": "Shop Incense Sticks"
       }

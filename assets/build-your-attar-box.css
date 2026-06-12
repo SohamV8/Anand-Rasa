@@ -231,6 +231,11 @@
   max-width: 34em;
 }
 
+.byb a.byb-hero__cta,
+.byb button.byb-hero__cta {
+  color: #fff;
+}
+
 .byb-hero__cta {
   display: inline-flex;
   align-items: center;
@@ -255,6 +260,7 @@
 
 .byb-hero__cta-label {
   display: inline-block;
+  color: inherit;
   transition: transform 0.45s var(--byb-ease);
 }
 

@@ -44,11 +44,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         assign ar_is_find_fragrance_legacy_view = true
       endif
 
+      assign ar_build_3_incense_page = pages['build-3-incense']
+      assign ar_is_build_3_incense_legacy_view = false
+      if request.page_type == 'index' and template.suffix == 'build-3-incense'
+        assign ar_is_build_3_incense_legacy_view = true
+      endif
+
       assign ar_should_noindex = false
       if ar_is_faq_legacy_view
         assign ar_should_noindex = true
       endif
       if ar_is_find_fragrance_legacy_view
+        assign ar_should_noindex = true
+      endif
+      if ar_is_build_3_incense_legacy_view
         assign ar_should_noindex = true
       endif
       if request.page_type == 'index'
@@ -106,6 +115,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     {%- if ar_is_find_fragrance_legacy_view and ar_find_page != blank -%}
       <script>window.location.replace({{ ar_find_page.url | json }});</script>
+    {%- endif -%}
+    {%- if ar_is_build_3_incense_legacy_view and ar_build_3_incense_page != blank -%}
+      <script>window.location.replace({{ ar_build_3_incense_page.url | json }});</script>
     {%- endif -%}
     {%- comment -%}
       On 404, request.path is /404 (not the URL the visitor asked for). Use location.pathname.
@@ -166,6 +178,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     {%- if request.page_type == 'page' and page != blank and page.handle == 'faqs' -%}
       <script>window.location.replace({{ ar_faq_canonical_url | json }});</script>
+    {%- endif -%}
+    {%- if request.page_type == 'page' and page != blank and page.handle == 'incense-bundle-offer' -%}
+      {%- if ar_build_3_incense_page != blank -%}
+        <script>window.location.replace({{ ar_build_3_incense_page.url | json }});</script>
+      {%- else -%}
+        <script>window.location.replace({{ routes.root_url | append: '?view=build-3-incense' | json }});</script>
+      {%- endif -%}
+    {%- endif -%}
+    {%- comment -%} Build box pages published without the matching template — fall back to ?view= {%- endcomment -%}
+    {%- if request.page_type == 'page' and page != blank -%}
+      {%- if page.handle == 'build-5-attars' and page.template_suffix != 'build-5-attars' -%}
+        <script>window.location.replace({{ routes.root_url | append: '?view=build-5-attars' | json }});</script>
+      {%- elsif page.handle == 'build-3-attars' and page.template_suffix != 'build-3-attars' -%}
+        <script>window.location.replace({{ routes.root_url | append: '?view=build-3-attars' | json }});</script>
+      {%- elsif page.handle == 'build-4-perfumes' and page.template_suffix != 'build-4-perfumes' -%}
+        <script>window.location.replace({{ routes.root_url | append: '?view=build-4-perfumes' | json }});</script>
+      {%- elsif page.handle == 'astrology-ritual-set' and page.template_suffix != 'astrology-ritual-set' -%}
+        <script>window.location.replace({{ routes.root_url | append: '?view=astrology-ritual-set' | json }});</script>
+      {%- endif -%}
     {%- endif -%}
 
     {%- comment -%}

@@ -1,0 +1,46 @@
+{%- comment -%}
+  Build Your Attar Box — conditional assets (load once per page).
+  @param part {string} styles | scripts
+  @param hub_mode {boolean} Hub landing only — no bundle scripts when true.
+{%- endcomment -%}
+
+{%- if part == 'styles' or part == blank -%}
+  {%- unless build_box_attar_css_loaded -%}
+    {%- assign build_box_attar_css_loaded = true -%}
+    {{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
+  {%- endunless -%}
+{%- endif -%}
+
+{%- if part == 'scripts' or part == blank -%}
+  {%- if hub_mode -%}
+    {%- unless build_box_attar_hub_script_loaded -%}
+      {%- assign build_box_attar_hub_script_loaded = true -%}
+      <script>
+        (function () {
+          var hero = document.querySelector('.byb--hub .byb-hero--cinematic');
+          if (!hero) return;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              hero.classList.add('byb-hero--animate');
+              var root = hero.closest('.byb');
+              if (root) root.classList.add('is-visible');
+            });
+          });
+        })();
+      </script>
+    {%- endunless -%}
+  {%- else -%}
+    {%- unless build_box_confetti_js_loaded -%}
+      {%- assign build_box_confetti_js_loaded = true -%}
+      <script src="{{ 'build-box-confetti.js' | asset_url }}" defer data-build-box-asset="confetti"></script>
+    {%- endunless -%}
+    {%- unless build_box_attar_js_loaded -%}
+      {%- assign build_box_attar_js_loaded = true -%}
+      <script src="{{ 'build-your-attar-box.js' | asset_url }}" defer data-build-box-asset="attar"></script>
+    {%- endunless -%}
+    {%- unless build_box_attar_qv_js_loaded -%}
+      {%- assign build_box_attar_qv_js_loaded = true -%}
+      <script src="{{ 'build-your-attar-box-quickview.js' | asset_url }}" defer data-build-box-asset="attar-quickview"></script>
+    {%- endunless -%}
+  {%- endif -%}
+{%- endif -%}

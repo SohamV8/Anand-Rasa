@@ -4,7 +4,11 @@
 {% endcomment %}
 
 {%- liquid
-  assign byb_handles = section.settings.collection_handles | default: 'bestseller,Bestseller,best-seller,bestsellers,best-sellers' | split: ','
+  if template.suffix == 'build-4-perfumes'
+    assign byb_handles = 'perfume-series,perfume,perfumes,perfume-collection' | split: ','
+  else
+    assign byb_handles = section.settings.collection_handles | default: 'bestseller,Bestseller,best-seller,bestsellers,best-sellers' | split: ','
+  endif
   assign byb_collection = blank
   for byb_h in byb_handles
     assign byb_h_clean = byb_h | strip
@@ -69,8 +73,17 @@
   endif
 
   unless byb_hub_mode
-    assign byb_size_label = '6ml'
+    if template.suffix == 'build-4-perfumes'
+      assign byb_size_label = section.settings.size_label | default: '20ml'
+    else
+      assign byb_size_label = '6ml'
+    endif
   endunless
+
+  assign byb_grid_handles = section.settings.collection_handles
+  if template.suffix == 'build-4-perfumes'
+    assign byb_grid_handles = 'perfume-series,perfume,perfumes,perfume-collection'
+  endif
 
   if byb_hub_mode
     capture byb_hub_url_3
@@ -120,7 +133,7 @@
   endif
 -%}
 
-{{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
+{% render 'build-box-attar-assets', part: 'styles', hub_mode: byb_hub_mode %}
 
 <div
   class="byb{% if byb_hub_mode %} byb--hub{% elsif byb_plan_b_on == false %} byb--fixed-plan{% endif %}"
@@ -280,10 +293,10 @@
       <p class="byb-grid-section__complete" aria-live="polite">{{ byb_complete_msg }}</p>
     </div>
 
-    {%- if section.settings.collection_handles != blank and byb_group_astro -%}
-      {% render 'build-box-products-grid-astro', collection_handles: section.settings.collection_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
-    {%- elsif section.settings.collection_handles != blank -%}
-      {% render 'build-box-products-grid', collection_handles: section.settings.collection_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
+    {%- if byb_grid_handles != blank and byb_group_astro -%}
+      {% render 'build-box-products-grid-astro', collection_handles: byb_grid_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
+    {%- elsif byb_grid_handles != blank -%}
+      {% render 'build-box-products-grid', collection_handles: byb_grid_handles, size_label: byb_size_label, assets_only: byb_assets_only %}
     {%- elsif byb_collection != blank and byb_collection.products_count > 0 -%}
       {% render 'build-box-products-grid', collection: byb_collection, size_label: byb_size_label, assets_only: byb_assets_only %}
     {%- else -%}
@@ -306,25 +319,7 @@
   {%- endunless -%}
 </div>
 
-{%- if byb_hub_mode -%}
-<script>
-  (function () {
-    var hero = document.querySelector('.byb--hub .byb-hero--cinematic');
-    if (!hero) return;
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        hero.classList.add('byb-hero--animate');
-        var root = hero.closest('.byb');
-        if (root) root.classList.add('is-visible');
-      });
-    });
-  })();
-</script>
-{%- else -%}
-<script src="{{ 'build-box-confetti.js' | asset_url }}" defer></script>
-<script src="{{ 'build-your-attar-box.js' | asset_url }}" defer></script>
-<script src="{{ 'build-your-attar-box-quickview.js' | asset_url }}" defer></script>
-{%- endif -%}
+{% render 'build-box-attar-assets', part: 'scripts', hub_mode: byb_hub_mode %}
 
 {% schema %}
 {

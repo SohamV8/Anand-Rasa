@@ -1,0 +1,22 @@
+{%- comment -%}
+  Build Your Incense Box — conditional assets (load once per page).
+  @param part {string} styles | scripts
+{%- endcomment -%}
+
+{%- if part == 'styles' or part == blank -%}
+  {%- unless build_box_incense_css_loaded -%}
+    {%- assign build_box_incense_css_loaded = true -%}
+    {{ 'build-your-incense-box.css' | asset_url | stylesheet_tag }}
+  {%- endunless -%}
+{%- endif -%}
+
+{%- if part == 'scripts' or part == blank -%}
+  {%- unless build_box_confetti_js_loaded -%}
+    {%- assign build_box_confetti_js_loaded = true -%}
+    <script src="{{ 'build-box-confetti.js' | asset_url }}" defer data-build-box-asset="confetti"></script>
+  {%- endunless -%}
+  {%- unless build_box_incense_js_loaded -%}
+    {%- assign build_box_incense_js_loaded = true -%}
+    <script src="{{ 'build-your-incense-box.js' | asset_url }}" defer data-build-box-asset="incense"></script>
+  {%- endunless -%}
+{%- endif -%}

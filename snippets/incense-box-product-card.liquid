@@ -1,0 +1,126 @@
+{%- comment -%}
+  Product card — Build Your Incense Box
+  @param product {Product}
+  @param index {Number} optional loop index for stagger
+{%- endcomment -%}
+{%- liquid
+  assign bib_v = product.selected_or_first_available_variant
+  assign bib_default_burn = default_burn_time | default: '45–60 minutes'
+-%}
+{%- if bib_v != blank and bib_v.available -%}
+{%- liquid
+  capture bib_note
+    render 'build-box-product-notes', product: product
+  endcapture
+  assign bib_note = bib_note | strip
+  if bib_note == blank
+    assign bib_note = product.metafields.custom.tagline.value | default: '' | strip
+  endif
+
+  assign bib_img = ''
+  assign bib_img_srcset = ''
+  capture bib_asset
+    render 'incense-image-lookup', inc_product: product
+  endcapture
+  assign bib_asset = bib_asset | strip
+  if bib_asset != blank
+    assign bib_img = bib_asset | asset_url
+  elsif product.featured_image
+    assign bib_img = product.featured_image | image_url: width: 600
+    assign bib_img_srcset = product.featured_image | image_url: width: 400 | append: ' 400w, '
+    assign bib_img_srcset = bib_img_srcset | append: product.featured_image | image_url: width: 600 | append: ' 600w, '
+    assign bib_img_srcset = bib_img_srcset | append: product.featured_image | image_url: width: 900 | append: ' 900w'
+  endif
+
+  assign bib_desc = product.description | strip_html | strip | truncate: 120
+  assign bib_profile = product.metafields.custom.main_notes.value | default: product.metafields.custom.top_notes.value | default: bib_note | strip
+  assign bib_burn = product.metafields.custom.burn_time.value | default: bib_default_burn | strip
+  assign bib_best = product.metafields.custom.best_for.value | default: product.metafields.custom.tagline.value | default: 'Daily ritual' | strip
+  assign bib_ing = product.metafields.custom.ingredients.value | default: bib_profile | default: 'Natural botanicals & essential oils' | strip
+
+  assign bib_name = product.title | replace: ' Incense Stick', '' | replace: ' incense stick', '' | replace: ' Incense Sticks', '' | replace: ' incense sticks', '' | strip
+  assign bib_cat = product.type | default: 'Incense' | strip
+  assign bib_oneline = product.metafields.custom.tagline.value | default: bib_desc | default: bib_note | strip | truncate: 72
+-%}
+
+<article
+  class="bib-card"
+  data-bib-card
+  data-bib-reveal
+  style="--bib-i: {{ index | default: 0 }};"
+  data-variant-id="{{ bib_v.id }}"
+  data-product-id="{{ product.id }}"
+  data-title="{{ product.title | escape }}"
+>
+  <script type="application/json" data-bib-product-data>
+    {
+      "variantId": {{ bib_v.id | json }},
+      "productId": {{ product.id | json }},
+      "title": {{ product.title | json }},
+      "category": {{ bib_cat | json }},
+      "subtitle": {{ bib_oneline | json }},
+      "price": {{ bib_v.price | json }},
+      "compareAt": {{ bib_v.compare_at_price | default: 0 | json }},
+      "note": {{ bib_note | json }},
+      "description": {{ bib_desc | json }},
+      "profile": {{ bib_profile | json }},
+      "burnTime": {{ bib_burn | json }},
+      "bestFor": {{ bib_best | json }},
+      "ingredients": {{ bib_ing | json }},
+      "image": {{ bib_img | json }},
+      "images": [
+        {%- if product.images.size > 0 -%}
+          {%- for bib_media in product.images limit: 5 -%}
+            {{ bib_media | image_url: width: 900 | json }}{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        {%- elsif bib_img != blank -%}
+          {{ bib_img | json }}
+        {%- endif -%}
+      ]
+    }
+  </script>
+
+  <div class="bib-card__open" data-bib-card-open tabindex="0" role="button" aria-label="View {{ bib_name | escape }}">
+    <div class="bib-card__media">
+      {%- if bib_img != blank -%}
+        <img
+          class="bib-card__img"
+          src="{{ bib_img }}"
+          {% if bib_img_srcset != blank %}srcset="{{ bib_img_srcset }}" sizes="(min-width: 1100px) 25vw, (min-width: 768px) 33vw, (min-width: 480px) 50vw, 88vw"{% endif %}
+          alt="{{ bib_name | escape }}"
+          width="600"
+          height="450"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- else -%}
+        <span class="bib-card__ph" aria-hidden="true">✦</span>
+      {%- endif -%}
+      <span class="bib-card__selected" data-bib-rank hidden aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+
+    <div class="bib-card__body">
+      <span class="bib-card__badge">{{ bib_cat }}</span>
+      <h3 class="bib-card__name">{{ bib_name }}</h3>
+      {%- if bib_oneline != blank -%}
+        <p class="bib-card__desc">{{ bib_oneline }}</p>
+      {%- endif -%}
+      <div class="bib-card__meta-chips">
+        <span class="bib-card__chip">Burn {{ bib_burn }}</span>
+        <span class="bib-card__chip">{{ bib_best }}</span>
+      </div>
+      <div class="bib-card__price-row">
+        <span class="bib-card__price">{{ bib_v.price | money }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bib-card__foot">
+    <button type="button" class="bib-card__add" data-bib-add aria-pressed="false">
+      <span data-bib-add-label>Add to Box</span>
+    </button>
+  </div>
+</article>
+{%- endif -%}

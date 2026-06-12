@@ -1,31 +1,19 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "incense-bundle-offer",
       "settings": {
-        "bundle_collection": "incense-stick",
+        "bundle_collection": "incense-sticks",
         "bundle_size": 3,
-        "bundle_price_text": "\u20b9600",
+        "bundle_price_text": "₹600",
         "discount_code": "BUY3FOR600",
-        "hero_layout": "banner",
-        "offer_minutes": 60,
-        "hero_eyebrow": "Special Discount",
-        "hero_title": "Buy any 3",
-        "hero_sub": "Hand-picked incense sticks, crafted from pure botanicals. Mix any three fragrances and treat your space \u2014 or your loved ones \u2014 to a sacred ritual.",
-        "cta_pick": "Pick Your 3 Fragrances",
-        "cta_secondary_text": "Browse all incense",
-        "cta_secondary_url": "/collections/incense-stick",
+        "hero_eyebrow": "BUILD YOUR INCENSE RITUAL",
+        "hero_title": "Build Your Perfect Incense Box",
+        "hero_sub": "Choose your favourite handcrafted incense sticks and create a ritual made just for you.",
+        "hero_secondary": "Choose Any 3 Packs",
+        "cta_pick": "Start Building",
         "cta_add": "Add Bundle to Cart",
-        "cta_clear": "Clear Selection"
+        "cta_clear": "Clear"
       }
     }
   },

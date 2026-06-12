@@ -1,12 +1,18 @@
 {%- comment -%}
-  Resolve the 6ml variant for Build Your Attar Box (available variants only).
+  Resolve the bundle variant for Build Your Attar / Perfume Box (available variants only).
 
   @param product {Product} required
-  Outputs variant id string, or blank when no eligible 6ml variant exists.
+  @param size_label {String} optional — "6ml" (default) or "20ml"
+  Outputs variant id string, or blank when no eligible variant exists.
 {%- endcomment -%}
 {%- liquid
   assign byb_variant_id = ''
   assign byb_pt = product.title | downcase
+  assign byb_size = size_label | default: '6ml' | downcase
+  assign byb_perfume_mode = false
+  if byb_size contains '20'
+    assign byb_perfume_mode = true
+  endif
 
   for variant in product.variants
     unless variant.available
@@ -17,22 +23,39 @@
     assign byb_vopts = variant.option1 | append: ' ' | append: variant.option2 | append: ' ' | append: variant.option3 | downcase
     assign byb_vscope = byb_vlabel | append: ' ' | append: byb_vopts
 
-    if byb_vscope contains '12ml' or byb_vscope contains '20ml' or byb_vscope contains '30ml' or byb_vscope contains '50ml' or byb_vscope contains '100ml'
-      continue
-    endif
+    if byb_perfume_mode
+      if byb_vscope contains '6ml' or byb_vscope contains '6 ml' or byb_vscope contains '12ml' or byb_vscope contains '30ml' or byb_vscope contains '50ml' or byb_vscope contains '100ml'
+        continue
+      endif
 
-    if byb_vscope contains '6ml' or byb_vscope contains '6 ml'
-      assign byb_variant_id = variant.id
-      break
+      if byb_vscope contains '20ml' or byb_vscope contains '20 ml'
+        assign byb_variant_id = variant.id
+        break
+      endif
+    else
+      if byb_vscope contains '12ml' or byb_vscope contains '20ml' or byb_vscope contains '30ml' or byb_vscope contains '50ml' or byb_vscope contains '100ml'
+        continue
+      endif
+
+      if byb_vscope contains '6ml' or byb_vscope contains '6 ml'
+        assign byb_variant_id = variant.id
+        break
+      endif
     endif
   endfor
 
   if byb_variant_id == '' and product.variants.size == 1
     assign byb_only = product.variants.first
     if byb_only.available
-      unless byb_pt contains '12ml' or byb_pt contains '20ml' or byb_pt contains '30ml' or byb_pt contains '50ml' or byb_pt contains '100ml'
-        assign byb_variant_id = byb_only.id
-      endunless
+      if byb_perfume_mode
+        if byb_pt contains '20ml' or byb_pt contains '20 ml'
+          assign byb_variant_id = byb_only.id
+        endif
+      else
+        unless byb_pt contains '12ml' or byb_pt contains '20ml' or byb_pt contains '30ml' or byb_pt contains '50ml' or byb_pt contains '100ml'
+          assign byb_variant_id = byb_only.id
+        endunless
+      endif
     endif
   endif
 

@@ -10,7 +10,7 @@
   assign byb_assets_only = assets_only | default: false
 
   capture byb_variant_id_raw
-    render 'build-box-variant-lookup', product: product
+    render 'build-box-variant-lookup', product: product, size_label: byb_size_label
   endcapture
   assign byb_variant_id = byb_variant_id_raw | strip | plus: 0
   assign byb_variant = product.selected_or_first_available_variant
@@ -68,7 +68,7 @@
 -%}
 
 {%- unless byb_variant != blank and byb_variant_id > 0 -%}
-  {%- comment -%} No eligible 6ml variant — card omitted. {%- endcomment -%}
+  {%- comment -%} No eligible variant — card omitted. {%- endcomment -%}
 {%- else -%}
 
 <article

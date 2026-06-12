@@ -786,11 +786,26 @@
     endcapture
     assign ar_box_main_url = ar_box_main_url | strip
   endif
-  assign ar_box_url_3 = routes.root_url | append: '?view=build-3-attars'
-  assign ar_box_url_5 = routes.root_url | append: '?view=build-5-attars'
-  assign ar_box_url_perfume = routes.root_url | append: '?view=build-4-perfumes'
-  assign ar_box_url_astro = routes.root_url | append: '?view=astrology-ritual-set'
-  assign ar_box_url_incense = routes.root_url | append: '?view=build-3-incense'
+  capture ar_box_url_3
+    render 'ar-page-url', handle: 'build-3-attars'
+  endcapture
+  capture ar_box_url_5
+    render 'ar-page-url', handle: 'build-5-attars'
+  endcapture
+  capture ar_box_url_perfume
+    render 'ar-page-url', handle: 'build-4-perfumes'
+  endcapture
+  capture ar_box_url_astro
+    render 'ar-page-url', handle: 'astrology-ritual-set'
+  endcapture
+  assign ar_box_url_3 = ar_box_url_3 | strip
+  assign ar_box_url_5 = ar_box_url_5 | strip
+  assign ar_box_url_perfume = ar_box_url_perfume | strip
+  assign ar_box_url_astro = ar_box_url_astro | strip
+  capture ar_box_url_incense
+    render 'ar-page-url', handle: 'build-3-incense'
+  endcapture
+  assign ar_box_url_incense = ar_box_url_incense | strip
   if section.settings.box_url_3 != blank
     assign ar_box_url_3 = section.settings.box_url_3
   endif

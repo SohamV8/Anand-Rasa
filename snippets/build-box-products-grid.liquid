@@ -12,6 +12,10 @@
   assign byb_idx = 0
   assign byb_size_label = size_label | default: '6ml'
   assign byb_assets_only = assets_only | default: false
+  assign byb_is_perfume_grid = false
+  if byb_size_label contains '20'
+    assign byb_is_perfume_grid = true
+  endif
 -%}
 
 <div class="byb-grid" data-byb-grid role="list">
@@ -30,12 +34,21 @@
           {%- endunless -%}
 
           {%- assign byb_title_down = product.title | downcase -%}
-          {%- if byb_title_down contains '12ml' or byb_title_down contains '20ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+          {%- assign byb_type_down = product.type | downcase -%}
+          {%- if byb_is_perfume_grid -%}
+            {%- if byb_title_down contains '6ml' or byb_title_down contains '6 ml' or byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+              {%- continue -%}
+            {%- endif -%}
+            {%- assign byb_scope = byb_title_down | append: ' ' | append: product.handle | downcase -%}
+            {%- unless byb_type_down contains 'perfume' or byb_scope contains 'perfume' -%}
+              {%- continue -%}
+            {%- endunless -%}
+          {%- elsif byb_title_down contains '12ml' or byb_title_down contains '20ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
             {%- continue -%}
           {%- endif -%}
 
           {%- capture byb_variant_id_raw -%}
-            {%- render 'build-box-variant-lookup', product: product -%}
+            {%- render 'build-box-variant-lookup', product: product, size_label: byb_size_label -%}
           {%- endcapture -%}
           {%- assign byb_variant_id = byb_variant_id_raw | strip | plus: 0 -%}
           {%- if byb_variant_id == 0 -%}
@@ -71,12 +84,21 @@
         {%- endunless -%}
 
         {%- assign byb_title_down = product.title | downcase -%}
-        {%- if byb_title_down contains '12ml' or byb_title_down contains '20ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+        {%- assign byb_type_down = product.type | downcase -%}
+        {%- if byb_is_perfume_grid -%}
+          {%- if byb_title_down contains '6ml' or byb_title_down contains '6 ml' or byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+            {%- continue -%}
+          {%- endif -%}
+          {%- assign byb_scope = byb_title_down | append: ' ' | append: product.handle | downcase -%}
+          {%- unless byb_type_down contains 'perfume' or byb_scope contains 'perfume' -%}
+            {%- continue -%}
+          {%- endunless -%}
+        {%- elsif byb_title_down contains '12ml' or byb_title_down contains '20ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
           {%- continue -%}
         {%- endif -%}
 
         {%- capture byb_variant_id_raw -%}
-          {%- render 'build-box-variant-lookup', product: product -%}
+          {%- render 'build-box-variant-lookup', product: product, size_label: byb_size_label -%}
         {%- endcapture -%}
         {%- assign byb_variant_id = byb_variant_id_raw | strip | plus: 0 -%}
         {%- if byb_variant_id == 0 -%}
