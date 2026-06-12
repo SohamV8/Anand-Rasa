@@ -15,6 +15,8 @@
   color: var(--byb-ink);
   background: var(--byb-bg);
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .byb *,
@@ -301,6 +303,37 @@
   margin-inline: auto;
 }
 
+.byb-plans__grid--hub {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 920px;
+  margin-inline: auto;
+}
+
+.byb-plan--link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.byb-plan--link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(30, 32, 35, 0.08);
+}
+
+.byb-plan--link:focus-visible {
+  outline: 2px solid var(--byb-gold);
+  outline-offset: 3px;
+}
+
+.byb--hub .byb-hero__cta {
+  text-decoration: none;
+}
+
+.byb--hub [data-byb-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
 /* Dedicated bundle pages (₹1200 / ₹2400 / etc.) — no plan picker step */
 .byb--fixed-plan .byb-grid-section {
   padding-top: clamp(32px, 5vw, 48px);
@@ -453,6 +486,8 @@
   padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 56px);
   background: var(--byb-bg);
   transition: opacity 0.55s var(--byb-ease), filter 0.55s var(--byb-ease);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .byb-grid-section.is-locked {
@@ -1309,6 +1344,37 @@
 }
 
 @media (max-width: 900px) {
+  /* Mobile: never hide product grid behind reveal/entrance animations (iOS Safari
+     often skips off-screen keyframes, leaving cards at opacity: 0). */
+  .byb [data-byb-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .byb-grid__item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .byb.is-visible .byb-grid__item {
+    animation: none;
+  }
+
+  .byb-card__media {
+    display: block;
+  }
+
+  .byb-card__img {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    flex: none;
+    width: auto;
+    height: auto;
+    max-width: calc(100% - 28px);
+    max-height: calc(100% - 28px);
+  }
+
   .byb-hero--cinematic {
     min-height: auto;
     padding-top: clamp(56px, 12vw, 80px);
@@ -1358,7 +1424,8 @@
     --byb-dock-h: 268px;
   }
 
-  .byb-plans__grid {
+  .byb-plans__grid,
+  .byb-plans__grid--hub {
     grid-template-columns: 1fr;
   }
 

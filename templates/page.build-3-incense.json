@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "incense-bundle-offer",
+      "settings": {
+        "bundle_collection": "incense-sticks",
+        "bundle_size": 3,
+        "bundle_price_text": "₹600",
+        "discount_code": "BUY3FOR600",
+        "offer_minutes": 60,
+        "hero_layout": "banner",
+        "hero_eyebrow": "Special Discount",
+        "hero_title": "Buy any 3",
+        "hero_sub": "Hand-picked incense sticks, crafted from pure botanicals. Mix any three fragrances and treat your space — or your loved ones — to a sacred ritual.",
+        "cta_pick": "Pick Your 3 Fragrances",
+        "cta_secondary_text": "Browse all incense",
+        "cta_secondary_url": "/collections/incense-sticks",
+        "cta_add": "Add Bundle to Cart",
+        "cta_clear": "Clear Selection"
+      }
+    }
+  },
+  "order": ["main"]
+}

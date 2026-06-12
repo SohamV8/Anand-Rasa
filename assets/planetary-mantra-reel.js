@@ -11,12 +11,15 @@
     frame.classList.add('is-visible');
   }
 
-  function buildEmbedUrl(videoId) {
+  function buildEmbedUrl(videoId, muted) {
     var origin = window.location.origin;
+    var isMuted = muted !== false;
     return (
       'https://www.youtube.com/embed/' +
       encodeURIComponent(videoId) +
-      '?autoplay=1&mute=1&loop=1&playlist=' +
+      '?autoplay=1&mute=' +
+      (isMuted ? '1' : '0') +
+      '&loop=1&playlist=' +
       encodeURIComponent(videoId) +
       '&controls=0&modestbranding=1&rel=0&fs=0&playsinline=1' +
       '&enablejsapi=1&origin=' +
@@ -52,37 +55,72 @@
 
     if (!videoId || !mediaHost) return;
 
-    function setMuted(muted) {
-      if (!iframe) return;
-      ytCommand(iframe, muted ? 'mute' : 'unMute');
-      isUnmuted = !muted;
+    function updateSoundUi() {
       reel.classList.toggle('is-unmuted', isUnmuted);
       if (soundBtn) {
         soundBtn.setAttribute(
           'aria-label',
-          muted ? soundBtn.getAttribute('data-pme-label-unmute') : soundBtn.getAttribute('data-pme-label-mute')
+          isUnmuted
+            ? soundBtn.getAttribute('data-pme-label-mute')
+            : soundBtn.getAttribute('data-pme-label-unmute')
         );
       }
       if (hint) {
-        hint.textContent = muted ? 'Tap for sound' : '';
+        hint.textContent = isUnmuted ? '' : 'Tap for sound';
       }
     }
 
+    function setMuted(muted) {
+      if (!iframe) return;
+      ytCommand(iframe, muted ? 'mute' : 'unMute');
+      isUnmuted = !muted;
+      updateSoundUi();
+    }
+
+    function enableSound() {
+      pendingUnmute = true;
+      isUnmuted = true;
+      updateSoundUi();
+
+      if (!iframe) {
+        loadIframe();
+        return;
+      }
+
+      iframe.src = buildEmbedUrl(videoId, false);
+      ytCommand(iframe, 'unMute');
+      ytCommand(iframe, 'playVideo');
+    }
+
     function loadIframe() {
-      if (isLoaded) return;
+      if (isLoaded) {
+        if (pendingUnmute && iframe) {
+          iframe.src = buildEmbedUrl(videoId, false);
+        }
+        return;
+      }
       isLoaded = true;
 
       iframe = document.createElement('iframe');
       iframe.setAttribute('title', 'Mantra chanting reel');
-      iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+      iframe.setAttribute(
+        'allow',
+        'autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+      );
       iframe.setAttribute('allowfullscreen', 'false');
       iframe.setAttribute('loading', 'lazy');
       iframe.setAttribute('tabindex', '-1');
-      iframe.src = buildEmbedUrl(videoId);
+      iframe.src = buildEmbedUrl(videoId, !pendingUnmute);
 
-      iframe.addEventListener('load', function () {
+      iframe.addEventListener('load', function onIframeLoad() {
         reel.classList.add('is-loaded');
-        setMuted(!pendingUnmute);
+        if (pendingUnmute) {
+          isUnmuted = true;
+          updateSoundUi();
+          ytCommand(iframe, 'unMute');
+        } else {
+          ytCommand(iframe, 'mute');
+        }
         pendingUnmute = false;
         ytCommand(iframe, 'playVideo');
       });
@@ -91,23 +129,36 @@
       mediaHost.appendChild(iframe);
     }
 
+    var soundTapLock = false;
+
+    function onSoundTap(e) {
+      if (soundTapLock) return;
+      if (e.type === 'touchend') {
+        e.preventDefault();
+        soundTapLock = true;
+        window.setTimeout(function () {
+          soundTapLock = false;
+        }, 450);
+      }
+      if (!isUnmuted) {
+        enableSound();
+        return;
+      }
+      setMuted(true);
+      pendingUnmute = false;
+    }
+
     if (soundBtn) {
       soundBtn.setAttribute('data-pme-label-unmute', soundBtn.getAttribute('aria-label') || 'Enable sound');
       soundBtn.setAttribute('data-pme-label-mute', 'Mute mantra reel');
 
-      soundBtn.addEventListener('click', function () {
-        if (!iframe) {
-          pendingUnmute = true;
-          loadIframe();
-          return;
-        }
-        setMuted(isUnmuted);
-      });
+      soundBtn.addEventListener('click', onSoundTap);
+      soundBtn.addEventListener('touchend', onSoundTap, { passive: false });
 
       soundBtn.addEventListener('keydown', function (e) {
         if (e.key === ' ' || e.key === 'Enter') {
           e.preventDefault();
-          soundBtn.click();
+          onSoundTap(e);
         }
       });
     }
@@ -123,9 +174,11 @@
                 if (!isUnmuted) setMuted(true);
               }
             } else if (iframe) {
-              setMuted(true);
+              ytCommand(iframe, 'pauseVideo');
+              pendingUnmute = false;
               isUnmuted = false;
-              reel.classList.remove('is-unmuted');
+              updateSoundUi();
+              ytCommand(iframe, 'mute');
             }
           });
         },

@@ -14,8 +14,9 @@
       "settings": {
         "bundle_collection": "incense-stick",
         "bundle_size": 3,
-        "bundle_price_text": "\u20b9599",
-        "discount_code": "BUY3FOR599",
+        "bundle_price_text": "\u20b9600",
+        "discount_code": "BUY3FOR600",
+        "hero_layout": "banner",
         "offer_minutes": 60,
         "hero_eyebrow": "Special Discount",
         "hero_title": "Buy any 3",

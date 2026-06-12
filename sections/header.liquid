@@ -252,14 +252,27 @@
   .ar-nav__drawer-toggle { font-family:var(--font-body-family); }
   .ar-nav__drawer-toggle svg { transition:transform .3s var(--ar-easing); flex-shrink:0; }
   .ar-nav__drawer-toggle.is-open svg { transform:rotate(180deg); }
+  .ar-nav__drawer-toggle--pitara { gap:10px; }
+  .ar-nav__drawer-pitara-logo {
+    display:block;
+    height:30px;
+    width:auto;
+    max-width:min(200px, 55vw);
+    object-fit:contain;
+    flex-shrink:0;
+  }
   .ar-nav__drawer-sub-menu {
     display:grid;
     grid-template-rows:0fr;
-    transition:grid-template-rows .4s var(--ar-easing);
+    max-height:0;
+    transition:grid-template-rows .4s var(--ar-easing), max-height .4s var(--ar-easing);
     overflow:hidden;
     padding:0 0 0 16px;
   }
-  .ar-nav__drawer-sub-menu.is-open { grid-template-rows:1fr; }
+  .ar-nav__drawer-sub-menu.is-open {
+    grid-template-rows:1fr;
+    max-height:min(70vh, 720px);
+  }
   .ar-nav__drawer-sub-menu > .ar-nav__drawer-sub-inner { min-height:0; display:flex; flex-direction:column; }
   .ar-nav__drawer-link.ar-nav__drawer-sub { font-size:15px; font-weight:400; color:var(--ar-ink-soft); padding:14px 0; border-bottom:1px solid var(--ar-line); opacity:1; transform:none; }
   .ar-nav__drawer-link.ar-nav__drawer-sub:last-child { border-bottom:none; }
@@ -777,6 +790,7 @@
   assign ar_box_url_5 = routes.root_url | append: '?view=build-5-attars'
   assign ar_box_url_perfume = routes.root_url | append: '?view=build-4-perfumes'
   assign ar_box_url_astro = routes.root_url | append: '?view=astrology-ritual-set'
+  assign ar_box_url_incense = routes.root_url | append: '?view=build-3-incense'
   if section.settings.box_url_3 != blank
     assign ar_box_url_3 = section.settings.box_url_3
   endif
@@ -788,6 +802,9 @@
   endif
   if section.settings.box_url_astro != blank
     assign ar_box_url_astro = section.settings.box_url_astro
+  endif
+  if section.settings.box_url_incense != blank
+    assign ar_box_url_incense = section.settings.box_url_incense
   endif
 %}
 {%- assign ar_header_about_url = pages['about-us'].url | default: pages['about'].url | default: pages['about-anand-rasa'].url -%}
@@ -833,6 +850,10 @@
           <a href="{{ ar_box_url_astro }}" class="ar-box__item" role="menuitem">
             <span class="ar-box__item-name">Astrology Ritual Set</span>
             <span class="ar-box__item-price">₹2500</span>
+          </a>
+          <a href="{{ ar_box_url_incense }}" class="ar-box__item" role="menuitem">
+            <span class="ar-box__item-name">Pick Any 3 &middot; Incense Sticks</span>
+            <span class="ar-box__item-price">₹600</span>
           </a>
         </div>
       </div>
@@ -1159,16 +1180,43 @@
   </div>
   <a href="{{ section.settings.nav_l1_url | default: routes.all_products_collection_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l1 | default: 'Shop' }}</a>
   <a href="{{ section.settings.nav_l2_url | default: ar_header_blog_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_l2 | default: 'Blogs' }}</a>
-  <span class="ar-nav__drawer-group-title">Build Your Attar Box</span>
-  <a href="{{ ar_box_url_3 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 3 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹1200</span></a>
-  <a href="{{ ar_box_url_5 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 5 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹2400</span></a>
-  <a href="{{ ar_box_url_perfume }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 4 &middot; 20ml Perfumes <span class="ar-nav__drawer-tag">₹2100</span></a>
-  <a href="{{ ar_box_url_astro }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Astrology Ritual Set <span class="ar-nav__drawer-tag">₹2500</span></a>
-  <button class="ar-nav__drawer-link ar-nav__drawer-toggle js-ar-drawer-toggle" aria-expanded="false" type="button">
-    <span>{{ section.settings.nav_r1 | default: 'Collections' }}</span>
-    <svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <button
+    type="button"
+    class="ar-nav__drawer-link ar-nav__drawer-toggle ar-nav__drawer-toggle--pitara js-ar-drawer-toggle"
+    aria-expanded="false"
+    aria-controls="ar-drawer-pitara-{{ section.id }}"
+    aria-label="Build Your Attar Box"
+  >
+    <img
+      class="ar-nav__drawer-pitara-logo"
+      src="{{ 'Pitara_logo1.webp' | asset_url }}"
+      alt=""
+      width="120"
+      height="30"
+      loading="lazy"
+      decoding="async"
+    >
+    <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
-  <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub">
+  <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub" id="ar-drawer-pitara-{{ section.id }}">
+    <div class="ar-nav__drawer-sub-inner">
+      <a href="{{ ar_box_url_3 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 3 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹1200</span></a>
+      <a href="{{ ar_box_url_5 }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 5 &middot; 6ml Attars <span class="ar-nav__drawer-tag">₹2400</span></a>
+      <a href="{{ ar_box_url_perfume }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 4 &middot; 20ml Perfumes <span class="ar-nav__drawer-tag">₹2100</span></a>
+      <a href="{{ ar_box_url_astro }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Astrology Ritual Set <span class="ar-nav__drawer-tag">₹2500</span></a>
+      <a href="{{ ar_box_url_incense }}" class="ar-nav__drawer-link ar-nav__drawer-sub">Pick Any 3 &middot; Incense Sticks <span class="ar-nav__drawer-tag">₹600</span></a>
+    </div>
+  </div>
+  <button
+    type="button"
+    class="ar-nav__drawer-link ar-nav__drawer-toggle js-ar-drawer-toggle"
+    aria-expanded="false"
+    aria-controls="ar-drawer-collections-{{ section.id }}"
+  >
+    <span>{{ section.settings.nav_r1 | default: 'Collections' }}</span>
+    <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub" id="ar-drawer-collections-{{ section.id }}">
     <div class="ar-nav__drawer-sub-inner">
     {%- if mega_blocks.size > 0 -%}
       {%- for block in mega_blocks -%}
@@ -1261,7 +1309,11 @@
   (function () {
     'use strict';
     var sectionId = '{{ section.id }}';
-    var sectionRoot = document.getElementById('shopify-section-{{ section.id }}') || document;
+
+    function initArNav(sectionRoot) {
+    if (!sectionRoot || sectionRoot.dataset.arNavInited === 'true') return;
+    sectionRoot.dataset.arNavInited = 'true';
+
     var nav = sectionRoot.querySelector('.ar-nav');
     var burger = sectionRoot.querySelector('.js-ar-burger');
     var drawer = sectionRoot.querySelector('.js-ar-drawer');
@@ -1272,6 +1324,17 @@
     var searchClose = sectionRoot.querySelector('.js-ar-search-close');
     var searchInput = sectionRoot.querySelector('.js-ar-search-input');
     var searchForm = sectionRoot.querySelector('.ar-search-panel__form');
+
+    function closeDrawerDropdowns() {
+      if (!drawer) return;
+      drawer.querySelectorAll('.js-ar-drawer-sub.is-open').forEach(function (panel) {
+        panel.classList.remove('is-open');
+      });
+      drawer.querySelectorAll('.js-ar-drawer-toggle.is-open').forEach(function (toggle) {
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    }
 
     function lockScroll(lock) {
       document.body.style.overflow = lock ? 'hidden' : '';
@@ -1298,6 +1361,7 @@
     }
     function closeDrawer() {
       if (!drawer) return;
+      closeDrawerDropdowns();
       drawer.classList.remove('is-open');
       drawer.setAttribute('aria-hidden', 'true');
       if (burger) { burger.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); }
@@ -1346,12 +1410,50 @@
       if (link.classList.contains('ar-nav__drawer-toggle')) return;
       link.addEventListener('click', function () { closeDrawer(); });
     });
+
+    if (drawer && drawer.dataset.arDrawerDropdowns !== 'true') {
+      drawer.dataset.arDrawerDropdowns = 'true';
+      drawer.addEventListener('click', function (e) {
+        var toggle = e.target.closest('.js-ar-drawer-toggle');
+        if (!toggle || !drawer.contains(toggle)) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var panelId = toggle.getAttribute('aria-controls');
+        var panel = panelId ? document.getElementById(panelId) : null;
+        if (!panel && toggle.nextElementSibling && toggle.nextElementSibling.classList.contains('js-ar-drawer-sub')) {
+          panel = toggle.nextElementSibling;
+        }
+        if (!panel) return;
+
+        var willOpen = !panel.classList.contains('is-open');
+        closeDrawerDropdowns();
+        if (willOpen) {
+          panel.classList.add('is-open');
+          toggle.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
     sectionRoot.querySelectorAll('[data-open-cart-drawer]').forEach(function (trigger) {
       trigger.addEventListener('click', function () { closeDrawer(); closeSearch(); });
     });
-    window.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeDrawer(); closeSearch(); }
-    });
+    if (!window.__arNavEscapeInit) {
+      window.__arNavEscapeInit = true;
+      window.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        var openDrawer = document.querySelector('.js-ar-drawer.is-open');
+        if (openDrawer) {
+          var closeBtn = openDrawer.querySelector('.js-ar-close');
+          if (closeBtn) closeBtn.click();
+        }
+        var openSearch = document.querySelector('.js-ar-search-panel.is-open');
+        if (openSearch) {
+          var searchCloseBtn = openSearch.querySelector('.js-ar-search-close');
+          if (searchCloseBtn) searchCloseBtn.click();
+        }
+      });
+    }
 
     // Stagger index for drawer link animations
     if (drawer) {
@@ -1377,17 +1479,6 @@
       }
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
-    }
-
-    var drawerToggle = sectionRoot.querySelector('.js-ar-drawer-toggle');
-    var drawerSub = sectionRoot.querySelector('.js-ar-drawer-sub');
-    if (drawerToggle && drawerSub) {
-      drawerToggle.addEventListener('click', function () {
-        var isOpen = drawerSub.classList.contains('is-open');
-        drawerSub.classList.toggle('is-open', !isOpen);
-        drawerToggle.classList.toggle('is-open', !isOpen);
-        drawerToggle.setAttribute('aria-expanded', String(!isOpen));
-      });
     }
 
     function initMegaMenuHover(root) {
@@ -1478,10 +1569,14 @@
     }
 
     initMegaMenuHover(sectionRoot);
+    }
+
+    var sectionRoot = document.getElementById('shopify-section-{{ section.id }}') || document;
+    initArNav(sectionRoot);
 
     document.addEventListener('shopify:section:load', function (event) {
       if (!event.target || event.target.id !== ('shopify-section-' + sectionId)) return;
-      initMegaMenuHover(event.target);
+      initArNav(event.target);
     });
   })();
 </script>
@@ -1592,6 +1687,12 @@
       "id": "box_url_astro",
       "label": "Astrology Ritual Set @2500 URL",
       "info": "Optional. Leave empty to use /?view=astrology-ritual-set (works while the page is Hidden)."
+    },
+    {
+      "type": "url",
+      "id": "box_url_incense",
+      "label": "Pick any 3 incense @600 URL",
+      "info": "Optional. Leave empty to use /?view=build-3-incense (works while the page is Hidden)."
     },
     {
       "type": "text",

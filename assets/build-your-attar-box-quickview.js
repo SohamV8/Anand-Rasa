@@ -4,8 +4,10 @@
 (function () {
   'use strict';
 
+  function initBuildYourAttarBoxQV() {
   var root = document.querySelector('[data-byb-root]');
-  if (!root) return;
+  if (!root || root.dataset.bybQvInit === 'true') return;
+  root.dataset.bybQvInit = 'true';
 
   var modalRoot = root.querySelector('[data-byb-qv]');
   if (!modalRoot) return;
@@ -497,7 +499,7 @@
   }
 
   function trapFocus(e) {
-    if (e.key !== 'Tab' || modalRoot.hidden) return;
+    if (e.key !== 'Tab' || !modalRoot || modalRoot.hidden) return;
     var focusable = dialog.querySelectorAll(
       'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
     );
@@ -562,15 +564,18 @@
     }
   }
 
-  backdrop.addEventListener('click', close);
-  closeBtn.addEventListener('click', close);
-  addBtn.addEventListener('click', onAddClick);
-  modalRoot.querySelector('[data-byb-qv-quick]').addEventListener('click', function (e) {
-    e.preventDefault();
-  });
+  if (backdrop) backdrop.addEventListener('click', close);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  if (addBtn) addBtn.addEventListener('click', onAddClick);
+  var qvQuick = modalRoot.querySelector('[data-byb-qv-quick]');
+  if (qvQuick) {
+    qvQuick.addEventListener('click', function (e) {
+      e.preventDefault();
+    });
+  }
 
   document.addEventListener('keydown', function (e) {
-    if (modalRoot.hidden) return;
+    if (!modalRoot || modalRoot.hidden) return;
     if (e.key === 'Escape') close();
     trapFocus(e);
   });
@@ -600,5 +605,14 @@
     if (e.target.closest('a[href]') && !e.target.hasAttribute('data-byb-open-qv')) return;
     e.preventDefault();
     open(card);
+  });
+  }
+
+  initBuildYourAttarBoxQV();
+
+  document.addEventListener('shopify:section:load', function (event) {
+    if (event.target && event.target.querySelector('[data-byb-root]')) {
+      initBuildYourAttarBoxQV();
+    }
   });
 })();

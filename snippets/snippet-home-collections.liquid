@@ -6,11 +6,11 @@
   assign ar_disc_heading = section.settings.disc_heading | default: 'Find Your Fragrance Ritual'
   assign ar_disc_sub = section.settings.disc_subheading | default: 'Curated attars for ritual, balance, and discovery.'
 
-  assign ar_feat_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|giftsets|giftsets|meditation-oils' | split: '|'
-  assign ar_feat_titles = 'Planet Attars|Zodiac Attars|Nakshatra Attars|Chakra Attars|Stress Relief Attars|Love Attars|Incense Sticks|Discovery Kits|Gift Sets|Meditation Oils' | split: '|'
-  assign ar_feat_matches = 'planet|zodiac|nakshatra|chakra|stress|love|incense|discovery|gift set|meditation' | split: '|'
-  assign ar_feat_ctas = 'Explore|Explore|Explore|Explore|Explore|Explore|Explore|Shop|Shop|Explore' | split: '|'
-  assign ar_feat_fallbacks = 'PlanetHero.webp|PlanetHero.webp|PlanetHero.webp|chakra.webp|stress.webp|love.webp|incense.jpeg|home.webp|home.webp|chakra.webp' | split: '|'
+  assign ar_feat_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|apsara-attars|giftsets|perfume-series' | split: '|'
+  assign ar_feat_titles = 'Planet Attars|Zodiac Attars|Nakshatra Attars|Chakra Attars|Stress Relief Attars|Love Attars|Incense Sticks|Apsara Attars|Gift Sets|Perfume Series' | split: '|'
+  assign ar_feat_matches = 'planet|zodiac|nakshatra|chakra|stress|love|incense|apsara|gift set|perfume' | split: '|'
+  assign ar_feat_ctas = 'Explore|Explore|Explore|Explore|Explore|Explore|Explore|Explore|Shop|Explore' | split: '|'
+  assign ar_feat_fallbacks = 'PlanetHero.webp|PlanetHero.webp|PlanetHero.webp|chakra.webp|stress.webp|love.webp|incense.jpeg|home.webp|home.webp|home.webp' | split: '|'
   assign ar_feat_tones = 'dark|dark|dark|light|dark|dark|dark|dark|dark|dark' | split: '|'
 -%}
 
@@ -44,8 +44,12 @@
               if ar_bt contains 'gift set' or ar_bt == 'gift sets'
                 assign ar_is_match = true
               endif
-            elsif ar_match == 'discovery'
-              if ar_bt contains 'discovery'
+            elsif ar_match == 'apsara'
+              if ar_bt contains 'apsara'
+                assign ar_is_match = true
+              endif
+            elsif ar_match == 'perfume'
+              if ar_bt contains 'perfume series' or ar_bt contains 'perfume'
                 assign ar_is_match = true
               endif
             elsif ar_bt contains ar_match or ar_bl contains ar_feat_handle

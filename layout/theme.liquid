@@ -52,7 +52,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         assign ar_should_noindex = true
       endif
       if request.page_type == 'index'
-        if template.suffix == 'build-3-attars' or template.suffix == 'build-5-attars' or template.suffix == 'build-4-perfumes' or template.suffix == 'astrology-ritual-set'
+        if template.suffix == 'build-3-attars' or template.suffix == 'build-5-attars' or template.suffix == 'build-4-perfumes' or template.suffix == 'astrology-ritual-set' or template.suffix == 'build-3-incense'
           assign ar_should_noindex = true
         endif
       endif
@@ -153,7 +153,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             '/pages/build-3-attars': {{ routes.root_url | append: '?view=build-3-attars' | json }},
             '/pages/build-5-attars': {{ routes.root_url | append: '?view=build-5-attars' | json }},
             '/pages/build-4-perfumes': {{ routes.root_url | append: '?view=build-4-perfumes' | json }},
-            '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }}
+            '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }},
+            '/pages/build-3-incense': {{ routes.root_url | append: '?view=build-3-incense' | json }},
+            '/pages/incense-bundle-offer': {{ routes.root_url | append: '?view=build-3-incense' | json }}
           };
           if (buildBoxPaths[path]) {
             arGo(buildBoxPaths[path]);

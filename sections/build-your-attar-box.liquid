@@ -62,16 +62,71 @@
     assign byb_assets_only = true
     assign byb_group_astro = true
   endif
+
+  assign byb_hub_mode = false
+  if template.suffix == 'build-your-box'
+    assign byb_hub_mode = true
+  endif
+
+  unless byb_hub_mode
+    assign byb_size_label = '6ml'
+  endunless
+
+  if byb_hub_mode
+    capture byb_hub_url_3
+      render 'ar-page-url', handle: 'build-3-attars'
+    endcapture
+    capture byb_hub_url_5
+      render 'ar-page-url', handle: 'build-5-attars'
+    endcapture
+    capture byb_hub_url_perfume
+      render 'ar-page-url', handle: 'build-4-perfumes'
+    endcapture
+    capture byb_hub_url_astro
+      render 'ar-page-url', handle: 'astrology-ritual-set'
+    endcapture
+    capture byb_hub_url_incense
+      render 'ar-page-url', handle: 'build-3-incense'
+    endcapture
+    assign byb_hub_url_3 = byb_hub_url_3 | strip
+    assign byb_hub_url_5 = byb_hub_url_5 | strip
+    assign byb_hub_url_perfume = byb_hub_url_perfume | strip
+    assign byb_hub_url_astro = byb_hub_url_astro | strip
+    assign byb_hub_url_incense = byb_hub_url_incense | strip
+    if section.settings.hub_url_3 != blank
+      assign byb_hub_url_3 = section.settings.hub_url_3
+    endif
+    if section.settings.hub_url_5 != blank
+      assign byb_hub_url_5 = section.settings.hub_url_5
+    endif
+    if section.settings.hub_url_perfume != blank
+      assign byb_hub_url_perfume = section.settings.hub_url_perfume
+    endif
+    if section.settings.hub_url_astro != blank
+      assign byb_hub_url_astro = section.settings.hub_url_astro
+    endif
+    if section.settings.hub_url_incense != blank
+      assign byb_hub_url_incense = section.settings.hub_url_incense
+    endif
+    assign byb_hub_perfume_name = section.settings.hub_perfume_name | default: 'Pick Any 4 · 20ml Perfumes'
+    assign byb_hub_perfume_detail = section.settings.hub_perfume_detail | default: '4 × 20ml luxury perfumes'
+    assign byb_hub_perfume_price = section.settings.hub_perfume_price | default: '₹2100'
+    assign byb_hub_astro_name = section.settings.hub_astro_name | default: 'Astrology Ritual Set'
+    assign byb_hub_astro_detail = section.settings.hub_astro_detail | default: 'Planet, Zodiac & Nakshatra attars'
+    assign byb_hub_astro_price = section.settings.hub_astro_price | default: '₹2500'
+    assign byb_hub_incense_name = section.settings.hub_incense_name | default: 'Pick Any 3 · Incense Sticks'
+    assign byb_hub_incense_detail = section.settings.hub_incense_detail | default: '3 × premium incense sticks'
+    assign byb_hub_incense_price = section.settings.hub_incense_price | default: '₹600'
+  endif
 -%}
 
 {{ 'build-your-attar-box.css' | asset_url | stylesheet_tag }}
 
 <div
-  class="byb{% unless byb_plan_b_on %} byb--fixed-plan{% endunless %}"
-  data-byb-root
-  data-section-id="{{ section.id }}"
-  {% unless byb_plan_b_on %}data-byb-default-plan="{{ byb_plan_a_size }}"{% endunless %}
+  class="byb{% if byb_hub_mode %} byb--hub{% elsif byb_plan_b_on == false %} byb--fixed-plan{% endif %}"
+  {% unless byb_hub_mode %}data-byb-root data-section-id="{{ section.id }}"{% if byb_plan_b_on == false %} data-byb-default-plan="{{ byb_plan_a_size }}"{% endif %}{% endunless %}
 >
+  {%- unless byb_hub_mode -%}
   <script type="application/json" data-byb-config>
     {
       "plans": {
@@ -93,6 +148,7 @@
       "currency": {{ cart.currency.iso_code | default: shop.currency | json }}
     }
   </script>
+  {%- endunless -%}
 
   {%- comment -%} ── Hero ── {%- endcomment -%}
   <header class="byb-hero byb-hero--cinematic">
@@ -105,9 +161,15 @@
         <h1 class="byb-hero__title" data-byb-hero-item>{{ byb_hero_title }}</h1>
         <p class="byb-hero__lead" data-byb-hero-item>{{ byb_hero_lead }}</p>
         <p class="byb-hero__sub" data-byb-hero-item>{{ byb_hero_sub }}</p>
-        <button type="button" class="byb-hero__cta" data-byb-hero-item data-byb-hero-cta>
-          <span class="byb-hero__cta-label">{{ byb_hero_cta }}</span>
-        </button>
+        {%- if byb_hub_mode -%}
+          <a href="#build-box-plans" class="byb-hero__cta" data-byb-hero-item>
+            <span class="byb-hero__cta-label">{{ byb_hero_cta }}</span>
+          </a>
+        {%- else -%}
+          <button type="button" class="byb-hero__cta" data-byb-hero-item data-byb-hero-cta>
+            <span class="byb-hero__cta-label">{{ byb_hero_cta }}</span>
+          </button>
+        {%- endif -%}
       </div>
       <div class="byb-hero__media-wrap" data-byb-hero-media aria-hidden="true">
         <div class="byb-hero__media-frame">
@@ -127,8 +189,43 @@
     </div>
   </header>
 
-  {%- comment -%} Plan picker — only when two ritual sizes are offered (e.g. main Build Your Box page). {%- endcomment -%}
-  {%- if byb_plan_b_on -%}
+  {%- comment -%} Hub landing — ritual box options link out to dedicated builder pages. {%- endcomment -%}
+  {%- if byb_hub_mode -%}
+  <section class="byb-plans byb-plans--hub" id="build-box-plans" aria-labelledby="byb-plans-heading" data-byb-reveal>
+    <div class="byb-plans__inner">
+      <h2 id="byb-plans-heading" class="byb-plans__title">{{ byb_plans_title }}</h2>
+      <p class="byb-plans__sub">{{ byb_plans_sub }}</p>
+      <div class="byb-plans__grid byb-plans__grid--hub" role="list">
+        <a href="{{ byb_hub_url_3 }}" class="byb-plan byb-plan--link" role="listitem">
+          <h3 class="byb-plan__name">{{ byb_plan_a_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_plan_a_detail }}</p>
+          <p class="byb-plan__price">{{ byb_plan_a_display }}</p>
+        </a>
+        <a href="{{ byb_hub_url_5 }}" class="byb-plan byb-plan--link" role="listitem">
+          <h3 class="byb-plan__name">{{ byb_plan_b_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_plan_b_detail }}</p>
+          <p class="byb-plan__price">{{ byb_plan_b_display }}</p>
+        </a>
+        <a href="{{ byb_hub_url_perfume }}" class="byb-plan byb-plan--link" role="listitem">
+          <h3 class="byb-plan__name">{{ byb_hub_perfume_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_hub_perfume_detail }}</p>
+          <p class="byb-plan__price">{{ byb_hub_perfume_price }}</p>
+        </a>
+        <a href="{{ byb_hub_url_astro }}" class="byb-plan byb-plan--link" role="listitem">
+          <h3 class="byb-plan__name">{{ byb_hub_astro_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_hub_astro_detail }}</p>
+          <p class="byb-plan__price">{{ byb_hub_astro_price }}</p>
+        </a>
+        <a href="{{ byb_hub_url_incense }}" class="byb-plan byb-plan--link" role="listitem">
+          <h3 class="byb-plan__name">{{ byb_hub_incense_name }}</h3>
+          <p class="byb-plan__detail">{{ byb_hub_incense_detail }}</p>
+          <p class="byb-plan__price">{{ byb_hub_incense_price }}</p>
+        </a>
+      </div>
+    </div>
+  </section>
+  {%- comment -%} Plan picker — only when two ritual sizes are offered on a builder page. {%- endcomment -%}
+  {%- elsif byb_plan_b_on -%}
   <section class="byb-plans" id="build-box-plans" aria-labelledby="byb-plans-heading" data-byb-reveal>
     <div class="byb-plans__inner">
       <h2 id="byb-plans-heading" class="byb-plans__title">{{ byb_plans_title }}</h2>
@@ -169,6 +266,7 @@
   </section>
   {%- endif -%}
 
+  {%- unless byb_hub_mode -%}
   {%- comment -%} ── Product grid ── {%- endcomment -%}
   <section
     class="byb-grid-section is-locked"
@@ -205,11 +303,28 @@
   {% render 'build-box-quickview-modal' %}
 
   <div class="byb-toast" data-byb-toast role="status" aria-live="polite"></div>
+  {%- endunless -%}
 </div>
 
+{%- if byb_hub_mode -%}
+<script>
+  (function () {
+    var hero = document.querySelector('.byb--hub .byb-hero--cinematic');
+    if (!hero) return;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        hero.classList.add('byb-hero--animate');
+        var root = hero.closest('.byb');
+        if (root) root.classList.add('is-visible');
+      });
+    });
+  })();
+</script>
+{%- else -%}
 <script src="{{ 'build-box-confetti.js' | asset_url }}" defer></script>
 <script src="{{ 'build-your-attar-box.js' | asset_url }}" defer></script>
 <script src="{{ 'build-your-attar-box-quickview.js' | asset_url }}" defer></script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -269,8 +384,95 @@
     },
     {
       "type": "header",
-      "content": "Plans"
+      "content": "Hub page (build-your-box template only)"
     },
+    {
+      "type": "paragraph",
+      "content": "On the main Build Your Box landing page, ritual options link out to dedicated builder pages. No products are shown on the hub."
+    },
+    {
+      "type": "url",
+      "id": "hub_url_3",
+      "label": "Hub — Pick any 3 URL (optional)"
+    },
+    {
+      "type": "url",
+      "id": "hub_url_5",
+      "label": "Hub — Pick any 5 URL (optional)"
+    },
+    {
+      "type": "url",
+      "id": "hub_url_perfume",
+      "label": "Hub — Pick any 4 perfumes URL (optional)"
+    },
+    {
+      "type": "url",
+      "id": "hub_url_astro",
+      "label": "Hub — Astrology ritual set URL (optional)"
+    },
+    {
+      "type": "text",
+      "id": "hub_perfume_name",
+      "label": "Hub — Perfume option title",
+      "default": "Pick Any 4 · 20ml Perfumes"
+    },
+    {
+      "type": "text",
+      "id": "hub_perfume_detail",
+      "label": "Hub — Perfume option detail",
+      "default": "4 × 20ml luxury perfumes"
+    },
+    {
+      "type": "text",
+      "id": "hub_perfume_price",
+      "label": "Hub — Perfume option price",
+      "default": "₹2100"
+    },
+    {
+      "type": "text",
+      "id": "hub_astro_name",
+      "label": "Hub — Astrology option title",
+      "default": "Astrology Ritual Set"
+    },
+    {
+      "type": "text",
+      "id": "hub_astro_detail",
+      "label": "Hub — Astrology option detail",
+      "default": "Planet, Zodiac & Nakshatra attars"
+    },
+    {
+      "type": "text",
+      "id": "hub_astro_price",
+      "label": "Hub — Astrology option price",
+      "default": "₹2500"
+    },
+    {
+      "type": "url",
+      "id": "hub_url_incense",
+      "label": "Hub — Pick any 3 incense URL (optional)"
+    },
+    {
+      "type": "text",
+      "id": "hub_incense_name",
+      "label": "Hub — Incense option title",
+      "default": "Pick Any 3 · Incense Sticks"
+    },
+    {
+      "type": "text",
+      "id": "hub_incense_detail",
+      "label": "Hub — Incense option detail",
+      "default": "3 × premium incense sticks"
+    },
+    {
+      "type": "text",
+      "id": "hub_incense_price",
+      "label": "Hub — Incense option price",
+      "default": "₹600"
+    },
+    {
+      "type": "header",
+      "content": "Plans"
+  },
     {
       "type": "text",
       "id": "plans_title",

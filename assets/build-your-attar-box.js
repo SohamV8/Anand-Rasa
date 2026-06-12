@@ -4,8 +4,10 @@
 (function () {
   'use strict';
 
+  function initBuildYourAttarBox() {
   var root = document.querySelector('[data-byb-root]');
-  if (!root) return;
+  if (!root || root.dataset.bybInit === 'true') return;
+  root.dataset.bybInit = 'true';
 
   var configEl = root.querySelector('[data-byb-config]');
   if (!configEl) return;
@@ -576,22 +578,29 @@
     });
   }
 
+  function markBybVisible() {
+    root.classList.add('is-visible');
+  }
+
+  markBybVisible();
+
   if ('IntersectionObserver' in window) {
+    var revealTarget = root.querySelector('[data-byb-grid-section]') || root;
     var revealObs = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            root.classList.add('is-visible');
+            markBybVisible();
             revealObs.disconnect();
           }
         });
       },
-      { threshold: 0.06 }
+      { threshold: 0, rootMargin: '64px 0px' }
     );
-    revealObs.observe(root);
-  } else {
-    root.classList.add('is-visible');
+    revealObs.observe(revealTarget);
   }
+
+  setTimeout(markBybVisible, 120);
 
   [].slice.call(root.querySelectorAll('.byb-grid__item')).forEach(function (item, i) {
     item.style.setProperty('--byb-i', String(i));
@@ -607,4 +616,13 @@
   }
 
   render();
+  }
+
+  initBuildYourAttarBox();
+
+  document.addEventListener('shopify:section:load', function (event) {
+    if (event.target && event.target.querySelector('[data-byb-root]')) {
+      initBuildYourAttarBox();
+    }
+  });
 })();

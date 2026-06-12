@@ -28,7 +28,6 @@
     if (!path) return;
 
     var legacyPaths = {
-      '/pages/incense-bundle-offer': true,
       '/collections/incense': true
     };
 
@@ -47,7 +46,9 @@
       '/pages/build-3-attars': {{ routes.root_url | append: '?view=build-3-attars' | json }},
       '/pages/build-5-attars': {{ routes.root_url | append: '?view=build-5-attars' | json }},
       '/pages/build-4-perfumes': {{ routes.root_url | append: '?view=build-4-perfumes' | json }},
-      '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }}
+      '/pages/astrology-ritual-set': {{ routes.root_url | append: '?view=astrology-ritual-set' | json }},
+      '/pages/build-3-incense': {{ routes.root_url | append: '?view=build-3-incense' | json }},
+      '/pages/incense-bundle-offer': {{ routes.root_url | append: '?view=build-3-incense' | json }}
     };
     if (buildBoxViews[path]) {
       window.location.replace(buildBoxViews[path]);

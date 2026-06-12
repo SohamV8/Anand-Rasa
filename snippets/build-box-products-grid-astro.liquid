@@ -60,7 +60,15 @@
           {%- endunless -%}
 
           {%- assign byb_title_down = product.title | downcase -%}
-          {%- if byb_title_down contains '12ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+          {%- if byb_title_down contains '12ml' or byb_title_down contains '20ml' or byb_title_down contains '30ml' or byb_title_down contains '100ml' or byb_title_down contains '50ml' -%}
+            {%- continue -%}
+          {%- endif -%}
+
+          {%- capture byb_variant_id_raw -%}
+            {%- render 'build-box-variant-lookup', product: product -%}
+          {%- endcapture -%}
+          {%- assign byb_variant_id = byb_variant_id_raw | strip | plus: 0 -%}
+          {%- if byb_variant_id == 0 -%}
             {%- continue -%}
           {%- endif -%}
 

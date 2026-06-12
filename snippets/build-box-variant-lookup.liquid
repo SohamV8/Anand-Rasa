@@ -1,0 +1,40 @@
+{%- comment -%}
+  Resolve the 6ml variant for Build Your Attar Box (available variants only).
+
+  @param product {Product} required
+  Outputs variant id string, or blank when no eligible 6ml variant exists.
+{%- endcomment -%}
+{%- liquid
+  assign byb_variant_id = ''
+  assign byb_pt = product.title | downcase
+
+  for variant in product.variants
+    unless variant.available
+      continue
+    endunless
+
+    assign byb_vlabel = variant.title | downcase
+    assign byb_vopts = variant.option1 | append: ' ' | append: variant.option2 | append: ' ' | append: variant.option3 | downcase
+    assign byb_vscope = byb_vlabel | append: ' ' | append: byb_vopts
+
+    if byb_vscope contains '12ml' or byb_vscope contains '20ml' or byb_vscope contains '30ml' or byb_vscope contains '50ml' or byb_vscope contains '100ml'
+      continue
+    endif
+
+    if byb_vscope contains '6ml' or byb_vscope contains '6 ml'
+      assign byb_variant_id = variant.id
+      break
+    endif
+  endfor
+
+  if byb_variant_id == '' and product.variants.size == 1
+    assign byb_only = product.variants.first
+    if byb_only.available
+      unless byb_pt contains '12ml' or byb_pt contains '20ml' or byb_pt contains '30ml' or byb_pt contains '50ml' or byb_pt contains '100ml'
+        assign byb_variant_id = byb_only.id
+      endunless
+    endif
+  endif
+
+  echo byb_variant_id
+-%}

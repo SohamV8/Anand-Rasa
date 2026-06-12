@@ -11,7 +11,8 @@
   --pme-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --pme-devanagari: 'Noto Sans Devanagari', 'Nirmala UI', 'Mangal', sans-serif;
   --pme-accent: #c9a962;
-  --pme-lh: 1.7;
+  --pme-lh: 1.75;
+  --pme-lh-tight: 1.35;
   margin: 0;
   padding: clamp(20px, 3vw, 32px) clamp(12px, 2.5vw, 24px);
   background: transparent;
@@ -26,7 +27,6 @@
 .pme__frame {
   position: relative;
   isolation: isolate;
-  max-height: 95vh;
   border: 1px solid var(--pme-gold-border);
   border-radius: 18px;
   background:
@@ -65,9 +65,8 @@
   display: grid;
   grid-template-columns: 40% 60%;
   align-items: center;
-  gap: 24px;
+  gap: clamp(20px, 2.5vw, 28px);
   padding: clamp(20px, 2.5vw, 28px) clamp(20px, 2.5vw, 32px);
-  max-height: 95vh;
   box-sizing: border-box;
 }
 
@@ -81,7 +80,8 @@
 
 .pme__reel {
   width: 100%;
-  max-width: min(100%, calc((95vh - 80px) * 9 / 16));
+  max-width: min(100%, 320px);
+  margin-inline: auto;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -232,6 +232,8 @@
   background: transparent;
   cursor: pointer;
   padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pme__reel-sound:focus-visible {
@@ -246,9 +248,7 @@
   align-items: center;
   justify-content: center;
   min-width: 0;
-  max-height: calc(95vh - 40px);
-  overflow-y: auto;
-  scrollbar-width: thin;
+  overflow: visible;
 }
 
 .pme__mantra-inner {
@@ -258,28 +258,28 @@
 }
 
 .pme__header {
-  margin-bottom: clamp(12px, 2vw, 18px);
+  margin-bottom: clamp(14px, 2vw, 20px);
 }
 
 .pme__eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-family: var(--pme-serif);
-  font-size: clamp(14px, 1.5vw, 16px);
+  font-size: clamp(0.8125rem, 1.1vw, 0.9375rem);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--pme-accent);
-  line-height: var(--pme-lh);
+  line-height: var(--pme-lh-tight);
 }
 
 .pme__planet-name {
   margin: 0;
   font-family: var(--pme-serif);
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--pme-ink);
-  line-height: var(--pme-lh);
+  line-height: var(--pme-lh-tight);
 }
 
 .pme__mantra-core > * {
@@ -325,18 +325,19 @@
 .pme__sanskrit {
   margin: 0;
   font-family: var(--pme-devanagari);
-  font-size: clamp(1.75rem, 3.2vw, 3rem);
+  font-size: clamp(1.875rem, 3.4vw, 2.75rem);
   font-weight: 600;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--pme-ink);
   letter-spacing: 0.01em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 .pme__translit {
-  margin: 0 0 clamp(12px, 2vw, 16px);
+  margin: 0 0 clamp(14px, 2vw, 18px);
   font-family: var(--pme-serif);
-  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  font-size: clamp(1.125rem, 1.9vw, 1.375rem);
   line-height: var(--pme-lh);
   color: var(--pme-muted);
 }
@@ -374,7 +375,7 @@
 .pme__meaning-text {
   margin: 0;
   font-family: var(--pme-serif);
-  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
   line-height: var(--pme-lh);
   color: var(--pme-muted);
 }
@@ -384,8 +385,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px 14px;
-  margin: 0 0 clamp(14px, 2vw, 18px);
+  gap: 8px 16px;
+  margin: 0 0 clamp(16px, 2vw, 20px);
   padding: 0;
   list-style: none;
 }
@@ -393,12 +394,11 @@
 .pme__meta-item {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-family: var(--pme-serif);
-  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-  line-height: 1.4;
+  font-size: clamp(0.875rem, 1.25vw, 1rem);
+  line-height: 1.5;
   color: var(--pme-muted);
-  white-space: nowrap;
 }
 
 .pme__meta-icon {
@@ -421,8 +421,8 @@
 .pme__blessings {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding-top: clamp(12px, 1.5vw, 16px);
+  gap: 12px;
+  padding-top: clamp(14px, 1.8vw, 18px);
   border-top: 1px solid var(--pme-gold-soft);
 }
 
@@ -433,7 +433,7 @@
     opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.3s ease,
-    transform 0.3s ease;
+    border-color 0.3s ease;
 }
 
 .pme__frame.is-visible .pme__blessings > .pme__blessing {
@@ -487,17 +487,17 @@
 .pme__blessing-title {
   margin: 0;
   font-family: var(--pme-serif);
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
   font-weight: 600;
   letter-spacing: 0.03em;
   color: var(--pme-ink);
-  line-height: 1.4;
+  line-height: var(--pme-lh-tight);
 }
 
 .pme__blessing-desc {
   margin: 0;
   font-family: var(--pme-serif);
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
   line-height: var(--pme-lh);
   color: var(--pme-muted);
 }
@@ -533,7 +533,7 @@
   min-height: 44px;
   padding: 10px 22px;
   font-family: var(--pme-serif);
-  font-size: clamp(0.875rem, 1.2vw, 0.9375rem);
+  font-size: clamp(0.9375rem, 1.25vw, 1rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -585,35 +585,33 @@
 
 /* ===== Tablet ===== */
 @media (max-width: 989px) {
-  .pme__frame {
-    max-height: none;
-  }
-
   .pme__grid {
-    grid-template-columns: 45% 55%;
-    max-height: none;
+    grid-template-columns: 42% 58%;
     padding: 20px;
   }
 
   .pme__reel {
-    max-width: 100%;
+    max-width: min(100%, 280px);
+  }
+
+  .pme__planet-name {
+    font-size: clamp(1.625rem, 4vw, 2rem);
   }
 
   .pme__sanskrit {
-    font-size: clamp(1.625rem, 4vw, 2.25rem);
+    font-size: clamp(1.75rem, 4.2vw, 2.375rem);
   }
 
   .pme__translit {
-    font-size: clamp(1.125rem, 2.2vw, 1.25rem);
+    font-size: clamp(1.125rem, 2.4vw, 1.3125rem);
   }
 
   .pme__meaning-text {
-    font-size: clamp(1rem, 1.8vw, 1.0625rem);
+    font-size: clamp(1.0625rem, 2vw, 1.125rem);
   }
 
-  .pme__mantra-col {
-    max-height: none;
-    overflow: visible;
+  .pme__meta-item {
+    font-size: clamp(0.875rem, 1.8vw, 0.9375rem);
   }
 }
 
@@ -625,13 +623,21 @@
 
   .pme__grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 22px;
     padding: 16px;
   }
 
   .pme__reel {
-    max-width: 100%;
+    max-width: min(100%, 300px);
     width: 100%;
+  }
+
+  .pme__planet-name {
+    font-size: 1.75rem;
+  }
+
+  .pme__eyebrow {
+    font-size: 0.8125rem;
   }
 
   .pme__mantra-row {
@@ -645,7 +651,7 @@
   }
 
   .pme__sanskrit {
-    font-size: clamp(1.75rem, 7vw, 2rem);
+    font-size: clamp(1.75rem, 7vw, 2.125rem);
   }
 
   .pme__translit {
@@ -653,16 +659,24 @@
   }
 
   .pme__meaning-text {
-    font-size: 1rem;
+    font-size: 1.0625rem;
   }
 
   .pme__meta {
-    gap: 8px 10px;
-    justify-content: flex-start;
+    gap: 10px 12px;
+    justify-content: center;
   }
 
   .pme__meta-item {
-    white-space: normal;
+    font-size: 0.875rem;
+  }
+
+  .pme__blessing-title {
+    font-size: 1.0625rem;
+  }
+
+  .pme__blessing-desc {
+    font-size: 0.9375rem;
   }
 
   .pme__blessings {

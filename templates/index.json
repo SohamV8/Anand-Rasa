@@ -187,37 +187,51 @@
         "cat-8": {
           "type": "category",
           "settings": {
+            "title": "Apsara Attars",
+            "link": "shopify://collections/apsara-attar"
+          }
+        },
+        "cat-9": {
+          "type": "category",
+          "settings": {
             "image": "shopify://shop_images/gift-set-of-perfume-and-attar-indian-traditional-minimal-cream-color-modern-traditional-professional.png",
-            "title": "Discovery Kit",
-            "link": "shopify://collections/all"
+            "title": "Gift Sets",
+            "link": "shopify://collections/giftsets"
+          }
+        },
+        "cat-10": {
+          "type": "category",
+          "settings": {
+            "title": "Perfume Series",
+            "link": "shopify://collections/perfume-series"
           }
         },
         "bp-phil-1": {
           "type": "philosophy_card",
           "settings": {
-            "title": "We Deliver Experience.",
-            "text": "Every note in our Anand Rasa attars is crafted for depth, emotion and lasting presence."
+            "title": "✨ Astrology Crafted",
+            "text": "Attars inspired by your Planet, Zodiac & Nakshatra for a truly personal fragrance."
           }
         },
         "bp-phil-2": {
           "type": "philosophy_card",
           "settings": {
-            "title": "Craft Before Claims",
-            "text": "No hype. Only performance. Traditional methods, real ingredients."
+            "title": "🌿 Pure Oil. Zero Alcohol.",
+            "text": "100% alcohol-free attars made with pure aromatic oils for a richer, longer-lasting scent."
           }
         },
         "bp-phil-3": {
           "type": "philosophy_card",
           "settings": {
-            "title": "Luxury Is Not Packaging",
-            "text": "What matters is how long it lasts and how it makes you feel."
+            "title": "🏺 Handcrafted The Traditional Way",
+            "text": "Small-batch attars created using time-honoured Indian perfumery traditions."
           }
         },
         "bp-phil-4": {
           "type": "philosophy_card",
           "settings": {
-            "title": "One Standard. Always.",
-            "text": "No compromise. No shortcuts. That is the Anand Rasa promise."
+            "title": "💛 Made To Stay With You",
+            "text": "Long-lasting, skin-friendly fragrances designed for daily rituals and special moments."
           }
         }
       },
@@ -245,6 +259,8 @@
         "cat-7",
         "planet-8",
         "cat-8",
+        "cat-9",
+        "cat-10",
         "bp-phil-1",
         "bp-phil-2",
         "bp-phil-3",
@@ -301,7 +317,7 @@
         "vtm_sub": "Real people. Real experiences.",
         "tst_heading": "What Our Customers Say",
         "tst_sub": "Real people. Real experiences.",
-        "bp_heading": "We believe in Truth, Results and No BS",
+        "bp_heading": "Why Anand Rasa Feels Different",
         "blog": "news",
         "blog_limit": 3,
         "blog_heading": "OUR BLOGS",

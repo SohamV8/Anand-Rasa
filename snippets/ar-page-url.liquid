@@ -56,6 +56,11 @@
       if pages['astrology-ritual-set'] != blank
         assign url = pages['astrology-ritual-set'].url
       endif
+    when 'build-3-incense'
+      assign url = routes.root_url | append: '?view=build-3-incense'
+      if pages['build-3-incense'] != blank
+        assign url = pages['build-3-incense'].url
+      endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key
   endcase

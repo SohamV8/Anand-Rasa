@@ -27,8 +27,20 @@
     endif
 
     assign atr_show = false
-    if atr_scope contains 'attar' or atr_scope contains 'perfume oil' or atr_scope contains 'fragrance oil' or atr_scope contains 'apsara' or atr_scope contains 'perfume'
+    if atr_scope contains 'attar' or atr_scope contains 'perfume oil' or atr_scope contains 'perfume-oil' or atr_scope contains 'fragrance oil' or atr_scope contains 'apsara'
       assign atr_show = true
+    endif
+    if atr_show
+      if atr_scope contains 'perfume-series' or atr_scope contains 'perfume-collection' or atr_scope contains 'signature-perfume' or atr_scope contains 'luxury-perfume'
+        unless atr_scope contains 'attar' or atr_scope contains 'apsara'
+          assign atr_show = false
+        endunless
+      endif
+      if atr_type == 'perfume' or atr_type == 'perfumes'
+        unless atr_scope contains 'attar' or atr_scope contains 'apsara' or atr_scope contains 'perfume oil' or atr_scope contains 'perfume-oil'
+          assign atr_show = false
+        endunless
+      endif
     endif
     if atr_is_incense
       assign atr_show = false

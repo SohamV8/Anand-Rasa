@@ -3,31 +3,48 @@
   sections/incense-bundle-offer.liquid
 
   A standalone offer page where the customer picks any 3 incense sticks
-  for a fixed bundle price (default ₹599). When the bundle is complete the
+  for a fixed bundle price (default ₹600). When the bundle is complete the
   customer hits "Add Bundle to Cart" — all 3 variants are added in a single
   /cart/add.js call, and the configured discount code is auto-applied via
   the /discount/{code}?redirect=/cart Shopify URL.
 
+  Assign template "build-3-incense" to a page with handle build-3-incense.
+
   Notes for the merchant:
-  - Set the source collection in the Theme Editor (default handle: incense).
-  - Create a Shopify discount (e.g. "BUY3FOR599") that applies when 3 items
+  - Set the source collection in the Theme Editor (default: incense-sticks).
+  - Create a Shopify discount (e.g. "BUY3FOR600") that applies when 3 items
     from the collection are in the cart, OR a fixed-amount code that brings
-    3 items down to ₹599. Then enter that code in the section settings.
+    3 items down to ₹600. Then enter that code in the section settings.
 {% endcomment %}
 
 {%- liquid
-  assign coll_handle  = section.settings.bundle_collection | default: 'incense-stick'
-  assign bundle_coll  = collections[coll_handle]
+  assign bundle_coll = section.settings.bundle_collection
+  if bundle_coll == blank or bundle_coll.products_count == 0
+    assign bundle_fallback_handles = 'incense-sticks,incense-stick,incense' | split: ','
+    for bundle_h in bundle_fallback_handles
+      assign bundle_h_clean = bundle_h | strip
+      if collections[bundle_h_clean] != blank and collections[bundle_h_clean].products_count > 0
+        assign bundle_coll = collections[bundle_h_clean]
+        break
+      endif
+    endfor
+  endif
+
   assign bundle_size  = section.settings.bundle_size       | default: 3
-  assign bundle_price = section.settings.bundle_price_text | default: '₹599'
-  assign disc_code    = section.settings.discount_code     | default: 'BUY3FOR599'
+  assign bundle_price = section.settings.bundle_price_text | default: '₹600'
+  assign disc_code    = section.settings.discount_code     | default: 'BUY3FOR600'
   assign offer_mins   = section.settings.offer_minutes     | default: 60
+  assign hero_layout  = section.settings.hero_layout      | default: 'banner'
+  if template.suffix == 'build-3-incense' and section.settings.hero_layout == blank
+    assign hero_layout = 'banner'
+  endif
   assign hero_eyebrow = section.settings.hero_eyebrow      | default: 'Special Discount'
   assign hero_title   = section.settings.hero_title        | default: 'Buy any 3'
   assign hero_sub     = section.settings.hero_sub          | default: 'Hand-picked incense sticks, crafted from pure botanicals. Mix any three fragrances and treat your space — or your loved ones — to a sacred ritual.'
   assign cta_pick     = section.settings.cta_pick          | default: 'Pick Your 3 Fragrances'
   assign cta_add      = section.settings.cta_add           | default: 'Add Bundle to Cart'
   assign cta_clear    = section.settings.cta_clear         | default: 'Clear Selection'
+  assign hero_banner_alt = section.settings.hero_banner_alt | default: 'Buy any 3 incense sticks for ' | append: bundle_price
 -%}
 
 <style>
@@ -949,9 +966,123 @@
   font-size: 28px;
   margin: 0 0 10px;
 }
+
+/* ============================================================
+   BANNER HERO (promo image + inline countdown)
+   ============================================================ */
+.arb-promo {
+  background: var(--arb-bg);
+}
+.arb-promo__banner {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  background: #2a2218;
+}
+.arb-promo__banner-img {
+  width: 100%;
+  height: auto;
+  max-height: min(52vw, 520px);
+  object-fit: cover;
+  object-position: center;
+}
+.arb-promo__count {
+  text-align: center;
+  padding: 18px 20px 28px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--arb-ink-2);
+  border-bottom: 1px solid var(--arb-border);
+}
+.arb-promo__count strong {
+  display: inline-block;
+  margin-left: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--arb-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.arb-promo__intro {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 20px 8px;
+  text-align: center;
+}
+.arb-promo__intro p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--arb-ink-3);
+}
+.arb-promo__cta {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 8px;
+}
 </style>
 
 <div class="arb" data-section-id="{{ section.id }}">
+  {%- if hero_layout == 'banner' -%}
+  <section class="arb-promo" aria-labelledby="arb-hero-title">
+    <a href="#arb-picker" class="arb-promo__banner">
+      {%- if section.settings.hero_banner != blank -%}
+        <img
+          class="arb-promo__banner-img"
+          src="{{ section.settings.hero_banner | image_url: width: 2000 }}"
+          srcset="
+            {{ section.settings.hero_banner | image_url: width: 900 }} 900w,
+            {{ section.settings.hero_banner | image_url: width: 1400 }} 1400w,
+            {{ section.settings.hero_banner | image_url: width: 2000 }} 2000w
+          "
+          sizes="100vw"
+          alt="{{ section.settings.hero_banner.alt | default: hero_banner_alt | escape }}"
+          width="2000"
+          height="900"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- else -%}
+        <img
+          class="arb-promo__banner-img"
+          src="{{ 'incense/discount.webp' | asset_url }}"
+          alt="{{ hero_banner_alt | escape }}"
+          width="2000"
+          height="900"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- endif -%}
+    </a>
+    <p
+      class="arb-promo__count"
+      data-arb-countdown-inline
+      data-minutes="{{ offer_mins }}"
+      role="timer"
+      aria-live="polite"
+    >
+      Offer ends in
+      <strong data-arb-countdown-clock>00:00:00</strong>
+    </p>
+    {%- if hero_sub != blank -%}
+      <div class="arb-promo__intro">
+        <p>{{ hero_sub }}</p>
+      </div>
+    {%- endif -%}
+    <div class="arb-promo__cta">
+      <a href="#arb-picker" class="arb-btn arb-btn--primary">
+        {{ cta_pick }}
+        <span class="arb-btn-arrow">→</span>
+      </a>
+    </div>
+  </section>
+  {%- else -%}
   {%- comment -%} ── HERO ── {%- endcomment -%}
   <section class="arb-hero" aria-labelledby="arb-hero-title">
     <span class="arb-hero__blob arb-hero__blob--gold" aria-hidden="true"></span>
@@ -1014,6 +1145,7 @@
       </div>
     </div>
   </section>
+  {%- endif -%}
 
   {%- comment -%} ── HOW IT WORKS ── {%- endcomment -%}
   <section class="arb-steps" aria-label="How the bundle works">
@@ -1045,7 +1177,7 @@
   {%- comment -%} ── PICKER ── {%- endcomment -%}
   <header class="arb-pickhead" id="arb-picker">
     <div>
-      <h2 class="arb-pickhead__title">Choose your three fragrances</h2>
+      <h2 class="arb-pickhead__title">Choose your {{ bundle_size }} fragrances</h2>
       <span class="arb-pickhead__rule" aria-hidden="true"></span>
     </div>
     <span class="arb-pickhead__counter" aria-live="polite">
@@ -1056,7 +1188,7 @@
 
   {%- if bundle_coll != blank and bundle_coll.products.size > 0 -%}
     <main class="arb-grid" id="arb-grid" data-bundle-size="{{ bundle_size }}">
-      {%- for p in bundle_coll.products limit: 24 -%}
+      {%- for p in bundle_coll.products -%}
         {%- liquid
           assign v = p.selected_or_first_available_variant
           assign tag = p.metafields.custom.tagline | metafield_text
@@ -1134,7 +1266,7 @@
     <div class="arb-empty">
       <h2>Bundle is being prepared</h2>
       <p>No products available yet. Please check back shortly, or browse the
-        <a href="/collections/{{ coll_handle }}" style="color: var(--arb-gold); text-decoration: underline;">incense collection</a>.</p>
+        <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" style="color: var(--arb-gold); text-decoration: underline;">incense collection</a>.</p>
     </div>
   {%- endif -%}
 
@@ -1186,48 +1318,53 @@
 
   /* ── COUNTDOWN ─────────────────────────────────────── */
   (function () {
-    var el = root.querySelector('[data-arb-countdown]');
-    if (!el) return;
-
-    var minutes = parseInt(el.getAttribute('data-minutes'), 10) || 60;
-    var key = 'arb_offer_end_v1_{{ section.id }}';
-    var stored = parseInt(window.sessionStorage ? sessionStorage.getItem(key) : 0, 10);
-    var now = Date.now();
-    var endTs;
-
-    if (stored && stored > now) {
-      endTs = stored;
-    } else {
-      endTs = now + (minutes * 60 * 1000);
-      try { if (window.sessionStorage) sessionStorage.setItem(key, String(endTs)); } catch (e) {}
-    }
-
-    var hEl = el.querySelector('[data-unit="hours"]');
-    var mEl = el.querySelector('[data-unit="minutes"]');
-    var sEl = el.querySelector('[data-unit="seconds"]');
+    var countdownEls = root.querySelectorAll('[data-arb-countdown], [data-arb-countdown-inline]');
+    if (!countdownEls.length) return;
 
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
-    function tick() {
-      var diff = endTs - Date.now();
-      if (diff <= 0) {
-        if (hEl) hEl.textContent = '00';
-        if (mEl) mEl.textContent = '00';
-        if (sEl) sEl.textContent = '00';
-        el.classList.add('is-expired');
-        clearInterval(timer);
-        return;
-      }
-      var h = Math.floor(diff / 3600000);
-      var m = Math.floor((diff % 3600000) / 60000);
-      var s = Math.floor((diff % 60000) / 1000);
-      if (hEl) hEl.textContent = pad(h);
-      if (mEl) mEl.textContent = pad(m);
-      if (sEl) sEl.textContent = pad(s);
-    }
+    countdownEls.forEach(function (el) {
+      var minutes = parseInt(el.getAttribute('data-minutes'), 10) || 60;
+      var key = 'arb_offer_end_v1_{{ section.id }}';
+      var stored = parseInt(window.sessionStorage ? sessionStorage.getItem(key) : 0, 10);
+      var now = Date.now();
+      var endTs;
 
-    tick();
-    var timer = setInterval(tick, 1000);
+      if (stored && stored > now) {
+        endTs = stored;
+      } else {
+        endTs = now + (minutes * 60 * 1000);
+        try { if (window.sessionStorage) sessionStorage.setItem(key, String(endTs)); } catch (e) {}
+      }
+
+      var hEl = el.querySelector('[data-unit="hours"]');
+      var mEl = el.querySelector('[data-unit="minutes"]');
+      var sEl = el.querySelector('[data-unit="seconds"]');
+      var inlineEl = el.querySelector('[data-arb-countdown-clock]');
+
+      function tick() {
+        var diff = endTs - Date.now();
+        if (diff <= 0) {
+          if (hEl) hEl.textContent = '00';
+          if (mEl) mEl.textContent = '00';
+          if (sEl) sEl.textContent = '00';
+          if (inlineEl) inlineEl.textContent = '00:00:00';
+          el.classList.add('is-expired');
+          clearInterval(timer);
+          return;
+        }
+        var h = Math.floor(diff / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        if (hEl) hEl.textContent = pad(h);
+        if (mEl) mEl.textContent = pad(m);
+        if (sEl) sEl.textContent = pad(s);
+        if (inlineEl) inlineEl.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+      }
+
+      tick();
+      var timer = setInterval(tick, 1000);
+    });
   })();
 
   /* ── BUNDLE PICKER ─────────────────────────────────── */
@@ -1431,14 +1568,14 @@
       "type": "text",
       "id": "bundle_price_text",
       "label": "Displayed bundle price",
-      "default": "₹599"
+      "default": "₹600"
     },
     {
       "type": "text",
       "id": "discount_code",
       "label": "Discount code to auto-apply",
       "info": "After 'Add Bundle to Cart', the customer is sent to /discount/{code}?redirect=/cart so the discount is auto-applied. Leave empty to skip.",
-      "default": "BUY3FOR599"
+      "default": "BUY3FOR600"
     },
     {
       "type": "range",
@@ -1448,6 +1585,27 @@
     },
 
     { "type": "header", "content": "Hero" },
+    {
+      "type": "select",
+      "id": "hero_layout",
+      "label": "Hero layout",
+      "default": "banner",
+      "options": [
+        { "value": "banner", "label": "Promo banner image" },
+        { "value": "split", "label": "Split text + countdown" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_banner",
+      "label": "Promo banner image",
+      "info": "Used when Hero layout is Promo banner. Defaults to theme asset incense/discount.webp."
+    },
+    {
+      "type": "text",
+      "id": "hero_banner_alt",
+      "label": "Banner image alt text"
+    },
     { "type": "text",     "id": "hero_eyebrow", "label": "Eyebrow",  "default": "Special Discount" },
     { "type": "text",     "id": "hero_title",   "label": "Heading",  "default": "Buy any 3" },
     { "type": "textarea", "id": "hero_sub",     "label": "Sub-heading",

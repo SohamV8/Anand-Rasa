@@ -8,9 +8,21 @@
 {%- liquid
   assign byb_size_label = size_label | default: '6ml'
   assign byb_assets_only = assets_only | default: false
+
+  capture byb_variant_id_raw
+    render 'build-box-variant-lookup', product: product
+  endcapture
+  assign byb_variant_id = byb_variant_id_raw | strip | plus: 0
   assign byb_variant = product.selected_or_first_available_variant
-  assign byb_available = byb_variant.available
-  assign byb_price_cents = byb_variant.price
+  if byb_variant_id > 0
+    assign byb_variant = product.variants | where: 'id', byb_variant_id | first
+  endif
+  assign byb_available = false
+  assign byb_price_cents = 0
+  if byb_variant != blank
+    assign byb_available = byb_variant.available
+    assign byb_price_cents = byb_variant.price
+  endif
 
   capture byb_notes
     render 'build-box-product-notes', product: product
@@ -54,6 +66,10 @@
     assign byb_notes = byb_notes | truncate: 110
   endif
 -%}
+
+{%- unless byb_variant != blank and byb_variant_id > 0 -%}
+  {%- comment -%} No eligible 6ml variant — card omitted. {%- endcomment -%}
+{%- else -%}
 
 <article
   class="byb-card"
@@ -121,3 +137,5 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </span>
 </article>
+
+{%- endunless -%}
