@@ -331,6 +331,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         else
           assign ar_seo_description = 'Discover handcrafted attar and perfume from India at Anandrasa. Shop pure long-lasting fragrances inspired by tradition, crafted for modern everyday luxury.'
         endif
+      elsif request.page_type == 'list-collections'
+        assign ar_pcl_section = sections['main']
+        if ar_pcl_section != blank and ar_pcl_section.settings.seo_title != blank
+          assign ar_seo_title = ar_pcl_section.settings.seo_title | strip
+        else
+          assign ar_seo_title = 'Luxury Attar & Perfume Collections | Anandrasa'
+        endif
+        if ar_pcl_section != blank and ar_pcl_section.settings.seo_description != blank
+          assign ar_seo_description = ar_pcl_section.settings.seo_description | strip_html | strip
+        else
+          assign ar_seo_description = 'Explore Anand Rasa collections — planet, zodiac and nakshatra attars, chakra oils, incense, perfumes and gift sets. Handcrafted Indian fragrances for ritual and luxury.'
+        endif
       elsif request.page_type == '404'
         assign ar_seo_title = 'Page Not Found | Anandrasa'
         assign ar_seo_description = 'The page you are looking for is unavailable. Explore handcrafted attar and perfume collections from Anandrasa and continue discovering authentic Indian fragrances.'
@@ -355,9 +367,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       assign ar_seo_og_url = blank
       if ar_is_faq_page or ar_is_faq_legacy_view
         assign ar_seo_og_url = ar_faq_canonical_url
+      elsif request.page_type == 'list-collections'
+        assign ar_seo_og_url = request.origin | append: routes.collections_url
       endif
     -%}
     {% render 'meta-tags', seo_title: ar_seo_title, seo_description: ar_seo_description, seo_og_url: ar_seo_og_url %}
+    {%- if request.page_type == 'list-collections' -%}
+      {%- liquid
+        assign ar_pcl_head = sections['main']
+        assign ar_pcl_preload_src = blank
+        if ar_pcl_head != blank and ar_pcl_head.settings.hero_image != blank
+          assign ar_pcl_preload_src = ar_pcl_head.settings.hero_image | image_url: width: 1400
+        else
+          assign ar_pcl_preload_src = 'collection_hero.webp' | asset_url
+        endif
+      -%}
+      <link rel="preload" as="image" href="{{ ar_pcl_preload_src }}" fetchpriority="high">
+    {%- endif -%}
     {% render 'schema-global' %}
     {% render 'schema-breadcrumbs' %}
     {%- if request.page_type == 'product' and product != blank -%}
@@ -365,6 +391,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- endif -%}
     {%- if request.page_type == 'collection' and collection != blank -%}
       {% render 'schema-collection', collection: collection %}
+    {%- endif -%}
+    {%- if request.page_type == 'list-collections' and sections['main'] != blank -%}
+      {% render 'schema-list-collections', section: sections['main'] %}
     {%- endif -%}
 
     {%- comment -%} <!-- SEO Fix: Deferred non-critical scripts moved before closing body --> {%- endcomment -%}

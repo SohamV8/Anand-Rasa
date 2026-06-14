@@ -1,0 +1,811 @@
+{% comment %}
+  Premium Collections — /collections list page
+  sections/premium-collections.liquid
+{% endcomment %}
+
+{{ 'premium-collections.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'premium-collections.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign pcl_eyebrow = section.settings.hero_eyebrow | default: 'OUR COLLECTIONS'
+  assign pcl_heading = section.settings.hero_heading | default: 'Discover The World Of Anand Rasa'
+  assign pcl_desc = section.settings.hero_description | default: 'Ancient rituals. Modern luxury. Fragrances crafted for every journey.'
+  assign pcl_hero_img = section.settings.hero_image
+  assign pcl_quote = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign pcl_finder_title = section.settings.finder_heading | default: 'Discover the fragrance written in your stars.'
+  assign pcl_finder_desc = section.settings.finder_description | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.'
+  assign pcl_finder_cta = section.settings.finder_cta_label | default: 'Find your fragrance'
+  capture pcl_finder_url
+    render 'ar-page-url', handle: 'find-fragrance'
+  endcapture
+  assign pcl_finder_url = pcl_finder_url | strip
+  if pcl_finder_url == blank
+    assign pcl_finder_url = routes.root_url | append: '?view=find-fragrance'
+  endif
+  assign pcl_seo_intro = ''
+  if section.settings.show_seo_intro != false
+    assign pcl_seo_intro = section.settings.seo_intro | strip
+    if pcl_seo_intro == blank
+      assign pcl_seo_intro = 'Browse Anand Rasa fragrance collections including bestselling attars, Navagraha planet perfumes, zodiac and nakshatra astrology fragrances, chakra alignment oils, love and stress-relief attars, modern perfume series, natural incense sticks, luxury gift sets, and Apsara attars. Every collection is handcrafted in India from pure botanical oils using traditional distillation — discover Vedic fragrances for meditation, daily wear, gifting, and spiritual practice.'
+    endif
+  endif
+  assign pcl_has_pills = false
+  assign pcl_has_cards = false
+  for block in section.blocks
+    if block.type == 'category_pill'
+      assign pcl_has_pills = true
+    endif
+    if block.type == 'collection_card'
+      assign pcl_has_cards = true
+    endif
+  endfor
+-%}
+
+<div
+  class="pcl js-pcl"
+  id="pcl-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  {%- comment -%} ── Hero ── {%- endcomment -%}
+  <header class="pcl-hero pcl__reveal" style="--pcl-reveal-delay: 0ms;">
+    <div class="pcl-hero__grid">
+      <div class="pcl-hero__copy">
+        <p class="pcl-hero__eyebrow">{{ pcl_eyebrow | escape }}</p>
+        <h1 class="pcl-hero__title">{{ pcl_heading | escape }}</h1>
+        {%- if pcl_desc != blank -%}
+          <p class="pcl-hero__desc">{{ pcl_desc | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="pcl-hero__visual js-pcl-hero-visual">
+        <div class="pcl-hero__img-wrap">
+        {%- if pcl_hero_img != blank -%}
+          {%- capture pcl_hero_alt -%}{%- render 'image-seo-hero-alt', hero_image: pcl_hero_img, alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
+          <img
+            class="pcl-hero__img js-pcl-hero-img"
+            src="{{ pcl_hero_img | image_url: width: 2000 }}"
+            srcset="{{ pcl_hero_img | image_url: width: 600 }} 600w, {{ pcl_hero_img | image_url: width: 900 }} 900w, {{ pcl_hero_img | image_url: width: 1400 }} 1400w, {{ pcl_hero_img | image_url: width: 2000 }} 2000w"
+            sizes="(min-width: 1200px) 52vw, (min-width: 900px) 55vw, 92vw"
+            alt="{{ pcl_hero_alt | strip | escape }}"
+            width="{{ pcl_hero_img.width | default: 2400 }}"
+            height="{{ pcl_hero_img.height | default: 1600 }}"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        {%- else -%}
+          {%- capture pcl_hero_asset_alt -%}{%- render 'image-seo-hero-alt', alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
+          <img
+            class="pcl-hero__img js-pcl-hero-img"
+            src="{{ 'collection_hero.webp' | asset_url }}"
+            alt="{{ pcl_hero_asset_alt | strip | escape }}"
+            width="2400"
+            height="1600"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        {%- endif -%}
+        </div>
+        {%- if section.settings.hero_glass_label != blank and pcl_hero_img != blank -%}
+          <span class="pcl-hero__glass">{{ section.settings.hero_glass_label | escape }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ── Category pills ── {%- endcomment -%}
+    {%- if pcl_has_pills -%}
+      <nav class="pcl-pills pcl__wrap pcl__reveal" style="--pcl-reveal-delay: 120ms;" aria-label="{{ section.settings.pills_aria_label | default: 'Filter collections' | escape }}">
+        <div class="pcl-pills__track-wrap">
+          <div class="pcl-pills__track" id="pcl-pills-{{ section.id }}" role="tablist" aria-orientation="horizontal">
+            <button
+              type="button"
+              class="pcl-pill js-pcl-pill is-active"
+              data-filter="all"
+              role="tab"
+              id="pcl-pill-all-{{ section.id }}"
+              aria-selected="true"
+              aria-pressed="true"
+              aria-controls="pcl-collections-panel-{{ section.id }}"
+            >
+              {{ section.settings.pill_all_label | default: 'All' | escape }}
+            </button>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'category_pill' -%}
+                <button
+                  type="button"
+                  class="pcl-pill js-pcl-pill"
+                  data-filter="{{ block.settings.filter_key | escape }}"
+                  role="tab"
+                  id="pcl-pill-{{ block.id }}"
+                  aria-selected="false"
+                  aria-pressed="false"
+                  aria-controls="pcl-collections-panel-{{ section.id }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.label | escape }}
+                </button>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </nav>
+    {%- endif -%}
+  </header>
+
+  {%- if pcl_seo_intro != blank and section.settings.show_seo_intro != false -%}
+    <div class="visually-hidden" id="pcl-seo-intro-{{ section.id }}">
+      <h2>{{ section.settings.seo_intro_heading | default: 'Shop luxury attar and perfume collections' | escape }}</h2>
+      <p>{{ pcl_seo_intro | escape }}</p>
+      <nav aria-label="{{ section.settings.seo_nav_label | default: 'Collection categories' | escape }}">
+        <ul>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'collection_card' -%}
+              {%- liquid
+                assign pcl_nav_coll = block.settings.collection
+                assign pcl_nav_handle = block.settings.handle | strip
+                assign pcl_nav_title = block.settings.title | strip
+                if pcl_nav_coll != blank
+                  assign pcl_nav_title = block.settings.title | default: pcl_nav_coll.title
+                endif
+                capture pcl_nav_url
+                  if pcl_nav_coll != blank and pcl_nav_coll.url != blank
+                    echo pcl_nav_coll.url
+                  elsif pcl_nav_handle != blank
+                    render 'ar-collection-url', handle: pcl_nav_handle
+                  else
+                    echo routes.collections_url
+                  endif
+                endcapture
+                assign pcl_nav_url = pcl_nav_url | strip
+              -%}
+              <li><a href="{{ pcl_nav_url }}">{{ pcl_nav_title | default: pcl_nav_handle | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ── Masonry grid ── {%- endcomment -%}
+  <section
+    class="pcl-grid-section pcl__wrap"
+    id="pcl-collections-panel-{{ section.id }}"
+    aria-label="{{ section.settings.grid_aria_label | default: 'Shop collections' | escape }}"
+    {% if pcl_has_pills %}role="tabpanel" aria-labelledby="pcl-pill-all-{{ section.id }}"{% endif %}
+  >
+    <h2 class="visually-hidden">{{ section.settings.grid_heading | default: 'Explore our fragrance collections' | escape }}</h2>
+    {%- if pcl_has_cards -%}
+    <div class="pcl-masonry js-pcl-masonry">
+      {%- assign pcl_card_i = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'collection_card' -%}
+          {%- assign pcl_card_i = pcl_card_i | plus: 1 -%}
+          {%- assign pcl_delay = pcl_card_i | times: 60 -%}
+          {% render 'pcl-collection-card', block: block, delay: pcl_delay %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- else -%}
+      <p class="pcl-grid-empty">{{ section.settings.grid_empty_message | default: 'Collections will appear here once cards are added in the theme editor.' | escape }}</p>
+    {%- endif -%}
+  </section>
+
+  {%- comment -%} ── Feature icons ── {%- endcomment -%}
+  <section class="pcl-features js-pcl-features" aria-labelledby="pcl-features-heading-{{ section.id }}">
+    <div class="pcl__wrap">
+      <h2 id="pcl-features-heading-{{ section.id }}" class="visually-hidden">{{ section.settings.features_heading | default: 'Why Anand Rasa fragrances' | escape }}</h2>
+      <ul class="pcl-features__grid" role="list">
+        {%- assign pcl_fi = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'feature' -%}
+            {%- assign pcl_f_delay = pcl_fi | times: 70 -%}
+            {%- assign pcl_fi = pcl_fi | plus: 1 -%}
+            <li class="pcl-features__item" style="--pcl-f-delay: {{ pcl_f_delay }}ms;" {{ block.shopify_attributes }}>
+              <span class="pcl-features__icon" aria-hidden="true">
+                {% render 'collections-brand-icon', icon: block.settings.icon %}
+              </span>
+              <p class="pcl-features__title">{{ block.settings.title | escape }}</p>
+              <p class="pcl-features__sub">{{ block.settings.subtitle | escape }}</p>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── Fragrance finder CTA ── {%- endcomment -%}
+  {%- if section.settings.show_finder_cta -%}
+    <section class="pcl-finder js-pcl-finder pcl__wrap" aria-labelledby="pcl-finder-heading">
+      <a href="{{ pcl_finder_url }}" class="pcl-finder__link" aria-label="{{ pcl_finder_title | strip_html | escape }} — {{ pcl_finder_cta | strip_html | escape }}">
+        <div class="pcl-finder__inner">
+          <div class="pcl-finder__copy">
+            <h2 id="pcl-finder-heading" class="pcl-finder__title">{{ pcl_finder_title | escape }}</h2>
+            {%- if pcl_finder_desc != blank -%}
+              <p class="pcl-finder__desc">{{ pcl_finder_desc | escape }}</p>
+            {%- endif -%}
+            {%- if pcl_finder_cta != blank -%}
+              <span class="pcl-finder__cta">
+                {{ pcl_finder_cta | escape }}
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </a>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ── Trust bar ── {%- endcomment -%}
+  <section class="pcl-trust js-pcl-trust" aria-label="{{ section.settings.trust_aria_label | default: 'Shopping assurances' | escape }}">
+    <div class="pcl__wrap">
+      <ul class="pcl-trust__grid" role="list">
+        {%- assign pcl_ti = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_item' -%}
+            {%- assign pcl_t_delay = pcl_ti | times: 80 -%}
+            {%- assign pcl_ti = pcl_ti | plus: 1 -%}
+            <li class="pcl-trust__item" style="--pcl-t-delay: {{ pcl_t_delay }}ms;" {{ block.shopify_attributes }}>
+              <span class="pcl-trust__icon" aria-hidden="true">
+                {% render 'pcl-trust-icon', icon: block.settings.icon %}
+              </span>
+              <p class="pcl-trust__title">{{ block.settings.title | escape }}</p>
+              <p class="pcl-trust__sub">{{ block.settings.subtitle | escape }}</p>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Premium collections",
+  "tag": "section",
+  "class": "section-premium-collections",
+  "settings": [
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "text",
+      "id": "seo_title",
+      "label": "Page title (SEO)",
+      "default": "Luxury Attar & Perfume Collections | Anandrasa",
+      "info": "Overrides the browser title and social sharing title for /collections"
+    },
+    {
+      "type": "textarea",
+      "id": "seo_description",
+      "label": "Meta description",
+      "default": "Explore Anand Rasa collections — planet, zodiac and nakshatra attars, chakra oils, incense, perfumes and gift sets. Handcrafted Indian fragrances for ritual and luxury."
+    },
+    {
+      "type": "image_picker",
+      "id": "seo_og_image",
+      "label": "Social sharing image",
+      "info": "Open Graph and Twitter card image. Falls back to hero image."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_seo_intro",
+      "label": "Show SEO intro for search engines",
+      "default": true,
+      "info": "Visually hidden copy and collection links — no layout change"
+    },
+    {
+      "type": "text",
+      "id": "seo_intro_heading",
+      "label": "SEO intro heading",
+      "default": "Shop luxury attar and perfume collections"
+    },
+    {
+      "type": "textarea",
+      "id": "seo_intro",
+      "label": "SEO intro text",
+      "info": "Leave blank to use the default premium copy"
+    },
+    {
+      "type": "text",
+      "id": "seo_nav_label",
+      "label": "SEO nav label",
+      "default": "Collection categories"
+    },
+    {
+      "type": "text",
+      "id": "grid_heading",
+      "label": "Grid heading (screen readers)",
+      "default": "Explore our fragrance collections"
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "OUR COLLECTIONS"
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Heading",
+      "default": "Discover The World Of Anand Rasa"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_description",
+      "label": "Description",
+      "default": "Ancient rituals. Modern luxury. Fragrances crafted for every journey."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Hero image alt (SEO)"
+    },
+    {
+      "type": "text",
+      "id": "hero_glass_label",
+      "label": "Hero glass label (desktop)",
+      "default": "Handcrafted in India"
+    },
+    {
+      "type": "text",
+      "id": "hero_placeholder_label",
+      "label": "Hero placeholder label",
+      "default": "Upload hero image in theme editor",
+      "info": "Shown when no hero image is uploaded"
+    },
+    {
+      "type": "header",
+      "content": "Pills"
+    },
+    {
+      "type": "text",
+      "id": "pill_all_label",
+      "label": "All pill label",
+      "default": "All"
+    },
+    {
+      "type": "text",
+      "id": "pills_aria_label",
+      "label": "Pills accessibility label",
+      "default": "Filter collections"
+    },
+    {
+      "type": "header",
+      "content": "Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote text",
+      "default": "The right fragrance is not chosen. It finds you."
+    },
+    {
+      "type": "image_picker",
+      "id": "lotus_image",
+      "label": "Quote lotus image"
+    },
+    {
+      "type": "header",
+      "content": "Fragrance finder"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_finder_cta",
+      "label": "Show fragrance finder banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "finder_heading",
+      "label": "Finder heading",
+      "default": "Discover the fragrance written in your stars."
+    },
+    {
+      "type": "textarea",
+      "id": "finder_description",
+      "label": "Finder description",
+      "default": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy."
+    },
+    {
+      "type": "text",
+      "id": "finder_cta_label",
+      "label": "Finder button label",
+      "default": "Find your fragrance"
+    },
+    {
+      "type": "header",
+      "content": "Accessibility"
+    },
+    {
+      "type": "text",
+      "id": "grid_empty_message",
+      "label": "Empty grid message",
+      "default": "Collections will appear here once cards are added in the theme editor."
+    },
+    {
+      "type": "text",
+      "id": "grid_aria_label",
+      "label": "Grid label",
+      "default": "Shop collections"
+    },
+    {
+      "type": "text",
+      "id": "features_heading",
+      "label": "Features heading (screen readers)",
+      "default": "Why Anand Rasa fragrances"
+    },
+    {
+      "type": "text",
+      "id": "features_aria_label",
+      "label": "Features label",
+      "default": "Brand values"
+    },
+    {
+      "type": "text",
+      "id": "quote_aria_label",
+      "label": "Quote label",
+      "default": "Brand quote"
+    },
+    {
+      "type": "text",
+      "id": "trust_aria_label",
+      "label": "Trust label",
+      "default": "Shopping assurances"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_pill",
+      "name": "Category pill",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Bestsellers"
+        },
+        {
+          "type": "text",
+          "id": "filter_key",
+          "label": "Filter key",
+          "info": "Must match pill_groups on collection cards (e.g. bestsellers, astrology)",
+          "default": "bestsellers"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "bestsellers", "label": "Bestsellers" },
+            { "value": "astrology", "label": "Astrology" },
+            { "value": "attars", "label": "Attars" },
+            { "value": "perfumes", "label": "Perfumes" },
+            { "value": "incense", "label": "Incense" },
+            { "value": "gift-sets", "label": "Gift sets" }
+          ],
+          "default": "bestsellers"
+        }
+      ]
+    },
+    {
+      "type": "collection_card",
+      "name": "Collection card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Handle fallback",
+          "info": "Used if collection picker is empty. e.g. planet-attars"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title override"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description override",
+          "info": "Premium SEO copy shown on featured cards; screen-reader text on compact cards"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt (SEO)",
+          "info": "Leave blank for automatic semantic alt text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "text",
+          "id": "fallback_asset",
+          "label": "Asset fallback filename",
+          "info": "e.g. collection-planet-attars.webp — auto-resolves from assets when empty"
+        },
+        {
+          "type": "select",
+          "id": "card_size",
+          "label": "Card size",
+          "options": [
+            { "value": "featured", "label": "Featured (large)" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "small", "label": "Small" }
+          ],
+          "default": "small"
+        },
+        {
+          "type": "range",
+          "id": "grid_position",
+          "label": "Grid position",
+          "info": "Desktop layout slot (1–10). Set to 0 for auto order.",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "info": "e.g. MOST LOVED"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Featured CTA",
+          "default": "EXPLORE COLLECTION →"
+        },
+        {
+          "type": "text",
+          "id": "pill_groups",
+          "label": "Pill filter groups",
+          "info": "Comma-separated: bestsellers, astrology, attars, perfumes, incense, gift-sets",
+          "default": "bestsellers"
+        },
+        {
+          "type": "select",
+          "id": "text_tone",
+          "label": "Text tone",
+          "options": [
+            { "value": "light", "label": "Light (on dark image)" },
+            { "value": "dark", "label": "Dark (on light image)" }
+          ],
+          "default": "light"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature icon",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "pure-oil", "label": "Pure oil" },
+            { "value": "alcohol-free", "label": "Alcohol free" },
+            { "value": "handcrafted", "label": "Handcrafted" },
+            { "value": "astrology", "label": "Astrology" },
+            { "value": "long-lasting", "label": "Long lasting" },
+            { "value": "distillation", "label": "Distillation" }
+          ],
+          "default": "pure-oil"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pure Oil"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "100% Natural"
+        }
+      ]
+    },
+    {
+      "type": "trust_item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "made-in-india", "label": "Made in India" },
+            { "value": "cruelty-free", "label": "Cruelty free" },
+            { "value": "secure-payments", "label": "Secure payments" },
+            { "value": "worldwide-shipping", "label": "Worldwide shipping" }
+          ],
+          "default": "made-in-india"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Made In India"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Proudly Indian"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium collections",
+      "blocks": [
+        { "type": "category_pill", "settings": { "label": "Bestsellers", "filter_key": "bestsellers", "icon": "bestsellers" } },
+        { "type": "category_pill", "settings": { "label": "Astrology", "filter_key": "astrology", "icon": "astrology" } },
+        { "type": "category_pill", "settings": { "label": "Attars", "filter_key": "attars", "icon": "attars" } },
+        { "type": "category_pill", "settings": { "label": "Perfumes", "filter_key": "perfumes", "icon": "perfumes" } },
+        { "type": "category_pill", "settings": { "label": "Incense", "filter_key": "incense", "icon": "incense" } },
+        { "type": "category_pill", "settings": { "label": "Gift Sets", "filter_key": "gift-sets", "icon": "gift-sets" } },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "bestseller",
+            "title": "Bestsellers",
+            "description": "Our most loved fragrances, chosen by thousands.",
+            "card_size": "featured",
+            "badge": "MOST LOVED",
+            "cta_label": "EXPLORE COLLECTION →",
+            "pill_groups": "bestsellers",
+            "fallback_asset": "PlanetHero.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "planet-attars",
+            "title": "Planet Attars",
+            "description": "Planetary energies distilled into sacred oils.",
+            "card_size": "medium",
+            "grid_position": 1,
+            "pill_groups": "astrology,attars",
+            "fallback_asset": "PlanetHero.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "zodiac-attars",
+            "title": "Zodiac Attars",
+            "description": "Fragrances aligned with your celestial sign.",
+            "card_size": "medium",
+            "grid_position": 2,
+            "pill_groups": "astrology,attars",
+            "fallback_asset": "PlanetHero.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "nakshatra-attars",
+            "title": "Nakshatra Attars",
+            "description": "Lunar mansions captured in pure attar form.",
+            "card_size": "medium",
+            "grid_position": 3,
+            "pill_groups": "astrology,attars",
+            "fallback_asset": "PlanetHero.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "chakra-attars",
+            "title": "Chakra Attars",
+            "description": "Balance your energy centres with sacred scents.",
+            "card_size": "medium",
+            "grid_position": 4,
+            "pill_groups": "astrology,attars",
+            "text_tone": "dark",
+            "fallback_asset": "chakra.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "love-attars",
+            "title": "Love Attars",
+            "description": "Romantic blends for the heart and soul.",
+            "card_size": "small",
+            "pill_groups": "attars",
+            "fallback_asset": "love.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "stress-relief",
+            "title": "Stress Relief",
+            "description": "Calming attars for peace and restoration.",
+            "card_size": "small",
+            "pill_groups": "attars",
+            "fallback_asset": "stress.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "perfume-series",
+            "title": "Perfume Series",
+            "description": "Modern eau de parfum for everyday luxury.",
+            "card_size": "small",
+            "pill_groups": "perfumes",
+            "fallback_asset": "home.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "incense-sticks",
+            "title": "Incense Collection",
+            "description": "Hand-rolled incense for sacred rituals.",
+            "card_size": "small",
+            "pill_groups": "incense",
+            "fallback_asset": "incense/incense_collection.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "gift-sets",
+            "title": "Gift Sets",
+            "description": "Curated boxes for gifting and discovery.",
+            "card_size": "small",
+            "pill_groups": "gift-sets",
+            "fallback_asset": "wooden_attar_box.webp"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "handle": "apsara-attar",
+            "title": "Apsara Attars",
+            "description": "Divine feminine fragrances of timeless beauty.",
+            "card_size": "small",
+            "pill_groups": "attars",
+            "fallback_asset": "home.webp"
+          }
+        },
+        { "type": "feature", "settings": { "icon": "pure-oil", "title": "Pure Oil", "subtitle": "100% Natural" } },
+        { "type": "feature", "settings": { "icon": "alcohol-free", "title": "Alcohol Free", "subtitle": "Gentle & Safe" } },
+        { "type": "feature", "settings": { "icon": "handcrafted", "title": "Handcrafted", "subtitle": "With Devotion" } },
+        { "type": "feature", "settings": { "icon": "astrology", "title": "Astrology Inspired", "subtitle": "Planetary Blessings" } },
+        { "type": "feature", "settings": { "icon": "long-lasting", "title": "Long Lasting", "subtitle": "Exquisite Longevity" } },
+        { "type": "feature", "settings": { "icon": "distillation", "title": "Traditional Distillation", "subtitle": "Ancient Methods" } },
+        { "type": "trust_item", "settings": { "icon": "made-in-india", "title": "Made In India", "subtitle": "Proudly Indian" } },
+        { "type": "trust_item", "settings": { "icon": "cruelty-free", "title": "Cruelty Free", "subtitle": "Kind to Nature" } },
+        { "type": "trust_item", "settings": { "icon": "secure-payments", "title": "Secure Payments", "subtitle": "100% Protected" } },
+        { "type": "trust_item", "settings": { "icon": "worldwide-shipping", "title": "Worldwide Shipping", "subtitle": "Delivering Happiness" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

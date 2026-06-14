@@ -1,0 +1,277 @@
+{% comment %}
+  Collection brand trust — feature icons + quote banner
+  sections/collection-brand-trust.liquid
+{% endcomment %}
+
+{{ 'collection-brand-trust.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign quote_text = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign lotus_image = section.settings.lotus_image
+-%}
+
+<section
+  class="cbt js-cbt"
+  id="collection-brand-trust-{{ section.id }}"
+  aria-label="{{ section.settings.aria_label | default: 'Brand highlights' | escape }}"
+>
+  <div class="cbt__features">
+    <ul class="cbt__grid" role="list">
+      <li class="cbt__item" style="--cbt-delay: 0ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'pure-oil' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_1_title | default: 'Pure Oil' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_1_sub | default: '100% Natural' }}</p>
+      </li>
+      <li class="cbt__item" style="--cbt-delay: 80ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'alcohol-free' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_2_title | default: 'Alcohol Free' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_2_sub | default: 'Gentle & Safe' }}</p>
+      </li>
+      <li class="cbt__item" style="--cbt-delay: 160ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'handcrafted' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_3_title | default: 'Handcrafted' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_3_sub | default: 'With Devotion' }}</p>
+      </li>
+      <li class="cbt__item" style="--cbt-delay: 240ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'astrology' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_4_title | default: 'Astrology Inspired' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_4_sub | default: 'Planetary Blessings' }}</p>
+      </li>
+      <li class="cbt__item" style="--cbt-delay: 320ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'long-lasting' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_5_title | default: 'Long Lasting' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_5_sub | default: 'Exquisite Longevity' }}</p>
+      </li>
+      <li class="cbt__item" style="--cbt-delay: 400ms">
+        <span class="cbt__icon">{% render 'collection-brand-icon', icon: 'distillation' %}</span>
+        <p class="cbt__title">{{ section.settings.feature_6_title | default: 'Traditional Distillation' }}</p>
+        <p class="cbt__sub">{{ section.settings.feature_6_sub | default: 'Ancient Methods' }}</p>
+      </li>
+    </ul>
+  </div>
+
+  <div class="cbt__quote-wrap">
+    <div class="cbt__quote">
+      <div class="cbt__quote-deco cbt__quote-deco--left" aria-hidden="true">
+        <svg viewBox="0 0 200 280" fill="none" preserveAspectRatio="xMinYMax meet">
+          <path d="M30 280V120c8-40 24-72 44-96" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M55 280V100c6-35 18-64 36-88" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M80 280V140c10-30 20-52 32-70" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M12 200c12-8 22-8 32 0M20 160c14-6 26-4 36 6M8 240c16-10 28-8 40 4" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+          <ellipse cx="44" cy="88" rx="8" ry="12" stroke="currentColor" stroke-width="0.9" transform="rotate(-12 44 88)"/>
+          <ellipse cx="72" cy="72" rx="6" ry="10" stroke="currentColor" stroke-width="0.9" transform="rotate(8 72 72)"/>
+        </svg>
+      </div>
+
+      {%- if lotus_image != blank -%}
+        <div class="cbt__quote-deco cbt__quote-deco--right" aria-hidden="true">
+          <img
+            src="{{ lotus_image | image_url: width: 560 }}"
+            alt=""
+            width="280"
+            height="280"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      {%- else -%}
+        <div class="cbt__quote-deco cbt__quote-deco--right" aria-hidden="true">
+          <img
+            src="{{ 'Notes/lotus11.webp' | asset_url }}"
+            alt=""
+            width="280"
+            height="280"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      {%- endif -%}
+
+      <div class="cbt__quote-inner">
+        <blockquote class="cbt__quote-text">
+          <p>{{ quote_text }}</p>
+        </blockquote>
+        <div class="cbt__quote-divider" aria-hidden="true">
+          <span class="cbt__quote-line"></span>
+          <span class="cbt__quote-lotus">{% render 'attar-ritual-icon', icon: 'lotus' %}</span>
+          <span class="cbt__quote-line"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    'use strict';
+    var sectionId = '{{ section.id }}';
+
+    function initCbt(root) {
+      if (!root || root.dataset.cbtInited === 'true') return;
+      root.dataset.cbtInited = 'true';
+
+      if (!('IntersectionObserver' in window)) {
+        root.classList.add('is-visible');
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          });
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+
+      observer.observe(root);
+    }
+
+    var root = document.getElementById('collection-brand-trust-' + sectionId);
+    initCbt(root);
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.detail.sectionId === sectionId) {
+        var reloaded = document.getElementById('collection-brand-trust-' + sectionId);
+        if (reloaded) {
+          reloaded.dataset.cbtInited = '';
+          initCbt(reloaded);
+        }
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection brand trust",
+  "tag": "section",
+  "class": "section-collection-brand-trust",
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessibility label",
+      "default": "Brand highlights"
+    },
+    {
+      "type": "header",
+      "content": "Quote banner"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "The right fragrance is not chosen. It finds you."
+    },
+    {
+      "type": "image_picker",
+      "id": "lotus_image",
+      "label": "Lotus image (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Feature 1"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_title",
+      "label": "Title",
+      "default": "Pure Oil"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_sub",
+      "label": "Subtitle",
+      "default": "100% Natural"
+    },
+    {
+      "type": "header",
+      "content": "Feature 2"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_title",
+      "label": "Title",
+      "default": "Alcohol Free"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_sub",
+      "label": "Subtitle",
+      "default": "Gentle & Safe"
+    },
+    {
+      "type": "header",
+      "content": "Feature 3"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_title",
+      "label": "Title",
+      "default": "Handcrafted"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_sub",
+      "label": "Subtitle",
+      "default": "With Devotion"
+    },
+    {
+      "type": "header",
+      "content": "Feature 4"
+    },
+    {
+      "type": "text",
+      "id": "feature_4_title",
+      "label": "Title",
+      "default": "Astrology Inspired"
+    },
+    {
+      "type": "text",
+      "id": "feature_4_sub",
+      "label": "Subtitle",
+      "default": "Planetary Blessings"
+    },
+    {
+      "type": "header",
+      "content": "Feature 5"
+    },
+    {
+      "type": "text",
+      "id": "feature_5_title",
+      "label": "Title",
+      "default": "Long Lasting"
+    },
+    {
+      "type": "text",
+      "id": "feature_5_sub",
+      "label": "Subtitle",
+      "default": "Exquisite Longevity"
+    },
+    {
+      "type": "header",
+      "content": "Feature 6"
+    },
+    {
+      "type": "text",
+      "id": "feature_6_title",
+      "label": "Title",
+      "default": "Traditional Distillation"
+    },
+    {
+      "type": "text",
+      "id": "feature_6_sub",
+      "label": "Subtitle",
+      "default": "Ancient Methods"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection brand trust"
+    }
+  ]
+}
+{% endschema %}

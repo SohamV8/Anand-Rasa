@@ -1,13 +1,302 @@
 {
   "sections": {
     "main": {
-      "type": "main-list-collections",
+      "type": "premium-collections",
+      "blocks": {
+        "pill_bestsellers": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Bestsellers",
+            "filter_key": "bestsellers",
+            "icon": "bestsellers"
+          }
+        },
+        "pill_astrology": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Astrology",
+            "filter_key": "astrology",
+            "icon": "astrology"
+          }
+        },
+        "pill_attars": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Attars",
+            "filter_key": "attars",
+            "icon": "attars"
+          }
+        },
+        "pill_perfumes": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Perfumes",
+            "filter_key": "perfumes",
+            "icon": "perfumes"
+          }
+        },
+        "pill_incense": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Incense",
+            "filter_key": "incense",
+            "icon": "incense"
+          }
+        },
+        "pill_gifts": {
+          "type": "category_pill",
+          "settings": {
+            "label": "Gift Sets",
+            "filter_key": "gift-sets",
+            "icon": "gift-sets"
+          }
+        },
+        "card_bestsellers": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "bestseller",
+            "title": "Bestsellers",
+            "description": "Customer favourites in luxury attars and natural perfumes — bestselling Indian fragrances loved for longevity, ritual, and everyday elegance.",
+            "card_size": "featured",
+            "badge": "FEATURED",
+            "cta_label": "Explore Collection →",
+            "pill_groups": "bestsellers"
+          }
+        },
+        "card_planet": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "planet-attars",
+            "title": "Planet Attars",
+            "description": "Navagraha planet attars crafted with Vedic wisdom — luxury perfume oils channelling solar, lunar, and planetary energies for spiritual alignment.",
+            "card_size": "medium",
+            "grid_position": 1,
+            "pill_groups": "astrology,attars"
+          }
+        },
+        "card_zodiac": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "zodiac-attars",
+            "title": "Zodiac Attars",
+            "description": "Zodiac sign attars aligned to your birth chart — astrology perfumes blending natural Indian oils for celestial harmony and daily ritual.",
+            "card_size": "medium",
+            "grid_position": 2,
+            "pill_groups": "astrology,attars"
+          }
+        },
+        "card_nakshatra": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "nakshatra-attars",
+            "title": "Nakshatra Attars",
+            "description": "27 Nakshatra attars honouring Vedic lunar mansions — birth-star fragrance oils for meditation, astrology rituals, and soulful discovery.",
+            "card_size": "medium",
+            "grid_position": 3,
+            "pill_groups": "astrology,attars"
+          }
+        },
+        "card_chakra": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "chakra-attars",
+            "title": "Chakra Attars",
+            "description": "Seven chakra attars for energy balance — natural perfume oils to ground, open, and harmonise root through crown centres.",
+            "card_size": "medium",
+            "grid_position": 4,
+            "pill_groups": "astrology,attars",
+            "text_tone": "dark"
+          }
+        },
+        "card_love": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "love-attars",
+            "title": "Love Attars",
+            "description": "Romantic love attars for intimacy and devotion — luxury natural perfume oils handcrafted for gifting and sacred connection.",
+            "card_size": "small",
+            "grid_position": 5,
+            "pill_groups": "attars"
+          }
+        },
+        "card_stress": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "stress-relief",
+            "title": "Stress Relief",
+            "description": "Calming stress-relief attars for peace and restoration — aromatherapy perfume oils to ease anxiety and invite serene well-being.",
+            "card_size": "small",
+            "grid_position": 6,
+            "pill_groups": "attars"
+          }
+        },
+        "card_perfume": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "perfume-series",
+            "title": "Perfume Series",
+            "description": "Modern eau de parfum from India — alcohol-based luxury fragrances with attar soul, designed for everyday elegance and long-lasting wear.",
+            "card_size": "small",
+            "grid_position": 7,
+            "pill_groups": "perfumes"
+          }
+        },
+        "card_incense": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "incense-sticks",
+            "title": "Incense Collection",
+            "description": "Hand-rolled natural incense sticks for puja and meditation — Indian agarbatti blends for sacred ritual and mindful living.",
+            "card_size": "small",
+            "grid_position": 8,
+            "pill_groups": "incense"
+          }
+        },
+        "card_gifts": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "gift-sets",
+            "title": "Gift Sets",
+            "description": "Curated attar and perfume gift sets — luxury Indian fragrance boxes for birthdays, festivals, and thoughtful discovery gifting.",
+            "card_size": "small",
+            "grid_position": 9,
+            "pill_groups": "gift-sets"
+          }
+        },
+        "card_apsara": {
+          "type": "collection_card",
+          "settings": {
+            "handle": "apsara-attar",
+            "title": "Apsara Attars",
+            "description": "Apsara attars inspired by divine feminine grace — rare luxury perfume oils celebrating beauty, devotion, and Indian fragrance artistry.",
+            "card_size": "small",
+            "grid_position": 10,
+            "pill_groups": "attars"
+          }
+        },
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "pure-oil",
+            "title": "Pure Oil",
+            "subtitle": "100% Natural"
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "alcohol-free",
+            "title": "Alcohol Free",
+            "subtitle": "Gentle & Safe"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "handcrafted",
+            "title": "Handcrafted",
+            "subtitle": "With Devotion"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "astrology",
+            "title": "Astrology Inspired",
+            "subtitle": "Planetary Blessings"
+          }
+        },
+        "feature_5": {
+          "type": "feature",
+          "settings": {
+            "icon": "long-lasting",
+            "title": "Long Lasting",
+            "subtitle": "Exquisite Longevity"
+          }
+        },
+        "feature_6": {
+          "type": "feature",
+          "settings": {
+            "icon": "distillation",
+            "title": "Traditional Distillation",
+            "subtitle": "Ancient Methods"
+          }
+        },
+        "trust_1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "made-in-india",
+            "title": "Made In India",
+            "subtitle": "Proudly Indian"
+          }
+        },
+        "trust_2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "cruelty-free",
+            "title": "Cruelty Free",
+            "subtitle": "Kind to Nature"
+          }
+        },
+        "trust_3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "secure-payments",
+            "title": "Secure Payments",
+            "subtitle": "100% Protected"
+          }
+        },
+        "trust_4": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "worldwide-shipping",
+            "title": "Worldwide Shipping",
+            "subtitle": "Delivering Happiness"
+          }
+        }
+      },
+      "block_order": [
+        "pill_bestsellers",
+        "pill_astrology",
+        "pill_attars",
+        "pill_perfumes",
+        "pill_incense",
+        "pill_gifts",
+        "card_bestsellers",
+        "card_planet",
+        "card_zodiac",
+        "card_nakshatra",
+        "card_chakra",
+        "card_love",
+        "card_stress",
+        "card_perfume",
+        "card_incense",
+        "card_gifts",
+        "card_apsara",
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4",
+        "feature_5",
+        "feature_6",
+        "trust_1",
+        "trust_2",
+        "trust_3",
+        "trust_4"
+      ],
       "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
+        "seo_title": "Luxury Attar & Perfume Collections | Anandrasa",
+        "seo_description": "Explore Anand Rasa collections — planet, zodiac and nakshatra attars, chakra oils, incense, perfumes and gift sets. Handcrafted Indian fragrances for ritual and luxury.",
+        "show_seo_intro": true,
+        "hero_eyebrow": "OUR COLLECTIONS",
+        "hero_heading": "Discover The World Of Anand Rasa",
+        "hero_description": "Ancient rituals. Modern luxury. Fragrances crafted for every journey.",
+        "hero_glass_label": "Handcrafted in India",
+        "quote": "The right fragrance is not chosen. It finds you.",
+        "show_finder_cta": true,
+        "finder_heading": "Discover the fragrance written in your stars.",
+        "finder_description": "Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.",
+        "finder_cta_label": "Find your fragrance"
       }
     }
   },

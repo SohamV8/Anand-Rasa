@@ -99,6 +99,12 @@
       assign alt_text = col_title | append: ' — love and romance attar collection, luxury perfume oils' | append: brand_suffix
     elsif col_key contains 'gift'
       assign alt_text = col_title | append: ' — luxury attar gift sets and discovery collections' | append: brand_suffix
+    elsif col_key contains 'perfume'
+      assign alt_text = col_title | append: ' — modern eau de parfum collection, luxury Indian fragrances' | append: brand_suffix
+    elsif col_key contains 'apsara'
+      assign alt_text = col_title | append: ' — divine feminine Apsara attar collection, luxury perfume oils' | append: brand_suffix
+    elsif col_key contains 'bestseller' or col_key contains 'best-seller'
+      assign alt_text = col_title | append: ' — bestselling attars and natural perfumes from India' | append: brand_suffix
     else
       assign alt_text = col_title | append: ' — handcrafted attar and perfume collection' | append: brand_suffix
     endif

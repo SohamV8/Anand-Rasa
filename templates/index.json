@@ -209,28 +209,28 @@
         "bp-phil-1": {
           "type": "philosophy_card",
           "settings": {
-            "title": "✨ Astrology Crafted",
+            "title": "Astrology Crafted",
             "text": "Attars inspired by your Planet, Zodiac & Nakshatra for a truly personal fragrance."
           }
         },
         "bp-phil-2": {
           "type": "philosophy_card",
           "settings": {
-            "title": "🌿 Pure Oil. Zero Alcohol.",
+            "title": "Pure Oil. Zero Alcohol.",
             "text": "100% alcohol-free attars made with pure aromatic oils for a richer, longer-lasting scent."
           }
         },
         "bp-phil-3": {
           "type": "philosophy_card",
           "settings": {
-            "title": "🏺 Handcrafted The Traditional Way",
+            "title": "Handcrafted The Traditional Way",
             "text": "Small-batch attars created using time-honoured Indian perfumery traditions."
           }
         },
         "bp-phil-4": {
           "type": "philosophy_card",
           "settings": {
-            "title": "💛 Made To Stay With You",
+            "title": "Made To Stay With You",
             "text": "Long-lasting, skin-friendly fragrances designed for daily rituals and special moments."
           }
         }

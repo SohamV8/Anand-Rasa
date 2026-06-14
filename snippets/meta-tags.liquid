@@ -55,6 +55,27 @@
     assign og_image_alt = article.image.alt | default: article.title
     assign og_image_width = article.image.width | default: 1200
     assign og_image_height = article.image.height | default: 630
+  elsif request.page_type == 'list-collections'
+    assign ar_pcl_meta_section = sections['main']
+    if ar_pcl_meta_section != blank and ar_pcl_meta_section.settings.seo_og_image != blank
+      assign og_image = ar_pcl_meta_section.settings.seo_og_image | image_url: width: 1200
+      assign og_image_alt = ar_pcl_meta_section.settings.seo_og_image.alt | default: og_title
+      assign og_image_width = ar_pcl_meta_section.settings.seo_og_image.width | default: 1200
+      assign og_image_height = ar_pcl_meta_section.settings.seo_og_image.height | default: 630
+    elsif ar_pcl_meta_section != blank and ar_pcl_meta_section.settings.hero_image != blank
+      assign og_image = ar_pcl_meta_section.settings.hero_image | image_url: width: 1200
+      capture og_image_alt_resolved
+        render 'image-seo-hero-alt', hero_image: ar_pcl_meta_section.settings.hero_image, alt_override: ar_pcl_meta_section.settings.hero_image_alt, seo_label: og_title, img_context: 'og'
+      endcapture
+      assign og_image_alt = og_image_alt_resolved | strip
+      assign og_image_width = ar_pcl_meta_section.settings.hero_image.width | default: 1200
+      assign og_image_height = ar_pcl_meta_section.settings.hero_image.height | default: 630
+    else
+      assign og_image = 'collection_hero.webp' | asset_url
+      assign og_image_alt = og_title | append: ' — luxury attar and perfume collections from India'
+      assign og_image_width = 2400
+      assign og_image_height = 1600
+    endif
   endif
 
   if og_image == blank

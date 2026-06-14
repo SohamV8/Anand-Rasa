@@ -202,7 +202,15 @@
     box-shadow:18px 0 60px rgba(0,0,0,.18);
   }
   .ar-nav__drawer.is-open { transform:translateX(0); }
-  .ar-nav__drawer-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid var(--ar-line); }
+  .ar-nav__drawer-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--ar-line);
+    flex-shrink:0;
+  }
   .ar-nav__drawer-head .ar-nav__logo-img { height:44px; }
   .ar-nav__drawer-close {
     background:none;
@@ -264,16 +272,23 @@
   .ar-nav__drawer-sub-menu {
     display:grid;
     grid-template-rows:0fr;
-    max-height:0;
-    transition:grid-template-rows .4s var(--ar-easing), max-height .4s var(--ar-easing);
+    transition:grid-template-rows .4s var(--ar-easing);
     overflow:hidden;
     padding:0 0 0 16px;
+    flex-shrink:0;
   }
   .ar-nav__drawer-sub-menu.is-open {
     grid-template-rows:1fr;
-    max-height:min(70vh, 720px);
   }
-  .ar-nav__drawer-sub-menu > .ar-nav__drawer-sub-inner { min-height:0; display:flex; flex-direction:column; }
+  .ar-nav__drawer-sub-menu > .ar-nav__drawer-sub-inner {
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .ar-nav__drawer-sub-menu.is-open > .ar-nav__drawer-sub-inner {
+    overflow:visible;
+  }
   .ar-nav__drawer-link.ar-nav__drawer-sub { font-size:15px; font-weight:400; color:var(--ar-ink-soft); padding:14px 0; border-bottom:1px solid var(--ar-line); opacity:1; transform:none; }
   .ar-nav__drawer-link.ar-nav__drawer-sub:last-child { border-bottom:none; }
   .ar-nav__drawer-group-title {
@@ -697,6 +712,36 @@
     .ar-search-panel .predictive-search__item { padding:10px 12px; }
     .ar-search-panel__quick { gap:6px; margin-top:10px; }
     .ar-search-panel__quick-chip { padding:7px 10px; font-size:11px; }
+    .ar-nav__drawer {
+      top:0;
+      bottom:auto;
+      height:100dvh;
+      max-height:100dvh;
+      padding-top:calc(24px + env(safe-area-inset-top, 0px));
+      padding-bottom:calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-left:calc(28px + env(safe-area-inset-left, 0px));
+      overflow-x:hidden;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
+      touch-action:pan-y;
+    }
+    .ar-nav__drawer-head {
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:#fff;
+      margin-bottom:18px;
+    }
+    .ar-nav__drawer-link,
+    button.ar-nav__drawer-link {
+      flex-shrink:0;
+    }
+    .ar-nav__drawer-sub-menu.is-open > .ar-nav__drawer-sub-inner {
+      max-height:none;
+      overflow-y:visible;
+      -webkit-overflow-scrolling:touch;
+    }
   }
 
   @media(max-width:480px){
@@ -721,7 +766,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .ar-nav, .ar-nav__inner, .ar-nav__logo-img, .ar-nav__icon, .ar-nav__burger span,
-    .ar-nav__drawer, .ar-nav__drawer-link, .ar-search-panel, .ar-nav__backdrop, .ar-nav__link::after,
+    .ar-nav__drawer, .ar-nav__drawer-link, .ar-nav__drawer-sub-menu, .ar-search-panel, .ar-nav__backdrop, .ar-nav__link::after,
     .ar-box__menu, .ar-box__item, .ar-box__trigger {
       transition: none !important;
       animation: none !important;
@@ -1352,7 +1397,9 @@
     }
 
     function lockScroll(lock) {
+      document.documentElement.style.overflow = lock ? 'hidden' : '';
       document.body.style.overflow = lock ? 'hidden' : '';
+      document.body.style.touchAction = lock ? 'none' : '';
     }
     function showBackdrop(show) {
       if (!backdrop) return;
@@ -1447,6 +1494,16 @@
           panel.classList.add('is-open');
           toggle.classList.add('is-open');
           toggle.setAttribute('aria-expanded', 'true');
+          requestAnimationFrame(function () {
+            if (!drawer || !panel.classList.contains('is-open')) return;
+            var drawerRect = drawer.getBoundingClientRect();
+            var panelRect = panel.getBoundingClientRect();
+            if (panelRect.bottom > drawerRect.bottom - 8) {
+              var toggleRect = toggle.getBoundingClientRect();
+              var scrollTop = drawer.scrollTop + (toggleRect.top - drawerRect.top) - 12;
+              drawer.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
+            }
+          });
         }
       });
     }

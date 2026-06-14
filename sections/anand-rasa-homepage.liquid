@@ -292,8 +292,9 @@
   .ar-sc__price { margin-top:12px; font-size:13px; font-weight:500; color:#1e2023; }
 
   /* ── NAVAGRAHA ── */
-  .ar-nav9-wrap { background:#fff; border:2px solid #1e2023; font-family:var(--fb); overflow-x:clip; }
+  .ar-nav9-wrap { background:#fff; border:none; font-family:var(--fb); overflow-x:clip; }
   .ar-nav9-wrap .ar-pl { border:none; overflow-x:clip; }
+  .ar-nav9-wrap .ar-pl__card { border:none; }
   .ar-nav9-intro { display:flex; align-items:center; justify-content:center; min-height:28vh; padding:48px 24px 24px; border-bottom:none; }
   .ar-nav9-intro__in { max-width:672px; text-align:center; }
   .ar-nav9-intro__h { font-family:var(--fh); font-size:clamp(24px,3vw,36px); color:#1e2023; margin-bottom:16px; }
@@ -634,6 +635,13 @@
     else
       assign combo_image = 'wooden_attar_box.webp' | asset_url
     endif
+    capture ar_gift_sets_url
+      render 'ar-collection-url', handle: 'gift-sets'
+    endcapture
+    assign ar_gift_sets_url = ar_gift_sets_url | strip
+    if ar_gift_sets_url == blank or ar_gift_sets_url == routes.collections_url
+      assign ar_gift_sets_url = '/collections/gift-set?view=gift-sets'
+    endif
     assign combo_eyebrow = section.settings.combo_eyebrow
     assign combo_heading = section.settings.combo_heading
     assign combo_text = section.settings.combo_text
@@ -665,6 +673,7 @@
     combo_note: combo_note,
     combo_url: combo_url,
     combo_btn: combo_btn,
+    gift_sets_url: ar_gift_sets_url,
     story_heading: story_heading,
     story_text: story_text,
     story_url: story_url,
@@ -1115,7 +1124,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Uses wooden_attar_box.webp from theme assets when no image is selected."
+      "content": "Uses wooden_attar_box.webp as the main image and gift.webp below (links to Gift Sets). Override the main image here if needed."
     },
     {
       "type": "image_picker",
@@ -1396,7 +1405,7 @@
           "type": "text",
           "id": "title",
           "label": "Pill label",
-          "default": "✨ Astrology Crafted"
+          "default": "Astrology Crafted"
         },
         {
           "type": "textarea",
@@ -1630,28 +1639,28 @@
         {
           "type": "philosophy_card",
           "settings": {
-            "title": "✨ Astrology Crafted",
+            "title": "Astrology Crafted",
             "text": "Attars inspired by your Planet, Zodiac & Nakshatra for a truly personal fragrance."
           }
         },
         {
           "type": "philosophy_card",
           "settings": {
-            "title": "🌿 Pure Oil. Zero Alcohol.",
+            "title": "Pure Oil. Zero Alcohol.",
             "text": "100% alcohol-free attars made with pure aromatic oils for a richer, longer-lasting scent."
           }
         },
         {
           "type": "philosophy_card",
           "settings": {
-            "title": "🏺 Handcrafted The Traditional Way",
+            "title": "Handcrafted The Traditional Way",
             "text": "Small-batch attars created using time-honoured Indian perfumery traditions."
           }
         },
         {
           "type": "philosophy_card",
           "settings": {
-            "title": "💛 Made To Stay With You",
+            "title": "Made To Stay With You",
             "text": "Long-lasting, skin-friendly fragrances designed for daily rituals and special moments."
           }
         },

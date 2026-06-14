@@ -62,6 +62,16 @@
   if ar_story_href == blank or ar_story_href contains '/pages/about'
     assign ar_story_href = ar_story_default_url
   endif
+  assign ar_gift_sets_href = gift_sets_url | strip
+  if ar_gift_sets_href == blank
+    capture ar_gift_sets_href
+      render 'ar-collection-url', handle: 'gift-sets'
+    endcapture
+    assign ar_gift_sets_href = ar_gift_sets_href | strip
+  endif
+  if ar_gift_sets_href == blank or ar_gift_sets_href == routes.collections_url
+    assign ar_gift_sets_href = '/collections/gift-set?view=gift-sets'
+  endif
 -%}
 
 <section class="ar-dk" aria-labelledby="ar-dk-heading">
@@ -109,6 +119,21 @@
       {%- endif -%}
     </div>
 
+  </div>
+
+  <div class="ar-dk__gift">
+    <a href="{{ ar_gift_sets_href }}" class="ar-dk__gift-link" aria-label="Shop gift sets — curated attar and perfume gift collections">
+      <img
+        class="ar-dk__gift-image"
+        src="{{ 'gift.webp' | asset_url }}"
+        alt="Anand Rasa luxury attar and perfume gift sets"
+        width="2400"
+        height="800"
+        sizes="100vw"
+        loading="lazy"
+        decoding="async"
+      >
+    </a>
   </div>
 </section>
 
@@ -270,7 +295,9 @@
   --ar-dk-ease: cubic-bezier(0.22, 1, 0.36, 1);
   min-height: min(88vh, 920px);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
   background: #ffffff;
   font-family: var(--font-body-family, Georgia, serif);
   overflow: hidden;
@@ -337,6 +364,36 @@
     transform: translateZ(0) scale(1.035);
     filter: drop-shadow(0 34px 56px rgba(30, 32, 35, 0.18));
   }
+}
+
+.ar-dk__gift {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.ar-dk__gift-link {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.ar-dk__gift-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: none;
+  filter: none;
+}
+
+.ar-dk__gift-link:focus-visible {
+  outline: 2px solid var(--ar-dk-gold);
+  outline-offset: -2px;
 }
 
 .ar-dk__content {
@@ -439,6 +496,7 @@
   outline: 2px solid var(--ar-dk-gold);
   outline-offset: 3px;
 }
+
 
 @keyframes ar-dk-float {
   0% {

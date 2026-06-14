@@ -1,0 +1,88 @@
+{%- comment -%}
+  Premium SEO copy for /collections cards — merchant override first, then handle-based fallback.
+  @param handle {string} collection handle
+  @param title {string} display title fallback
+  @param mode {string} card | long (default: card)
+{%- endcomment -%}
+{%- liquid
+  assign pcl_mode = mode | default: 'card'
+  assign pcl_key = handle | downcase | strip
+  assign pcl_out = ''
+
+  case pcl_key
+    when 'bestseller', 'bestsellers', 'best-seller', 'best-sellers'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Our bestselling attars and natural perfumes — customer favourites chosen for exceptional longevity, ritual depth, and everyday luxury. Discover the Indian fragrances Anand Rasa lovers reach for again and again.'
+      else
+        assign pcl_out = 'Customer favourites in luxury attars and natural perfumes — bestselling Indian fragrances loved for longevity, ritual, and everyday elegance.'
+      endif
+    when 'planet-attars', 'planet-attar', 'planet'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Navagraha planet attars channel Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu, and Ketu through pure botanical oils. Vedic planetary fragrances for meditation, astrology rituals, and aligning with cosmic energy.'
+      else
+        assign pcl_out = 'Navagraha planet attars crafted with Vedic wisdom — luxury perfume oils channelling solar, lunar, and planetary energies for spiritual alignment.'
+      endif
+    when 'zodiac-attars', 'zodiac-attar', 'zodiac'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Zodiac attars aligned to your birth sign — from Aries to Pisces, each astrology perfume blends natural Indian oils to harmonise with your celestial chart, daily wear, and spiritual intention.'
+      else
+        assign pcl_out = 'Zodiac sign attars aligned to your birth chart — astrology perfumes blending natural Indian oils for celestial harmony and daily ritual.'
+      endif
+    when 'nakshatra-attars', 'nakshatra-attar', 'nakshatra', 'naksahtra'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Twenty-seven Nakshatra attars honour Vedic lunar mansions — birth-star fragrance oils for meditation, astrology practice, and discovering the scent written in your stars.'
+      else
+        assign pcl_out = '27 Nakshatra attars honouring Vedic lunar mansions — birth-star fragrance oils for meditation, astrology rituals, and soulful discovery.'
+      endif
+    when 'chakra-attars', 'chakra-attar', 'chakra'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Seven chakra attars support energy balance from root to crown — natural perfume oils for grounding, heart-opening, and third-eye clarity in meditation and mindful living.'
+      else
+        assign pcl_out = 'Seven chakra attars for energy balance — natural perfume oils to ground, open, and harmonise root through crown centres.'
+      endif
+    when 'love-attars', 'love-attar', 'love'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Love attars weave florals, musk, and sacred resins into romantic natural perfumes — luxury oils for intimacy, devotion, gifting, and celebrating connection.'
+      else
+        assign pcl_out = 'Romantic love attars for intimacy and devotion — luxury natural perfume oils handcrafted for gifting and sacred connection.'
+      endif
+    when 'stress-relief', 'stressrelief', 'stress'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Stress-relief attars invite calm through aromatherapy botanicals — soothing Indian perfume oils to ease tension, support mindfulness, and restore peaceful well-being.'
+      else
+        assign pcl_out = 'Calming stress-relief attars for peace and restoration — aromatherapy perfume oils to ease anxiety and invite serene well-being.'
+      endif
+    when 'perfume-series', 'perfume', 'perfumes'
+      if pcl_mode == 'long'
+        assign pcl_out = 'The Perfume Series brings modern eau de parfum with attar soul — alcohol-based luxury fragrances from India, crafted for office, evening, and everyday elegance with lasting presence.'
+      else
+        assign pcl_out = 'Modern eau de parfum from India — alcohol-based luxury fragrances with attar soul, designed for everyday elegance and long-lasting wear.'
+      endif
+    when 'incense-sticks', 'incense-stick', 'incense'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Hand-rolled natural incense sticks for puja, meditation, and home sanctuary — Indian agarbatti blends that elevate ritual, purify space, and deepen mindful practice.'
+      else
+        assign pcl_out = 'Hand-rolled natural incense sticks for puja and meditation — Indian agarbatti blends for sacred ritual and mindful living.'
+      endif
+    when 'gift-sets', 'giftsets', 'gift-set'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Curated attar and perfume gift sets — luxury Indian fragrance boxes for birthdays, weddings, festivals, and thoughtful discovery gifting with premium presentation.'
+      else
+        assign pcl_out = 'Curated attar and perfume gift sets — luxury Indian fragrance boxes for birthdays, festivals, and thoughtful discovery gifting.'
+      endif
+    when 'apsara-attar', 'apsara-attars', 'apsara'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Apsara attars celebrate divine feminine grace — rare luxury perfume oils inspired by celestial beauty, devotion, and timeless Indian fragrance artistry.'
+      else
+        assign pcl_out = 'Apsara attars inspired by divine feminine grace — rare luxury perfume oils celebrating beauty, devotion, and Indian fragrance artistry.'
+      endif
+    else
+      if pcl_mode == 'long'
+        assign pcl_out = 'Explore ' | append: title | append: ' at Anand Rasa — handcrafted luxury attars, natural perfumes, and Vedic fragrances from India.'
+      else
+        assign pcl_out = 'Explore ' | append: title | append: ' — handcrafted luxury attars and natural Indian fragrances at Anand Rasa.'
+      endif
+  endcase
+
+  echo pcl_out | strip
+-%}

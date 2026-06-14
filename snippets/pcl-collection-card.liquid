@@ -1,0 +1,261 @@
+{%- comment -%}
+  Premium collection card
+  @param block {object} section block with settings
+  @param card_size {string} featured | medium | small
+  @param grid_pos {number} masonry position for medium cards (1-10)
+  @param delay {number} animation delay ms
+{%- endcomment -%}
+{%- liquid
+  assign pcl_coll = block.settings.collection
+  assign pcl_handle = block.settings.handle | strip
+  assign pcl_size = card_size | default: block.settings.card_size | default: 'small'
+  assign pcl_pos = grid_pos | default: block.settings.grid_position | default: 0 | plus: 0
+  assign pcl_badge = block.settings.badge | strip
+  assign pcl_desc = block.settings.description | strip
+  assign pcl_image = block.settings.image
+  assign pcl_groups = block.settings.pill_groups | downcase | strip
+  assign pcl_cta = block.settings.cta_label | strip
+  assign pcl_tone = block.settings.text_tone | default: 'light'
+
+  assign pcl_title = ''
+  assign pcl_url = ''
+  assign pcl_count = 0
+  assign pcl_use_asset = false
+  assign pcl_asset_name = ''
+
+  if pcl_coll != blank and pcl_coll.handle != blank
+    assign pcl_title = block.settings.title | default: pcl_coll.title
+    assign pcl_url = pcl_coll.url
+    assign pcl_count = pcl_coll.all_products_count
+    if pcl_image == blank
+      assign pcl_image = pcl_coll.featured_image | default: pcl_coll.image
+    endif
+    if pcl_desc == blank and pcl_coll.description != blank
+      assign pcl_desc = pcl_coll.description | strip_html | truncate: 120
+    endif
+    assign pcl_handle = pcl_coll.handle
+  elsif pcl_handle != blank
+    capture pcl_url
+      render 'ar-collection-url', handle: pcl_handle
+    endcapture
+    assign pcl_url = pcl_url | strip
+    assign pcl_title = block.settings.title | default: pcl_handle | replace: '-', ' ' | capitalize
+
+    assign pcl_lookup = pcl_handle | downcase
+    assign pcl_candidates = pcl_lookup
+    case pcl_lookup
+      when 'bestseller', 'bestsellers'
+        assign pcl_candidates = 'bestseller,bestsellers,best-seller,best-sellers'
+      when 'planet-attars', 'planet'
+        assign pcl_candidates = 'planet-attars,planet-attar,planet'
+      when 'zodiac-attars', 'zodiac'
+        assign pcl_candidates = 'zodiac-attars,zodiac-attar,zodiac'
+      when 'nakshatra-attars', 'nakshatra'
+        assign pcl_candidates = 'nakshatra-attars,nakshatra-attar,nakshatra,naksahtra'
+      when 'chakra-attars', 'chakra'
+        assign pcl_candidates = 'chakra-attars,chakra-attar,chakra'
+      when 'love-attars', 'love-attar'
+        assign pcl_candidates = 'love-attar,love-attars,love'
+      when 'stress-relief', 'stressrelief'
+        assign pcl_candidates = 'stress-relief,stressrelief,stress'
+      when 'perfume-series', 'perfumes'
+        assign pcl_candidates = 'perfume-series,perfume,perfumes'
+      when 'incense-sticks', 'incense'
+        assign pcl_candidates = 'incense-sticks,incense-stick,incense'
+      when 'gift-sets', 'giftsets'
+        assign pcl_candidates = 'giftsets,gift-sets,gift-set'
+      when 'apsara-attar', 'apsara-attars'
+        assign pcl_candidates = 'apsara-attar,apsara-attars,apsara'
+    endcase
+
+    assign pcl_candidate_list = pcl_candidates | split: ','
+    for pcl_cand in pcl_candidate_list
+      assign pcl_c = pcl_cand | strip
+      if pcl_c != blank and collections[pcl_c] != blank
+        assign pcl_coll = collections[pcl_c]
+        assign pcl_title = block.settings.title | default: pcl_coll.title
+        assign pcl_count = pcl_coll.all_products_count
+        if pcl_image == blank
+          assign pcl_image = pcl_coll.featured_image | default: pcl_coll.image
+        endif
+        if pcl_desc == blank and pcl_coll.description != blank
+          assign pcl_desc = pcl_coll.description | strip_html | truncate: 120
+        endif
+        break
+      endif
+    endfor
+  endif
+
+  if pcl_title == blank
+    assign pcl_title = block.settings.title | default: 'Collection'
+  endif
+
+  if pcl_url == blank
+    assign pcl_url = routes.collections_url
+  endif
+
+  assign pcl_lookup = pcl_handle | downcase
+  if pcl_lookup == blank and pcl_coll != blank and pcl_coll.handle != blank
+    assign pcl_lookup = pcl_coll.handle | downcase
+  endif
+
+  if pcl_desc == blank
+    capture pcl_desc
+      render 'pcl-seo-description', handle: pcl_lookup, title: pcl_title, mode: 'card'
+    endcapture
+    assign pcl_desc = pcl_desc | strip
+  endif
+
+  if block.settings.description != blank
+    assign pcl_desc = block.settings.description | strip
+  endif
+
+  capture pcl_img_alt
+    if block.settings.image_alt != blank
+      echo block.settings.image_alt | strip
+    elsif pcl_coll != blank
+      render 'image-seo-alt', seo_collection: pcl_coll, img_context: 'card'
+    else
+      render 'image-seo-alt', seo_label: pcl_title, img_context: 'card'
+    endif
+  endcapture
+  assign pcl_img_alt = pcl_img_alt | strip
+  if pcl_img_alt == blank
+    assign pcl_img_alt = pcl_title
+  endif
+
+  assign pcl_asset_name = block.settings.fallback_asset | strip
+  if pcl_asset_name == blank and pcl_lookup != blank
+    case pcl_lookup
+      when 'bestseller', 'bestsellers', 'best-seller', 'best-sellers'
+        assign pcl_asset_name = 'PlanetHero.webp'
+      when 'planet-attars', 'planet-attar', 'planet'
+        assign pcl_asset_name = 'PlanetHero.webp'
+      when 'zodiac-attars', 'zodiac-attar', 'zodiac'
+        assign pcl_asset_name = 'PlanetHero.webp'
+      when 'nakshatra-attars', 'nakshatra-attar', 'nakshatra', 'naksahtra'
+        assign pcl_asset_name = 'PlanetHero.webp'
+      when 'chakra-attars', 'chakra-attar', 'chakra'
+        assign pcl_asset_name = 'chakra.webp'
+      when 'love-attars', 'love-attar', 'love'
+        assign pcl_asset_name = 'love.webp'
+      when 'stress-relief', 'stressrelief', 'stress'
+        assign pcl_asset_name = 'stress.webp'
+      when 'perfume-series', 'perfumes', 'perfume'
+        assign pcl_asset_name = 'home.webp'
+      when 'incense-sticks', 'incense-stick', 'incense'
+        assign pcl_asset_name = 'incense/incense_collection.webp'
+      when 'gift-sets', 'giftsets', 'gift-set'
+        assign pcl_asset_name = 'gift.webp'
+      when 'apsara-attar', 'apsara-attars', 'apsara'
+        assign pcl_asset_name = 'home.webp'
+    endcase
+  endif
+
+  if block.settings.image != blank
+    assign pcl_use_asset = false
+  elsif block.settings.fallback_asset != blank
+    assign pcl_image = pcl_asset_name | asset_url
+    assign pcl_use_asset = true
+  elsif pcl_image != blank
+    assign pcl_use_asset = false
+  elsif pcl_asset_name != blank
+    assign pcl_image = pcl_asset_name | asset_url
+    assign pcl_use_asset = true
+  else
+    assign pcl_use_asset = false
+    assign pcl_image = blank
+  endif
+
+  assign pcl_delay = delay | default: 0
+-%}
+
+<article
+  class="pcl-card pcl-card--{{ pcl_size }} js-pcl-card"
+  data-size="{{ pcl_size }}"
+  {% if pcl_pos > 0 %}data-pos="{{ pcl_pos }}"{% endif %}
+  {% if pcl_groups != blank %}data-groups="{{ pcl_groups }}"{% endif %}
+  style="--pcl-delay: {{ pcl_delay }}ms;"
+  {{ block.shopify_attributes }}
+>
+  <a href="{{ pcl_url }}" class="pcl-card__link{% if pcl_size == 'featured' %} pcl-card__link--featured pcl-card__link--{{ pcl_tone }}{% else %} pcl-card__link--compact{% endif %}" aria-label="{{ pcl_title | escape }} — explore collection">
+    <div class="pcl-card__media">
+      {%- if pcl_use_asset -%}
+        <img
+          class="pcl-card__img"
+          src="{{ pcl_image }}"
+          alt="{{ pcl_img_alt | escape }}"
+          width="800"
+          height="1000"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- elsif pcl_image != blank -%}
+        <img
+          class="pcl-card__img"
+          src="{{ pcl_image | image_url: width: 1200 }}"
+          srcset="{{ pcl_image | image_url: width: 400 }} 400w, {{ pcl_image | image_url: width: 600 }} 600w, {{ pcl_image | image_url: width: 900 }} 900w, {{ pcl_image | image_url: width: 1200 }} 1200w"
+          sizes="{% if pcl_size == 'featured' %}(min-width: 1024px) 50vw, 100vw{% elsif pcl_size == 'medium' %}(min-width: 1024px) 25vw, 50vw{% else %}(min-width: 1024px) 33vw, 100vw{% endif %}"
+          alt="{{ pcl_image.alt | default: pcl_img_alt | escape }}"
+          width="{{ pcl_image.width | default: 1200 }}"
+          height="{{ pcl_image.height | default: 900 }}"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- else -%}
+        <span class="pcl-card__ph" aria-hidden="true"></span>
+      {%- endif -%}
+      <span class="pcl-card__shade" aria-hidden="true"></span>
+      <span class="pcl-card__glow" aria-hidden="true"></span>
+    </div>
+
+    <div class="pcl-card__body">
+      {%- if pcl_size == 'featured' -%}
+        {%- if pcl_badge != blank -%}
+          <span class="pcl-card__badge">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5l1.6 3.3 3.6.5-2.6 2.5.6 3.5L8 9.8l-3.2 1.7.6-3.5-2.6-2.5 3.6-.5L8 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            {{ pcl_badge | escape }}
+          </span>
+        {%- endif -%}
+        <h3 class="pcl-card__title">{{ pcl_title | escape }}</h3>
+        {%- if pcl_desc != blank -%}
+          <p class="pcl-card__desc">{{ pcl_desc | escape }}</p>
+        {%- endif -%}
+        <div class="pcl-card__foot">
+          <div class="pcl-card__featured-meta">
+            {%- if pcl_image != blank -%}
+              <span class="pcl-card__thumb">
+                {%- if pcl_use_asset -%}
+                  <img src="{{ pcl_image }}" alt="" width="80" height="80" loading="lazy" decoding="async">
+                {%- else -%}
+                  <img src="{{ pcl_image | image_url: width: 120 }}" alt="" width="80" height="80" loading="lazy" decoding="async">
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+            {%- if pcl_count > 0 -%}
+              <span class="pcl-card__count">{{ pcl_count }}+ Products</span>
+            {%- endif -%}
+          </div>
+          {%- if pcl_cta != blank -%}
+            <span class="pcl-card__cta">{{ pcl_cta | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <div class="pcl-card__meta">
+          <div class="pcl-card__meta-text">
+            <h3 class="pcl-card__title">{{ pcl_title | escape }}</h3>
+            {%- if pcl_count > 0 -%}
+              <span class="pcl-card__count">{{ pcl_count }}+ Products</span>
+            {%- endif -%}
+          </div>
+          {%- if pcl_desc != blank -%}
+            <span class="visually-hidden">{{ pcl_desc | escape }}</span>
+          {%- endif -%}
+          <span class="pcl-card__arrow js-pcl-magnetic" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+</article>

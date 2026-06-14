@@ -41,6 +41,28 @@
       ]
     }
   </script>
+{%- elsif request.page_type == 'list-collections' -%}
+  {%- assign ar_collections_url = request.origin | append: routes.collections_url -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Homepage",
+          "item": {{ ar_root_item | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Collections",
+          "item": {{ ar_collections_url | json }}
+        }
+      ]
+    }
+  </script>
 {%- elsif request.page_type == 'collection' and collection != blank -%}
   <script type="application/ld+json">
     {

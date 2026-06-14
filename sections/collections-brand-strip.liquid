@@ -1,0 +1,242 @@
+{{ 'collections-brand-strip.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign cbs_quote = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign cbs_lotus = section.settings.lotus_image
+-%}
+
+<section
+  class="cbs js-cbs"
+  id="collections-brand-{{ section.id }}"
+  aria-label="{{ section.settings.aria_label | default: 'Anand Rasa brand values' | escape }}"
+>
+  <div class="cbs__wrap">
+    <ul class="cbs__features" role="list">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'feature' -%}
+          <li
+            class="cbs__feature"
+            style="--cbs-i: {{ forloop.index0 }};"
+            {{ block.shopify_attributes }}
+          >
+            <span class="cbs__icon" aria-hidden="true">
+              {%- render 'collections-brand-icon', icon: block.settings.icon -%}
+            </span>
+            <p class="cbs__title">{{ block.settings.title }}</p>
+            <p class="cbs__sub">{{ block.settings.subtitle }}</p>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+
+    <div class="cbs__quote" data-cbs-quote>
+      <svg class="cbs__quote-deco cbs__quote-deco--left" viewBox="0 0 200 240" fill="none" aria-hidden="true">
+        <path d="M30 220c20-40 15-90 5-120M50 200c30-50 25-100 10-140M70 210c40-60 35-120 15-170" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M25 180c8-12 18-18 28-16M45 150c10-14 22-20 34-16M60 115c12-16 26-22 40-18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+        <ellipse cx="28" cy="168" rx="6" ry="10" stroke="currentColor" stroke-width="1" transform="rotate(-20 28 168)" opacity="0.6"/>
+        <ellipse cx="52" cy="138" rx="7" ry="11" stroke="currentColor" stroke-width="1" transform="rotate(-15 52 138)" opacity="0.6"/>
+        <ellipse cx="72" cy="100" rx="8" ry="12" stroke="currentColor" stroke-width="1" transform="rotate(-10 72 100)" opacity="0.6"/>
+      </svg>
+
+      {%- if cbs_lotus != blank -%}
+        {{
+          cbs_lotus
+          | image_url: width: 560
+          | image_tag:
+            class: 'cbs__quote-deco cbs__quote-deco--right',
+            loading: 'lazy',
+            decoding: 'async',
+            widths: '280, 420, 560',
+            sizes: '(min-width: 768px) 280px, 160px',
+            alt: ''
+        }}
+      {%- else -%}
+        <img
+          class="cbs__quote-deco cbs__quote-deco--right"
+          src="{{ 'Notes/lotus11.webp' | asset_url }}"
+          alt=""
+          width="280"
+          height="280"
+          loading="lazy"
+          decoding="async"
+        >
+      {%- endif -%}
+
+      <div class="cbs__quote-inner">
+        <blockquote class="cbs__quote-text">
+          <p>{{ cbs_quote }}</p>
+        </blockquote>
+        <div class="cbs__quote-rule" aria-hidden="true">
+          <span class="cbs__quote-line"></span>
+          <span class="cbs__quote-lotus">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 4c-2 3-4 5-4 7a4 4 0 008 0c0-2-2-4-4-7z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M12 11v3M9 17c1.5 1 2.5 1.5 3 1.5s1.5-.5 3-1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="cbs__quote-line"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    'use strict';
+    var sectionId = '{{ section.id }}';
+
+    function initCbs(root) {
+      if (!root || root.dataset.cbsInited === 'true') return;
+      root.dataset.cbsInited = 'true';
+
+      if (!('IntersectionObserver' in window)) {
+        root.classList.add('is-visible');
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+
+      observer.observe(root);
+    }
+
+    function boot() {
+      var root = document.getElementById('collections-brand-' + sectionId);
+      if (root) initCbs(root);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.detail && e.detail.sectionId === sectionId) boot();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collections brand strip",
+  "tag": "section",
+  "class": "section-collections-brand",
+  "settings": [
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Accessibility label",
+      "default": "Anand Rasa brand values"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "The right fragrance is not chosen. It finds you."
+    },
+    {
+      "type": "image_picker",
+      "id": "lotus_image",
+      "label": "Quote banner lotus image",
+      "info": "Defaults to theme lotus asset if empty."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "pure-oil", "label": "Pure oil" },
+            { "value": "alcohol-free", "label": "Alcohol free" },
+            { "value": "handcrafted", "label": "Handcrafted" },
+            { "value": "astrology", "label": "Astrology inspired" },
+            { "value": "long-lasting", "label": "Long lasting" },
+            { "value": "distillation", "label": "Traditional distillation" }
+          ],
+          "default": "pure-oil"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pure Oil"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "100% Natural"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections brand strip",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "pure-oil",
+            "title": "Pure Oil",
+            "subtitle": "100% Natural"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "alcohol-free",
+            "title": "Alcohol Free",
+            "subtitle": "Gentle & Safe"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "handcrafted",
+            "title": "Handcrafted",
+            "subtitle": "With Devotion"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "astrology",
+            "title": "Astrology Inspired",
+            "subtitle": "Planetary Blessings"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "long-lasting",
+            "title": "Long Lasting",
+            "subtitle": "Exquisite Longevity"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "distillation",
+            "title": "Traditional Distillation",
+            "subtitle": "Ancient Methods"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

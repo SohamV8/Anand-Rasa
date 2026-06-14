@@ -1,0 +1,127 @@
+{%- comment -%}
+  CollectionPage + ItemList JSON-LD for /collections (list-collections template).
+  @param section {object} premium-collections section from sections['main']
+{%- endcomment -%}
+{%- if request.page_type == 'list-collections' and section != blank -%}
+  {%- liquid
+    assign pcl_page_url = request.origin | append: routes.collections_url
+    assign pcl_page_name = section.settings.seo_title | default: section.settings.hero_heading | default: 'Fragrance Collections'
+    assign pcl_page_desc = section.settings.seo_description | default: section.settings.hero_description | default: 'Explore Anand Rasa luxury attar, perfume, incense, and gift collections handcrafted in India.'
+
+    capture pcl_og_img
+      if section.settings.seo_og_image != blank
+        echo section.settings.seo_og_image | image_url: width: 1200
+      elsif section.settings.hero_image != blank
+        echo section.settings.hero_image | image_url: width: 1200
+      else
+        echo 'collection_hero.webp' | asset_url
+      endif
+    endcapture
+    assign pcl_og_img = pcl_og_img | strip
+    unless pcl_og_img contains 'https://' or pcl_og_img contains 'http://'
+      if pcl_og_img contains '//'
+        assign pcl_og_img = pcl_og_img | prepend: 'https:'
+      endif
+    endunless
+
+    assign pcl_item_count = 0
+    for block in section.blocks
+      if block.type == 'collection_card'
+        assign pcl_item_count = pcl_item_count | plus: 1
+      endif
+    endfor
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": {{ pcl_page_url | append: '#collections' | json }},
+      "name": {{ pcl_page_name | json }},
+      "description": {{ pcl_page_desc | strip_html | strip | json }},
+      "url": {{ pcl_page_url | json }},
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": {{ shop.url | append: '#website' | json }},
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }}
+      },
+      "publisher": {
+        "@type": "Organization",
+        "@id": {{ shop.url | append: '#organization' | json }},
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }}
+      }
+      {%- if pcl_og_img != blank -%}
+      ,
+      "image": {
+        "@type": "ImageObject",
+        "url": {{ pcl_og_img | json }},
+        "name": {{ pcl_page_name | json }}
+      }
+      {%- endif -%}
+      {%- if pcl_item_count > 0 -%}
+      ,
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Anand Rasa fragrance collections",
+        "numberOfItems": {{ pcl_item_count }},
+        "itemListElement": [
+          {%- assign pcl_li = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'collection_card' -%}
+              {%- liquid
+                assign pcl_li = pcl_li | plus: 1
+                assign pcl_coll = block.settings.collection
+                assign pcl_handle = block.settings.handle | strip
+                assign pcl_name = block.settings.title | strip
+
+                if pcl_coll != blank and pcl_coll.handle != blank
+                  assign pcl_name = block.settings.title | default: pcl_coll.title
+                  assign pcl_handle = pcl_coll.handle
+                endif
+
+                if pcl_name == blank
+                  assign pcl_name = pcl_handle | replace: '-', ' ' | capitalize
+                endif
+
+                capture pcl_item_url
+                  if pcl_coll != blank and pcl_coll.url != blank
+                    echo request.origin | append: pcl_coll.url
+                  elsif pcl_handle != blank
+                    capture pcl_rel_url
+                      render 'ar-collection-url', handle: pcl_handle
+                    endcapture
+                    assign pcl_rel_url = pcl_rel_url | strip
+                    echo request.origin | append: pcl_rel_url
+                  else
+                    echo pcl_page_url
+                  endif
+                endcapture
+                assign pcl_item_url = pcl_item_url | strip
+
+                assign pcl_item_desc = block.settings.description | strip
+                if pcl_item_desc == blank
+                  capture pcl_item_desc
+                    render 'pcl-seo-description', handle: pcl_handle, title: pcl_name, mode: 'card'
+                  endcapture
+                  assign pcl_item_desc = pcl_item_desc | strip
+                endif
+              -%}
+              {
+                "@type": "ListItem",
+                "position": {{ pcl_li }},
+                "item": {
+                  "@type": "CollectionPage",
+                  "name": {{ pcl_name | json }},
+                  "description": {{ pcl_item_desc | strip_html | strip | json }},
+                  "url": {{ pcl_item_url | json }}
+                }
+              }{%- unless pcl_li == pcl_item_count -%},{%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}

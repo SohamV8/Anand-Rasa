@@ -1,0 +1,16 @@
+{%- comment -%}
+  Premium collections — trust bar icons
+  @param icon {string} made-in-india | cruelty-free | secure-payments | worldwide-shipping
+{%- endcomment -%}
+{%- case icon -%}
+  {%- when 'made-in-india' -%}
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="16" stroke="currentColor" stroke-width="1.5"/><path d="M24 8v32M8 24h32" stroke="currentColor" stroke-width="1.2" opacity="0.4"/><circle cx="24" cy="24" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M18 14l2 3M30 14l-2 3M18 34l2-3M30 34l-2-3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+  {%- when 'cruelty-free' -%}
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 28c0-6 4.5-11 10-11s10 5 10 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 20c-2-1-3-3-2.5-5.5M36 20c2-1 3-3 2.5-5.5M16 16c-1.5-2-1-4.5 1-6M32 16c1.5-2 1-4.5-1-6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M18 32c2 4 4 6 6 6s4-2 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M24 38v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  {%- when 'secure-payments' -%}
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="10" y="20" width="28" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M16 20v-4a8 8 0 0116 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="24" cy="30" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M24 33v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+  {%- when 'worldwide-shipping' -%}
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="1.5"/><ellipse cx="24" cy="24" rx="6" ry="14" stroke="currentColor" stroke-width="1.2"/><path d="M10 24h28M14 16c4 2 8 3 10 3s6-1 10-3M14 32c4-2 8-3 10-3s6 1 10 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+  {%- else -%}
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="1.5"/></svg>
+{%- endcase -%}
