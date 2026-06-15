@@ -1,0 +1,71 @@
+{% doc %}
+  Resolves influencer dashboard mock data from the page handle.
+  V2: replace assigns with page.metafields.custom.influencer_dashboard.value (JSON matching influencer-dashboard-schema.json).
+  Shopify Flow can write that metafield on influencer pages.
+{% enddoc %}
+
+{%- liquid
+  assign inf_handle = page.handle | default: 'partner' | downcase
+  assign inf_name = page.title | default: inf_handle | capitalize
+  assign inf_coupon = inf_handle | upcase | append: '10'
+  assign inf_instagram = '@' | append: inf_handle | append: '.aroma'
+  assign inf_commission_rate = 10
+
+  assign inf_total_orders = 47
+  assign inf_revenue = 118500
+  assign inf_commission = 11850
+  assign inf_aov = 2521
+  assign inf_highest = 8400
+  assign inf_today = 2500
+  assign inf_monthly = 32400
+  assign inf_lifetime_commission = 42800
+  assign inf_monthly_commission = 3240
+  assign inf_goal_revenue = 38200
+  assign inf_rank = 3
+  assign inf_monthly_rank = 2
+  assign inf_top_influencer = 'Priya'
+
+  if inf_handle == 'rahul'
+    assign inf_name = 'Rahul'
+    assign inf_coupon = 'RAHUL10'
+    assign inf_instagram = '@rahul.scent'
+    assign inf_total_orders = 62
+    assign inf_revenue = 156200
+    assign inf_commission = 15620
+    assign inf_aov = 2519
+    assign inf_highest = 9200
+    assign inf_today = 1800
+    assign inf_monthly = 41200
+    assign inf_lifetime_commission = 58200
+    assign inf_monthly_commission = 4120
+    assign inf_goal_revenue = 51200
+    assign inf_rank = 2
+    assign inf_monthly_rank = 1
+    assign inf_top_influencer = 'Rahul'
+  elsif inf_handle == 'priya'
+    assign inf_name = 'Priya'
+    assign inf_coupon = 'PRIYA10'
+    assign inf_instagram = '@priya.fragrance'
+    assign inf_total_orders = 89
+    assign inf_revenue = 224800
+    assign inf_commission = 22480
+    assign inf_aov = 2526
+    assign inf_highest = 12500
+    assign inf_today = 4200
+    assign inf_monthly = 56800
+    assign inf_lifetime_commission = 89400
+    assign inf_monthly_commission = 5680
+    assign inf_goal_revenue = 72400
+    assign inf_rank = 1
+    assign inf_monthly_rank = 1
+    assign inf_top_influencer = 'Priya'
+  elsif inf_handle == 'soham'
+    assign inf_name = 'Soham'
+    assign inf_coupon = 'SOHAM10'
+    assign inf_instagram = '@soham.aroma'
+  endif
+
+  assign inf_referral_url = shop.url | append: '/discount/' | append: inf_coupon | append: '?redirect=/collections/all'
+  assign inf_page_url = shop.url | append: page.url
+  assign inf_initials = inf_name | slice: 0, 1 | upcase
+-%}

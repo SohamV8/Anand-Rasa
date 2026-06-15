@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "anand-rasa/influencer-dashboard/v1",
+  "title": "Anand Rasa Influencer Dashboard Data Contract",
+  "description": "V1 mock schema for Shopify Flow / metafield integration. Map page.metafields.custom.influencer_dashboard (json) to this shape.",
+  "type": "object",
+  "required": ["handle", "name", "coupon", "commission_rate", "stats"],
+  "properties": {
+    "handle": { "type": "string", "description": "Page handle, e.g. soham" },
+    "name": { "type": "string" },
+    "coupon": { "type": "string" },
+    "instagram": { "type": "string" },
+    "commission_rate": { "type": "number", "minimum": 0, "maximum": 100 },
+    "profile_image": { "type": "string", "format": "uri" },
+    "referral_url": { "type": "string", "format": "uri" },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "total_orders": { "type": "integer" },
+        "revenue_generated": { "type": "number" },
+        "estimated_commission": { "type": "number" },
+        "average_order_value": { "type": "number" },
+        "highest_order": { "type": "number" },
+        "today_sales": { "type": "number" },
+        "monthly_sales": { "type": "number" },
+        "last_coupon_used": { "type": "string", "format": "date-time" }
+      }
+    },
+    "recent_activity": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "order_total": { "type": "number" },
+          "commission": { "type": "number" }
+        }
+      }
+    },
+    "goals": {
+      "type": "object",
+      "properties": {
+        "current_revenue": { "type": "number" },
+        "tiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "threshold": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "top_products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "image": { "type": "string" },
+          "times_sold": { "type": "integer" }
+        }
+      }
+    },
+    "monthly_summary": {
+      "type": "object",
+      "properties": {
+        "orders": { "type": "integer" },
+        "revenue": { "type": "number" },
+        "commission": { "type": "number" },
+        "best_product": { "type": "string" },
+        "top_day": { "type": "string" }
+      }
+    },
+    "leaderboard": {
+      "type": "object",
+      "properties": {
+        "current_rank": { "type": "integer" },
+        "monthly_rank": { "type": "integer" },
+        "top_influencer": { "type": "string" }
+      }
+    },
+    "notifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "message": { "type": "string" },
+          "time": { "type": "string" }
+        }
+      }
+    },
+    "social": {
+      "type": "object",
+      "properties": {
+        "instagram": { "type": "string" },
+        "youtube": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "website": { "type": "string" }
+      }
+    }
+  },
+  "examples": [
+    {
+      "handle": "soham",
+      "name": "Soham",
+      "coupon": "SOHAM10",
+      "instagram": "@soham.aroma",
+      "commission_rate": 10,
+      "stats": {
+        "total_orders": 47,
+        "revenue_generated": 118500,
+        "estimated_commission": 11850,
+        "average_order_value": 2521,
+        "highest_order": 8400,
+        "today_sales": 2500,
+        "monthly_sales": 32400,
+        "last_coupon_used": "2026-06-15T10:30:00+05:30"
+      }
+    }
+  ]
+}

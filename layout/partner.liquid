@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta name="theme-color" content="#ffffff">
+
+    {%- assign ar_partner_favicon = settings.favicon | image_url: width: 32, height: 32 -%}
+    {%- if settings.favicon == blank -%}
+      {%- assign ar_partner_favicon = 'anand-rasa-logo-black.png' | asset_url -%}
+    {%- endif -%}
+    <link rel="icon" type="image/png" href="{{ ar_partner_favicon }}">
+
+    <title>Partner Dashboard — {{ shop.name }}</title>
+    <meta name="description" content="Anand Rasa partner portal. Track your fragrance journey.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Poppins:wght@400;500;600&display=swap">
+
+    {{ content_for_header }}
+  </head>
+  <body class="ar-partner-body">
+    {{ content_for_layout }}
+  </body>
+</html>

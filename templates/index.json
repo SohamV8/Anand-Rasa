@@ -171,7 +171,6 @@
         "cat-7": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_Mar_30_2026_12_21_21_PM.png",
             "title": "Incense Sticks",
             "link": "shopify://collections/incense-stick"
           }
@@ -194,7 +193,6 @@
         "cat-9": {
           "type": "category",
           "settings": {
-            "image": "shopify://shop_images/gift-set-of-perfume-and-attar-indian-traditional-minimal-cream-color-modern-traditional-professional.png",
             "title": "Gift Sets",
             "link": "shopify://collections/giftsets"
           }

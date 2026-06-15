@@ -1,0 +1,235 @@
+{% comment %}
+  Anand Rasa — Partner Dashboard V1
+  Isolated portal at /pages/partner (template: partner)
+  Coupon-gated. No per-influencer pages required.
+{% endcomment %}
+
+{{ 'partner-dashboard.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'partner-dashboard.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign ar_partner_shop_url = shop.url
+  assign ar_partner_contact = section.settings.contact_url | default: '/pages/contact'
+  assign ar_partner_whatsapp = section.settings.whatsapp_number | default: '919876543210'
+  assign ar_partner_help_email = section.settings.help_email | default: 'partners@anandrasa.com'
+-%}
+
+<div
+  class="ar-partner js-ar-partner"
+  id="ar-partner-{{ section.id }}"
+  data-shop-url="{{ ar_partner_shop_url | escape }}"
+  data-whatsapp="{{ ar_partner_whatsapp | escape }}"
+  data-contact-url="{{ ar_partner_contact | escape }}"
+  data-help-email="{{ ar_partner_help_email | escape }}"
+>
+  <div class="ar-partner__shell">
+    {%- comment -%} ── Gate: coupon entry ── {%- endcomment -%}
+    <section
+      class="ar-partner-gate js-ar-partner-gate"
+      aria-labelledby="ar-partner-gate-title"
+    >
+      <div class="ar-partner-card ar-partner-gate__card ar-partner-reveal">
+        <p class="ar-partner-gate__brand">Anand Rasa Partners</p>
+        <h1 id="ar-partner-gate-title" class="ar-partner-gate__title">Track your fragrance journey.</h1>
+
+        <form class="ar-partner-gate__form js-ar-partner-form" novalidate>
+          <label class="ar-partner-field" for="ar-partner-coupon-input">
+            <span class="ar-partner-field__label">Coupon code</span>
+            <input
+              type="text"
+              id="ar-partner-coupon-input"
+              class="ar-partner-field__input js-ar-partner-input"
+              name="coupon"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              maxlength="24"
+              placeholder="Enter your code"
+              aria-describedby="ar-partner-gate-error ar-partner-gate-hint"
+              required
+            >
+          </label>
+          <p id="ar-partner-gate-hint" class="ar-partner-gate__hint">Codes are not case-sensitive.</p>
+          <p
+            id="ar-partner-gate-error"
+            class="ar-partner-gate__error js-ar-partner-error"
+            role="alert"
+            hidden
+          ></p>
+          <button type="submit" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-submit">
+            View dashboard
+          </button>
+        </form>
+      </div>
+    </section>
+
+    {%- comment -%} ── Dashboard (shown after valid coupon) ── {%- endcomment -%}
+    <section
+      class="ar-partner-dash js-ar-partner-dash"
+      aria-labelledby="ar-partner-dash-welcome"
+      hidden
+    >
+      <div class="ar-partner-dash__header ar-partner-reveal">
+        <button type="button" class="ar-partner-dash__back js-ar-partner-signout" aria-label="Use a different partner code">
+          ← Different code
+        </button>
+        <p class="ar-partner-dash__success js-ar-partner-success-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="currentColor" opacity="0.12"/><path d="M8 14.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </p>
+        <h1 id="ar-partner-dash-welcome" class="ar-partner-dash__welcome">
+          Welcome <span class="js-ar-partner-name">Partner</span> 👋
+        </h1>
+      </div>
+
+      <div class="ar-partner-dash__grid">
+        <div class="ar-partner-dash__main">
+          {%- comment -%} Status card {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-status ar-partner-reveal">
+            <dl class="ar-partner-status__list">
+              <div>
+                <dt>Coupon</dt>
+                <dd class="js-ar-partner-coupon">—</dd>
+              </div>
+              <div>
+                <dt>Partner status</dt>
+                <dd><span class="ar-partner-badge js-ar-partner-status">Active</span></dd>
+              </div>
+            </dl>
+            <p class="ar-partner-status__email">
+              <span class="ar-partner-status__email-icon" aria-hidden="true">✉</span>
+              Email notifications enabled
+            </p>
+          </article>
+
+          {%- comment -%} Stats {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-stats ar-partner-reveal">
+            <div class="ar-partner-stat">
+              <p class="ar-partner-stat__label">Orders</p>
+              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="orders" data-format="number">0</p>
+            </div>
+            <div class="ar-partner-stat">
+              <p class="ar-partner-stat__label">Revenue generated</p>
+              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="revenue" data-format="currency">₹0</p>
+            </div>
+            <div class="ar-partner-stat ar-partner-stat--gold">
+              <p class="ar-partner-stat__label">Estimated commission</p>
+              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="commission" data-format="currency">₹0</p>
+            </div>
+            <div class="ar-partner-stat">
+              <p class="ar-partner-stat__label">Commission rate</p>
+              <p class="ar-partner-stat__value js-ar-partner-rate">10%</p>
+            </div>
+          </article>
+
+          {%- comment -%} Empty state (zero sales) {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-empty js-ar-partner-empty" hidden>
+            <h2 class="ar-partner-empty__title">Welcome!</h2>
+            <p class="ar-partner-empty__lead">Your journey has started.</p>
+            <p class="ar-partner-empty__cta">Share your code to start earning.</p>
+          </article>
+
+          {%- comment -%} Latest activity {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-activity ar-partner-reveal js-ar-partner-activity">
+            <h2 class="ar-partner-card__title">Latest activity</h2>
+            <p class="ar-partner-activity__text js-ar-partner-activity-text">Someone used your code today.</p>
+          </article>
+
+          {%- comment -%} Partner benefits {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-benefits ar-partner-reveal">
+            <h2 class="ar-partner-card__title">Partner benefits</h2>
+            <ul class="ar-partner-benefits__list" role="list">
+              <li>Early launches</li>
+              <li>Exclusive discounts</li>
+              <li>Special campaigns</li>
+            </ul>
+          </article>
+
+          {%- comment -%} Help {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-help ar-partner-reveal">
+            <h2 class="ar-partner-card__title">Need help?</h2>
+            <p class="ar-partner-help__text">Our partner team is here for you.</p>
+            <a class="ar-partner-btn ar-partner-btn--outline js-ar-partner-contact" href="{{ ar_partner_contact }}">
+              Contact partner team
+            </a>
+          </article>
+        </div>
+
+        <aside class="ar-partner-dash__aside">
+          {%- comment -%} Referral {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-referral ar-partner-reveal">
+            <h2 class="ar-partner-card__title">Referral link</h2>
+            <p class="ar-partner-referral__url js-ar-partner-referral" tabindex="0">—</p>
+            <button type="button" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-copy" data-copy-type="referral">
+              Copy link
+            </button>
+          </article>
+
+          {%- comment -%} Share {%- endcomment -%}
+          <article class="ar-partner-card ar-partner-share ar-partner-reveal">
+            <h2 class="ar-partner-card__title">Share your code</h2>
+            <div class="ar-partner-share__actions">
+              <button type="button" class="ar-partner-btn ar-partner-btn--block js-ar-partner-copy" data-copy-type="coupon">
+                Copy coupon
+              </button>
+              <button type="button" class="ar-partner-btn ar-partner-btn--block js-ar-partner-copy" data-copy-type="referral">
+                Copy referral link
+              </button>
+              <a class="ar-partner-btn ar-partner-btn--block ar-partner-btn--whatsapp js-ar-partner-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+                WhatsApp
+              </a>
+              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--outline js-ar-partner-share-ig">
+                Instagram
+              </button>
+              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--ghost ar-partner-btn--soon" disabled>
+                Story assets <span class="ar-partner-soon">Coming soon</span>
+              </button>
+              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--ghost ar-partner-btn--soon" disabled>
+                Partner kit <span class="ar-partner-soon">Coming soon</span>
+              </button>
+            </div>
+          </article>
+        </aside>
+      </div>
+
+      <div class="ar-partner-sticky js-ar-partner-sticky" hidden>
+        <button type="button" class="ar-partner-btn ar-partner-btn--primary ar-partner-sticky__btn js-ar-partner-copy" data-copy-type="coupon">
+          Copy coupon
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="ar-partner-toast js-ar-partner-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+</div>
+
+{% schema %}
+{
+  "name": "Partner Dashboard",
+  "tag": "section",
+  "class": "ar-partner-section",
+  "settings": [
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Partner contact page URL"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp number (country code, no +)",
+      "default": "919876543210"
+    },
+    {
+      "type": "text",
+      "id": "help_email",
+      "label": "Partner help email",
+      "default": "partners@anandrasa.com"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Partner Dashboard"
+    }
+  ]
+}
+{% endschema %}
