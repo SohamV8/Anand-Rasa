@@ -268,10 +268,11 @@
         "hero_image_alt": "",
         "hero_eyebrow": "ANAND RAS",
         "hero_headline": "India's First Astrology-Personalised Luxury Attar House",
-        "hero_body": "Pure, alcohol-free attars inspired by the nine Navagraha, your zodiac sign, and the 27 nakshatras. Hand-distilled through timeless Vedic rituals — crafted for the modern soul.",
+        "hero_body": "'Fragrance that knows your soul ΓÇö\nzodiac & Planet based attars crafted for who you truly are.",
         "hero_btn1_label": "Shop Now",
-        "hero_btn1_url": "shopify://collections/all",
+        "hero_btn1_url": "shopify://collections/planet-attar",
         "hero_btn2_label": "Find My Attar",
+        "hero_btn2_url": "shopify://collections",
         "bs_collection": "bestseller",
         "bs_limit": 10,
         "bs_heading": "BestSellers",
@@ -320,7 +321,16 @@
         "blog_heading": "OUR BLOGS",
         "incense_url": "/pages/build-3-incense",
         "inc_collection": "incense-stick",
-        "inc_heading": "Shop Incense Sticks"
+        "inc_heading": "Shop Incense Sticks",
+        "community_heading_prefix": "Join The",
+        "community_heading_suffix": "Community",
+        "community_subheading": "A community of fragrance lovers, spiritual seekers, and modern ritualists.",
+        "community_carousel_speed": 5,
+        "community_join_heading": "Join The Anand Rasa Community",
+        "community_join_text": "Receive exclusive launches, fragrance stories, early access, ritual guides, and special community-only offers.",
+        "community_email_placeholder": "Enter your email",
+        "community_submit_label": "Join Community",
+        "community_success_message": "Welcome to the Anand Rasa Community."
       }
     },
     "1779784306d05da1a6": {
