@@ -271,7 +271,7 @@
         "hero_body": "'Fragrance that knows your soul —\nzodiac & Planet based attars crafted for who you truly are.",
         "hero_btn1_label": "Shop Now",
         "hero_btn1_url": "shopify://collections/planet-attar",
-        "hero_btn2_label": "Find My Attar",
+        "hero_btn2_label": "",
         "hero_btn2_url": "shopify://collections",
         "bs_collection": "bestseller",
         "bs_limit": 10,
