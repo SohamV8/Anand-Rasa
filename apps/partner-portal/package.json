@@ -1,0 +1,22 @@
+{
+  "name": "anand-rasa-partner-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure partner portal app proxy for Anand Rasa",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "shopify:dev": "shopify app dev --store anand-rasa-3.myshopify.com",
+    "shopify:deploy": "shopify app deploy",
+    "shopify:info": "shopify app info",
+    "verify": "node scripts/verify-shopify-config.mjs"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2"
+  }
+}

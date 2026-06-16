@@ -6,7 +6,7 @@
 {{ 'collection-brand-trust.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign quote_text = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign quote_text = section.settings.quote | default: ''
   assign lotus_image = section.settings.lotus_image
 -%}
 
@@ -50,6 +50,7 @@
     </ul>
   </div>
 
+  {%- if quote_text != blank -%}
   <div class="cbt__quote-wrap">
     <div class="cbt__quote">
       <div class="cbt__quote-deco cbt__quote-deco--left" aria-hidden="true">
@@ -99,6 +100,7 @@
       </div>
     </div>
   </div>
+  {%- endif -%}
 </section>
 
 <script>
@@ -163,8 +165,7 @@
     {
       "type": "textarea",
       "id": "quote",
-      "label": "Quote",
-      "default": "The right fragrance is not chosen. It finds you."
+      "label": "Quote"
     },
     {
       "type": "image_picker",

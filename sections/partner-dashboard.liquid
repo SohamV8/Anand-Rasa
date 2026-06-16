@@ -1,7 +1,6 @@
 {% comment %}
-  Anand Rasa — Partner Dashboard V1
-  Isolated portal at /pages/partner (template: partner)
-  Coupon-gated. No per-influencer pages required.
+  Partner Portal
+  /pages/partner · template: partner
 {% endcomment %}
 
 {{ 'partner-dashboard.css' | asset_url | stylesheet_tag }}
@@ -9,197 +8,319 @@
 
 {%- liquid
   assign ar_partner_shop_url = shop.url
-  assign ar_partner_contact = section.settings.contact_url | default: '/pages/contact'
-  assign ar_partner_whatsapp = section.settings.whatsapp_number | default: '919876543210'
-  assign ar_partner_help_email = section.settings.help_email | default: 'partners@anandrasa.com'
+  assign ar_partner_whatsapp = section.settings.whatsapp_number | strip
 -%}
 
 <div
-  class="ar-partner js-ar-partner"
+  class="ar-partner ar-partner--gate js-ar-partner"
   id="ar-partner-{{ section.id }}"
   data-shop-url="{{ ar_partner_shop_url | escape }}"
   data-whatsapp="{{ ar_partner_whatsapp | escape }}"
-  data-contact-url="{{ ar_partner_contact | escape }}"
-  data-help-email="{{ ar_partner_help_email | escape }}"
+  data-api-base="{{ section.settings.api_base | default: '/apps/partner-portal' | escape }}"
 >
   <div class="ar-partner__shell">
-    {%- comment -%} ── Gate: coupon entry ── {%- endcomment -%}
-    <section
-      class="ar-partner-gate js-ar-partner-gate"
-      aria-labelledby="ar-partner-gate-title"
-    >
-      <div class="ar-partner-card ar-partner-gate__card ar-partner-reveal">
-        <p class="ar-partner-gate__brand">Anand Rasa Partners</p>
-        <h1 id="ar-partner-gate-title" class="ar-partner-gate__title">Track your fragrance journey.</h1>
+    <section class="ar-partner-login js-ar-partner-login" aria-labelledby="ar-partner-login-title">
+      <header class="ar-partner-login__head ar-partner-reveal">
+        <h1 id="ar-partner-login-title" class="ar-partner-login__title">Partner Portal</h1>
+        <p class="ar-partner-login__lead">Enter your Anand Rasa partner coupon code to access your dashboard.</p>
+      </header>
 
-        <form class="ar-partner-gate__form js-ar-partner-form" novalidate>
-          <label class="ar-partner-field" for="ar-partner-coupon-input">
-            <span class="ar-partner-field__label">Coupon code</span>
+      <div class="ar-partner-panel ar-partner-login__panel ar-partner-reveal">
+        <form class="ar-partner-login__form js-ar-partner-form" novalidate>
+          <label class="ar-partner-field" for="ar-partner-code">
+            <span class="ar-partner-field__label">Coupon Code</span>
             <input
               type="text"
-              id="ar-partner-coupon-input"
-              class="ar-partner-field__input js-ar-partner-input"
-              name="coupon"
+              id="ar-partner-code"
+              class="ar-partner-field__input js-ar-partner-code"
+              name="code"
               autocomplete="off"
               autocapitalize="characters"
               spellcheck="false"
-              maxlength="24"
-              placeholder="Enter your code"
-              aria-describedby="ar-partner-gate-error ar-partner-gate-hint"
+              maxlength="32"
+              placeholder="Enter coupon code"
+              aria-describedby="ar-partner-login-error"
               required
             >
           </label>
-          <p id="ar-partner-gate-hint" class="ar-partner-gate__hint">Codes are not case-sensitive.</p>
-          <p
-            id="ar-partner-gate-error"
-            class="ar-partner-gate__error js-ar-partner-error"
-            role="alert"
-            hidden
-          ></p>
+
+          <p id="ar-partner-login-error" class="ar-partner-login__error js-ar-partner-error" role="alert" hidden></p>
+
           <button type="submit" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-submit">
-            View dashboard
+            Access Dashboard
           </button>
         </form>
       </div>
     </section>
 
-    {%- comment -%} ── Dashboard (shown after valid coupon) ── {%- endcomment -%}
-    <section
-      class="ar-partner-dash js-ar-partner-dash"
-      aria-labelledby="ar-partner-dash-welcome"
-      hidden
-    >
-      <div class="ar-partner-dash__header ar-partner-reveal">
-        <button type="button" class="ar-partner-dash__back js-ar-partner-signout" aria-label="Use a different partner code">
-          ← Different code
-        </button>
-        <p class="ar-partner-dash__success js-ar-partner-success-icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="14" fill="currentColor" opacity="0.12"/><path d="M8 14.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </p>
-        <h1 id="ar-partner-dash-welcome" class="ar-partner-dash__welcome">
-          Welcome <span class="js-ar-partner-name">Partner</span> 👋
-        </h1>
+    <section class="ar-partner-dash js-ar-partner-dash" aria-label="Partner dashboard" hidden aria-hidden="true" inert>
+      <div class="ar-partner-skeleton js-ar-partner-skeleton" aria-hidden="true" hidden>
+        <div class="ar-partner-skeleton__bar"></div>
+        <div class="ar-partner-skeleton__grid"></div>
       </div>
 
-      <div class="ar-partner-dash__grid">
-        <div class="ar-partner-dash__main">
-          {%- comment -%} Status card {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-status ar-partner-reveal">
-            <dl class="ar-partner-status__list">
-              <div>
-                <dt>Coupon</dt>
-                <dd class="js-ar-partner-coupon">—</dd>
-              </div>
-              <div>
-                <dt>Partner status</dt>
-                <dd><span class="ar-partner-badge js-ar-partner-status">Active</span></dd>
-              </div>
-            </dl>
-            <p class="ar-partner-status__email">
-              <span class="ar-partner-status__email-icon" aria-hidden="true">✉</span>
-              Email notifications enabled
-            </p>
-          </article>
-
-          {%- comment -%} Stats {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-stats ar-partner-reveal">
-            <div class="ar-partner-stat">
-              <p class="ar-partner-stat__label">Orders</p>
-              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="orders" data-format="number">0</p>
-            </div>
-            <div class="ar-partner-stat">
-              <p class="ar-partner-stat__label">Revenue generated</p>
-              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="revenue" data-format="currency">₹0</p>
-            </div>
-            <div class="ar-partner-stat ar-partner-stat--gold">
-              <p class="ar-partner-stat__label">Estimated commission</p>
-              <p class="ar-partner-stat__value js-ar-partner-counter" data-key="commission" data-format="currency">₹0</p>
-            </div>
-            <div class="ar-partner-stat">
-              <p class="ar-partner-stat__label">Commission rate</p>
-              <p class="ar-partner-stat__value js-ar-partner-rate">10%</p>
-            </div>
-          </article>
-
-          {%- comment -%} Empty state (zero sales) {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-empty js-ar-partner-empty" hidden>
-            <h2 class="ar-partner-empty__title">Welcome!</h2>
-            <p class="ar-partner-empty__lead">Your journey has started.</p>
-            <p class="ar-partner-empty__cta">Share your code to start earning.</p>
-          </article>
-
-          {%- comment -%} Latest activity {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-activity ar-partner-reveal js-ar-partner-activity">
-            <h2 class="ar-partner-card__title">Latest activity</h2>
-            <p class="ar-partner-activity__text js-ar-partner-activity-text">Someone used your code today.</p>
-          </article>
-
-          {%- comment -%} Partner benefits {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-benefits ar-partner-reveal">
-            <h2 class="ar-partner-card__title">Partner benefits</h2>
-            <ul class="ar-partner-benefits__list" role="list">
-              <li>Early launches</li>
-              <li>Exclusive discounts</li>
-              <li>Special campaigns</li>
-            </ul>
-          </article>
-
-          {%- comment -%} Help {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-help ar-partner-reveal">
-            <h2 class="ar-partner-card__title">Need help?</h2>
-            <p class="ar-partner-help__text">Our partner team is here for you.</p>
-            <a class="ar-partner-btn ar-partner-btn--outline js-ar-partner-contact" href="{{ ar_partner_contact }}">
-              Contact partner team
-            </a>
-          </article>
+      <div class="ar-partner-dash__inner js-ar-partner-content" hidden>
+        <div class="ar-partner-dash__top">
+          <span class="ar-partner-dash__brand">Partner Portal</span>
+          <button type="button" class="ar-partner-dash__logout js-ar-partner-logout">Log out</button>
         </div>
 
-        <aside class="ar-partner-dash__aside">
-          {%- comment -%} Referral {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-referral ar-partner-reveal">
-            <h2 class="ar-partner-card__title">Referral link</h2>
-            <p class="ar-partner-referral__url js-ar-partner-referral" tabindex="0">—</p>
-            <button type="button" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-copy" data-copy-type="referral">
-              Copy link
-            </button>
-          </article>
+        <header class="ar-partner-hero ar-partner-panel ar-partner-reveal">
+          <div class="ar-partner-hero__copy">
+            <p class="ar-partner-hero__eyebrow">Welcome</p>
+            <h1 class="ar-partner-hero__title">Welcome <span class="js-ar-partner-name">Partner</span></h1>
+            <div class="ar-partner-hero__meta" aria-label="Partner summary">
+              <p class="ar-partner-hero__meta-item">
+                <span class="ar-partner-hero__meta-label">Partner since</span>
+                <span class="js-ar-partner-since">—</span>
+              </p>
+              <p class="ar-partner-hero__meta-item">
+                <span class="ar-partner-hero__meta-label">Status</span>
+                <span class="js-ar-partner-status-text">Unknown</span>
+              </p>
+            </div>
+          </div>
 
-          {%- comment -%} Share {%- endcomment -%}
-          <article class="ar-partner-card ar-partner-share ar-partner-reveal">
-            <h2 class="ar-partner-card__title">Share your code</h2>
-            <div class="ar-partner-share__actions">
-              <button type="button" class="ar-partner-btn ar-partner-btn--block js-ar-partner-copy" data-copy-type="coupon">
-                Copy coupon
+          <div class="ar-partner-hero__coupon-row">
+            <div class="ar-partner-hero__coupon">
+              <span class="ar-partner-hero__coupon-label">Coupon</span>
+              <span class="ar-partner-hero__coupon-code js-ar-partner-coupon-hero">—</span>
+            </div>
+
+            <div class="ar-partner-hero__actions">
+              <button
+                type="button"
+                class="ar-partner-btn ar-partner-btn--secondary ar-partner-btn--sm js-ar-partner-copy"
+                data-copy-type="coupon"
+                aria-label="Copy coupon code"
+              >
+                {% render 'partner-portal-icon', name: 'copy' %}
+                <span>Copy</span>
               </button>
-              <button type="button" class="ar-partner-btn ar-partner-btn--block js-ar-partner-copy" data-copy-type="referral">
-                Copy referral link
-              </button>
-              <a class="ar-partner-btn ar-partner-btn--block ar-partner-btn--whatsapp js-ar-partner-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
-                WhatsApp
-              </a>
-              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--outline js-ar-partner-share-ig">
-                Instagram
-              </button>
-              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--ghost ar-partner-btn--soon" disabled>
-                Story assets <span class="ar-partner-soon">Coming soon</span>
-              </button>
-              <button type="button" class="ar-partner-btn ar-partner-btn--block ar-partner-btn--ghost ar-partner-btn--soon" disabled>
-                Partner kit <span class="ar-partner-soon">Coming soon</span>
+
+              <button
+                type="button"
+                class="ar-partner-btn ar-partner-btn--secondary ar-partner-btn--sm js-ar-partner-native-share"
+                aria-label="Share coupon and referral link"
+              >
+                {% render 'partner-portal-icon', name: 'share' %}
+                <span>Share</span>
               </button>
             </div>
-          </article>
-        </aside>
-      </div>
+          </div>
+        </header>
 
-      <div class="ar-partner-sticky js-ar-partner-sticky" hidden>
-        <button type="button" class="ar-partner-btn ar-partner-btn--primary ar-partner-sticky__btn js-ar-partner-copy" data-copy-type="coupon">
-          Copy coupon
-        </button>
+        <div class="ar-partner-layout">
+          <div class="ar-partner-layout__main">
+            <section class="ar-partner-panel ar-partner-coupon ar-partner-reveal" aria-labelledby="ar-partner-coupon-title">
+              <div class="ar-partner-section-head">
+                <h2 id="ar-partner-coupon-title" class="ar-partner-heading">Coupon</h2>
+              </div>
+
+              <div class="ar-partner-coupon__grid">
+                <div class="ar-partner-coupon__block">
+                  <p class="ar-partner-coupon__label">Coupon code</p>
+                  <p class="ar-partner-coupon__value js-ar-partner-coupon-card">—</p>
+                </div>
+
+                <div class="ar-partner-coupon__block">
+                  <p class="ar-partner-coupon__label">Referral link</p>
+                  <p class="ar-partner-coupon__value ar-partner-coupon__value--link js-ar-partner-referral-url">—</p>
+                </div>
+              </div>
+
+              <div class="ar-partner-coupon__actions">
+                <button type="button" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-copy" data-copy-type="coupon">
+                  {% render 'partner-portal-icon', name: 'copy' %}
+                  <span>Copy coupon</span>
+                </button>
+
+                <button type="button" class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-copy" data-copy-type="referral">
+                  {% render 'partner-portal-icon', name: 'link' %}
+                  <span>Copy referral link</span>
+                </button>
+
+                <button type="button" class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-native-share">
+                  {% render 'partner-portal-icon', name: 'share' %}
+                  <span>Share</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="ar-partner-panel ar-partner-performance ar-partner-reveal" aria-labelledby="ar-partner-performance-title">
+              <div class="ar-partner-section-head">
+                <h2 id="ar-partner-performance-title" class="ar-partner-heading">Performance</h2>
+              </div>
+
+              <div class="ar-partner-metrics">
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Orders using coupon</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="ordersUsingCoupon">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="ordersUsingCoupon" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Total revenue generated</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="totalRevenueGenerated">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="totalRevenueGenerated" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Commission earned</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="commissionEarned">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="commissionEarned" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Average order value</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="averageOrderValue">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="averageOrderValue" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Last coupon use</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="lastCouponUseAt">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="lastCouponUseAt" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Highest order</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="highestOrder">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="highestOrder" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">This month sales</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="thisMonthSales">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="thisMonthSales" hidden></p>
+                </article>
+
+                <article class="ar-partner-metric">
+                  <p class="ar-partner-metric__label">Lifetime sales</p>
+                  <p class="ar-partner-metric__value js-ar-partner-metric-value" data-metric="lifetimeSales">—</p>
+                  <p class="ar-partner-metric__note js-ar-partner-metric-note" data-metric-note="lifetimeSales" hidden></p>
+                </article>
+              </div>
+            </section>
+
+            <section class="ar-partner-panel ar-partner-orders ar-partner-reveal" aria-labelledby="ar-partner-orders-title">
+              <div class="ar-partner-section-head">
+                <h2 id="ar-partner-orders-title" class="ar-partner-heading">Recent Activity</h2>
+                <p class="ar-partner-section-copy">Aggregated coupon activity only. No customer details are shown.</p>
+              </div>
+
+              <div class="ar-partner-activity js-ar-partner-activity">
+                <article class="ar-partner-activity__card">
+                  <p class="ar-partner-activity__title">Today</p>
+                  <p class="ar-partner-activity__value js-ar-partner-activity-value" data-activity="todayRevenue">₹0</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="todayCommission">Commission setup pending.</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="todayOrders">Coupon used 0 times</p>
+                </article>
+                <article class="ar-partner-activity__card">
+                  <p class="ar-partner-activity__title">Yesterday</p>
+                  <p class="ar-partner-activity__value js-ar-partner-activity-value" data-activity="yesterdayRevenue">₹0</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="yesterdayCommission">Commission setup pending.</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="yesterdayOrders">Coupon used 0 times</p>
+                </article>
+                <article class="ar-partner-activity__card">
+                  <p class="ar-partner-activity__title">Last week</p>
+                  <p class="ar-partner-activity__value js-ar-partner-activity-value" data-activity="lastWeekRevenue">₹0</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="lastWeekCommission">Commission setup pending.</p>
+                  <p class="ar-partner-activity__meta js-ar-partner-activity-value" data-activity="lastWeekOrders">Coupon used 0 times</p>
+                </article>
+              </div>
+
+              <div class="ar-partner-empty js-ar-partner-orders-empty" hidden>
+                <div class="ar-partner-empty__art" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p class="ar-partner-empty__title">No orders yet.</p>
+                <p class="ar-partner-empty__copy">Share your coupon to start earning.</p>
+              </div>
+            </section>
+
+          </div>
+
+          <aside class="ar-partner-layout__side">
+            <section class="ar-partner-panel ar-partner-commission ar-partner-reveal" aria-labelledby="ar-partner-commission-title">
+              <div class="ar-partner-section-head">
+                <h2 id="ar-partner-commission-title" class="ar-partner-heading">Commission</h2>
+              </div>
+
+              <dl class="ar-partner-commission__rows">
+                <div class="ar-partner-commission__row">
+                  <dt>Commission %</dt>
+                  <dd class="js-ar-partner-commission-rate">—</dd>
+                </div>
+
+                <div class="ar-partner-commission__row">
+                  <dt>Total earned</dt>
+                  <dd class="js-ar-partner-commission-total">—</dd>
+                </div>
+
+                <div class="ar-partner-commission__row js-ar-partner-payout-row">
+                  <dt>Pending payout</dt>
+                  <dd class="js-ar-partner-commission-pending">—</dd>
+                </div>
+
+                <div class="ar-partner-commission__row js-ar-partner-payout-row">
+                  <dt>Paid</dt>
+                  <dd class="js-ar-partner-commission-paid">—</dd>
+                </div>
+
+                <div class="ar-partner-commission__row js-ar-partner-payout-row">
+                  <dt>Next payout</dt>
+                  <dd class="js-ar-partner-commission-next">—</dd>
+                </div>
+              </dl>
+
+              <p class="ar-partner-commission__note js-ar-partner-payout-note" hidden>Payout data is not available yet.</p>
+            </section>
+
+            <section class="ar-partner-panel ar-partner-share ar-partner-reveal" aria-labelledby="ar-partner-share-title">
+              <div class="ar-partner-section-head">
+                <h2 id="ar-partner-share-title" class="ar-partner-heading">Share</h2>
+              </div>
+
+              <div class="ar-partner-share__grid">
+                <button type="button" class="ar-partner-btn ar-partner-btn--primary js-ar-partner-copy" data-copy-type="coupon">
+                  {% render 'partner-portal-icon', name: 'copy' %}
+                  <span>Copy coupon</span>
+                </button>
+
+                <button type="button" class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-copy" data-copy-type="referral">
+                  {% render 'partner-portal-icon', name: 'link' %}
+                  <span>Copy referral link</span>
+                </button>
+
+                <a class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+                  {% render 'partner-portal-icon', name: 'whatsapp' %}
+                  <span>Share WhatsApp</span>
+                </a>
+
+                <button type="button" class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-share-ig">
+                  {% render 'partner-portal-icon', name: 'instagram' %}
+                  <span>Share Instagram</span>
+                </button>
+
+                <a class="ar-partner-btn ar-partner-btn--secondary js-ar-partner-share-fb" href="#" target="_blank" rel="noopener noreferrer">
+                  {% render 'partner-portal-icon', name: 'facebook' %}
+                  <span>Share Facebook</span>
+                </a>
+              </div>
+            </section>
+          </aside>
+        </div>
       </div>
     </section>
   </div>
 
-  <div class="ar-partner-toast js-ar-partner-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+  <div class="ar-partner-toast js-ar-partner-toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="ar-partner-toast__icon" aria-hidden="true"></span>
+    <span class="js-ar-partner-toast-text"></span>
+  </div>
 </div>
 
 {% schema %}
@@ -209,27 +330,17 @@
   "class": "ar-partner-section",
   "settings": [
     {
-      "type": "url",
-      "id": "contact_url",
-      "label": "Partner contact page URL"
-    },
-    {
       "type": "text",
       "id": "whatsapp_number",
-      "label": "WhatsApp number (country code, no +)",
-      "default": "919876543210"
+      "label": "WhatsApp number (country code, no +)"
     },
     {
       "type": "text",
-      "id": "help_email",
-      "label": "Partner help email",
-      "default": "partners@anandrasa.com"
+      "id": "api_base",
+      "label": "App proxy base path",
+      "default": "/apps/partner-portal"
     }
   ],
-  "presets": [
-    {
-      "name": "Partner Dashboard"
-    }
-  ]
+  "presets": [{ "name": "Partner Dashboard" }]
 }
 {% endschema %}

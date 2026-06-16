@@ -61,6 +61,17 @@
       if pages['build-3-incense'] != blank and pages['build-3-incense'].template_suffix == 'build-3-incense'
         assign url = pages['build-3-incense'].url
       endif
+    when 'partner', 'partner-portal'
+      assign url = pages['partner'].url
+      if url == blank
+        assign url = '/pages/partner?view=partner'
+      else
+        if url contains '?'
+          assign url = url | append: '&view=partner'
+        else
+          assign url = url | append: '?view=partner'
+        endif
+      endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key
   endcase

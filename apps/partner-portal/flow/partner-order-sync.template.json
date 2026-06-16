@@ -1,0 +1,16 @@
+{
+  "name": "Partner order sync (template)",
+  "description": "Import via Shopify Flow. When an order is paid with a partner discount code, update the matching Partner metaobject stats. No customer PII is stored.",
+  "trigger": "order_paid",
+  "steps": [
+    "For each discount code on the order, find Partner metaobject where coupon_code matches",
+    "Increment orders_lifetime, add order total to revenue_lifetime",
+    "If order is in current month, increment orders_month and revenue_month",
+    "Set commission fields = revenue * (commission_percent / 100)",
+    "Update last_sale_date and last_coupon_used_at",
+    "Prepend { date, revenue, commission } to activity_log (max 20 entries, no customer fields)",
+    "Send email to partner email and admin (Shopify Email / Flow Send email)"
+  ],
+  "metaobject_type": "$app:partner",
+  "match_field": "coupon_code"
+}

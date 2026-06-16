@@ -1,13 +1,14 @@
 {%- comment -%} 1. HERO {%- endcomment -%}
-{%- capture ar_hero_btn1_default_url -%}{% render 'ar-collection-url', handle: 'planet-attars' %}{%- endcapture -%}
 {%- liquid
+  assign ar_hero_btn1_default_url = routes.all_products_collection_url
+  assign ar_hero_btn2_default_url = routes.root_url | append: '?view=find-fragrance'
   assign ar_hero_btn1_url = section.settings.hero_btn1_url | strip
   assign ar_hero_btn2_url = section.settings.hero_btn2_url | strip
-  if ar_hero_btn1_url == blank or ar_hero_btn1_url contains 'collections'
+  if ar_hero_btn1_url == blank
     assign ar_hero_btn1_url = ar_hero_btn1_default_url
   endif
   if ar_hero_btn2_url == blank
-    assign ar_hero_btn2_url = routes.collections_url
+    assign ar_hero_btn2_url = ar_hero_btn2_default_url
   endif
 -%}
 <section class="ar-hero">
@@ -37,7 +38,7 @@
         </a>
 
         <a href="{{ ar_hero_btn2_url }}" class="ar-hero__btn2">
-          {{ section.settings.hero_btn2_label | default: 'Explore Collections' }}
+          {{ section.settings.hero_btn2_label | default: 'Find My Attar' }}
         </a>
       </div>
     </div>

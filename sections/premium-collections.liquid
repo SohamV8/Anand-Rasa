@@ -11,7 +11,7 @@
   assign pcl_heading = section.settings.hero_heading | default: 'Discover The World Of Anand Rasa'
   assign pcl_desc = section.settings.hero_description | default: 'Ancient rituals. Modern luxury. Fragrances crafted for every journey.'
   assign pcl_hero_img = section.settings.hero_image
-  assign pcl_quote = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign pcl_quote = section.settings.quote | default: ''
   assign pcl_finder_title = section.settings.finder_heading | default: 'Discover the fragrance written in your stars.'
   assign pcl_finder_desc = section.settings.finder_description | default: 'Our astrology fragrance finder reveals the attar aligned with your zodiac, planet, and Nakshatra energy.'
   assign pcl_finder_cta = section.settings.finder_cta_label | default: 'Find your fragrance'
@@ -387,8 +387,7 @@
     {
       "type": "textarea",
       "id": "quote",
-      "label": "Quote text",
-      "default": "The right fragrance is not chosen. It finds you."
+      "label": "Quote text"
     },
     {
       "type": "image_picker",
@@ -688,7 +687,7 @@
             "card_size": "medium",
             "grid_position": 1,
             "pill_groups": "astrology,attars",
-            "fallback_asset": "PlanetHero.webp"
+            "fallback_asset": "planets.webp"
           }
         },
         {
@@ -700,7 +699,7 @@
             "card_size": "medium",
             "grid_position": 2,
             "pill_groups": "astrology,attars",
-            "fallback_asset": "PlanetHero.webp"
+            "fallback_asset": "zodiac.webp"
           }
         },
         {
@@ -712,7 +711,7 @@
             "card_size": "medium",
             "grid_position": 3,
             "pill_groups": "astrology,attars",
-            "fallback_asset": "PlanetHero.webp"
+            "fallback_asset": "nakshatra.webp"
           }
         },
         {
@@ -736,7 +735,7 @@
             "description": "Romantic blends for the heart and soul.",
             "card_size": "small",
             "pill_groups": "attars",
-            "fallback_asset": "love.webp"
+            "fallback_asset": "Love Attar.webp"
           }
         },
         {
@@ -758,7 +757,7 @@
             "description": "Modern eau de parfum for everyday luxury.",
             "card_size": "small",
             "pill_groups": "perfumes",
-            "fallback_asset": "home.webp"
+            "fallback_asset": "Perfume Series.webp"
           }
         },
         {
@@ -769,7 +768,7 @@
             "description": "Hand-rolled incense for sacred rituals.",
             "card_size": "small",
             "pill_groups": "incense",
-            "fallback_asset": "incense/incense_collection.webp"
+            "fallback_asset": "incense_stick.webp"
           }
         },
         {
@@ -780,7 +779,7 @@
             "description": "Curated boxes for gifting and discovery.",
             "card_size": "small",
             "pill_groups": "gift-sets",
-            "fallback_asset": "wooden_attar_box.webp"
+            "fallback_asset": "Gift Set.webp"
           }
         },
         {
@@ -791,7 +790,7 @@
             "description": "Divine feminine fragrances of timeless beauty.",
             "card_size": "small",
             "pill_groups": "attars",
-            "fallback_asset": "home.webp"
+            "fallback_asset": "Apsara Attar.webp"
           }
         },
         { "type": "feature", "settings": { "icon": "pure-oil", "title": "Pure Oil", "subtitle": "100% Natural" } },

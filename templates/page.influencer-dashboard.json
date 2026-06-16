@@ -3,7 +3,6 @@
     "main": {
       "type": "influencer-dashboard",
       "settings": {
-        "show_leaderboard": true,
         "padding_top": 36,
         "padding_bottom": 64
       }

@@ -1,454 +1,108 @@
 {% comment %}
-  Anand Rasa — Influencer Dashboard V1
-  Isolated module. Assets load only on this section.
-  Assign template "influencer-dashboard" to pages like /pages/soham
+  Legacy route bridge.
+  Force-loads the secure /pages/partner dashboard view.
 {% endcomment %}
 
-{{ 'influencer-dashboard.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'influencer-dashboard.js' | asset_url }}" defer></script>
-
 {%- style -%}
-  .ar-inf-dashboard-section {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  .ar-inf-legacy {
+    padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 16px {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background: #ffffff;
   }
+
+  .ar-inf-legacy__wrap {
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: clamp(28px, 5vw, 44px);
+    border: 1px solid rgba(18, 16, 14, 0.08);
+    border-radius: 28px;
+    background: linear-gradient(180deg, #fffdfb 0%, #ffffff 100%);
+    box-shadow: 0 14px 38px rgba(18, 16, 14, 0.06);
+    text-align: center;
+  }
+
+  .ar-inf-legacy__eyebrow {
+    margin: 0 0 12px;
+    color: #6f6860;
+    font: 600 14px/1.2 Poppins, system-ui, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ar-inf-legacy__title {
+    margin: 0 0 14px;
+    color: #12100e;
+    font: 500 clamp(2.1rem, 5vw, 3rem)/1.02 "Cormorant Garamond", Georgia, serif;
+    letter-spacing: -0.03em;
+  }
+
+  .ar-inf-legacy__copy {
+    margin: 0 auto;
+    max-width: 42ch;
+    color: #3d3832;
+    font: 400 16px/1.6 Poppins, system-ui, sans-serif;
+  }
+
+  .ar-inf-legacy__actions {
+    display: grid;
+    gap: 12px;
+    width: min(100%, 360px);
+    margin: 28px auto 0;
+  }
+
+  .ar-inf-legacy__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 14px 20px;
+    border-radius: 999px;
+    font: 600 16px/1.2 Poppins, system-ui, sans-serif;
+    text-decoration: none;
+  }
+
+  .ar-inf-legacy__btn--primary {
+    background: #12100e;
+    color: #ffffff;
+  }
+
+  .ar-inf-legacy__btn--secondary {
+    border: 1px solid rgba(18, 16, 14, 0.12);
+    color: #12100e;
+    background: #ffffff;
+  }
+
   @media screen and (min-width: 750px) {
-    .ar-inf-dashboard-section {
+    .ar-inf-legacy {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
 {%- endstyle -%}
 
-{%- render 'influencer-dashboard-data' -%}
+<section class="ar-inf-legacy" aria-labelledby="ar-inf-legacy-title">
+  <div class="ar-inf-legacy__wrap">
+    <p class="ar-inf-legacy__eyebrow">Partner Dashboard</p>
+    <h1 id="ar-inf-legacy-title" class="ar-inf-legacy__title">Opening secure dashboard…</h1>
+    <p class="ar-inf-legacy__copy">Redirecting to the authenticated partner portal now.</p>
 
-{%- liquid
-  assign inf_show_leaderboard = section.settings.show_leaderboard
-  assign inf_whatsapp = section.settings.whatsapp_number | default: '919876543210'
-  assign inf_ig_url = section.settings.brand_instagram | default: 'https://instagram.com/anandrasa'
-  assign inf_yt_url = section.settings.brand_youtube | default: 'https://youtube.com/@anandrasa'
-  assign inf_site_url = section.settings.brand_website | default: shop.url
--%}
-
-<div
-  class="ar-inf-dashboard js-ar-inf-dashboard"
-  id="ar-inf-{{ section.id }}"
-  data-section-id="{{ section.id }}"
-  data-coupon="{{ inf_coupon | escape }}"
-  data-referral="{{ inf_referral_url | escape }}"
-  data-page-url="{{ inf_page_url | escape }}"
-  data-name="{{ inf_name | escape }}"
-  data-whatsapp="{{ inf_whatsapp | escape }}"
-  role="main"
-  aria-label="Influencer dashboard for {{ inf_name | escape }}"
->
-  <div class="ar-inf-dashboard__bg" aria-hidden="true"></div>
-
-  <div class="ar-inf-dashboard__wrap">
-    {%- comment -%} ── Hero ── {%- endcomment -%}
-    <header class="ar-inf-hero ar-inf-reveal">
-      <div class="ar-inf-hero__copy">
-        <p class="ar-inf-hero__eyebrow">Partner with Anand Rasa</p>
-        <h1 class="ar-inf-hero__title">Welcome, {{ inf_name }}.</h1>
-        <p class="ar-inf-hero__lead">Track your impact. Track your earnings. Track your community.</p>
-        <ul class="ar-inf-hero__tags" role="list">
-          <li>Impact</li>
-          <li>Earnings</li>
-          <li>Community</li>
-        </ul>
-      </div>
-
-      <div class="ar-inf-card ar-inf-hero__card ar-inf-reveal" style="--ar-inf-delay: 80ms">
-        <div class="ar-inf-hero__profile">
-          <div class="ar-inf-hero__avatar" aria-hidden="true">
-            <span class="ar-inf-hero__initials">{{ inf_initials }}</span>
-          </div>
-          <div class="ar-inf-hero__identity">
-            <h2 class="ar-inf-hero__name">{{ inf_name }}</h2>
-            <p class="ar-inf-hero__handle">{{ inf_instagram }}</p>
-          </div>
-        </div>
-
-        <div class="ar-inf-hero__codes">
-          <div class="ar-inf-hero__code-row">
-            <span class="ar-inf-hero__code-label">Coupon</span>
-            <code class="ar-inf-hero__code-value" id="ar-inf-coupon-display">{{ inf_coupon }}</code>
-            <button
-              type="button"
-              class="ar-inf-btn ar-inf-btn--ghost ar-inf-btn--sm js-ar-inf-copy"
-              data-copy="{{ inf_coupon }}"
-              aria-label="Copy coupon code {{ inf_coupon }}"
-            >
-              Copy
-            </button>
-          </div>
-          <div class="ar-inf-hero__code-row">
-            <span class="ar-inf-hero__code-label">Referral</span>
-            <span class="ar-inf-hero__code-value ar-inf-hero__code-value--truncate" id="ar-inf-referral-display">{{ inf_referral_url }}</span>
-            <button
-              type="button"
-              class="ar-inf-btn ar-inf-btn--ghost ar-inf-btn--sm js-ar-inf-copy"
-              data-copy="{{ inf_referral_url }}"
-              aria-label="Copy referral link"
-            >
-              Copy
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="ar-inf-dashboard__grid">
-      <div class="ar-inf-dashboard__main">
-        {%- comment -%} ── Stats ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-stats-heading">
-          <h2 id="ar-inf-stats-heading" class="ar-inf-section__title">Your impact</h2>
-          <div class="ar-inf-stats">
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Total orders</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_total_orders }}" data-format="number">0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Revenue generated</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_revenue }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat ar-inf-stat--highlight">
-              <p class="ar-inf-stat__label">Estimated commission</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_commission }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Average order value</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_aov }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Highest order</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_highest }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Today's sales</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_today }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Monthly sales</p>
-              <p class="ar-inf-stat__value js-ar-inf-counter" data-value="{{ inf_monthly }}" data-format="currency">₹0</p>
-            </article>
-            <article class="ar-inf-card ar-inf-stat">
-              <p class="ar-inf-stat__label">Last coupon used</p>
-              <p class="ar-inf-stat__value ar-inf-stat__value--text">Today, 10:30 AM</p>
-            </article>
-          </div>
-        </section>
-
-        {%- comment -%} ── Recent activity ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-activity-heading">
-          <h2 id="ar-inf-activity-heading" class="ar-inf-section__title">Recent activity</h2>
-          <p class="ar-inf-section__desc">Aggregate coupon usage only — no customer details shared.</p>
-          <ul class="ar-inf-activity" role="list">
-            <li class="ar-inf-card ar-inf-activity__item">
-              <div class="ar-inf-activity__meta">
-                <span class="ar-inf-activity__when">Today</span>
-                <span class="ar-inf-activity__badge">Coupon used</span>
-              </div>
-              <p class="ar-inf-activity__amount">₹2,500</p>
-              <p class="ar-inf-activity__commission">Est. commission ₹250</p>
-            </li>
-            <li class="ar-inf-card ar-inf-activity__item">
-              <div class="ar-inf-activity__meta">
-                <span class="ar-inf-activity__when">Yesterday</span>
-                <span class="ar-inf-activity__badge">Coupon used</span>
-              </div>
-              <p class="ar-inf-activity__amount">₹1,800</p>
-              <p class="ar-inf-activity__commission">Est. commission ₹180</p>
-            </li>
-            <li class="ar-inf-card ar-inf-activity__item">
-              <div class="ar-inf-activity__meta">
-                <span class="ar-inf-activity__when">Last week</span>
-                <span class="ar-inf-activity__badge">Coupon used</span>
-              </div>
-              <p class="ar-inf-activity__amount">₹4,200</p>
-              <p class="ar-inf-activity__commission">Est. commission ₹420</p>
-            </li>
-          </ul>
-        </section>
-
-        {%- comment -%} ── Commission ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-commission-heading">
-          <h2 id="ar-inf-commission-heading" class="ar-inf-section__title">Commission</h2>
-          <div class="ar-inf-card ar-inf-commission">
-            <div class="ar-inf-commission__rate">
-              <span class="ar-inf-commission__percent">{{ inf_commission_rate }}%</span>
-              <span class="ar-inf-commission__label">Partner rate</span>
-            </div>
-            <div class="ar-inf-commission__calc">
-              <p class="ar-inf-commission__example">
-                <span>₹2,500 order</span>
-                <span aria-hidden="true">→</span>
-                <strong>₹250 commission</strong>
-              </p>
-              <div class="ar-inf-commission__earnings">
-                <div>
-                  <p class="ar-inf-commission__earn-label">Monthly earnings</p>
-                  <p class="ar-inf-commission__earn-value js-ar-inf-counter" data-value="{{ inf_monthly_commission }}" data-format="currency">₹0</p>
-                </div>
-                <div>
-                  <p class="ar-inf-commission__earn-label">Lifetime earnings</p>
-                  <p class="ar-inf-commission__earn-value js-ar-inf-counter" data-value="{{ inf_lifetime_commission }}" data-format="currency">₹0</p>
-                </div>
-              </div>
-              <div class="ar-inf-progress" role="progressbar" aria-valuenow="{{ inf_monthly_commission }}" aria-valuemin="0" aria-valuemax="10000" aria-label="Monthly commission progress">
-                <div class="ar-inf-progress__bar" style="--ar-inf-progress: {{ inf_monthly_commission | times: 100 | divided_by: 10000 }}%"></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {%- comment -%} ── Goals ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-goals-heading">
-          <h2 id="ar-inf-goals-heading" class="ar-inf-section__title">Goals</h2>
-          <div class="ar-inf-card ar-inf-goals">
-            <div class="ar-inf-goals__header">
-              <p class="ar-inf-goals__current">
-                <span class="js-ar-inf-counter" data-value="{{ inf_goal_revenue }}" data-format="currency">₹0</span>
-                <span class="ar-inf-goals__current-label">revenue this month</span>
-              </p>
-            </div>
-            <ol class="ar-inf-goals__tiers" role="list">
-              <li class="ar-inf-goals__tier{% if inf_goal_revenue >= 25000 %} ar-inf-goals__tier--done{% endif %}">
-                <span class="ar-inf-goals__tier-name">Starter</span>
-                <span class="ar-inf-goals__tier-amount">₹25,000</span>
-                <div class="ar-inf-goals__tier-bar"><span style="width: {% if inf_goal_revenue >= 25000 %}100{% else %}{{ inf_goal_revenue | times: 100 | divided_by: 25000 }}{% endif %}%"></span></div>
-              </li>
-              <li class="ar-inf-goals__tier{% if inf_goal_revenue >= 50000 %} ar-inf-goals__tier--done{% elsif inf_goal_revenue >= 25000 %} ar-inf-goals__tier--active{% endif %}">
-                <span class="ar-inf-goals__tier-name">Silver</span>
-                <span class="ar-inf-goals__tier-amount">₹50,000</span>
-                <div class="ar-inf-goals__tier-bar"><span style="width: {% if inf_goal_revenue >= 50000 %}100{% elsif inf_goal_revenue >= 25000 %}{{ inf_goal_revenue | minus: 25000 | times: 100 | divided_by: 25000 }}{% else %}0{% endif %}%"></span></div>
-              </li>
-              <li class="ar-inf-goals__tier{% if inf_goal_revenue >= 100000 %} ar-inf-goals__tier--done{% elsif inf_goal_revenue >= 50000 %} ar-inf-goals__tier--active{% endif %}">
-                <span class="ar-inf-goals__tier-name">Gold</span>
-                <span class="ar-inf-goals__tier-amount">₹1,00,000</span>
-                <div class="ar-inf-goals__tier-bar"><span style="width: {% if inf_goal_revenue >= 100000 %}100{% elsif inf_goal_revenue >= 50000 %}{{ inf_goal_revenue | minus: 50000 | times: 100 | divided_by: 50000 }}{% else %}0{% endif %}%"></span></div>
-              </li>
-              <li class="ar-inf-goals__tier{% if inf_goal_revenue >= 250000 %} ar-inf-goals__tier--done{% elsif inf_goal_revenue >= 100000 %} ar-inf-goals__tier--active{% endif %}">
-                <span class="ar-inf-goals__tier-name">Elite</span>
-                <span class="ar-inf-goals__tier-amount">₹2,50,000</span>
-                <div class="ar-inf-goals__tier-bar"><span style="width: {% if inf_goal_revenue >= 250000 %}100{% elsif inf_goal_revenue >= 100000 %}{{ inf_goal_revenue | minus: 100000 | times: 100 | divided_by: 150000 }}{% else %}0{% endif %}%"></span></div>
-              </li>
-            </ol>
-          </div>
-        </section>
-
-        {%- comment -%} ── Top products ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-products-heading">
-          <h2 id="ar-inf-products-heading" class="ar-inf-section__title">Top products</h2>
-          <p class="ar-inf-section__desc">Most purchased through your coupon — top 5.</p>
-          <ul class="ar-inf-products" role="list">
-            <li class="ar-inf-card ar-inf-product">
-              <img class="ar-inf-product__img" src="{{ 'manmohini.webp' | asset_url }}" alt="" width="64" height="64" loading="lazy">
-              <div class="ar-inf-product__info">
-                <p class="ar-inf-product__name">Manmohini Attar</p>
-                <p class="ar-inf-product__sold">18 sold</p>
-              </div>
-            </li>
-            <li class="ar-inf-card ar-inf-product">
-              <img class="ar-inf-product__img" src="{{ 'Love Attar.png' | asset_url }}" alt="" width="64" height="64" loading="lazy">
-              <div class="ar-inf-product__info">
-                <p class="ar-inf-product__name">Love Attar</p>
-                <p class="ar-inf-product__sold">14 sold</p>
-              </div>
-            </li>
-            <li class="ar-inf-card ar-inf-product">
-              <img class="ar-inf-product__img" src="{{ 'Planet Attar.png' | asset_url }}" alt="" width="64" height="64" loading="lazy">
-              <div class="ar-inf-product__info">
-                <p class="ar-inf-product__name">Planet Attar</p>
-                <p class="ar-inf-product__sold">11 sold</p>
-              </div>
-            </li>
-            <li class="ar-inf-card ar-inf-product">
-              <img class="ar-inf-product__img" src="{{ 'Zodiac Attar.png' | asset_url }}" alt="" width="64" height="64" loading="lazy">
-              <div class="ar-inf-product__info">
-                <p class="ar-inf-product__name">Zodiac Attar</p>
-                <p class="ar-inf-product__sold">9 sold</p>
-              </div>
-            </li>
-            <li class="ar-inf-card ar-inf-product">
-              <img class="ar-inf-product__img" src="{{ 'Gift Set.png' | asset_url }}" alt="" width="64" height="64" loading="lazy">
-              <div class="ar-inf-product__info">
-                <p class="ar-inf-product__name">Luxury Gift Set</p>
-                <p class="ar-inf-product__sold">7 sold</p>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        {%- comment -%} ── Monthly summary ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-monthly-heading">
-          <h2 id="ar-inf-monthly-heading" class="ar-inf-section__title">Monthly summary</h2>
-          <div class="ar-inf-card ar-inf-summary">
-            <dl class="ar-inf-summary__grid">
-              <div>
-                <dt>Orders</dt>
-                <dd class="js-ar-inf-counter" data-value="12" data-format="number">0</dd>
-              </div>
-              <div>
-                <dt>Revenue</dt>
-                <dd class="js-ar-inf-counter" data-value="{{ inf_monthly }}" data-format="currency">₹0</dd>
-              </div>
-              <div>
-                <dt>Commission</dt>
-                <dd class="js-ar-inf-counter" data-value="{{ inf_monthly_commission }}" data-format="currency">₹0</dd>
-              </div>
-              <div>
-                <dt>Best selling product</dt>
-                <dd>Manmohini Attar</dd>
-              </div>
-              <div class="ar-inf-summary__wide">
-                <dt>Top performing day</dt>
-                <dd>Saturday — ₹8,400</dd>
-              </div>
-            </dl>
-          </div>
-        </section>
-
-        {%- if inf_show_leaderboard -%}
-          <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-leaderboard-heading">
-            <h2 id="ar-inf-leaderboard-heading" class="ar-inf-section__title">Leaderboard</h2>
-            <div class="ar-inf-card ar-inf-leaderboard">
-              <p class="ar-inf-leaderboard__top">Top influencer this month: <strong>{{ inf_top_influencer }}</strong></p>
-              <div class="ar-inf-leaderboard__ranks">
-                <div>
-                  <span class="ar-inf-leaderboard__rank-label">Your rank</span>
-                  <span class="ar-inf-leaderboard__rank-value">#{{ inf_rank }}</span>
-                </div>
-                <div>
-                  <span class="ar-inf-leaderboard__rank-label">Monthly rank</span>
-                  <span class="ar-inf-leaderboard__rank-value">#{{ inf_monthly_rank }}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-        {%- endif -%}
-      </div>
-
-      <aside class="ar-inf-dashboard__aside">
-        {%- comment -%} ── Coupon card (sticky) ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-coupon-sticky ar-inf-reveal" aria-labelledby="ar-inf-coupon-heading">
-          <h2 id="ar-inf-coupon-heading" class="ar-inf-section__title">Your coupon</h2>
-          <div class="ar-inf-card ar-inf-coupon">
-            <p class="ar-inf-coupon__label">Coupon code</p>
-            <p class="ar-inf-coupon__code" id="ar-inf-coupon-side">{{ inf_coupon }}</p>
-            <div class="ar-inf-coupon__actions">
-              <button type="button" class="ar-inf-btn ar-inf-btn--primary js-ar-inf-copy" data-copy="{{ inf_coupon }}" aria-label="Copy coupon">
-                Copy coupon
-              </button>
-              <button type="button" class="ar-inf-btn ar-inf-btn--outline js-ar-inf-share" data-share="native" aria-label="Share coupon">
-                Share
-              </button>
-            </div>
-            <div class="ar-inf-coupon__qr">
-              <canvas class="js-ar-inf-qr" width="140" height="140" aria-label="QR code for referral link"></canvas>
-            </div>
-            <p class="ar-inf-coupon__url-label">Referral URL</p>
-            <p class="ar-inf-coupon__url">{{ inf_referral_url }}</p>
-            <p class="ar-inf-coupon__hint">Share your code at checkout. Friends save 10%. You earn {{ inf_commission_rate }}% on every qualifying order.</p>
-          </div>
-        </section>
-
-        {%- comment -%} ── Share ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-share-heading">
-          <h2 id="ar-inf-share-heading" class="ar-inf-section__title">Share</h2>
-          <div class="ar-inf-card ar-inf-share">
-            <button type="button" class="ar-inf-btn ar-inf-btn--block js-ar-inf-copy" data-copy="{{ inf_coupon }}">Copy coupon</button>
-            <button type="button" class="ar-inf-btn ar-inf-btn--block js-ar-inf-copy" data-copy="{{ inf_referral_url }}">Copy referral URL</button>
-            <a
-              class="ar-inf-btn ar-inf-btn--block ar-inf-btn--whatsapp js-ar-inf-whatsapp"
-              href="https://wa.me/{{ inf_whatsapp }}?text={{ 'Shop Anand Rasa with my code ' | append: inf_coupon | append: ': ' | append: inf_referral_url | url_encode }}"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Share on WhatsApp
-            </a>
-            <a
-              class="ar-inf-btn ar-inf-btn--block ar-inf-btn--outline"
-              href="https://www.instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Share on Instagram
-            </a>
-            <button type="button" class="ar-inf-btn ar-inf-btn--block ar-inf-btn--ghost js-ar-inf-share" data-share="story">
-              Share story assets
-            </button>
-          </div>
-        </section>
-
-        {%- comment -%} ── Downloads ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-downloads-heading">
-          <h2 id="ar-inf-downloads-heading" class="ar-inf-section__title">Downloads</h2>
-          <p class="ar-inf-section__desc">Marketing resources for your channels.</p>
-          <ul class="ar-inf-downloads" role="list">
-            <li><a class="ar-inf-download" href="{{ 'manmohini.webp' | asset_url }}" download>Product images</a></li>
-            <li><a class="ar-inf-download" href="{{ 'collection_hero.webp' | asset_url }}" download>Brand stories</a></li>
-            <li><a class="ar-inf-download" href="{{ 'anand-rasa-logo-black.png' | asset_url }}" download>Brand logos</a></li>
-            <li><span class="ar-inf-download ar-inf-download--soon">Media kit PDF</span></li>
-            <li><span class="ar-inf-download ar-inf-download--soon">Social assets pack</span></li>
-          </ul>
-        </section>
-
-        {%- comment -%} ── Social links ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-social-heading">
-          <h2 id="ar-inf-social-heading" class="ar-inf-section__title">Connect</h2>
-          <nav class="ar-inf-social" aria-label="Brand social links">
-            <a href="{{ inf_ig_url }}" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="{{ inf_yt_url }}" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="https://wa.me/{{ inf_whatsapp }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            <a href="{{ inf_site_url }}">Website</a>
-            <button type="button" class="ar-inf-social__referral js-ar-inf-copy" data-copy="{{ inf_referral_url }}">Copy referral link</button>
-          </nav>
-        </section>
-
-        {%- comment -%} ── Email status ── {%- endcomment -%}
-        <section class="ar-inf-section ar-inf-reveal" aria-labelledby="ar-inf-email-heading">
-          <h2 id="ar-inf-email-heading" class="ar-inf-section__title">Notifications</h2>
-          <ul class="ar-inf-notifications" role="list">
-            <li class="ar-inf-card ar-inf-notification">
-              <span class="ar-inf-notification__type">Coupon used</span>
-              <p class="ar-inf-notification__msg">Your code was used for a ₹2,500 order.</p>
-              <time class="ar-inf-notification__time" datetime="2026-06-15">Today</time>
-            </li>
-            <li class="ar-inf-card ar-inf-notification">
-              <span class="ar-inf-notification__type">Commission earned</span>
-              <p class="ar-inf-notification__msg">₹250 added to your monthly earnings.</p>
-              <time class="ar-inf-notification__time" datetime="2026-06-15">Today</time>
-            </li>
-            <li class="ar-inf-card ar-inf-notification">
-              <span class="ar-inf-notification__type">Monthly report</span>
-              <p class="ar-inf-notification__msg">June summary ready — ₹32,400 in sales.</p>
-              <time class="ar-inf-notification__time" datetime="2026-06-01">Jun 1</time>
-            </li>
-            <li class="ar-inf-card ar-inf-notification">
-              <span class="ar-inf-notification__type">Upcoming payout</span>
-              <p class="ar-inf-notification__msg">Estimated payout on July 5.</p>
-              <time class="ar-inf-notification__time" datetime="2026-07-05">Jul 5</time>
-            </li>
-          </ul>
-        </section>
-      </aside>
+    <div class="ar-inf-legacy__actions">
+      <a class="ar-inf-legacy__btn ar-inf-legacy__btn--primary" href="/pages/partner?view=partner">Open secure dashboard</a>
+      <a class="ar-inf-legacy__btn ar-inf-legacy__btn--secondary" href="/pages/contact">Need help?</a>
     </div>
   </div>
+</section>
 
-  <div class="ar-inf-toast js-ar-inf-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
-
-  <script type="application/json" id="ar-inf-dashboard-data">
-    {
-      "handle": {{ inf_handle | json }},
-      "name": {{ inf_name | json }},
-      "coupon": {{ inf_coupon | json }},
-      "commission_rate": {{ inf_commission_rate }},
-      "referral_url": {{ inf_referral_url | json }},
-      "schema": {{ 'influencer-dashboard-schema.json' | asset_url | json }}
-    }
-  </script>
-</div>
+<script>
+  (function () {
+    try {
+      var url = new URL(window.location.href);
+      if (url.pathname !== '/pages/partner') return;
+      if (url.searchParams.get('view') === 'partner') return;
+      url.searchParams.set('view', 'partner');
+      window.location.replace(url.toString());
+    } catch (_e) {}
+  })();
+</script>
 
 {% schema %}
 {
@@ -456,33 +110,6 @@
   "tag": "section",
   "class": "section ar-inf-dashboard-section",
   "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_leaderboard",
-      "label": "Show leaderboard",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "whatsapp_number",
-      "label": "WhatsApp number (country code, no +)",
-      "default": "919876543210"
-    },
-    {
-      "type": "url",
-      "id": "brand_instagram",
-      "label": "Brand Instagram URL"
-    },
-    {
-      "type": "url",
-      "id": "brand_youtube",
-      "label": "Brand YouTube URL"
-    },
-    {
-      "type": "url",
-      "id": "brand_website",
-      "label": "Brand website URL"
-    },
     {
       "type": "range",
       "id": "padding_top",

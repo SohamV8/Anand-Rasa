@@ -8,9 +8,9 @@
   assign arc_logo = section.settings.community_logo | default: blank
   assign arc_logo_asset = 'anand-rasa-logo-black.png'
   assign arc_form_id = 'arc-newsletter-' | append: section.id
-  assign arc_fallback_imgs = 'wooden_attar_box.webp,home.webp,chakra.webp,care.webp,love.webp,stress.webp' | split: ','
-  assign arc_handles = '@ritual.with.rasa|@attar.rituals|@spiritual.scent|@nakshatra.mood|@gifted.attars|@temple.fragrance' | split: '|'
-  assign arc_cities = 'Mumbai|Delhi|Bangalore|Jaipur|Pune|Chennai' | split: '|'
+  assign arc_fallback_imgs = 'soham_vashist_8.webp,vashist_shubham_2005.webp' | split: ','
+  assign arc_handles = '@soham_vashist_8|@vashist_shubham_2005' | split: '|'
+  assign arc_cities = '|' | split: '|'
   assign arc_speed = section.settings.community_carousel_speed | default: 5 | times: 0.1
 -%}
 
@@ -358,15 +358,22 @@
             {%- if arc_members.size > 0 -%}
               {%- for block in arc_members -%}
                 {%- assign member_img = block.settings.image -%}
-                {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
-                {%- assign arc_fb_asset = arc_fallback_imgs[arc_fb_idx] -%}
+                {%- assign arc_member_asset = blank -%}
+                {%- if block.settings.handle != blank -%}
+                  {%- assign arc_handle_key = block.settings.handle | remove: '@' | strip -%}
+                  {%- assign arc_member_asset = arc_handle_key | append: '.webp' -%}
+                {%- endif -%}
+                {%- if arc_member_asset == blank -%}
+                  {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
+                  {%- assign arc_member_asset = arc_fallback_imgs[arc_fb_idx] -%}
+                {%- endif -%}
                 {%- assign arc_card_alt = block.settings.handle | default: block.settings.name | default: 'Anand Rasa community' -%}
                 <article class="arc-card" role="listitem" {{ block.shopify_attributes }} style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
                   <div class="arc-card__media">
                     {%- if member_img != blank -%}
                       <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
                     {%- else -%}
-                      <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                      <img class="arc-card__img" src="{{ arc_member_asset | asset_url }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
                     {%- endif -%}
                   </div>
                   <div class="arc-card__body">

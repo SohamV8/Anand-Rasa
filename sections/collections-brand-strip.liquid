@@ -1,7 +1,7 @@
 {{ 'collections-brand-strip.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign cbs_quote = section.settings.quote | default: 'The right fragrance is not chosen. It finds you.'
+  assign cbs_quote = section.settings.quote | default: ''
   assign cbs_lotus = section.settings.lotus_image
 -%}
 
@@ -29,6 +29,7 @@
       {%- endfor -%}
     </ul>
 
+    {%- if cbs_quote != blank -%}
     <div class="cbs__quote" data-cbs-quote>
       <svg class="cbs__quote-deco cbs__quote-deco--left" viewBox="0 0 200 240" fill="none" aria-hidden="true">
         <path d="M30 220c20-40 15-90 5-120M50 200c30-50 25-100 10-140M70 210c40-60 35-120 15-170" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
@@ -75,6 +76,7 @@
         </div>
       </div>
     </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -139,8 +141,7 @@
     {
       "type": "textarea",
       "id": "quote",
-      "label": "Quote",
-      "default": "The right fragrance is not chosen. It finds you."
+      "label": "Quote"
     },
     {
       "type": "image_picker",

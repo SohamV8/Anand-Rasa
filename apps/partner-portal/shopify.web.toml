@@ -1,0 +1,7 @@
+name = "partner-portal"
+roles = ["frontend", "backend"]
+webhooks_path = "/webhooks"
+
+[commands]
+dev = "node server.js"
+build = "echo \"No build step\""

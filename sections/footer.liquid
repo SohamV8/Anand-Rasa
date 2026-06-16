@@ -60,6 +60,7 @@
   {%- if ar_footer_bulk_url == blank -%}{%- capture ar_footer_bulk_url -%}{% render 'ar-page-url', handle: 'bulk-enquiry' %}{%- endcapture -%}{%- endif -%}
   {%- assign ar_footer_find_url = pages['find-fragrance'].url | default: pages['find-your-fragrance'].url | default: pages['astro-fragrance-finder'].url | default: pages['custom-perfume-quiz'].url -%}
   {%- if ar_footer_find_url == blank -%}{%- capture ar_footer_find_url -%}{% render 'ar-page-url', handle: 'find-fragrance' %}{%- endcapture -%}{%- endif -%}
+  {%- capture ar_footer_partner_url -%}{% render 'ar-page-url', handle: 'partner' %}{%- endcapture -%}
 
   <div class="arf__main">
     <div>
@@ -119,6 +120,7 @@
         <a href="{% if shop.shipping_policy %}{{ shop.shipping_policy.url }}{% else %}/policies/shipping-policy{% endif %}" class="arf__link">Shipping Policy</a>
         <a href="{{ ar_footer_bulk_url }}" class="arf__link">Bulk Enquiry</a>
         <a href="{{ ar_footer_faq_url }}" class="arf__link">FAQ</a>
+        <a href="{{ ar_footer_partner_url | strip }}" class="arf__link">Partner Portal</a>
         <a href="{{ ar_footer_find_url }}" class="arf__link">Astro Fragrance Finder</a>
       </div>
     </div>
