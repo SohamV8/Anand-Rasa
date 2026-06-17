@@ -397,10 +397,14 @@
                 {%- assign member_img = block.settings.image -%}
                 {%- assign arc_card_handle = block.settings.handle | default: block.settings.name | default: 'Anand Rasa community' -%}
                 {%- assign arc_ph_hue = arc_ph_hues[forloop.index0] | default: '38' -%}
+                {%- assign arc_handle_key = block.settings.handle | remove: '@' | strip -%}
+                {%- assign arc_member_asset = arc_handle_key | append: '.webp' -%}
                 <article class="arc-card" role="listitem" {{ block.shopify_attributes }} style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
-                  <div class="arc-card__media{% unless member_img != blank %} arc-card__media--ph{% endunless %}"{% unless member_img != blank %} style="--arc-ph-hue: {{ arc_ph_hue }};"{% endunless %}>
+                  <div class="arc-card__media{% if member_img == blank and arc_handle_key == blank %} arc-card__media--ph{% endif %}"{% if member_img == blank and arc_handle_key == blank %} style="--arc-ph-hue: {{ arc_ph_hue }};"{% endif %}>
                     {%- if member_img != blank -%}
                       <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                    {%- elsif arc_handle_key != blank -%}
+                      <img class="arc-card__img" src="{{ arc_member_asset | asset_url }}" alt="{{ arc_card_handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
                     {%- else -%}
                       <svg class="arc-card__ph-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="2"/><path d="M12 54c4-12 12-18 20-18s16 6 20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                       <span class="arc-card__ph-tag">Community</span>
@@ -418,10 +422,10 @@
                 {%- assign handle = arc_handles[forloop.index0] | default: arc_key -%}
                 {%- assign arc_ph_hue = arc_ph_hues[forloop.index0] | default: '38' -%}
                 {%- assign arc_city = arc_cities[forloop.index0] -%}
+                {%- assign arc_fb_asset = arc_key | append: '.webp' -%}
                 <article class="arc-card" role="listitem" style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
-                  <div class="arc-card__media arc-card__media--ph" style="--arc-ph-hue: {{ arc_ph_hue }};">
-                    <svg class="arc-card__ph-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="2"/><path d="M12 54c4-12 12-18 20-18s16 6 20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                    <span class="arc-card__ph-tag">Community</span>
+                  <div class="arc-card__media">
+                    <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
                   </div>
                   <div class="arc-card__body">
                     <span class="arc-card__handle">{{ handle }}</span>
