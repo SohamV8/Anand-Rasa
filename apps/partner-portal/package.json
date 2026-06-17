@@ -10,9 +10,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
+    "setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-dev.ps1",
     "shopify:dev": "shopify app dev --store anand-rasa-3.myshopify.com",
     "shopify:deploy": "shopify app deploy",
     "shopify:info": "shopify app info",
+    "shopify:link": "shopify app config link",
+    "shopify:env": "shopify app env pull",
     "verify": "node scripts/verify-shopify-config.mjs"
   },
   "dependencies": {

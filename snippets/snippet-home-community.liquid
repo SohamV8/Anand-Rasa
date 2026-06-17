@@ -8,8 +8,9 @@
   assign arc_logo = section.settings.community_logo | default: blank
   assign arc_logo_asset = 'anand-rasa-logo-black.png'
   assign arc_form_id = 'arc-newsletter-' | append: section.id
-  assign arc_fallback_imgs = 'soham_vashist_8.webp,vashist_shubham_2005.webp' | split: ','
-  assign arc_handles = '@soham_vashist_8|@vashist_shubham_2005' | split: '|'
+  assign arc_community_keys = 'soham_vashist_8|vinayakrao27_|vashist_shubham_2005' | split: '|'
+  assign arc_handles = '@soham_vashist_8|@vinayakrao27_|@vashist_shubham_2005' | split: '|'
+  assign arc_ph_hues = '38|145|350' | split: '|'
   assign arc_cities = '|' | split: '|'
   assign arc_speed = section.settings.community_carousel_speed | default: 5 | times: 0.1
 -%}
@@ -197,7 +198,43 @@
     max-width: 100%;
   }
 
-  .arc-card__city { display: none; }
+  .arc-card__media--ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    background:
+      linear-gradient(145deg, hsl(var(--arc-ph-hue, 38) 28% 92%) 0%, hsl(var(--arc-ph-hue, 38) 22% 84%) 100%);
+  }
+
+  .arc-card__ph-icon {
+    width: 44%;
+    max-width: 72px;
+    height: auto;
+    color: hsl(var(--arc-ph-hue, 38) 18% 42%);
+    opacity: 0.55;
+  }
+
+  .arc-card__ph-tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: hsl(var(--arc-ph-hue, 38) 14% 38%);
+    opacity: 0.72;
+  }
+
+  .arc-carousel__track.is-finite {
+    justify-content: flex-start;
+  }
+
+  @media (min-width: 900px) {
+    .arc-carousel__track.is-finite {
+      justify-content: center;
+    }
+  }
 
   .arc-join {
     border-top: 1px solid var(--arc-bdr);
@@ -358,22 +395,15 @@
             {%- if arc_members.size > 0 -%}
               {%- for block in arc_members -%}
                 {%- assign member_img = block.settings.image -%}
-                {%- assign arc_member_asset = blank -%}
-                {%- if block.settings.handle != blank -%}
-                  {%- assign arc_handle_key = block.settings.handle | remove: '@' | strip -%}
-                  {%- assign arc_member_asset = arc_handle_key | append: '.webp' -%}
-                {%- endif -%}
-                {%- if arc_member_asset == blank -%}
-                  {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
-                  {%- assign arc_member_asset = arc_fallback_imgs[arc_fb_idx] -%}
-                {%- endif -%}
-                {%- assign arc_card_alt = block.settings.handle | default: block.settings.name | default: 'Anand Rasa community' -%}
+                {%- assign arc_card_handle = block.settings.handle | default: block.settings.name | default: 'Anand Rasa community' -%}
+                {%- assign arc_ph_hue = arc_ph_hues[forloop.index0] | default: '38' -%}
                 <article class="arc-card" role="listitem" {{ block.shopify_attributes }} style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
-                  <div class="arc-card__media">
+                  <div class="arc-card__media{% unless member_img != blank %} arc-card__media--ph{% endunless %}"{% unless member_img != blank %} style="--arc-ph-hue: {{ arc_ph_hue }};"{% endunless %}>
                     {%- if member_img != blank -%}
-                      <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                      <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
                     {%- else -%}
-                      <img class="arc-card__img" src="{{ arc_member_asset | asset_url }}" alt="{{ arc_card_alt | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                      <svg class="arc-card__ph-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="2"/><path d="M12 54c4-12 12-18 20-18s16 6 20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                      <span class="arc-card__ph-tag">Community</span>
                     {%- endif -%}
                   </div>
                   <div class="arc-card__body">
@@ -384,13 +414,14 @@
                 </article>
               {%- endfor -%}
             {%- else -%}
-              {%- for handle in arc_handles -%}
-                {%- assign arc_fb_idx = forloop.index0 | modulo: arc_fallback_imgs.size -%}
-                {%- assign arc_fb_asset = arc_fallback_imgs[arc_fb_idx] -%}
+              {%- for arc_key in arc_community_keys -%}
+                {%- assign handle = arc_handles[forloop.index0] | default: arc_key -%}
+                {%- assign arc_ph_hue = arc_ph_hues[forloop.index0] | default: '38' -%}
                 {%- assign arc_city = arc_cities[forloop.index0] -%}
                 <article class="arc-card" role="listitem" style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
-                  <div class="arc-card__media">
-                    <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                  <div class="arc-card__media arc-card__media--ph" style="--arc-ph-hue: {{ arc_ph_hue }};">
+                    <svg class="arc-card__ph-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="24" r="12" stroke="currentColor" stroke-width="2"/><path d="M12 54c4-12 12-18 20-18s16 6 20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    <span class="arc-card__ph-tag">Community</span>
                   </div>
                   <div class="arc-card__body">
                     <span class="arc-card__handle">{{ handle }}</span>

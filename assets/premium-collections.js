@@ -127,18 +127,24 @@
     }
 
     var heroImg = root.querySelector('.js-pcl-hero-img');
-    if (heroImg && !reduced && window.matchMedia && window.matchMedia('(min-width: 900px)').matches) {
+    if (heroImg && !reduced && window.matchMedia && window.matchMedia('(min-width: 1025px)').matches) {
       var heroVisual = heroImg.closest('.pcl-hero__visual');
       var ticking = false;
+      var parallaxReady = false;
+      window.setTimeout(function () {
+        parallaxReady = true;
+      }, 900);
+
       var onScroll = function () {
-        if (ticking || !heroVisual) return;
+        if (ticking || !heroVisual || !heroImg || !parallaxReady) return;
         ticking = true;
         requestAnimationFrame(function () {
           var rect = heroVisual.getBoundingClientRect();
           var vh = window.innerHeight || document.documentElement.clientHeight;
           if (rect.bottom > 0 && rect.top < vh) {
-            var p = (rect.top + rect.height * 0.5 - vh * 0.5) / vh;
-            heroImg.style.transform = 'translateY(' + p * -8 + 'px)';
+            var center = rect.top + rect.height * 0.5;
+            var p = (center - vh * 0.5) / vh;
+            heroImg.style.transform = 'translate3d(0,' + p * -8 + 'px,0)';
           }
           ticking = false;
         });

@@ -1,0 +1,107 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "088bec725b2f54757449294c1db64eef"
+name = "ANAND-RASA"
+application_url = "https://www.anandrasa.com"
+embedded = false
+handle = "anand-rasa-partner-portal"
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2026-07"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_discounts,read_metaobjects,read_orders,write_metaobjects"
+
+[auth]
+redirect_urls = [ "https://www.anandrasa.com/auth/callback" ]
+
+[app_proxy]
+url = "/proxy"
+subpath = "partner-portal"
+prefix = "apps"
+
+[metaobjects.app.partner]
+name = "Partner"
+display_name_field = "display_name"
+
+  [metaobjects.app.partner.access]
+  admin = "merchant_read_write"
+  storefront = "none"
+
+[metaobjects.app.partner.fields.email]
+name = "Email"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.partner.fields.coupon_code]
+name = "Coupon code"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.partner.fields.display_name]
+name = "Display name"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.partner.fields.commission_percent]
+name = "Commission percent"
+type = "number_decimal"
+required = true
+
+[metaobjects.app.partner.fields.status]
+name = "Status"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.partner.fields.orders_month]
+name = "Orders (month)"
+type = "number_integer"
+
+[metaobjects.app.partner.fields.orders_lifetime]
+name = "Orders (lifetime)"
+type = "number_integer"
+
+[metaobjects.app.partner.fields.revenue_month]
+name = "Revenue (month)"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.revenue_lifetime]
+name = "Revenue (lifetime)"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.commission_month]
+name = "Commission estimate (month)"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.commission_lifetime]
+name = "Commission estimate (lifetime)"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.average_order_value]
+name = "Average order value"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.highest_order]
+name = "Highest order"
+type = "number_decimal"
+
+[metaobjects.app.partner.fields.last_sale_date]
+name = "Last sale date"
+type = "date"
+
+[metaobjects.app.partner.fields.last_coupon_used_at]
+name = "Last coupon used at"
+type = "date_time"
+
+[metaobjects.app.partner.fields.activity_log]
+name = "Activity log"
+type = "json"
+
+[metaobjects.app.partner.fields.notifications_enabled]
+name = "Notifications enabled"
+type = "boolean"

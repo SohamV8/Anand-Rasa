@@ -1,12 +1,4 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
+
 {
   "sections": {
     "anand-rasa-homepage": {
@@ -266,13 +258,13 @@
       ],
       "settings": {
         "hero_image_alt": "",
-        "hero_eyebrow": "ANAND RAS",
+        "hero_eyebrow": "ANAND RASA",
         "hero_headline": "India's First Astrology-Personalised Luxury Attar House",
-        "hero_body": "'Fragrance that knows your soul ΓÇö\nzodiac & Planet based attars crafted for who you truly are.",
+        "hero_body": "Fragrance that knows your soul — zodiac & Planet based attars crafted for who you truly are.",
         "hero_btn1_label": "Shop Now",
-        "hero_btn1_url": "shopify://collections/planet-attar",
+        "hero_btn1_url": "shopify://collections/all",
         "hero_btn2_label": "Find My Attar",
-        "hero_btn2_url": "shopify://collections",
+        "hero_btn2_url": "",
         "bs_collection": "bestseller",
         "bs_limit": 10,
         "bs_heading": "BestSellers",

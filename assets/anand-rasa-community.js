@@ -5,6 +5,7 @@
   'use strict';
 
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var LOOP_MIN = 5;
 
   function initCarousel(root) {
     var viewport = root.querySelector('[data-arc-viewport]');
@@ -14,37 +15,63 @@
     var originals = Array.prototype.slice.call(track.children);
     if (!originals.length) return;
 
-    originals.forEach(function (node) {
-      track.appendChild(node.cloneNode(true));
-    });
-    originals.slice().reverse().forEach(function (node) {
-      track.insertBefore(node.cloneNode(true), track.firstChild);
-    });
+    var loop = originals.length >= LOOP_MIN;
+
+    if (loop) {
+      originals.forEach(function (node) {
+        track.appendChild(node.cloneNode(true));
+      });
+      originals.slice().reverse().forEach(function (node) {
+        track.insertBefore(node.cloneNode(true), track.firstChild);
+      });
+    } else {
+      track.classList.add('is-finite');
+    }
 
     var cards = track.children;
     var gap = 0;
     var setWidth = 0;
     var offset = 0;
+    var minOffset = 0;
     var paused = false;
     var dragging = false;
     var dragStartX = 0;
     var dragStartOffset = 0;
-    var velocity = 0;
     var rafId = 0;
-    var autoSpeed = parseFloat(root.getAttribute('data-arc-speed')) || 0.45;
+    var autoSpeed = loop ? parseFloat(root.getAttribute('data-arc-speed')) || 0.45 : 0;
 
     function readGap() {
       var style = window.getComputedStyle(track);
       gap = parseFloat(style.columnGap || style.gap) || 16;
     }
 
+    function trackWidth() {
+      var total = 0;
+      for (var i = 0; i < cards.length; i++) {
+        total += cards[i].offsetWidth + (i < cards.length - 1 ? gap : 0);
+      }
+      return total;
+    }
+
+    function clampOffset() {
+      if (loop) return;
+      if (offset > 0) offset = 0;
+      if (offset < minOffset) offset = minOffset;
+    }
+
     function measure() {
       readGap();
-      setWidth = 0;
-      for (var i = originals.length; i < originals.length * 2; i++) {
-        setWidth += cards[i].offsetWidth + gap;
+      if (loop) {
+        setWidth = 0;
+        for (var i = originals.length; i < originals.length * 2; i++) {
+          setWidth += cards[i].offsetWidth + gap;
+        }
+        offset = -setWidth;
+      } else {
+        setWidth = trackWidth();
+        minOffset = Math.min(0, viewport.clientWidth - setWidth);
+        clampOffset();
       }
-      offset = -setWidth;
       apply();
     }
 
@@ -53,11 +80,16 @@
     }
 
     function normalize() {
+      if (!loop) {
+        clampOffset();
+        return;
+      }
       if (offset <= -setWidth * 2) offset += setWidth;
       if (offset >= 0) offset -= setWidth;
     }
 
     function tick() {
+      if (!loop) return;
       if (!paused && !dragging && !REDUCED) {
         offset -= autoSpeed;
         normalize();
@@ -102,6 +134,7 @@
     viewport.addEventListener('pointermove', function (e) {
       if (!dragging) return;
       offset = dragStartOffset + (e.clientX - dragStartX);
+      if (!loop) clampOffset();
       apply();
     });
 
@@ -109,7 +142,6 @@
       if (!dragging) return;
       dragging = false;
       track.classList.remove('is-dragging');
-      velocity = 0;
       normalize();
       apply();
       try {
@@ -135,7 +167,7 @@
 
     measure();
     window.addEventListener('resize', measure);
-    if (!REDUCED) tick();
+    if (loop && !REDUCED) tick();
 
     return function () {
       window.cancelAnimationFrame(rafId);

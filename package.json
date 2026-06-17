@@ -1,0 +1,16 @@
+{
+  "name": "anand-rasa",
+  "private": true,
+  "description": "Anand Rasa Shopify theme + partner portal app",
+  "scripts": {
+    "theme:dev": "shopify theme dev",
+    "app:dev": "shopify app dev --store anand-rasa-3.myshopify.com",
+    "app:info": "shopify app info",
+    "app:link": "shopify app config link",
+    "app:deploy": "shopify app deploy",
+    "app:env": "shopify app env pull",
+    "app:verify": "npm run verify --prefix apps/partner-portal",
+    "partner:start": "npm start --prefix apps/partner-portal",
+    "partner:setup": "npm run setup --prefix apps/partner-portal"
+  }
+}

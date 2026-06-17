@@ -48,54 +48,50 @@
 >
   {%- comment -%} ── Hero ── {%- endcomment -%}
   <header class="pcl-hero pcl__reveal" style="--pcl-reveal-delay: 0ms;">
-    <div class="pcl-hero__grid">
-      <div class="pcl-hero__copy">
-        <p class="pcl-hero__eyebrow">{{ pcl_eyebrow | escape }}</p>
-        <h1 class="pcl-hero__title">{{ pcl_heading | escape }}</h1>
-        {%- if pcl_desc != blank -%}
-          <p class="pcl-hero__desc">{{ pcl_desc | escape }}</p>
-        {%- endif -%}
-      </div>
-
-      <div class="pcl-hero__visual js-pcl-hero-visual">
-        <div class="pcl-hero__img-wrap">
-        {%- if pcl_hero_img != blank -%}
-          {%- capture pcl_hero_alt -%}{%- render 'image-seo-hero-alt', hero_image: pcl_hero_img, alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
-          <img
-            class="pcl-hero__img js-pcl-hero-img"
-            src="{{ pcl_hero_img | image_url: width: 2000 }}"
-            srcset="{{ pcl_hero_img | image_url: width: 600 }} 600w, {{ pcl_hero_img | image_url: width: 900 }} 900w, {{ pcl_hero_img | image_url: width: 1400 }} 1400w, {{ pcl_hero_img | image_url: width: 2000 }} 2000w"
-            sizes="(min-width: 1200px) 52vw, (min-width: 900px) 55vw, 92vw"
-            alt="{{ pcl_hero_alt | strip | escape }}"
-            width="{{ pcl_hero_img.width | default: 2400 }}"
-            height="{{ pcl_hero_img.height | default: 1600 }}"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          >
-        {%- else -%}
-          {%- capture pcl_hero_asset_alt -%}{%- render 'image-seo-hero-alt', alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
-          <img
-            class="pcl-hero__img js-pcl-hero-img"
-            src="{{ 'collection_hero.webp' | asset_url }}"
-            alt="{{ pcl_hero_asset_alt | strip | escape }}"
-            width="2400"
-            height="1600"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          >
-        {%- endif -%}
+    <div class="pcl-hero__in">
+      <div class="pcl-hero__grid">
+        <div class="pcl-hero__copy">
+          <p class="pcl-hero__eyebrow">{{ pcl_eyebrow | escape }}</p>
+          <h1 class="pcl-hero__title">{{ pcl_heading | escape }}</h1>
+          {%- if pcl_desc != blank -%}
+            <p class="pcl-hero__desc">{{ pcl_desc | escape }}</p>
+          {%- endif -%}
         </div>
-        {%- if section.settings.hero_glass_label != blank and pcl_hero_img != blank -%}
-          <span class="pcl-hero__glass">{{ section.settings.hero_glass_label | escape }}</span>
-        {%- endif -%}
-      </div>
-    </div>
 
-    {%- comment -%} ── Category pills ── {%- endcomment -%}
-    {%- if pcl_has_pills -%}
-      <nav class="pcl-pills pcl__wrap pcl__reveal" style="--pcl-reveal-delay: 120ms;" aria-label="{{ section.settings.pills_aria_label | default: 'Filter collections' | escape }}">
+        <div class="pcl-hero__visual js-pcl-hero-visual">
+          {%- if pcl_hero_img != blank -%}
+            {%- capture pcl_hero_alt -%}{%- render 'image-seo-hero-alt', hero_image: pcl_hero_img, alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
+            <img
+              class="pcl-hero__img js-pcl-hero-img"
+              src="{{ pcl_hero_img | image_url: width: 2400 }}"
+              srcset="{{ pcl_hero_img | image_url: width: 1200 }} 1200w, {{ pcl_hero_img | image_url: width: 1800 }} 1800w, {{ pcl_hero_img | image_url: width: 2400 }} 2400w"
+              sizes="(min-width: 1024px) 42vw, 92vw"
+              alt="{{ pcl_hero_alt | strip | escape }}"
+              width="{{ pcl_hero_img.width | default: 2400 }}"
+              height="{{ pcl_hero_img.height | default: 1600 }}"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
+          {%- else -%}
+            {%- capture pcl_hero_asset_alt -%}{%- render 'image-seo-hero-alt', alt_override: section.settings.hero_image_alt, seo_label: pcl_heading, img_context: 'hero' -%}{%- endcapture -%}
+            <img
+              class="pcl-hero__img js-pcl-hero-img"
+              src="{{ 'collection_hero.webp' | asset_url }}"
+              alt="{{ pcl_hero_asset_alt | strip | escape }}"
+              width="2400"
+              height="1600"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ── Category pills ── {%- endcomment -%}
+      {%- if pcl_has_pills -%}
+        <nav class="pcl-pills pcl__reveal" style="--pcl-reveal-delay: 120ms;" aria-label="{{ section.settings.pills_aria_label | default: 'Filter collections' | escape }}">
         <div class="pcl-pills__track-wrap">
           <div class="pcl-pills__track" id="pcl-pills-{{ section.id }}" role="tablist" aria-orientation="horizontal">
             <button
@@ -131,6 +127,7 @@
         </div>
       </nav>
     {%- endif -%}
+    </div>
   </header>
 
   {%- if pcl_seo_intro != blank and section.settings.show_seo_intro != false -%}
