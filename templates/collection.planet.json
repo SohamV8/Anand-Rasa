@@ -19,12 +19,6 @@
         "bg_color": "#FFFFFF"
       }
     },
-    "navagraha_mantras": {
-      "type": "navagraha-mantra",
-      "settings": {
-        "context": "collection"
-      }
-    },
     "main": {
       "type": "collection-planet",
       "settings": {
@@ -40,7 +34,6 @@
   },
   "order": [
     "collection_hero",
-    "navagraha_mantras",
     "main",
     "luxury_gift_impact"
   ]

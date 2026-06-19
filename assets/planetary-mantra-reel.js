@@ -5,6 +5,9 @@
   window.__pmeInit = true;
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile =
+    window.matchMedia('(pointer: coarse)').matches ||
+    window.matchMedia('(max-width: 860px)').matches;
 
   function revealFrame(frame) {
     if (!frame || frame.classList.contains('is-visible')) return;
@@ -77,6 +80,15 @@
       updateSoundUi();
     }
 
+    var mediaObserver = null;
+
+    function stopMediaObserver() {
+      if (mediaObserver) {
+        mediaObserver.unobserve(reel);
+        mediaObserver = null;
+      }
+    }
+
     function enableSound() {
       pendingUnmute = true;
       isUnmuted = true;
@@ -87,7 +99,6 @@
         return;
       }
 
-      iframe.src = buildEmbedUrl(videoId, false);
       ytCommand(iframe, 'unMute');
       ytCommand(iframe, 'playVideo');
     }
@@ -95,7 +106,8 @@
     function loadIframe() {
       if (isLoaded) {
         if (pendingUnmute && iframe) {
-          iframe.src = buildEmbedUrl(videoId, false);
+          ytCommand(iframe, 'unMute');
+          ytCommand(iframe, 'playVideo');
         }
         return;
       }
@@ -114,6 +126,7 @@
 
       iframe.addEventListener('load', function onIframeLoad() {
         reel.classList.add('is-loaded');
+        stopMediaObserver();
         if (pendingUnmute) {
           isUnmuted = true;
           updateSoundUi();
@@ -164,16 +177,16 @@
     }
 
     if ('IntersectionObserver' in window) {
-      var mediaObserver = new IntersectionObserver(
+      mediaObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
               loadIframe();
               if (iframe) {
                 ytCommand(iframe, 'playVideo');
-                if (!isUnmuted) setMuted(true);
+                if (!isUnmuted) ytCommand(iframe, 'mute');
               }
-            } else if (iframe) {
+            } else if (iframe && !isMobile) {
               ytCommand(iframe, 'pauseVideo');
               pendingUnmute = false;
               isUnmuted = false;
@@ -182,14 +195,18 @@
             }
           });
         },
-        { root: null, threshold: 0.25 }
+        {
+          root: null,
+          threshold: isMobile ? 0.5 : 0.25,
+          rootMargin: isMobile ? '0px 0px -8% 0px' : '0px'
+        }
       );
 
       mediaObserver.observe(reel);
       return;
     }
 
-    loadIframe();
+    if (!isMobile) loadIframe();
   }
 
   function initSection(section) {

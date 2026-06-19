@@ -1,24 +1,44 @@
 {% comment %}
-  Collection template placeholder — product mantras render via snippets/navagraha-mantra.liquid only.
+  Navagraha Mantra — collection explorer + product mantra placeholder.
+  Collection pages: renders the interactive planet table/explorer.
+  Product pages: inactive (mantras render via snippets/navagraha-mantra.liquid).
 {% endcomment %}
+
+{%- if section.settings.context != 'product' -%}
+  {% render 'navagraha-attar-explorer' %}
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Navagraha Mantra",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "Product mantras appear automatically on Navagraha product pages. This section is intentionally inactive on collection pages."
-    },
-    {
       "type": "select",
       "id": "context",
       "label": "Context",
       "options": [
-        { "value": "collection", "label": "Collection (disabled)" },
-        { "value": "product", "label": "Product" }
+        { "value": "collection", "label": "Collection (planet explorer)" },
+        { "value": "product", "label": "Product (disabled)" }
       ],
       "default": "collection"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Navagraha Collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Nine Planetary Attars"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Ancient Vedic wisdom distilled into rare botanical essences. Each attar is formulated under the planetary hour of its ruling graha."
     }
   ],
   "presets": [{ "name": "Navagraha Mantra" }]

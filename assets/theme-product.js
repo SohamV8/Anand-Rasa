@@ -159,6 +159,7 @@
         this.resumeOnVisible = false;
         this.bindEvents();
         requestAnimationFrame(this.revealFab.bind(this));
+        this.scheduleWarmup();
 
         if (this.prefs.enabled) {
           this.play({ autoplay: true, persist: false });
@@ -195,6 +196,9 @@
         this.bound.onCanPlay = function () {
           self.audioReady = true;
         };
+        this.bound.onWarmup = function () {
+          self.ensureAudioSource();
+        };
 
         this.bound.onPointerDown = function () {
           self.fab.classList.add('is-pressed');
@@ -209,9 +213,12 @@
         this.fab.addEventListener('pointerup', this.bound.onPointerUp, { passive: true });
         this.fab.addEventListener('pointercancel', this.bound.onPointerUp, { passive: true });
         this.fab.addEventListener('pointerleave', this.bound.onPointerUp, { passive: true });
+        this.fab.addEventListener('pointerenter', this.bound.onWarmup, { passive: true });
+        this.fab.addEventListener('touchstart', this.bound.onWarmup, { passive: true });
+        this.fab.addEventListener('focus', this.bound.onWarmup, { passive: true });
         document.addEventListener('visibilitychange', this.bound.onVisibility, { passive: true });
         window.addEventListener('pagehide', this.bound.onPageHide, { passive: true });
-        this.audio.addEventListener('canplaythrough', this.bound.onCanPlay, { once: true, passive: true });
+        this.audio.addEventListener('canplay', this.bound.onCanPlay, { once: true, passive: true });
         this.bound._active = true;
       },
 
@@ -223,21 +230,38 @@
         this.fab.removeEventListener('pointerup', this.bound.onPointerUp);
         this.fab.removeEventListener('pointercancel', this.bound.onPointerUp);
         this.fab.removeEventListener('pointerleave', this.bound.onPointerUp);
+        this.fab.removeEventListener('pointerenter', this.bound.onWarmup);
+        this.fab.removeEventListener('touchstart', this.bound.onWarmup);
+        this.fab.removeEventListener('focus', this.bound.onWarmup);
         document.removeEventListener('visibilitychange', this.bound.onVisibility);
         window.removeEventListener('pagehide', this.bound.onPageHide);
         if (this.audio && this.bound.onCanPlay) {
-          this.audio.removeEventListener('canplaythrough', this.bound.onCanPlay);
+          this.audio.removeEventListener('canplay', this.bound.onCanPlay);
         }
         this.bound._active = false;
       },
 
       ensureAudioSource: function () {
         if (!this.audio || this.audio.src) return;
-        this.audio.preload = 'metadata';
+        this.audio.preload = 'auto';
         this.audio.loop = true;
         this.audio.playsInline = true;
         this.audio.src = this.trackUrl;
         this.audio.load();
+      },
+
+      scheduleWarmup: function () {
+        var self = this;
+        if (typeof window.requestIdleCallback === 'function') {
+          window.requestIdleCallback(function () {
+            self.ensureAudioSource();
+          }, { timeout: 1200 });
+          return;
+        }
+
+        window.setTimeout(function () {
+          self.ensureAudioSource();
+        }, 350);
       },
 
       targetVolume: function () {
