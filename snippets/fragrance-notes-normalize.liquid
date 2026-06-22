@@ -1,0 +1,59 @@
+{%- comment -%}
+  Normalize fragrance note input into a comma-separated string.
+  @param notes {string|array}
+  @param notes_type {string} optional metafield type
+{%- endcomment -%}
+{%- liquid
+  assign fnn_out = ''
+
+  if notes != blank
+    assign fnn_type = notes_type | default: ''
+
+    if fnn_type contains 'list.' and notes.size > 0
+      for fnn_item in notes
+        assign fnn_piece = fnn_item | strip_html | strip
+        assign fnn_piece = fnn_piece | replace: '•', '' | replace: '·', '' | strip
+        if fnn_piece != blank
+          if fnn_out != blank
+            assign fnn_out = fnn_out | append: ', '
+          endif
+          assign fnn_out = fnn_out | append: fnn_piece
+        endif
+      endfor
+    else
+      assign fnn_src = notes | strip
+
+      if fnn_src contains '<li>'
+        assign fnn_li_parts = fnn_src | split: '<li>'
+        for fnn_li in fnn_li_parts
+          assign fnn_piece = fnn_li | split: '</li>' | first | strip_html | strip
+          if fnn_piece != blank
+            if fnn_out != blank
+              assign fnn_out = fnn_out | append: ', '
+            endif
+            assign fnn_out = fnn_out | append: fnn_piece
+          endif
+        endfor
+      else
+        assign fnn_src = fnn_src | strip_html | strip
+        assign fnn_src = fnn_src | replace: '</p>', ', ' | replace: '<p>', ''
+        assign fnn_src = fnn_src | newline_to_br
+        assign fnn_src = fnn_src | replace: '<br />', ', ' | replace: '<br/>', ', ' | replace: '<br>', ', '
+        assign fnn_src = fnn_src | replace: '•', ',' | replace: '·', ',' | replace: '|', ','
+        assign fnn_src = fnn_src | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' / ', ', ' | replace: ';', ','
+        assign fnn_src = fnn_src | replace: ' and ', ', '
+
+        assign fnn_parts = fnn_src | split: ','
+        for fnn_part in fnn_parts
+          assign fnn_piece = fnn_part | strip
+          if fnn_piece != blank
+            if fnn_out != blank
+              assign fnn_out = fnn_out | append: ', '
+            endif
+            assign fnn_out = fnn_out | append: fnn_piece
+          endif
+        endfor
+      endif
+    endif
+  endif
+-%}{{- fnn_out -}}

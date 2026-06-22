@@ -3,10 +3,20 @@
 {%- endcomment -%}
 {%- if product != blank -%}
   {%- liquid
-    assign fn_top = product.metafields.custom.top_notes.value | default: '' | strip
-    assign fn_heart_meta = product.metafields.custom.heart_notes.value | default: '' | strip
-    assign fn_middle_meta = product.metafields.custom.middle_notes.value | default: '' | strip
-    assign fn_base = product.metafields.custom.base_notes.value | default: '' | strip
+    assign fn_top_field = product.metafields.custom.top_notes
+    assign fn_heart_field = product.metafields.custom.heart_notes
+    assign fn_middle_field = product.metafields.custom.middle_notes
+    assign fn_base_field = product.metafields.custom.base_notes
+  -%}
+  {%- capture fn_top -%}{%- render 'fragrance-notes-normalize', notes: fn_top_field.value, notes_type: fn_top_field.type -%}{%- endcapture -%}
+  {%- capture fn_heart_meta -%}{%- render 'fragrance-notes-normalize', notes: fn_heart_field.value, notes_type: fn_heart_field.type -%}{%- endcapture -%}
+  {%- capture fn_middle_meta -%}{%- render 'fragrance-notes-normalize', notes: fn_middle_field.value, notes_type: fn_middle_field.type -%}{%- endcapture -%}
+  {%- capture fn_base -%}{%- render 'fragrance-notes-normalize', notes: fn_base_field.value, notes_type: fn_base_field.type -%}{%- endcapture -%}
+  {%- liquid
+    assign fn_top = fn_top | strip
+    assign fn_heart_meta = fn_heart_meta | strip
+    assign fn_middle_meta = fn_middle_meta | strip
+    assign fn_base = fn_base | strip
 
     assign fn_mid = ''
     if fn_heart_meta != blank and fn_middle_meta != blank
@@ -17,58 +27,99 @@
       assign fn_mid = fn_middle_meta
     endif
 
-    assign fn_desc = product.description | strip_html | strip
+    assign fn_desc_html = product.description | default: ''
+    assign fn_desc = fn_desc_html | strip_html | strip
     assign fn_desc = fn_desc | replace: 'TOP NOTES', 'Top Notes' | replace: 'Top notes', 'Top Notes' | replace: 'Top Note:', 'Top Notes:' | replace: 'HEART NOTES', 'Heart Notes' | replace: 'Heart notes', 'Heart Notes' | replace: 'Heart Note:', 'Heart Notes:' | replace: 'MIDDLE NOTES', 'Middle Notes' | replace: 'Middle notes', 'Middle Notes' | replace: 'Middle Note:', 'Middle Notes:' | replace: 'BASE NOTES', 'Base Notes' | replace: 'Base notes', 'Base Notes' | replace: 'Base Note:', 'Base Notes:' | replace: 'AROMA PROFILE', 'Aroma Profile' | replace: 'BENEFITS OF', 'Benefits of' | replace: 'KEY TRADITIONAL INGREDIENTS', 'Key Traditional Ingredients'
 
-    if fn_top == blank and fn_desc contains 'Top Notes'
+    if fn_top == blank and fn_desc_html contains 'Top Notes'
+      assign fn_top_section = fn_desc_html | split: 'Top Notes' | last | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
+      capture fn_top
+        render 'fragrance-notes-normalize', notes: fn_top_section
+      endcapture
+      assign fn_top = fn_top | strip
+    elsif fn_top == blank and fn_desc contains 'Top Notes'
       assign fn_top_chunks = fn_desc | split: 'Top Notes'
       if fn_top_chunks.size > 1
         assign fn_top_raw = fn_top_chunks[1] | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
         assign fn_top_parts = fn_top_raw | split: ':'
         if fn_top_parts.size > 1
-          assign fn_top = fn_top_parts[1] | strip
+          assign fn_top_extract = fn_top_parts[1] | strip
         else
-          assign fn_top = fn_top_raw | replace: ':', '' | strip
+          assign fn_top_extract = fn_top_raw | replace: ':', '' | strip
         endif
+        capture fn_top
+          render 'fragrance-notes-normalize', notes: fn_top_extract
+        endcapture
+        assign fn_top = fn_top | strip
       endif
     endif
 
-    if fn_mid == blank and fn_desc contains 'Middle Notes'
+    if fn_mid == blank and fn_desc_html contains 'Middle Notes'
+      assign fn_mid_section = fn_desc_html | split: 'Middle Notes' | last | split: 'Heart Notes' | first | split: 'Base Notes' | first
+      capture fn_mid
+        render 'fragrance-notes-normalize', notes: fn_mid_section
+      endcapture
+      assign fn_mid = fn_mid | strip
+    elsif fn_mid == blank and fn_desc contains 'Middle Notes'
       assign fn_mid_chunks = fn_desc | split: 'Middle Notes'
       if fn_mid_chunks.size > 1
         assign fn_mid_raw = fn_mid_chunks[1] | split: 'Heart Notes' | first | split: 'Base Notes' | first
         assign fn_mid_parts = fn_mid_raw | split: ':'
         if fn_mid_parts.size > 1
-          assign fn_mid = fn_mid_parts[1] | strip
+          assign fn_mid_extract = fn_mid_parts[1] | strip
         else
-          assign fn_mid = fn_mid_raw | replace: ':', '' | strip
+          assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip
         endif
+        capture fn_mid
+          render 'fragrance-notes-normalize', notes: fn_mid_extract
+        endcapture
+        assign fn_mid = fn_mid | strip
       endif
     endif
 
-    if fn_mid == blank and fn_desc contains 'Heart Notes'
+    if fn_mid == blank and fn_desc_html contains 'Heart Notes'
+      assign fn_mid_section = fn_desc_html | split: 'Heart Notes' | last | split: 'Middle Notes' | first | split: 'Base Notes' | first
+      capture fn_mid
+        render 'fragrance-notes-normalize', notes: fn_mid_section
+      endcapture
+      assign fn_mid = fn_mid | strip
+    elsif fn_mid == blank and fn_desc contains 'Heart Notes'
       assign fn_mid_chunks = fn_desc | split: 'Heart Notes'
       if fn_mid_chunks.size > 1
         assign fn_mid_raw = fn_mid_chunks[1] | split: 'Middle Notes' | first | split: 'Base Notes' | first
         assign fn_mid_parts = fn_mid_raw | split: ':'
         if fn_mid_parts.size > 1
-          assign fn_mid = fn_mid_parts[1] | strip
+          assign fn_mid_extract = fn_mid_parts[1] | strip
         else
-          assign fn_mid = fn_mid_raw | replace: ':', '' | strip
+          assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip
         endif
+        capture fn_mid
+          render 'fragrance-notes-normalize', notes: fn_mid_extract
+        endcapture
+        assign fn_mid = fn_mid | strip
       endif
     endif
 
-    if fn_base == blank and fn_desc contains 'Base Notes'
+    if fn_base == blank and fn_desc_html contains 'Base Notes'
+      assign fn_base_section = fn_desc_html | split: 'Base Notes' | last | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first
+      capture fn_base
+        render 'fragrance-notes-normalize', notes: fn_base_section
+      endcapture
+      assign fn_base = fn_base | strip
+    elsif fn_base == blank and fn_desc contains 'Base Notes'
       assign fn_base_chunks = fn_desc | split: 'Base Notes'
       if fn_base_chunks.size > 1
         assign fn_base_raw = fn_base_chunks[1] | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first
         assign fn_base_parts = fn_base_raw | split: ':'
         if fn_base_parts.size > 1
-          assign fn_base = fn_base_parts[1] | strip
+          assign fn_base_extract = fn_base_parts[1] | strip
         else
-          assign fn_base = fn_base_raw | replace: ':', '' | strip
+          assign fn_base_extract = fn_base_raw | replace: ':', '' | strip
         endif
+        capture fn_base
+          render 'fragrance-notes-normalize', notes: fn_base_extract
+        endcapture
+        assign fn_base = fn_base | strip
       endif
     endif
 

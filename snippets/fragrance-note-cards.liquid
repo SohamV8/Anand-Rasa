@@ -3,10 +3,9 @@
   Usage: {% render 'fragrance-note-cards', notes_text: fn_top, tier: 'top' %}
 {%- endcomment -%}
 {%- if notes_text != blank -%}
-  {%- liquid
-    assign fnc_raw = notes_text | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' and ', ', ' | replace: ' / ', ', ' | replace: ';', ','
-    assign fnc_list = fnc_raw | split: ','
-  -%}
+  {%- capture fnc_raw -%}{%- render 'fragrance-notes-normalize', notes: notes_text -%}{%- endcapture -%}
+  {%- assign fnc_raw = fnc_raw | strip -%}
+  {%- assign fnc_list = fnc_raw | split: ',' -%}
   <div class="ar-fn__cards" role="list">
     {%- for note in fnc_list -%}
       {%- assign fnc_label = note | strip -%}
