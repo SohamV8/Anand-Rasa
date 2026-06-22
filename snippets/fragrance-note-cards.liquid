@@ -9,6 +9,10 @@
   <div class="ar-fn__cards" role="list">
     {%- for note in fnc_list -%}
       {%- assign fnc_label = note | strip -%}
+      {%- assign fnc_lead = fnc_label | slice: 0, 1 -%}
+      {%- if fnc_lead == ':' -%}
+        {%- assign fnc_label = fnc_label | slice: 1, 10000 | strip -%}
+      {%- endif -%}
       {%- if fnc_label != blank -%}
         {%- capture fnc_img -%}{%- render 'fragrance-note-image-lookup', note_name: fnc_label -%}{%- endcapture -%}
         {%- assign fnc_img = fnc_img | strip -%}

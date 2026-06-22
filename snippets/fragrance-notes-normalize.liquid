@@ -13,6 +13,10 @@
       for fnn_item in notes
         assign fnn_piece = fnn_item | strip_html | strip
         assign fnn_piece = fnn_piece | replace: '•', '' | replace: '·', '' | strip
+        assign fnn_lead = fnn_piece | slice: 0, 1
+        if fnn_lead == ':'
+          assign fnn_piece = fnn_piece | slice: 1, 10000 | strip
+        endif
         if fnn_piece != blank
           if fnn_out != blank
             assign fnn_out = fnn_out | append: ', '
@@ -22,11 +26,19 @@
       endfor
     else
       assign fnn_src = notes | strip
+      assign fnn_lead = fnn_src | slice: 0, 1
+      if fnn_lead == ':'
+        assign fnn_src = fnn_src | slice: 1, 10000 | strip
+      endif
 
       if fnn_src contains '<li>'
         assign fnn_li_parts = fnn_src | split: '<li>'
         for fnn_li in fnn_li_parts
           assign fnn_piece = fnn_li | split: '</li>' | first | strip_html | strip
+          assign fnn_lead = fnn_piece | slice: 0, 1
+          if fnn_lead == ':'
+            assign fnn_piece = fnn_piece | slice: 1, 10000 | strip
+          endif
           if fnn_piece != blank
             if fnn_out != blank
               assign fnn_out = fnn_out | append: ', '
@@ -46,6 +58,10 @@
         assign fnn_parts = fnn_src | split: ','
         for fnn_part in fnn_parts
           assign fnn_piece = fnn_part | strip
+          assign fnn_lead = fnn_piece | slice: 0, 1
+          if fnn_lead == ':'
+            assign fnn_piece = fnn_piece | slice: 1, 10000 | strip
+          endif
           if fnn_piece != blank
             if fnn_out != blank
               assign fnn_out = fnn_out | append: ', '
