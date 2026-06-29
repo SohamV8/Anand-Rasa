@@ -1,0 +1,26 @@
+{%- comment -%}
+  Extract a YouTube video ID from a URL or bare ID.
+  @param url {string}
+{%- endcomment -%}
+{%- liquid
+  assign bev_raw = url | default: '' | strip
+  assign bev_id = ''
+
+  if bev_raw != blank
+    if bev_raw contains 'youtu.be/'
+      assign bev_tail = bev_raw | split: 'youtu.be/' | last
+      assign bev_id = bev_tail | split: '?' | first | split: '&' | first | split: '/' | first | strip
+    elsif bev_raw contains 'youtube.com/shorts/'
+      assign bev_tail = bev_raw | split: '/shorts/' | last
+      assign bev_id = bev_tail | split: '?' | first | split: '&' | first | strip
+    elsif bev_raw contains 'youtube.com/embed/'
+      assign bev_tail = bev_raw | split: '/embed/' | last
+      assign bev_id = bev_tail | split: '?' | first | strip
+    elsif bev_raw contains 'v='
+      assign bev_tail = bev_raw | split: 'v=' | last
+      assign bev_id = bev_tail | split: '&' | first | split: '#' | first | strip
+    elsif bev_raw.size == 11
+      assign bev_id = bev_raw
+    endif
+  endif
+-%}{{- bev_id -}}

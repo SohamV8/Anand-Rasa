@@ -1,32 +1,83 @@
-
 {
   "sections": {
     "main": {
       "type": "main-capricorn",
       "blocks": {
-        "trait_1": { "type": "trait", "settings": { "text": "Discipline" } },
-        "trait_2": { "type": "trait", "settings": { "text": "Ambition" } },
-        "trait_3": { "type": "trait", "settings": { "text": "Structure" } },
-        "benefit_1": { "type": "benefit", "settings": { "title": "Steady focus", "text": "A refined attar presence designed for discipline and consistency." } },
-        "benefit_2": { "type": "benefit", "settings": { "title": "Quiet power", "text": "A premium, alcohol-free attar for strong intention and grounded ambition." } },
-        "benefit_3": { "type": "benefit", "settings": { "title": "Ritual structure", "text": "A daily companion for routines, planning, and long-term goals." } },
-        "who_1": { "type": "who_for", "settings": { "text": "For disciplined builders and ambitious planners" } },
-        "who_2": { "type": "who_for", "settings": { "text": "For structured routines and consistent rituals" } }
+        "trait_1": {
+          "type": "trait",
+          "settings": {
+            "text": "Discipline"
+          }
+        },
+        "trait_2": {
+          "type": "trait",
+          "settings": {
+            "text": "Ambition"
+          }
+        },
+        "trait_3": {
+          "type": "trait",
+          "settings": {
+            "text": "Structure"
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Steady focus",
+            "text": "A refined attar presence designed for discipline and consistency."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Quiet power",
+            "text": "A premium, alcohol-free attar for strong intention and grounded ambition."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Ritual structure",
+            "text": "A daily companion for routines, planning, and long-term goals."
+          }
+        },
+        "who_1": {
+          "type": "who_for",
+          "settings": {
+            "text": "For disciplined builders and ambitious planners"
+          }
+        },
+        "who_2": {
+          "type": "who_for",
+          "settings": {
+            "text": "For structured routines and consistent rituals"
+          }
+        }
       },
-      "block_order": ["trait_1", "trait_2", "trait_3", "benefit_1", "benefit_2", "benefit_3", "who_1", "who_2"],
+      "block_order": [
+        "trait_1",
+        "trait_2",
+        "trait_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "who_1",
+        "who_2"
+      ],
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Zodiac Attar",
         "title": "Capricorn Zodiac Attar",
         "subtitle": "Grounded ambition in a luxury attar.",
-        "description": "<p>Capricorn is disciplined, ambitious, and deeply grounded. This Zodiac Attar is crafted to complement structure, resilience, and steady focus—ideal for rituals and daily wear.</p>",
+        "description": "<p>Capricorn is disciplined, ambitious, and deeply grounded. This Zodiac Attar is crafted to complement structure, resilience, and steady focus\u2014ideal for rituals and daily wear.</p>",
         "seo_keywords": "Capricorn zodiac attar, Capricorn attar, disciplined fragrance, grounded ambition perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
         "short_description": "A luxury attar for discipline, ambition, and grounded focus.",
         "strip_col1": "Discipline & ambition",
         "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
         "strip_col3": "Zodiac Attar",
         "why_heading": "Why this Zodiac Attar",
-        "why_sub": "Crafted to complement Capricorn energy — disciplined, grounded, and enduring.",
+        "why_sub": "Crafted to complement Capricorn energy \u2014 disciplined, grounded, and enduring.",
         "spec_item_type": "Discipline, ambition, structure",
         "spec_sticks": "Daily wear, rituals, meditation",
         "spec_burn": "Long-lasting aroma",
@@ -34,7 +85,120 @@
         "related_heading": "Recommended",
         "related_sub": "Explore more zodiac attars"
       }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "brand_experience_videos"
+  ]
 }

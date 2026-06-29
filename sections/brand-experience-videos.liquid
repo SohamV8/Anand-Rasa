@@ -1,0 +1,240 @@
+{%- comment -%}
+  Brand Experience Videos — full-width 3D infinite Shorts carousel (product pages).
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' -%}
+  {%- liquid
+    assign bev_videos = section.blocks | where: 'type', 'video'
+    assign bev_valid = 0
+
+    for bev_block in bev_videos
+      capture bev_vid
+        render 'bev-youtube-id', url: bev_block.settings.youtube_url
+      endcapture
+      assign bev_vid = bev_vid | strip
+      if bev_vid != blank
+        assign bev_valid = bev_valid | plus: 1
+      endif
+    endfor
+  -%}
+
+  {%- if bev_valid > 0 -%}
+    <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
+    <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+    {{ 'brand-experience-videos.css' | asset_url | stylesheet_tag }}
+
+    <section
+      class="bev"
+      data-brand-videos
+      data-scroll="{{ section.settings.marquee_autoplay }}"
+      data-speed="{{ section.settings.marquee_speed }}"
+      data-play="{{ section.settings.video_autoplay }}"
+      {% if section.settings.heading != blank %}
+        aria-labelledby="bev-heading-{{ section.id }}"
+      {% else %}
+        aria-label="Brand experience videos"
+      {% endif %}
+    >
+      {%- if section.settings.heading != blank or section.settings.description != blank -%}
+        <header class="bev__header" data-brand-videos-header>
+          {%- if section.settings.heading != blank -%}
+            {%- assign bev_words = section.settings.heading | strip | split: ' ' -%}
+            {%- assign bev_last_line1_idx = bev_words.size | minus: 1 -%}
+            <h2 id="bev-heading-{{ section.id }}" class="bev__heading">
+              {%- if bev_words.size > 1 -%}
+                <span class="bev__heading-line bev__heading-line--1" aria-hidden="true">
+                  {%- for word in bev_words -%}
+                    {%- unless forloop.last -%}
+                      <span class="bev__word" style="--bev-i: {{ forloop.index0 }}">
+                        <span class="bev__word-inner">{{ word | escape }}</span>
+                      </span>
+                      {%- unless forloop.index == bev_last_line1_idx -%}{{ ' ' }}{%- endunless -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </span>
+                <span class="bev__heading-line bev__heading-line--2" aria-hidden="true">
+                  <span class="bev__word" style="--bev-i: {{ bev_words.size | minus: 1 }}">
+                    <span class="bev__word-inner">{{ bev_words | last | escape }}</span>
+                  </span>
+                </span>
+                <span class="visually-hidden">{{ section.settings.heading | escape }}</span>
+              {%- else -%}
+                <span class="bev__heading-line bev__heading-line--1">
+                  <span class="bev__word" style="--bev-i: 0">
+                    <span class="bev__word-inner">{{ section.settings.heading | escape }}</span>
+                  </span>
+                </span>
+              {%- endif -%}
+            </h2>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <div class="bev__rule" aria-hidden="true">
+              <span class="bev__rule-line"></span>
+              <span class="bev__rule-gem">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M6 1 10.5 6 6 11 1.5 6 6 1Z" stroke="currentColor" stroke-width="0.75"/>
+                </svg>
+              </span>
+              <span class="bev__rule-line"></span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <p class="bev__copy">
+              <span class="bev__copy-inner">{{ section.settings.description | escape }}</span>
+            </p>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      <div class="bev__viewport" data-brand-videos-viewport tabindex="0" role="region" aria-roledescription="carousel">
+        <div class="bev__rail" data-brand-videos-rail>
+          <ul class="bev__row" data-brand-videos-row aria-hidden="false">
+            {%- for bev_block in bev_videos -%}
+              <li class="bev__slot">
+                {%- render 'bev-video-card', block: bev_block, editable: true -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+          <ul class="bev__row" data-brand-videos-row aria-hidden="true">
+            {%- for bev_block in bev_videos -%}
+              <li class="bev__slot">
+                {%- render 'bev-video-card', block: bev_block, editable: false -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+
+      <div class="bev-dialog" data-brand-videos-dialog hidden aria-hidden="true">
+        <div class="bev-dialog__scrim" data-brand-videos-close tabindex="-1" aria-hidden="true"></div>
+        <div
+          class="bev-dialog__sheet"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Video player"
+        >
+          <button type="button" class="bev-dialog__x" data-brand-videos-close aria-label="Close video">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+              <path d="M18 6 6 18M6 6l12 12"/>
+            </svg>
+          </button>
+          <button type="button" class="bev-dialog__audio" data-brand-videos-audio aria-label="Unmute video" aria-pressed="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+              <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+              <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+            </svg>
+          </button>
+          <button type="button" class="bev-dialog__fs" data-brand-videos-fs aria-label="Enter fullscreen">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+          </button>
+          <div class="bev-dialog__player" data-brand-videos-player></div>
+        </div>
+      </div>
+    </section>
+
+    <script src="{{ 'brand-experience-videos.js' | asset_url }}" defer="defer"></script>
+
+  {%- elsif request.design_mode -%}
+    <section class="bev">
+      <header class="bev__header is-revealed" data-brand-videos-header>
+        {%- if section.settings.heading != blank -%}
+          <h2 class="bev__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        <p class="bev__copy">Add YouTube Shorts blocks to populate this carousel.</p>
+      </header>
+    </section>
+  {%- endif -%}
+
+{%- elsif request.design_mode -%}
+  <section class="bev">
+    <p class="bev__copy">Brand Experience Videos — product pages only.</p>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Brand Experience Videos",
+  "tag": "section",
+  "class": "section-brand-experience-videos",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Experience Anand Rasa"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar."
+    },
+    {
+      "type": "checkbox",
+      "id": "marquee_autoplay",
+      "label": "Auto-scroll carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Scroll speed",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 4,
+      "info": "0 pauses scrolling"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Auto-play centered video (muted)",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "YouTube Short",
+      "settings": [
+        {
+          "type": "text",
+          "id": "youtube_url",
+          "label": "YouTube URL",
+          "info": "Watch, Shorts, embed, or youtu.be"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Accessible title",
+          "default": "Brand experience video"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Experience Videos",
+      "blocks": [
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/84V234Let2g" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

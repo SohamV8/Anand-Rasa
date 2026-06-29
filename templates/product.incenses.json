@@ -1,5 +1,3 @@
-
-
 {
   "sections": {
     "main": {
@@ -17,13 +15,13 @@
         "trust_4": "24 hours dispatch",
         "story_pre": "Our Story",
         "story_heading": "Born from Ancient Ritual",
-        "story_text": "<p>For centuries, the art of incense-making has been a sacred tradition in India — a bridge between the earthly and the divine. Each Anand Rasa incense stick carries that lineage forward.<\/p><p>We work with artisans who have inherited this craft through generations, using only botanicals that nature intended to be burned in devotion.<\/p>",
+        "story_text": "<p>For centuries, the art of incense-making has been a sacred tradition in India \u2014 a bridge between the earthly and the divine. Each Anand Rasa incense stick carries that lineage forward.</p><p>We work with artisans who have inherited this craft through generations, using only botanicals that nature intended to be burned in devotion.</p>",
         "scent_pre": "Scent Profile",
         "scent_top": "Rose, Jasmine, Mogra",
         "scent_heart": "Sandalwood, Havan Samagri",
         "scent_base": "Pure Resin, Amber, Earth",
         "scent_desc_pre": "The Experience",
-        "scent_desc": "<h3>A Fragrance That Stills the Mind<\/h3><p>Close your eyes. The first curl of smoke rises — soft, warm, botanical. The room shifts. What was ordinary becomes sacred.<\/p><p>This is what Anand Rasa incense does. It doesn't just scent a space. It changes the quality of the air. The quality of thought. The quality of being.<\/p>",
+        "scent_desc": "<h3>A Fragrance That Stills the Mind</h3><p>Close your eyes. The first curl of smoke rises \u2014 soft, warm, botanical. The room shifts. What was ordinary becomes sacred.</p><p>This is what Anand Rasa incense does. It doesn't just scent a space. It changes the quality of the air. The quality of thought. The quality of being.</p>",
         "ritual_pre": "The Ritual",
         "ritual_heading": "A Practice of Presence",
         "compare_pre": "Why Choose Us",
@@ -41,25 +39,37 @@
       "blocks": {
         "usp-1": {
           "type": "usp",
-          "settings": { "name": "PURE BOTANICALS", "desc": "No synthetics, ever" }
+          "settings": {
+            "name": "PURE BOTANICALS",
+            "desc": "No synthetics, ever"
+          }
         },
         "usp-2": {
           "type": "usp",
-          "settings": { "name": "LONG BURN", "desc": "2–3 hours per stick" }
+          "settings": {
+            "name": "LONG BURN",
+            "desc": "2\u20133 hours per stick"
+          }
         },
         "usp-3": {
           "type": "usp",
-          "settings": { "name": "HANDCRAFTED", "desc": "Traditional techniques" }
+          "settings": {
+            "name": "HANDCRAFTED",
+            "desc": "Traditional techniques"
+          }
         },
         "usp-4": {
           "type": "usp",
-          "settings": { "name": "SPIRITUAL GRADE", "desc": "Temple quality purity" }
+          "settings": {
+            "name": "SPIRITUAL GRADE",
+            "desc": "Temple quality purity"
+          }
         },
         "ritual-1": {
           "type": "ritual_step",
           "settings": {
             "title": "Light",
-            "desc": "Hold the uncoated end and bring a flame to the tip until it glows softly amber. No harsh burning — just a gentle catch."
+            "desc": "Hold the uncoated end and bring a flame to the tip until it glows softly amber. No harsh burning \u2014 just a gentle catch."
           }
         },
         "ritual-2": {
@@ -78,47 +88,87 @@
         },
         "compare-1": {
           "type": "compare_row",
-          "settings": { "feature": "Charcoal Free", "ours_check": true, "others_check": false }
+          "settings": {
+            "feature": "Charcoal Free",
+            "ours_check": true,
+            "others_check": false
+          }
         },
         "compare-2": {
           "type": "compare_row",
-          "settings": { "feature": "100% Natural Ingredients", "ours_check": true, "others_check": false }
+          "settings": {
+            "feature": "100% Natural Ingredients",
+            "ours_check": true,
+            "others_check": false
+          }
         },
         "compare-3": {
           "type": "compare_row",
-          "settings": { "feature": "2–3 Hour Burn Time", "ours_check": true, "ours_text": "Consistent", "others_check": false, "others_text": "Varies" }
+          "settings": {
+            "feature": "2\u20133 Hour Burn Time",
+            "ours_check": true,
+            "ours_text": "Consistent",
+            "others_check": false,
+            "others_text": "Varies"
+          }
         },
         "compare-4": {
           "type": "compare_row",
-          "settings": { "feature": "No Synthetic Fragrance", "ours_check": true, "others_check": false }
+          "settings": {
+            "feature": "No Synthetic Fragrance",
+            "ours_check": true,
+            "others_check": false
+          }
         },
         "compare-5": {
           "type": "compare_row",
-          "settings": { "feature": "Handrolled", "ours_check": true, "others_check": false }
+          "settings": {
+            "feature": "Handrolled",
+            "ours_check": true,
+            "others_check": false
+          }
         },
         "spec-1": {
           "type": "spec",
-          "settings": { "label": "Sticks Per Pack", "value": "Around 80 sticks" }
+          "settings": {
+            "label": "Sticks Per Pack",
+            "value": "Around 80 sticks"
+          }
         },
         "spec-2": {
           "type": "spec",
-          "settings": { "label": "Burn Time", "value": "More than 1.5 hours" }
+          "settings": {
+            "label": "Burn Time",
+            "value": "More than 1.5 hours"
+          }
         },
         "spec-3": {
           "type": "spec",
-          "settings": { "label": "Stick Length", "value": "6 inches" }
+          "settings": {
+            "label": "Stick Length",
+            "value": "6 inches"
+          }
         },
         "spec-4": {
           "type": "spec",
-          "settings": { "label": "Item Form", "value": "Incense stick" }
+          "settings": {
+            "label": "Item Form",
+            "value": "Incense stick"
+          }
         },
         "spec-5": {
           "type": "spec",
-          "settings": { "label": "Made In", "value": "India" }
+          "settings": {
+            "label": "Made In",
+            "value": "India"
+          }
         },
         "spec-6": {
           "type": "spec",
-          "settings": { "label": "Suitable For", "value": "Meditation, Prayer, Home Fragrance" }
+          "settings": {
+            "label": "Suitable For",
+            "value": "Meditation, Prayer, Home Fragrance"
+          }
         },
         "review-1": {
           "type": "review",
@@ -149,13 +199,142 @@
         }
       },
       "block_order": [
-        "usp-1", "usp-2", "usp-3", "usp-4",
-        "ritual-1", "ritual-2", "ritual-3",
-        "compare-1", "compare-2", "compare-3", "compare-4", "compare-5",
-        "spec-1", "spec-2", "spec-3", "spec-4", "spec-5", "spec-6",
-        "review-1", "review-2", "review-3"
+        "usp-1",
+        "usp-2",
+        "usp-3",
+        "usp-4",
+        "ritual-1",
+        "ritual-2",
+        "ritual-3",
+        "compare-1",
+        "compare-2",
+        "compare-3",
+        "compare-4",
+        "compare-5",
+        "spec-1",
+        "spec-2",
+        "spec-3",
+        "spec-4",
+        "spec-5",
+        "spec-6",
+        "review-1",
+        "review-2",
+        "review-3"
       ]
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "brand_experience_videos"
+  ]
 }

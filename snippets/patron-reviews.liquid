@@ -1,5 +1,5 @@
 {%- comment -%}
-  Patron Reviews — auto for attar & perfume product pages.
+  Patron Reviews — auto for attar, perfume & incense product pages.
   Usage: {% render 'patron-reviews', product: product %}
 {%- endcomment -%}
 
@@ -15,62 +15,109 @@
 
   if prv_p != blank
     assign prv_type = prv_p.type | default: '' | downcase
-    assign prv_title = prv_p.title | default: '' | downcase
+    assign prv_p_title = prv_p.title | default: '' | downcase
     assign prv_handle = prv_p.handle | default: '' | downcase
     assign prv_tags = prv_p.tags | join: '|' | downcase
     assign prv_cols = prv_p.collections | map: 'handle' | join: '|' | downcase
-    assign prv_scope = prv_type | append: '|' | append: prv_title | append: '|' | append: prv_handle | append: '|' | append: prv_tags | append: '|' | append: prv_cols
+    assign prv_scope = prv_type | append: '|' | append: prv_p_title | append: '|' | append: prv_handle | append: '|' | append: prv_tags | append: '|' | append: prv_cols
 
-    assign prv_excluded = false
-    if prv_scope contains 'incense' or prv_scope contains 'agarbatti' or prv_scope contains 'dhoop'
-      assign prv_excluded = true
+    assign prv_is_incense = false
+    if prv_scope contains 'incense' or prv_scope contains 'agarbatti' or prv_scope contains 'dhoop' or prv_scope contains 'agarbathi' or prv_cols contains 'incense-sticks'
+      assign prv_is_incense = true
     endif
 
     assign prv_is_attar = false
     if prv_scope contains 'attar' or prv_scope contains 'perfume oil' or prv_scope contains 'perfume-oil' or prv_scope contains 'fragrance oil' or prv_scope contains 'perfume' or prv_scope contains 'apsara'
       assign prv_is_attar = true
     endif
-    if prv_scope contains 'incense' or prv_scope contains 'agarbatti' or prv_scope contains 'dhoop'
-      assign prv_is_attar = false
+
+    if prv_is_incense
+      assign prv_show = true
+      assign prv_axis = 'incense'
+    elsif prv_is_attar
+      assign prv_show = true
     endif
 
-    unless prv_excluded
-      if prv_is_attar
-        assign prv_show = true
-      endif
-    endunless
-
-    if prv_show
+    if prv_show and prv_is_attar
       assign prv_product_short = prv_p.title | strip
       assign prv_product_short = prv_product_short | replace: ' Nakshatra Attar', '' | replace: ' Zodiac Attar', '' | replace: ' Planet Attar', '' | replace: ' Chakra Attar', '' | replace: ' Attar', '' | replace: ' Perfume Oil', '' | replace: ' Perfume', '' | strip
 
-      if prv_scope contains 'planet' or prv_scope contains 'navagraha' or prv_scope contains 'navgraha' or prv_scope contains 'surya' or prv_scope contains 'chandra' or prv_scope contains 'mangal' or prv_scope contains 'budh' or prv_scope contains 'guru' or prv_scope contains 'shukra' or prv_scope contains 'shani' or prv_scope contains 'rahu' or prv_scope contains 'ketu'
+      if prv_cols contains 'bestseller' or prv_cols contains 'best-seller' or prv_cols contains 'best-sellers'
+        assign prv_axis = 'bestseller'
+      elsif prv_cols contains 'gift-sets' or prv_cols contains 'gift-set' or prv_cols contains 'giftsets'
+        assign prv_axis = 'gift'
+      elsif prv_cols contains 'limited-edition' or prv_tags contains 'limited-edition'
+        assign prv_axis = 'limited'
+      elsif prv_cols contains 'seasonal' or prv_tags contains 'seasonal'
+        assign prv_axis = 'seasonal'
+      elsif prv_cols contains 'festival' or prv_tags contains 'festival' or prv_tags contains 'diwali' or prv_tags contains 'holi'
+        assign prv_axis = 'festival'
+      elsif prv_cols contains 'nakshatra-attars' or prv_cols contains 'nakshatra-attar' or prv_scope contains 'nakshatra' or prv_scope contains 'birth star' or prv_scope contains 'janma'
+        assign prv_axis = 'nakshatra'
+      elsif prv_cols contains 'chakra-attars' or prv_cols contains 'chakra-attar' or prv_scope contains 'chakra' or prv_scope contains 'muladhara' or prv_scope contains 'vishuddha' or prv_scope contains 'sahasrara' or prv_scope contains 'manipura' or prv_scope contains 'anahata' or prv_scope contains 'ajna' or prv_scope contains 'svadhisthana' or prv_handle == 'root' or prv_handle == 'sacral' or prv_handle == 'heart' or prv_handle == 'throat' or prv_handle == 'third-eye' or prv_handle == 'crown' or prv_handle == 'solar'
+        assign prv_axis = 'chakra'
+      elsif prv_cols contains 'planet-attars' or prv_cols contains 'planet-attar' or prv_scope contains 'navagraha' or prv_scope contains 'navgraha' or prv_scope contains 'planet' or prv_scope contains 'surya' or prv_scope contains 'chandra' or prv_scope contains 'mangal' or prv_scope contains 'budh' or prv_scope contains 'guru' or prv_scope contains 'shukra' or prv_scope contains 'shani' or prv_scope contains 'rahu' or prv_scope contains 'ketu'
         assign prv_axis = 'planet'
-      elsif prv_scope contains 'zodiac' or prv_scope contains 'rashi' or prv_scope contains 'aries' or prv_scope contains 'taurus' or prv_scope contains 'gemini' or prv_scope contains 'cancer' or prv_scope contains 'leo' or prv_scope contains 'virgo' or prv_scope contains 'libra' or prv_scope contains 'scorpio' or prv_scope contains 'sagittarius' or prv_scope contains 'capricorn' or prv_scope contains 'aquarius' or prv_scope contains 'pisces'
+      elsif prv_cols contains 'zodiac-attars' or prv_cols contains 'zodiac-attar' or prv_scope contains 'zodiac' or prv_scope contains 'rashi' or prv_scope contains 'aries' or prv_scope contains 'taurus' or prv_scope contains 'gemini' or prv_scope contains 'cancer' or prv_scope contains 'leo' or prv_scope contains 'virgo' or prv_scope contains 'libra' or prv_scope contains 'scorpio' or prv_scope contains 'sagittarius' or prv_scope contains 'capricorn' or prv_scope contains 'aquarius' or prv_scope contains 'pisces'
         assign prv_axis = 'zodiac'
-      elsif prv_scope contains 'stress' or prv_scope contains 'shanti' or prv_scope contains 'relief' or prv_scope contains 'anxiety' or prv_scope contains 'calm'
+      elsif prv_cols contains 'apsara-attar' or prv_cols contains 'apsara-attars' or prv_scope contains 'apsara'
+        assign prv_axis = 'apsara'
+      elsif prv_cols contains 'astrology' or prv_scope contains 'astrology' or prv_scope contains 'horoscope'
+        assign prv_axis = 'astrology'
+      elsif prv_cols contains 'stress-relief' or prv_scope contains 'stress' or prv_scope contains 'shanti' or prv_scope contains 'relief' or prv_scope contains 'anxiety' or prv_scope contains 'calm'
         assign prv_axis = 'stress'
-      elsif prv_scope contains 'love' or prv_scope contains 'romance' or prv_scope contains 'passion' or prv_scope contains 'mohini'
+      elsif prv_cols contains 'love-attars' or prv_cols contains 'love-attar' or prv_scope contains 'love' or prv_scope contains 'romance' or prv_scope contains 'passion' or prv_scope contains 'mohini'
         assign prv_axis = 'love'
-      elsif prv_scope contains 'meditation' or prv_scope contains 'yoga' or prv_scope contains 'spiritual' or prv_scope contains 'ritual' or prv_scope contains 'pooja' or prv_scope contains 'prayer' or prv_scope contains 'sacred'
+      elsif prv_cols contains 'meditation' or prv_tags contains 'meditation'
+        assign prv_axis = 'meditation'
+      elsif prv_cols contains 'spiritual' or prv_scope contains 'spiritual' or prv_scope contains 'ritual' or prv_scope contains 'pooja' or prv_scope contains 'prayer' or prv_scope contains 'sacred'
         assign prv_axis = 'spiritual'
-      elsif prv_scope contains 'perfume-series' or prv_scope contains 'perfume collection' or prv_scope contains 'signature perfume' or prv_scope contains 'luxury perfume'
+      elsif prv_cols contains 'mood' or prv_tags contains 'mood'
+        assign prv_axis = 'mood'
+      elsif prv_cols contains 'daily-wear' or prv_tags contains 'daily-wear' or prv_tags contains 'office'
+        assign prv_axis = 'daily'
+      elsif prv_cols contains 'premium' or prv_tags contains 'premium'
+        assign prv_axis = 'premium'
+      elsif prv_cols contains 'perfume-series' or prv_scope contains 'perfume-series' or prv_scope contains 'signature perfume' or prv_scope contains 'luxury perfume'
         assign prv_axis = 'perfume'
-      elsif prv_scope contains 'luxury' or prv_scope contains 'signature' or prv_scope contains 'premium' or prv_scope contains 'oud' or prv_scope contains 'musk' or prv_scope contains 'sandal'
+      elsif prv_cols contains 'luxury' or prv_scope contains 'luxury' or prv_scope contains 'signature' or prv_scope contains 'oud' or prv_scope contains 'musk' or prv_scope contains 'sandal'
         assign prv_axis = 'luxury'
       else
         assign prv_axis = 'generic'
       endif
+    elsif prv_show and prv_is_incense
+      assign prv_product_short = prv_p.title | strip
     endif
   endif
 -%}
 
 {%- if prv_show -%}
-  {%- assign prv_uid = 'prv-' | append: prv_p.id -%}
+  {%- liquid
+    assign prv_uid = 'prv-' | append: prv_p.id
+    assign prv_product_thumb = ''
+
+    capture prv_ck_asset
+      render 'chakra-image-lookup', ck_product: prv_p
+    endcapture
+    assign prv_ck_asset = prv_ck_asset | strip
+
+    if prv_ck_asset != blank
+      assign prv_product_thumb = prv_ck_asset | asset_url
+    elsif prv_p.featured_image
+      assign prv_product_thumb = prv_p.featured_image | image_url: width: 120
+    endif
+  -%}
+  {%- liquid
+    assign prv_render_title = prv_section_title | default: 'Voices from our fragrance family'
+    assign prv_render_lede = prv_lede | default: 'Real patrons. Different moods. One shared love for slow, soulful scent.'
+  -%}
   {%- render 'patron-reviews-render',
     prv_uid: prv_uid,
     prv_axis: prv_axis,
     prv_product_short: prv_product_short,
-    prv_product_id: prv_p.id
+    prv_product_id: prv_p.id,
+    prv_product_thumb: prv_product_thumb,
+    prv_section_title: prv_render_title,
+    prv_lede: prv_render_lede
   -%}
 {%- endif -%}

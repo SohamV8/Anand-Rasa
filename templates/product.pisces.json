@@ -94,7 +94,7 @@
         "atc_text": "Add to Cart",
         "sold_out_text": "Sold Out",
         "buy_now_text": "Buy Now",
-        "adding_text": "Adding…",
+        "adding_text": "Adding\u2026",
         "added_text": "Added to your cart",
         "qty_label": "Quantity",
         "qty_decrease_aria_label": "Decrease quantity",
@@ -116,7 +116,7 @@
         "show_who_for": false,
         "who_for_heading": "Who is this for",
         "why_heading": "Why this Zodiac Attar",
-        "why_sub": "Crafted to complement Pisces energy — intuitive, gentle, and inspired.",
+        "why_sub": "Crafted to complement Pisces energy \u2014 intuitive, gentle, and inspired.",
         "spec_heading": "Product specifications",
         "spec_label_origin": "Country of Origin",
         "spec_origin": "India",
@@ -138,9 +138,9 @@
         "compare_col_features": "Features",
         "compare_col_brand": "Anand Rasa",
         "compare_col_others": "Others",
-        "compare_row1_feature": "Alcohol-free attar — concentrated",
+        "compare_row1_feature": "Alcohol-free attar \u2014 concentrated",
         "compare_row2_feature": "Natural aromatic ingredients",
-        "compare_row3_feature": "Premium quality — crafted with care",
+        "compare_row3_feature": "Premium quality \u2014 crafted with care",
         "compare_row4_feature": "Ritual-ready aroma for meditation",
         "show_related": true,
         "related_collection": "zodiac-attars",
@@ -153,7 +153,7 @@
         "show_new_badge": true,
         "new_badge_text": "New",
         "show_sale_badge": true,
-        "sale_badge_prefix": "−",
+        "sale_badge_prefix": "\u2212",
         "sale_badge_suffix": "%",
         "show_bestseller_badge": true,
         "bestseller_badge_text": "Bestseller",
@@ -165,9 +165,120 @@
         "zoom_modal_aria_label": "Product image",
         "zoom_close_aria_label": "Close"
       }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "brand_experience_videos"
   ]
 }

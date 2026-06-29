@@ -1,0 +1,40 @@
+{%- comment -%}
+  Single carousel card.
+  @param block {object}
+  @param editable {boolean}
+{%- endcomment -%}
+{%- liquid
+  capture bev_id
+    render 'bev-youtube-id', url: block.settings.youtube_url
+  endcapture
+  assign bev_id = bev_id | strip
+-%}
+{%- if bev_id != blank -%}
+  {%- assign bev_label = block.settings.title | default: 'Brand experience video' | escape -%}
+  <article
+    class="bev-card"
+    data-brand-videos-card
+    data-video-id="{{ bev_id }}"
+    data-video-title="{{ bev_label }}"
+    {% if editable %}{{ block.shopify_attributes }}{% endif %}
+  >
+    <button type="button" class="bev-card__btn" data-brand-videos-open aria-label="Play {{ bev_label }}">
+      <span class="bev-card__frame">
+        <img
+          class="bev-card__poster"
+          src="https://i.ytimg.com/vi/{{ bev_id }}/hqdefault.jpg"
+          alt=""
+          width="480"
+          height="854"
+          loading="lazy"
+          decoding="async"
+        >
+        <span class="bev-card__embed" data-brand-videos-embed></span>
+      </span>
+    </button>
+  </article>
+{%- elsif block.settings.youtube_url != blank -%}
+  <article class="bev-card bev-card--error" {% if editable %}{{ block.shopify_attributes }}{% endif %}>
+    <p class="bev-card__error">Video unavailable</p>
+  </article>
+{%- endif -%}

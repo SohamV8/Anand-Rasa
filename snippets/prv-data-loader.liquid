@@ -1,0 +1,55 @@
+{%- comment -%}
+  Loads patron review dataset by collection axis.
+  Echoes delimited review rows; captured by patron-reviews-render.
+
+  Param: prv_axis
+{%- endcomment -%}
+{%- liquid
+  assign prv_axis = prv_axis | default: 'generic'
+-%}
+{%- case prv_axis -%}
+  {%- when 'planet' -%}
+    {%- render 'prv-data-planet' -%}
+  {%- when 'zodiac' -%}
+    {%- render 'prv-data-zodiac' -%}
+  {%- when 'nakshatra' -%}
+    {%- render 'prv-data-nakshatra' -%}
+  {%- when 'chakra' -%}
+    {%- render 'prv-data-chakra' -%}
+  {%- when 'love' -%}
+    {%- render 'prv-data-love' -%}
+  {%- when 'stress' -%}
+    {%- render 'prv-data-stress' -%}
+  {%- when 'perfume' -%}
+    {%- render 'prv-data-perfume' -%}
+  {%- when 'luxury' -%}
+    {%- render 'prv-data-luxury' -%}
+  {%- when 'spiritual' -%}
+    {%- render 'prv-data-spiritual' -%}
+  {%- when 'bestseller' -%}
+    {%- render 'prv-data-bestseller' -%}
+  {%- when 'incense' -%}
+    {%- render 'prv-data-incense' -%}
+  {%- when 'gift' -%}
+    {%- render 'prv-data-gift' -%}
+  {%- when 'apsara' -%}
+    {%- render 'prv-data-apsara' -%}
+  {%- when 'astrology' -%}
+    {%- render 'prv-data-astrology' -%}
+  {%- when 'mood' -%}
+    {%- render 'prv-data-mood' -%}
+  {%- when 'festival' -%}
+    {%- render 'prv-data-festival' -%}
+  {%- when 'daily' -%}
+    {%- render 'prv-data-daily' -%}
+  {%- when 'meditation' -%}
+    {%- render 'prv-data-meditation' -%}
+  {%- when 'premium' -%}
+    {%- render 'prv-data-premium' -%}
+  {%- when 'limited' -%}
+    {%- render 'prv-data-limited' -%}
+  {%- when 'seasonal' -%}
+    {%- render 'prv-data-seasonal' -%}
+  {%- else -%}
+    {%- render 'prv-data-generic' -%}
+{%- endcase -%}

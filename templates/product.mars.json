@@ -15,8 +15,8 @@
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Mars Energy Attar",
-        "short_description": "A bold attar crafted for action, courage, and strength — fuelling forward movement and fearless focus.",
-        "product_tagline": "Energy • Drive • Aggression",
+        "short_description": "A bold attar crafted for action, courage, and strength \u2014 fuelling forward movement and fearless focus.",
+        "product_tagline": "Energy \u2022 Drive \u2022 Aggression",
         "rating": 5,
         "review_count": "0",
         "show_buy_now": true,
@@ -34,13 +34,126 @@
         "spec_sticks": "Workouts, competitive tasks, and action-focused routines",
         "spec_burn": "Long-lasting bold projection",
         "spec_length": "Dab on pulse points before active hours",
-        "spec_fragrance": "Warm spice • red resin • dry woods",
+        "spec_fragrance": "Warm spice \u2022 red resin \u2022 dry woods",
         "spec_ingredients": "Natural resins, essential oils, premium aromatic botanicals",
         "related_collection": "incense-sticks",
         "related_heading": "You May Also Like",
         "related_sub": "More planetary aromas for your ritual"
       }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "brand_experience_videos"
+  ]
 }

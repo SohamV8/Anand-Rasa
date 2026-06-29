@@ -1,34 +1,57 @@
 {%- comment -%}
-  Chakra image lookup — maps chakra attar products to /assets/Chakra/ showcase images.
-  Echoes asset path (e.g. "Chakra/Muladhara.webp") or empty string.
+  Chakra image lookup — maps chakra attar products to flat /assets/ images.
+  Echoes asset path (e.g. "chakra-muladhara-attar.webp") or empty string.
 
   Parameters:
     ck_product — Shopify product object
+    ck_variant — optional: "attar" (default) or "symbol"
 {%- endcomment -%}
 {%- liquid
+  assign ck_variant = ck_variant | default: 'attar'
   assign ck_key = ''
+  assign ck_handle = ''
+
   if ck_product != blank
     assign ck_key = ck_product.handle | append: ' ' | append: ck_product.title | downcase
+    assign ck_handle = ck_product.handle | downcase
   endif
 
   assign img = ''
 
   if ck_key != blank
-    if ck_key contains 'muladhara' or ck_key contains 'root-chakra' or ck_key contains 'root chakra'
-      assign img = 'Chakra/Muladhara.webp'
-    elsif ck_key contains 'svadhisthana' or ck_key contains 'swadhisthana' or ck_key contains 'sacral-chakra' or ck_key contains 'sacral chakra'
-      assign img = 'Chakra/Svadhisthana.webp'
-    elsif ck_key contains 'manipura' or ck_key contains 'solar-plexus' or ck_key contains 'solar plexus'
-      assign img = 'Chakra/Manipura.webp'
-    elsif ck_key contains 'anahata' or ck_key contains 'heart-chakra' or ck_key contains 'heart chakra'
-      assign img = 'Chakra/Anahata.webp'
-    elsif ck_key contains 'vishuddha' or ck_key contains 'vishudha' or ck_key contains 'throat-chakra' or ck_key contains 'throat chakra'
-      assign img = 'Chakra/Vishuddha.webp'
-    elsif ck_key contains 'ajna' or ck_key contains 'agya' or ck_key contains 'third-eye' or ck_key contains 'third eye'
-      assign img = 'Chakra/Ajna.webp'
-    elsif ck_key contains 'sahasrara' or ck_key contains 'crown-chakra' or ck_key contains 'crown chakra'
-      assign img = 'Chakra/Sahasrara.webp'
-  endif
+    if ck_variant == 'symbol'
+      if ck_key contains 'muladhara' or ck_key contains 'root-chakra' or ck_key contains 'root chakra' or ck_handle == 'root'
+        assign img = 'chakra-muladhara.webp'
+      elsif ck_key contains 'svadhisthana' or ck_key contains 'swadhisthana' or ck_key contains 'sacral-chakra' or ck_key contains 'sacral chakra' or ck_handle == 'sacral'
+        assign img = 'chakra-svadhisthana.webp'
+      elsif ck_key contains 'manipura' or ck_key contains 'solar-plexus' or ck_key contains 'solar plexus' or ck_handle == 'solar'
+        assign img = 'chakra-manipura.webp'
+      elsif ck_key contains 'anahata' or ck_key contains 'heart-chakra' or ck_key contains 'heart chakra' or ck_handle == 'heart'
+        assign img = 'chakra-anahata.webp'
+      elsif ck_key contains 'vishuddha' or ck_key contains 'vishudha' or ck_key contains 'throat-chakra' or ck_key contains 'throat chakra' or ck_handle == 'throat'
+        assign img = 'chakra-vishuddha.webp'
+      elsif ck_key contains 'ajna' or ck_key contains 'agya' or ck_key contains 'third-eye' or ck_key contains 'third eye' or ck_handle == 'third-eye'
+        assign img = 'chakra-ajna.webp'
+      elsif ck_key contains 'sahasrara' or ck_key contains 'crown-chakra' or ck_key contains 'crown chakra' or ck_handle == 'crown'
+        assign img = 'chakra-sahasrara.webp'
+      endif
+    else
+      if ck_key contains 'muladhara' or ck_key contains 'root-chakra' or ck_key contains 'root chakra' or ck_handle == 'root'
+        assign img = 'chakra-muladhara-attar.webp'
+      elsif ck_key contains 'svadhisthana' or ck_key contains 'swadhisthana' or ck_key contains 'sacral-chakra' or ck_key contains 'sacral chakra' or ck_handle == 'sacral'
+        assign img = 'chakra-svadhisthana-attar.webp'
+      elsif ck_key contains 'manipura' or ck_key contains 'solar-plexus' or ck_key contains 'solar plexus' or ck_handle == 'solar'
+        assign img = 'chakra-manipura-attar.webp'
+      elsif ck_key contains 'anahata' or ck_key contains 'heart-chakra' or ck_key contains 'heart chakra' or ck_handle == 'heart'
+        assign img = 'chakra-anahata-attar.webp'
+      elsif ck_key contains 'vishuddha' or ck_key contains 'vishudha' or ck_key contains 'throat-chakra' or ck_key contains 'throat chakra' or ck_handle == 'throat'
+        assign img = 'chakra-vishuddha-attar.webp'
+      elsif ck_key contains 'ajna' or ck_key contains 'agya' or ck_key contains 'third-eye' or ck_key contains 'third eye' or ck_handle == 'third-eye'
+        assign img = 'chakra-ajna-attar.webp'
+      elsif ck_key contains 'sahasrara' or ck_key contains 'crown-chakra' or ck_key contains 'crown chakra' or ck_handle == 'crown'
+        assign img = 'chakra-sahasrara-attar.webp'
+      endif
+    endif
   endif
 
   echo img

@@ -17,6 +17,20 @@
   if side_thumbs_desktop
     assign side_class = ' lmg--side-desktop'
   endif
+
+  assign chakra_attar_asset = chakra_attar_asset | default: ''
+  if chakra_attar_asset == blank
+    capture chakra_attar_asset
+      render 'chakra-image-lookup', ck_product: product
+    endcapture
+    assign chakra_attar_asset = chakra_attar_asset | strip
+  endif
+
+  assign chakra_attar_offset = 0
+  if chakra_attar_asset != blank
+    assign chakra_attar_offset = 1
+    assign image_count = image_count | plus: 1
+  endif
 -%}
 
 <div
@@ -30,6 +44,20 @@
     <div class="lmg__hero aip-gallery__main" id="aip-main-img-wrap">
       <span class="lmg__corners" aria-hidden="true"></span>
 
+      {%- if chakra_attar_asset != blank -%}
+        <img
+          src="{{ chakra_attar_asset | asset_url }}"
+          alt="{{ product.title | escape }} — chakra attar bottle"
+          width="1200"
+          height="1500"
+          loading="eager"
+          decoding="async"
+          class="lmg__hero-img aip-gallery__main-img aip-gallery__main-img--chakra-bottle"
+          data-index="0"
+          id="aip-img-0"
+        >
+      {%- endif -%}
+
       {%- for image in product.images -%}
         <img
           src="{{ image | image_url: width: 1800 }}"
@@ -38,14 +66,16 @@
           alt="{{ image.alt | default: product.title | escape }}"
           width="{{ image.width | default: 1200 }}"
           height="{{ image.height | default: 1200 }}"
-          loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+          loading="{% if chakra_attar_asset == blank and forloop.first %}eager{% else %}lazy{% endif %}"
           decoding="async"
-          class="lmg__hero-img aip-gallery__main-img{% unless forloop.first %} is-hidden{% endunless %}"
-          data-index="{{ forloop.index0 }}"
-          id="aip-img-{{ forloop.index0 }}"
+          class="lmg__hero-img aip-gallery__main-img{% if chakra_attar_asset != blank or forloop.first == false %} is-hidden{% endif %}"
+          data-index="{{ forloop.index0 | plus: chakra_attar_offset }}"
+          id="aip-img-{{ forloop.index0 | plus: chakra_attar_offset }}"
         >
       {%- else -%}
-        <p class="lmg__empty" style="font-size:13px;color:#9ca3af;">No image</p>
+        {%- unless chakra_attar_asset != blank -%}
+          <p class="lmg__empty" style="font-size:13px;color:#9ca3af;">No image</p>
+        {%- endunless -%}
       {%- endfor -%}
 
       {%- if section != blank -%}
@@ -96,14 +126,36 @@
 
   {%- if image_count > 1 -%}
     <div class="lmg__thumbs aip-gallery__thumbs-scroll" role="list" aria-label="{{ 'products.product.media.gallery_viewer' | t | default: 'Gallery thumbnails' }}">
+      {%- if chakra_attar_asset != blank -%}
+        <button
+          type="button"
+          class="lmg__thumb-btn aip-gallery__thumb is-active"
+          data-index="0"
+          role="listitem"
+          aria-label="Chakra attar bottle"
+          aria-current="true"
+        >
+          <span class="lmg__thumb-frame">
+            <span class="lmg__corners lmg__corners--thumb" aria-hidden="true"></span>
+            <img
+              src="{{ chakra_attar_asset | asset_url }}"
+              alt="{{ product.title | escape }} — chakra attar bottle"
+              width="84"
+              height="84"
+              loading="lazy"
+              decoding="async"
+            >
+          </span>
+        </button>
+      {%- endif -%}
       {%- for image in product.images limit: 10 -%}
         <button
           type="button"
-          class="lmg__thumb-btn aip-gallery__thumb{% if forloop.first %} is-active{% endif %}"
-          data-index="{{ forloop.index0 }}"
+          class="lmg__thumb-btn aip-gallery__thumb{% if chakra_attar_asset == blank and forloop.first %} is-active{% endif %}"
+          data-index="{{ forloop.index0 | plus: chakra_attar_offset }}"
           role="listitem"
           aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index | default: 'View image' | append: ' ' | append: forloop.index }}"
-          {% if forloop.first %}
+          {% if chakra_attar_asset == blank and forloop.first %}
             aria-current="true"
           {% endif %}
         >

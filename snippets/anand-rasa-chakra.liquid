@@ -262,12 +262,15 @@
 /* Product image — flush top, rounded to match card */
 .ar-chakra__img-wrap {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   border-radius: 21px 21px 0 0;
   overflow: hidden;
   background: var(--ck-card-fill);
   margin: 0;
   position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .ar-chakra__img {
@@ -277,6 +280,13 @@
   object-position: center;
   display: block;
   transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ar-chakra__img--bottle {
+  object-fit: contain;
+  object-position: center bottom;
+  padding: 16px 14px 10px;
+  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.1));
 }
 
 .ar-chakra__product:hover .ar-chakra__img {
@@ -574,14 +584,16 @@ a.ar-chakra__prod-name:hover {
   {%- assign chakras = '7,6,5,4,3,2,1' | split: ',' -%}
   {%- assign ck_names    = 'sahasrara,ajna,vishuddha,anahata,manipura,svadhisthana,muladhara' | split: ',' -%}
   {%- assign ck_english  = 'Crown Chakra,Third Eye Chakra,Throat Chakra,Heart Chakra,Solar Plexus Chakra,Sacral Chakra,Root Chakra' | split: ',' -%}
-  {%- comment -%} WEBP symbols in /assets/Chakra — same order as ck_names (crown → root) {%- endcomment -%}
-  {%- assign ck_symbol_assets = 'Chakra/Sahasrara.webp,Chakra/Ajna.webp,Chakra/Vishuddha.webp,Chakra/Anahata.webp,Chakra/Manipura.webp,Chakra/Svadhisthana.webp,Chakra/Muladhara.webp' | split: ',' -%}
+  {%- comment -%} WEBP symbols + attar bottles in /assets — same order as ck_names (crown → root) {%- endcomment -%}
+  {%- assign ck_symbol_assets = 'chakra-sahasrara.webp,chakra-ajna.webp,chakra-vishuddha.webp,chakra-anahata.webp,chakra-manipura.webp,chakra-svadhisthana.webp,chakra-muladhara.webp' | split: ',' -%}
+  {%- assign ck_attar_assets = 'chakra-sahasrara-attar.webp,chakra-ajna-attar.webp,chakra-vishuddha-attar.webp,chakra-anahata-attar.webp,chakra-manipura-attar.webp,chakra-svadhisthana-attar.webp,chakra-muladhara-attar.webp' | split: ',' -%}
   {%- assign ck_numbers  = '07,06,05,04,03,02,01' | split: ',' -%}
 
   {%- for idx in (0..6) -%}
     {%- assign ck_key    = ck_names[idx] -%}
     {%- assign ck_eng    = ck_english[idx] -%}
     {%- assign ck_sym_asset = ck_symbol_assets[idx] -%}
+    {%- assign ck_attar_asset = ck_attar_assets[idx] -%}
     {%- assign ck_num    = ck_numbers[idx] -%}
 
     {%- assign q_sanskrit = 'name_' | append: ck_key -%}
@@ -709,23 +721,22 @@ a.ar-chakra__prod-name:hover {
         <div class="ar-chakra__product">
 
           {%- if ck_product != blank and ck_product != empty -%}
+            {%- capture ck_attar_lookup -%}{%- render 'chakra-image-lookup', ck_product: ck_product -%}{%- endcapture -%}
+            {%- assign ck_attar_lookup = ck_attar_lookup | strip -%}
+            {%- if ck_attar_lookup != blank -%}
+              {%- assign ck_attar_asset = ck_attar_lookup -%}
+            {%- endif -%}
 
             <a href="{{ ck_product.url }}" class="ar-chakra__img-wrap" aria-label="{{ ck_product.title | escape }}">
-              {%- if ck_product.featured_image -%}
-                <img
-                  class="ar-chakra__img"
-                  src="{{ ck_product.featured_image | image_url: width: 600 }}"
-                  alt="{{ ck_product.featured_image.alt | default: ck_product.title | escape }}"
-                  width="600"
-                  height="600"
-                  loading="lazy"
-                  decoding="async"
-                >
-              {%- else -%}
-                <div class="ar-chakra__img-ph" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-              {%- endif -%}
+              <img
+                class="ar-chakra__img ar-chakra__img--bottle"
+                src="{{ ck_attar_asset | asset_url }}"
+                alt="{{ ck_product.title | escape }} — chakra attar bottle"
+                width="600"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              >
             </a>
 
             <a href="{{ ck_product.url }}" class="ar-chakra__prod-name">
@@ -755,9 +766,15 @@ a.ar-chakra__prod-name:hover {
 
           {%- else -%}
             <div class="ar-chakra__img-wrap" aria-hidden="true">
-              <div class="ar-chakra__img-ph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              </div>
+              <img
+                class="ar-chakra__img ar-chakra__img--bottle"
+                src="{{ ck_attar_asset | asset_url }}"
+                alt=""
+                width="600"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              >
             </div>
             <p class="ar-chakra__prod-name">{{ ck_display }} Attar</p>
             <p class="ar-chakra__no-product">Assign product in Theme Editor</p>

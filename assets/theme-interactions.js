@@ -546,9 +546,34 @@ if (Shopify.designMode) {
     root.classList.add('is-visible');
   }
 
+  function bindTrackKeyboard(track) {
+    if (!track || track.dataset.prvKeys === 'true') return;
+    track.dataset.prvKeys = 'true';
+
+    track.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var card = track.querySelector('.prv__card');
+      if (!card) return;
+      var gap = parseFloat(getComputedStyle(track).gap) || 16;
+      var step = card.offsetWidth + gap;
+      track.scrollBy({ left: e.key === 'ArrowRight' ? step : -step, behavior: 'smooth' });
+      e.preventDefault();
+    });
+  }
+
   function initSection(root) {
     if (!root || root.dataset.prvInit === 'true') return;
     root.dataset.prvInit = 'true';
+
+    var track = root.querySelector('[data-prv-track]');
+    if (track) {
+      bindTrackKeyboard(track);
+      var cards = Array.prototype.slice.call(track.children);
+      for (var i = cards.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        track.appendChild(cards[j]);
+      }
+    }
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       revealSection(root);
@@ -566,7 +591,7 @@ if (Shopify.designMode) {
             observer.unobserve(entry.target);
           });
         },
-        { rootMargin: '0px 0px -5% 0px', threshold: 0.12 }
+        { rootMargin: '0px 0px -6% 0px', threshold: 0.1 }
       );
       observer.observe(root);
 

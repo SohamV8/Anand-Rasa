@@ -53,6 +53,13 @@
 
   .aip-gallery__zoom svg { width: 18px; height: 18px; color: var(--ink); }
 
+  .aip-gallery__main-img--chakra-bottle {
+    object-fit: contain !important;
+    object-position: center bottom;
+    padding: clamp(16px, 3vw, 28px);
+    filter: drop-shadow(0 14px 24px rgba(26, 22, 20, 0.12));
+  }
+
   /* Product info */
   .aip-info { padding-top: 4px; animation: aipFade 0.85s ease both; }
   .aip-brand { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
@@ -447,16 +454,29 @@
 
 <div class="aip-zoom-modal" id="aip-zoom-modal" role="dialog" aria-modal="true" aria-label="Product image">
   <button type="button" class="aip-zoom-modal__close" id="aip-zoom-close" aria-label="Close">&times;</button>
-  {%- assign aip_zoom_src = product.featured_image | default: product.images.first -%}
-  {%- if aip_zoom_src -%}
+  {%- capture aip_ck_attar -%}{%- render 'chakra-image-lookup', ck_product: product -%}{%- endcapture -%}
+  {%- assign aip_ck_attar = aip_ck_attar | strip -%}
+  {%- if aip_ck_attar != blank -%}
     <img
-      src="{{ aip_zoom_src | image_url: width: 2000 }}"
-      alt="{{ product.title | escape }}"
+      src="{{ aip_ck_attar | asset_url }}"
+      alt="{{ product.title | escape }} — chakra attar bottle"
       id="aip-zoom-img"
-      width="{{ aip_zoom_src.width | default: 2000 }}"
-      height="{{ aip_zoom_src.height | default: 2000 }}"
+      width="2000"
+      height="2500"
       style="max-width:92vw;max-height:92vh;object-fit:contain;"
     >
+  {%- else -%}
+    {%- assign aip_zoom_src = product.featured_image | default: product.images.first -%}
+    {%- if aip_zoom_src -%}
+      <img
+        src="{{ aip_zoom_src | image_url: width: 2000 }}"
+        alt="{{ product.title | escape }}"
+        id="aip-zoom-img"
+        width="{{ aip_zoom_src.width | default: 2000 }}"
+        height="{{ aip_zoom_src.height | default: 2000 }}"
+        style="max-width:92vw;max-height:92vh;object-fit:contain;"
+      >
+    {%- endif -%}
   {%- endif -%}
 </div>
 

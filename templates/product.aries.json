@@ -1,17 +1,59 @@
-
 {
   "sections": {
     "main": {
       "type": "main-aries",
       "blocks": {
-        "trait_1": { "type": "trait", "settings": { "text": "Bold" } },
-        "trait_2": { "type": "trait", "settings": { "text": "Leadership" } },
-        "trait_3": { "type": "trait", "settings": { "text": "Action" } },
-        "benefit_1": { "type": "benefit", "settings": { "title": "Confidence", "text": "A ritual-ready attar designed to amplify decisive energy and presence." } },
-        "benefit_2": { "type": "benefit", "settings": { "title": "Focus", "text": "A grounding scent profile to keep momentum clear and steady." } },
-        "benefit_3": { "type": "benefit", "settings": { "title": "Impact", "text": "A premium attar experience for those who move first and lead from the front." } },
-        "who_1": { "type": "who_for", "settings": { "text": "For bold starters and natural leaders" } },
-        "who_2": { "type": "who_for", "settings": { "text": "For days that demand action and confidence" } }
+        "trait_1": {
+          "type": "trait",
+          "settings": {
+            "text": "Bold"
+          }
+        },
+        "trait_2": {
+          "type": "trait",
+          "settings": {
+            "text": "Leadership"
+          }
+        },
+        "trait_3": {
+          "type": "trait",
+          "settings": {
+            "text": "Action"
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Confidence",
+            "text": "A ritual-ready attar designed to amplify decisive energy and presence."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Focus",
+            "text": "A grounding scent profile to keep momentum clear and steady."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Impact",
+            "text": "A premium attar experience for those who move first and lead from the front."
+          }
+        },
+        "who_1": {
+          "type": "who_for",
+          "settings": {
+            "text": "For bold starters and natural leaders"
+          }
+        },
+        "who_2": {
+          "type": "who_for",
+          "settings": {
+            "text": "For days that demand action and confidence"
+          }
+        }
       },
       "block_order": [
         "trait_1",
@@ -28,7 +70,7 @@
         "product_label": "Zodiac Attar",
         "title": "Aries Zodiac Attar",
         "subtitle": "Bold leadership energy in a luxury attar.",
-        "description": "<p>Aries is bold, forward-moving, and fearless. This Zodiac Attar is crafted to complement leadership, action, and confident presence—perfect for rituals, meditation, and daily wear.</p>",
+        "description": "<p>Aries is bold, forward-moving, and fearless. This Zodiac Attar is crafted to complement leadership, action, and confident presence\u2014perfect for rituals, meditation, and daily wear.</p>",
         "seo_keywords": "Aries zodiac attar, Aries attar, bold leadership fragrance, action energy perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
         "short_description": "Bold, leadership-driven attar for action and confident presence.",
         "product_tagline": "",
@@ -36,7 +78,7 @@
         "strip_col2": "Luxury alcohol-free attar for ritual and daily wear",
         "strip_col3": "Zodiac Attar",
         "why_heading": "Why this Zodiac Attar",
-        "why_sub": "Crafted to complement Aries energy — bold, decisive, and driven.",
+        "why_sub": "Crafted to complement Aries energy \u2014 bold, decisive, and driven.",
         "spec_item_type": "Boldness, leadership, action",
         "spec_sticks": "Daily wear, rituals, meditation",
         "spec_burn": "Long-lasting aroma",
@@ -44,8 +86,120 @@
         "related_heading": "Recommended",
         "related_sub": "Explore more zodiac attars"
       }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "brand_experience_videos"
+  ]
 }
-

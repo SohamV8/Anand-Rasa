@@ -1,4 +1,3 @@
-
 {
   "sections": {
     "main": {
@@ -33,7 +32,7 @@
         "product_label": "Attar",
         "title_override": "Bharani Nakshatra Attar",
         "subtitle": "Aligned with your birth star energy",
-        "short_description": "Bharani energy profile — transformation, intensity, creation.",
+        "short_description": "Bharani energy profile \u2014 transformation, intensity, creation.",
         "product_tagline": "",
         "rating": 5,
         "review_count": "0",
@@ -48,20 +47,20 @@
         "strip_col2": "Themes: transformation, intensity, creation.",
         "strip_col3": "Nakshatra Attar",
         "why_heading": "Why Bharani Nakshatra Attar",
-        "why_sub": "A refined attar crafted to echo Bharani traits — transformation, intensity, creation.",
+        "why_sub": "A refined attar crafted to echo Bharani traits \u2014 transformation, intensity, creation.",
         "spec_origin": "India",
         "spec_item_form": "Attar (Roll-on / Dab)",
         "spec_item_type": "Alcohol-free, Long-lasting, Premium",
-        "spec_sticks": "—",
-        "spec_burn": "—",
-        "spec_length": "—",
+        "spec_sticks": "\u2014",
+        "spec_burn": "\u2014",
+        "spec_length": "\u2014",
         "spec_fragrance": "",
         "spec_ingredients": "",
         "compare_brand_label": "Anand Rasa",
-        "compare_row_1": "Clean profile — balanced wear",
-        "compare_row_2": "Alcohol-free — skin-friendly",
-        "compare_row_3": "Premium quality — crafted",
-        "compare_row_4": "Intention-led — spiritual alignment",
+        "compare_row_1": "Clean profile \u2014 balanced wear",
+        "compare_row_2": "Alcohol-free \u2014 skin-friendly",
+        "compare_row_3": "Premium quality \u2014 crafted",
+        "compare_row_4": "Intention-led \u2014 spiritual alignment",
         "related_collection": "",
         "related_heading": "Recommended",
         "related_sub": "Curated for your ritual",
@@ -71,11 +70,122 @@
         "who_heading": "Who should use this",
         "who_should_use": "<p>Recommended for those who want a personal fragrance ritual aligned with their birth star.</p>",
         "spiritual_heading": "Spiritual alignment note",
-        "spiritual_alignment_note": "Use as a mindful anchor for Bharani intentions — transformation, intensity, creation."
+        "spiritual_alignment_note": "Use as a mindful anchor for Bharani intentions \u2014 transformation, intensity, creation."
+      }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "brand_experience_videos"
   ]
 }

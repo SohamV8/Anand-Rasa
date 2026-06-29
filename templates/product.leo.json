@@ -13,29 +13,81 @@
     "main": {
       "type": "main-leo",
       "blocks": {
-        "trait_1": { "type": "trait", "settings": { "text": "Confidence" } },
-        "trait_2": { "type": "trait", "settings": { "text": "Royalty" } },
-        "trait_3": { "type": "trait", "settings": { "text": "Charisma" } },
-        "benefit_1": { "type": "benefit", "settings": { "title": "Presence", "text": "A bold attar aura designed for confident self-expression." } },
-        "benefit_2": { "type": "benefit", "settings": { "title": "Radiance", "text": "A premium, alcohol-free attar experience with a strong signature feel." } },
-        "benefit_3": { "type": "benefit", "settings": { "title": "Charm", "text": "A ritual-ready scent for charisma, celebration, and everyday confidence." } },
-        "who_1": { "type": "who_for", "settings": { "text": "For confident leaders and bold personalities" } },
-        "who_2": { "type": "who_for", "settings": { "text": "For moments that call for charisma and shine" } }
+        "trait_1": {
+          "type": "trait",
+          "settings": {
+            "text": "Confidence"
+          }
+        },
+        "trait_2": {
+          "type": "trait",
+          "settings": {
+            "text": "Royalty"
+          }
+        },
+        "trait_3": {
+          "type": "trait",
+          "settings": {
+            "text": "Charisma"
+          }
+        },
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Presence",
+            "text": "A bold attar aura designed for confident self-expression."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Radiance",
+            "text": "A premium, alcohol-free attar experience with a strong signature feel."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "title": "Charm",
+            "text": "A ritual-ready scent for charisma, celebration, and everyday confidence."
+          }
+        },
+        "who_1": {
+          "type": "who_for",
+          "settings": {
+            "text": "For confident leaders and bold personalities"
+          }
+        },
+        "who_2": {
+          "type": "who_for",
+          "settings": {
+            "text": "For moments that call for charisma and shine"
+          }
+        }
       },
-      "block_order": ["trait_1","trait_2","trait_3","benefit_1","benefit_2","benefit_3","who_1","who_2"],
+      "block_order": [
+        "trait_1",
+        "trait_2",
+        "trait_3",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "who_1",
+        "who_2"
+      ],
       "settings": {
         "brand_text": "ANAND RAS",
         "product_label": "Zodiac Attar",
         "title": "Leo Zodiac Attar",
         "subtitle": "Royal confidence in a luxury attar.",
-        "description": "<p>Leo is confident, radiant, and charismatic. This Zodiac Attar is crafted to complement royalty energy, strong presence, and warm magnetism—ideal for rituals and daily wear.</p>",
+        "description": "<p>Leo is confident, radiant, and charismatic. This Zodiac Attar is crafted to complement royalty energy, strong presence, and warm magnetism\u2014ideal for rituals and daily wear.</p>",
         "seo_keywords": "Leo zodiac attar, Leo attar, confidence fragrance, royalty charisma perfume oil, luxury attar, alcohol-free attar, Anand Rasa",
         "short_description": "A luxury attar for confidence, royalty energy, and charisma.",
         "strip_col1": "Confidence, royalty, charisma",
         "strip_col2": "Premium alcohol-free attar for ritual and daily wear",
         "strip_col3": "Zodiac Attar",
         "why_heading": "Why this Zodiac Attar",
-        "why_sub": "Crafted to complement Leo energy — radiant, confident, and bold.",
+        "why_sub": "Crafted to complement Leo energy \u2014 radiant, confident, and bold.",
         "spec_item_type": "Confidence, royalty, charisma",
         "spec_sticks": "Daily wear, rituals, meditation",
         "spec_burn": "Long-lasting aroma",
@@ -43,8 +95,120 @@
         "related_heading": "Recommended",
         "related_sub": "Explore more zodiac attars"
       }
+    },
+    "brand_experience_videos": {
+      "type": "brand-experience-videos",
+      "blocks": {
+        "video_1": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uj1nKx9plrU",
+            "title": "Brand experience video"
+          }
+        },
+        "video_2": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_3": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zf91_shVilo",
+            "title": "Brand experience video"
+          }
+        },
+        "video_4": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_5": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/N_sy2Hc6Prg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_6": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_7": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/_8DGK1ID9Ug",
+            "title": "Brand experience video"
+          }
+        },
+        "video_8": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YTfBpzpQmWk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_9": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_10": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/84V234Let2g",
+            "title": "Brand experience video"
+          }
+        },
+        "video_11": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk",
+            "title": "Brand experience video"
+          }
+        },
+        "video_12": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
+            "title": "Brand experience video"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5",
+        "video_6",
+        "video_7",
+        "video_8",
+        "video_9",
+        "video_10",
+        "video_11",
+        "video_12"
+      ],
+      "settings": {
+        "heading": "Experience Anand Rasa",
+        "description": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar.",
+        "marquee_autoplay": true,
+        "marquee_speed": 4,
+        "video_autoplay": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "brand_experience_videos"
+  ]
 }
-

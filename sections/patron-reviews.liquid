@@ -3,7 +3,16 @@
 {% endcomment %}
 
 {%- if product != blank -%}
-  {% render 'patron-reviews', product: product %}
+  {% render 'patron-reviews',
+    product: product,
+    prv_eyebrow: section.settings.eyebrow,
+    prv_section_title: section.settings.title,
+    prv_lede: section.settings.lede,
+    prv_stat_rating: section.settings.stat_rating,
+    prv_stat_customers: section.settings.stat_customers,
+    prv_stat_repeat: section.settings.stat_repeat,
+    prv_stat_handmade: section.settings.stat_handmade
+  %}
 {%- endif -%}
 
 {% schema %}
@@ -12,7 +21,54 @@
   "tag": "section",
   "class": "section section-prv",
   "templates": ["product"],
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Patron Reviews"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Voices from our fragrance family"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Description",
+      "default": "Real patrons. Different moods. One shared love for slow, soulful scent."
+    },
+    {
+      "type": "header",
+      "content": "Social proof"
+    },
+    {
+      "type": "text",
+      "id": "stat_rating",
+      "label": "Average rating",
+      "default": "4.9/5"
+    },
+    {
+      "type": "text",
+      "id": "stat_customers",
+      "label": "Happy customers",
+      "default": "10,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_repeat",
+      "label": "Repeat customers",
+      "default": "95%"
+    },
+    {
+      "type": "text",
+      "id": "stat_handmade",
+      "label": "Craft line",
+      "default": "Handmade in India"
+    }
+  ],
   "presets": [
     {
       "name": "Patron Reviews"
