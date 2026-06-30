@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from prv_category_rules import BANNED_BODY_PATTERNS, FORBIDDEN, TAGS
+from prv_category_rules import BANNED_BODY_PATTERNS, FORBIDDEN, FRAGMENT_PATTERNS, TAGS
 
 SNIPPETS = Path(__file__).resolve().parent.parent / "snippets"
 SEP_F = "~|~"
@@ -26,7 +26,7 @@ def parse_liquid(path: Path) -> str:
 
 
 def opening_key(body: str) -> str:
-    return " ".join(body.split()[:5]).lower()
+    return " ".join(body.split()[:8]).lower()
 
 
 
@@ -56,9 +56,23 @@ def audit_file(path: Path) -> dict:
         if "{{ prv_short }}" in body or "prv_short" in low:
             issues.append(f"row {i} ({name}): product name placeholder in body")
 
+        if re.search(r"[—–]", body):
+            issues.append(f"row {i} ({name}): em dash in body")
+
+        words = len(re.findall(r"\b\w+\b", body))
+        if words < 18:
+            issues.append(f"row {i} ({name}): too short ({words} words)")
+
+        if len(re.findall(r"[.!?]+", body)) < 2:
+            issues.append(f"row {i} ({name}): fewer than two sentences")
+
         for pat in BANNED_BODY_PATTERNS:
             if re.search(pat, body, re.IGNORECASE):
                 issues.append(f"row {i} ({name}): banned pattern '{pat}'")
+
+        for pat in FRAGMENT_PATTERNS:
+            if re.search(pat, body, re.IGNORECASE):
+                issues.append(f"row {i} ({name}): fragment pattern '{pat}'")
 
         for term in FORBIDDEN.get(axis, []):
             if term.lower() in low:

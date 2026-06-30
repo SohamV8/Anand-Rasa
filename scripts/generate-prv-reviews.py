@@ -8,12 +8,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from prv_names import CITIES, DATES, NAME_PAIRS
-from prv_experience_gen import GENERATORS
+from prv_natural_gen import GENERATORS
 from prv_category_rules import (
     BANNED_BODY_PATTERNS,
     CONTEXT_NOTE,
     DEFAULT_CONTEXT_NOTE,
     FORBIDDEN,
+    FRAGMENT_PATTERNS,
     PURCHASE_CONTEXT,
     TAGS,
 )
@@ -46,9 +47,19 @@ def validate_body(axis: str, body: str) -> list[str]:
     low = body.lower()
     if "{{ prv_short }}" in body or "prv_short" in low:
         issues.append("product_name_in_body")
+    if re.search(r"[—–]", body):
+        issues.append("em_dash")
+    words = len(re.findall(r"\b\w+\b", body))
+    if words < 18:
+        issues.append(f"too_short:{words}_words")
+    if len(re.findall(r"[.!?]+", body)) < 2:
+        issues.append("needs_multiple_sentences")
     for pat in BANNED_BODY_PATTERNS:
         if re.search(pat, body, re.IGNORECASE):
             issues.append(f"banned:{pat}")
+    for pat in FRAGMENT_PATTERNS:
+        if re.search(pat, body, re.IGNORECASE):
+            issues.append(f"fragment:{pat}")
     for term in FORBIDDEN.get(axis, []):
         if term.lower() in low:
             issues.append(f"forbidden:{term}")

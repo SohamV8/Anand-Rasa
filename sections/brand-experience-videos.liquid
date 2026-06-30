@@ -21,6 +21,7 @@
   {%- if bev_valid > 0 -%}
     <link rel="preconnect" href="https://www.youtube-nocookie.com" crossorigin>
     <link rel="preconnect" href="https://i.ytimg.com" crossorigin>
+    <link rel="preconnect" href="https://www.youtube.com" crossorigin>
     {{ 'brand-experience-videos.css' | asset_url | stylesheet_tag }}
 
     <section
@@ -29,6 +30,16 @@
       data-scroll="{{ section.settings.marquee_autoplay }}"
       data-speed="{{ section.settings.marquee_speed }}"
       data-play="{{ section.settings.video_autoplay }}"
+      data-pause-offscreen="{{ section.settings.pause_offscreen }}"
+      style="
+        --bev-perspective: {{ section.settings.perspective }}px;
+        --bev-hover-scale: {{ section.settings.hover_scale | divided_by: 100.0 }};
+        --bev-radius: {{ section.settings.card_radius }}px;
+        --bev-blur: {{ section.settings.modal_blur }}px;
+        --bev-duration: {{ section.settings.animation_duration }}ms;
+        --bev-center-scale: {{ section.settings.center_scale | divided_by: 100.0 }};
+        --bev-shadow: {{ section.settings.card_shadow | divided_by: 100.0 }};
+      "
       {% if section.settings.heading != blank %}
         aria-labelledby="bev-heading-{{ section.id }}"
       {% else %}
@@ -86,26 +97,37 @@
         </header>
       {%- endif -%}
 
-      <div class="bev__viewport" data-brand-videos-viewport tabindex="0" role="region" aria-roledescription="carousel">
+      <div
+        class="bev__viewport"
+        data-brand-videos-viewport
+        tabindex="0"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Brand experience video carousel"
+        aria-controls="bev-dialog-{{ section.id }}"
+        aria-live="polite"
+      >
         <div class="bev__rail" data-brand-videos-rail>
-          <ul class="bev__row" data-brand-videos-row aria-hidden="false">
+          <ul class="bev__row" data-brand-videos-row>
             {%- for bev_block in bev_videos -%}
-              <li class="bev__slot">
-                {%- render 'bev-video-card', block: bev_block, editable: true -%}
-              </li>
+              {%- render 'bev-video-card', block: bev_block, editable: true, priority: forloop.first, poster_quality: section.settings.video_quality -%}
             {%- endfor -%}
           </ul>
           <ul class="bev__row" data-brand-videos-row aria-hidden="true">
             {%- for bev_block in bev_videos -%}
-              <li class="bev__slot">
-                {%- render 'bev-video-card', block: bev_block, editable: false -%}
-              </li>
+              {%- render 'bev-video-card', block: bev_block, editable: false, poster_quality: section.settings.video_quality -%}
             {%- endfor -%}
           </ul>
         </div>
       </div>
 
-      <div class="bev-dialog" data-brand-videos-dialog hidden aria-hidden="true">
+      <div
+        class="bev-dialog"
+        id="bev-dialog-{{ section.id }}"
+        data-brand-videos-dialog
+        hidden
+        aria-hidden="true"
+      >
         <div class="bev-dialog__scrim" data-brand-videos-close tabindex="-1" aria-hidden="true"></div>
         <div
           class="bev-dialog__sheet"
@@ -124,16 +146,40 @@
               <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
             </svg>
           </button>
+          <button type="button" class="bev-dialog__play" data-brand-videos-playpause aria-label="Pause video" aria-pressed="true">
+            <svg class="bev-dialog__icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+              <rect x="6" y="5" width="4" height="14" rx="1"/>
+              <rect x="14" y="5" width="4" height="14" rx="1"/>
+            </svg>
+            <svg class="bev-dialog__icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" hidden>
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
           <button type="button" class="bev-dialog__fs" data-brand-videos-fs aria-label="Enter fullscreen">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
               <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
             </svg>
           </button>
-          <div class="bev-dialog__player" data-brand-videos-player></div>
+          <div class="bev-dialog__player" data-brand-videos-player>
+            <div
+              class="bev-dialog__progress"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              aria-label="Playback progress"
+              data-brand-videos-progress-wrap
+            >
+              <span class="bev-dialog__progress-bar" data-brand-videos-progress></span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
+    <script src="{{ 'bev-lib.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'bev-carousel.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'bev-modal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'brand-experience-videos.js' | asset_url }}" defer="defer"></script>
 
   {%- elsif request.design_mode -%}
@@ -175,6 +221,10 @@
       "default": "A cinematic glimpse into the rituals, craftsmanship, and sensory world behind every attar."
     },
     {
+      "type": "header",
+      "content": "Carousel"
+    },
+    {
       "type": "checkbox",
       "id": "marquee_autoplay",
       "label": "Auto-scroll carousel",
@@ -183,7 +233,7 @@
     {
       "type": "range",
       "id": "marquee_speed",
-      "label": "Scroll speed",
+      "label": "Carousel speed",
       "min": 0,
       "max": 10,
       "step": 1,
@@ -191,10 +241,109 @@
       "info": "0 pauses scrolling"
     },
     {
+      "type": "range",
+      "id": "perspective",
+      "label": "3D perspective",
+      "min": 480,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1080
+    },
+    {
+      "type": "range",
+      "id": "center_scale",
+      "label": "Center card scale",
+      "min": 100,
+      "max": 115,
+      "step": 1,
+      "unit": "%",
+      "default": 104
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation duration",
+      "min": 200,
+      "max": 800,
+      "step": 25,
+      "unit": "ms",
+      "default": 450
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
       "type": "checkbox",
       "id": "video_autoplay",
-      "label": "Auto-play centered video (muted)",
+      "label": "Autoplay centered videos (muted)",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_offscreen",
+      "label": "Pause offscreen",
+      "default": true,
+      "info": "Detach players when the section leaves the viewport"
+    },
+    {
+      "type": "select",
+      "id": "video_quality",
+      "label": "Poster quality",
+      "default": "hqdefault",
+      "options": [
+        { "value": "mqdefault", "label": "Low (320px)" },
+        { "value": "hqdefault", "label": "Medium (480px)" },
+        { "value": "sddefault", "label": "High (640px)" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover scale",
+      "min": 100,
+      "max": 108,
+      "step": 1,
+      "unit": "%",
+      "default": 103
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card radius",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "card_shadow",
+      "label": "Card shadow intensity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Modal"
+    },
+    {
+      "type": "range",
+      "id": "modal_blur",
+      "label": "Modal background blur",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
     }
   ],
   "blocks": [
@@ -232,7 +381,8 @@
         { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI" } },
         { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/84V234Let2g" } },
         { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/DETPBRVRNQk" } },
-        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw" } }
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw" } },
+        { "type": "video", "settings": { "youtube_url": "https://www.youtube.com/shorts/AXpD-qtgZiM" } }
       ]
     }
   ]

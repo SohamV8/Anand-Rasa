@@ -127,6 +127,13 @@
             "youtube_url": "https://www.youtube.com/shorts/uIaW8dbqqDw",
             "title": "Brand experience video"
           }
+        },
+        "video_13": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/AXpD-qtgZiM",
+            "title": "Brand experience video"
+          }
         }
       },
       "block_order": [
@@ -141,7 +148,8 @@
         "video_9",
         "video_10",
         "video_11",
-        "video_12"
+        "video_12",
+        "video_13"
       ],
       "settings": {
         "heading": "Experience Anand Rasa",

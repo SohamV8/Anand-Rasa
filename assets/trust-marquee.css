@@ -1,0 +1,202 @@
+/* Trust Marquee — luxury minimal product trust strip */
+
+.tmq {
+  --tmq-scale: 1.18;
+  --tmq-ink: #1e2023;
+  --tmq-muted: #6b7280;
+  --tmq-gap: clamp(2.35rem, 6vw, 4.15rem);
+  --tmq-py: clamp(3.5rem, 7vw, 5.3rem);
+  --tmq-icon: calc(2.06rem * var(--tmq-scale) / 1.18);
+  --tmq-duration: 58s;
+  --tmq-shift: 50%;
+  width: 100%;
+  margin: 0;
+  padding: var(--tmq-py) 0;
+  background: transparent;
+  color: var(--tmq-ink);
+  font-family: "Poppins", var(--font-body-family, system-ui, sans-serif);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tmq *,
+.tmq *::before,
+.tmq *::after {
+  box-sizing: border-box;
+}
+
+.tmq + .prv {
+  margin-top: 0;
+  border-top: none;
+}
+
+.tmq__viewport {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.tmq__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: var(--tmq-gap);
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation: tmq-scroll var(--tmq-duration, 58s) linear infinite;
+}
+
+.tmq[data-pause-hover="true"]:hover .tmq__track,
+.tmq[data-pause-hover="true"]:focus-within .tmq__track {
+  animation-play-state: paused;
+}
+
+.tmq__row {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: var(--tmq-gap);
+}
+
+.tmq__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: clamp(6.5rem, 16vw, 8.85rem);
+  max-width: 10.5rem;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  gap: clamp(0.7rem, 1.4vw, 0.85rem);
+}
+
+.tmq__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tmq-icon);
+  height: var(--tmq-icon);
+  color: var(--tmq-ink);
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.tmq__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: var(--tmq-icon);
+  max-height: var(--tmq-icon);
+}
+
+.tmq__img {
+  display: block;
+  width: var(--tmq-icon);
+  height: var(--tmq-icon);
+  object-fit: contain;
+  object-position: center center;
+}
+
+.tmq__title {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(0.8125rem, 1.45vw, 0.9625rem);
+  font-weight: 600;
+  line-height: 1.38;
+  letter-spacing: 0.085em;
+  text-transform: uppercase;
+  color: var(--tmq-ink);
+  max-width: 100%;
+}
+
+.tmq__subtitle {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(0.72rem, 1.15vw, 0.875rem);
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: 0.025em;
+  color: var(--tmq-muted);
+  max-width: 100%;
+}
+
+@keyframes tmq-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-1 * var(--tmq-shift, 50%)), 0, 0);
+  }
+}
+
+/* Tablet */
+@media (min-width: 750px) and (max-width: 989px) {
+  .tmq {
+    --tmq-scale: 1.14;
+    --tmq-gap: clamp(2.15rem, 5.5vw, 3.5rem);
+    --tmq-py: clamp(3.15rem, 6.5vw, 4.5rem);
+  }
+}
+
+/* Mobile */
+@media (max-width: 749px) {
+  .tmq {
+    --tmq-scale: 1.1;
+    --tmq-gap: clamp(1.85rem, 7vw, 2.65rem);
+    --tmq-py: clamp(2.95rem, 9vw, 3.85rem);
+  }
+
+  .tmq__item {
+    min-width: 5.9rem;
+    max-width: 9rem;
+  }
+}
+
+/* Wide desktop */
+@media (min-width: 1600px) {
+  .tmq {
+    --tmq-scale: 1.2;
+    --tmq-gap: 4.75rem;
+    --tmq-py: 5.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tmq__track {
+    animation: none;
+    transform: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: var(--tmq-gap);
+  }
+
+  .tmq__row[aria-hidden="true"] {
+    display: none;
+  }
+
+  .tmq__viewport {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+  }
+
+  .tmq__row {
+    justify-content: flex-start;
+    width: max-content;
+    margin-inline: auto;
+  }
+
+  .tmq__item {
+    scroll-snap-align: start;
+  }
+}

@@ -1,0 +1,205 @@
+{%- comment -%}
+  Trust Marquee — infinite horizontal trust strip for product pages.
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' -%}
+  {%- liquid
+    assign tmq_blocks = section.blocks
+    assign tmq_has_blocks = false
+    if tmq_blocks.size > 0
+      assign tmq_has_blocks = true
+    endif
+
+    assign tmq_show_subtitles = section.settings.show_subtitles
+    assign tmq_pause_hover = section.settings.pause_on_hover
+    assign tmq_speed = section.settings.marquee_speed | default: 5
+  -%}
+
+  {%- if tmq_has_blocks or section.settings.enable_section -%}
+    {{ 'trust-marquee.css' | asset_url | stylesheet_tag }}
+
+    <section
+      class="tmq"
+      data-trust-marquee
+      data-speed="{{ tmq_speed }}"
+      {% if tmq_pause_hover %}data-pause-hover="true"{% endif %}
+      aria-label="{{ section.settings.accessibility_label | default: 'Product trust highlights' | escape }}"
+    >
+      <div class="tmq__viewport">
+        <div class="tmq__track" data-tmq-track>
+          <ul class="tmq__row" data-tmq-row role="list">
+            {%- if tmq_has_blocks -%}
+              {%- for block in tmq_blocks -%}
+                {%- render 'tmq-item',
+                  block: block,
+                  editable: true,
+                  show_subtitle: tmq_show_subtitles
+                -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign tmq_defaults_title = 'Organic|Clean Beauty|Ethically Sourced|Hypoallergenic|Non Toxic|Paraben Free|Sulphate Free|Cruelty Free|Made in India|Handcrafted|Long Lasting|Vegan|IFRA Compliant' | split: '|' -%}
+              {%- assign tmq_defaults_icon = 'organic|clean_beauty|ethically_sourced|hypoallergenic|non_toxic|paraben_free|sulphate_free|cruelty_free|made_in_india|handcrafted|long_lasting|vegan|ifra_compliant' | split: '|' -%}
+              {%- for tmq_title in tmq_defaults_title -%}
+                {%- assign tmq_i = forloop.index0 -%}
+                {%- render 'tmq-item',
+                  title: tmq_title,
+                  icon: tmq_defaults_icon[tmq_i],
+                  show_subtitle: false
+                -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+          <ul class="tmq__row" data-tmq-row aria-hidden="true">
+            {%- if tmq_has_blocks -%}
+              {%- for block in tmq_blocks -%}
+                {%- render 'tmq-item',
+                  block: block,
+                  editable: false,
+                  show_subtitle: tmq_show_subtitles
+                -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- assign tmq_defaults_title = 'Organic|Clean Beauty|Ethically Sourced|Hypoallergenic|Non Toxic|Paraben Free|Sulphate Free|Cruelty Free|Made in India|Handcrafted|Long Lasting|Vegan|IFRA Compliant' | split: '|' -%}
+              {%- assign tmq_defaults_icon = 'organic|clean_beauty|ethically_sourced|hypoallergenic|non_toxic|paraben_free|sulphate_free|cruelty_free|made_in_india|handcrafted|long_lasting|vegan|ifra_compliant' | split: '|' -%}
+              {%- for tmq_title in tmq_defaults_title -%}
+                {%- assign tmq_i = forloop.index0 -%}
+                {%- render 'tmq-item',
+                  title: tmq_title,
+                  icon: tmq_defaults_icon[tmq_i],
+                  show_subtitle: false
+                -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <script src="{{ 'trust-marquee.js' | asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+{%- elsif request.design_mode -%}
+  <section class="tmq" style="padding:2rem;text-align:center;font-family:Poppins,sans-serif;">
+    <p>Trust Marquee — product pages only.</p>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Trust Marquee",
+  "tag": "section",
+  "class": "section-trust-marquee",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "Show section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Accessibility label",
+      "default": "Product trust highlights"
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Scroll speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "info": "Higher is faster"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitles",
+      "label": "Show subtitles on all items",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon image",
+          "info": "Optional. Replaces the outline icon below."
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Outline icon",
+          "default": "organic",
+          "options": [
+            { "value": "organic", "label": "Organic" },
+            { "value": "clean_beauty", "label": "Clean beauty" },
+            { "value": "ethically_sourced", "label": "Ethically sourced" },
+            { "value": "hypoallergenic", "label": "Hypoallergenic" },
+            { "value": "non_toxic", "label": "Non toxic" },
+            { "value": "paraben_free", "label": "Paraben free" },
+            { "value": "sulphate_free", "label": "Sulphate free" },
+            { "value": "cruelty_free", "label": "Cruelty free" },
+            { "value": "made_in_india", "label": "Made in India" },
+            { "value": "handcrafted", "label": "Handcrafted" },
+            { "value": "long_lasting", "label": "Long lasting" },
+            { "value": "vegan", "label": "Vegan" },
+            { "value": "ifra_compliant", "label": "IFRA compliant" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Organic"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_subtitle",
+          "label": "Show subtitle for this item",
+          "default": false,
+          "info": "Also enable global subtitles in section settings"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Marquee",
+      "blocks": [
+        { "type": "trust_item", "settings": { "icon": "organic", "title": "Organic" } },
+        { "type": "trust_item", "settings": { "icon": "clean_beauty", "title": "Clean Beauty" } },
+        { "type": "trust_item", "settings": { "icon": "ethically_sourced", "title": "Ethically Sourced" } },
+        { "type": "trust_item", "settings": { "icon": "hypoallergenic", "title": "Hypoallergenic" } },
+        { "type": "trust_item", "settings": { "icon": "non_toxic", "title": "Non Toxic" } },
+        { "type": "trust_item", "settings": { "icon": "paraben_free", "title": "Paraben Free" } },
+        { "type": "trust_item", "settings": { "icon": "sulphate_free", "title": "Sulphate Free" } },
+        { "type": "trust_item", "settings": { "icon": "cruelty_free", "title": "Cruelty Free" } },
+        { "type": "trust_item", "settings": { "icon": "made_in_india", "title": "Made in India" } },
+        { "type": "trust_item", "settings": { "icon": "handcrafted", "title": "Handcrafted" } },
+        { "type": "trust_item", "settings": { "icon": "long_lasting", "title": "Long Lasting" } },
+        { "type": "trust_item", "settings": { "icon": "vegan", "title": "Vegan" } },
+        { "type": "trust_item", "settings": { "icon": "ifra_compliant", "title": "IFRA Compliant" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

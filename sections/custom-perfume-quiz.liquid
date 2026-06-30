@@ -58,9 +58,6 @@
       <input type="hidden" name="contact[purpose]" value="" data-cpq-contact-field="purpose">
       <input type="hidden" name="contact[mood]" value="" data-cpq-contact-field="mood">
       <input type="hidden" name="contact[fragrance_families]" value="" data-cpq-contact-field="families">
-      <input type="hidden" name="contact[zodiac]" value="" data-cpq-contact-field="zodiac">
-      <input type="hidden" name="contact[planet]" value="" data-cpq-contact-field="planet">
-      <input type="hidden" name="contact[nakshatra]" value="" data-cpq-contact-field="nakshatra">
       <input type="hidden" name="contact[intensity]" value="" data-cpq-contact-field="intensity">
       <input type="hidden" name="contact[date_of_birth]" value="" data-cpq-contact-field="dob">
       <input type="hidden" name="contact[birth_time]" value="" data-cpq-contact-field="birthTime">
@@ -172,30 +169,30 @@
         {%- comment -%} Step 3 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="3" hidden>
           <legend class="cpq__step-title">Usage time</legend>
-          <p class="cpq__step-sub">When will you wear this fragrance?</p>
-          <div class="cpq__choices cpq__choices--chips" data-cpq-group="purpose" data-cpq-required>
+          <p class="cpq__step-sub">When will you wear this fragrance? Select 2 to 3 options.</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="purpose" data-cpq-required data-cpq-multi data-cpq-min="2" data-cpq-max="3">
             {%- assign cpq_purposes = 'Everyday|daily,Work|office,Sports|sports,Meditation|meditation,Stress relief|stress,Spiritual|spiritual,Gift|gifting,Special event|special' | split: ',' -%}
             {%- for cpq_p in cpq_purposes -%}
               {%- assign cpq_pp = cpq_p | split: '|' -%}
               <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_pp[1] }}" aria-pressed="false">{{ cpq_pp[0] }}</button>
             {%- endfor -%}
           </div>
+          <p class="cpq__hint" data-cpq-hint="purpose">Choose at least 2, up to 3.</p>
         </fieldset>
 
         {%- comment -%} Step 4 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="4" hidden>
           <legend class="cpq__step-title">Mood</legend>
-          <p class="cpq__step-sub">How should it feel on you?</p>
-          <div class="cpq__choices cpq__choices--chips" data-cpq-group="mood" data-cpq-required>
+          <p class="cpq__step-sub">How should it feel on you? Select 2 to 3 options.</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="mood" data-cpq-required data-cpq-multi data-cpq-min="2" data-cpq-max="3">
             {%- assign cpq_moods = 'Calm|calm,Happy|happy,Fresh|fresh,Warm|warm,Romantic|romantic,Bold|bold,Relaxed|relaxed,Confident|confident' | split: ',' -%}
             {%- for cpq_m in cpq_moods -%}
               {%- assign cpq_mp = cpq_m | split: '|' -%}
               <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_mp[1] }}" aria-pressed="false">{{ cpq_mp[0] }}</button>
             {%- endfor -%}
           </div>
+          <p class="cpq__hint" data-cpq-hint="mood">Choose at least 2, up to 3.</p>
         </fieldset>
-
-        {%- comment -%} Step 5 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="5" hidden>
           <legend class="cpq__step-title">Notes</legend>
           <p class="cpq__step-sub">Tap the notes you like. You can pick more than one.</p>
@@ -228,69 +225,6 @@
           <legend class="cpq__step-title">Cosmic alignment</legend>
           <p class="cpq__step-sub">Optional. Skip anything you do not know.</p>
           <div class="cpq__astro-grid">
-            <div class="cpq__field">
-              <label class="cpq__label" for="cpq-zodiac-{{ cpq_uid }}">Zodiac sign</label>
-              <select class="cpq__select" id="cpq-zodiac-{{ cpq_uid }}" name="zodiac" data-cpq-field="zodiac">
-                <option value="">Prefer not to say</option>
-                <option value="aries">Aries (Mesh)</option>
-                <option value="taurus">Taurus (Vrishabh)</option>
-                <option value="gemini">Gemini (Mithun)</option>
-                <option value="cancer">Cancer (Kark)</option>
-                <option value="leo">Leo (Simha)</option>
-                <option value="virgo">Virgo (Kanya)</option>
-                <option value="libra">Libra (Tula)</option>
-                <option value="scorpio">Scorpio (Vrishchik)</option>
-                <option value="sagittarius">Sagittarius (Dhanu)</option>
-                <option value="capricorn">Capricorn (Makar)</option>
-                <option value="aquarius">Aquarius (Kumbh)</option>
-                <option value="pisces">Pisces (Meen)</option>
-              </select>
-            </div>
-            <div class="cpq__field">
-              <label class="cpq__label" for="cpq-planet-{{ cpq_uid }}">Planet</label>
-              <select class="cpq__select" id="cpq-planet-{{ cpq_uid }}" name="planet" data-cpq-field="planet">
-                <option value="">Prefer not to say</option>
-                <option value="surya">Sun (Surya)</option>
-                <option value="chandra">Moon (Chandra)</option>
-                <option value="mangal">Mars (Mangal)</option>
-                <option value="budh">Mercury (Budh)</option>
-                <option value="guru">Jupiter (Guru)</option>
-                <option value="shukra">Venus (Shukra)</option>
-                <option value="shani">Saturn (Shani)</option>
-                <option value="rahu">Rahu</option>
-                <option value="ketu">Ketu</option>
-              </select>
-            </div>
-            <div class="cpq__field">
-              <label class="cpq__label" for="cpq-nakshatra-{{ cpq_uid }}">Nakshatra</label>
-              <select class="cpq__select" id="cpq-nakshatra-{{ cpq_uid }}" name="nakshatra" data-cpq-field="nakshatra">
-                <option value="">Prefer not to say</option>
-                <option value="ashwini">Ashwini</option>
-                <option value="bharani">Bharani</option>
-                <option value="krittika">Krittika</option>
-                <option value="rohini">Rohini</option>
-                <option value="mrigashira">Mrigashira</option>
-                <option value="ardra">Ardra</option>
-                <option value="punarvasu">Punarvasu</option>
-                <option value="pushya">Pushya</option>
-                <option value="ashlesha">Ashlesha</option>
-                <option value="magha">Magha</option>
-                <option value="phalguni">Phalguni</option>
-                <option value="hasta">Hasta</option>
-                <option value="chitra">Chitra</option>
-                <option value="swati">Swati</option>
-                <option value="vishakha">Vishakha</option>
-                <option value="anuradha">Anuradha</option>
-                <option value="jyeshtha">Jyeshtha</option>
-                <option value="mula">Mula</option>
-                <option value="ashadha">Ashadha</option>
-                <option value="shravana">Shravana</option>
-                <option value="dhanishtha">Dhanishtha</option>
-                <option value="shatabhisha">Shatabhisha</option>
-                <option value="bhadrapada">Bhadrapada</option>
-                <option value="revati">Revati</option>
-              </select>
-            </div>
             <div class="cpq__field">
               <label class="cpq__label" for="cpq-dob-{{ cpq_uid }}">Date of birth <span class="cpq__opt">(optional)</span></label>
               <input class="cpq__input" id="cpq-dob-{{ cpq_uid }}" name="dob" type="date" data-cpq-field="dob" autocomplete="bday">
@@ -374,8 +308,8 @@
               <div class="cpq__faq-a"><p>Yes. Our attars are concentrated, alcohol-free perfume oils designed for intimate, long-lasting wear on skin.</p></div>
             </details>
             <details class="cpq__faq-item">
-              <summary class="cpq__faq-q">Can I use zodiac or birth details?</summary>
-              <div class="cpq__faq-a"><p>Yes. Optional zodiac, planet, nakshatra, date, time, and place of birth help surface zodiac attars, planet attars, and nakshatra attars that resonate with your profile.</p></div>
+              <summary class="cpq__faq-q">Can I add birth details?</summary>
+              <div class="cpq__faq-a"><p>Yes. Optional date, time, and place of birth help us tailor recommendations when you know them.</p></div>
             </details>
           {%- endif -%}
         </div>
@@ -421,12 +355,9 @@
   var total = 7;
   var answers = {
     fragranceType: '',
-    purpose: '',
-    mood: '',
+    purpose: [],
+    mood: [],
     families: [],
-    zodiac: '',
-    planet: '',
-    nakshatra: '',
     dob: '',
     birthTime: '',
     birthLocation: '',
@@ -489,13 +420,55 @@
     }
   }
 
+  function normalizeMultiAnswers() {
+    ['purpose', 'mood', 'families'].forEach(function (key) {
+      if (typeof answers[key] === 'string') {
+        answers[key] = answers[key] ? [answers[key]] : [];
+      } else if (!Array.isArray(answers[key])) {
+        answers[key] = [];
+      }
+    });
+  }
+
+  function getGroupLimits(group) {
+    var min = parseInt(group.getAttribute('data-cpq-min') || '1', 10);
+    var max = parseInt(group.getAttribute('data-cpq-max') || '0', 10);
+    if (isNaN(min) || min < 1) min = 1;
+    if (isNaN(max) || max < 0) max = 0;
+    return { min: min, max: max };
+  }
+
+  function updateMultiHint(group) {
+    if (!group) return;
+    var key = group.getAttribute('data-cpq-group');
+    var hint = root.querySelector('[data-cpq-hint="' + key + '"]');
+    if (!hint) return;
+    var limits = getGroupLimits(group);
+    var count = answers[key] ? answers[key].length : 0;
+    if (limits.max > 0) {
+      hint.textContent = count + ' of ' + limits.max + ' selected (minimum ' + limits.min + ').';
+    } else if (limits.min > 1) {
+      hint.textContent = count + ' selected (minimum ' + limits.min + ').';
+    }
+    hint.classList.toggle('is-valid', count >= limits.min && (limits.max === 0 || count <= limits.max));
+  }
+
+  function validateMultiGroup(group) {
+    var key = group.getAttribute('data-cpq-group');
+    var limits = getGroupLimits(group);
+    var count = answers[key] ? answers[key].length : 0;
+    if (count < limits.min) return false;
+    if (limits.max > 0 && count > limits.max) return false;
+    return true;
+  }
+
   function getGroupEl(stepNum) {
     var step = steps.find(function (s) { return parseInt(s.getAttribute('data-cpq-step'), 10) === stepNum; });
     return step;
   }
 
   function readAnswers() {
-    ['zodiac', 'planet', 'nakshatra', 'dob', 'birthTime', 'birthLocation'].forEach(function (key) {
+    ['dob', 'birthTime', 'birthLocation'].forEach(function (key) {
       var el = root.querySelector('[data-cpq-field="' + key + '"]');
       answers[key] = el ? (el.value || '').trim() : '';
     });
@@ -533,9 +506,6 @@
       'Purpose: ' + humanizeValue(answers.purpose),
       'Mood: ' + humanizeValue(answers.mood),
       'Fragrance families: ' + humanizeValue(answers.families),
-      'Zodiac: ' + humanizeValue(answers.zodiac),
-      'Planet: ' + humanizeValue(answers.planet),
-      'Nakshatra: ' + humanizeValue(answers.nakshatra),
       'Intensity: ' + humanizeValue(answers.intensity)
     ];
     if (answers.dob) lines.push('Date of birth: ' + answers.dob);
@@ -557,9 +527,6 @@
     setHiddenContactField('purpose', humanizeValue(answers.purpose));
     setHiddenContactField('mood', humanizeValue(answers.mood));
     setHiddenContactField('families', humanizeValue(answers.families));
-    setHiddenContactField('zodiac', humanizeValue(answers.zodiac));
-    setHiddenContactField('planet', humanizeValue(answers.planet));
-    setHiddenContactField('nakshatra', humanizeValue(answers.nakshatra));
     setHiddenContactField('intensity', humanizeValue(answers.intensity));
     setHiddenContactField('dob', answers.dob || '');
     setHiddenContactField('birthTime', answers.birthTime || '');
@@ -588,6 +555,7 @@
   }
 
   function restoreChoiceUI() {
+    normalizeMultiAnswers();
     root.querySelectorAll('[data-cpq-group]').forEach(function (group) {
       var key = group.getAttribute('data-cpq-group');
       var isMulti = group.hasAttribute('data-cpq-multi');
@@ -597,6 +565,7 @@
         var on = isMulti ? (val && val.indexOf(v) >= 0) : val === v;
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
+      if (isMulti) updateMultiHint(group);
     });
   }
 
@@ -608,6 +577,7 @@
     Object.keys(saved.answers).forEach(function (key) {
       if (answers.hasOwnProperty(key)) answers[key] = saved.answers[key];
     });
+    normalizeMultiAnswers();
     if (saved.step) showStep(saved.step, -1);
     restoreChoiceUI();
     populateContactForm();
@@ -627,19 +597,21 @@
       var groupKey = g.getAttribute('data-cpq-group');
       var isMulti = g.hasAttribute('data-cpq-multi');
       if (isMulti) {
-        if (!answers[groupKey] || answers[groupKey].length === 0) return false;
+        if (!validateMultiGroup(g)) return false;
       } else if (!answers[groupKey]) return false;
     }
     return true;
   }
 
   function bindChoices() {
+    normalizeMultiAnswers();
     root.querySelectorAll('[data-cpq-group]').forEach(function (group) {
       var key = group.getAttribute('data-cpq-group');
       var isMulti = group.hasAttribute('data-cpq-multi');
       if (answers[key] === undefined || answers[key] === null) {
         answers[key] = isMulti ? [] : '';
       }
+      if (isMulti) updateMultiHint(group);
     });
     if (!quizPanel) return;
     quizPanel.addEventListener('click', function (e) {
@@ -656,9 +628,16 @@
           answers[key].splice(idx, 1);
           btn.setAttribute('aria-pressed', 'false');
         } else {
+          var limits = getGroupLimits(group);
+          if (limits.max > 0 && answers[key].length >= limits.max) {
+            group.classList.add('is-limit');
+            setTimeout(function () { group.classList.remove('is-limit'); }, 350);
+            return;
+          }
           answers[key].push(val);
           btn.setAttribute('aria-pressed', 'true');
         }
+        updateMultiHint(group);
       } else {
         group.querySelectorAll('[data-cpq-value]').forEach(function (b) {
           b.setAttribute('aria-pressed', 'false');
@@ -787,10 +766,10 @@
           },
           {
             "@type": "Question",
-            "name": "Can I use zodiac or birth details?",
+            "name": "Can I add birth details?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Optional zodiac, planet, nakshatra, date, time, and place of birth help surface zodiac attars, planet attars, and nakshatra attars that resonate with your profile."
+              "text": "Yes. Optional date, time, and place of birth help us tailor recommendations when you know them."
             }
           }
         ]

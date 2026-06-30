@@ -1,0 +1,43 @@
+{%- comment -%}
+  Trust Marquee item. Params: block, title, icon, subtitle, show_subtitle, image, editable
+{%- endcomment -%}
+{%- liquid
+  assign tmq_title = title | default: block.settings.title
+  assign tmq_icon = icon | default: block.settings.icon | default: 'organic'
+  assign tmq_subtitle = subtitle | default: block.settings.subtitle
+  assign tmq_image = image | default: block.settings.custom_icon
+  assign tmq_show_sub = false
+  if show_subtitle
+    assign tmq_show_sub = true
+  endif
+  if block != blank and block.settings.show_subtitle
+    assign tmq_show_sub = true
+  endif
+-%}
+<li
+  class="tmq__item"
+  role="listitem"
+  {% if editable and block != blank %}{{ block.shopify_attributes }}{% endif %}
+>
+  <div class="tmq__icon-wrap">
+    {%- if tmq_image != blank -%}
+      {{
+        tmq_image
+        | image_url: width: 140
+        | image_tag:
+          class: 'tmq__img',
+          loading: 'lazy',
+          decoding: 'async',
+          widths: '70, 140',
+          sizes: '34px',
+          alt: ''
+      }}
+    {%- else -%}
+      {% render 'tmq-icon', icon: tmq_icon %}
+    {%- endif -%}
+  </div>
+  <p class="tmq__title">{{ tmq_title | escape }}</p>
+  {%- if tmq_show_sub and tmq_subtitle != blank -%}
+    <p class="tmq__subtitle">{{ tmq_subtitle | escape }}</p>
+  {%- endif -%}
+</li>

@@ -441,6 +441,27 @@
   color: var(--cpq-soft);
 }
 
+.cpq__hint.is-valid {
+  color: var(--cpq-muted);
+}
+
+.cpq__choices.is-limit {
+  animation: cpqLimitShake 0.35s ease;
+}
+
+@keyframes cpqLimitShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
 /* Pills (strength) */
 .cpq__pills {
   display: grid;

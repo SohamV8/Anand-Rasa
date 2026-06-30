@@ -2,17 +2,20 @@
   Single carousel card.
   @param block {object}
   @param editable {boolean}
+  @param priority {boolean} — fetchpriority for first visible poster
+  @param poster_quality {string} — YouTube thumbnail size key
 {%- endcomment -%}
 {%- liquid
   capture bev_id
     render 'bev-youtube-id', url: block.settings.youtube_url
   endcapture
   assign bev_id = bev_id | strip
+  assign bev_poster = poster_quality | default: 'hqdefault'
 -%}
 {%- if bev_id != blank -%}
   {%- assign bev_label = block.settings.title | default: 'Brand experience video' | escape -%}
-  <article
-    class="bev-card"
+  <li
+    class="bev__slot bev-card"
     data-brand-videos-card
     data-video-id="{{ bev_id }}"
     data-video-title="{{ bev_label }}"
@@ -22,19 +25,25 @@
       <span class="bev-card__frame">
         <img
           class="bev-card__poster"
-          src="https://i.ytimg.com/vi/{{ bev_id }}/hqdefault.jpg"
+          src="https://i.ytimg.com/vi/{{ bev_id }}/{{ bev_poster }}.jpg"
+          srcset="
+            https://i.ytimg.com/vi/{{ bev_id }}/mqdefault.jpg 320w,
+            https://i.ytimg.com/vi/{{ bev_id }}/hqdefault.jpg 480w,
+            https://i.ytimg.com/vi/{{ bev_id }}/sddefault.jpg 640w
+          "
+          sizes="(max-width: 749px) 52vw, (max-width: 989px) 28vw, 14vw"
           alt=""
           width="480"
           height="854"
-          loading="lazy"
+          {% if priority %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
           decoding="async"
         >
-        <span class="bev-card__embed" data-brand-videos-embed></span>
+        <span class="bev-card__embed" data-brand-videos-embed aria-hidden="true"></span>
       </span>
     </button>
-  </article>
+  </li>
 {%- elsif block.settings.youtube_url != blank -%}
-  <article class="bev-card bev-card--error" {% if editable %}{{ block.shopify_attributes }}{% endif %}>
+  <li class="bev__slot bev-card bev-card--error" {% if editable %}{{ block.shopify_attributes }}{% endif %}>
     <p class="bev-card__error">Video unavailable</p>
-  </article>
+  </li>
 {%- endif -%}

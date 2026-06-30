@@ -4,6 +4,9 @@
 {% endcomment %}
 
 {{ 'premium-collections.css' | asset_url | stylesheet_tag }}
+{{ 'three.min.js' | asset_url | script_tag }}
+{{ 'vanta.clouds.min.js' | asset_url | script_tag }}
+{{ 'hero-vanta.js' | asset_url | script_tag }}
 <script src="{{ 'premium-collections.js' | asset_url }}" defer></script>
 
 {%- liquid
@@ -215,7 +218,7 @@
   {%- if section.settings.show_finder_cta -%}
     <section class="pcl-finder js-pcl-finder pcl__wrap" aria-labelledby="pcl-finder-heading">
       <a href="{{ pcl_finder_url }}" class="pcl-finder__link" aria-label="{{ pcl_finder_title | strip_html | escape }} — {{ pcl_finder_cta | strip_html | escape }}">
-        <div class="pcl-finder__inner">
+        <div class="pcl-finder__inner hero-vanta">
           <div class="pcl-finder__copy">
             <h2 id="pcl-finder-heading" class="pcl-finder__title">{{ pcl_finder_title | escape }}</h2>
             {%- if pcl_finder_desc != blank -%}

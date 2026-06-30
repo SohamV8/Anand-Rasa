@@ -141,6 +141,35 @@
         "settings": {
           "color_scheme": "scheme-1"
         }
+      },
+      "trust-marquee": {
+        "type": "trust-marquee",
+        "blocks": {
+          "tmq-1": { "type": "trust_item", "settings": { "icon": "organic", "title": "Organic" } },
+          "tmq-2": { "type": "trust_item", "settings": { "icon": "clean_beauty", "title": "Clean Beauty" } },
+          "tmq-3": { "type": "trust_item", "settings": { "icon": "ethically_sourced", "title": "Ethically Sourced" } },
+          "tmq-4": { "type": "trust_item", "settings": { "icon": "hypoallergenic", "title": "Hypoallergenic" } },
+          "tmq-5": { "type": "trust_item", "settings": { "icon": "non_toxic", "title": "Non Toxic" } },
+          "tmq-6": { "type": "trust_item", "settings": { "icon": "paraben_free", "title": "Paraben Free" } },
+          "tmq-7": { "type": "trust_item", "settings": { "icon": "sulphate_free", "title": "Sulphate Free" } },
+          "tmq-8": { "type": "trust_item", "settings": { "icon": "cruelty_free", "title": "Cruelty Free" } },
+          "tmq-9": { "type": "trust_item", "settings": { "icon": "made_in_india", "title": "Made in India" } },
+          "tmq-10": { "type": "trust_item", "settings": { "icon": "handcrafted", "title": "Handcrafted" } },
+          "tmq-11": { "type": "trust_item", "settings": { "icon": "long_lasting", "title": "Long Lasting" } },
+          "tmq-12": { "type": "trust_item", "settings": { "icon": "vegan", "title": "Vegan" } },
+          "tmq-13": { "type": "trust_item", "settings": { "icon": "ifra_compliant", "title": "IFRA Compliant" } }
+        },
+        "block_order": [
+          "tmq-1", "tmq-2", "tmq-3", "tmq-4", "tmq-5", "tmq-6", "tmq-7",
+          "tmq-8", "tmq-9", "tmq-10", "tmq-11", "tmq-12", "tmq-13"
+        ],
+        "settings": {
+          "enable_section": true,
+          "accessibility_label": "Product trust highlights",
+          "marquee_speed": 5,
+          "pause_on_hover": true,
+          "show_subtitles": false
+        }
       }
     },
     "content_for_index": [],

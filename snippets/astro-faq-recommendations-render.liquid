@@ -241,7 +241,11 @@
               aria-label="Previous products"
               aria-controls="{{ afr_uid }}-track"
             >
-              <span class="afr__track-btn-icon" aria-hidden="true">←</span>
+              <span class="afr__track-btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </span>
             </button>
             <ul
               class="afr__track"
@@ -265,7 +269,11 @@
               aria-label="Next products"
               aria-controls="{{ afr_uid }}-track"
             >
-              <span class="afr__track-btn-icon" aria-hidden="true">→</span>
+              <span class="afr__track-btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </span>
             </button>
           {%- else -%}
             <p class="afr__empty">{{ afr_empty_message }}</p>

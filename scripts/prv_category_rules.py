@@ -4,7 +4,9 @@
 BANNED_BODY_PATTERNS = [
     r"\{\{\s*prv_short\s*\}\}",
     r"\bprv_short\b",
+    r"[—–]",
     r"\bnatural ingredients\b",
+    r"\blong lasting\b",
     r"\bpremium texture\b",
     r"\bsolar glow\b",
     r"\bcrown light\b",
@@ -12,12 +14,21 @@ BANNED_BODY_PATTERNS = [
     r"\b(pure|woody|floral|sandalwood|resin)\s+notes\b",
     r"\bdry-down\b",
     r"\bsillage\b",
-    r"\bprojection\b",
     r"\bcured my\b",
     r"\bhealed my\b",
     r"\bchanged my destiny\b",
     r"\bgraha dosha\b",
     r"\b(cured my|healed my|it's a miracle|ye miracle|miracle cure)\b",
+    r"\b(festival week|repeat buy|friend referral|gift story|travel memory|portable ritual)\b",
+    r"\b(mother'?s day|crowd mein kaam|uncha staple|reorder already)\b",
+    r"\b(honestly|repeat buy|gift story|festival week)\s*[—–,]\s*",
+]
+
+FRAGMENT_PATTERNS = [
+    r"^[A-Z][a-z]+ (week|buy|story|referral|memory|ritual)\b",
+    r"\b(pleasantly stuck|daily now|memory scent)\b",
+    r"\.\s*[A-Z][a-z]{2,8}\.$",
+    r"\b(portable ritual|travel memory scent)\b",
 ]
 
 FORBIDDEN = {
