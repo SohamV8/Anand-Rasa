@@ -55,6 +55,8 @@
           sizes="(min-width:1024px) 55vw, 100vw"
           alt="{{ ar_home_hero_alt | strip | escape }}"
           title="{{ section.settings.hero_headline | default: shop.name | escape }}"
+          width="{{ section.settings.hero_image.width }}"
+          height="{{ section.settings.hero_image.height }}"
           loading="eager"
           fetchpriority="high"
           decoding="async"

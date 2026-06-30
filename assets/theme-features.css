@@ -4,7 +4,7 @@
    ============================================================================= */
 
 /* ----- theme-gift-impact.css ----- */
-@import url('https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap');
+/* Perf: removed redundant Google Fonts @import — Caudex + Poppins are already loaded site-wide via the <link> in theme.liquid (all weights covered). Typography unchanged. */
 
 .shopify-section.section-lgi {
   background: #faf8f4;

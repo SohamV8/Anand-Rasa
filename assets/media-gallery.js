@@ -32,6 +32,17 @@ if (!customElements.get('media-gallery')) {
         }
       }
 
+      // Perf/memory: tear down the autoplay interval and modal MutationObserver
+      // when the element leaves the DOM (navigation / Theme Editor section reload)
+      // so they don't leak. No behavioural change while connected.
+      disconnectedCallback() {
+        if (typeof this._lmgClearTimers === 'function') this._lmgClearTimers();
+        if (this._lmgModalObserver) {
+          this._lmgModalObserver.disconnect();
+          this._lmgModalObserver = null;
+        }
+      }
+
       initLuxuryAutoplay() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (this.dataset.lmgAutoplay === 'off') return;
@@ -94,6 +105,7 @@ if (!customElements.get('media-gallery')) {
 
         this._lmgPauseAutoplay = pause;
         this._lmgResumeAutoplay = resume;
+        this._lmgClearTimers = clearTimers;
 
         const originalSetActiveMedia = this.setActiveMedia.bind(this);
         this.setActiveMedia = (mediaId, prepend) => {
@@ -128,6 +140,7 @@ if (!customElements.get('media-gallery')) {
             else resume();
           });
           modalObserver.observe(modal, { attributes: true, attributeFilter: ['open'] });
+          this._lmgModalObserver = modalObserver;
         }
 
         document.addEventListener('visibilitychange', () => {

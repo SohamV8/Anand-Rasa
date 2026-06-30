@@ -39,6 +39,7 @@
   </div>
 </section>
 
-{{ 'three.min.js' | asset_url | script_tag }}
-{{ 'vanta.clouds.min.js' | asset_url | script_tag }}
-{{ 'hero-vanta.js' | asset_url | script_tag }}
+{%- comment -%} Perf: WebGL hero stack deferred (was render-blocking script_tag). hero-vanta.js lazy-inits via IntersectionObserver on window load, so defer keeps visuals identical while unblocking HTML parse / LCP. {%- endcomment -%}
+<script src="{{ 'three.min.js' | asset_url }}" defer></script>
+<script src="{{ 'vanta.clouds.min.js' | asset_url }}" defer></script>
+<script src="{{ 'hero-vanta.js' | asset_url }}" defer></script>

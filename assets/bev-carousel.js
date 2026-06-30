@@ -294,6 +294,14 @@
       const dt = Math.min(64, ts - this.#lastTs);
       this.#lastTs = ts;
 
+      // Perf: when scrolled out of view the carousel is invisible, so skip the
+      // per-frame 3D transforms/filters and video sync (videos already detached
+      // via setOffscreen). Keeps the loop alive to resume instantly when shown.
+      if (this.#offscreen) {
+        this.#raf = requestAnimationFrame(this.#tick);
+        return;
+      }
+
       if (!this.#drag.active && Math.abs(this.#drag.velocity) > 0.01) {
         this.#offset += this.#drag.velocity * dt;
         this.#drag.velocity *= 0.94;

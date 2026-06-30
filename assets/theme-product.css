@@ -732,7 +732,7 @@
 
 
 /* ===== navagraha-mantra.css ===== */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap');
+/* Perf: removed duplicate @import (identical to the one at the top of this file). A mid-file @import is invalid CSS and was ignored by browsers anyway. Fonts still load from the top-of-file @import. */
 
 .ng-mantra {
   --ng-ivory: #f7f2ea;

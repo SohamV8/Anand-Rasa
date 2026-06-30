@@ -38,6 +38,9 @@
     var dragStartX = 0;
     var dragStartOffset = 0;
     var rafId = 0;
+    var visible = true;
+    var io = null;
+    var resizeTimer = 0;
     var autoSpeed = loop ? parseFloat(root.getAttribute('data-arc-speed')) || 0.45 : 0;
 
     function readGap() {
@@ -89,13 +92,27 @@
     }
 
     function tick() {
-      if (!loop) return;
       if (!paused && !dragging && !REDUCED) {
         offset -= autoSpeed;
         normalize();
         apply();
       }
       rafId = window.requestAnimationFrame(tick);
+    }
+
+    // Perf: only run the rAF auto-scroll while the carousel is on-screen and the
+    // tab is visible. Animation is invisible when offscreen/hidden, so this is
+    // visually identical but eliminates the always-on main-thread loop.
+    function startLoop() {
+      if (rafId || !loop || REDUCED) return;
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    function stopLoop() {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
     }
 
     function nudge(dx) {
@@ -166,12 +183,42 @@
     }
 
     measure();
-    window.addEventListener('resize', measure);
-    if (loop && !REDUCED) tick();
 
-    return function () {
-      window.cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', measure);
+    function onResize() {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(measure, 150);
+    }
+    window.addEventListener('resize', onResize);
+
+    function onVisibility() {
+      if (document.hidden) stopLoop();
+      else if (visible) startLoop();
+    }
+    document.addEventListener('visibilitychange', onVisibility);
+
+    if (loop && !REDUCED && 'IntersectionObserver' in window) {
+      io = new IntersectionObserver(
+        function (entries) {
+          visible = entries[0].isIntersecting;
+          if (visible && !document.hidden) startLoop();
+          else stopLoop();
+        },
+        { rootMargin: '120px 0px' }
+      );
+      io.observe(viewport);
+    } else if (loop && !REDUCED) {
+      startLoop();
+    }
+
+    return function destroy() {
+      stopLoop();
+      window.clearTimeout(resizeTimer);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (io) {
+        io.disconnect();
+        io = null;
+      }
     };
   }
 
@@ -194,8 +241,29 @@
     obs.observe(root);
   }
 
-  document.querySelectorAll('[data-arc-root]').forEach(function (root) {
-    initReveal(root);
-    initCarousel(root.querySelector('[data-arc-carousel]'));
+  function boot(scope) {
+    (scope || document).querySelectorAll('[data-arc-root]').forEach(function (root) {
+      if (root.__arcBooted) return;
+      root.__arcBooted = true;
+      initReveal(root);
+      var carousel = root.querySelector('[data-arc-carousel]');
+      if (carousel) {
+        root.__arcDestroy = initCarousel(carousel);
+      }
+    });
+  }
+
+  boot(document);
+
+  // Theme editor: tear down / re-init cleanly so observers and rAF don't leak.
+  document.addEventListener('shopify:section:load', function (e) {
+    boot(e.target);
+  });
+  document.addEventListener('shopify:section:unload', function (e) {
+    e.target.querySelectorAll('[data-arc-root]').forEach(function (root) {
+      if (typeof root.__arcDestroy === 'function') root.__arcDestroy();
+      root.__arcDestroy = null;
+      root.__arcBooted = false;
+    });
   });
 })();
