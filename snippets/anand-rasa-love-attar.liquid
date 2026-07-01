@@ -666,9 +666,56 @@
       {%- if collection != blank and collection.products_count > 0 -%}
         <div class="ar-love__grid">
           {%- for product in collection.products limit: 6 -%}
+            {%- comment -%} Resolve the product's showcase image from /assets/ via the shared lookups (same cascade as card-product): chakra → nakshatra → incense → bestseller. Falls back to the product's featured image. {%- endcomment -%}
+            {%- liquid
+              assign love_asset_img = ''
+              capture love_ck
+                render 'chakra-image-lookup', ck_product: product
+              endcapture
+              assign love_ck = love_ck | strip
+              if love_ck != blank
+                assign love_asset_img = love_ck | asset_url
+              endif
+              if love_asset_img == blank
+                capture love_nk
+                  render 'nakshatra-image-lookup', nk_product: product
+                endcapture
+                assign love_nk = love_nk | strip
+                if love_nk != blank
+                  assign love_asset_img = love_nk | asset_url
+                endif
+              endif
+              if love_asset_img == blank
+                capture love_inc
+                  render 'incense-image-lookup', inc_product: product
+                endcapture
+                assign love_inc = love_inc | strip
+                if love_inc != blank
+                  assign love_asset_img = love_inc | asset_url
+                endif
+              endif
+              if love_asset_img == blank
+                capture love_bs
+                  render 'bestseller-image-lookup', bs_product: product
+                endcapture
+                assign love_bs = love_bs | strip
+                if love_bs != blank
+                  assign love_asset_img = love_bs | asset_url
+                endif
+              endif
+            -%}
             <article class="ar-love__card">
               <a href="{{ product.url }}" class="ar-love__card-img">
-                {%- if product.featured_image -%}
+                {%- if love_asset_img != blank -%}
+                  <img
+                    src="{{ love_asset_img }}"
+                    alt="{{ product.title | escape }}"
+                    width="720"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {%- elsif product.featured_image -%}
                   <img
                     src="{{ product.featured_image | image_url: width: 720 }}"
                     alt="{{ product.featured_image.alt | default: product.title | escape }}"
