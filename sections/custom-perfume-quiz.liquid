@@ -169,29 +169,29 @@
         {%- comment -%} Step 3 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="3" hidden>
           <legend class="cpq__step-title">Usage time</legend>
-          <p class="cpq__step-sub">When will you wear this fragrance? Select 2 to 3 options.</p>
-          <div class="cpq__choices cpq__choices--chips" data-cpq-group="purpose" data-cpq-required data-cpq-multi data-cpq-min="2" data-cpq-max="3">
+          <p class="cpq__step-sub">When will you wear this fragrance? Select any that apply (optional).</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="purpose" data-cpq-multi>
             {%- assign cpq_purposes = 'Everyday|daily,Work|office,Sports|sports,Meditation|meditation,Stress relief|stress,Spiritual|spiritual,Gift|gifting,Special event|special' | split: ',' -%}
             {%- for cpq_p in cpq_purposes -%}
               {%- assign cpq_pp = cpq_p | split: '|' -%}
               <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_pp[1] }}" aria-pressed="false">{{ cpq_pp[0] }}</button>
             {%- endfor -%}
           </div>
-          <p class="cpq__hint" data-cpq-hint="purpose">Choose at least 2, up to 3.</p>
+          <p class="cpq__hint" data-cpq-hint="purpose" hidden></p>
         </fieldset>
 
         {%- comment -%} Step 4 {%- endcomment -%}
         <fieldset class="cpq__step" data-cpq-step="4" hidden>
           <legend class="cpq__step-title">Mood</legend>
-          <p class="cpq__step-sub">How should it feel on you? Select 2 to 3 options.</p>
-          <div class="cpq__choices cpq__choices--chips" data-cpq-group="mood" data-cpq-required data-cpq-multi data-cpq-min="2" data-cpq-max="3">
+          <p class="cpq__step-sub">How should it feel on you? Select any that apply (optional).</p>
+          <div class="cpq__choices cpq__choices--chips" data-cpq-group="mood" data-cpq-multi>
             {%- assign cpq_moods = 'Calm|calm,Happy|happy,Fresh|fresh,Warm|warm,Romantic|romantic,Bold|bold,Relaxed|relaxed,Confident|confident' | split: ',' -%}
             {%- for cpq_m in cpq_moods -%}
               {%- assign cpq_mp = cpq_m | split: '|' -%}
               <button type="button" class="cpq__choice" data-cpq-value="{{ cpq_mp[1] }}" aria-pressed="false">{{ cpq_mp[0] }}</button>
             {%- endfor -%}
           </div>
-          <p class="cpq__hint" data-cpq-hint="mood">Choose at least 2, up to 3.</p>
+          <p class="cpq__hint" data-cpq-hint="mood" hidden></p>
         </fieldset>
         <fieldset class="cpq__step" data-cpq-step="5" hidden>
           <legend class="cpq__step-title">Notes</legend>

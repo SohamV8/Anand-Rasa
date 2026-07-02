@@ -32,7 +32,7 @@
         <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t2_label | default: 'Shop Now' }}</span></div>
       </a>
       <a href="{{ ar_trio_t3_url }}" class="ar-trio__card">
-        {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Love Attars' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<img src="{{ 'love.webp' | asset_url }}" alt="Love Attars" width="800" height="600" loading="lazy" class="ar-trio__img">{%- endif -%}
+        {%- if section.settings.t3_image != blank -%}<img src="{{ section.settings.t3_image | image_url: width: 800 }}" alt="{{ section.settings.t3_image.alt | default: 'Prem Rasa' }}" width="800" height="600" loading="lazy" class="ar-trio__img">{%- else -%}<img src="{{ 'love.webp' | asset_url }}" alt="Prem Rasa" width="800" height="600" loading="lazy" class="ar-trio__img">{%- endif -%}
         <div class="ar-trio__ov"></div>
         <div class="ar-trio__cta-wrap"><span class="ar-trio__cta">{{ section.settings.t3_label | default: 'Shop Now' }}</span></div>
       </a>

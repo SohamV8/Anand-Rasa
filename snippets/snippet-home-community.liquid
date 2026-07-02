@@ -8,9 +8,9 @@
   assign arc_logo = section.settings.community_logo | default: blank
   assign arc_logo_asset = 'anand-rasa-logo-black.png'
   assign arc_form_id = 'arc-newsletter-' | append: section.id
-  assign arc_community_keys = 'soham_vashist_8|vinayakrao27_|vashist_shubham_2005' | split: '|'
-  assign arc_handles = '@soham_vashist_8|@vinayakrao27_|@vashist_shubham_2005' | split: '|'
-  assign arc_ph_hues = '38|145|350' | split: '|'
+  assign arc_community_keys = 'soham_vashist_8|vinayakrao27_|vashist_shubham_2005|jeuti__sarma__|secretlifeeof_gunnn|siyayadav._' | split: '|'
+  assign arc_handles = '@soham_vashist_8|@vinayakrao27_|@vashist_shubham_2005|@jeuti__sarma__|@secretlifeeof_gunnn|@siyayadav._' | split: '|'
+  assign arc_ph_hues = '38|145|350|200|280|45' | split: '|'
   assign arc_cities = '|' | split: '|'
   assign arc_speed = section.settings.community_carousel_speed | default: 5 | times: 0.1
 -%}
@@ -157,10 +157,10 @@
     transform: translate3d(0, -3px, 0);
   }
 
-  /* Square image frame */
+  /* Portrait image frame (4:5) */
   .arc-card__media {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
     background: #f2f0ed;
   }

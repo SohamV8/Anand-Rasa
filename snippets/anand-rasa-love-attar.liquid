@@ -1,5 +1,5 @@
 {% comment %}
-  ANAND RASA — Love Attar · Floating Petals Section
+  ANAND RASA — Prem Rasa · Floating Petals Section
   sections/anand-rasa-love-attar.liquid
   Upper border (border1.webp) + Floating petals + Content + Lower border (border.webp)
 {% endcomment %}
@@ -56,6 +56,8 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+  /* Match the product showcase so the border's transparent area blends in (no white gap) */
+  background: #FFF398;
 }
 .ar-love__border-top img {
   width: 100%;
@@ -130,7 +132,7 @@
   z-index: 40;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 48px 96px;
+  padding: 56px 48px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -140,7 +142,7 @@
 /* ── Section header ── */
 .ar-love__header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 0;
 }
 
 .ar-love__eyebrow {
@@ -151,8 +153,9 @@
   font-weight: 700;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--pink);
+  color: var(--white);
   margin-bottom: 14px;
+  text-shadow: 0 1px 4px rgba(26, 26, 26, 0.28);
 }
 .ar-love__eyebrow::before,
 .ar-love__eyebrow::after {
@@ -168,8 +171,9 @@
   letter-spacing: -0.04em;
   line-height: 1.05;
   margin-bottom: 16px;
+  text-shadow: 0 1px 5px rgba(26, 26, 26, 0.22), 0 2px 10px rgba(26, 26, 26, 0.12);
 }
-.ar-love__title em { font-style: italic; font-weight: 400; color: var(--pink-deep); }
+.ar-love__title em { font-style: italic; font-weight: 400; color: var(--white); }
 
 .ar-love__sub {
   font-size: 16px;
@@ -177,7 +181,7 @@
   line-height: 1.8;
   font-weight: 300;
   max-width: 560px;
-  margin: 0 auto 24px;
+  margin: 0 auto 16px;
 }
 
 /* Gold decorative rule */
@@ -433,7 +437,8 @@
   gap: 64px;
   align-items: center;
   width: 100%;
-  margin-bottom: 60px;
+  margin-top: 48px;
+  margin-bottom: 32px;
   background: rgba(255,255,255,0.6);
   border: 1px solid rgba(232,121,154,0.12);
   border-radius: 28px;
@@ -476,31 +481,6 @@
 }
 .ar-love__story-btn:hover { background: var(--pink-deep); transform: translateY(-2px); }
 
-/* ── Notes / Feature row ── */
-.ar-love__notes {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  width: 100%;
-}
-@media (max-width: 768px) { .ar-love__notes { grid-template-columns: repeat(2,1fr); } }
-@media (max-width: 420px) { .ar-love__notes { grid-template-columns: 1fr; } }
-
-.ar-love__note {
-  background: rgba(255,255,255,0.65);
-  border: 1px solid rgba(232,121,154,0.12);
-  border-radius: 20px;
-  padding: 24px 20px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform var(--trans), box-shadow var(--trans);
-}
-.ar-love__note:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(232,121,154,0.14); }
-.ar-love__note-icon { font-size: 28px; margin-bottom: 10px; }
-.ar-love__note-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; }
-.ar-love__note-val   { font-size: 12px; color: var(--ink-3); font-weight: 300; line-height: 1.5; }
-
 /* ============================================================
    BOTTOM BORDER
    ============================================================ */
@@ -523,7 +503,6 @@
 .ar-love__header { opacity: 0; animation: ar-love-up 0.7s ease 0.1s forwards; }
 .ar-love__grid   { opacity: 0; animation: ar-love-up 0.7s ease 0.25s forwards; }
 .ar-love__story  { opacity: 0; animation: ar-love-up 0.7s ease 0.35s forwards; }
-.ar-love__notes  { opacity: 0; animation: ar-love-up 0.7s ease 0.45s forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   .ar-love *, .ar-love *::before, .ar-love *::after {
@@ -537,21 +516,23 @@
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-  .ar-love__content { padding: 60px 24px 72px; }
+  .ar-love__content { padding: 44px 24px 16px; }
+  .ar-love__story { margin-top: 36px; margin-bottom: 24px; }
   .ar-love__product-showcase { padding: 0 20px 48px; }
   .ar-love__product-inner { padding-top: 0; }
   .ar-love__showcase-head { padding-top: 12px; }
   .ar-love__product-showcase .ar-love__card-img { padding: 14px 14px 8px; }
 }
 @media (max-width: 480px) {
-  .ar-love__content { padding: 48px 16px 60px; }
+  .ar-love__content { padding: 36px 16px 12px; }
+  .ar-love__story { margin-top: 28px; margin-bottom: 20px; }
   .ar-love__product-showcase { padding: 0 16px 40px; }
   .ar-love__product-inner { padding-top: 0; }
   .ar-love__showcase-head { padding-top: 10px; }
 }
 </style>
 
-<div class="ar-love" role="region" aria-label="Love Attar Collection">
+<div class="ar-love" role="region" aria-label="Prem Rasa Collection">
   {%- comment -%} ── MAIN SHELL ── {%- endcomment -%}
   <div class="ar-love__shell">
 
@@ -563,7 +544,7 @@
 
       {%- comment -%} HEADER {%- endcomment -%}
       <header class="ar-love__header">
-        <span class="ar-love__eyebrow">{{ section.settings.eyebrow | default: 'Pure Love Collection' }}</span>
+        <span class="ar-love__eyebrow">{{ section.settings.eyebrow | default: 'Prem Rasa' }}</span>
         <h2 class="ar-love__title">{{ section.settings.title | default: 'Attars <em>for the Heart</em>' }}</h2>
         <p class="ar-love__sub">{{ section.settings.subtitle | default: 'Rare botanical attars crafted for love — to attract it, honour it, deepen it. Each drop carries the essence of flowers that have spoken love since antiquity.' }}</p>
         <div class="ar-love__rule" aria-hidden="true">
@@ -587,9 +568,9 @@
             {%- endif -%}
           </div>
           <div>
-            <span class="ar-love__story-label">{{ section.settings.story_label | default: 'The Story of Love Attar' }}</span>
+            <span class="ar-love__story-label">{{ section.settings.story_label | default: 'The Story of Prem Rasa' }}</span>
             <h3 class="ar-love__story-h">{{ section.settings.story_title }}</h3>
-            <p class="ar-love__story-p">{{ section.settings.story_text | default: 'Long before perfume was bottled and branded, love had its own fragrance — distilled in rose fields at dawn, carried in clay vials across empires. Our Love Attar is that fragrance, returned to you.' }}</p>
+            <p class="ar-love__story-p">{{ section.settings.story_text | default: 'Long before perfume was bottled and branded, love had its own fragrance — distilled in rose fields at dawn, carried in clay vials across empires. Prem Rasa is that fragrance, returned to you.' }}</p>
             {%- if section.settings.story_url != blank -%}
               <a href="{{ section.settings.story_url }}" class="ar-love__story-btn">
                 {{ section.settings.story_btn | default: 'Read the Story' }}
@@ -599,30 +580,6 @@
           </div>
         </div>
       {%- endif -%}
-
-      {%- comment -%} FEATURE NOTES {%- endcomment -%}
-      <div class="ar-love__notes" role="list">
-        <div class="ar-love__note" role="listitem">
-          <div class="ar-love__note-icon">🌹</div>
-          <p class="ar-love__note-title">Pure Rose Absolute</p>
-          <p class="ar-love__note-val">Extracted from 10,000 roses per bottle — the most expensive botanical in perfumery</p>
-        </div>
-        <div class="ar-love__note" role="listitem">
-          <div class="ar-love__note-icon">🕯️</div>
-          <p class="ar-love__note-title">Zero Synthetics</p>
-          <p class="ar-love__note-val">No alcohol, no artificial fixatives — only pure botanical essences in aged sandalwood base</p>
-        </div>
-        <div class="ar-love__note" role="listitem">
-          <div class="ar-love__note-icon">⏱️</div>
-          <p class="ar-love__note-title">All-Day Longevity</p>
-          <p class="ar-love__note-val">A single drop lasts 8–12 hours, deepening and evolving on warm skin throughout the day</p>
-        </div>
-        <div class="ar-love__note" role="listitem">
-          <div class="ar-love__note-icon">🫙</div>
-          <p class="ar-love__note-title">Hand-Distilled</p>
-          <p class="ar-love__note-val">Small-batch hydrodistillation in Kannauj — the same method used for over 500 years</p>
-        </div>
-      </div>
 
     </div>
   </div>
@@ -654,10 +611,10 @@
   </div>
 
   {%- comment -%} ── PRODUCT SHOWCASE (BETWEEN BORDERS) ── {%- endcomment -%}
-  <section class="ar-love__product-showcase" aria-label="Love attar product showcase">
+  <section class="ar-love__product-showcase" aria-label="Prem Rasa product showcase">
     <div class="ar-love__product-inner">
       <header class="ar-love__showcase-head">
-        <h3 class="ar-love__showcase-title">Our love attar collection</h3>
+        <h3 class="ar-love__showcase-title">Our Prem Rasa collection</h3>
         <p class="ar-love__showcase-sub">
           Handcrafted floral attars curated for romance, warmth, and timeless elegance.
         </p>
@@ -730,7 +687,7 @@
                 {%- endif -%}
               </a>
               <div class="ar-love__card-body">
-                <p class="ar-love__card-type">{{ product.type | default: 'Love attar' }}</p>
+                <p class="ar-love__card-type">{{ product.type | default: 'Prem Rasa' }}</p>
                 <h4 class="ar-love__card-name">{{ product.title }}</h4>
                 {%- if product.description != blank -%}
                   <p class="ar-love__card-desc">{{ product.description | strip_html | truncate: 72 }}</p>

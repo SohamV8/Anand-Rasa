@@ -44,7 +44,7 @@
       assign entity_label = 'Wellness attar'
       assign entity_phrase = 'stress-relief aromatherapy perfume oil'
     elsif seo_key contains 'love' or seo_key contains 'romance'
-      assign entity_label = 'Love attar'
+      assign entity_label = 'Prem Rasa'
       assign entity_phrase = 'romantic luxury perfume oil'
     elsif seo_key contains 'gift' or seo_key contains 'discovery' or seo_key contains 'set'
       assign entity_label = 'Gift set'
@@ -96,7 +96,7 @@
     elsif col_key contains 'stress'
       assign alt_text = col_title | append: ' — stress relief attar collection for calm and wellness' | append: brand_suffix
     elsif col_key contains 'love'
-      assign alt_text = col_title | append: ' — love and romance attar collection, luxury perfume oils' | append: brand_suffix
+      assign alt_text = col_title | append: ' — Prem Rasa attar collection, luxury perfume oils' | append: brand_suffix
     elsif col_key contains 'gift'
       assign alt_text = col_title | append: ' — luxury attar gift sets and discovery collections' | append: brand_suffix
     elsif col_key contains 'perfume'
