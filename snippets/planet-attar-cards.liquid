@@ -1,6 +1,6 @@
 {% comment %}
   Navagraha planet attar cards — icon above, product card below (chakra-style).
-  Uses assets/Planet/ icons + attar images; products from collection by handle match.
+  Uses assets/Planet- icons + attar images; products from collection by handle match.
   Optional: pl_collection (explicit collection), hide_head: true (skip duplicate header)
 {% endcomment %}
 
@@ -13,8 +13,8 @@
   assign pl_home = pl_home | default: false
   assign pl_keys = 'surya,chandra,mangal,budha,guru,shukra,shani,rahu,ketu' | split: ','
   assign pl_labels = 'Surya,Chandra,Mangal,Budha,Guru,Shukra,Shani,Rahu,Ketu' | split: ','
-  assign pl_icons = 'Planet/sun.webp,Planet/moon.webp,Planet/mars.webp,Planet/Mercury.webp,Planet/Jupiter.webp,Planet/Venus.webp,Planet/Saturn.webp,Planet/Rahu.webp,Planet/Ketu.webp' | split: ','
-  assign pl_attars = 'Planet/surya_attar.webp,Planet/chandra_attar.webp,Planet/mangal_attar.webp,Planet/budh_attar.webp,Planet/guru_attar.webp,Planet/shukra_attar.webp,Planet/shani_attar.webp,Planet/rahu_attar.webp,Planet/ketu_attar.webp' | split: ','
+  assign pl_icons = 'Planet-sun.webp,Planet-moon.webp,Planet-mars.webp,Planet-Mercury.webp,Planet-Jupiter.webp,Planet-Venus.webp,Planet-Saturn.webp,Planet-Rahu.webp,Planet-Ketu.webp' | split: ','
+  assign pl_attars = 'Planet-surya_attar.webp,Planet-chandra_attar.webp,Planet-mangal_attar.webp,Planet-budh_attar.webp,Planet-guru_attar.webp,Planet-shukra_attar.webp,Planet-shani_attar.webp,Planet-rahu_attar.webp,Planet-ketu_attar.webp' | split: ','
   assign pl_match = 'sun,surya|moon,chandra|mars,mangal|mercury,budh,budha|jupiter,guru|venus,shukra|saturn,shani|rahu|ketu' | split: '|'
 -%}
 

@@ -227,7 +227,7 @@
       {%- elsif section.settings.pay_visa_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_visa_url }}" alt="Visa" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot"><img src="{{ 'Footer/visa-icon.svg' | asset_url }}" alt="Visa" width="40" height="24" loading="lazy"></div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer-visa-icon.svg' | asset_url }}" alt="Visa" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_mc != blank -%}
@@ -235,7 +235,7 @@
       {%- elsif section.settings.pay_mc_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_mc_url }}" alt="Mastercard" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot"><img src="{{ 'Footer/master-card-icon.svg' | asset_url }}" alt="Mastercard" width="40" height="24" loading="lazy"></div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer-master-card-icon.svg' | asset_url }}" alt="Mastercard" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_upi != blank -%}
@@ -243,7 +243,7 @@
       {%- elsif section.settings.pay_upi_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_upi_url }}" alt="UPI" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot"><img src="{{ 'Footer/upi-payment-icon.svg' | asset_url }}" alt="UPI" width="40" height="24" loading="lazy"></div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer-upi-payment-icon.svg' | asset_url }}" alt="UPI" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
 
       {%- if section.settings.pay_rp != blank -%}
@@ -251,7 +251,7 @@
       {%- elsif section.settings.pay_rp_url != blank -%}
         <div class="arf__pay-slot"><img src="{{ section.settings.pay_rp_url }}" alt="RuPay" width="40" height="24" loading="lazy"></div>
       {%- else -%}
-        <div class="arf__pay-slot"><img src="{{ 'Footer/razorpay-icon.svg' | asset_url }}" alt="Razorpay" width="40" height="24" loading="lazy"></div>
+        <div class="arf__pay-slot"><img src="{{ 'Footer-razorpay-icon.svg' | asset_url }}" alt="Razorpay" width="40" height="24" loading="lazy"></div>
       {%- endif -%}
     </div>
   </div>
@@ -280,7 +280,7 @@
       >
     {%- else -%}
       <img
-        src="{{ 'Footer/Footer.webp' | asset_url }}"
+        src="{{ 'Footer-Footer.webp' | asset_url }}"
         sizes="100vw"
         alt="{{ shop.name }}"
         width="2000"

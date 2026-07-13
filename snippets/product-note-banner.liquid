@@ -22,7 +22,7 @@
 
   {%- capture pnb_asset -%}{%- render 'note-banner-lookup', nb_product: pnb_product -%}{%- endcapture -%}
   {%- assign pnb_asset = pnb_asset | strip -%}
-  {%- unless pnb_asset contains 'NoteBanner/' -%}
+  {%- unless pnb_asset contains 'NoteBanner-' -%}
     {%- assign pnb_asset = '' -%}
   {%- endunless -%}
 

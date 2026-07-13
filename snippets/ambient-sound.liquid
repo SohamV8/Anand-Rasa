@@ -55,7 +55,7 @@
 
   assign ar_ambient_url = blank
   if ar_ambient_track != blank
-    assign ar_ambient_url = 'Music/' | append: ar_ambient_track | asset_url
+    assign ar_ambient_url = 'Music-' | append: ar_ambient_track | asset_url
   endif
 -%}
 

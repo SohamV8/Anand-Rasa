@@ -144,7 +144,7 @@
           <legend class="cpq__step-title">Attar or perfume oil</legend>
           <p class="cpq__step-sub">Pick the type you want.</p>
           <div class="cpq__choices cpq__choices--2 cpq__choices--visual" data-cpq-group="fragranceType" data-cpq-required>
-            {%- assign cpq_types = 'Attar|attar|Planet/shukra_attar.webp,Perfume|perfume-oil|Perfume/Perfume_100ml.webp' | split: ',' -%}
+            {%- assign cpq_types = 'Attar|attar|Planet-shukra_attar.webp,Perfume|perfume-oil|Perfume-Perfume_100ml.webp' | split: ',' -%}
             {%- for cpq_t in cpq_types -%}
               {%- assign cpq_tp = cpq_t | split: '|' -%}
               <button type="button" class="cpq__choice cpq__choice--visual" data-cpq-value="{{ cpq_tp[1] }}" aria-pressed="false">
@@ -197,7 +197,7 @@
           <legend class="cpq__step-title">Notes</legend>
           <p class="cpq__step-sub">Tap the notes you like. You can pick more than one.</p>
           <div class="cpq__choices cpq__choices--3 cpq__choices--visual cpq__choices--notes" data-cpq-group="families" data-cpq-required data-cpq-multi>
-            {%- assign cpq_families = 'Rose|rose|Notes/Rose.webp,Lavender|lavender|Notes/lavender.webp,Sandalwood|sandalwood|Notes/cedarwood.webp,Jasmine|jasmine|Notes/jasmine.webp,Mogra|mogra|Notes/motia.webp,Oud|oud|Notes/oud.webp,Vetiver|vetiver|Notes/vetiver.webp,Musk|musk|Notes/musk.webp,Amber|amber|Notes/amber.webp,Saffron|saffron|Notes/Saffron.webp,Citrus|citrus|Notes/citrus.webp,Floral|floral|Notes/Gardenia.webp,Woody|woody|Notes/wood.webp,Herbal|herbal|Notes/green_herbal.webp' | split: ',' -%}
+            {%- assign cpq_families = 'Rose|rose|Notes-Rose.webp,Lavender|lavender|Notes-lavender.webp,Sandalwood|sandalwood|Notes-cedarwood.webp,Jasmine|jasmine|Notes-jasmine.webp,Mogra|mogra|Notes-motia.webp,Oud|oud|Notes-oud.webp,Vetiver|vetiver|Notes-vetiver.webp,Musk|musk|Notes-musk.webp,Amber|amber|Notes-amber.webp,Saffron|saffron|Notes-Saffron.webp,Citrus|citrus|Notes-citrus.webp,Floral|floral|Notes-Gardenia.webp,Woody|woody|Notes-wood.webp,Herbal|herbal|Notes-green_herbal.webp' | split: ',' -%}
             {%- for cpq_f in cpq_families -%}
               {%- assign cpq_fp = cpq_f | split: '|' -%}
               <button type="button" class="cpq__choice cpq__choice--visual cpq__choice--note" data-cpq-value="{{ cpq_fp[1] }}" aria-pressed="false">

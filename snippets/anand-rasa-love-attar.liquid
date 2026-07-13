@@ -5,7 +5,7 @@
 {% endcomment %}
 
 {%- liquid
-  assign petal_srcs = 'love/1.webp,love/2.webp,love/3.webp,love/4.webp,love/5.webp,love/6.webp' | split: ','
+  assign petal_srcs = 'love-1.webp,love-2.webp,love-3.webp,love-4.webp,love-5.webp,love-6.webp' | split: ','
   assign petal_count = 28
 -%}
 
@@ -599,7 +599,7 @@
       >
     {% else %}
       <img
-        src="{{ 'love/border1.webp' | asset_url }}"
+        src="{{ 'love-border1.webp' | asset_url }}"
         alt=""
         width="1920"
         height="140"
@@ -740,7 +740,7 @@
       >
     {% else %}
       <img
-        src="{{ 'love/border.webp' | asset_url }}"
+        src="{{ 'love-border.webp' | asset_url }}"
         alt=""
         width="1920"
         height="140"
@@ -761,12 +761,12 @@
      FLOATING PETALS — pure Vanilla JS, mirrors framer-motion logic
      ============================================================ */
   var PETAL_SRCS = [
-    {{ 'love/1.webp' | asset_url | json }},
-    {{ 'love/2.webp' | asset_url | json }},
-    {{ 'love/3.webp' | asset_url | json }},
-    {{ 'love/4.webp' | asset_url | json }},
-    {{ 'love/5.webp' | asset_url | json }},
-    {{ 'love/6.webp' | asset_url | json }}
+    {{ 'love-1.webp' | asset_url | json }},
+    {{ 'love-2.webp' | asset_url | json }},
+    {{ 'love-3.webp' | asset_url | json }},
+    {{ 'love-4.webp' | asset_url | json }},
+    {{ 'love-5.webp' | asset_url | json }},
+    {{ 'love-6.webp' | asset_url | json }}
   ];
 
   var PETAL_COUNT = 28;
