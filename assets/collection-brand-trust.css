@@ -51,17 +51,19 @@
 }
 
 .cbt__icon {
-  width: 52px;
-  height: 52px;
+  width: 72px;
+  height: 72px;
   color: var(--cbt-gold);
   margin-bottom: 14px;
   transition: transform 0.45s var(--cbt-ease);
 }
 
-.cbt__icon svg {
+.cbt__icon svg,
+.cbt__icon img {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: contain;
 }
 
 .cbt__item:hover .cbt__icon {
@@ -224,8 +226,8 @@
   }
 
   .cbt__icon {
-    width: 56px;
-    height: 56px;
+    width: 72px;
+    height: 72px;
     margin-bottom: 16px;
   }
 }

@@ -124,12 +124,8 @@
   @media(max-width:560px){
     .ab-card--highlight { grid-column: span 1; }
   }
-  .ab-card--highlight .ab-card__img-wrap { aspect-ratio: 21 / 10; }
-  @media(max-width:560px){
-    .ab-card--highlight .ab-card__img-wrap { aspect-ratio: 16 / 10; }
-  }
-  .ab-card__img-wrap { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #e8e4dc; }
-  .ab-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .65s ease; }
+  .ab-card__img-wrap { position: relative; aspect-ratio: 3 / 2; overflow: hidden; background: #e8e4dc; }
+  .ab-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform .65s ease; }
   .ab-card:hover .ab-card__img { transform: scale(1.06); }
   .ab-card__img-ph { position: absolute; inset: 0; background: linear-gradient(145deg, #f3f4f6, #e5e7eb); }
   .ab-card__badge {
@@ -284,7 +280,7 @@
             <a href="{{ article.url }}" class="ab-card{% if forloop.first and paginate.current_page == 1 %} ab-card--highlight{% endif %}" style="animation-delay: {{ forloop.index0 | times: 45 }}ms;">
               <div class="ab-card__img-wrap">
                 {%- if article.image -%}
-                  <img src="{{ article.image | image_url: width: 1000 }}" alt="{{ article.image.alt | default: article.title }}" width="1000" height="750" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" class="ab-card__img">
+                  <img src="{{ article.image | image_url: width: 1000 }}" alt="{{ article.image.alt | default: article.title }}" width="1000" height="667" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" class="ab-card__img">
                 {%- else -%}
                   <div class="ab-card__img-ph" aria-hidden="true"></div>
                 {%- endif -%}

@@ -166,13 +166,6 @@
               "title": "Ethically Sourced"
             }
           },
-          "tmq-4": {
-            "type": "trust_item",
-            "settings": {
-              "icon": "hypoallergenic",
-              "title": "Hypoallergenic"
-            }
-          },
           "tmq-5": {
             "type": "trust_item",
             "settings": {
@@ -241,7 +234,6 @@
           "tmq-1",
           "tmq-2",
           "tmq-3",
-          "tmq-4",
           "tmq-5",
           "tmq-6",
           "tmq-7",

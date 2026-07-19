@@ -125,14 +125,11 @@
     flex-shrink: 0;
   }
 
-  .ai-process-icon-{{ ai_gen_id }} svg {
+  .ai-process-icon-{{ ai_gen_id }} img {
     width: 100%;
     height: 100%;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    object-fit: contain;
+    display: block;
   }
 
   .ai-process-description-{{ ai_gen_id }} {
@@ -189,11 +186,7 @@
       {% if block.settings.step_1_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
-              <path d="M12 6v6l4 2"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
+            <img src="{{ 'icon-flowers-collected-temples.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_1_text }}</p>
         </div>
@@ -202,11 +195,7 @@
       {% if block.settings.step_2_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M3 3h18v18H3z"/>
-              <path d="M9 9h6v6H9z"/>
-              <path d="M3 9h6M15 9h6M9 3v6M9 15v6M15 3v6M15 15v6"/>
-            </svg>
+            <img src="{{ 'icon-flowers-sorting.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_2_text }}</p>
         </div>
@@ -215,10 +204,7 @@
       {% if block.settings.step_3_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M9 11l3 3L22 4"/>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-            </svg>
+            <img src="{{ 'icon-handpicked-separated.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_3_text }}</p>
         </div>
@@ -227,11 +213,7 @@
       {% if block.settings.step_4_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2"/>
-              <path d="M16.24 7.76l-2.12 2.12M7.76 16.24l2.12-2.12"/>
-            </svg>
+            <img src="{{ 'icon-dried-flowers-powder.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_4_text }}</p>
         </div>
@@ -240,14 +222,7 @@
       {% if block.settings.step_5_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-              <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
-              <polyline points="7.5 19.79 7.5 14.6 3 12"/>
-              <polyline points="21 12 16.5 14.6 16.5 19.79"/>
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-              <line x1="12" y1="22.08" x2="12" y2="12"/>
-            </svg>
+            <img src="{{ 'icon-paste-dhoop-incense.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_5_text }}</p>
         </div>
@@ -256,11 +231,7 @@
       {% if block.settings.step_6_enabled %}
         <div class="ai-process-step-{{ ai_gen_id }}">
           <div class="ai-process-icon-{{ ai_gen_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
+            <img src="{{ 'icon-incense-blended-oils.webp' | asset_url }}" alt="" width="{{ block.settings.icon_size }}" height="{{ block.settings.icon_size }}" loading="lazy">
           </div>
           <p class="ai-process-description-{{ ai_gen_id }}">{{ block.settings.step_6_text }}</p>
         </div>
@@ -409,11 +380,11 @@
       "type": "range",
       "id": "icon_size",
       "min": 30,
-      "max": 80,
+      "max": 140,
       "step": 5,
       "unit": "px",
       "label": "Icon size",
-      "default": 50
+      "default": 110
     },
     {
       "type": "color",

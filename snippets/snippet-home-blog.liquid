@@ -28,7 +28,7 @@
         <a href="{{ article.url }}" class="ar-blog__link">
           <div class="ar-blog__imgw">
             {%- if article.image -%}
-              <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.image.alt | default: article.title }}" width="800" height="600" loading="lazy" class="ar-blog__img">
+              <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | default: article.title }}" width="900" height="600" loading="lazy" class="ar-blog__img">
             {%- else -%}
               <div class="ar-blog__ph"></div>
             {%- endif -%}

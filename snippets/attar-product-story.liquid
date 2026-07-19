@@ -1,7 +1,11 @@
 {%- comment -%}
-  Editorial attar story — italic intro, ✺ divider, detail paragraph.
+  Editorial attar story — italic intro, ✺ divider, factual detail.
 
-  Priority: section.settings → product metafields → handle defaults
+  Content priority (server-rendered, product-specific):
+  1. Product metafields (story / fragrance / emotional / signature / short / intro+detail)
+  2. First storytelling paragraphs from product.description
+  3. Generated from title + real notes / accords / collection context
+
   Usage: {% render 'attar-product-story', product: product, section: section %}
 {%- endcomment -%}
 
@@ -16,202 +20,462 @@
   {%- liquid
     assign aps_intro = ''
     assign aps_body = ''
-    assign aps_h = aps_p.handle | default: '' | downcase
-    assign aps_t = aps_p.title | default: '' | downcase
-    assign aps_scope = aps_h | append: '|' | append: aps_t
 
-    if aps_scope contains 'mercury' or aps_scope contains 'budh' or aps_scope contains 'vitpati'
-      assign aps_intro = 'The attar of articulate radiance, distilled by hand for seekers of clarity and calm speech.'
-      assign aps_body = 'Green cardamom from the Western Ghats. Fresh vetiver root. Light citrus peel and soft woods. A crisp trail for meetings, study, and clear thought—composed to steady the mind without heaviness.'
-    elsif aps_scope contains 'surya' or aps_h == 'sun' or aps_scope contains 'sun-energy' or aps_scope contains 'sun-attar'
-      assign aps_intro = 'The attar of sovereign radiance, distilled by hand for those who lead with warmth and presence.'
-      assign aps_body = 'Kerala turmeric. Aged Mysore sandalwood. Golden spice and sun-warmed resin. Eight-hour luminosity—blessed for mornings when you step forward with confidence.'
-    elsif aps_scope contains 'moon' or aps_scope contains 'chandra'
-      assign aps_intro = 'The attar of lunar grace, distilled by hand for emotional balance and quiet intuition.'
-      assign aps_body = 'White sandalwood. Soft jasmine at dusk. Cool musk and silvered florals. A gentle veil of scent for evening rituals, reflection, and restorative calm.'
-    elsif aps_scope contains 'mars' or aps_scope contains 'mangal'
-      assign aps_intro = 'The attar of courageous fire, distilled by hand for vitality, focus, and fearless movement.'
-      assign aps_body = 'Red spice. Iron-rich resin. Smoky wood and warm pepper. A bold, grounding trail for decisive days—never loud, always intentional.'
-    elsif aps_scope contains 'jupiter' or aps_scope contains 'guru'
-      assign aps_intro = 'The attar of expansive wisdom, distilled by hand for prosperity, learning, and generous spirit.'
-      assign aps_body = 'Sacred frankincense. Rich amber. Temple-grade sandalwood and honeyed balsam. A regal dry-down that lingers through long ceremonies and celebrations.'
-    elsif aps_scope contains 'venus' or aps_scope contains 'shukra'
-      assign aps_intro = 'The attar of sensual refinement, distilled by hand for beauty, harmony, and magnetic softness.'
-      assign aps_body = 'Damascus rose. Creamy sandalwood. Vanilla resin and soft orchid notes. An elegant aura for evenings when grace matters more than volume.'
-    elsif aps_scope contains 'saturn' or aps_scope contains 'shani'
-      assign aps_intro = 'The attar of disciplined depth, distilled by hand for patience, resilience, and grounded mastery.'
-      assign aps_body = 'Aged patchouli. Dark cedar. Mineral smoke and dry vetiver. A serious, slow-unfolding scent for those who value permanence over flash.'
-    elsif aps_scope contains 'rahu'
-      assign aps_intro = 'The attar of transformative mystery, distilled by hand for bold change and unconventional paths.'
-      assign aps_body = 'Dark oud accents. Smoked resin. Spiced florals and shadowed woods. An enigmatic trail—modern, deep, and quietly unforgettable.'
-    elsif aps_scope contains 'ketu'
-      assign aps_intro = 'The attar of spiritual release, distilled by hand for detachment, insight, and inner pilgrimage.'
-      assign aps_body = 'Sacred smoke notes. Ash and sandal. Rare herbs and temple incense memory. A meditative scent that feels older than the day you wear it.'
-    elsif aps_scope contains 'aries'
-      assign aps_intro = 'The attar of pioneering fire, distilled by hand for the first spark of courage and new beginnings.'
-      assign aps_body = 'Cardamom spark. Red musk. Black pepper and charred wood. Electric yet wearable—built for leaders who move before the room notices.'
-    elsif aps_scope contains 'taurus' or aps_scope contains 'vrishabha'
-      assign aps_intro = 'The attar of earthly luxury, distilled by hand for comfort, devotion, and unhurried beauty.'
-      assign aps_body = 'Rose absolute. Mysore sandalwood. Vetiver root and vanilla balsam. Rich on skin, restrained in the air—true Taurus sensuality.'
-    elsif aps_scope contains 'gemini'
-      assign aps_intro = 'The attar of mercurial charm, distilled by hand for wit, curiosity, and light-footed grace.'
-      assign aps_body = 'Bergamot peel. Green herbs. White musk and airy florals. Bright at first, thoughtful in the dry-down—like conversation that stays interesting.'
-    elsif aps_scope contains 'cancer'
-      assign aps_intro = 'The attar of tidal feeling, distilled by hand for nurture, memory, and protective warmth.'
-      assign aps_body = 'Moonlit jasmine. Sea-salt musk. Soft amber and white woods. Intimate and comforting—scent as emotional shelter.'
-    elsif aps_scope contains 'leo'
-      assign aps_intro = 'The attar of royal warmth, distilled by hand for charisma, creativity, and solar pride.'
-      assign aps_body = 'Saffron gold. Resinous amber. Sun-dried florals and cedar throne. A fragrance that enters softly and leaves a golden echo.'
-    elsif aps_scope contains 'virgo'
-      assign aps_intro = 'The attar of refined clarity, distilled by hand for order, healing, and quiet perfection.'
-      assign aps_body = 'Sacred basil. Clean vetiver. Pale iris and herbal resin. Crisp, pure, and grounding—beauty in precision.'
-    elsif aps_scope contains 'libra'
-      assign aps_intro = 'The attar of harmonious balance, distilled by hand for grace, diplomacy, and aesthetic calm.'
-      assign aps_body = 'Pink rose. Soft oud. Powdered musk and sandal cream. Balanced from first breath to last—never sweet, never severe.'
-    elsif aps_scope contains 'scorpio'
-      assign aps_intro = 'The attar of magnetic depth, distilled by hand for intensity, loyalty, and transformative power.'
-      assign aps_body = 'Dark rose. Patchouli smoke. Animalic musk and resinous woods. Seductive without shouting—a private flame.'
-    elsif aps_scope contains 'sagittarius'
-      assign aps_intro = 'The attar of adventurous spirit, distilled by hand for freedom, faith, and wide horizons.'
-      assign aps_body = 'Frankincense trail. Juniper berry. Warm spice and open-air woods. Uplifting and frank—scent for those always leaving town at dawn.'
-    elsif aps_scope contains 'capricorn'
-      assign aps_intro = 'The attar of enduring ambition, distilled by hand for discipline, legacy, and quiet authority.'
-      assign aps_body = 'Dry cedar. Stone moss. Aged labdanum and leathered resin. Structured, mature, and impeccably composed.'
-    elsif aps_scope contains 'aquarius'
-      assign aps_intro = 'The attar of visionary air, distilled by hand for originality, intellect, and humane rebellion.'
-      assign aps_body = 'Cool aldehydic lift. Iris root. Metallic florals and clean woods. Modern, airy, and unmistakably individual.'
-    elsif aps_scope contains 'pisces'
-      assign aps_intro = 'The attar of dreamwater calm, distilled by hand for compassion, art, and spiritual drift.'
-      assign aps_body = 'Water lily. Soft ambergris tone. Incense mist and saline musk. Ethereal on skin—like memory of rain on warm stone.'
-    elsif aps_scope contains 'ashwini'
-      assign aps_intro = 'The attar of swift healing light, distilled by hand for new paths and rejuvenated beginnings.'
-      assign aps_body = 'Fresh herbs. Light resin. Clean musk and dawn florals. Quick, bright opening; gentle, restorative dry-down—Ashwini energy in a bottle.'
-    elsif aps_scope contains 'bharani'
-      assign aps_intro = 'The attar of creative endurance, distilled by hand for devotion, sensuality, and sacred transformation.'
-      assign aps_body = 'Deep rose. Rich ylang. Resinous heart and warm spice. Intense yet refined—beauty that does not apologize.'
-    elsif aps_scope contains 'krittika' or aps_scope contains 'kritika'
-      assign aps_intro = 'The attar of purifying flame, distilled by hand for courage, truth, and sharp clarity.'
-      assign aps_body = 'Saffron fire. Sacred ash notes. Sandal embers and metallic spice. Cleansing, bright, and spiritually awake.'
-    elsif aps_scope contains 'rohini'
-      assign aps_intro = 'The attar of fertile beauty, distilled by hand for abundance, charm, and creative growth.'
-      assign aps_body = 'Night jasmine. Creamy sandal. Honeyed florals and soft musk. Luxurious, magnetic, and deeply feminine in spirit.'
-    elsif aps_scope contains 'mrigashira'
-      assign aps_intro = 'The attar of searching grace, distilled by hand for curiosity, gentleness, and poetic movement.'
-      assign aps_body = 'Green stem. Suede musk. Light florals and woodland air. Restless yet soft—always wandering, never lost.'
-    elsif aps_scope contains 'ardra'
-      assign aps_intro = 'The attar of storm and renewal, distilled by hand for emotional release and fierce honesty.'
-      assign aps_body = 'Rain on stone. Dark florals. Ozone musk and cedar flash. Powerful weather on skin—cleansing, not chaotic.'
-    elsif aps_scope contains 'punarvasu'
-      assign aps_intro = 'The attar of returning light, distilled by hand for restoration, hope, and second chances.'
-      assign aps_body = 'Sacred grass. Soft amber. Morning dew florals and clean resin. Gentle optimism woven through every hour worn.'
-    elsif aps_scope contains 'pushya'
-      assign aps_intro = 'The attar of nourishing protection, distilled by hand for care, stability, and spiritual food.'
-      assign aps_body = 'Temple sandalwood. Milk-soft musk. Honey resin and white florals. The scent of being held—quiet, holy, whole.'
-    elsif aps_scope contains 'ashlesha'
-      assign aps_intro = 'The attar of hypnotic wisdom, distilled by hand for intuition, mystery, and serpentine calm.'
-      assign aps_body = 'Dark jasmine. Cool spice. Smoked woods and mineral musk. Enigmatic, slow, and impossible to ignore up close.'
-    elsif aps_scope contains 'magha'
-      assign aps_intro = 'The attar of ancestral pride, distilled by hand for lineage, dignity, and royal memory.'
-      assign aps_body = 'Royal oud tone. Golden spice. Incense throne and aged woods. Regal without excess—honor worn as scent.'
-    elsif aps_scope contains 'phalguni'
-      assign aps_intro = 'The attar of celebratory warmth, distilled by hand for joy, union, and creative radiance.'
-      assign aps_body = 'Marigold resin. Rose garland. Warm musk and festive spice. Wedding-light in a bottle—generous and golden.'
-    elsif aps_scope contains 'hasta'
-      assign aps_intro = 'The attar of skilled grace, distilled by hand for craftsmanship, agility, and mindful touch.'
-      assign aps_body = 'Pale citrus. Hand-rolled spice. Fine musk and linen woods. Precise, clean, and quietly confident.'
-    elsif aps_scope contains 'chitra'
-      assign aps_intro = 'The attar of celestial design, distilled by hand for beauty, architecture, and vivid charisma.'
-      assign aps_body = 'Bright spice. Jewel-tone florals. Polished woods and crystal musk. Structured brilliance from first dab to dry-down.'
-    elsif aps_scope contains 'swati'
-      assign aps_intro = 'The attar of independent breeze, distilled by hand for freedom, diplomacy, and balanced breath.'
-      assign aps_body = 'Airy florals. Light oud wash. Clean musk and bamboo wood. Moves like wind—present, never heavy.'
-    elsif aps_scope contains 'vishakha'
-      assign aps_intro = 'The attar of focused triumph, distilled by hand for determination, loyalty, and sacred ambition.'
-      assign aps_body = 'Fiery spice. Deep resin. Sandal pillar and dark florals. Single-minded warmth for goals pursued with devotion.'
-    elsif aps_scope contains 'anuradha'
-      assign aps_intro = 'The attar of devoted friendship, distilled by hand for loyalty, travel, and heartfelt success.'
-      assign aps_body = 'Resin path. Soft spice. Mysore sandal and night bloom. Warm, inclusive, and steady through long days.'
-    elsif aps_scope contains 'jyeshtha'
-      assign aps_intro = 'The attar of protective authority, distilled by hand for senior wisdom and fierce guardianship.'
-      assign aps_body = 'Dark patchouli. Iron woods. Sacred smoke and aged musk. Powerful, mature, and unshakeable on the skin.'
-    elsif aps_scope contains 'mula'
-      assign aps_intro = 'The attar of root truth, distilled by hand for uprooting illusion and finding core knowing.'
-      assign aps_body = 'Dry root. Bitter herb. Smoky resin and earth musk. Grounding to the point of revelation—honest and deep.'
-    elsif aps_scope contains 'ashadha'
-      assign aps_intro = 'The attar of invincible joy, distilled by hand for victory, celebration, and radiant optimism.'
-      assign aps_body = 'Festive spice. Sun resin. Garland florals and golden woods. Uplifting energy that feels earned, not borrowed.'
-    elsif aps_scope contains 'shravana'
-      assign aps_intro = 'The attar of listening wisdom, distilled by hand for learning, mantra, and sacred hearing.'
-      assign aps_body = 'Temple incense. Clear sandal. Soft bell-metal musk and water notes. Quiet intelligence you feel before you speak.'
-    elsif aps_scope contains 'dhanishtha'
-      assign aps_intro = 'The attar of rhythmic abundance, distilled by hand for music, wealth, and celebratory spirit.'
-      assign aps_body = 'Copper spice. Resin drum. Warm woods and sparkling musk. Prosperous, lively, and beautifully timed.'
-    elsif aps_scope contains 'shatabhisha'
-      assign aps_intro = 'The attar of healing secrecy, distilled by hand for solitude, medicine, and starlit repair.'
-      assign aps_body = 'Cool herb. Mineral musk. Night rain and distant incense. Mysterious healer’s trail—calm, cool, restorative.'
-    elsif aps_scope contains 'bhadrapada'
-      assign aps_intro = 'The attar of auspicious depth, distilled by hand for spiritual wealth and composed power.'
-      assign aps_body = 'Sacred resin. Dark florals. Sandal foundation and noble musk. Solemn beauty for rituals that matter.'
-    elsif aps_scope contains 'revati'
-      assign aps_intro = 'The attar of gentle completion, distilled by hand for safe journeys and compassionate endings.'
-      assign aps_body = 'Soft musk. Travel spice. Protective florals and moonlit woods. A guardian scent—tender, faithful, calm.'
-    elsif aps_scope contains 'muladhara' or aps_scope contains 'root-chakra' or aps_h == 'root'
-      assign aps_intro = 'The attar of grounded root, distilled by hand for stability, safety, and embodied presence.'
-      assign aps_body = 'Vetiver earth. Cedar root. Patchouli depth and warm resin. Anchoring from the first breath—steady, primal, sure.'
-    elsif aps_scope contains 'svadhisthana' or aps_scope contains 'sacral'
-      assign aps_intro = 'The attar of creative flow, distilled by hand for pleasure, emotion, and sensual honesty.'
-      assign aps_body = 'Orange blossom. Amber warmth. Soft spice and fluid musk. Alive, warm, and unafraid of feeling.'
-    elsif aps_scope contains 'manipura' or aps_h == 'solar' or aps_scope contains 'solar-plexus'
-      assign aps_intro = 'The attar of solar will, distilled by hand for confidence, digestion of life, and inner fire.'
-      assign aps_body = 'Golden spice. Ginger resin. Sun wood and bright balsam. Personal power worn lightly, felt deeply.'
-    elsif aps_scope contains 'anahata' or aps_h == 'heart'
-      assign aps_intro = 'The attar of open heart, distilled by hand for compassion, forgiveness, and loving courage.'
-      assign aps_body = 'Rose heart. Soft frankincense. Green stem and honeyed musk. Tender without weakness—love with backbone.'
-    elsif aps_scope contains 'vishuddha' or aps_scope contains 'throat'
-      assign aps_intro = 'The attar of truthful voice, distilled by hand for expression, song, and clear communication.'
-      assign aps_body = 'Blue chamomile tone. Light herbs. Clean woods and airy musk. Fresh on the throat chakra—honest and bright.'
-    elsif aps_scope contains 'ajna' or aps_scope contains 'third-eye'
-      assign aps_intro = 'The attar of inner sight, distilled by hand for intuition, focus, and meditative vision.'
-      assign aps_body = 'Frankincense veil. Lavender smoke. Sandal mist and cool resin. Clarifying, still, and subtly luminous.'
-    elsif aps_scope contains 'sahasrara' or aps_scope contains 'crown'
-      assign aps_intro = 'The attar of crown light, distilled by hand for unity, prayer, and transcendent calm.'
-      assign aps_body = 'White sandal. Sacred lotus tone. Incense halo and weightless musk. Ethereal finish—scent as quiet blessing.'
-    elsif aps_scope contains 'stress' or aps_scope contains 'shanti' or aps_scope contains 'lavender' or aps_scope contains 'muskrose'
-      assign aps_intro = 'The attar of restorative calm, distilled by hand for exhale, sleep, and unclenched evenings.'
-      assign aps_body = 'Lavender hill. Sandal balm. Soft woods and saline musk. Not sedating—simply kind to a tired nervous system.'
-    elsif aps_scope contains 'love' or aps_scope contains 'mohini' or aps_scope contains 'romance'
-      assign aps_intro = 'The attar of intimate warmth, distilled by hand for romance, softness, and nearness.'
-      assign aps_body = 'Musk rose. Creamy sandal. Vanilla resin and blush florals. Close-skin scent for moments that need tenderness.'
-    elsif aps_scope contains 'apsara'
-      assign aps_intro = 'The attar of celestial allure, distilled by hand for grace, artistry, and divine femininity.'
-      assign aps_body = 'Temple jasmine. Gold amber. Sacred spice and silk musk. Mythic beauty made wearable—light, golden, rare.'
-    elsif aps_scope contains 'perfume' or aps_scope contains 'kesar' or aps_scope contains 'chandan'
-      assign aps_intro = 'The attar of perfumed heritage, distilled by hand for modern luxury rooted in Indian craft.'
-      assign aps_body = 'Saffron thread. Sandal heart. Resin depth and polished musk. Contemporary elegance with ancestral soul.'
-    elsif aps_scope contains 'attar' or aps_scope contains 'perfume oil' or aps_scope contains 'fragrance oil'
-      assign aps_intro = 'The attar of quiet radiance, distilled by hand for those who wear scent as personal ritual.'
-      assign aps_body = 'Premium botanical oils. Traditional deg-bhapka craft. Balanced resin, wood, and floral heart. Long-wearing, skin-close, honestly luxurious.'
+    comment
+      --- Metafield text helpers (plain) ---
+    endcomment
+    assign aps_mf_story = aps_p.metafields.custom.story | metafield_text | strip
+    if aps_mf_story == blank and aps_p.metafields.custom.story != blank
+      assign aps_mf_story = aps_p.metafields.custom.story.value | default: aps_p.metafields.custom.story | strip_html | strip
     endif
 
-    if section.settings.story_intro != blank
-      assign aps_intro = section.settings.story_intro | strip
-    endif
-    if section.settings.story_detail != blank
-      assign aps_body = section.settings.story_detail | strip
+    assign aps_mf_fragrance = aps_p.metafields.custom.fragrance_story | metafield_text | strip
+    if aps_mf_fragrance == blank and aps_p.metafields.custom.fragrance_story != blank
+      assign aps_mf_fragrance = aps_p.metafields.custom.fragrance_story.value | default: aps_p.metafields.custom.fragrance_story | strip_html | strip
     endif
 
-    if aps_intro == blank and aps_p.metafields.custom.story_intro != blank
-      assign aps_intro = aps_p.metafields.custom.story_intro.value | default: aps_p.metafields.custom.story_intro | strip
+    assign aps_mf_emotional = aps_p.metafields.custom.emotional_story | metafield_text | strip
+    if aps_mf_emotional == blank and aps_p.metafields.custom.emotional_story != blank
+      assign aps_mf_emotional = aps_p.metafields.custom.emotional_story.value | default: aps_p.metafields.custom.emotional_story | strip_html | strip
     endif
-    if aps_body == blank and aps_p.metafields.custom.story_detail != blank
-      assign aps_body = aps_p.metafields.custom.story_detail.value | default: aps_p.metafields.custom.story_detail | strip
+
+    assign aps_mf_signature = aps_p.metafields.custom.signature_story | metafield_text | strip
+    if aps_mf_signature == blank and aps_p.metafields.custom.signature_story != blank
+      assign aps_mf_signature = aps_p.metafields.custom.signature_story.value | default: aps_p.metafields.custom.signature_story | strip_html | strip
+    endif
+
+    assign aps_mf_meaning = aps_p.metafields.custom.meaning_story | metafield_text | strip
+    if aps_mf_meaning == blank and aps_p.metafields.custom.meaning_story != blank
+      assign aps_mf_meaning = aps_p.metafields.custom.meaning_story.value | default: aps_p.metafields.custom.meaning_story | strip_html | strip
+    endif
+
+    assign aps_mf_short = aps_p.metafields.custom.short_story | metafield_text | strip
+    if aps_mf_short == blank and aps_p.metafields.custom.short_story != blank
+      assign aps_mf_short = aps_p.metafields.custom.short_story.value | default: aps_p.metafields.custom.short_story | strip_html | strip
+    endif
+
+    assign aps_mf_intro = aps_p.metafields.custom.story_intro | metafield_text | strip
+    if aps_mf_intro == blank and aps_p.metafields.custom.story_intro != blank
+      assign aps_mf_intro = aps_p.metafields.custom.story_intro.value | default: aps_p.metafields.custom.story_intro | strip_html | strip
+    endif
+
+    assign aps_mf_detail = aps_p.metafields.custom.story_detail | metafield_text | strip
+    if aps_mf_detail == blank and aps_p.metafields.custom.story_detail != blank
+      assign aps_mf_detail = aps_p.metafields.custom.story_detail.value | default: aps_p.metafields.custom.story_detail | strip_html | strip
+    endif
+
+    assign aps_tagline = aps_p.metafields.custom.tagline | metafield_text | strip
+    if aps_tagline == blank and aps_p.metafields.custom.tagline != blank
+      assign aps_tagline = aps_p.metafields.custom.tagline.value | default: aps_p.metafields.custom.tagline | strip_html | strip
+    endif
+
+    comment
+      Prefer the most complete story metafield among story-family keys.
+    endcomment
+    assign aps_story_blob = ''
+    assign aps_story_len = 0
+
+    if aps_mf_story != blank
+      assign aps_story_blob = aps_mf_story
+      assign aps_story_len = aps_mf_story.size
+    endif
+    if aps_mf_fragrance != blank and aps_mf_fragrance.size > aps_story_len
+      assign aps_story_blob = aps_mf_fragrance
+      assign aps_story_len = aps_mf_fragrance.size
+    endif
+    if aps_mf_emotional != blank and aps_mf_emotional.size > aps_story_len
+      assign aps_story_blob = aps_mf_emotional
+      assign aps_story_len = aps_mf_emotional.size
+    endif
+    if aps_mf_signature != blank and aps_mf_signature.size > aps_story_len
+      assign aps_story_blob = aps_mf_signature
+      assign aps_story_len = aps_mf_signature.size
+    endif
+    if aps_mf_meaning != blank and aps_mf_meaning.size > aps_story_len
+      assign aps_story_blob = aps_mf_meaning
+      assign aps_story_len = aps_mf_meaning.size
+    endif
+
+    comment
+      Explicit priority: custom.story → short_story when no longer story-family field won via completeness.
+      If custom.story exists it always wins over short alone.
+    endcomment
+    if aps_mf_story != blank
+      assign aps_story_blob = aps_mf_story
+    elsif aps_story_blob == blank and aps_mf_short != blank
+      assign aps_story_blob = aps_mf_short
+    endif
+
+    if aps_mf_intro != blank
+      assign aps_intro = aps_mf_intro
+    endif
+    if aps_mf_detail != blank
+      assign aps_body = aps_mf_detail
+    endif
+
+    if aps_intro == blank and aps_body == blank and aps_story_blob != blank
+      assign aps_split_a = ''
+      assign aps_split_b = ''
+      assign aps_br = aps_story_blob | newline_to_br | split: '<br />'
+      if aps_br.size < 2
+        assign aps_br = aps_story_blob | newline_to_br | split: '<br/>'
+      endif
+      if aps_br.size < 2
+        assign aps_br = aps_story_blob | newline_to_br | split: '<br>'
+      endif
+
+      for aps_line in aps_br
+        assign aps_line_clean = aps_line | strip_html | strip
+        if aps_line_clean != blank
+          if aps_split_a == blank
+            assign aps_split_a = aps_line_clean
+          elsif aps_split_b == blank
+            assign aps_split_b = aps_line_clean
+          else
+            assign aps_split_b = aps_split_b | append: ' ' | append: aps_line_clean
+          endif
+        endif
+      endfor
+
+      if aps_split_b == blank and aps_story_blob contains '. '
+        assign aps_dot_parts = aps_story_blob | split: '. '
+        if aps_dot_parts.size > 1
+          assign aps_split_a = aps_dot_parts.first | append: '.'
+          assign aps_split_b = ''
+          for aps_dot_part in aps_dot_parts
+            unless forloop.first
+              if aps_split_b != blank
+                assign aps_split_b = aps_split_b | append: '. '
+              endif
+              assign aps_split_b = aps_split_b | append: aps_dot_part
+            endunless
+          endfor
+          assign aps_split_b = aps_split_b | strip
+        endif
+      endif
+
+      if aps_split_a != blank
+        assign aps_intro = aps_split_a
+      else
+        assign aps_intro = aps_story_blob
+      endif
+      if aps_split_b != blank
+        assign aps_body = aps_split_b
+      endif
+    elsif aps_intro == blank and aps_story_blob != blank
+      assign aps_intro = aps_story_blob
+    endif
+
+    comment
+      Priority 2 — product description paragraphs
+    endcomment
+    if aps_intro == blank or aps_body == blank
+      assign aps_desc_html = aps_p.description | default: ''
+      if aps_desc_html != blank
+        assign aps_desc_parts = aps_desc_html | split: '</p>'
+        assign aps_desc_first = ''
+        assign aps_desc_second = ''
+        for aps_part in aps_desc_parts
+          assign aps_para = aps_part | strip_html | strip
+          if aps_para.size >= 28
+            assign aps_para_down = aps_para | downcase
+            unless aps_para_down contains 'top notes' or aps_para_down contains 'heart notes' or aps_para_down contains 'base notes' or aps_para_down contains 'middle notes'
+              if aps_desc_first == blank
+                assign aps_desc_first = aps_para
+              elsif aps_desc_second == blank
+                assign aps_desc_second = aps_para
+              endif
+            endunless
+          endif
+        endfor
+
+        if aps_desc_first == blank
+          assign aps_desc_plain = aps_desc_html | strip_html | strip
+          if aps_desc_plain.size >= 28
+            assign aps_desc_first = aps_desc_plain | truncate: 220, ''
+            if aps_desc_plain.size > 220
+              assign aps_rest = aps_desc_plain | slice: 220, 280 | strip
+              if aps_rest != blank
+                assign aps_desc_second = aps_rest | truncate: 220, ''
+              endif
+            endif
+          endif
+        endif
+
+        if aps_intro == blank and aps_desc_first != blank
+          assign aps_intro = aps_desc_first
+        endif
+      endif
+    endif
+
+    if aps_intro == blank and aps_tagline != blank
+      assign aps_intro = aps_tagline
+    endif
+  -%}
+
+  {%- comment -%} Real fragrance data for factual body / generated fallbacks {%- endcomment -%}
+  {%- capture aps_top -%}
+    {%- render 'fragrance-notes-normalize', notes: aps_p.metafields.custom.top_notes.value, notes_type: aps_p.metafields.custom.top_notes.type -%}
+  {%- endcapture -%}
+  {%- capture aps_heart -%}
+    {%- render 'fragrance-notes-normalize', notes: aps_p.metafields.custom.heart_notes.value, notes_type: aps_p.metafields.custom.heart_notes.type -%}
+  {%- endcapture -%}
+  {%- capture aps_middle -%}
+    {%- render 'fragrance-notes-normalize', notes: aps_p.metafields.custom.middle_notes.value, notes_type: aps_p.metafields.custom.middle_notes.type -%}
+  {%- endcapture -%}
+  {%- capture aps_base -%}
+    {%- render 'fragrance-notes-normalize', notes: aps_p.metafields.custom.base_notes.value, notes_type: aps_p.metafields.custom.base_notes.type -%}
+  {%- endcapture -%}
+  {%- capture aps_main -%}
+    {%- render 'fragrance-notes-normalize', notes: aps_p.metafields.custom.main_notes.value, notes_type: aps_p.metafields.custom.main_notes.type -%}
+  {%- endcapture -%}
+
+  {%- liquid
+    assign aps_top = aps_top | strip
+    assign aps_heart = aps_heart | strip
+    assign aps_middle = aps_middle | strip
+    assign aps_base = aps_base | strip
+    assign aps_main = aps_main | strip
+
+    assign aps_desc_html_notes = aps_p.description | default: ''
+    assign aps_desc_notes = aps_desc_html_notes | strip_html | strip
+    assign aps_desc_notes = aps_desc_notes | replace: 'TOP NOTES', 'Top Notes' | replace: 'Top notes', 'Top Notes' | replace: 'Top Note:', 'Top Notes:' | replace: 'HEART NOTES', 'Heart Notes' | replace: 'Heart notes', 'Heart Notes' | replace: 'Heart Note:', 'Heart Notes:' | replace: 'MIDDLE NOTES', 'Middle Notes' | replace: 'Middle notes', 'Middle Notes' | replace: 'Middle Note:', 'Middle Notes:' | replace: 'BASE NOTES', 'Base Notes' | replace: 'Base notes', 'Base Notes' | replace: 'Base Note:', 'Base Notes:'
+
+    if aps_top == blank and aps_desc_html_notes contains 'Top Notes'
+      assign aps_top_section = aps_desc_html_notes | split: 'Top Notes' | last | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
+      capture aps_top
+        render 'fragrance-notes-normalize', notes: aps_top_section
+      endcapture
+      assign aps_top = aps_top | strip
+    elsif aps_top == blank and aps_desc_notes contains 'Top Notes'
+      assign aps_top_chunks = aps_desc_notes | split: 'Top Notes'
+      if aps_top_chunks.size > 1
+        assign aps_top_raw = aps_top_chunks[1] | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
+        assign aps_top_parts = aps_top_raw | split: ':'
+        if aps_top_parts.size > 1
+          assign aps_top_extract = aps_top_parts[1] | strip
+        else
+          assign aps_top_extract = aps_top_raw | replace: ':', '' | strip
+        endif
+        capture aps_top
+          render 'fragrance-notes-normalize', notes: aps_top_extract
+        endcapture
+        assign aps_top = aps_top | strip
+      endif
+    endif
+
+    if aps_heart == blank and aps_desc_html_notes contains 'Middle Notes'
+      assign aps_heart_section = aps_desc_html_notes | split: 'Middle Notes' | last | split: 'Heart Notes' | first | split: 'Base Notes' | first
+      capture aps_heart
+        render 'fragrance-notes-normalize', notes: aps_heart_section
+      endcapture
+      assign aps_heart = aps_heart | strip
+    elsif aps_heart == blank and aps_desc_notes contains 'Middle Notes'
+      assign aps_heart_chunks = aps_desc_notes | split: 'Middle Notes'
+      if aps_heart_chunks.size > 1
+        assign aps_heart_raw = aps_heart_chunks[1] | split: 'Heart Notes' | first | split: 'Base Notes' | first
+        assign aps_heart_parts = aps_heart_raw | split: ':'
+        if aps_heart_parts.size > 1
+          assign aps_heart_extract = aps_heart_parts[1] | strip
+        else
+          assign aps_heart_extract = aps_heart_raw | replace: ':', '' | strip
+        endif
+        capture aps_heart
+          render 'fragrance-notes-normalize', notes: aps_heart_extract
+        endcapture
+        assign aps_heart = aps_heart | strip
+      endif
+    endif
+
+    if aps_heart == blank and aps_desc_html_notes contains 'Heart Notes'
+      assign aps_heart_section = aps_desc_html_notes | split: 'Heart Notes' | last | split: 'Base Notes' | first
+      capture aps_heart
+        render 'fragrance-notes-normalize', notes: aps_heart_section
+      endcapture
+      assign aps_heart = aps_heart | strip
+    elsif aps_heart == blank and aps_desc_notes contains 'Heart Notes'
+      assign aps_heart_chunks = aps_desc_notes | split: 'Heart Notes'
+      if aps_heart_chunks.size > 1
+        assign aps_heart_raw = aps_heart_chunks[1] | split: 'Base Notes' | first
+        assign aps_heart_parts = aps_heart_raw | split: ':'
+        if aps_heart_parts.size > 1
+          assign aps_heart_extract = aps_heart_parts[1] | strip
+        else
+          assign aps_heart_extract = aps_heart_raw | replace: ':', '' | strip
+        endif
+        capture aps_heart
+          render 'fragrance-notes-normalize', notes: aps_heart_extract
+        endcapture
+        assign aps_heart = aps_heart | strip
+      endif
+    endif
+
+    if aps_base == blank and aps_desc_html_notes contains 'Base Notes'
+      assign aps_base_section = aps_desc_html_notes | split: 'Base Notes' | last
+      capture aps_base
+        render 'fragrance-notes-normalize', notes: aps_base_section
+      endcapture
+      assign aps_base = aps_base | strip
+    elsif aps_base == blank and aps_desc_notes contains 'Base Notes'
+      assign aps_base_chunks = aps_desc_notes | split: 'Base Notes'
+      if aps_base_chunks.size > 1
+        assign aps_base_raw = aps_base_chunks[1]
+        assign aps_base_parts = aps_base_raw | split: ':'
+        if aps_base_parts.size > 1
+          assign aps_base_extract = aps_base_parts[1] | strip
+        else
+          assign aps_base_extract = aps_base_raw | replace: ':', '' | strip
+        endif
+        capture aps_base
+          render 'fragrance-notes-normalize', notes: aps_base_extract
+        endcapture
+        assign aps_base = aps_base | strip
+      endif
+    endif
+
+    if aps_heart == blank and aps_middle != blank
+      assign aps_heart = aps_middle
+    elsif aps_heart != blank and aps_middle != blank
+      assign aps_heart = aps_heart | append: ', ' | append: aps_middle
+    endif
+
+    assign aps_ingredients = aps_p.metafields.custom.ingredients | metafield_text | strip
+    if aps_ingredients == blank and aps_p.metafields.custom.ingredients != blank
+      assign aps_ingredients = aps_p.metafields.custom.ingredients.value | default: '' | strip_html | strip
+    endif
+
+    assign aps_accords = aps_p.metafields.custom.accords | metafield_text | strip
+    if aps_accords == blank and aps_p.metafields.custom.accords != blank
+      assign aps_accords_val = aps_p.metafields.custom.accords.value
+      if aps_accords_val.size > 0
+        assign aps_accords = aps_accords_val | join: ', '
+      else
+        assign aps_accords = aps_accords_val | default: '' | strip_html | strip
+      endif
+    endif
+
+    assign aps_family = aps_p.metafields.custom.fragrance_family | metafield_text | strip
+    if aps_family == blank
+      assign aps_family = aps_p.metafields.custom.fragrance_family.value | default: aps_p.metafields.custom.family.value | default: '' | strip
+    endif
+
+    assign aps_mood = aps_p.metafields.custom.mood | metafield_text | strip
+    if aps_mood == blank
+      assign aps_mood = aps_p.metafields.custom.mood.value | default: '' | strip
+    endif
+
+    assign aps_concentration = aps_p.metafields.custom.concentration | metafield_text | strip
+    if aps_concentration == blank
+      assign aps_concentration = aps_p.metafields.custom.concentration.value | default: '' | strip
+    endif
+
+    assign aps_planet = aps_p.metafields.custom.planet | metafield_text | strip
+    if aps_planet == blank
+      assign aps_planet = aps_p.metafields.custom.planet.value | default: '' | strip
+    endif
+
+    assign aps_zodiac = aps_p.metafields.custom.zodiac | metafield_text | strip
+    if aps_zodiac == blank
+      assign aps_zodiac = aps_p.metafields.custom.zodiac.value | default: aps_p.metafields.custom.rashi.value | default: '' | strip
+    endif
+
+    assign aps_nakshatra = aps_p.metafields.custom.nakshatra | metafield_text | strip
+    if aps_nakshatra == blank
+      assign aps_nakshatra = aps_p.metafields.custom.nakshatra.value | default: '' | strip
+    endif
+
+    assign aps_chakra = aps_p.metafields.custom.chakra | metafield_text | strip
+    if aps_chakra == blank
+      assign aps_chakra = aps_p.metafields.custom.chakra.value | default: '' | strip
+    endif
+
+    assign aps_collection_title = ''
+    if aps_p.collections.size > 0
+      assign aps_collection_title = aps_p.collections.first.title | strip
+    endif
+
+    assign aps_note_1 = ''
+    assign aps_note_2 = ''
+    if aps_top != blank
+      assign aps_note_parts = aps_top | split: ','
+      assign aps_note_1 = aps_note_parts.first | strip
+    elsif aps_main != blank
+      assign aps_note_parts = aps_main | split: ','
+      assign aps_note_1 = aps_note_parts.first | strip
+    elsif aps_heart != blank
+      assign aps_note_parts = aps_heart | split: ','
+      assign aps_note_1 = aps_note_parts.first | strip
+    endif
+
+    if aps_heart != blank
+      assign aps_note_parts = aps_heart | split: ','
+      assign aps_note_2 = aps_note_parts.first | strip
+    elsif aps_base != blank
+      assign aps_note_parts = aps_base | split: ','
+      assign aps_note_2 = aps_note_parts.first | strip
+    elsif aps_main != blank
+      assign aps_note_parts = aps_main | split: ','
+      if aps_note_parts.size > 1
+        assign aps_note_2 = aps_note_parts[1] | strip
+      endif
+    endif
+
+    comment
+      Priority 3 — generate only from real product fields (never invent notes)
+    endcomment
+    if aps_intro == blank
+      if aps_note_1 != blank and aps_note_2 != blank and aps_note_1 != aps_note_2
+        assign aps_intro = 'The quiet elegance of ' | append: aps_note_1 | append: ' wrapped in ' | append: aps_note_2 | append: '.'
+      elsif aps_note_1 != blank
+        assign aps_intro = 'A fragrance shaped around ' | append: aps_note_1 | append: ', distilled by hand for lasting presence.'
+      elsif aps_nakshatra != blank
+        assign aps_intro = 'A fragrance inspired by ' | append: aps_nakshatra | append: ' nakshatra — timeless Indian perfumery, distilled by hand.'
+      elsif aps_zodiac != blank
+        assign aps_intro = 'A fragrance inspired by ' | append: aps_zodiac | append: ', composed in the tradition of Indian attar craft.'
+      elsif aps_planet != blank
+        assign aps_intro = 'A fragrance inspired by ' | append: aps_planet | append: ' — sacred ritual energy translated into scent.'
+      elsif aps_chakra != blank
+        assign aps_intro = 'A fragrance inspired by ' | append: aps_chakra | append: ', composed for mindful ritual and quiet alignment.'
+      elsif aps_mood != blank
+        assign aps_intro = 'A handcrafted attar of ' | append: aps_p.title | append: ', composed for ' | append: aps_mood | append: '.'
+      elsif aps_collection_title != blank
+        assign aps_intro = 'A handcrafted fragrance from the ' | append: aps_collection_title | append: ' collection — ' | append: aps_p.title | append: '.'
+      else
+        assign aps_intro = 'A handcrafted attar of ' | append: aps_p.title | append: ', distilled in the tradition of Indian perfumery.'
+      endif
+    endif
+
+    assign aps_all_notes = ''
+    if aps_top != blank
+      assign aps_all_notes = aps_top
+    endif
+    if aps_heart != blank
+      if aps_all_notes != blank
+        assign aps_all_notes = aps_all_notes | append: ', '
+      endif
+      assign aps_all_notes = aps_all_notes | append: aps_heart
+    endif
+    if aps_base != blank
+      if aps_all_notes != blank
+        assign aps_all_notes = aps_all_notes | append: ', '
+      endif
+      assign aps_all_notes = aps_all_notes | append: aps_base
+    endif
+    if aps_all_notes == blank and aps_main != blank
+      assign aps_all_notes = aps_main
+    endif
+
+    if aps_all_notes != blank
+      assign aps_body = aps_all_notes
+    elsif aps_body == blank and aps_ingredients != blank
+      assign aps_body = aps_ingredients
     endif
   -%}
 
   {%- if aps_intro != blank or aps_body != blank -%}
     <div class="ar-story-block" data-attar-story>
       {%- if aps_intro != blank -%}
-        <p class="ar-story-intro">{{ aps_intro }}</p>
+        <p class="ar-story-intro">{{ aps_intro | escape }}</p>
       {%- endif -%}
 
       {%- if aps_intro != blank and aps_body != blank -%}
@@ -221,7 +485,7 @@
       {%- endif -%}
 
       {%- if aps_body != blank -%}
-        <p class="ar-story-text">{{ aps_body }}</p>
+        <p class="ar-story-text">{{ aps_body | escape }}</p>
       {%- endif -%}
     </div>
 
