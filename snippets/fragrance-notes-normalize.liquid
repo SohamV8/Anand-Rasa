@@ -12,6 +12,7 @@
     if fnn_type contains 'list.' and notes.size > 0
       for fnn_item in notes
         assign fnn_piece = fnn_item | strip_html | strip
+        assign fnn_piece = fnn_piece | replace: '&amp;', '&' | replace: '&#38;', '&' | replace: '&AMP;', '&'
         assign fnn_piece = fnn_piece | replace: '•', '' | replace: '·', '' | strip
         assign fnn_lead = fnn_piece | slice: 0, 1
         if fnn_lead == ':'
@@ -35,6 +36,7 @@
         assign fnn_li_parts = fnn_src | split: '<li>'
         for fnn_li in fnn_li_parts
           assign fnn_piece = fnn_li | split: '</li>' | first | strip_html | strip
+          assign fnn_piece = fnn_piece | replace: '&amp;', '&' | replace: '&#38;', '&' | replace: '&AMP;', '&'
           assign fnn_lead = fnn_piece | slice: 0, 1
           if fnn_lead == ':'
             assign fnn_piece = fnn_piece | slice: 1, 10000 | strip
@@ -51,6 +53,7 @@
         assign fnn_src = fnn_src | replace: '</p>', ', ' | replace: '<p>', ''
         assign fnn_src = fnn_src | newline_to_br
         assign fnn_src = fnn_src | replace: '<br />', ', ' | replace: '<br/>', ', ' | replace: '<br>', ', '
+        assign fnn_src = fnn_src | replace: '&amp;', '&' | replace: '&#38;', '&' | replace: '&AMP;', '&'
         assign fnn_src = fnn_src | replace: '•', ',' | replace: '·', ',' | replace: '|', ','
         assign fnn_src = fnn_src | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' / ', ', ' | replace: ';', ','
         assign fnn_src = fnn_src | replace: ' and ', ', '

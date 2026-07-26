@@ -33,7 +33,7 @@
     assign byb_raw = product.description | strip_html | strip | truncate: 90
   endif
 
-  assign byb_raw = byb_raw | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
+  assign byb_raw = byb_raw | replace: '&amp;', '&' | replace: '&#38;', '&' | replace: '&AMP;', '&' | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
   assign byb_parts = byb_raw | split: ','
 
   for byb_part in byb_parts

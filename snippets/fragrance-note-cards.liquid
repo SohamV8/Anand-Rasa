@@ -31,7 +31,7 @@
               >
             </figure>
           {%- endif -%}
-          <p class="ar-fn__card-name">{{ fnc_label | escape }}</p>
+          <p class="ar-fn__card-name">{{ fnc_label | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
         </div>
       {%- endif -%}
     {%- endfor -%}

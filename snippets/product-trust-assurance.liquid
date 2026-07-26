@@ -2,32 +2,37 @@
   Product PDP — luxury trust + assurance strip
 {%- endcomment -%}
 <div class="ar-trust-section" aria-label="Product assurance">
-  <div class="ar-trust-benefits">
-    <p class="ar-trust-benefits__row">
-      <span class="ar-trust-benefits__item">Free Shipping</span>
-      <span class="ar-trust-benefits__item">100% Natural</span>
-    </p>
-    <p class="ar-trust-benefits__row">
-      <span class="ar-trust-benefits__item">Alcohol-Free</span>
-      <span class="ar-trust-benefits__item">Hand-Distilled</span>
-    </p>
-  </div>
+  <ul class="ar-trust-benefits" role="list">
+    <li class="ar-trust-benefits__item">Free Shipping</li>
+    <li class="ar-trust-benefits__item">100% Natural</li>
+    <li class="ar-trust-benefits__item">Alcohol-Free</li>
+    <li class="ar-trust-benefits__item">Hand-Distilled</li>
+  </ul>
 
-  <p class="ar-trust-gift"><span class="ar-trust-gift__icon" aria-hidden="true">🎁</span> Gift-wrap available</p>
+  <p class="ar-trust-gift">
+    <span class="ar-trust-gift__icon" aria-hidden="true">🎁</span>
+    <span class="ar-trust-gift__text">Gift-wrap available</span>
+  </p>
 
   <div class="ar-guarantee-box">
     <p class="ar-guarantee-title">100% Ritual Satisfaction Guarantee</p>
-    <p class="ar-guarantee-subtitle">Order By 6 PM • Delivered In 3–5 Days</p>
+    <p class="ar-guarantee-subtitle">
+      <span class="ar-guarantee-subtitle__part">Order by 6 PM</span>
+      <span class="ar-guarantee-subtitle__dot" aria-hidden="true"></span>
+      <span class="ar-guarantee-subtitle__part">Delivered in 3–5 days</span>
+    </p>
   </div>
 </div>
 
 <style>
   .ar-trust-section {
     --ar-trust-gold: #c8a96e;
-    --ar-trust-ink: #5c4f3f;
-    --ar-trust-muted: #8a7a66;
+    --ar-trust-ink: #4a3f32;
+    --ar-trust-muted: #7a6b58;
     --ar-trust-ivory: #faf8f4;
-    margin: clamp(18px, 3vw, 28px) 0 clamp(14px, 2.5vw, 22px);
+    --ar-trust-line: rgba(200, 169, 110, 0.4);
+    margin: 22px 0 18px;
+    padding: 0 2px;
     text-align: center;
     animation: ar-trust-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -44,106 +49,202 @@
   }
 
   .ar-trust-benefits {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(8px, 1.6vw, 11px);
-    margin: 0 0 clamp(10px, 1.8vw, 14px);
-  }
-
-  .ar-trust-benefits__row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0;
-    margin: 0;
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .ar-trust-benefits__item {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 12px;
+    margin: 0;
+    box-sizing: border-box;
+    border: 1px solid rgba(200, 169, 110, 0.28);
+    border-radius: 10px;
+    background: #fff;
     font-family: 'Poppins', var(--font-heading-family, sans-serif);
-    font-size: clamp(9px, 1.6vw, 10.5px);
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--ar-trust-ink);
-    line-height: 1.4;
-  }
-
-  .ar-trust-benefits__row .ar-trust-benefits__item:first-child::after {
-    content: '';
-    display: inline-block;
-    width: 3px;
-    height: 3px;
-    margin: 0 clamp(14px, 3vw, 22px);
-    border-radius: 50%;
-    background: var(--ar-trust-gold);
-    opacity: 0.75;
-    flex-shrink: 0;
+    line-height: 1.25;
+    text-align: center;
   }
 
   .ar-trust-gift {
-    margin: 0 0 clamp(16px, 2.8vw, 22px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 0 18px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(200, 169, 110, 0.1);
     font-family: 'Poppins', var(--font-heading-family, sans-serif);
-    font-size: clamp(9px, 1.6vw, 10.5px);
+    font-size: 13px;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--ar-trust-muted);
-    line-height: 1.4;
+    line-height: 1.3;
   }
 
   .ar-trust-gift__icon {
-    margin-right: 6px;
-    font-size: 1.05em;
-    opacity: 0.9;
+    font-size: 18px;
+    line-height: 1;
+    opacity: 0.95;
   }
 
   .ar-guarantee-box {
-    max-width: 420px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: clamp(16px, 2.8vw, 22px) clamp(18px, 3vw, 28px);
+    padding: 18px 16px;
+    box-sizing: border-box;
     background: var(--ar-trust-ivory);
-    border: 1px solid rgba(200, 169, 110, 0.38);
-    border-radius: 10px;
-    box-shadow: 0 6px 28px rgba(92, 79, 63, 0.06);
+    border: 1px solid var(--ar-trust-line);
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(92, 79, 63, 0.06);
     transition:
       box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: box-shadow, border-color;
-  }
-
-  .ar-guarantee-box:hover {
-    border-color: rgba(200, 169, 110, 0.58);
-    box-shadow: 0 10px 36px rgba(200, 169, 110, 0.12);
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .ar-guarantee-title {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-family: 'Poppins', var(--font-heading-family, sans-serif);
-    font-size: clamp(13px, 2.2vw, 14.5px);
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     line-height: 1.35;
     color: var(--ar-trust-ink);
   }
 
   .ar-guarantee-subtitle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 10px;
     margin: 0;
     font-family: 'Caudex', var(--font-body-family, Georgia, serif);
-    font-size: clamp(12px, 2vw, 13px);
+    font-size: 14px;
     font-weight: 400;
-    letter-spacing: 0.03em;
-    line-height: 1.5;
+    letter-spacing: 0.02em;
+    line-height: 1.45;
     color: var(--ar-trust-muted);
   }
 
-  @media screen and (max-width: 749px) {
+  .ar-guarantee-subtitle__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ar-trust-gold);
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+
+  /* Tablet+ — quieter editorial strip (2 rows) */
+  @media screen and (min-width: 750px) {
+    .ar-trust-section {
+      margin: clamp(18px, 3vw, 28px) 0 clamp(14px, 2.5vw, 22px);
+      padding: 0;
+    }
+
+    .ar-trust-benefits {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      justify-content: center;
+      column-gap: 0;
+      row-gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .ar-trust-benefits__item {
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      justify-content: flex-end;
+    }
+
+    .ar-trust-benefits__item:nth-child(even) {
+      justify-content: flex-start;
+    }
+
+    .ar-trust-benefits__item:nth-child(odd)::after {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 3px;
+      margin: 0 18px;
+      border-radius: 50%;
+      background: var(--ar-trust-gold);
+      opacity: 0.75;
+      flex-shrink: 0;
+    }
+
+    .ar-trust-gift {
+      margin-bottom: 20px;
+      padding: 0;
+      background: transparent;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+    }
+
+    .ar-trust-gift__icon {
+      font-size: 14px;
+    }
+
     .ar-guarantee-box {
-      max-width: 100%;
+      max-width: 420px;
+      padding: 20px 28px;
+    }
+
+    .ar-guarantee-box:hover {
+      border-color: rgba(200, 169, 110, 0.58);
+      box-shadow: 0 10px 36px rgba(200, 169, 110, 0.12);
+    }
+
+    .ar-guarantee-title {
+      font-size: 14.5px;
+      margin-bottom: 8px;
+    }
+
+    .ar-guarantee-subtitle {
+      font-size: 13px;
+      gap: 10px 12px;
+    }
+  }
+
+  @media screen and (max-width: 359px) {
+    .ar-trust-benefits {
+      gap: 8px;
+    }
+
+    .ar-trust-benefits__item {
+      font-size: 11.5px;
+      padding: 10px 8px;
+      letter-spacing: 0.03em;
+    }
+
+    .ar-guarantee-title {
+      font-size: 14px;
+    }
+
+    .ar-guarantee-subtitle {
+      font-size: 13px;
     }
   }
 
@@ -154,11 +255,6 @@
 
     .ar-guarantee-box {
       transition: none;
-    }
-
-    .ar-guarantee-box:hover {
-      box-shadow: 0 6px 28px rgba(92, 79, 63, 0.06);
-      border-color: rgba(200, 169, 110, 0.38);
     }
   }
 </style>

@@ -276,7 +276,7 @@
             endif
           endif
 
-          assign ar_raw_notes = ar_raw_notes | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' and ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
+          assign ar_raw_notes = ar_raw_notes | replace: '&amp;', '&' | replace: '&#38;', '&' | replace: '&AMP;', '&' | replace: ' · ', ', ' | replace: ' & ', ', ' | replace: ' and ', ', ' | replace: ' / ', ', ' | replace: ';', ',' | strip
         -%}
 
         <h3 class="ar-card__title">
@@ -298,7 +298,7 @@
             {%- endif -%}
           {%- endfor -%}
           {%- if ar_main_notes != blank -%}
-            <p class="ar-card__notes">{{ ar_main_notes | escape }}</p>
+            <p class="ar-card__notes">{{ ar_main_notes | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
           {%- endif -%}
         {%- endif -%}
 

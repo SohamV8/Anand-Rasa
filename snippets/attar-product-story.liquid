@@ -475,7 +475,7 @@
   {%- if aps_intro != blank or aps_body != blank -%}
     <div class="ar-story-block" data-attar-story>
       {%- if aps_intro != blank -%}
-        <p class="ar-story-intro">{{ aps_intro | escape }}</p>
+        <p class="ar-story-intro">{{ aps_intro | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
       {%- endif -%}
 
       {%- if aps_intro != blank and aps_body != blank -%}
@@ -485,7 +485,7 @@
       {%- endif -%}
 
       {%- if aps_body != blank -%}
-        <p class="ar-story-text">{{ aps_body | escape }}</p>
+        <p class="ar-story-text">{{ aps_body | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
       {%- endif -%}
     </div>
 

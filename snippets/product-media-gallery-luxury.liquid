@@ -58,6 +58,8 @@
   aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
   data-desktop-layout="{{ section.settings.gallery_layout }}"
   data-lmg-autoplay="7000"
+  data-lmg-count="{{ media_count }}"
+  style="--lmg-count: {{ media_count | at_least: 1 }};"
 >
   <div class="lmg-dawn__shell">
   <div id="GalleryStatus-{{ section.id }}" class="visually-hidden" role="status"></div>
@@ -306,7 +308,7 @@
         {%- endunless -%}
       {%- endfor -%}
     </ul>
-    <div class="slider-buttons quick-add-hidden{% if hide_mobile_slider %} small-hide{% endif %}">
+    <div class="slider-buttons quick-add-hidden">
       <button
         type="button"
         class="slider-button slider-button--prev"
