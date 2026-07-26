@@ -198,10 +198,21 @@ if (!customElements.get('media-gallery')) {
       }
 
       centerActiveThumbnail() {
+        // Mobile only. Never use scrollIntoView — it scrolls the document on the X-axis on iOS/Android.
         if (!this.elements.thumbnails || this.mql.matches) return;
-        const active = this.elements.thumbnails.querySelector('button[aria-current="true"]');
-        if (!active || typeof active.scrollIntoView !== 'function') return;
-        active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        const activeBtn = this.elements.thumbnails.querySelector('button[aria-current="true"]');
+        if (!activeBtn) return;
+        const item = activeBtn.closest('.thumbnail-list__item') || activeBtn;
+        const list =
+          this.elements.thumbnails.slider ||
+          this.elements.thumbnails.querySelector('.thumbnail-list');
+        if (!list || typeof list.scrollTo !== 'function') return;
+
+        const listWidth = list.clientWidth;
+        const itemLeft = item.offsetLeft;
+        const itemWidth = item.offsetWidth;
+        const target = Math.max(0, itemLeft - (listWidth - itemWidth) / 2);
+        list.scrollTo({ left: target, behavior: 'smooth' });
       }
 
       initLuxuryVideoController() {
@@ -235,7 +246,8 @@ if (!customElements.get('media-gallery')) {
                 if (video === this._lmgActiveVideo) this.safePlayVideo(video);
               });
             },
-            { threshold: 0.35, rootMargin: '0px' }
+            // Lower threshold so partially visible active reels still autoplay on short phones.
+            { threshold: 0.15, rootMargin: '0px' }
           );
         }
       }
@@ -277,12 +289,15 @@ if (!customElements.get('media-gallery')) {
 
       applyMobileVideoChrome(video) {
         if (!video) return;
+        // iOS/Safari: muted + playsinline must be present before any play() call.
         video.muted = true;
         video.defaultMuted = true;
         video.setAttribute('muted', '');
         video.playsInline = true;
         video.setAttribute('playsinline', '');
         video.setAttribute('webkit-playsinline', '');
+        video.autoplay = true;
+        video.setAttribute('autoplay', '');
         video.loop = true;
         video.setAttribute('loop', '');
         if (!video.getAttribute('preload') || video.getAttribute('preload') === 'auto') {
@@ -298,6 +313,9 @@ if (!customElements.get('media-gallery')) {
         video.controls = false;
         video.removeAttribute('controls');
 
+        // Clear Dawn deferred-media inline style hack (display:block / style="null")
+        // so absolute + width:100% CSS can size the video without overflowing.
+        video.style.removeProperty('display');
         video.style.transform = 'translateZ(0)';
         video.style.backfaceVisibility = 'hidden';
       }
@@ -309,11 +327,38 @@ if (!customElements.get('media-gallery')) {
           return;
         }
         this.applyMobileVideoChrome(video);
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {
-            /* Autoplay may be blocked; poster / tap remains available. */
-          });
+
+        const attemptPlay = () => {
+          if (video !== this._lmgActiveVideo) return;
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+              // Retry once after metadata — covers Safari race after deferred insert.
+              if (video !== this._lmgActiveVideo) return;
+              const retry = () => {
+                this.applyMobileVideoChrome(video);
+                const second = video.play();
+                if (second && typeof second.catch === 'function') {
+                  second.catch(() => {
+                    /* Autoplay blocked (e.g. Low Power Mode); poster remains. */
+                  });
+                }
+              };
+              if (video.readyState >= 2) {
+                window.setTimeout(retry, 50);
+              } else {
+                video.addEventListener('loadeddata', retry, { once: true });
+              }
+            });
+          }
+        };
+
+        if (video.readyState >= 2) {
+          attemptPlay();
+        } else {
+          video.addEventListener('loadeddata', attemptPlay, { once: true });
+          // Also try immediately — muted+playsinline autoplay often works before loadeddata.
+          attemptPlay();
         }
       }
 
@@ -333,30 +378,39 @@ if (!customElements.get('media-gallery')) {
       prepareActiveVideo(activeItem) {
         if (!activeItem) return;
         const deferredMedia = activeItem.querySelector('deferred-media, .deferred-media');
+
+        // Load deferred template, then apply iOS chrome BEFORE relying on play().
+        // Dawn's DeferredMedia.play() runs without playsinline — we correct immediately after.
         if (deferredMedia && typeof deferredMedia.loadContent === 'function') {
           deferredMedia.loadContent(false);
         }
 
+        const activate = (video) => {
+          if (!video) return;
+          // Undo Dawn's temporary inline style that can expose intrinsic video width.
+          if (video.getAttribute('style') === 'display: block;' || video.getAttribute('style') === 'null') {
+            video.removeAttribute('style');
+          }
+          this._lmgActiveVideo = video;
+          this.pauseGalleryVideos(video);
+          this.applyMobileVideoChrome(video);
+          if (this._lmgVideoIO) this._lmgVideoIO.observe(video);
+          this.safePlayVideo(video);
+        };
+
         const video = activeItem.querySelector('video.product-gallery-video, video');
         if (!video) {
-          // Template may resolve a frame later in some browsers.
           window.requestAnimationFrame(() => {
-            const lateVideo = activeItem.querySelector('video.product-gallery-video, video');
-            if (!lateVideo) return;
-            this._lmgActiveVideo = lateVideo;
-            this.pauseGalleryVideos(lateVideo);
-            this.applyMobileVideoChrome(lateVideo);
-            if (this._lmgVideoIO) this._lmgVideoIO.observe(lateVideo);
-            this.safePlayVideo(lateVideo);
+            activate(activeItem.querySelector('video.product-gallery-video, video'));
           });
           return;
         }
 
-        this._lmgActiveVideo = video;
-        this.pauseGalleryVideos(video);
-        this.applyMobileVideoChrome(video);
-        if (this._lmgVideoIO) this._lmgVideoIO.observe(video);
-        this.safePlayVideo(video);
+        activate(video);
+        // Dawn restores formerStyle on setTimeout(0) — re-apply chrome after that wipe.
+        window.setTimeout(() => {
+          if (this._lmgActiveVideo === video) this.applyMobileVideoChrome(video);
+        }, 0);
       }
 
       initLuxuryAutoplay() {
@@ -505,14 +559,20 @@ if (!customElements.get('media-gallery')) {
         }
 
         this.preventStickyHeader();
+        // Capture at call-time: autoplay clears `_lmgAutoplayAdvance` before this timeout runs.
+        const skipPageScroll =
+          this._lmgAutoplayAdvance === true || this.classList.contains('lmg-dawn');
         window.setTimeout(() => {
           const list = activeMedia.parentElement;
-          // Only horizontal-scroll when the list is actually a peek carousel.
-          if (list && list.scrollWidth > list.clientWidth + 8) {
+          // Luxury mobile uses a fade stack — never horizontal-scroll the media list
+          // (scrollWidth can still exceed clientWidth due to Dawn peek leftovers).
+          const luxuryMobileFade = this.classList.contains('lmg-dawn') && !this.mql.matches;
+          if (!luxuryMobileFade && list && list.scrollWidth > list.clientWidth + 8) {
             list.scrollTo({ left: activeMedia.offsetLeft, behavior: 'smooth' });
           }
-          // Never hijack page scroll during luxury autoplay or when gallery is off-screen.
-          if (this._lmgAutoplayAdvance) return;
+          // Luxury fade gallery keeps media in-place — never hijack document scroll
+          // (was jumping to gallery/top on every autoplay + variant media switch).
+          if (skipPageScroll) return;
           const activeMediaRect = activeMedia.getBoundingClientRect();
           const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
           if (activeMediaRect.bottom < 0 || activeMediaRect.top > viewportHeight) return;

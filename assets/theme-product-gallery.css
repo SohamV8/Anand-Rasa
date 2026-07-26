@@ -241,11 +241,12 @@ media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button[disabl
   pointer-events: auto !important;
 }
 
-media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button--prev .svg-wrapper {
+/* Caret SVG points down; rotate to left / right (do not also rotate .svg-wrapper) */
+media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button--prev .icon {
   transform: rotate(90deg);
 }
 
-media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button--next .svg-wrapper {
+media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button--next .icon {
   transform: rotate(-90deg);
 }
 
@@ -262,6 +263,16 @@ media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button:focus-
 media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button .svg-wrapper {
   width: 14px;
   height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: none;
+}
+
+media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons .slider-button .icon {
+  width: 12px;
+  height: 12px;
+  display: block;
 }
 
 /* ── Thumbnails ── */
@@ -465,9 +476,23 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
 
   media-gallery.lmg-dawn .lmg-dawn__thumbs {
     order: 1;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* section-main-product.css loads later and applies -1.5rem to
+     slider-component:not(.thumbnail-slider--no-slide) — force-reset thumbs */
+  .product--lmg-pdp .product__media-wrapper media-gallery.lmg-dawn .lmg-dawn__thumbs,
+  .product--lmg-pdp .product__media-wrapper slider-component.lmg-dawn__thumbs,
+  .product--lmg-pdp .product__media-wrapper slider-component.thumbnail-slider {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Fade stack — no horizontal peek carousel (removes left gap root cause) */
@@ -484,6 +509,16 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     padding: 0 !important;
     padding-right: 0 !important;
     position: relative;
+  }
+
+  /* Dawn grid--peek / slider--mobile ::after extends scrollWidth past the viewport */
+  media-gallery.lmg-dawn .product__media-list::after,
+  media-gallery.lmg-dawn .product__media-list::before {
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   media-gallery.lmg-dawn .product__media-list .product__media-item,
@@ -555,11 +590,15 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     aspect-ratio: 9 / 16 !important;
     max-height: min(78vh, 560px) !important;
     margin-inline: auto !important;
+    overflow: hidden !important;
+    box-sizing: border-box;
   }
 
   media-gallery.lmg-dawn .lmg-dawn__viewer .media-type-video video,
   media-gallery.lmg-dawn .lmg-dawn__viewer .product-gallery-video {
     object-fit: cover !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
   }
 
   media-gallery.lmg-dawn .lmg-dawn__viewer > .slider-buttons {

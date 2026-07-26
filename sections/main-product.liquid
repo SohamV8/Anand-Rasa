@@ -62,15 +62,19 @@
       display: none;
     }
     .pdp-meta-accordion__item summary::after {
-      content: "+";
-      color: #6b7280;
-      font-size: 1.6rem;
-      line-height: 1;
-      font-weight: 500;
+      content: "";
+      width: 0.7rem;
+      height: 0.7rem;
+      border-right: 2px solid #6b7280;
+      border-bottom: 2px solid #6b7280;
+      transform: rotate(45deg);
+      transition: transform 0.25s ease;
       flex-shrink: 0;
+      margin-top: -0.35rem;
     }
     .pdp-meta-accordion__item[open] summary::after {
-      content: "−";
+      transform: rotate(225deg);
+      margin-top: 0.15rem;
     }
     .pdp-meta-accordion__title-wrap {
       display: flex;
@@ -93,6 +97,25 @@
     }
     .pdp-meta-accordion__content p {
       margin: 0;
+    }
+    /* Smooth expand/collapse where ::details-content is supported */
+    @supports selector(::details-content) {
+      .pdp-meta-accordion__item::details-content {
+        block-size: 0;
+        overflow: hidden;
+        transition:
+          block-size 0.25s ease,
+          content-visibility 0.25s allow-discrete;
+      }
+      .pdp-meta-accordion__item[open]::details-content {
+        block-size: auto;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pdp-meta-accordion__item summary::after,
+      .pdp-meta-accordion__item::details-content {
+        transition: none;
+      }
     }
     .product__info-container > * {
       margin-bottom: 1.4rem;
@@ -650,13 +673,22 @@
                   endif
                 -%}
                 <div class="pdp-meta-accordion quick-add-hidden" id="PdpMetaAccordion-{{ section.id }}">
-                  <details class="pdp-meta-accordion__item" open>
-                    <summary>
+                  <details class="pdp-meta-accordion__item">
+                    <summary
+                      id="PdpDescSummary-{{ section.id }}"
+                      aria-expanded="false"
+                      aria-controls="PdpDescContent-{{ section.id }}"
+                    >
                       <div class="pdp-meta-accordion__title-wrap">
                         <h3 class="pdp-meta-accordion__title">Description</h3>
                       </div>
                     </summary>
-                    <div class="pdp-meta-accordion__content rte">
+                    <div
+                      class="pdp-meta-accordion__content rte"
+                      id="PdpDescContent-{{ section.id }}"
+                      role="region"
+                      aria-labelledby="PdpDescSummary-{{ section.id }}"
+                    >
                       {%- if product.description != blank -%}
                         {{ product.description }}
                       {%- else -%}
@@ -666,12 +698,21 @@
                   </details>
 
                   <details class="pdp-meta-accordion__item">
-                    <summary>
+                    <summary
+                      id="PdpUseSummary-{{ section.id }}"
+                      aria-expanded="false"
+                      aria-controls="PdpUseContent-{{ section.id }}"
+                    >
                       <div class="pdp-meta-accordion__title-wrap">
                         <h3 class="pdp-meta-accordion__title">Use & Storage</h3>
                       </div>
                     </summary>
-                    <div class="pdp-meta-accordion__content rte">
+                    <div
+                      class="pdp-meta-accordion__content rte"
+                      id="PdpUseContent-{{ section.id }}"
+                      role="region"
+                      aria-labelledby="PdpUseSummary-{{ section.id }}"
+                    >
                       {%- if use_storage_text != blank -%}
                         {{ use_storage_text }}
                       {%- elsif is_incense_product -%}
@@ -715,6 +756,22 @@
                     </div>
                   </details>
                 </div>
+                <script>
+                  (function () {
+                    var root = document.getElementById('PdpMetaAccordion-{{ section.id }}');
+                    if (!root || root.dataset.pdpAccordionReady) return;
+                    root.dataset.pdpAccordionReady = '1';
+                    root.querySelectorAll('details.pdp-meta-accordion__item').forEach(function (item) {
+                      var summary = item.querySelector('summary');
+                      if (!summary) return;
+                      var sync = function () {
+                        summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+                      };
+                      sync();
+                      item.addEventListener('toggle', sync);
+                    });
+                  })();
+                </script>
               {%- when 'popup' -%}
                 <modal-opener
                   class="product-popup-modal__opener quick-add-hidden"

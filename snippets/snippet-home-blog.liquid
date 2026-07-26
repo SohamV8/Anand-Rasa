@@ -22,13 +22,21 @@
     <h2 class="ar-blog__h">{{ section.settings.blog_heading | default: 'OUR JOURNAL' }}</h2>
     <div class="ar-blog__div"></div>
   </header>
-  <div class="ar-blog__track">
+  <div class="ar-blog__track" role="list">
     {%- for article in blogs[section.settings.blog].articles limit: section.settings.blog_limit -%}
-      <article>
+      <article class="ar-blog__card" role="listitem">
         <a href="{{ article.url }}" class="ar-blog__link">
           <div class="ar-blog__imgw">
             {%- if article.image -%}
-              <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | default: article.title }}" width="900" height="600" loading="lazy" class="ar-blog__img">
+              <img
+                src="{{ article.image | image_url: width: 900 }}"
+                alt="{{ article.image.alt | default: article.title | escape }}"
+                width="900"
+                height="1125"
+                loading="lazy"
+                decoding="async"
+                class="ar-blog__img"
+              >
             {%- else -%}
               <div class="ar-blog__ph"></div>
             {%- endif -%}
