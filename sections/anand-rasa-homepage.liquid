@@ -853,7 +853,9 @@
       btn.setAttribute('role', 'tab');
       btn.setAttribute('aria-label', 'Slide ' + (i + 1));
       btn.addEventListener('click', function(){
-        card.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+        var pad = 8;
+        var left = Math.max(0, card.offsetLeft - pad);
+        track.scrollTo({ left: left, behavior: 'smooth' });
       });
       dotsRoot.appendChild(btn);
     });

@@ -559,27 +559,17 @@ if (!customElements.get('media-gallery')) {
         }
 
         this.preventStickyHeader();
-        // Capture at call-time: autoplay clears `_lmgAutoplayAdvance` before this timeout runs.
-        const skipPageScroll =
-          this._lmgAutoplayAdvance === true || this.classList.contains('lmg-dawn');
-        window.setTimeout(() => {
-          const list = activeMedia.parentElement;
-          // Luxury mobile uses a fade stack — never horizontal-scroll the media list
-          // (scrollWidth can still exceed clientWidth due to Dawn peek leftovers).
-          const luxuryMobileFade = this.classList.contains('lmg-dawn') && !this.mql.matches;
-          if (!luxuryMobileFade && list && list.scrollWidth > list.clientWidth + 8) {
-            list.scrollTo({ left: activeMedia.offsetLeft, behavior: 'smooth' });
-          }
-          // Luxury fade gallery keeps media in-place — never hijack document scroll
-          // (was jumping to gallery/top on every autoplay + variant media switch).
-          if (skipPageScroll) return;
-          const activeMediaRect = activeMedia.getBoundingClientRect();
-          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-          if (activeMediaRect.bottom < 0 || activeMediaRect.top > viewportHeight) return;
-          if (activeMediaRect.top > -0.5) return;
-          const top = activeMediaRect.top + window.scrollY;
-          window.scrollTo({ top: top, behavior: 'smooth' });
-        });
+        // Never hijack document scroll on media change.
+        // Autoplay + 4:5↔9:16 height swaps + Dawn scrollTo caused repeated page jumps.
+        const isLuxury = this.classList.contains('lmg-dawn');
+        if (!isLuxury) {
+          window.setTimeout(() => {
+            const list = activeMedia.parentElement;
+            if (list && list.scrollWidth > list.clientWidth + 8) {
+              list.scrollTo({ left: activeMedia.offsetLeft, behavior: 'smooth' });
+            }
+          });
+        }
         this.playActiveMedia(activeMedia);
 
         if (!this.elements.thumbnails) return;
@@ -609,16 +599,16 @@ if (!customElements.get('media-gallery')) {
       }
 
       announceLiveRegion(activeItem, position) {
-        const image = activeItem.querySelector('.product__modal-opener--image img');
-        if (!image) return;
-        image.onload = () => {
-          this.elements.liveRegion.setAttribute('aria-hidden', false);
-          this.elements.liveRegion.innerHTML = window.accessibilityStrings.imageAvailable.replace('[index]', position);
-          setTimeout(() => {
-            this.elements.liveRegion.setAttribute('aria-hidden', true);
-          }, 2000);
-        };
-        image.src = image.src;
+        if (!this.elements.liveRegion || !window.accessibilityStrings) return;
+        // Do not reassign image.src — that reloads the asset and causes layout jump during autoplay.
+        this.elements.liveRegion.setAttribute('aria-hidden', false);
+        this.elements.liveRegion.innerHTML = window.accessibilityStrings.imageAvailable.replace(
+          '[index]',
+          position
+        );
+        window.setTimeout(() => {
+          this.elements.liveRegion.setAttribute('aria-hidden', true);
+        }, 2000);
       }
 
       playActiveMedia(activeItem) {

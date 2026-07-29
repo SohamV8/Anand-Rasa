@@ -1,6 +1,6 @@
 {% comment %}
   Navagraha planet attar cards — icon above, product card below (chakra-style).
-  Uses assets/Planet- icons + attar images; products from collection by handle match.
+  Uses assets/Planet- icons + planet-attar-*.webp card images; products from collection by handle match.
   Optional: pl_collection (explicit collection), hide_head: true (skip duplicate header)
 {% endcomment %}
 
@@ -14,7 +14,7 @@
   assign pl_keys = 'surya,chandra,mangal,budha,guru,shukra,shani,rahu,ketu' | split: ','
   assign pl_labels = 'Surya,Chandra,Mangal,Budha,Guru,Shukra,Shani,Rahu,Ketu' | split: ','
   assign pl_icons = 'Planet-sun.webp,Planet-moon.webp,Planet-mars.webp,Planet-Mercury.webp,Planet-Jupiter.webp,Planet-Venus.webp,Planet-Saturn.webp,Planet-Rahu.webp,Planet-Ketu.webp' | split: ','
-  assign pl_attars = 'Planet-surya_attar.webp,Planet-chandra_attar.webp,Planet-mangal_attar.webp,Planet-budh_attar.webp,Planet-guru_attar.webp,Planet-shukra_attar.webp,Planet-shani_attar.webp,Planet-rahu_attar.webp,Planet-ketu_attar.webp' | split: ','
+  assign pl_attars = 'planet-attar-surya.webp,planet-attar-chandra.webp,planet-attar-mangal.webp,planet-attar-budh.webp,planet-attar-guru.webp,planet-attar-shukra.webp,planet-attar-shani.webp,planet-attar-rahu.webp,planet-attar-ketu.webp' | split: ','
   assign pl_match = 'sun,surya|moon,chandra|mars,mangal|mercury,budh,budha|jupiter,guru|venus,shukra|saturn,shani|rahu|ketu' | split: '|'
 -%}
 
@@ -118,17 +118,19 @@
 .ar-pl__img-wrap {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   background: var(--pl-fill);
   overflow: hidden;
   border-radius: 21px 21px 0 0;
 }
-.ar-pl__img {
+.ar-pl .ar-pl__img {
+  display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: contain;
   object-position: center;
-  padding: 12px;
   transition: transform 0.5s ease;
 }
 .ar-pl__card:hover .ar-pl__img { transform: scale(1.04); }
@@ -375,11 +377,11 @@
 .ar-pl--home .ar-pl__img {
   width: 100%;
   height: 100%;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: contain;
   object-position: center;
-  padding: 10px;
+  padding: 0;
 }
 .ar-pl--home .ar-pl__card:hover .ar-pl__img { transform: none; }
 .ar-pl--home .ar-pl__name {

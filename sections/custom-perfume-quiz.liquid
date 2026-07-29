@@ -144,7 +144,7 @@
           <legend class="cpq__step-title">Attar or perfume oil</legend>
           <p class="cpq__step-sub">Pick the type you want.</p>
           <div class="cpq__choices cpq__choices--2 cpq__choices--visual" data-cpq-group="fragranceType" data-cpq-required>
-            {%- assign cpq_types = 'Attar|attar|Planet-shukra_attar.webp,Perfume|perfume-oil|Perfume-Perfume_100ml.webp' | split: ',' -%}
+            {%- assign cpq_types = 'Attar|attar|planet-attar-shukra.webp,Perfume|perfume-oil|Perfume-Perfume_100ml.webp' | split: ',' -%}
             {%- for cpq_t in cpq_types -%}
               {%- assign cpq_tp = cpq_t | split: '|' -%}
               <button type="button" class="cpq__choice cpq__choice--visual" data-cpq-value="{{ cpq_tp[1] }}" aria-pressed="false">

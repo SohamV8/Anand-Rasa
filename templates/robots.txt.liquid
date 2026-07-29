@@ -1,11 +1,38 @@
 {%- comment -%}
-  Anandrasa robots.txt production template.
+  ============================================================================
+  FILE LOCATION : templates/robots.txt.liquid    (Shopify theme > Templates)
+  SERVED AT     : https://www.anandrasa.com/robots.txt
+  ============================================================================
 
-  Default crawl rules come from robots.default_groups (Shopify-managed).
-  Then we append AI crawler Allow blocks. No duplicate Sitemap line after
-  those groups. Long documentation lives in theme docs or repo README.
+  DESIGN RULES FOR THIS FILE — read before editing.
 
-  Do not put Liquid tag-like brace sequences inside this comment block.
+  1. Shopify's `robots.default_groups` carries the platform-maintained crawl
+     rules (blocking /cart, /checkout, /account, /admin, /search, faceted
+     collection URLs, preview URLs and so on). Always emit them first and
+     never replace them; Shopify updates them as the platform changes.
+
+  2. The sitemap directive comes from `group.sitemap` — SINGULAR. An earlier
+     revision of this file looped over `group.sitemaps` (plural), which is
+     not a Liquid object, so it silently rendered nothing and /robots.txt
+     shipped with no Sitemap: line at all. Do not reintroduce the plural.
+
+  3. Naming a crawler in its own `User-agent:` group makes that crawler
+     IGNORE the `*` group entirely. A bare `User-agent: X` + `Allow: /` pair
+     therefore unblocks /cart, /checkout, /account and every faceted URL for
+     that crawler. Any named group here must restate the protective
+     disallows. That is what AR_AGENT_RULES below exists for.
+
+  4. For the same reason, mainstream search crawlers (Googlebot,
+     Googlebot-Image, Googlebot-News, Bingbot, DuckDuckBot, YandexBot,
+     Applebot) are deliberately NOT given their own groups. They already
+     match the `*` group, which allows the whole public site while keeping
+     the transactional and duplicate surfaces blocked. Giving them a group
+     would remove those protections and waste crawl budget. Leave them out.
+
+     Google-Extended and Applebot-Extended ARE listed below because they are
+     content-usage controls for AI training and answer surfaces, not
+     crawlers — they have no crawl rules of their own to override.
+  ============================================================================
 {%- endcomment -%}
 
 {%- for group in robots.default_groups -%}
@@ -14,84 +41,104 @@
     {{ rule }}
   {%- endfor -%}
 
-  {%- for sitemap in group.sitemaps -%}
-    {{ sitemap }}
-  {%- endfor -%}
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
 
 {%- endfor -%}
-# ---------------------------------------------------------------------------
-# Generative AI & answer-engine crawlers — full-site allow
-# ---------------------------------------------------------------------------
 
-# OpenAI — training corpus, ChatGPT Search index, in-chat browsing
-User-agent: GPTBot
+{%- comment -%}
+  Shared rule block for every explicitly named agent group below. Mirrors the
+  protective disallows from the `*` group, then opens the rest of the site.
+  Order matters: Allow: / is last so the specific disallows take precedence
+  under longest-match resolution.
+{%- endcomment -%}
+{%- capture ar_agent_rules -%}
+Disallow: /admin
+Disallow: /cart
+Disallow: /carts
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /a/downloads/-/*
+Disallow: /recommendations/products
+Disallow: /collections/*sort_by*
+Disallow: /collections/*+*
+Disallow: /collections/*%2B*
+Disallow: /collections/*%2b*
+Disallow: /blogs/*+*
+Disallow: /blogs/*%2B*
+Disallow: /blogs/*%2b*
+Disallow: /*?*oseid=*
+Disallow: /*preview_theme_id*
+Disallow: /*preview_script_id*
 Allow: /
+{%- endcapture -%}
 
-User-agent: OAI-SearchBot
-Allow: /
+{%- comment -%}
+  Generative AI, answer-engine and LLM-retrieval crawlers.
 
-User-agent: ChatGPT-User
-Allow: /
+  OpenAI        GPTBot (training), OAI-SearchBot (ChatGPT Search index),
+                ChatGPT-User (live in-chat fetches)
+  Anthropic     ClaudeBot (index), Claude-User (live fetches),
+                Claude-SearchBot, anthropic-ai (legacy)
+  Perplexity    PerplexityBot (index), Perplexity-User (live fetches)
+  Google        Google-Extended gates Gemini training and AI Overviews usage
+  Apple         Applebot-Extended gates Apple Intelligence and Siri usage
+  Microsoft     Copilot answers are served from the Bing index, which is
+                already covered by the `*` group — no separate agent needed
+  Others        Amazonbot (Alexa), DuckAssistBot (DuckDuckGo AI),
+                Meta-ExternalAgent / Meta-ExternalFetcher (Meta AI),
+                MistralAI-User, YouBot, cohere-ai, CCBot (Common Crawl,
+                a training source for many downstream models)
+{%- endcomment -%}
+{%- assign ar_ai_agents = 'GPTBot,OAI-SearchBot,ChatGPT-User,ClaudeBot,Claude-User,Claude-SearchBot,anthropic-ai,PerplexityBot,Perplexity-User,Google-Extended,Applebot-Extended,Amazonbot,DuckAssistBot,Meta-ExternalAgent,Meta-ExternalFetcher,MistralAI-User,YouBot,cohere-ai,CCBot' | split: ',' -%}
+{%- for ar_agent in ar_ai_agents %}
 
-# Perplexity — index + on-demand fetches
-User-agent: PerplexityBot
-Allow: /
+User-agent: {{ ar_agent }}
+{{ ar_agent_rules }}
+{%- endfor %}
 
-User-agent: Perplexity-User
-Allow: /
+{%- comment -%}
+  Aggressive commercial SEO crawlers: permitted, but throttled so they do not
+  consume the crawl capacity that matters for search and AI indexing.
+{%- endcomment -%}
+{%- assign ar_throttled_agents = 'SemrushBot,MJ12bot,DotBot,BLEXBot' | split: ',' -%}
+{%- for ar_agent in ar_throttled_agents %}
 
-# Anthropic — Claude
-User-agent: ClaudeBot
-Allow: /
+User-agent: {{ ar_agent }}
+Crawl-delay: 10
+{{ ar_agent_rules }}
+{%- endfor %}
 
-User-agent: Claude-Web
-Allow: /
+{%- comment -%}
+  Policy and trust pages.
 
-User-agent: anthropic-ai
-Allow: /
+  Shopify's default `*` group blocks /policies/ wholesale. These five pages
+  are self-canonical, return `index, follow`, and are linked from the site
+  footer. They carry the shipping, returns, privacy and business-identity
+  facts that E-E-A-T assessment and AI answer engines rely on, so they are
+  re-opened individually. Longest-match wins, so these Allow lines override
+  the broader `Disallow: /policies/` for these paths only; every other
+  /policies/ URL stays blocked.
 
-# Google — gates AI Overviews / Gemini training (separate from Googlebot)
-User-agent: Google-Extended
-Allow: /
+  Verified live 2026-07-29 — all five return HTTP 200. Re-verify before
+  adding any new path here; a stale Allow pointing at a 404 is dead weight.
+  A previous revision allowed /pages/faq, which does not exist on this store;
+  the real FAQ handle is the one listed below.
 
-# Apple Intelligence / Siri answer surfaces
-User-agent: Applebot-Extended
-Allow: /
-
-# Microsoft Copilot / Bing Chat (Bingbot itself is allowed via the * group)
-User-agent: Bingbot
-Allow: /
-
-# Other notable answer engines and AI indexers
-User-agent: Amazonbot
-Allow: /
-
-User-agent: DuckAssistBot
-Allow: /
-
-User-agent: Meta-ExternalAgent
-Allow: /
-
-User-agent: Meta-ExternalFetcher
-Allow: /
-
-User-agent: YouBot
-Allow: /
-
-User-agent: cohere-ai
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-# ---------------------------------------------------------------------------
-# FAQ + footer policy pages (explicit allow; pages sitemap lists /pages/faq)
-# ---------------------------------------------------------------------------
-User-agent: *
-Allow: /pages/faq
+  Note the closing tag below is `endcomment %}` without a trailing hyphen. The
+  literal text that follows is not preceded by any Liquid tag that would emit
+  a newline, so stripping here would weld `User-agent: *` onto the previous
+  agent group's last rule.
+{%- endcomment %}
 
 User-agent: *
 Allow: /policies/shipping-policy
+Allow: /policies/refund-policy
 Allow: /policies/privacy-policy
 Allow: /policies/terms-of-service
-Allow: /policies/refund-policy
+Allow: /policies/contact-information
+Allow: /pages/https-www-anandrasa-com-pages-frequently-asked-questions

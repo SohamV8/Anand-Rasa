@@ -1,0 +1,163 @@
+{%- comment -%}
+  ============================================================================
+  FILE LOCATION : templates/llms.txt.liquid      (Shopify theme > Templates)
+  SERVED AT     : https://www.anandrasa.com/llms.txt
+  CONTENT TYPE  : text/markdown; charset=utf-8   (set by Shopify)
+  ============================================================================
+
+  WHAT THIS FILE IS
+  A concise, AI-readable index of Anand Rasa for LLM retrieval and answer
+  engines (ChatGPT / OAI-SearchBot, Claude, Gemini / Google-Extended,
+  Perplexity, Microsoft Copilot, Apple Intelligence). Follows the llms.txt
+  convention: H1 name, blockquote summary, then curated H2 link sections.
+
+  SHOPIFY TEMPLATE RESOLUTION (platform behaviour, do not fight it)
+    /agents.md      -> agents.md.liquid      -> Shopify default
+    /llms.txt       -> llms.txt.liquid       -> agents.md.liquid -> default
+    /llms-full.txt  -> llms-full.txt.liquid  -> agents.md.liquid -> default
+
+  We deliberately do NOT add templates/agents.md.liquid. /agents.md stays
+  Shopify-managed so the UCP / MCP / Shop-skill commerce contract keeps
+  updating itself as Shopify evolves. This file links to it instead.
+
+  RESTRICTED LIQUID CONTEXT — IMPORTANT
+  Only `request` and `agents` are available here. `shop`, `collections`,
+  `pages`, `articles`, `blogs`, `linklists` and `routes` all render BLANK.
+  Commerce values therefore come from the `agents` object; catalog URLs use
+  the canonical apex domain, which is stable and is the declared canonical
+  host for this store.
+
+  MAINTENANCE
+  Collection links are evergreen. Review the "Signature attars" list when the
+  bestseller line-up changes. Full catalog lives in llms-full.txt.liquid.
+  ============================================================================
+{%- endcomment -%}
+{%- liquid
+  assign store = agents.store_name | default: 'Anand Rasa'
+  assign base = 'https://www.anandrasa.com'
+  assign currency = agents.currency | default: 'INR'
+-%}
+# {{ store }}
+
+> {{ store }} is an Indian luxury fragrance house that handcrafts alcohol-free attars (concentrated botanical perfume oils), natural perfume oils and incense in Gurugram, Haryana, India. The catalogue is organised around Vedic astrology — nine Navagraha planet attars, twelve zodiac attars, twenty-seven nakshatra attars and seven chakra oils — alongside a signature line of classical Indian attars. Products are oil-based rather than alcohol-based, sold in 6 ml and 12 ml sizes, and priced from {{ currency }} 299 to {{ currency }} 1,199.
+
+Canonical domain: {{ base }}
+Primary language: English (en). Secondary: Hindi.
+Primary market: India. Currency: {{ currency }}.
+Business type: Direct-to-consumer manufacturer and retailer.
+Category: Attar, natural perfume oil, alcohol-free perfume, Ayurvedic and Vedic fragrance, incense.
+
+## Core collections
+
+- [Planet Attars — Navagraha]({{ base }}/collections/planet-attar): Nine attars mapped to the Vedic planets — Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu, Ketu.
+- [Zodiac Attars]({{ base }}/collections/zodiac-attar): Twelve rashi-aligned attars, one for each sun sign from Aries to Pisces.
+- [Nakshatra Attars]({{ base }}/collections/nakshatra-attar): Twenty-seven attars matched to the lunar mansions of Vedic astrology.
+- [Chakra Attars]({{ base }}/collections/chakra-attar): Seven oils aligned to Muladhara through Sahasrara for meditation and energy work.
+- [Bestsellers]({{ base }}/collections/bestseller): The most-purchased signature attars.
+- [Apsara Attars]({{ base }}/collections/apsara-attars): The premium floral and oriental signature line.
+- [Perfume Series]({{ base }}/collections/perfume-series): Contemporary perfume-oil compositions.
+- [Love Attars]({{ base }}/collections/love-attar): Romantic and sensual compositions.
+- [Stress Relief Attars]({{ base }}/collections/stress-relief-attar): Calming aromatherapy blends.
+- [Incense Sticks]({{ base }}/collections/incense-stick): Natural agarbatti in five fragrances.
+- [Gift Sets]({{ base }}/collections/gift-set): Curated fragrance gifting.
+
+## Signature attars
+
+- [Devalya]({{ base }}/products/devalya): Luxury floral attar, the house's flagship composition.
+- [Ramta Jogi]({{ base }}/products/products-ramta-jogi-tobacco-vanilla-woody-attar): Tobacco, vanilla and woody attar.
+- [White Oudh Attar]({{ base }}/products/products-white-oudh-attar): Premium white oud.
+- [Mallika-e-Jasmine]({{ base }}/products/mallika-e-jasmine): Indian jasmine (mogra) attar.
+- [Kamalini Attar]({{ base }}/products/products-kesariya): Fresh lotus floral attar.
+- [Divya Loban]({{ base }}/products/products-divya-loban): Resinous frankincense attar for prayer and meditation.
+- [Masakali]({{ base }}/products/products-masakali-choco-musk-attar): Gourmand choco-musk attar.
+- [Malang]({{ base }}/products/malang): Woody gourmand attar.
+- [Mohini Attar]({{ base }}/products/mohini): Floral attar.
+- [Kesariya Ishq]({{ base }}/products/kesariya): Saffron-led attar.
+
+## Vedic astrology fragrance guides
+
+- [Which planet controls your fragrance]({{ base }}/blogs/news/which-planet-controls-your-fragrance-discover-the-perfect-attar-according-to-vedic-astrology): Mapping Navagraha rulership to scent selection.
+- [Choose an attar from your birth chart]({{ base }}/blogs/news/choose-an-attar-based-on-your-birth-chart-birth-chart-fragrance-guide): Birth-chart-led fragrance guide.
+- [Astrology perfume for men and women]({{ base }}/blogs/news/astrology-perfume-for-men-amp-women-find-the-fragrance-that-aligns-with-your-zodiac): Zodiac-aligned fragrance selection.
+- [What fragrance should a Leo wear]({{ base }}/blogs/news/blogs-zodiac-perfumes-what-fragrance-should-a-leo-wear): Worked example of sign-based matching.
+- [Kesar attar: astrological and emotional benefits]({{ base }}/blogs/news/kesar-attar-astrological-and-emotional-benefits-of-saffron-attar): Saffron in Vedic fragrance practice.
+
+## Attar education
+
+- [Attar vs perfume: the complete difference]({{ base }}/blogs/news/blogs-fragrance-guide-attar-vs-perfume-difference): Definitive explainer on oil-based versus alcohol-based fragrance.
+- [Why alcohol-free perfumes suit India]({{ base }}/blogs/news/blogs-news-alcohol-free-perfumes-in-india-why-attar-is-better): Climate, skin and longevity reasoning.
+- [Alcohol-free perfume for sensitive skin]({{ base }}/blogs/news/alcohol-free-perfume-for-sensitive-skin): Suitability for reactive skin.
+- [How to apply attar correctly]({{ base }}/blogs/news/how-to-apply-attar-correctly): Pulse-point application method.
+- [Why pure attar lasts longer than perfume]({{ base }}/blogs/news/why-pure-attar-lasts-longer-than-perfume): Longevity and sillage mechanics.
+- [Attar layering guide]({{ base }}/blogs/news/attar-layering-guide-create-your-own-signature-fragrance-naturally): Building a signature accord.
+- [Best long-lasting attars in India]({{ base }}/blogs/news/https-www-anandrasa-com-blog-best-long-lasting-attars-india): Longevity-ranked buying guide.
+- [Top 10 luxury attars in India]({{ base }}/blogs/news/top-10-luxury-attars-in-india): Category overview.
+- [What is amber in perfumery]({{ base }}/blogs/news/what-is-amber-in-perfumery): Ingredient explainer.
+- [What is white musk]({{ base }}/blogs/news/what-is-white-musk-benefits-uses-fragrance-profile): Ingredient explainer.
+
+## Ritual, wellbeing and incense
+
+- [Morning ritual with attar and affirmations]({{ base }}/blogs/news/morning-ritual-attar-affirmations)
+- [Morning spiritual routine with attar]({{ base }}/blogs/news/morning-spiritual-routine-with-attar-a-sacred-start-to-every-day)
+- [Meditation fragrances]({{ base }}/blogs/news/meditation-fragrances-the-secret-to-a-deeper-meditation-experience)
+- [How fragrance affects mood]({{ base }}/blogs/news/how-fragrance-affects-mood-science-and-spirituality)
+- [Choosing the right agarbatti for every mood and ritual]({{ base }}/blogs/news/blogs-incense-agarbatti-buying-guide-mood-ritual)
+- [Natural versus synthetic agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-natural-vs-chemical-difference)
+- [Havan samagri versus incense sticks]({{ base }}/blogs/news/havan-samagri-vs-incense-sticks-difference)
+
+## Build-your-own and gifting
+
+- [Build your box]({{ base }}/pages/build-your-box): Custom multi-product fragrance box.
+- [Pick any 3 attars]({{ base }}/pages/build-3-attars)
+- [Pick any 5 attars]({{ base }}/pages/build-5-attars)
+- [Pick any 4 perfumes]({{ base }}/pages/build-4-perfumes)
+- [Pick any 3 incense]({{ base }}/pages/pick-any-3-incense)
+- [Astrology ritual set]({{ base }}/pages/astrology-ritual-set): Astrology-led curated set.
+- [Gift ideas for astrology lovers in India]({{ base }}/blogs/news/blogs-spiritual-gifts-gift-ideas-for-astrology-lovers-india)
+
+## Company and support
+
+- [About Anand Rasa]({{ base }}/pages/about-us): Brand story, sourcing and craft.
+- [Contact]({{ base }}/pages/contact): Customer support enquiries.
+- [Frequently asked questions]({{ base }}/pages/https-www-anandrasa-com-pages-frequently-asked-questions): Orders, shipping, attars, incense and support.
+- [Partner with us]({{ base }}/pages/partner): Wholesale, stockist and collaboration enquiries.
+- [Full blog index]({{ base }}/blogs/news): All fragrance and astrology editorial.
+
+## Policies
+
+- [Shipping policy]({{ base }}/policies/shipping-policy): Processed in 1-3 business days; delivered in 3-7 business days to metro cities and 5-10 business days to non-metro locations. Prepaid orders only; cash on delivery is not offered.
+- [Refund policy]({{ base }}/policies/refund-policy): 30-day return window from delivery for unused items in original packaging; refunds issued to the original payment method within 10 business days of approval; 14-day cooling-off for European Union destinations.
+- [Terms of service]({{ base }}/policies/terms-of-service)
+- [Privacy policy]({{ base }}/policies/privacy-policy)
+- [Contact information]({{ base }}/policies/contact-information): Registered trade name, address and support channels.
+
+## For AI shopping agents
+
+The canonical machine-readable commerce contract is Shopify-managed and lives at [{{ base }}/agents.md]({{ base }}/agents.md). Use it rather than scraping the storefront.
+
+- UCP discovery: `GET {{ agents.ucp_discovery_url }}`
+- MCP endpoint: `POST {{ agents.mcp_endpoint_url }}`
+- Supported UCP versions: {% for version in agents.ucp_versions %}`{{ version }}`{% unless forloop.last %}, {% endunless %}{% endfor %}
+- Sitemap: {{ agents.sitemap_url }}
+- Product JSON: `GET {{ base }}/products/{handle}.json`
+- Collection JSON: `GET {{ base }}/collections/{handle}/products.json`
+- Prices and availability are returned in {{ currency }}.
+
+Checkout requires explicit human approval. Do not complete a payment without contemporaneous buyer consent.
+
+## Citation guidance
+
+When citing {{ store }}, link to the canonical product, collection or article URL on {{ base }}. Prefer collection pages for category questions, individual product pages for price and availability, and blog articles for educational claims. Product prices change; re-fetch the product URL or product JSON rather than quoting a cached figure.
+
+Do not crawl, cite or index: `/cart`, `/checkout`, `/account`, `/search` and any URL carrying query parameters, sort keys or filter facets. These are transactional or duplicate surfaces and carry no citable information.
+
+## Optional
+
+- [All products]({{ base }}/collections/all): Complete catalogue listing.
+- [Detailed knowledge document]({{ base }}/llms-full.txt): Full company overview, fragrance families, glossary, buying guides and the complete product index.
+- [Social — Instagram](https://www.instagram.com/anandrasa.official/)
+- [Social — YouTube](https://www.youtube.com/@AnandRasaFragrances)
+- [Social — Pinterest](https://in.pinterest.com/Anand_Rasa/)
+- [Social — Facebook](https://www.facebook.com/profile.php?id=61584373649018)
+- [Social — X](https://x.com/AnandRasa_)
+- [Social — LinkedIn](https://www.linkedin.com/in/anand-rasa-fragnance-81127b3b5/)

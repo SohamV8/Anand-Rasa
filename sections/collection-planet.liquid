@@ -137,23 +137,23 @@
             {%- assign ar_key = product.handle | append: ' ' | append: product.title | downcase -%}
             {%- unless template.suffix == 'bestseller' -%}
             {%- if ar_key contains 'sun' or ar_key contains 'surya' -%}
-              {%- assign ar_attar_img = 'Planet-surya_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-surya.webp' | asset_url -%}
             {%- elsif ar_key contains 'moon' or ar_key contains 'chandra' -%}
-              {%- assign ar_attar_img = 'Planet-chandra_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-chandra.webp' | asset_url -%}
             {%- elsif ar_key contains 'mars' or ar_key contains 'mangal' -%}
-              {%- assign ar_attar_img = 'Planet-mangal_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-mangal.webp' | asset_url -%}
             {%- elsif ar_key contains 'mercury' or ar_key contains 'budh' -%}
-              {%- assign ar_attar_img = 'Planet-budh_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-budh.webp' | asset_url -%}
             {%- elsif ar_key contains 'jupiter' or ar_key contains 'guru' -%}
-              {%- assign ar_attar_img = 'Planet-guru_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-guru.webp' | asset_url -%}
             {%- elsif ar_key contains 'venus' or ar_key contains 'shukra' -%}
-              {%- assign ar_attar_img = 'Planet-shukra_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-shukra.webp' | asset_url -%}
             {%- elsif ar_key contains 'saturn' or ar_key contains 'shani' -%}
-              {%- assign ar_attar_img = 'Planet-shani_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-shani.webp' | asset_url -%}
             {%- elsif ar_key contains 'rahu' -%}
-              {%- assign ar_attar_img = 'Planet-rahu_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-rahu.webp' | asset_url -%}
             {%- elsif ar_key contains 'ketu' -%}
-              {%- assign ar_attar_img = 'Planet-ketu_attar.webp' | asset_url -%}
+              {%- assign ar_attar_img = 'planet-attar-ketu.webp' | asset_url -%}
             {%- endif -%}
             {%- endunless -%}
             {%- if template.suffix == 'bestseller' -%}

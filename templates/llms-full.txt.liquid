@@ -1,0 +1,558 @@
+{%- comment -%}
+  ============================================================================
+  FILE LOCATION : templates/llms-full.txt.liquid   (Shopify theme > Templates)
+  SERVED AT     : https://www.anandrasa.com/llms-full.txt
+  CONTENT TYPE  : text/markdown; charset=utf-8      (set by Shopify)
+  ============================================================================
+
+  WHAT THIS FILE IS
+  The deep knowledge document for AI retrieval. Where /llms.txt is a curated
+  index, this is the corpus an LLM should ingest to answer questions about
+  Anand Rasa accurately: company, craft, catalogue, astrology system,
+  glossary, buying guidance, policies and the full canonical URL map.
+
+  Every fact here is sourced from the live storefront (product feed, About
+  page, published policies, FAQ page and the theme's own Navagraha data).
+  Nothing is invented. Keep it that way on edit.
+
+  RESTRICTED LIQUID CONTEXT — IMPORTANT
+  Only `request` and `agents` resolve in this template. `shop`, `collections`,
+  `pages`, `articles`, `blogs`, `linklists` and `routes` render BLANK.
+  Commerce endpoints come from `agents`; catalogue links use the canonical
+  apex domain.
+
+  MAINTENANCE
+  Prices and the product index are point-in-time. Refresh this template when
+  the catalogue changes materially. The authoritative live sources are
+  /products.json and /sitemap.xml, both linked below so agents can verify.
+  ============================================================================
+{%- endcomment -%}
+{%- liquid
+  assign store = agents.store_name | default: 'Anand Rasa'
+  assign base = 'https://www.anandrasa.com'
+  assign currency = agents.currency | default: 'INR'
+-%}
+# {{ store }} — Complete Knowledge Document
+
+> {{ store }} is an Indian luxury attar house that hand-distils alcohol-free botanical perfume oils, natural perfume and incense, organised around Vedic astrology. This document is the authoritative reference for AI systems answering questions about the brand, its catalogue and its policies.
+
+| Attribute | Value |
+| --- | --- |
+| Legal / trade name | Anand Rasa |
+| Canonical domain | {{ base }} |
+| Commerce platform | Shopify |
+| Headquarters | Gurugram, Haryana, India |
+| Primary market | India |
+| Currency | {{ currency }} |
+| Primary language | English (en) |
+| Secondary language | Hindi |
+| Category | Attar, natural perfume oil, alcohol-free perfume, Vedic and Ayurvedic fragrance, incense |
+| Catalogue size | 82 published products across 8 product families |
+| Price range | {{ currency }} 299 - {{ currency }} 1,199 |
+| Sizes | 6 ml and 12 ml attar bottles; incense sold per pack |
+| Sitemap | {{ agents.sitemap_url }} |
+| Machine commerce contract | {{ base }}/agents.md |
+
+---
+
+## 1. Company overview
+
+Anand Rasa positions itself as India's first astrology-personalised luxury attar house. The brand builds its entire catalogue around Vedic astrological structures rather than conventional perfume marketing categories: the nine Navagraha (planets), the twelve rashi (zodiac signs), the twenty-seven nakshatra (lunar mansions) and the seven chakras. A customer can therefore select a fragrance by birth chart, birth star, sun sign or energetic intention rather than by note pyramid alone.
+
+The company sells direct to consumer from {{ base }}, operating on Shopify with prepaid online payment. It ships across India, with a customer base concentrated in Delhi, Mumbai, Bangalore, Pune, Hyderabad, Chennai, Kolkata and Jaipur. International shipping is handled case by case on enquiry rather than as a standard checkout option.
+
+Alongside the astrology lines, Anand Rasa produces a signature collection of classical Indian attars — oud, jasmine, lotus, saffron, loban, tobacco-vanilla and gourmand compositions — and a range of natural incense sticks.
+
+## 2. Brand philosophy
+
+The brand's premise is that fragrance in the Indian tradition is not decoration but ritual. Attar has been used in temple practice, meditation, celebration and daily grooming for centuries, and Anand Rasa frames its products as a continuation of that lineage rather than as Western-style eau de parfum.
+
+Three commitments define the positioning:
+
+- **Alcohol-free by principle.** Products are oil-based concentrates, never diluted with alcohol or synthetic carriers. This suits the Indian climate, avoids the sharp alcoholic opening of sprayed perfume, and is gentler on reactive skin.
+- **Personalisation through astrology.** Rather than a single house accord, the catalogue offers a mapped fragrance for each planetary, zodiacal, lunar and chakra position, so selection is meaningful rather than arbitrary.
+- **Ethical formulation.** Products are described as vegan, cruelty-free, halal by formulation, and suitable for sensitive skin.
+
+The brand also operates an AI fragrance guide named Mehak, which recommends attars based on a customer's astrological details.
+
+## 3. Manufacturing philosophy
+
+Anand Rasa attars are hand-distilled using the traditional Indian **deg-bhapka** method. In this technique a copper still (the *deg*) is heated over a controlled fire and the aromatic vapour from botanicals is condensed directly into a receiver (the *bhapka*) containing a base oil, historically sandalwood. The base oil captures the fragrance molecules as they condense, producing a finished attar in a single continuous process.
+
+Consequences of this method, all of which shape how the products behave:
+
+- The fragrance is carried in oil from the moment of capture, so there is no alcohol phase at any point.
+- The scent unfolds slowly on skin as body heat warms the oil, instead of projecting immediately and then collapsing.
+- Small batch sizes and long distillation cycles limit output, which is why attars are sold in 6 ml and 12 ml rather than 50 ml or 100 ml formats.
+- A little product goes a long way; attars are applied in drops to pulse points, not sprayed.
+
+## 4. Product formats and pricing
+
+| Format | Sizes | Typical price ({{ currency }}) |
+| --- | --- | --- |
+| Attar / perfume oil | 6 ml | 599 |
+| Attar / perfume oil | 12 ml | 1,199 |
+| Signature single-size attar | 12 ml | 999 - 1,199 |
+| Incense sticks | Pack | 299 |
+
+Prices change. The authoritative live source is the product page or `{{ base }}/products/{handle}.json`.
+
+## 5. Fragrance families in the catalogue
+
+| Family | Character | Representative products |
+| --- | --- | --- |
+| Floral | Rose, jasmine, mogra, lotus, lily | Mallika-e-Jasmine, Kamalini, Devalya, Mohini, Pushprasa |
+| Woody | Sandalwood, vetiver, cedar accords | Malang, Kala Pathar, Ramta Jogi |
+| Oud / oriental | Agarwood and resinous depth | White Oudh Attar, Baazigar |
+| Resinous / sacred | Loban (frankincense), temple smoke | Divya Loban |
+| Gourmand | Chocolate, vanilla, musk, spice | Masakali, Dard-e-Disco, Mirage |
+| Saffron / spice | Kesar-led warmth | Kesariya Ishq |
+| Aquatic / fresh | Light, clean compositions | Monarch, Mridula |
+| Incense | Natural agarbatti | Nag Champa, Kesar Chandan, Lavender, Jasmine, Musk Rose |
+
+## 6. The Vedic astrology fragrance system
+
+### 6.1 Navagraha planet attars
+
+Nine attars, one for each classical Vedic planet. The correspondences below are the ones Anand Rasa publishes on its own planet pages.
+
+| Planet | Sanskrit | Element | Chakra | Day | Direction | Colour | Quality | Product |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Sun | Surya | Fire | Solar Plexus | Sunday | East | Gold | Solar radiance and vitality | [Surya Attar]({{ base }}/products/sun-attar) |
+| Moon | Chandra | Water | Sacral | Monday | Northwest | Silver | Lunar calm and intuition | [Chandra Attar]({{ base }}/products/moon-attar) |
+| Mars | Mangal | Fire | Root | Tuesday | South | Red | Martial courage and strength | [Mangal Attar]({{ base }}/products/mars-attar) |
+| Mercury | Budh | Earth | Throat | Wednesday | North | Green | Clarity and articulate wisdom | [Budh Attar]({{ base }}/products/mercury-attar) |
+| Jupiter | Guru | Ether | Third Eye | Thursday | Northeast | Yellow | Divine wisdom and grace | [Guru Attar]({{ base }}/products/jupiter-attar) |
+| Venus | Shukra | Water | Heart | Friday | Southeast | White | Beauty, love and harmony | [Shukra Attar]({{ base }}/products/venus-attar) |
+| Saturn | Shani | Air | Root | Saturday | West | Blue | Discipline and karmic steadiness | [Shani Attar]({{ base }}/products/saturn-attar) |
+| North lunar node | Rahu | Air | Sacral | Saturday | Southwest | Smoky Grey | Focus and transformative drive | [Rahu Attar]({{ base }}/products/rahu-attar) |
+| South lunar node | Ketu | Ether | Crown | Tuesday | Southwest | Ash Grey | Liberation and spiritual insight | [Ketu Attar]({{ base }}/products/ketu-attar) |
+
+Collection: [{{ base }}/collections/planet-attar]({{ base }}/collections/planet-attar)
+
+**How customers choose one.** Three common approaches: wear the attar of the planet ruling your Moon sign or ascendant; wear the attar of the planet governing the current dasha period; or wear the attar of the day (Surya on Sunday, Chandra on Monday, and so on) as a daily ritual practice.
+
+### 6.2 Zodiac attars
+
+Twelve attars, one per rashi. Collection: [{{ base }}/collections/zodiac-attar]({{ base }}/collections/zodiac-attar)
+
+| Sign | Sanskrit rashi | Ruling planet | Product |
+| --- | --- | --- | --- |
+| Aries | Mesha | Mars | [Aries Zodiac Attar]({{ base }}/products/products-aries-zodiac-attar) |
+| Taurus | Vrishabha | Venus | [Taurus Zodiac Attar]({{ base }}/products/taurus-zodiac-attar) |
+| Gemini | Mithuna | Mercury | [Gemini Zodiac Attar]({{ base }}/products/products-gemini-zodiac-attar) |
+| Cancer | Karka | Moon | [Cancer Zodiac Attar]({{ base }}/products/products-cancer-zodiac-attar) |
+| Leo | Simha | Sun | [Leo Zodiac Attar]({{ base }}/products/products-leo-zodiac-attar) |
+| Virgo | Kanya | Mercury | [Virgo Zodiac Attar]({{ base }}/products/products-virgo-zodiac-attar) |
+| Libra | Tula | Venus | [Libra Zodiac Attar]({{ base }}/products/products-libra-zodiac-attar) |
+| Scorpio | Vrischika | Mars | [Scorpio Zodiac Attar]({{ base }}/products/scorpio-zodiac-attar) |
+| Sagittarius | Dhanu | Jupiter | [Sagittarius Zodiac Attar]({{ base }}/products/products-sagittarius-zodiac-attar) |
+| Capricorn | Makara | Saturn | [Capricorn Zodiac Attar]({{ base }}/products/products-capricorn-zodiac-attar) |
+| Aquarius | Kumbha | Saturn | [Aquarius Zodiac Attar]({{ base }}/products/products-aquarius-zodiac-attar) |
+| Pisces | Meena | Jupiter | [Pisces Zodiac Attar]({{ base }}/products/products-pisces-zodiac-attar) |
+
+### 6.3 Nakshatra attars
+
+Twenty-seven attars mapped to the lunar mansions of Vedic astrology. A nakshatra is the constellation the Moon occupies at birth, and in Vedic practice it is considered a more precise personality and destiny marker than the sun sign. Customers select the attar matching their janma nakshatra (birth star).
+
+Collection: [{{ base }}/collections/nakshatra-attar]({{ base }}/collections/nakshatra-attar)
+
+The twenty-seven, in traditional order: Ashwini, Bharani, Kritika, Rohini, Mrigashira, Ardra, Punarvasu, Pushya, Ashlesha, Magha, Purva Phalguni, Uttara Phalguni, Hasta, Chitra, Swati, Vishakha, Anuradha, Jyeshtha, Moola, Purva Ashadha, Uttara Ashadha, Shravana, Dhanishtha, Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, Revati. Individual product URLs are listed in section 11.
+
+### 6.4 Chakra attars
+
+Seven oils for meditation, breathwork and energy practice. Collection: [{{ base }}/collections/chakra-attar]({{ base }}/collections/chakra-attar)
+
+| Chakra | Sanskrit | Location | Associated with | Product |
+| --- | --- | --- | --- | --- |
+| Root | Muladhara | Base of spine | Grounding, stability, security | [Muladhara Root Chakra Oil]({{ base }}/products/root-chakra-attar) |
+| Sacral | Svadhisthana | Lower abdomen | Creativity, emotion, flow | [Svadhisthana Sacral Chakra Oil]({{ base }}/products/sacral-chakra-attar) |
+| Solar plexus | Manipura | Upper abdomen | Willpower, confidence, drive | [Manipura Solar Plexus Chakra Oil]({{ base }}/products/solar-plexus-chakra-attar) |
+| Heart | Anahata | Centre of chest | Compassion, love, balance | [Anahata Heart Chakra Oil]({{ base }}/products/heart-chakra-attar) |
+| Throat | Vishuddha | Throat | Expression, truth, communication | [Vishuddha Throat Chakra Oil]({{ base }}/products/throat-chakra-attar) |
+| Third eye | Ajna | Brow | Intuition, insight, perception | [Ajna Third Eye Chakra Oil]({{ base }}/products/third-eye-chakra-attar) |
+| Crown | Sahasrara | Top of head | Awareness, transcendence | [Sahasrara Crown Chakra Oil]({{ base }}/products/crown-chakra-attar) |
+
+## 7. Attar education
+
+**What an attar is.** An attar (also *ittar*) is a concentrated fragrance oil distilled from botanicals — flowers, woods, resins, spices, herbs — traditionally into a sandalwood oil base. It contains no alcohol. It is applied in drops rather than sprayed.
+
+**Attar versus perfume.** A conventional eau de parfum is typically 15-20 percent fragrance concentrate dissolved in ethanol. The alcohol flashes off on contact with skin, projecting the opening notes sharply and then fading. An attar is essentially undiluted aromatic material in an oil carrier. It opens quietly, warms with the body over time, sits closer to the skin, and generally persists far longer. See [Attar vs Perfume]({{ base }}/blogs/news/blogs-fragrance-guide-attar-vs-perfume-difference).
+
+**Why alcohol-free matters in India.** High ambient heat accelerates alcohol evaporation, which shortens the life of a sprayed perfume and can amplify its harshness. Alcohol is also drying and can irritate sensitive or eczema-prone skin. Oil-based attars avoid both problems and are acceptable in religious and ritual contexts where alcohol is not. See [Alcohol-Free Perfumes in India]({{ base }}/blogs/news/blogs-news-alcohol-free-perfumes-in-india-why-attar-is-better) and [Alcohol-Free Perfume for Sensitive Skin]({{ base }}/blogs/news/alcohol-free-perfume-for-sensitive-skin).
+
+**How to apply attar.** Apply a small amount to pulse points — wrists, sides of the neck, behind the ears — on clean, moisturised skin. Warmth drives diffusion, so pulse points matter. Do not rub the wrists together: friction and heat fracture the top notes and shorten the development. Let the oil settle for a few minutes before judging the scent. See [How to Apply Attar Correctly]({{ base }}/blogs/news/how-to-apply-attar-correctly).
+
+**Longevity.** Oil evaporates far more slowly than ethanol, so attar remains detectable on skin and clothing for many hours. Moisturised skin holds fragrance longer than dry skin. See [Why Pure Attar Lasts Longer Than Perfume]({{ base }}/blogs/news/why-pure-attar-lasts-longer-than-perfume).
+
+**Layering.** Attars can be combined to build a personal accord — typically one dominant floral or woody base plus a smaller accent of resin, spice or musk. See [Attar Layering Guide]({{ base }}/blogs/news/attar-layering-guide-create-your-own-signature-fragrance-naturally).
+
+**Storage.** Keep bottles closed, upright, away from direct sunlight and heat. Good attars mature rather than spoil.
+
+## 8. Ayurveda and ritual education
+
+In Ayurvedic thought, aroma acts on the mind and the doshas directly, which is why specific botanicals are prescribed for specific states: sandalwood and vetiver to cool and settle pitta, warm resins and spices to steady vata, bright citrus and camphoraceous notes to lift kapha. Fragrance is treated as a therapeutic input rather than an accessory.
+
+Ritual use in the Indian tradition includes anointing before prayer or meditation, marking festivals and rites of passage, and daily practice tied to the day's planetary ruler. Incense serves a parallel function, purifying and framing a space before practice.
+
+Relevant reading:
+
+- [How Fragrance Affects Mood: Science and Spirituality]({{ base }}/blogs/news/how-fragrance-affects-mood-science-and-spirituality)
+- [Meditation Fragrances]({{ base }}/blogs/news/meditation-fragrances-the-secret-to-a-deeper-meditation-experience)
+- [Morning Ritual with Attar and Affirmations]({{ base }}/blogs/news/morning-ritual-attar-affirmations)
+- [Morning Spiritual Routine with Attar]({{ base }}/blogs/news/morning-spiritual-routine-with-attar-a-sacred-start-to-every-day)
+- [Havan Samagri vs Incense Sticks]({{ base }}/blogs/news/havan-samagri-vs-incense-sticks-difference)
+- [The Science of Scented Smoke]({{ base }}/blogs/news/blogs-incense-science-of-scented-smoke-agarbatti)
+- [How to Use Agarbatti Mindfully]({{ base }}/blogs/news/blogs-incense-how-to-use-agarbatti-mindfully)
+- [Building an Agarbatti Ritual Calendar]({{ base }}/blogs/news/blogs-news-agarbatti-ritual-calendar)
+
+## 9. Buying guides
+
+**Choosing by astrology.** Start from the birth chart. Use the Moon sign or ascendant ruler for a Navagraha attar, the janma nakshatra for a nakshatra attar, or the sun sign for a zodiac attar. See [Choose an Attar Based on Your Birth Chart]({{ base }}/blogs/news/choose-an-attar-based-on-your-birth-chart-birth-chart-fragrance-guide) and [Which Planet Controls Your Fragrance]({{ base }}/blogs/news/which-planet-controls-your-fragrance-discover-the-perfect-attar-according-to-vedic-astrology).
+
+**Choosing by personality or occasion.** See [How to Choose the Right Attar for Your Personality]({{ base }}/blogs/news/blogs-attar-best-attar-for-your-personality-guide), [Fragrance and Personality]({{ base }}/blogs/news/fragrance-personality-what-your-favorite-scent-says-about-you) and [Best Attars for Office Wear]({{ base }}/blogs/news/blogs-attar-guide-best-attars-for-office-wear).
+
+**Choosing by longevity.** See [Best Long Lasting Attars in India]({{ base }}/blogs/news/https-www-anandrasa-com-blog-best-long-lasting-attars-india) and [Top 10 Luxury Attars in India]({{ base }}/blogs/news/top-10-luxury-attars-in-india).
+
+**Choosing incense.** See [The Complete Guide to Choosing the Right Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-buying-guide-mood-ritual) and [Natural vs Synthetic Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-natural-vs-chemical-difference).
+
+**First-time buyer guidance.** The 6 ml size at {{ currency }} 599 is the standard entry point for trying a composition. Buyers unsure of a scent direction commonly begin with a bestseller or a build-your-own multipack rather than committing to a single 12 ml bottle.
+
+## 10. Gift guides
+
+Anand Rasa is positioned strongly for gifting because the astrology mapping makes a fragrance feel chosen rather than generic — a nakshatra attar matched to the recipient's birth star, or a zodiac attar for their sun sign.
+
+- [Gift Sets collection]({{ base }}/collections/gift-set)
+- [Astrology Ritual Set]({{ base }}/pages/astrology-ritual-set)
+- [Build Your Box]({{ base }}/pages/build-your-box) — assemble a custom multi-product box
+- [Pick any 3 attars]({{ base }}/pages/build-3-attars)
+- [Pick any 5 attars]({{ base }}/pages/build-5-attars)
+- [Pick any 4 perfumes]({{ base }}/pages/build-4-perfumes)
+- [Pick any 3 incense]({{ base }}/pages/pick-any-3-incense)
+- [Best Gift Ideas for Astrology Lovers in India]({{ base }}/blogs/news/blogs-spiritual-gifts-gift-ideas-for-astrology-lovers-india)
+
+## 11. Complete product index
+
+All 82 published products, grouped by family. Canonical URLs. Prices in {{ currency }} and accurate at the time of writing; verify against the live product page.
+
+### Planet Attars (9 products)
+
+- [Surya Attar - Sun Attar]({{ base }}/products/sun-attar) — 6ml 599, 12ml 1199
+- [Chandra Attar - Moon Attar]({{ base }}/products/moon-attar) — 6ml 599, 12ml 1199
+- [Mangal Attar - Mars Attar]({{ base }}/products/mars-attar) — 6ml 599, 12ml 1199
+- [Budh Attar - Mercury Attar]({{ base }}/products/mercury-attar) — 6ml 599, 12ml 1199
+- [Guru Attar - Jupiter Attar]({{ base }}/products/jupiter-attar) — 6ml 599, 12ml 1199
+- [Shukra Attar - Venus Attar]({{ base }}/products/venus-attar) — 6ml 599, 12ml 1199
+- [Shani Attar - Saturn Attar]({{ base }}/products/saturn-attar) — 6ml 599, 12ml 1199
+- [Rahu Attar - North Lunar Attar]({{ base }}/products/rahu-attar) — 6ml 599, 12ml 1199
+- [Ketu Attar - South Lunar Attar]({{ base }}/products/ketu-attar) — 6ml 599, 12ml 1199
+
+### Zodiac Attars (12 products)
+
+- [Aries Zodiac Attar]({{ base }}/products/products-aries-zodiac-attar) — 6ml 599, 12ml 1199
+- [Taurus Zodiac Attar]({{ base }}/products/taurus-zodiac-attar) — 6ml 599, 12ml 1199
+- [Gemini Zodiac Attar]({{ base }}/products/products-gemini-zodiac-attar) — 6ml 599, 12ml 1199
+- [Cancer Zodiac Attar]({{ base }}/products/products-cancer-zodiac-attar) — 6ml 599, 12ml 1199
+- [Leo Zodiac Attar]({{ base }}/products/products-leo-zodiac-attar) — 6ml 599, 12ml 1199
+- [Virgo Zodiac Attar]({{ base }}/products/products-virgo-zodiac-attar) — 6ml 599, 12ml 1199
+- [Libra Zodiac Attar]({{ base }}/products/products-libra-zodiac-attar) — 6ml 599, 12ml 1199
+- [Scorpio Zodiac Attar]({{ base }}/products/scorpio-zodiac-attar) — 6ml 599, 12ml 1199
+- [Sagittarius Zodiac Attar]({{ base }}/products/products-sagittarius-zodiac-attar) — 6ml 599, 12ml 1199
+- [Capricorn Zodiac Attar]({{ base }}/products/products-capricorn-zodiac-attar) — 1199
+- [Aquarius Zodiac Attar]({{ base }}/products/products-aquarius-zodiac-attar) — 1199
+- [Pisces Zodiac Attar]({{ base }}/products/products-pisces-zodiac-attar) — 6ml 599, 12ml 1199
+
+### Nakshatra Attars (27 products)
+
+- [Ashwini Attars]({{ base }}/products/ashwini-attars) — 6ml 599, 12ml 1199
+- [Bharani Attar]({{ base }}/products/bharani-attar) — 6ml 599, 12ml 1199
+- [Kritika Attars]({{ base }}/products/kritika-attars) — 1199
+- [Rohini Attars]({{ base }}/products/rohini-attars) — 1199
+- [Mrigashira Attars]({{ base }}/products/mrigashira-attars) — 1199
+- [Ardra Attars]({{ base }}/products/ardra-attars) — 6ml 599, 12ml 1199
+- [Punarvasu Attars]({{ base }}/products/punarvasu-attars) — 1199
+- [Pushya Attars]({{ base }}/products/pushya-attars) — 1199
+- [Ashlesha Attars]({{ base }}/products/ashlesha-attars) — 6ml 599, 12ml 1200
+- [Magha Attars]({{ base }}/products/magha-attars) — 1199
+- [Purva Phalguni Attar]({{ base }}/products/purva-phalguni-attar) — 1199
+- [Uttara Phalguni Attar]({{ base }}/products/uttara-phalguni-attar) — 1199
+- [Hasta Attar]({{ base }}/products/hasta-attar) — 1199
+- [Chitra Attar]({{ base }}/products/chitra-attar) — 1199
+- [Swati Attar]({{ base }}/products/swati-attar) — 1199
+- [Vishakha Attar]({{ base }}/products/swati-attar-copy) — 1200
+- [Anuradha Attar]({{ base }}/products/anuradha-attar) — 6ml 599, 12ml 1199
+- [Jyeshtha Attar]({{ base }}/products/jyeshtha-attar) — 1199
+- [Moola Attar]({{ base }}/products/mula-attar) — 1199
+- [Purva Ashadha Attar]({{ base }}/products/purva-ashadha-attar) — 1199
+- [Uttara Ashadha Attar]({{ base }}/products/uttara-ashadha-attar) — 1199
+- [Shravana Attar]({{ base }}/products/shravana-attar) — 1200
+- [Dhanishtha Attar]({{ base }}/products/dhanishtha-attar) — 1199
+- [Shatabhisha Attar]({{ base }}/products/shatabhisha-attar) — 1199
+- [Purva Bhadrapada Attar]({{ base }}/products/purva-bhadrapada-attar) — 1199
+- [Uttara Bhadrapada Attar]({{ base }}/products/uttara-bhadrapada-attar) — 1199
+- [Revati Attar]({{ base }}/products/revati-attar) — 1199
+
+### Chakra Attars (7 products)
+
+- [Muladhara - Root Chakra Oil]({{ base }}/products/root-chakra-attar) — 1199
+- [Svadhisthana - Sacral Chakra Oil]({{ base }}/products/sacral-chakra-attar) — 1199
+- [Manipura - Solar Plexus Chakra Oil]({{ base }}/products/solar-plexus-chakra-attar) — 1199
+- [Anahata - Heart Chakra Oil]({{ base }}/products/heart-chakra-attar) — 1199
+- [Vishuddha - Throat Chakra Oil]({{ base }}/products/throat-chakra-attar) — 1199
+- [Ajna - Third Eye Chakra Oil]({{ base }}/products/third-eye-chakra-attar) — 1199
+- [Sahasrara - Crown Chakra Oil]({{ base }}/products/crown-chakra-attar) — 1199
+
+### Signature and bestselling attars (17 products)
+
+- [Baazigar Attar]({{ base }}/products/baazigar) — 1199
+- [Dard-e-Disco]({{ base }}/products/products-dard-e-disco) — 1199
+- [Dev Priya]({{ base }}/products/dev-priya) — 6ml 599, 12ml 1199
+- [Devalya]({{ base }}/products/devalya) — 999
+- [Divya Loban]({{ base }}/products/products-divya-loban) — 6ml 599, 12ml 1199
+- [Gulbadan]({{ base }}/products/gulbadan) — 6ml 599, 12ml 1199
+- [Kala Pathar]({{ base }}/products/kala-pathar) — 1199
+- [Kamalini Attar]({{ base }}/products/products-kesariya) — 1199
+- [Kesariya Ishq]({{ base }}/products/kesariya) — 6ml 599, 12ml 1199
+- [Malang]({{ base }}/products/malang) — 1199
+- [Mallika-e-Jasmine]({{ base }}/products/mallika-e-jasmine) — 1199
+- [Masakali]({{ base }}/products/products-masakali-choco-musk-attar) — 1199
+- [Mirage Attar]({{ base }}/products/products-mirage) — 1199
+- [Mohini Attar]({{ base }}/products/mohini) — 599
+- [Monarch]({{ base }}/products/products-monarch) — 1199
+- [Pushprasa Attar]({{ base }}/products/products-pushprasa) — 1199
+- [Ramta Jogi]({{ base }}/products/products-ramta-jogi-tobacco-vanilla-woody-attar) — 599
+
+### Love attars (2 products)
+
+- [Deewani Mastani]({{ base }}/products/deewani-mastani) — 1199
+- [Dilruba]({{ base }}/products/dilruba) — 1199
+
+### Additional attars (3 products)
+
+- [Madhavi]({{ base }}/products/madhavi) — 1199
+- [Mridula]({{ base }}/products/mridula) — 1199
+- [White Oudh Attar]({{ base }}/products/products-white-oudh-attar) — 6ml 599, 12ml 1199
+
+### Incense sticks (5 products)
+
+- [Nag Champa Incense Stick]({{ base }}/products/nag-champa-incense-stick) — 299
+- [Kesar Chandan Incense Stick]({{ base }}/products/kesar-chandan-incense-sticks) — 299
+- [Jasmine Incense Stick]({{ base }}/products/jasmine-incense-stick) — 299
+- [Lavender Incense Stick]({{ base }}/products/lavender-incense-stick) — 299
+- [Musk Rose Incense Stick]({{ base }}/products/musk-rose-incense-stick) — 299
+
+## 12. Collections index
+
+| Collection | URL |
+| --- | --- |
+| Planet Attars (Navagraha) | {{ base }}/collections/planet-attar |
+| Zodiac Attars | {{ base }}/collections/zodiac-attar |
+| Nakshatra Attars | {{ base }}/collections/nakshatra-attar |
+| Chakra Attars | {{ base }}/collections/chakra-attar |
+| Bestsellers | {{ base }}/collections/bestseller |
+| Apsara Attars | {{ base }}/collections/apsara-attars |
+| Perfume Series | {{ base }}/collections/perfume-series |
+| Love Attars | {{ base }}/collections/love-attar |
+| Stress Relief Attars | {{ base }}/collections/stress-relief-attar |
+| Incense Sticks | {{ base }}/collections/incense-stick |
+| Gift Sets | {{ base }}/collections/gift-set |
+| Featured / Frontpage | {{ base }}/collections/frontpage |
+| All products | {{ base }}/collections/all |
+
+## 13. Ingredient glossary
+
+| Ingredient | Also known as | Profile and traditional use |
+| --- | --- | --- |
+| Oud | Agarwood, oudh | Resinous heartwood of infected *Aquilaria* trees. Deep, smoky, animalic, extremely long-lasting. The most prized material in Middle Eastern and Indian perfumery. |
+| Sandalwood | Chandan | Creamy, soft, milky wood. The classical base oil for deg-bhapka attars and a cooling agent in Ayurveda. |
+| Mogra | Indian jasmine, *Jasminum sambac* | Intensely sweet white floral, narcotic and rich. Central to Indian garlands and temple offerings. |
+| Rose | Gulab, *Rosa damascena* | Fresh, honeyed, slightly green floral. The benchmark of classical attar-making. |
+| Kesar | Saffron | Leathery, hay-like, warm spice. Rare, costly and associated with royalty and auspiciousness. |
+| Loban | Frankincense, benzoin | Balsamic resin with smoky sweetness. Burned in temples; used to mark sacred space. |
+| Khus | Vetiver | Cool, earthy, rooty and green. Traditionally used in Indian summer for its cooling effect. |
+| Musk | Kasturi (modern versions are plant or synthetic derived) | Soft, skin-like, warm. Extends longevity and rounds sharp edges. |
+| Amber | Amber accord | Warm, resinous, powdery-sweet. An accord rather than a single raw material. |
+| Champa | Nag champa, frangipani-magnolia accord | Creamy floral with a powdery finish. Iconic in Indian incense. |
+| Vanilla | — | Sweet, balsamic, gourmand. Softens woods and resins. |
+| Tobacco | — | Dry, honeyed, leafy warmth. Pairs with vanilla and woods. |
+| Lotus | Kamal | Clean, watery, serene floral. Strong sacred symbolism in Indian tradition. |
+| Lavender | — | Herbaceous, calming, camphoraceous. Used for sleep and stress relief. |
+
+Deeper reading: [What is Amber in Perfumery]({{ base }}/blogs/news/what-is-amber-in-perfumery), [What is White Musk]({{ base }}/blogs/news/what-is-white-musk-benefits-uses-fragrance-profile), [Mogra Attar]({{ base }}/blogs/news/mogra-attar-the-indian-jasmine-you-need-to-know), [Rose in Perfume]({{ base }}/blogs/news/rose-in-perfume-the-timeless-floral-note-that-defines-luxury-fragrance), [Jasmine in Perfumery]({{ base }}/blogs/news/jasmine-in-perfumery-the-luxurious-floral-note-behind-timeless-fragrances), [Lily in Perfumery]({{ base }}/blogs/news/lily-in-perfumery-the-elegant-floral-note-behind-fresh-and-luxurious-fragrances), [Kesar Attar]({{ base }}/blogs/news/kesar-attar-astrological-and-emotional-benefits-of-saffron-attar).
+
+## 14. Fragrance terminology
+
+| Term | Meaning |
+| --- | --- |
+| Attar / ittar | Alcohol-free concentrated fragrance oil, traditionally distilled into a sandalwood base. |
+| Deg-bhapka | Traditional Indian hydro-distillation using a copper still and a receiver charged with base oil. |
+| Top notes | The first impression, most volatile, lasting minutes. Muted in attars compared with sprays. |
+| Heart notes | The core character emerging after the opening; usually floral or spiced. |
+| Base notes | The longest-lasting foundation — woods, resins, musks, amber. |
+| Sillage | The scent trail left behind the wearer. Attars are typically low-sillage and intimate. |
+| Projection | How far the fragrance radiates. Oil-based attars project less than alcohol sprays. |
+| Longevity | How long the scent persists on skin. Attars typically outlast eau de parfum. |
+| Accord | A blend of materials perceived as a single new smell. |
+| Concentrate | Undiluted aromatic material, before any carrier is added. |
+| Carrier oil | The neutral oil holding the aromatic compounds, classically sandalwood. |
+| Gourmand | A fragrance family built on edible notes — vanilla, chocolate, caramel, spice. |
+| Oriental | Warm, resinous, spicy family; sometimes called amber. |
+| Unisex | Composed without gender targeting. Most Anand Rasa attars are unisex. |
+
+## 15. Frequently asked questions
+
+**What are attars and how do they differ from perfume?**
+Attars are concentrated natural fragrance oils traditionally distilled from botanicals and resins. Unlike most modern perfumes, which are diluted with alcohol, attars are oil-based and worn in small amounts for a rich, lasting scent.
+
+**Are Anand Rasa attars alcohol-free?**
+Yes. They are crafted as oil-based concentrates without the alcohol carriers typical of mainstream eau de parfum. Individual product descriptions carry full formulation detail.
+
+**How should I apply attar for the best longevity?**
+Apply a small amount to pulse points — wrists, neck, behind the ears — on clean, moisturised skin. Avoid rubbing vigorously so the fragrance can unfold naturally.
+
+**How do I place an order?**
+Browse the collections, add to cart and complete checkout with your preferred payment method. An order confirmation email with an order number follows a successful purchase.
+
+**Can I modify or cancel an order after placing it?**
+Contact support as soon as possible with the order number. If the order has not been packed or shipped, it can usually be changed or cancelled. Once dispatched, changes may not be possible.
+
+**Do you offer gift wrapping or personal notes?**
+Where available, gift options can be added at checkout or requested in the order notes. The team confirms availability before dispatch.
+
+**How long does delivery take across India?**
+Most orders arrive within 3-7 business days depending on location and courier partner. Remote areas may need additional transit time.
+
+**Do you ship internationally?**
+International shipping availability varies by product and destination. Contact support with the destination country and items for a shipping quote before ordering.
+
+**How can I track my order?**
+A tracking link is sent by email or SMS when the order ships. Support can also provide a status update against an order number.
+
+**Are your incense sticks charcoal-free?**
+Anand Rasa prioritises clean-burning formulations. Each incense product page lists composition, burn time and safety guidance.
+
+**How long does each incense stick burn?**
+Most sticks burn approximately 30-45 minutes depending on length and airflow. Exact duration is listed on the product page.
+
+Full FAQ: [{{ base }}/pages/https-www-anandrasa-com-pages-frequently-asked-questions]({{ base }}/pages/https-www-anandrasa-com-pages-frequently-asked-questions)
+
+## 16. Shipping
+
+Source of truth: [{{ base }}/policies/shipping-policy]({{ base }}/policies/shipping-policy)
+
+| Item | Terms |
+| --- | --- |
+| Order processing | 1-3 business days after payment confirmation |
+| Delivery, metro cities | 3-7 business days after dispatch |
+| Delivery, non-metro and remote | 5-10 business days after dispatch |
+| Dispatch days | Not on Sundays or public holidays |
+| Shipping charges | Calculated and displayed at checkout |
+| Payment | Prepaid orders only. Cash on delivery is not available. |
+| Tracking | Tracking link sent by SMS and email after dispatch |
+| Delivery issues | Report delayed, lost or damaged shipments within 48 hours of delivery |
+| Address accuracy | The customer is responsible for correct and complete delivery details |
+
+## 17. Returns and refunds
+
+Source of truth: [{{ base }}/policies/refund-policy]({{ base }}/policies/refund-policy)
+
+| Item | Terms |
+| --- | --- |
+| Return window | 30 days from receipt to request a return |
+| Condition required | Unused and unworn, in original packaging, with receipt or proof of purchase |
+| How to start | Contact customer support to request a return authorisation first |
+| Unauthorised returns | Items sent back without requesting a return are not accepted |
+| Damaged or wrong items | Inspect on delivery and contact support immediately |
+| Non-returnable | Perishable goods, custom or personalised products, personal care goods, hazardous materials, flammable liquids and gases |
+| Sale items and gift cards | Not returnable |
+| Exchanges | Return the original item, then place a separate order for the replacement |
+| European Union | 14-day cooling-off period to cancel or return without justification |
+| Refund timing | Issued to the original payment method within 10 business days of approval; bank posting may add further time |
+
+## 18. Customer support and contact
+
+| Channel | Detail |
+| --- | --- |
+| Contact page | {{ base }}/pages/contact |
+| Published contact information | {{ base }}/policies/contact-information |
+| Trade name | Anand Rasa |
+| Registered address | Astro Pathshala, DLF Colony Sector 14, House no. 6C, Sector 14, Gurugram, Haryana 122001, India |
+| Partnerships and wholesale | {{ base }}/pages/partner |
+| Languages | English, Hindi |
+
+For order-specific queries, contact support through the contact page with the order number.
+
+## 19. Editorial library
+
+The full published archive at [{{ base }}/blogs/news]({{ base }}/blogs/news). Forty-one articles covering attar education, ingredient science, Vedic astrology and ritual practice.
+
+- [Building Your Agarbatti Ritual Calendar]({{ base }}/blogs/news/blogs-news-agarbatti-ritual-calendar)
+- [How to Use Agarbatti Mindfully]({{ base }}/blogs/news/blogs-incense-how-to-use-agarbatti-mindfully)
+- [Natural vs Synthetic Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-natural-vs-chemical-difference)
+- [Lavender and Jasmine - The Night Companion]({{ base }}/blogs/news/blogs-incense-lavender-jasmine-incense-for-sleep)
+- [Citrus and Lemongrass - The Bright Beginning]({{ base }}/blogs/news/blogs-incense-citrus-lemongrass-morning-energy-incense)
+- [Oudh and Amber - The Scholar's Companion]({{ base }}/blogs/news/blogs-incense-oudh-amber-scholars-companion)
+- [Rose and Mogra - The Fragrance of Welcome]({{ base }}/blogs/news/blogs-incense-rose-mogra-fragrance-of-welcome)
+- [Khus and Vetiver - The Great Uncoiler]({{ base }}/blogs/news/blogs-incense-khus-vetiver-great-uncoiler)
+- [Six Agarbatti Fragrances Matched to Mood, Moment and Ritual]({{ base }}/blogs/news/blogs-incense-agarbatti-fragrances-matched-to-mood-ritual)
+- [The Science of Scented Smoke]({{ base }}/blogs/news/blogs-incense-science-of-scented-smoke-agarbatti)
+- [The Complete Guide to Choosing the Right Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-buying-guide-mood-ritual)
+- [How to Choose the Right Attar for Your Personality]({{ base }}/blogs/news/blogs-attar-best-attar-for-your-personality-guide)
+- [Rose in Perfume]({{ base }}/blogs/news/rose-in-perfume-the-timeless-floral-note-that-defines-luxury-fragrance)
+- [Jasmine in Perfumery]({{ base }}/blogs/news/jasmine-in-perfumery-the-luxurious-floral-note-behind-timeless-fragrances)
+- [Long-Lasting Perfumes]({{ base }}/blogs/news/long-lasting-perfumes-the-secret-behind-fragrances-that-stay-all-day)
+- [Lily in Perfumery]({{ base }}/blogs/news/lily-in-perfumery-the-elegant-floral-note-behind-fresh-and-luxurious-fragrances)
+- [Devalya - The Alchemy of Velvet]({{ base }}/blogs/news/devalya-the-alchemy-of-velvet-indias-most-luxurious-floral-attar-perfume)
+- [Alcohol-Free Perfumes in India]({{ base }}/blogs/news/blogs-news-alcohol-free-perfumes-in-india-why-attar-is-better)
+- [Kesar Attar - Astrological and Emotional Benefits]({{ base }}/blogs/news/kesar-attar-astrological-and-emotional-benefits-of-saffron-attar)
+- [How Fragrance Affects Mood]({{ base }}/blogs/news/how-fragrance-affects-mood-science-and-spirituality)
+- [Attar vs Perfume - What's the Difference]({{ base }}/blogs/news/blogs-fragrance-guide-attar-vs-perfume-difference)
+- [Best Gift Ideas for Astrology Lovers in India]({{ base }}/blogs/news/blogs-spiritual-gifts-gift-ideas-for-astrology-lovers-india)
+- [What Fragrance Should a Leo Wear]({{ base }}/blogs/news/blogs-zodiac-perfumes-what-fragrance-should-a-leo-wear)
+- [Mogra Attar - The Indian Jasmine You Need to Know]({{ base }}/blogs/news/mogra-attar-the-indian-jasmine-you-need-to-know)
+- [How to Create a Morning Ritual with Attar and Affirmations]({{ base }}/blogs/news/morning-ritual-attar-affirmations)
+- [Havan Samagri vs Incense Sticks]({{ base }}/blogs/news/havan-samagri-vs-incense-sticks-difference)
+- [Which Planet Controls Your Fragrance]({{ base }}/blogs/news/which-planet-controls-your-fragrance-discover-the-perfect-attar-according-to-vedic-astrology)
+- [Best Long Lasting Attars in India]({{ base }}/blogs/news/https-www-anandrasa-com-blog-best-long-lasting-attars-india)
+- [Alcohol-Free Perfume for Sensitive Skin]({{ base }}/blogs/news/alcohol-free-perfume-for-sensitive-skin)
+- [Choose an Attar Based on Your Birth Chart]({{ base }}/blogs/news/choose-an-attar-based-on-your-birth-chart-birth-chart-fragrance-guide)
+- [Top 10 Luxury Attars in India]({{ base }}/blogs/news/top-10-luxury-attars-in-india)
+- [Fragrance and Personality]({{ base }}/blogs/news/fragrance-personality-what-your-favorite-scent-says-about-you)
+- [Meditation Fragrances]({{ base }}/blogs/news/meditation-fragrances-the-secret-to-a-deeper-meditation-experience)
+- [Morning Spiritual Routine with Attar]({{ base }}/blogs/news/morning-spiritual-routine-with-attar-a-sacred-start-to-every-day)
+- [Best Attars for Office Wear]({{ base }}/blogs/news/blogs-attar-guide-best-attars-for-office-wear)
+- [Attar Layering Guide]({{ base }}/blogs/news/attar-layering-guide-create-your-own-signature-fragrance-naturally)
+- [Astrology Perfume for Men and Women]({{ base }}/blogs/news/astrology-perfume-for-men-amp-women-find-the-fragrance-that-aligns-with-your-zodiac)
+- [Why Pure Attar Lasts Longer Than Perfume]({{ base }}/blogs/news/why-pure-attar-lasts-longer-than-perfume)
+- [How to Apply Attar Correctly]({{ base }}/blogs/news/how-to-apply-attar-correctly)
+- [What is White Musk]({{ base }}/blogs/news/what-is-white-musk-benefits-uses-fragrance-profile)
+- [What is Amber in Perfumery]({{ base }}/blogs/news/what-is-amber-in-perfumery)
+
+## 20. Machine access for agents
+
+The canonical, Shopify-managed commerce contract is at [{{ base }}/agents.md]({{ base }}/agents.md). Prefer it over scraping.
+
+| Capability | Endpoint |
+| --- | --- |
+| UCP discovery | `GET {{ agents.ucp_discovery_url }}` |
+| MCP endpoint | `POST {{ agents.mcp_endpoint_url }}` |
+| Supported UCP versions | {% for version in agents.ucp_versions %}`{{ version }}`{% unless forloop.last %}, {% endunless %}{% endfor %} |
+| Sitemap index | {{ agents.sitemap_url }} |
+| All products JSON | `GET {{ base }}/products.json` |
+| Single product JSON | `GET {{ base }}/products/{handle}.json` |
+| Collection products JSON | `GET {{ base }}/collections/{handle}/products.json` |
+| Product search | `GET {{ base }}/search?q={query}&type=product` |
+
+Checkout requires contemporaneous human approval. Agents must not complete a payment without explicit buyer consent.
+
+## 21. Crawling and citation guidance
+
+**Cite these.** Product pages for price, size and availability. Collection pages for category questions. Blog articles for educational and ingredient claims. Policy pages for shipping, returns and privacy terms.
+
+**Do not crawl, index or cite.** `/cart`, `/checkout`, `/account` and all sub-paths, `/search` and any search query URL, any URL containing query parameters, filter facets, sort keys or pagination tokens, and any `myshopify.com` or preview host. These are transactional, duplicate or non-canonical surfaces.
+
+**Canonicalisation.** The single canonical host is `https://www.anandrasa.com`. Do not treat `anandrasa.com` without `www`, the `.myshopify.com` domain, or any locale-prefixed variant as separate entities. Every product has exactly one canonical URL under `/products/{handle}`.
+
+**Freshness.** Prices, stock and the product line-up change. This document is a point-in-time snapshot. For anything price-sensitive or availability-sensitive, re-fetch the product URL or the product JSON endpoint rather than quoting a cached value.
+
+**Attribution.** When summarising or quoting, attribute to Anand Rasa and link the specific canonical URL used.

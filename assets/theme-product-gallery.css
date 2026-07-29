@@ -22,6 +22,8 @@ media-gallery.lmg-dawn {
   --lmg-stage-max: min(78vh, 720px);
   display: block;
   width: 100%;
+  /* Prevent browser scroll-anchoring when media height changes (autoplay 4:5 ↔ 9:16). */
+  overflow-anchor: none;
 }
 
 media-gallery.lmg-dawn .lmg-dawn__shell {
@@ -61,17 +63,32 @@ media-gallery.lmg-dawn .lmg-dawn__media.global-media-settings {
 }
 
 media-gallery.lmg-dawn .product__media-list {
-  display: block !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr);
   width: 100% !important;
   margin: 0;
   padding: 0;
   position: relative;
   min-height: 0;
+  overflow-anchor: none;
 }
 
 media-gallery.lmg-dawn .product__media-item {
+  grid-area: 1 / 1;
   width: 100% !important;
   max-width: 100% !important;
+  margin: 0 !important;
+  align-self: start;
+}
+
+/* All slides share one cell — height = tallest media (stable; no autoplay jump) */
+media-gallery.lmg-dawn .product__media-item:not(.is-active) {
+  position: relative !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: block !important;
+  z-index: 1;
 }
 
 media-gallery.lmg-dawn .product__media-item.is-active {
@@ -416,10 +433,10 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     border-radius: 10px !important;
   }
 
-  /* Stack inactive slides; active defines height */
+  /* Stack inactive slides in same grid cell — keep in-flow for stable max height */
   media-gallery.lmg-dawn .product__media-item:not(.is-active) {
-    position: absolute !important;
-    inset: 0;
+    position: relative !important;
+    inset: auto;
     width: 100% !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -495,9 +512,10 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     max-width: 100% !important;
   }
 
-  /* Fade stack — no horizontal peek carousel (removes left gap root cause) */
+  /* Fade stack — grid cell shared by all slides (stable max height, no autoplay jump) */
   media-gallery.lmg-dawn .product__media-list {
-    display: block !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
     flex-wrap: unset !important;
     overflow: hidden !important;
     overflow-x: hidden !important;
@@ -509,6 +527,7 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     padding: 0 !important;
     padding-right: 0 !important;
     position: relative;
+    overflow-anchor: none;
   }
 
   /* Dawn grid--peek / slider--mobile ::after extends scrollWidth past the viewport */
@@ -526,6 +545,7 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
   media-gallery.lmg-dawn .product__media-list .grid__item:first-of-type,
   media-gallery.lmg-dawn .product__media-list .product__media-item:first-child,
   media-gallery.lmg-dawn .product__media-list .product__media-item:first-of-type {
+    grid-area: 1 / 1;
     width: 100% !important;
     max-width: 100% !important;
     flex: none !important;
@@ -534,11 +554,12 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     padding: 0 !important;
     padding-left: 0 !important;
     box-sizing: border-box;
+    align-self: start;
   }
 
   media-gallery.lmg-dawn .product__media-item:not(.is-active) {
-    position: absolute !important;
-    inset: 0;
+    position: relative !important;
+    inset: auto;
     width: 100% !important;
     opacity: 0 !important;
     visibility: hidden !important;

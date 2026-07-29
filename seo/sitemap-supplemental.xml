@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ===========================================================================
+  Anand Rasa - supplemental XML sitemap
+  ===========================================================================
+
+  WHAT THIS IS
+  Shopify generates and maintains https://www.anandrasa.com/sitemap.xml in
+  real time and it cannot be overridden from a theme. That native sitemap
+  already covers every product, collection, page, blog and article, and it
+  already carries <image:image> entries for products. It should stay exactly
+  as it is.
+
+  The one documented gap is /policies/*. Shopify deliberately excludes policy
+  pages from the native sitemap, so Google and Bing have no sitemap signal
+  for them. All five pages below are self-canonical, return HTTP 200 and
+  serve `index, follow`. They are the store's trust and transparency pages,
+  which matters for E-E-A-T assessment and for AI answer engines that need
+  authoritative shipping, returns and business-identity facts.
+
+  This file closes that gap. It is additive; it replaces nothing.
+
+  PREREQUISITE
+  templates/robots.txt.liquid must allow these paths. Shopify's default rules
+  block /policies/ wholesale. The robots template in this theme re-opens
+  these five paths individually. Deploy that first or these URLs stay
+  uncrawlable and this sitemap will report "blocked by robots.txt".
+
+  WHERE THIS FILE GOES
+  It is NOT a theme asset. Shopify cannot serve arbitrary XML from a theme,
+  and the seo/ directory is ignored by `shopify theme push`. To publish it,
+  it must be served from the canonical host so the URLs it contains are
+  authorised - a sitemap may only list URLs on its own host unless both hosts
+  are verified in Search Console. See seo/README.md for the two supported
+  routes (reverse proxy, or Search Console direct submission) and for why
+  hosting it on cdn.shopify.com does not work.
+
+  IF YOU CANNOT HOST IT
+  These five URLs are already linked from the site footer on every page.
+  Once robots.txt stops blocking them, internal linking alone is enough for
+  discovery. This sitemap accelerates that; it is not required for it.
+
+  LASTMOD ACCURACY
+  Shopify does not expose Last-Modified headers for policy pages. The privacy
+  policy states its own revision date on the page and that exact date is used
+  below. The other four carry the date their content was last verified
+  against the live storefront. Update these when policy text changes; a
+  lastmod that never moves is ignored by crawlers.
+
+  Generated and verified against the live storefront: 2026-07-29
+  ===========================================================================
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Shipping terms: processing time, delivery windows, prepaid-only policy. -->
+  <url>
+    <loc>https://www.anandrasa.com/policies/shipping-policy</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Returns and refunds: 30-day window, EU cooling-off, refund timing. -->
+  <url>
+    <loc>https://www.anandrasa.com/policies/refund-policy</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Privacy policy. Revision date is stated on the page itself. -->
+  <url>
+    <loc>https://www.anandrasa.com/policies/privacy-policy</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Terms of service. -->
+  <url>
+    <loc>https://www.anandrasa.com/policies/terms-of-service</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Business identity: trade name, registered address, support channels.
+       The strongest single entity-SEO signal on the store. -->
+  <url>
+    <loc>https://www.anandrasa.com/policies/contact-information</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+</urlset>
