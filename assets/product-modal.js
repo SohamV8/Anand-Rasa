@@ -25,10 +25,13 @@ if (!customElements.get('product-modal')) {
         const activeMediaTemplate = activeMedia.querySelector('template');
         const activeMediaContent = activeMediaTemplate ? activeMediaTemplate.content : null;
         activeMedia.classList.add('active');
-        activeMedia.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
         const container = this.querySelector('[role="document"]');
-        container.scrollLeft = (activeMedia.width - container.clientWidth) / 2;
+        if (container) {
+          const activeLeft = activeMedia.offsetLeft || 0;
+          const activeWidth = activeMedia.offsetWidth || activeMedia.width || 0;
+          container.scrollLeft = Math.max(0, activeLeft - (container.clientWidth - activeWidth) / 2);
+        }
 
         if (
           activeMedia.nodeName == 'DEFERRED-MEDIA' &&

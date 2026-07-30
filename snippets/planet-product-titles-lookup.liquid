@@ -1,0 +1,76 @@
+{%- comment -%}
+  Navagraha planet marketplace + Shopify display titles.
+  Echoes: marketplace|||shopify  (empty when not a planet attar)
+
+  Usage:
+    {%- capture ppt -%}{%- render 'planet-product-titles-lookup', product: product -%}{%- endcapture -%}
+{%- endcomment -%}
+
+{%- liquid
+  assign ppt_p = product
+  if ppt_p == blank
+    assign ppt_p = lookup_product
+  endif
+
+  assign ppt_market = ''
+  assign ppt_shopify = ''
+  assign ppt_key = ''
+
+  if ppt_p != blank
+    assign ppt_scope = ppt_p.handle | append: ' ' | append: ppt_p.title | append: ' ' | append: ppt_p.type | downcase
+    assign ppt_tags = ppt_p.tags | join: ' ' | downcase
+    assign ppt_cols = ppt_p.collections | map: 'handle' | join: ' ' | downcase
+    assign ppt_scope = ppt_scope | append: ' ' | append: ppt_tags | append: ' ' | append: ppt_cols
+
+    if ppt_scope contains 'ketu' or ppt_scope contains 'nirvana'
+      assign ppt_key = 'ketu'
+    elsif ppt_scope contains 'rahu' or ppt_scope contains 'maya'
+      assign ppt_key = 'rahu'
+    elsif ppt_scope contains 'shani' or ppt_scope contains 'saturn' or ppt_scope contains 'shaneshwar'
+      assign ppt_key = 'shani'
+    elsif ppt_scope contains 'shukra' or ppt_scope contains 'venus' or ppt_scope contains 'saundarya'
+      assign ppt_key = 'shukra'
+    elsif ppt_scope contains 'guru' or ppt_scope contains 'jupiter' or ppt_scope contains 'devguru'
+      assign ppt_key = 'guru'
+    elsif ppt_scope contains 'budh' or ppt_scope contains 'mercury' or ppt_scope contains 'vitpati'
+      assign ppt_key = 'budh'
+    elsif ppt_scope contains 'mangal' or ppt_scope contains 'mars' or ppt_scope contains 'veer rasa' or ppt_scope contains 'veer-rasa'
+      assign ppt_key = 'mangal'
+    elsif ppt_scope contains 'chandra' or ppt_scope contains 'moon' or ppt_scope contains 'som rasa' or ppt_scope contains 'som-rasa'
+      assign ppt_key = 'chandra'
+    elsif ppt_scope contains 'surya' or ppt_scope contains 'sun' or ppt_scope contains 'tejas'
+      assign ppt_key = 'surya'
+    endif
+  endif
+
+  case ppt_key
+    when 'surya'
+      assign ppt_market = 'Surya Attar for Sun Remedies Pure Long Lasting Saffron Sandalwood Fragrance for Confidence, Success & Leadership Astrological Ravivar Puja Ittar for Fame, Authority & Radiant Energy 6ml'
+      assign ppt_shopify = 'Surya Attar – Sun Attar for Confidence & Leadership | Tejas'
+    when 'chandra'
+      assign ppt_market = 'Chandra Attar for Moon Remedies Pure Long Lasting White Floral Jasmine Fragrance for Peace, Calm & Emotional Balance Astrological Somvar Puja Ittar for Sleep, Intuition & Mental Clarity 6ml'
+      assign ppt_shopify = 'Som Rasa – Moon Attar for Calm & Emotional Balance | Chandra'
+    when 'mangal'
+      assign ppt_market = 'Mangal Attar for Mars Remedies Pure Long Lasting Oud Spice Fragrance for Courage, Strength & Confidence Astrological Mangalvar Puja Ittar for Energy, Victory & Mangal Dosha Balance 6ml'
+      assign ppt_shopify = 'Veer Rasa – Mars Attar for Courage & Strength | Mangal'
+    when 'budh'
+      assign ppt_market = 'Budh Attar for Mercury Remedies Pure Long Lasting Tulsi Vetiver Herbal Fragrance for Intelligence, Focus & Communication Astrological Budhvar Puja Ittar for Studies, Business & Sharp Memory 6ml'
+      assign ppt_shopify = 'Vitpati – Mercury Attar for Focus & Communication | Budha'
+    when 'guru'
+      assign ppt_market = 'Guru Attar for Jupiter Remedies Pure Long Lasting Saffron Champa Fragrance for Wealth, Wisdom & Prosperity Astrological Guruvar Puja Ittar for Marriage, Good Fortune & Spiritual Growth 6ml'
+      assign ppt_shopify = 'DevGuru – Jupiter Attar for Wisdom & Prosperity | Guru'
+    when 'shukra'
+      assign ppt_market = 'Shukra Attar for Venus Remedies Pure Long Lasting Rose Tuberose Floral Fragrance for Love, Beauty & Attraction Astrological Shukravar Puja Ittar for Marriage, Romance & Prosperity 6ml'
+      assign ppt_shopify = 'Saundarya Rasa – Venus Attar for Love & Attraction | Shukra'
+    when 'shani'
+      assign ppt_market = 'Shani Attar for Saturn Remedies Pure Long Lasting Cedarwood Camphor Woody Fragrance for Discipline, Patience & Obstacle Relief Astrological Shanivar Puja Ittar for Sade Sati, Karma & Grounding 6ml'
+      assign ppt_shopify = 'Shaneshwar – Saturn Attar for Discipline & Grounding | Shani'
+    when 'rahu'
+      assign ppt_market = 'Rahu Attar for Rahu Dosha Remedies Pure Long Lasting Blue Lotus Patchouli Fragrance for Magnetism, Ambition & Success Astrological Puja Ittar for Career Growth, Foreign Luck & Protection 6ml'
+      assign ppt_shopify = 'Maya – Rahu Attar for Magnetism & Ambition | Rahu'
+    when 'ketu'
+      assign ppt_market = 'Ketu Attar for Ketu Dosha Remedies Pure Long Lasting Gugal Kewra Sacred Smoke Fragrance for Meditation, Detachment & Moksha Astrological Puja Ittar for Spiritual Growth & Inner Peace 6ml'
+      assign ppt_shopify = 'Nirvana – Ketu Attar for Meditation & Detachment | Ketu'
+  endcase
+-%}
+{%- if ppt_market != blank and ppt_shopify != blank -%}{{ ppt_market }}|||{{ ppt_shopify }}{%- endif -%}

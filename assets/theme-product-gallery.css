@@ -70,6 +70,7 @@ media-gallery.lmg-dawn .product__media-list {
   padding: 0;
   position: relative;
   min-height: 0;
+  overflow: hidden;
   overflow-anchor: none;
 }
 
@@ -81,14 +82,24 @@ media-gallery.lmg-dawn .product__media-item {
   align-self: start;
 }
 
-/* All slides share one cell — height = tallest media (stable; no autoplay jump) */
+/*
+  Inactive slides must NOT contribute to gallery height.
+  Keeping them in-flow sized the stage to the tallest sibling (often a 9:16
+  video), which left a large white gap under active 4:5 / square images.
+  Absolute positioning sizes the stage to the active slide only. Document
+  scroll is already protected in media-gallery.js (no scrollIntoView).
+*/
 media-gallery.lmg-dawn .product__media-item:not(.is-active) {
-  position: relative !important;
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100%;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
   display: block !important;
   z-index: 1;
+  overflow: hidden;
 }
 
 media-gallery.lmg-dawn .product__media-item.is-active {
@@ -433,16 +444,18 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     border-radius: 10px !important;
   }
 
-  /* Stack inactive slides in same grid cell — keep in-flow for stable max height */
+  /* Inactive slides out of flow — stage height follows the active media only */
   media-gallery.lmg-dawn .product__media-item:not(.is-active) {
-    position: relative !important;
-    inset: auto;
+    position: absolute !important;
+    inset: 0;
     width: 100% !important;
+    height: 100%;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
     display: block !important;
     z-index: 1;
+    overflow: hidden;
   }
 
   media-gallery.lmg-dawn .product__media-item.is-active {
@@ -512,7 +525,7 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
     max-width: 100% !important;
   }
 
-  /* Fade stack — grid cell shared by all slides (stable max height, no autoplay jump) */
+  /* Fade stack — absolute inactive slides so stage height = active media only */
   media-gallery.lmg-dawn .product__media-list {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr);
@@ -558,14 +571,16 @@ media-gallery.lmg-dawn .lmg-dawn__thumb:focus-visible {
   }
 
   media-gallery.lmg-dawn .product__media-item:not(.is-active) {
-    position: relative !important;
-    inset: auto;
+    position: absolute !important;
+    inset: 0;
     width: 100% !important;
+    height: 100%;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
     display: block !important;
     z-index: 1;
+    overflow: hidden;
     transition: opacity 0.28s var(--lmg-ease), visibility 0.28s var(--lmg-ease);
   }
 
@@ -748,5 +763,36 @@ product-modal.lmg-dawn-modal .product-media-modal__content img {
 
   .product--lmg-pdp .product__media-wrapper media-gallery.lmg-dawn {
     margin-left: 0;
+  }
+}
+
+/* ── Scroll / overflow stability (product PDP) ── */
+.product--lmg-pdp.product.grid,
+.product--lmg-pdp .product__media-wrapper,
+.product--lmg-pdp .product__info-wrapper {
+  overflow-anchor: none;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  /*
+    Dawn section-main-product.css sets width: calc(100% + 4rem) on .product__media-list.
+    Clip at the wrapper so peek bleed never widens document scrollWidth.
+  */
+  .product__media-wrapper {
+    overflow-x: clip;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  media-gallery.lmg-dawn .lmg-dawn__viewer,
+  media-gallery.lmg-dawn slider-component.lmg-dawn__viewer {
+    overflow-x: clip;
+    touch-action: pan-y;
+  }
+
+  media-gallery.lmg-dawn .product__media-list {
+    touch-action: pan-y;
   }
 }

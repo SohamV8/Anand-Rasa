@@ -17,6 +17,116 @@
 -%}
 
 {%- if aps_p != blank -%}
+  {%- capture aps_planet_titles -%}{%- render 'planet-product-titles-lookup', product: aps_p -%}{%- endcapture -%}
+  {%- assign aps_planet_titles = aps_planet_titles | strip -%}
+
+  {%- if aps_planet_titles contains '|||' -%}
+    {%- assign aps_planet_parts = aps_planet_titles | split: '|||' -%}
+    <div class="ar-story-block ar-story-block--planet" data-attar-story data-planet-titles>
+      <p class="ar-story-marketplace">{{ aps_planet_parts[0] | escape }}</p>
+      <div class="ar-divider ar-divider--planet" aria-hidden="true">
+        <span>✺</span>
+      </div>
+      <p class="ar-story-shopify">{{ aps_planet_parts[1] | escape }}</p>
+    </div>
+
+    <style>
+      .ar-story-block--planet {
+        margin: clamp(10px, 2vw, 16px) 0 clamp(18px, 3vw, 28px);
+        max-width: 52ch;
+      }
+
+      @keyframes ar-story-rise {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 14px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes ar-story-line {
+        from {
+          opacity: 0;
+          transform: scaleX(0.35);
+        }
+        to {
+          opacity: 1;
+          transform: scaleX(1);
+        }
+      }
+
+      .ar-story-block--planet .ar-story-marketplace {
+        font-family: 'Jost', system-ui, sans-serif;
+        font-size: clamp(13px, 1.05vw + 11px, 15px);
+        font-weight: 400;
+        line-height: 1.62;
+        letter-spacing: 0.01em;
+        color: #6b5a46;
+        margin: 0;
+        animation: ar-story-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+        text-wrap: pretty;
+      }
+
+      .ar-story-block--planet .ar-divider--planet {
+        position: relative;
+        text-align: center;
+        margin: clamp(10px, 2vw, 14px) 0;
+        animation: ar-story-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+      }
+
+      .ar-story-block--planet .ar-divider--planet::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        border-top: 1px solid #d8c08a;
+        transform-origin: center;
+        animation: ar-story-line 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+      }
+
+      .ar-story-block--planet .ar-divider--planet span {
+        position: relative;
+        display: inline-block;
+        background: #ffffff;
+        padding: 0 10px;
+        color: #c8a03a;
+        font-size: clamp(11px, 0.8vw + 9px, 13px);
+        line-height: 1;
+      }
+
+      .ar-story-block--planet .ar-story-shopify {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: clamp(16px, 1.2vw + 13px, 19px);
+        font-weight: 500;
+        font-style: italic;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+        color: #7a654c;
+        margin: 0;
+        animation: ar-story-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.22s both;
+        text-wrap: pretty;
+      }
+
+      @media screen and (min-width: 990px) {
+        .ar-story-block--planet {
+          max-width: 46ch;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .ar-story-block--planet .ar-story-marketplace,
+        .ar-story-block--planet .ar-divider--planet,
+        .ar-story-block--planet .ar-story-shopify,
+        .ar-story-block--planet .ar-divider--planet::before {
+          animation: none;
+        }
+      }
+    </style>
+  {%- else -%}
   {%- liquid
     assign aps_intro = ''
     assign aps_body = ''
@@ -533,4 +643,5 @@
       }
     </style>
   {%- endif -%}
+{%- endif -%}
 {%- endif -%}
