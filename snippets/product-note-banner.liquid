@@ -16,7 +16,11 @@
 -%}
 {%- if pnb_product != blank -%}
   {% render 'ar-theme-assets', bundle: 'product-css' %}
-  {% render 'attar-meaning-editorial', product: pnb_product %}
+  {%- comment -%}
+    DISABLED: "The Meaning of …" editorial is hidden on product pages.
+    Snippet code is kept. Uncomment the render below to restore.
+  {%- endcomment -%}
+  {% comment %}{% render 'attar-meaning-editorial', product: pnb_product %}{% endcomment %}
 
   {% render 'fragrance-notes', product: pnb_product %}
 

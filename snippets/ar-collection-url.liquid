@@ -44,6 +44,9 @@
   {%- when 'perfume-series', 'perfume', 'perfumes' -%}
     {%- assign candidate_handles = 'perfume-series,perfume,perfumes,perfume-collection' -%}
     {%- assign template_suffix = 'perfume-series' -%}
+  {%- when 'gourmand', 'gourmand-collection', 'gourmand-attars', 'gourmand-attar' -%}
+    {%- assign candidate_handles = 'gourmand,gourmand-collection,gourmand-attars,gourmand-attar,gourmand-perfumes' -%}
+    {%- assign template_suffix = 'gourmand' -%}
 {%- endcase -%}
 
 {%- assign resolved_handle = '' -%}

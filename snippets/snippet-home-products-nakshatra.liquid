@@ -14,19 +14,27 @@
       <a href="{{ ar_nakshatra_url }}" class="ar-zh__btn">{{ section.settings.zh_btn | default: 'EXPLORE NAKSHATRA ATTARS' }}</a>
     </div>
     <div class="ar-zh__right">
+      {%- comment -%}
+        The clip is ~3MB of decorative animation below the fold. The poster paints
+        the identical first frame for ~50KB, and lazy-video.js attaches the source
+        and starts playback only once the section nears the viewport.
+      {%- endcomment -%}
       <video
         class="ar-zh__media"
         style="width:88%;height:88%;inset:0;margin:auto;object-fit:contain;object-position:center center;"
-        autoplay
         loop
         muted
         playsinline
-        preload="metadata"
+        preload="none"
+        poster="{{ 'NakshatraGif1-poster.webp' | asset_url }}"
+        width="1536"
+        height="1024"
+        data-lazy-src="{{ 'NakshatraGif1.webm' | asset_url }}"
+        data-lazy-type="video/webm"
+        data-lazy-autoplay="true"
         aria-label="Nakshatra Attar animation"
-      >
-        <source src="{{ 'NakshatraGif1.webm' | asset_url }}" type="video/webm">
-        Video cannot be played in your browser.
-      </video>
+      ></video>
     </div>
   </div>
 </section>
+<script src="{{ 'lazy-video.js' | asset_url }}" defer="defer"></script>

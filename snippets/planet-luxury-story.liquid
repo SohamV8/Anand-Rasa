@@ -1,0 +1,348 @@
+{%- comment -%}
+  Premium luxury product story — planet attar PDPs only.
+  Apple × Aesop × Byredo editorial layout under product info.
+
+  Params:
+    product {Product} required
+    planet_key {String} optional — surya|chandra|mangal|budha|guru|shukra|shani|rahu|ketu
+{%- endcomment -%}
+
+{%- liquid
+  assign pls_product = product
+  if pls_product == blank
+    assign pls_product = story_product
+  endif
+
+  assign pls_key = planet_key | default: '' | strip | downcase
+  if pls_key == 'budh'
+    assign pls_key = 'budha'
+  elsif pls_key == 'sun'
+    assign pls_key = 'surya'
+  elsif pls_key == 'moon'
+    assign pls_key = 'chandra'
+  elsif pls_key == 'mars'
+    assign pls_key = 'mangal'
+  elsif pls_key == 'mercury'
+    assign pls_key = 'budha'
+  elsif pls_key == 'jupiter'
+    assign pls_key = 'guru'
+  elsif pls_key == 'venus'
+    assign pls_key = 'shukra'
+  elsif pls_key == 'saturn'
+    assign pls_key = 'shani'
+  endif
+
+  if pls_key == blank and pls_product != blank
+    assign pls_scope = pls_product.handle | append: '|' | append: pls_product.title | append: '|' | append: pls_product.type | downcase
+    assign pls_tags = pls_product.tags | join: '|' | downcase
+    assign pls_cols = pls_product.collections | map: 'handle' | join: '|' | downcase
+    assign pls_all = pls_scope | append: '|' | append: pls_tags | append: '|' | append: pls_cols
+
+    if pls_all contains 'surya' or pls_all contains 'sun-attar' or pls_all contains 'tejas' or pls_product.handle == 'sun-attar'
+      assign pls_key = 'surya'
+    elsif pls_all contains 'chandra' or pls_all contains 'moon-attar' or pls_all contains 'som rasa' or pls_product.handle == 'moon-attar'
+      assign pls_key = 'chandra'
+    elsif pls_all contains 'mangal' or pls_all contains 'mars-attar' or pls_all contains 'veer rasa' or pls_product.handle == 'mars-attar'
+      assign pls_key = 'mangal'
+    elsif pls_all contains 'budh' or pls_all contains 'mercury-attar' or pls_all contains 'vitpati' or pls_product.handle == 'mercury-attar'
+      assign pls_key = 'budha'
+    elsif pls_all contains 'guru' or pls_all contains 'jupiter-attar' or pls_all contains 'devguru' or pls_product.handle == 'jupiter-attar'
+      assign pls_key = 'guru'
+    elsif pls_all contains 'shukra' or pls_all contains 'venus-attar' or pls_all contains 'saundarya' or pls_product.handle == 'venus-attar'
+      assign pls_key = 'shukra'
+    elsif pls_all contains 'shani' or pls_all contains 'saturn-attar' or pls_all contains 'shaneshwar' or pls_product.handle == 'saturn-attar'
+      assign pls_key = 'shani'
+    elsif pls_all contains 'rahu' or pls_product.handle == 'rahu-attar'
+      assign pls_key = 'rahu'
+    elsif pls_all contains 'ketu' or pls_product.handle == 'ketu-attar'
+      assign pls_key = 'ketu'
+    endif
+  endif
+
+  assign pls_name = ''
+  assign pls_heading = ''
+  assign pls_desc = ''
+  assign pls_cta_primary = 'Discover'
+  assign pls_cta_secondary = 'Explore the Collection'
+  assign pls_image = ''
+  assign pls_icon = ''
+  assign pls_b1_t = ''
+  assign pls_b1_d = ''
+  assign pls_b2_t = ''
+  assign pls_b2_d = ''
+  assign pls_b3_t = ''
+  assign pls_b3_d = ''
+  assign pls_b4_t = ''
+  assign pls_b4_d = ''
+
+  case pls_key
+    when 'surya'
+      assign pls_name = 'Surya Attar'
+      assign pls_heading = 'Surya — The Solar Attar of Leadership'
+      assign pls_desc = 'Crafted for confidence, leadership and everyday radiance. An alcohol-free solar attar that wears close to the skin and unfolds through the day.'
+      assign pls_cta_primary = 'Discover Surya'
+      assign pls_cta_secondary = 'Experience Solar Energy'
+      assign pls_image = 'planet-attar-surya.webp'
+      assign pls_icon = 'Planet-sun.webp'
+      assign pls_b1_t = 'Confidence & Leadership'
+      assign pls_b1_d = 'Surya is the planet of confidence, leadership and energy. Perfect for people who want to feel more confident and take charge in daily life.'
+      assign pls_b2_t = 'Long-Lasting Fragrance'
+      assign pls_b2_d = 'Made with pure botanical oils. Alcohol-free and gentle on skin. Slowly develops through the day for a rich, lasting fragrance.'
+      assign pls_b3_t = 'Inspired by the Sun'
+      assign pls_b3_d = 'Inspired by Surya, the planet of confidence and success in Vedic astrology. Wear it as part of your morning routine.'
+      assign pls_b4_t = 'Saffron, Sandalwood & Amber'
+      assign pls_b4_d = 'Made with saffron, Mysore sandalwood and warm amber. Simple, natural ingredients chosen to match the energy of the Sun.'
+    when 'chandra'
+      assign pls_name = 'Chandra Attar'
+      assign pls_heading = 'Chandra — The Lunar Attar of Balance'
+      assign pls_desc = 'A soft, skin-close attar for peace and emotional balance. Alcohol-free botanical oils that stay gentle through the evening.'
+      assign pls_cta_primary = 'Discover Chandra'
+      assign pls_cta_secondary = 'Experience Lunar Calm'
+      assign pls_image = 'planet-attar-chandra.webp'
+      assign pls_icon = 'Planet-moon.webp'
+      assign pls_b1_t = 'Calm Mind & Balance'
+      assign pls_b1_d = 'Chandra is the planet of peace and emotional balance. Ideal for anyone who wants a calmer mind and more balance in daily life.'
+      assign pls_b2_t = 'Soft, Skin-Friendly Fragrance'
+      assign pls_b2_d = 'Alcohol-free and made with pure botanical oils. Gentle on skin, with a soft fragrance that stays close all day.'
+      assign pls_b3_t = 'Inspired by the Moon'
+      assign pls_b3_d = 'Inspired by Chandra, the planet of calm and balance in Vedic astrology. Wear it during your evening routine to feel more relaxed.'
+      assign pls_b4_t = 'Rose, Jasmine & Lotus'
+      assign pls_b4_d = 'Made with white rose, jasmine and lotus. Soft, calming ingredients chosen to match the gentle nature of the Moon.'
+    when 'mangal'
+      assign pls_name = 'Mangal Attar'
+      assign pls_heading = 'Mangal — The Attar of Courage'
+      assign pls_desc = 'A bold, long-lasting attar for courage, drive and decisive action. Alcohol-free oils that build into a confident presence.'
+      assign pls_cta_primary = 'Discover Mangal'
+      assign pls_cta_secondary = 'Experience Martial Energy'
+      assign pls_image = 'planet-attar-mangal.webp'
+      assign pls_icon = 'Planet-mars.webp'
+      assign pls_b1_t = 'Courage & Action'
+      assign pls_b1_d = 'Mangal is the planet of courage and determination. Great for people who want more energy, courage and drive to take action.'
+      assign pls_b2_t = 'Bold, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Rich and long-lasting on skin. Alcohol-free and made with pure oils that slowly build into a strong, confident fragrance.'
+      assign pls_b3_t = 'Inspired by Mars'
+      assign pls_b3_d = 'Inspired by Mangal, the planet of courage and strength in Vedic astrology. Wear it when you need extra confidence and drive.'
+      assign pls_b4_t = 'Saffron, Clove & Oud'
+      assign pls_b4_d = 'Made with oud, red sandalwood, clove and a touch of saffron. Bold, natural ingredients that match the energy of Mars.'
+    when 'budha'
+      assign pls_name = 'Budha Attar'
+      assign pls_heading = 'Budha — The Attar of Clarity'
+      assign pls_desc = 'A light, fresh attar for clear speech, sharp thinking and focused learning. Alcohol-free oils that develop naturally on skin.'
+      assign pls_cta_primary = 'Discover Budha'
+      assign pls_cta_secondary = 'Experience Mercury Clarity'
+      assign pls_image = 'planet-attar-budh.webp'
+      assign pls_icon = 'Planet-Mercury.webp'
+      assign pls_b1_t = 'Communication & Learning'
+      assign pls_b1_d = 'Budha is the planet of communication and learning. Perfect for people who want to speak clearly and do well in business or studies.'
+      assign pls_b2_t = 'Fresh, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Light and fresh. Alcohol-free and made with pure oils that develop naturally on your skin through the day.'
+      assign pls_b3_t = 'Inspired by Mercury'
+      assign pls_b3_d = 'Inspired by Budha, the planet of communication and intelligence in Vedic astrology. Wear it before meetings, exams or important conversations.'
+      assign pls_b4_t = 'Vetiver, Tulsi & Cardamom'
+      assign pls_b4_d = 'Made with vetiver, tulsi, green cardamom and citrus. Fresh, natural ingredients chosen to match the clarity of Mercury.'
+    when 'guru'
+      assign pls_name = 'Guru Attar'
+      assign pls_heading = 'Guru — The Attar of Wisdom'
+      assign pls_desc = 'A warm, rich attar for wisdom, growth and guided decisions. Alcohol-free botanical oils that unfold slowly and linger.'
+      assign pls_cta_primary = 'Discover Guru'
+      assign pls_cta_secondary = 'Experience Jupiter Growth'
+      assign pls_image = 'planet-attar-guru.webp'
+      assign pls_icon = 'Planet-Jupiter.webp'
+      assign pls_b1_t = 'Wisdom & Growth'
+      assign pls_b1_d = 'Guru is the planet of wisdom and growth. Ideal for people who want good guidance, growth and success in life.'
+      assign pls_b2_t = 'Rich, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Made with pure botanical oils. Alcohol-free and gentle on skin, with a rich fragrance that develops slowly over time.'
+      assign pls_b3_t = 'Inspired by Jupiter'
+      assign pls_b3_d = 'Inspired by Guru, the planet of wisdom and growth in Vedic astrology. Wear it during study, planning or important decisions.'
+      assign pls_b4_t = 'Sandalwood, Frankincense & Turmeric'
+      assign pls_b4_d = 'Made with sandalwood, frankincense, turmeric and benzoin. Warm, natural ingredients chosen to match the wisdom of Jupiter.'
+    when 'shukra'
+      assign pls_name = 'Shukra Attar'
+      assign pls_heading = 'Shukra — The Attar of Attraction'
+      assign pls_desc = 'A soft, romantic attar for love, beauty and creative energy. Alcohol-free oils that stay close to the skin.'
+      assign pls_cta_primary = 'Discover Shukra'
+      assign pls_cta_secondary = 'Experience Venus Beauty'
+      assign pls_image = 'planet-attar-shukra.webp'
+      assign pls_icon = 'Planet-Venus.webp'
+      assign pls_b1_t = 'Love & Attraction'
+      assign pls_b1_d = 'Shukra is the planet of love, beauty and creativity. Great for people who want more attraction, romance and creative energy.'
+      assign pls_b2_t = 'Soft, Romantic Fragrance'
+      assign pls_b2_d = 'Made with pure botanical oils. Alcohol-free and long-lasting, with a soft fragrance that stays close to the skin.'
+      assign pls_b3_t = 'Inspired by Venus'
+      assign pls_b3_d = 'Inspired by Shukra, the planet of love and beauty in Vedic astrology. Wear it on date nights or when you want to feel attractive.'
+      assign pls_b4_t = 'Rose, Tuberose & Vanilla'
+      assign pls_b4_d = 'Made with rose, tuberose, jasmine and vanilla. Soft, romantic ingredients chosen to match the beauty of Venus.'
+    when 'shani'
+      assign pls_name = 'Shani Attar'
+      assign pls_heading = 'Shani — The Attar of Discipline'
+      assign pls_desc = 'A deep, grounded attar for focus, patience and responsibility. Alcohol-free oils that develop slowly through the day.'
+      assign pls_cta_primary = 'Discover Shani'
+      assign pls_cta_secondary = 'Experience Saturn Focus'
+      assign pls_image = 'planet-attar-shani.webp'
+      assign pls_icon = 'Planet-Saturn.webp'
+      assign pls_b1_t = 'Discipline & Patience'
+      assign pls_b1_d = 'Shani is the planet of discipline and patience. A daily fragrance for those who want more focus, patience and responsibility.'
+      assign pls_b2_t = 'Deep, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Alcohol-free and made with pure oils. Develops slowly on skin for a deep fragrance that lasts through the day.'
+      assign pls_b3_t = 'Inspired by Saturn'
+      assign pls_b3_d = 'Inspired by Shani, the planet of discipline and hard work in Vedic astrology. Wear it during focused work or study.'
+      assign pls_b4_t = 'Cedarwood, Patchouli & Vetiver'
+      assign pls_b4_d = 'Made with cedarwood, patchouli, black musk and vetiver. Grounded, natural ingredients chosen to match the steadiness of Saturn.'
+    when 'rahu'
+      assign pls_name = 'Rahu Attar'
+      assign pls_heading = 'Rahu — The Attar of Ambition'
+      assign pls_desc = 'A strong, smoky attar for bold thinking and new opportunities. Alcohol-free oils that build and last through the day.'
+      assign pls_cta_primary = 'Discover Rahu'
+      assign pls_cta_secondary = 'Experience Rahu Drive'
+      assign pls_image = 'planet-attar-rahu.webp'
+      assign pls_icon = 'Planet-Rahu.webp'
+      assign pls_b1_t = 'Ambition & Bold Thinking'
+      assign pls_b1_d = 'Rahu is the planet of ambition and bold ideas. Perfect for people who want new opportunities and the courage to think big.'
+      assign pls_b2_t = 'Strong, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Alcohol-free and made with pure oils. A strong fragrance that slowly builds and lasts through the day.'
+      assign pls_b3_t = 'Inspired by Rahu'
+      assign pls_b3_d = 'Inspired by Rahu, the planet of ambition and new opportunities in Vedic astrology. Wear it when chasing big goals.'
+      assign pls_b4_t = 'Oud, Pepper & Labdanum'
+      assign pls_b4_d = 'Made with oud, smoky resins, black pepper and labdanum. Bold, natural ingredients chosen to match the drive of Rahu.'
+    when 'ketu'
+      assign pls_name = 'Ketu Attar'
+      assign pls_heading = 'Ketu — The Attar of Inner Peace'
+      assign pls_desc = 'A gentle, clarifying attar for spiritual growth and a calmer mind. Alcohol-free oils that stay soft and close to the skin.'
+      assign pls_cta_primary = 'Discover Ketu'
+      assign pls_cta_secondary = 'Experience Ketu Clarity'
+      assign pls_image = 'planet-attar-ketu.webp'
+      assign pls_icon = 'Planet-Ketu.webp'
+      assign pls_b1_t = 'Inner Peace & Clarity'
+      assign pls_b1_d = 'Ketu is the planet of spiritual growth and inner peace. Ideal for anyone looking for clarity and a calmer mind.'
+      assign pls_b2_t = 'Gentle, Long-Lasting Fragrance'
+      assign pls_b2_d = 'Alcohol-free and made with pure oils. A soft fragrance that stays close to the skin all day.'
+      assign pls_b3_t = 'Inspired by Ketu'
+      assign pls_b3_d = 'Inspired by Ketu, the planet of inner peace and clarity in Vedic astrology. Wear it during meditation or quiet time.'
+      assign pls_b4_t = 'Loban, Frankincense & Myrrh'
+      assign pls_b4_d = 'Made with loban, frankincense, sandalwood and myrrh. Calming, natural ingredients chosen to match the peace of Ketu.'
+  endcase
+-%}
+
+{%- if pls_product != blank and pls_key != blank and pls_image != blank -%}
+  {%- liquid
+    assign pls_collection_url = blank
+    for pls_col in pls_product.collections
+      assign pls_ch = pls_col.handle | downcase
+      if pls_ch contains 'planet'
+        assign pls_collection_url = pls_col.url
+        break
+      endif
+    endfor
+  -%}
+  {%- if pls_collection_url == blank -%}
+    {%- capture pls_collection_url -%}{% render 'ar-collection-url', handle: 'planet-attars' %}{%- endcapture -%}
+    {%- assign pls_collection_url = pls_collection_url | strip -%}
+  {%- endif -%}
+
+  {%- liquid
+    assign pls_img_src = pls_image | asset_url
+    assign pls_alt = pls_product.title | append: ' bottle'
+  -%}
+
+  {{ 'planet-luxury-story.css' | asset_url | stylesheet_tag }}
+  <style>
+    @font-face {
+      font-family: 'Reigo Black';
+      src: url({{ 'Reigo-Black.ttf' | asset_url | json }}) format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+
+  <section
+    class="pls"
+    id="pls-{{ pls_product.id }}"
+    data-pls
+    data-planet="{{ pls_key | escape }}"
+    aria-label="{{ pls_heading | escape }}"
+  >
+    <div class="pls__grid" role="presentation">
+      {%- if pls_b1_t != blank -%}
+        <article class="pls__card pls__card--tl" data-pls-reveal>
+          <h3 class="pls__card-title">{{ pls_b1_t | escape }}</h3>
+          <p class="pls__card-text">{{ pls_b1_d | escape }}</p>
+        </article>
+      {%- endif -%}
+
+      {%- if pls_b2_t != blank -%}
+        <article class="pls__card pls__card--tr" data-pls-reveal>
+          <h3 class="pls__card-title">{{ pls_b2_t | escape }}</h3>
+          <p class="pls__card-text">{{ pls_b2_d | escape }}</p>
+        </article>
+      {%- endif -%}
+
+      <div class="pls__stage" data-pls-reveal>
+        <div class="pls__glow" aria-hidden="true"></div>
+        <div class="pls__bottle-wrap">
+          <img
+            class="pls__bottle"
+            src="{{ pls_img_src }}"
+            alt="{{ pls_alt | escape }}"
+            width="900"
+            height="1125"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      </div>
+
+      {%- if pls_b3_t != blank -%}
+        <article class="pls__card pls__card--bl" data-pls-reveal>
+          <h3 class="pls__card-title">{{ pls_b3_t | escape }}</h3>
+          <p class="pls__card-text">{{ pls_b3_d | escape }}</p>
+        </article>
+      {%- endif -%}
+
+      {%- if pls_b4_t != blank -%}
+        <article class="pls__card pls__card--br" data-pls-reveal>
+          <h3 class="pls__card-title">{{ pls_b4_t | escape }}</h3>
+          <p class="pls__card-text">{{ pls_b4_d | escape }}</p>
+        </article>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('pls-{{ pls_product.id }}');
+      if (!root || root.dataset.plsBound === 'true') return;
+      root.dataset.plsBound = 'true';
+
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var nodes = root.querySelectorAll('[data-pls-reveal]');
+
+      function showAll() {
+        for (var i = 0; i < nodes.length; i++) nodes[i].classList.add('is-in');
+      }
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        showAll();
+        return;
+      }
+
+      root.setAttribute('data-pls-ready', '');
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          for (var i = 0; i < entries.length; i++) {
+            if (!entries[i].isIntersecting) continue;
+            entries[i].target.classList.add('is-in');
+            io.unobserve(entries[i].target);
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+      );
+
+      for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
+
+      /* Failsafe: never leave content invisible */
+      window.setTimeout(showAll, 1800);
+    })();
+  </script>
+{%- endif -%}

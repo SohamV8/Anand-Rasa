@@ -338,12 +338,9 @@
   </div>
 
   {%- comment -%}
-    REQUIRED — Navagraha explorer table for ?view=planet. Do not remove.
-    Order: hero → products (above) → this explorer → gift section (next in template).
+    Navagraha explorer lives at the top of collection.planet.json
+    (navagraha_explorer section) so it is not rendered again here.
   {%- endcomment -%}
-  {%- if template.suffix == 'planet' -%}
-    {% render 'navagraha-attar-explorer' %}
-  {%- endif -%}
 
   {%- schema -%}
   {

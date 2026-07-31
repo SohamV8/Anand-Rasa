@@ -284,6 +284,8 @@
     </div>
   </div>
 
+  {% render 'planet-luxury-story', product: product, planet_key: planet_key %}
+
   <section class="aip-strip">
     <div class="aip-strip__inner">
       <div class="aip-strip__cell">
@@ -301,11 +303,18 @@
     </div>
   </section>
 
+  {%- comment -%}
+    Product description HTML previously rendered a cluttered bottle+text collage.
+    The premium planet-luxury-story section replaces that storytelling role.
+    Raw description is kept available in Shopify admin; uncomment below to restore.
+  {%- endcomment -%}
+  {% comment %}
   {%- if product.description != blank -%}
     <section class="aip-story">
       <div class="aip-desc rte">{{ product.description }}</div>
     </section>
   {%- endif -%}
+  {% endcomment %}
 
   <section class="aip-why">
     <h2 class="aip-why__h">{{ section.settings.why_heading | default: 'Why Choose Planet Energy Attar' }}</h2>

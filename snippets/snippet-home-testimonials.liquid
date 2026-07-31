@@ -105,7 +105,12 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  min-height: 0;
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden;
   overflow-x: clip;
   overflow-y: visible;
@@ -186,9 +191,10 @@
 
 .ar-vtm__slider-area {
   flex: 1 1 auto;
-  display: flex;
-  align-items: center;
+  display: block;
   position: relative;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
   overflow-x: hidden;
   overflow-x: clip;
@@ -375,16 +381,11 @@
 /* ============================================================
    VIDEO TRACK + CARDS — fully rounded, no cuts
    ============================================================ */
-.ar-vtm__track::before,
-.ar-vtm__track::after {
-  content: '';
-  flex: 1 1 0;
-  min-width: 0;
-  pointer-events: none;
-  align-self: stretch;
-}
 .ar-vtm__track {
   display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  justify-content: safe center;
   gap: 14px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -396,6 +397,8 @@
   padding: 14px 90px;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   will-change: scroll-position;
   align-items: center;
   cursor: default;
@@ -413,7 +416,13 @@
 
 /* Card — single clip boundary; GPU + isolation fix Safari edge artifacts */
 .ar-vtm__card {
-  flex: 0 0 auto;
+  --ar-vtm-card-h: min(65dvh, min(68vh, 460px));
+  --ar-vtm-card-w: min(280px, calc(var(--ar-vtm-card-h) * 9 / 16), calc(45vw - 36px));
+  flex: 0 0 var(--ar-vtm-card-w);
+  width: var(--ar-vtm-card-w);
+  max-width: var(--ar-vtm-card-w);
+  height: var(--ar-vtm-card-h);
+  margin: 0;
   scroll-snap-align: center;
   border-radius: var(--radius-video);
   overflow: hidden;
@@ -426,10 +435,6 @@
     transform 0.55s var(--ease-out),
     box-shadow 0.55s var(--ease-out),
     opacity 0.55s var(--ease-out);
-  height: min(68vh, 460px);
-  height: min(65dvh, min(68vh, 460px));
-  width: auto;
-  max-width: min(280px, calc(45vw - 36px));
   aspect-ratio: 9 / 16;
   flex-shrink: 0;
   box-shadow:
@@ -672,9 +677,8 @@ body.ar-vtm-modal-open { overflow: hidden; }
 @media (max-width: 1100px) {
   .ar-tm { width: 92%; }
   .ar-vtm__card {
-    max-width: min(260px, calc(42vw - 32px));
-    height: min(64vh, 430px);
-    height: min(62dvh, min(64vh, 430px));
+    --ar-vtm-card-h: min(62dvh, min(64vh, 430px));
+    --ar-vtm-card-w: min(260px, calc(var(--ar-vtm-card-h) * 9 / 16), calc(42vw - 32px));
   }
 }
 @media (max-width: 900px) {
@@ -683,9 +687,8 @@ body.ar-vtm-modal-open { overflow: hidden; }
   .ar-tst__track { padding: 16px 72px; scroll-padding-inline: 72px; }
   .ar-vtm__track { padding: 14px 72px; scroll-padding-inline: 72px; }
   .ar-vtm__card {
-    max-width: min(240px, calc(40vw - 28px));
-    height: min(60vh, 400px);
-    height: min(58dvh, min(60vh, 400px));
+    --ar-vtm-card-h: min(58dvh, min(60vh, 400px));
+    --ar-vtm-card-w: min(240px, calc(var(--ar-vtm-card-h) * 9 / 16), calc(40vw - 28px));
   }
 }
 @media (max-width: 640px) {
@@ -708,9 +711,8 @@ body.ar-vtm-modal-open { overflow: hidden; }
   .ar-tst__fade,
   .ar-vtm__fade   { width: 48px; }
   .ar-vtm__card {
-    height: min(56vh, 380px);
-    height: min(52dvh, min(56vh, 380px));
-    max-width: min(220px, calc(72vw - 64px));
+    --ar-vtm-card-h: min(52dvh, min(56vh, 380px));
+    --ar-vtm-card-w: min(220px, calc(var(--ar-vtm-card-h) * 9 / 16), calc(72vw - 64px));
     border-radius: 20px;
   }
 }
@@ -718,9 +720,8 @@ body.ar-vtm-modal-open { overflow: hidden; }
   .ar-tm { width: 96%; }
   .ar-tst__card  { flex: 0 0 min(88vw, 320px); }
   .ar-vtm__card  {
-    height: min(52vh, 340px);
-    height: min(48dvh, min(52vh, 340px));
-    max-width: min(200px, calc(78vw - 56px));
+    --ar-vtm-card-h: min(48dvh, min(52vh, 340px));
+    --ar-vtm-card-w: min(200px, calc(var(--ar-vtm-card-h) * 9 / 16), calc(78vw - 56px));
   }
   .ar-tst__track { padding: 12px 40px; gap: 12px; scroll-padding-inline: 40px; }
   .ar-vtm__track { padding: 12px 40px; gap: 8px; scroll-padding-inline: 40px; }
@@ -1020,7 +1021,33 @@ body.ar-vtm-modal-open { overflow: hidden; }
       }
       vd.forEach(function (b) { b.addEventListener('click', function () { scrollSlideIntoCenter(vt, vc, +b.dataset.idx); }); });
       var vTimer; vt.addEventListener('scroll', function () { clearTimeout(vTimer); vTimer = setTimeout(function () { vActive(vIdx()); }, 80); }, { passive: true });
-      vActive(0);
+      function vCenterInitial() {
+        if (!vc.length) return;
+        var gap = 14;
+        try {
+          var cs = window.getComputedStyle(vt);
+          var g = parseFloat(cs.columnGap || cs.gap);
+          if (!isNaN(g)) gap = g;
+        } catch (e) {}
+        var total = 0;
+        for (var i = 0; i < vc.length; i++) total += vc[i].offsetWidth + (i ? gap : 0);
+        var pad = 0;
+        try {
+          var st = window.getComputedStyle(vt);
+          pad = (parseFloat(st.paddingLeft) || 0) + (parseFloat(st.paddingRight) || 0);
+        } catch (e2) {}
+        if (total + pad <= vt.clientWidth + 1) {
+          vt.scrollLeft = 0;
+          vActive(0);
+          return;
+        }
+        var targetIdx = Math.min(2, Math.max(0, vc.length - 1));
+        scrollSlideIntoCenter(vt, vc, targetIdx);
+        vActive(targetIdx);
+      }
+      requestAnimationFrame(function () {
+        requestAnimationFrame(vCenterInitial);
+      });
       function vScroll(d) {
         var cur = nearestSlideIndex(vt, vc);
         var next = d < 0 ? Math.max(0, cur - 1) : Math.min(vc.length - 1, cur + 1);

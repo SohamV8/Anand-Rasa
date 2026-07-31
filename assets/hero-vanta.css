@@ -242,14 +242,21 @@
 }
 
 .hero-vanta--fallback {
-  background-color: #faf8f4;
+  /* Soft blue sky tones matching VANTA.CLOUDS (skyColor 0x6eb0d4 / bg 0xeaf2f8)
+     so the section never collapses to cream when WebGL is unavailable. */
+  background-color: #eaf2f8;
   background-image:
-    radial-gradient(ellipse 92% 68% at 24% 18%, rgba(255, 252, 246, 0.92) 0%, transparent 58%),
-    radial-gradient(ellipse 78% 56% at 78% 22%, rgba(235, 224, 206, 0.38) 0%, transparent 52%),
-    radial-gradient(ellipse 100% 72% at 50% 100%, rgba(201, 184, 154, 0.14) 0%, transparent 48%),
-    linear-gradient(168deg, #faf8f4 0%, #f3ede4 38%, #ebe3d6 72%, #e4d9c8 100%);
+    radial-gradient(ellipse 92% 68% at 28% 18%, rgba(255, 252, 246, 0.55) 0%, transparent 58%),
+    radial-gradient(ellipse 78% 56% at 78% 22%, rgba(110, 176, 212, 0.42) 0%, transparent 52%),
+    radial-gradient(ellipse 100% 72% at 50% 100%, rgba(63, 86, 108, 0.12) 0%, transparent 48%),
+    linear-gradient(168deg, #eaf2f8 0%, #d4e8f4 38%, #b8d6ea 72%, #9ec8e0 100%);
   background-size: 200% 200%, 180% 180%, 100% 100%, 100% 100%;
   animation: hero-vanta-fallback-shift 26s ease-in-out infinite;
+}
+
+/* Base sky tint before WebGL mounts — avoids a cream flash */
+.hero-vanta:not(.hero-vanta--ready):not(.hero-vanta--fallback) {
+  background-color: #eaf2f8;
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {
@@ -327,11 +334,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-vanta {
-    background-color: #faf8f4;
+    background-color: #eaf2f8;
     background-image:
-      radial-gradient(ellipse 92% 68% at 24% 18%, rgba(255, 252, 246, 0.92) 0%, transparent 58%),
-      radial-gradient(ellipse 78% 56% at 78% 22%, rgba(235, 224, 206, 0.38) 0%, transparent 52%),
-      linear-gradient(168deg, #faf8f4 0%, #f3ede4 42%, #ebe3d6 100%);
+      radial-gradient(ellipse 92% 68% at 28% 18%, rgba(255, 252, 246, 0.55) 0%, transparent 58%),
+      radial-gradient(ellipse 78% 56% at 78% 22%, rgba(110, 176, 212, 0.42) 0%, transparent 52%),
+      linear-gradient(168deg, #eaf2f8 0%, #d4e8f4 42%, #b8d6ea 100%);
   }
 
   .hero-vanta--fallback {

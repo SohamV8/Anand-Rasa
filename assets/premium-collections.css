@@ -919,7 +919,7 @@
 .pcl-finder__inner {
   position: relative;
   border-radius: var(--pcl-radius-lg);
-  background: linear-gradient(135deg, #fff 0%, #fff 55%, #fff 100%);
+  background: #eaf2f8;
   border: 1px solid rgba(201, 169, 110, 0.22);
   box-shadow: var(--pcl-shadow);
   overflow: hidden;

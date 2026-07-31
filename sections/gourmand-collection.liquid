@@ -1,0 +1,689 @@
+{% comment %}
+  Anand Rasa — Gourmand Collection Landing
+  Use with templates/collection.gourmand.json on a Shopify collection
+  (handles: gourmand, gourmand-collection, gourmand-attars).
+{% endcomment %}
+
+{{ 'gourmand-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign agm_id = section.id
+  assign agm_col = collection
+  assign agm_heading = section.settings.heading | default: 'The Gourmand Collection'
+  assign agm_sub = section.settings.subheading | default: 'Fragrances inspired by warm desserts, creamy woods, roasted coffee, vanilla, honey and timeless indulgence.'
+  assign agm_cta_primary = section.settings.cta_primary | default: 'Explore Collection'
+  assign agm_cta_secondary = section.settings.cta_secondary | default: 'Find Your Signature Gourmand'
+  assign agm_finder = pages['find-fragrance'].url | default: '/pages/find-fragrance'
+  assign agm_per_page = section.settings.products_per_page | default: 12
+-%}
+
+{%- capture agm_note_icon -%}
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+{%- endcapture -%}
+
+<section
+  id="gourmand-{{ agm_id }}"
+  class="agm"
+  aria-label="{{ agm_heading | escape }}"
+  data-agm-section
+>
+  {%- comment -%} ── Hero ── {%- endcomment -%}
+  <header class="agm-hero">
+    <div class="agm-hero__glow" aria-hidden="true"></div>
+    <div class="agm-hero__inner">
+      <span class="agm__eyebrow" data-agm-reveal>{{ section.settings.eyebrow | default: 'Anand Rasa' }}</span>
+      <h1 class="agm__title agm-hero__title" data-agm-reveal style="--agm-d:80ms;">{{ agm_heading }}</h1>
+      <span class="agm__rule" aria-hidden="true" data-agm-reveal style="--agm-d:140ms;"></span>
+      <p class="agm__lead agm-hero__lead" data-agm-reveal style="--agm-d:200ms;">{{ agm_sub }}</p>
+      <div class="agm-hero__ctas" data-agm-reveal style="--agm-d:280ms;">
+        <a href="#agm-products-{{ agm_id }}" class="agm__btn agm__btn--gold">{{ agm_cta_primary }}</a>
+        <a href="{{ agm_finder }}" class="agm__btn agm__btn--ghost">{{ agm_cta_secondary }}</a>
+      </div>
+    </div>
+  </header>
+
+  {%- comment -%} ── Story ── {%- endcomment -%}
+  <section class="agm-story" aria-labelledby="agm-story-title-{{ agm_id }}">
+    <div class="agm__wrap agm-story__grid">
+      <div class="agm-story__aside" data-agm-reveal>
+        <span class="agm__eyebrow">The Craft</span>
+        <h2 class="agm__title" id="agm-story-title-{{ agm_id }}">{{ section.settings.story_heading | default: 'What is a Gourmand fragrance?' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+      </div>
+      <div class="agm-story__body" data-agm-reveal style="--agm-d:100ms;">
+        {{ section.settings.story_body
+          | default: '<p>Gourmand fragrances draw from the language of desserts and warm kitchens — vanilla, caramel, roasted coffee, chocolate, honey, and toasted nuts — composed with the restraint of fine perfume rather than confection.</p><p>They are loved for intimacy and comfort: skin-close warmth that feels edible yet elegant, never sugary or childish. Where “sweet” can mean candy-bright, gourmand means roasted, creamy, and lingering.</p><p>At Anand Rasa, Indian attar craft interprets these notes as alcohol-free oils — slow distillation, soft projection, and a golden afterglow of sandalwood, amber, and musk.</p>'
+        }}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ── Signature notes ── {%- endcomment -%}
+  <section class="agm-notes" aria-labelledby="agm-notes-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-notes__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Signature Notes</span>
+        <h2 class="agm__title" id="agm-notes-title-{{ agm_id }}">{{ section.settings.notes_heading | default: 'The pantry of indulgence' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+        <p class="agm__lead">{{ section.settings.notes_lead | default: 'Each note is chosen for warmth, depth, and wearable elegance.' }}</p>
+      </header>
+      <ul class="agm-notes__grid" role="list">
+        {%- assign agm_note_blocks = section.blocks | where: 'type', 'note' -%}
+        {%- if agm_note_blocks.size > 0 -%}
+          {%- for block in agm_note_blocks -%}
+            {%- if block.settings.title != blank -%}
+              <li class="agm-note" data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 40 }}ms;" {{ block.shopify_attributes }}>
+                <span class="agm-note__icon">{{ agm_note_icon }}</span>
+                <h3 class="agm-note__title">{{ block.settings.title | escape }}</h3>
+                {%- if block.settings.text != blank -%}
+                  <p class="agm-note__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign agm_note_titles = 'Vanilla|Tonka Bean|Coffee|Chocolate|Caramel|Honey|Praline|Almond|Hazelnut|Cinnamon|Sandalwood|Amber' | split: '|' -%}
+          {%- assign agm_note_texts = 'Creamy, soft, and luminous — the heart of classic gourmand.|Almond-hay warmth with a velvet tobacco hush.|Roasted bitterness that grounds sweetness.|Dark cocoa depth without confectionery excess.|Buttery amber glow, melted and restrained.|Golden nectar with soft floral edges.|Toasted nut elegance, quietly addictive.|Marzipan softness with clean woody lift.|Roasted comfort for cold evenings.|Warm spice that awakens dessert accords.|Creamy wood that steadies the edible.|Resinous sunlight — lasting golden trail.' | split: '|' -%}
+          {%- for title in agm_note_titles -%}
+            <li class="agm-note" data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 40 }}ms;">
+              <span class="agm-note__icon">{{ agm_note_icon }}</span>
+              <h3 class="agm-note__title">{{ title | escape }}</h3>
+              <p class="agm-note__text">{{ agm_note_texts[forloop.index0] | escape }}</p>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── Featured products ── {%- endcomment -%}
+  <section class="agm-products" id="agm-products-{{ agm_id }}" aria-labelledby="agm-products-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-products__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Featured</span>
+        <h2 class="agm__title" id="agm-products-title-{{ agm_id }}">{{ section.settings.products_heading | default: 'Shop the Gourmand Collection' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+        <p class="agm__lead">{{ section.settings.products_lead | default: 'Alcohol-free attars and perfume oils — edible warmth, wearable luxury.' }}</p>
+      </header>
+
+      {%- if agm_col != blank and agm_col.products_count > 0 -%}
+        <div class="agm-products__toolbar" data-agm-reveal>
+          <p class="agm-products__count">{{ agm_col.products_count }} {{ agm_col.products_count | pluralize: 'fragrance', 'fragrances' }}</p>
+        </div>
+        <div class="agm-products__track-wrap">
+          <ul class="agm-products__grid" role="list">
+            {%- paginate agm_col.products by agm_per_page -%}
+              {%- for product in agm_col.products -%}
+                <li data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 50 }}ms;">
+                  <article class="agm-card">
+                    <a href="{{ product.url }}" class="agm-card__img-wrap" aria-label="{{ product.title | escape }}">
+                      {%- if product.featured_media -%}
+                        {%- assign agm_img_alt = product.featured_media.alt | default: product.title -%}
+                        {{
+                          product.featured_media
+                          | image_url: width: 720
+                          | image_tag:
+                            class: 'agm-card__img',
+                            loading: 'lazy',
+                            widths: '280, 360, 480, 720',
+                            sizes: '(max-width: 767px) 78vw, (max-width: 1100px) 30vw, 22vw',
+                            alt: agm_img_alt
+                        }}
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'agm-card__img' }}
+                      {%- endif -%}
+                    </a>
+                    <div class="agm-card__body">
+                      <p class="agm-card__type">{{ product.type | default: 'Gourmand Attar' }}</p>
+                      <h3 class="agm-card__name"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+                      <div class="agm-card__foot">
+                        <div>
+                          {%- if product.compare_at_price > product.price -%}
+                            <span class="agm-card__compare">{{ product.compare_at_price | money }}</span>
+                          {%- endif -%}
+                          <span class="agm-card__price">{{ product.price | money }}</span>
+                        </div>
+                        <a href="{{ product.url }}" class="agm-card__buy">View</a>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+              {%- endfor -%}
+            {%- endpaginate -%}
+          </ul>
+        </div>
+      {%- else -%}
+        <div class="agm-empty" data-agm-reveal>
+          <p>{{ section.settings.empty_text | default: 'Gourmand fragrances are being curated. Assign products to this collection in Shopify Admin, or explore our Perfume Series meanwhile.' }}</p>
+          <p style="margin-top:20px;">
+            <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="agm__btn">Explore Perfumes</a>
+          </p>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} ── Ingredients story ── {%- endcomment -%}
+  <section class="agm-ing" aria-labelledby="agm-ing-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-ing__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Ingredients</span>
+        <h2 class="agm__title" id="agm-ing-title-{{ agm_id }}">{{ section.settings.ing_heading | default: 'Material stories' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+        <p class="agm__lead">{{ section.settings.ing_lead | default: 'Magazine-quiet notes on the materials behind our gourmand oils.' }}</p>
+      </header>
+
+      {%- assign agm_ings = section.blocks | where: 'type', 'ingredient' -%}
+      {%- if agm_ings.size > 0 -%}
+        {%- for block in agm_ings -%}
+          <article class="agm-ing__row{% if forloop.index == 2 or forloop.index == 4 or forloop.index == 6 %} agm-ing__row--rev{% endif %}" data-agm-reveal {{ block.shopify_attributes }}>
+            <div class="agm-ing__visual" data-tone="{{ block.settings.tone | default: 'vanilla' }}" role="img" aria-label="{{ block.settings.title | escape }}"></div>
+            <div class="agm-ing__copy">
+              <h3 class="agm__title">{{ block.settings.title | escape }}</h3>
+              <p>{{ block.settings.text | escape }}</p>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        <article class="agm-ing__row" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="vanilla" role="img" aria-label="Vanilla"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Vanilla</h3>
+            <p>Not candy — a creamy orchid bean, soft and luminous, the signature warmth of every great gourmand.</p>
+          </div>
+        </article>
+        <article class="agm-ing__row agm-ing__row--rev" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="coffee" role="img" aria-label="Coffee"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Coffee</h3>
+            <p>Roasted bitterness that keeps sweetness adult — espresso steam, early light, quiet focus.</p>
+          </div>
+        </article>
+        <article class="agm-ing__row" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="chocolate" role="img" aria-label="Chocolate"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Chocolate</h3>
+            <p>Dark cocoa depth — bitter edges, velvet body, never confectionery loud.</p>
+          </div>
+        </article>
+        <article class="agm-ing__row agm-ing__row--rev" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="honey" role="img" aria-label="Honey & Tonka"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Honey & Tonka</h3>
+            <p>Golden nectar meets almond-hay tonka — a soft tobacco hush over dessert warmth.</p>
+          </div>
+        </article>
+        <article class="agm-ing__row" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="wood" role="img" aria-label="Sandalwood"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Sandalwood</h3>
+            <p>Creamy wood that steadies the edible — the Indian attar backbone beneath every gourmand.</p>
+          </div>
+        </article>
+        <article class="agm-ing__row agm-ing__row--rev" data-agm-reveal>
+          <div class="agm-ing__visual" data-tone="amber" role="img" aria-label="Amber & Warm Musk"></div>
+          <div class="agm-ing__copy">
+            <h3 class="agm__title">Amber & Warm Musk</h3>
+            <p>Resinous sunlight and skin-close musk — the lasting trail after the dessert fades.</p>
+          </div>
+        </article>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- comment -%} ── Pyramid ── {%- endcomment -%}
+  <section class="agm-pyramid" aria-labelledby="agm-pyramid-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-pyramid__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Composition</span>
+        <h2 class="agm__title" id="agm-pyramid-title-{{ agm_id }}">{{ section.settings.pyramid_heading | default: 'Fragrance pyramid' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+      </header>
+      <ol class="agm-pyramid__list" data-agm-reveal>
+        <li class="agm-pyramid__item">
+          <span class="agm-pyramid__dot" aria-hidden="true"></span>
+          <div>
+            <span class="agm-pyramid__label">Top Notes</span>
+            <p class="agm-pyramid__notes">{{ section.settings.top_notes | default: 'Cinnamon · Almond · Soft citrus zest' }}</p>
+            <p class="agm-pyramid__desc">{{ section.settings.top_desc | default: 'A brief spark of spice and nut before the cream unfolds.' }}</p>
+          </div>
+        </li>
+        <li class="agm-pyramid__item">
+          <span class="agm-pyramid__dot" aria-hidden="true"></span>
+          <div>
+            <span class="agm-pyramid__label">Middle Notes</span>
+            <p class="agm-pyramid__notes">{{ section.settings.heart_notes | default: 'Vanilla · Coffee · Honey · Praline' }}</p>
+            <p class="agm-pyramid__desc">{{ section.settings.heart_desc | default: 'The edible heart — warm, rounded, and intimately wearable.' }}</p>
+          </div>
+        </li>
+        <li class="agm-pyramid__item">
+          <span class="agm-pyramid__dot" aria-hidden="true"></span>
+          <div>
+            <span class="agm-pyramid__label">Base Notes</span>
+            <p class="agm-pyramid__notes">{{ section.settings.base_notes | default: 'Tonka · Sandalwood · Amber · Warm musk' }}</p>
+            <p class="agm-pyramid__desc">{{ section.settings.base_desc | default: 'A lasting golden trail — creamy wood and soft skin musk.' }}</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  {%- comment -%} ── Who it's for ── {%- endcomment -%}
+  <section class="agm-for" aria-labelledby="agm-for-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-for__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Audience</span>
+        <h2 class="agm__title" id="agm-for-title-{{ agm_id }}">{{ section.settings.for_heading | default: 'Who is it for?' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+      </header>
+      <ul class="agm-for__grid" role="list">
+        {%- assign agm_for_defaults = 'Coffee lovers|Dessert lovers|Winter fragrances|Date nights|Festivals|Luxury gifting|Cold weather|Evening wear|Luxury collectors' | split: '|' -%}
+        {%- assign agm_for_blocks = section.blocks | where: 'type', 'audience' -%}
+        {%- if agm_for_blocks.size > 0 -%}
+          {%- for block in agm_for_blocks -%}
+            {%- if block.settings.label != blank -%}
+              <li class="agm-for__card" data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 40 }}ms;" {{ block.shopify_attributes }}>
+                <span class="agm-for__mark" aria-hidden="true"></span>
+                <p class="agm-for__label">{{ block.settings.label | escape }}</p>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for label in agm_for_defaults -%}
+            <li class="agm-for__card" data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 40 }}ms;">
+              <span class="agm-for__mark" aria-hidden="true"></span>
+              <p class="agm-for__label">{{ label | escape }}</p>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── Pairing ── {%- endcomment -%}
+  <section class="agm-pair" aria-labelledby="agm-pair-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-pair__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Layering</span>
+        <h2 class="agm__title" id="agm-pair-title-{{ agm_id }}">{{ section.settings.pair_heading | default: 'Pairing guide' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+        <p class="agm__lead">{{ section.settings.pair_lead | default: 'Compose your own ritual — two oils, one signature.' }}</p>
+      </header>
+      <ul class="agm-pair__grid" role="list">
+        {%- assign agm_pair_blocks = section.blocks | where: 'type', 'pairing' -%}
+        {%- if agm_pair_blocks.size > 0 -%}
+          {%- for block in agm_pair_blocks -%}
+            <li class="agm-pair__card" data-agm-reveal {{ block.shopify_attributes }}>
+              <h3 class="agm-pair__combo">{{ block.settings.left | escape }}<span>+</span>{{ block.settings.right | escape }}</h3>
+              <p class="agm-pair__text">{{ block.settings.text | escape }}</p>
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li class="agm-pair__card" data-agm-reveal>
+            <h3 class="agm-pair__combo">Vanilla<span>+</span>Sandalwood</h3>
+            <p class="agm-pair__text">Cream meets creamy wood — the purest Indian gourmand silhouette.</p>
+          </li>
+          <li class="agm-pair__card" data-agm-reveal>
+            <h3 class="agm-pair__combo">Coffee<span>+</span>Amber</h3>
+            <p class="agm-pair__text">Roast and resin — evening warmth with a golden trail.</p>
+          </li>
+          <li class="agm-pair__card" data-agm-reveal>
+            <h3 class="agm-pair__combo">Honey<span>+</span>Musk</h3>
+            <p class="agm-pair__text">Nectar on skin — soft, intimate, festival-ready.</p>
+          </li>
+          <li class="agm-pair__card" data-agm-reveal>
+            <h3 class="agm-pair__combo">Chocolate<span>+</span>Tonka</h3>
+            <p class="agm-pair__text">Dark cocoa with almond-hay depth — winter date nights.</p>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── Voices (editorial; PDP reviews remain via patron-reviews) ── {%- endcomment -%}
+  <section class="agm-voices" aria-labelledby="agm-voices-title-{{ agm_id }}">
+    <div class="agm__wrap">
+      <header class="agm-voices__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">Voices</span>
+        <h2 class="agm__title" id="agm-voices-title-{{ agm_id }}">{{ section.settings.voices_heading | default: 'Loved for warmth' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+      </header>
+      <ul class="agm-voices__grid" role="list">
+        {%- assign agm_voice_blocks = section.blocks | where: 'type', 'voice' -%}
+        {%- if agm_voice_blocks.size > 0 -%}
+          {%- for block in agm_voice_blocks -%}
+            <li class="agm-voice" data-agm-reveal {{ block.shopify_attributes }}>
+              <blockquote class="agm-voice__quote">“{{ block.settings.quote | escape }}”</blockquote>
+              <p class="agm-voice__name">{{ block.settings.name | escape }}</p>
+              {%- if block.settings.meta != blank -%}
+                <p class="agm-voice__meta">{{ block.settings.meta | escape }}</p>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          <li class="agm-voice" data-agm-reveal>
+            <blockquote class="agm-voice__quote">“Smells like a quiet café at dusk — coffee and vanilla, never loud.”</blockquote>
+            <p class="agm-voice__name">Ananya</p>
+            <p class="agm-voice__meta">Mumbai · Gourmand wearer</p>
+          </li>
+          <li class="agm-voice" data-agm-reveal>
+            <blockquote class="agm-voice__quote">“The honey-sandalwood layer is my winter signature. Pure indulgence.”</blockquote>
+            <p class="agm-voice__name">Rohan</p>
+            <p class="agm-voice__meta">Delhi · Collector</p>
+          </li>
+          <li class="agm-voice" data-agm-reveal>
+            <blockquote class="agm-voice__quote">“Gifted the chocolate-tonka oil — she said it felt like dessert and silk.”</blockquote>
+            <p class="agm-voice__name">Meera</p>
+            <p class="agm-voice__meta">Bengaluru · Gifting</p>
+          </li>
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── FAQ ── {%- endcomment -%}
+  <section
+    class="agm-faq"
+    aria-labelledby="agm-faq-title-{{ agm_id }}"
+    itemscope
+    itemtype="https://schema.org/FAQPage"
+  >
+    <div class="agm__wrap">
+      <header class="agm-faq__hdr" data-agm-reveal>
+        <span class="agm__eyebrow">FAQ</span>
+        <h2 class="agm__title" id="agm-faq-title-{{ agm_id }}">{{ section.settings.faq_heading | default: 'Frequently asked questions' }}</h2>
+        <span class="agm__rule" aria-hidden="true"></span>
+      </header>
+      <ul class="agm-faq__list" role="list" data-agm-reveal>
+        {%- assign agm_faq_blocks = section.blocks | where: 'type', 'faq' -%}
+        {%- if agm_faq_blocks.size > 0 -%}
+          {%- for block in agm_faq_blocks -%}
+            {%- if block.settings.question != blank and block.settings.answer != blank -%}
+              {%- assign agm_fid = 'agm-faq-' | append: agm_id | append: '-' | append: forloop.index -%}
+              <li
+                class="agm-faq__item"
+                itemscope
+                itemprop="mainEntity"
+                itemtype="https://schema.org/Question"
+                {{ block.shopify_attributes }}
+              >
+                <button type="button" class="agm-faq__trigger" id="{{ agm_fid }}-btn" aria-expanded="false" aria-controls="{{ agm_fid }}-panel" itemprop="name">
+                  <span class="agm-faq__q">{{ block.settings.question | escape }}</span>
+                  <span class="agm-faq__icon" aria-hidden="true"></span>
+                </button>
+                <div class="agm-faq__panel" id="{{ agm_fid }}-panel" role="region" aria-labelledby="{{ agm_fid }}-btn" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                  <p class="agm-faq__a" itemprop="text">{{ block.settings.answer | escape }}</p>
+                </div>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign agm_faqs_q = 'What is a Gourmand fragrance?|Are Gourmand perfumes suitable for summer?|Is Gourmand fragrance too sweet?|How long do Gourmand perfumes last?|Are Gourmand attars alcohol free?' | split: '|' -%}
+          {%- assign agm_faqs_a = 'A gourmand fragrance draws from dessert and warm kitchen materials — vanilla, coffee, chocolate, honey, tonka — composed as elegant perfume, not candy.|Yes, in lighter oils and soft projection. Choose coffee, sandalwood, or amber-forward blends over heavy caramel in peak heat.|Not when composed with roast, wood, and musk. True gourmand balances edible warmth with bitterness and cream.|As alcohol-free attars, expect intimate projection with 6–12 hours on skin and longer on fabric.|Yes. Anand Rasa gourmand attars are pure perfume oils — alcohol-free, skin-close, and ritual-ready.' | split: '|' -%}
+          {%- for q in agm_faqs_q -%}
+            {%- assign agm_fi = forloop.index0 -%}
+            {%- assign agm_fid = 'agm-faq-' | append: agm_id | append: '-' | append: forloop.index -%}
+            <li class="agm-faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <button type="button" class="agm-faq__trigger" id="{{ agm_fid }}-btn" aria-expanded="false" aria-controls="{{ agm_fid }}-panel" itemprop="name">
+                <span class="agm-faq__q">{{ q | escape }}</span>
+                <span class="agm-faq__icon" aria-hidden="true"></span>
+              </button>
+              <div class="agm-faq__panel" id="{{ agm_fid }}-panel" role="region" aria-labelledby="{{ agm_fid }}-btn" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <p class="agm-faq__a" itemprop="text">{{ agm_faqs_a[agm_fi] | escape }}</p>
+              </div>
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} ── Banner ── {%- endcomment -%}
+  <aside class="agm-banner" aria-labelledby="agm-banner-title-{{ agm_id }}">
+    <span class="agm__eyebrow" data-agm-reveal>{{ section.settings.banner_eyebrow | default: 'Indulgence Bottled' }}</span>
+    <h2 class="agm__title" id="agm-banner-title-{{ agm_id }}" data-agm-reveal style="--agm-d:80ms;">{{ section.settings.banner_heading | default: "Discover India's Luxury Gourmand Collection" }}</h2>
+    <span class="agm__rule" aria-hidden="true" data-agm-reveal style="--agm-d:120ms;"></span>
+    <p class="agm__lead" data-agm-reveal style="--agm-d:160ms;">{{ section.settings.banner_lead | default: 'Warm desserts. Creamy woods. Alcohol-free oils made for slow evenings.' }}</p>
+    <div class="agm-banner__cta" data-agm-reveal style="--agm-d:220ms;">
+      <a href="#agm-products-{{ agm_id }}" class="agm__btn agm__btn--gold">{{ section.settings.banner_cta | default: 'Shop Now' }}</a>
+    </div>
+  </aside>
+</section>
+
+{%- comment -%} SEO: Collection + Breadcrumb JSON-LD {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ agm_heading | json }},
+  "description": {{ agm_sub | json }},
+  "url": {{ request.origin | append: request.path | json }},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }}
+  }
+  {%- if agm_col != blank and agm_col.products_count > 0 -%}
+  ,"mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ agm_col.products_count }},
+    "itemListElement": [
+      {%- for product in agm_col.products limit: 12 -%}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "url": {{ request.origin | append: product.url | json }},
+          "name": {{ product.title | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+  {%- endif -%}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ shop.url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Collections",
+      "item": {{ shop.url | append: routes.collections_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ agm_heading | json }},
+      "item": {{ request.origin | append: request.path | json }}
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('gourmand-{{ agm_id }}');
+  if (!root || root.dataset.agmReady === 'true') return;
+  root.dataset.agmReady = 'true';
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nodes = root.querySelectorAll('[data-agm-reveal]');
+
+  if (reduced || !('IntersectionObserver' in window)) {
+    nodes.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    nodes.forEach(function (el) { io.observe(el); });
+  }
+
+  root.querySelectorAll('.agm-faq__item').forEach(function (item) {
+    var btn = item.querySelector('.agm-faq__trigger');
+    var panel = item.querySelector('.agm-faq__panel');
+    if (!btn || !panel) return;
+
+    btn.addEventListener('click', function () {
+      var open = item.classList.contains('is-open');
+      var list = item.closest('.agm-faq__list');
+      if (list) {
+        list.querySelectorAll('.agm-faq__item.is-open').forEach(function (sib) {
+          if (sib === item) return;
+          sib.classList.remove('is-open');
+          var sBtn = sib.querySelector('.agm-faq__trigger');
+          var sPanel = sib.querySelector('.agm-faq__panel');
+          if (sBtn) sBtn.setAttribute('aria-expanded', 'false');
+          if (sPanel) sPanel.style.maxHeight = '0';
+        });
+      }
+      if (open) {
+        item.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        panel.style.maxHeight = '0';
+      } else {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Gourmand Collection",
+  "tag": "section",
+  "class": "section section-gourmand-collection",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Anand Rasa" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Gourmand Collection" },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Fragrances inspired by warm desserts, creamy woods, roasted coffee, vanilla, honey and timeless indulgence."
+    },
+    { "type": "text", "id": "cta_primary", "label": "Primary CTA", "default": "Explore Collection" },
+    { "type": "text", "id": "cta_secondary", "label": "Secondary CTA", "default": "Find Your Signature Gourmand" },
+    { "type": "header", "content": "Story" },
+    { "type": "text", "id": "story_heading", "label": "Story heading", "default": "What is a Gourmand fragrance?" },
+    {
+      "type": "richtext",
+      "id": "story_body",
+      "label": "Story body",
+      "default": "<p>Gourmand fragrances draw from the language of desserts and warm kitchens — vanilla, caramel, roasted coffee, chocolate, honey, and toasted nuts — composed with the restraint of fine perfume rather than confection.</p><p>They are loved for intimacy and comfort: skin-close warmth that feels edible yet elegant, never sugary or childish. Where “sweet” can mean candy-bright, gourmand means roasted, creamy, and lingering.</p><p>At Anand Rasa, Indian attar craft interprets these notes as alcohol-free oils — slow distillation, soft projection, and a golden afterglow of sandalwood, amber, and musk.</p>"
+    },
+    { "type": "header", "content": "Notes" },
+    { "type": "text", "id": "notes_heading", "label": "Notes heading", "default": "The pantry of indulgence" },
+    { "type": "textarea", "id": "notes_lead", "label": "Notes lead", "default": "Each note is chosen for warmth, depth, and wearable elegance." },
+    { "type": "header", "content": "Products" },
+    { "type": "text", "id": "products_heading", "label": "Products heading", "default": "Shop the Gourmand Collection" },
+    { "type": "textarea", "id": "products_lead", "label": "Products lead", "default": "Alcohol-free attars and perfume oils — edible warmth, wearable luxury." },
+    { "type": "range", "id": "products_per_page", "min": 4, "max": 24, "step": 4, "label": "Products shown", "default": 12 },
+    { "type": "textarea", "id": "empty_text", "label": "Empty state text" },
+    { "type": "header", "content": "Ingredients" },
+    { "type": "text", "id": "ing_heading", "label": "Ingredients heading", "default": "Material stories" },
+    { "type": "textarea", "id": "ing_lead", "label": "Ingredients lead", "default": "Magazine-quiet notes on the materials behind our gourmand oils." },
+    { "type": "header", "content": "Pyramid" },
+    { "type": "text", "id": "pyramid_heading", "label": "Pyramid heading", "default": "Fragrance pyramid" },
+    { "type": "text", "id": "top_notes", "label": "Top notes", "default": "Cinnamon · Almond · Soft citrus zest" },
+    { "type": "textarea", "id": "top_desc", "label": "Top description" },
+    { "type": "text", "id": "heart_notes", "label": "Heart notes", "default": "Vanilla · Coffee · Honey · Praline" },
+    { "type": "textarea", "id": "heart_desc", "label": "Heart description" },
+    { "type": "text", "id": "base_notes", "label": "Base notes", "default": "Tonka · Sandalwood · Amber · Warm musk" },
+    { "type": "textarea", "id": "base_desc", "label": "Base description" },
+    { "type": "header", "content": "Audience & pairing" },
+    { "type": "text", "id": "for_heading", "label": "Audience heading", "default": "Who is it for?" },
+    { "type": "text", "id": "pair_heading", "label": "Pairing heading", "default": "Pairing guide" },
+    { "type": "textarea", "id": "pair_lead", "label": "Pairing lead", "default": "Compose your own ritual — two oils, one signature." },
+    { "type": "header", "content": "Voices & FAQ" },
+    { "type": "text", "id": "voices_heading", "label": "Voices heading", "default": "Loved for warmth" },
+    { "type": "text", "id": "faq_heading", "label": "FAQ heading", "default": "Frequently asked questions" },
+    { "type": "header", "content": "Banner" },
+    { "type": "text", "id": "banner_eyebrow", "label": "Banner eyebrow", "default": "Indulgence Bottled" },
+    { "type": "text", "id": "banner_heading", "label": "Banner heading", "default": "Discover India's Luxury Gourmand Collection" },
+    { "type": "textarea", "id": "banner_lead", "label": "Banner lead", "default": "Warm desserts. Creamy woods. Alcohol-free oils made for slow evenings." },
+    { "type": "text", "id": "banner_cta", "label": "Banner CTA", "default": "Shop Now" }
+  ],
+  "blocks": [
+    {
+      "type": "note",
+      "name": "Signature note",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Description" }
+      ]
+    },
+    {
+      "type": "ingredient",
+      "name": "Ingredient story",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Description" },
+        {
+          "type": "select",
+          "id": "tone",
+          "label": "Visual tone",
+          "options": [
+            { "value": "vanilla", "label": "Vanilla / cream" },
+            { "value": "coffee", "label": "Coffee" },
+            { "value": "chocolate", "label": "Chocolate" },
+            { "value": "honey", "label": "Honey" },
+            { "value": "wood", "label": "Sandalwood" },
+            { "value": "amber", "label": "Amber" },
+            { "value": "musk", "label": "Musk" }
+          ],
+          "default": "vanilla"
+        }
+      ]
+    },
+    {
+      "type": "audience",
+      "name": "Audience card",
+      "settings": [{ "type": "text", "id": "label", "label": "Label" }]
+    },
+    {
+      "type": "pairing",
+      "name": "Pairing",
+      "settings": [
+        { "type": "text", "id": "left", "label": "Left note" },
+        { "type": "text", "id": "right", "label": "Right note" },
+        { "type": "textarea", "id": "text", "label": "Description" }
+      ]
+    },
+    {
+      "type": "voice",
+      "name": "Voice / quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "meta", "label": "Meta" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Gourmand Collection" }]
+}
+{% endschema %}

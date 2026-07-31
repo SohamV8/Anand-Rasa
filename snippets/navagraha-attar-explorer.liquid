@@ -181,8 +181,9 @@
 .nav-x__grid {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   max-width: 1240px;
   margin: 0 auto;
@@ -191,8 +192,29 @@
   animation: nv-rise 0.7s ease 0.5s forwards;
 }
 
-@media (max-width: 1000px) { .nav-x__grid { grid-template-columns: repeat(5, 1fr); gap: 9px; } }
-@media (max-width: 580px)  { .nav-x__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 16px; } }
+.nav-x__grid .nav-x__card {
+  flex: 0 1 calc((100% - 80px) / 9);
+  max-width: 132px;
+  min-width: 96px;
+}
+
+@media (max-width: 1000px) {
+  .nav-x__grid .nav-x__card {
+    flex: 0 1 calc((100% - 40px) / 5);
+    max-width: 148px;
+  }
+}
+@media (max-width: 580px) {
+  .nav-x__grid {
+    gap: 8px;
+    padding: 0 16px;
+  }
+  .nav-x__grid .nav-x__card {
+    flex: 0 1 calc((100% - 16px) / 3);
+    max-width: 140px;
+    min-width: 88px;
+  }
+}
 
 /* ── Planet card ── */
 .nav-x__card {

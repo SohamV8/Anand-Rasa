@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "gourmand_landing": {
+      "type": "gourmand-collection",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "heading": "The Gourmand Collection",
+        "subheading": "Fragrances inspired by warm desserts, creamy woods, roasted coffee, vanilla, honey and timeless indulgence.",
+        "cta_primary": "Explore Collection",
+        "cta_secondary": "Find Your Signature Gourmand",
+        "story_heading": "What is a Gourmand fragrance?",
+        "notes_heading": "The pantry of indulgence",
+        "products_heading": "Shop the Gourmand Collection",
+        "ing_heading": "Material stories",
+        "pyramid_heading": "Fragrance pyramid",
+        "for_heading": "Who is it for?",
+        "pair_heading": "Pairing guide",
+        "voices_heading": "Loved for warmth",
+        "faq_heading": "Frequently asked questions",
+        "banner_eyebrow": "Indulgence Bottled",
+        "banner_heading": "Discover India's Luxury Gourmand Collection",
+        "banner_cta": "Shop Now",
+        "products_per_page": 12
+      }
+    }
+  },
+  "order": ["gourmand_landing"]
+}

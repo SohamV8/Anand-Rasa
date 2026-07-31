@@ -1002,6 +1002,10 @@
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'perfume-series'
                         endcapture
+                      elsif ar_mega_title_key contains 'gourmand'
+                        capture ar_mega_link_url
+                          render 'ar-collection-url', handle: 'gourmand'
+                        endcapture
                       elsif ar_mega_title_key contains 'incense'
                         capture ar_mega_link_url
                           render 'ar-collection-url', handle: 'incense-sticks'
@@ -1037,6 +1041,8 @@
                       elsif ar_mega_title_key contains 'apsara' or ar_mega_link_key contains 'apsara-attar'
                         assign ar_mega_hover_image = 'Apsara Attar.webp' | asset_url
                       elsif ar_mega_title_key contains 'perfume' or ar_mega_link_key contains 'perfume-series'
+                        assign ar_mega_hover_image = 'Perfume Series.webp' | asset_url
+                      elsif ar_mega_title_key contains 'gourmand' or ar_mega_link_key contains 'gourmand'
                         assign ar_mega_hover_image = 'Perfume Series.webp' | asset_url
                       elsif ar_mega_title_key contains 'incense' or ar_mega_link_key contains 'incense-sticks'
                         assign ar_mega_hover_image = 'incense_stick.webp' | asset_url
@@ -1076,6 +1082,7 @@
                 <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" data-image="{{ 'Love Attar.webp' | asset_url }}">Prem Rasa</a>
                 <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-mega__link" data-image="{{ 'Apsara Attar.webp' | asset_url }}">Apsara Attar</a>
                 <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-mega__link" data-image="{{ 'Perfume Series.webp' | asset_url }}">Perfume Series</a>
+                <a href="{% render 'ar-collection-url', handle: 'gourmand' %}" class="ar-mega__link" data-image="{{ 'Perfume Series.webp' | asset_url }}">Gourmand Collection</a>
                 <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" data-image="{{ 'incense_stick.webp' | asset_url }}">Incense Sticks</a>
                 <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-mega__link" data-image="{{ 'Gift Set.webp' | asset_url }}">Gift Sets</a>
               {%- endif -%}
@@ -1320,6 +1327,10 @@
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'perfume-series'
               endcapture
+            elsif ar_drawer_title_key contains 'gourmand'
+              capture ar_drawer_link_url
+                render 'ar-collection-url', handle: 'gourmand'
+              endcapture
             elsif ar_drawer_title_key contains 'incense'
               capture ar_drawer_link_url
                 render 'ar-collection-url', handle: 'incense-sticks'
@@ -1349,6 +1360,7 @@
       <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Prem Rasa</a>
       <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Apsara Attar</a>
       <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Perfume Series</a>
+      <a href="{% render 'ar-collection-url', handle: 'gourmand' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gourmand Collection</a>
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
       <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gift Sets</a>
     {%- endif -%}

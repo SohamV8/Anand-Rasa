@@ -20,14 +20,14 @@
           <div class="ar-cat-video__item">
             <div class="ar-cat-video__media">
               <video
-                src="{{ block.settings.video }}"
-                autoplay
                 muted
                 loop
                 playsinline
-                preload="metadata"
+                preload="none"
                 width="1920"
                 height="1080"
+                data-lazy-src="{{ block.settings.video }}"
+                data-lazy-autoplay="true"
               ></video>
             </div>
             <p class="ar-cat-video__label">
@@ -37,17 +37,19 @@
         {% endfor %}
       {%- else -%}
         {%- for video_path in incense_video_assets -%}
+          {%- assign video_poster = video_path | split: '.' | first | append: '-poster.webp' -%}
           <div class="ar-cat-video__item">
             <div class="ar-cat-video__media">
               <video
-                src="{{ video_path | asset_url }}"
-                autoplay
                 muted
                 loop
                 playsinline
-                preload="metadata"
+                preload="none"
+                poster="{{ video_poster | asset_url }}"
                 width="1920"
                 height="1080"
+                data-lazy-src="{{ video_path | asset_url }}"
+                data-lazy-autoplay="true"
               ></video>
             </div>
             <p class="ar-cat-video__label">
@@ -60,6 +62,8 @@
     </div>
   </div>
 </section>
+
+<script src="{{ 'lazy-video.js' | asset_url }}" defer="defer"></script>
 
 <style>
 /* =========================

@@ -3,12 +3,17 @@
   Includes: auto-slide images, badges, wishlist, stars, price, ATC button.
 {% endcomment %}
 
+{%- comment -%}
+  This snippet renders its own card markup and does not use the bulk quantity or
+  volume-pricing components, so those stylesheets were pure unused weight — and,
+  because they are emitted per card, a grid repeated them dozens of times as
+  render-blocking <link> tags in the body. They are still loaded by the sections
+  that actually own them (quick-order-list, bulk-quick-order-list, cart drawer,
+  main-cart-items, main-product, featured-product).
+{%- endcomment -%}
 {%- unless skip_styles -%}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
-  {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
-  {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
-  {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
 
 {%- if card_product and card_product != empty -%}

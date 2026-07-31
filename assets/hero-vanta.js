@@ -1,5 +1,7 @@
 /**
  * Hero Vanta — official VANTA.CLOUDS (three.js r134 + vanta 0.5.24).
+ * Engine scripts are deferred via hero-vanta-loader.liquid; this file only
+ * lazy-inits when a .hero-vanta section is near the viewport.
  */
 (function () {
   'use strict';
@@ -8,6 +10,8 @@
   var pendingObservers = new WeakMap();
   var resizeTimer = null;
   var DEBUG = /[?&]vantaDebug=1(?:&|$)/.test(window.location.search);
+  var ENGINE_WAIT_MS = 80;
+  var ENGINE_WAIT_MAX = 40;
 
   function cloudOptions(hero) {
     return {
@@ -39,6 +43,10 @@
     console.log.apply(console, args);
   }
 
+  function engineReady() {
+    return !!(window.THREE && window.VANTA && typeof window.VANTA.CLOUDS === 'function');
+  }
+
   function animateContent(hero) {
     if (hero.dataset.heroContentAnimated === 'true') return;
     hero.dataset.heroContentAnimated = 'true';
@@ -60,7 +68,7 @@
       return;
     }
 
-    if (!window.THREE || !window.VANTA || typeof window.VANTA.CLOUDS !== 'function') {
+    if (!engineReady()) {
       useFallback(hero);
       return;
     }
@@ -124,16 +132,46 @@
     hero.classList.remove('hero-vanta--ready', 'hero-vanta--fallback');
   }
 
+  function waitForEngine(attempt, done) {
+    if (engineReady()) {
+      done(true);
+      return;
+    }
+    if (attempt >= ENGINE_WAIT_MAX) {
+      done(false);
+      return;
+    }
+    window.setTimeout(function () {
+      waitForEngine(attempt + 1, done);
+    }, ENGINE_WAIT_MS);
+  }
+
   function queueHero(hero) {
     if (hero.dataset.heroVantaInit === 'true') return;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      useFallback(hero);
+      return;
+    }
+
     disconnectPending(hero);
 
-    function run() {
+    function paint() {
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           initHero(hero);
         });
+      });
+    }
+
+    function run() {
+      waitForEngine(0, function (ok) {
+        if (!ok) {
+          log('engine not ready after wait');
+          useFallback(hero);
+          return;
+        }
+        paint();
       });
     }
 
@@ -145,7 +183,7 @@
             run();
           }
         });
-      }, { rootMargin: '80px 0px', threshold: 0.01 });
+      }, { rootMargin: '120px 0px', threshold: 0.01 });
 
       io.observe(hero);
       pendingObservers.set(hero, io);
@@ -195,8 +233,14 @@
     });
   }
 
-  window.addEventListener('load', function () {
+  function start() {
     bindEvents();
     boot(document);
-  });
+  }
+
+  if (document.readyState === 'complete') {
+    start();
+  } else {
+    window.addEventListener('load', start);
+  }
 })();

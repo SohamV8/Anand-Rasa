@@ -1,0 +1,11 @@
+{%- comment -%}
+  Hero Vanta loader — three.js + VANTA.CLOUDS + hero-vanta.js.
+
+  Scripts are deferred (non-blocking) so HTML/LCP stay free, but they must be
+  present as real <script src> tags. Dynamically injecting ~600KB of three.js
+  after IntersectionObserver proved unreliable (engine missing → cream fallback).
+  Init itself remains lazy via IntersectionObserver inside hero-vanta.js.
+{%- endcomment -%}
+<script src="{{ 'three.min.js' | asset_url }}" defer></script>
+<script src="{{ 'vanta.clouds.min.js' | asset_url }}" defer></script>
+<script src="{{ 'hero-vanta.js' | asset_url }}" defer></script>

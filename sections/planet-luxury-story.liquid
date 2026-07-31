@@ -1,0 +1,23 @@
+{%- comment -%}
+  Planet luxury story — bottle + 4 benefit texts.
+  Renders only when the product resolves to a Navagraha planet (auto-detect).
+{%- endcomment -%}
+
+{% render 'planet-luxury-story', product: product %}
+
+{% schema %}
+{
+  "name": "Planet luxury story",
+  "tag": "section",
+  "class": "section-planet-luxury-story",
+  "settings": [],
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "presets": [
+    {
+      "name": "Planet luxury story"
+    }
+  ]
+}
+{% endschema %}

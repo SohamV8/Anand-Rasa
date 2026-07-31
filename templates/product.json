@@ -159,6 +159,10 @@
         "padding_bottom": 0
       }
     },
+    "planet_luxury_story": {
+      "type": "planet-luxury-story",
+      "settings": {}
+    },
     "brand_experience_videos": {
       "type": "brand-experience-videos",
       "blocks": {
@@ -421,6 +425,7 @@
   "order": [
     "1777535904a27e40a3",
     "main",
+    "planet_luxury_story",
     "brand_experience_videos",
     "1777290678d5cd77e4",
     "17773752734e8faa13",

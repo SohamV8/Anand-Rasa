@@ -1,8 +1,12 @@
 {%- comment -%}
   Brand Experience Videos — full-width 3D infinite Shorts carousel (product pages).
-{%- endcomment -%}
 
-{%- if request.page_type == 'product' -%}
+  DISABLED: temporarily hidden on product pages. Code + Theme Editor settings are
+  preserved. Set ar_bev_enabled to true below to restore the carousel.
+{%- endcomment -%}
+{%- assign ar_bev_enabled = false -%}
+
+{%- if ar_bev_enabled and request.page_type == 'product' -%}
   {%- liquid
     assign bev_videos = section.blocks | where: 'type', 'video'
     assign bev_valid = 0

@@ -1,0 +1,473 @@
+/* Planet Luxury Story — refined full-viewport editorial */
+
+@font-face {
+  font-family: 'Reigo Black';
+  src: url('Reigo-Black.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.section-planet-luxury-story.shopify-section {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #ffffff;
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+
+.pls {
+  --pls-ink: #4a2e22;
+  --pls-muted: #5c4033;
+  --pls-glow: rgba(196, 165, 116, 0.28);
+  --pls-heading: 'Reigo Black', Georgia, 'Times New Roman', serif;
+  --pls-body: 'Caudex', Georgia, 'Times New Roman', serif;
+  --pls-pad-x: clamp(28px, 5vw, 80px);
+  --pls-pad-y: clamp(36px, 5vh, 64px);
+  --pls-gap-x: clamp(40px, 5.5vw, 96px);
+  --pls-gap-y: clamp(36px, 5vh, 64px);
+  --pls-bottle-w: min(48vh, 460px);
+  --pls-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--pls-pad-y) var(--pls-pad-x);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  color: var(--pls-ink);
+  font-family: var(--pls-body);
+  -webkit-font-smoothing: antialiased;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.pls *,
+.pls *::before,
+.pls *::after {
+  box-sizing: border-box;
+}
+
+/* —— Desktop: bottle center, points inward (previous alignment) —— */
+.pls__grid {
+  position: relative;
+  z-index: 1;
+  flex: 0 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    'tl stage tr'
+    'bl stage br';
+  column-gap: var(--pls-gap-x);
+  row-gap: var(--pls-gap-y);
+  align-items: center;
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  min-height: 0;
+  height: auto;
+}
+
+.pls__card--tl {
+  grid-area: tl;
+  text-align: right;
+  justify-self: end;
+  align-self: end;
+}
+
+.pls__card--tr {
+  grid-area: tr;
+  text-align: left;
+  justify-self: start;
+  align-self: end;
+}
+
+.pls__card--bl {
+  grid-area: bl;
+  text-align: right;
+  justify-self: end;
+  align-self: start;
+}
+
+.pls__card--br {
+  grid-area: br;
+  text-align: left;
+  justify-self: start;
+  align-self: start;
+}
+
+/* —— Stage / bottle —— */
+.pls__stage {
+  grid-area: stage;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+}
+
+/* Soft premium glow behind bottle (GPU opacity only) */
+.pls__glow {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  width: min(68vh, 640px);
+  height: min(68vh, 640px);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    var(--pls-glow) 0%,
+    rgba(196, 165, 116, 0.12) 38%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  transform: translate3d(-50%, -50%, 0);
+  opacity: 0.85;
+  will-change: opacity;
+  animation: pls-glow 7s var(--pls-ease) infinite alternate;
+}
+
+.pls__bottle-wrap {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--pls-bottle-w);
+  max-width: min(46vw, 480px);
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+  will-change: transform;
+  animation: pls-float 7s ease-in-out infinite;
+}
+
+.pls__bottle {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(78vh, 620px);
+  aspect-ratio: 900 / 1125;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  filter: none;
+}
+
+/* —— Copy —— */
+.pls__card {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: min(460px, 100%);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.pls__card-title,
+.page-type--product #MainContent .pls .pls__card-title {
+  margin: 0 0 clamp(16px, 1.8vh, 22px);
+  font-family: 'Reigo Black', Georgia, 'Times New Roman', serif !important;
+  font-size: clamp(1.875rem, 1.4vw + 1.35rem, 2.75rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--pls-ink);
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.pls__card-text,
+.page-type--product #MainContent .pls .pls__card-text {
+  margin: 0;
+  font-family: 'Caudex', Georgia, 'Times New Roman', serif !important;
+  font-size: clamp(1.125rem, 0.4vw + 1rem, 1.3125rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.75;
+  color: var(--pls-muted);
+  overflow-wrap: break-word;
+}
+
+.pls__card-icon {
+  display: none;
+}
+
+/* —— Scroll reveal (once) —— */
+.pls[data-pls-ready] [data-pls-reveal] {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translate3d(0, 22px, 0);
+  will-change: transform, opacity, filter;
+}
+
+.pls[data-pls-ready] [data-pls-reveal].is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.85s var(--pls-ease),
+    transform 0.85s var(--pls-ease),
+    filter 0.85s var(--pls-ease);
+  will-change: auto;
+}
+
+.pls[data-pls-ready] .pls__card--tl.is-in { transition-delay: 0.05s; }
+.pls[data-pls-ready] .pls__card--tr.is-in { transition-delay: 0.12s; }
+.pls[data-pls-ready] .pls__stage.is-in { transition-delay: 0s; }
+.pls[data-pls-ready] .pls__card--bl.is-in { transition-delay: 0.18s; }
+.pls[data-pls-ready] .pls__card--br.is-in { transition-delay: 0.24s; }
+
+/* —— Motion —— */
+@keyframes pls-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(0.8deg);
+  }
+}
+
+@keyframes pls-glow {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.95;
+  }
+}
+
+/* —— Large desktop —— */
+@media (min-width: 1440px) {
+  .pls {
+    --pls-bottle-w: min(52vh, 500px);
+    --pls-gap-x: clamp(56px, 6vw, 112px);
+  }
+
+  .pls__grid {
+    max-width: 1680px;
+  }
+
+  .pls__card {
+    max-width: 480px;
+  }
+
+  .pls__card-title,
+  .page-type--product #MainContent .pls .pls__card-title {
+    font-size: clamp(2.125rem, 1.5vw + 1.4rem, 3rem) !important;
+  }
+
+  .pls__card-text,
+  .page-type--product #MainContent .pls .pls__card-text {
+    font-size: clamp(1.1875rem, 0.35vw + 1.05rem, 1.375rem) !important;
+    line-height: 1.8;
+  }
+}
+
+/* —— Tablet —— */
+@media (max-width: 1099px) and (min-width: 768px) {
+  .pls {
+    --pls-pad-x: clamp(24px, 4vw, 40px);
+    --pls-pad-y: clamp(16px, 2.5vh, 28px);
+    --pls-gap-x: clamp(24px, 3.5vw, 40px);
+    --pls-gap-y: clamp(20px, 3vh, 36px);
+    --pls-bottle-w: min(40vh, 340px);
+  }
+
+  .pls__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      'stage stage'
+      'tl tr'
+      'bl br';
+    align-content: center;
+    justify-items: center;
+    max-width: 960px;
+    height: auto;
+    flex: 1 1 auto;
+  }
+
+  .pls__card--tl,
+  .pls__card--tr,
+  .pls__card--bl,
+  .pls__card--br {
+    text-align: center;
+    justify-self: center;
+    align-self: start;
+    max-width: 460px;
+    padding: 0;
+  }
+
+  .pls__card-title {
+    font-size: clamp(1.75rem, 2.2vw + 0.8rem, 2.25rem);
+  }
+
+  .pls__card-text {
+    font-size: clamp(1.125rem, 0.9vw + 0.8rem, 1.25rem);
+    font-weight: 700;
+  }
+
+  .pls__stage {
+    height: auto;
+    width: 100%;
+    min-height: var(--pls-bottle-w);
+  }
+
+  .pls__glow {
+    width: min(52vh, 420px);
+    height: min(52vh, 420px);
+  }
+
+  .pls__bottle-wrap {
+    max-width: min(42vw, 340px);
+  }
+
+  .pls__bottle {
+    max-height: min(46vh, 380px);
+  }
+}
+
+/* —— Mobile: Bottle → Left → Right —— */
+@media (max-width: 767px) {
+  .section-planet-luxury-story.shopify-section {
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .pls {
+    --pls-pad-x: clamp(18px, 5vw, 28px);
+    --pls-pad-y: clamp(20px, 3.5vh, 32px);
+    --pls-bottle-w: min(42svh, 280px);
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
+    justify-content: center;
+  }
+
+  .pls__grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(28px, 4.5vh, 40px);
+    height: auto;
+    max-width: 36rem;
+  }
+
+  .pls__stage {
+    order: 1;
+    width: 100%;
+    height: auto;
+    min-height: calc(var(--pls-bottle-w) * 1.15);
+    flex: 0 0 auto;
+  }
+
+  /* Left content (tl + bl) */
+  .pls__card--tl {
+    order: 2;
+  }
+
+  .pls__card--bl {
+    order: 3;
+  }
+
+  /* Right content (tr + br) */
+  .pls__card--tr {
+    order: 4;
+  }
+
+  .pls__card--br {
+    order: 5;
+  }
+
+  .pls__card--tl,
+  .pls__card--tr,
+  .pls__card--bl,
+  .pls__card--br {
+    text-align: center;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .pls__card-title {
+    font-size: clamp(1.75rem, 5.5vw, 2.125rem);
+    margin-bottom: 14px;
+  }
+
+  .pls__card-text {
+    font-size: clamp(1.125rem, 3.8vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.7;
+  }
+
+  .pls__glow {
+    width: min(58vw, 320px);
+    height: min(58vw, 320px);
+  }
+
+  .pls__bottle-wrap {
+    max-width: min(62vw, 280px);
+    margin-inline: auto;
+  }
+
+  .pls__bottle {
+    max-height: min(48svh, 320px);
+  }
+}
+
+/* —— Short viewports —— */
+@media (max-height: 720px) and (min-width: 768px) {
+  .pls {
+    --pls-pad-y: 10px;
+    --pls-gap-y: clamp(16px, 3vh, 32px);
+    --pls-bottle-w: min(42vh, 360px);
+  }
+
+  .pls__card-title,
+  .page-type--product #MainContent .pls .pls__card-title {
+    margin-bottom: 10px;
+    font-size: clamp(1.5rem, 1.2vw + 1rem, 2.125rem) !important;
+  }
+
+  .pls__card-text {
+    line-height: 1.6;
+  }
+}
+
+/* —— Reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  .pls__bottle-wrap,
+  .pls__glow {
+    animation: none !important;
+  }
+
+  .pls[data-pls-ready] [data-pls-reveal],
+  .pls[data-pls-ready] [data-pls-reveal].is-in {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
