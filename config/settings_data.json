@@ -260,21 +260,6 @@
         "disabled": false,
         "settings": {}
       },
-      "7147999719060634790": {
-        "type": "shopify://apps/gsc-countdown-timer/blocks/countdown-bar/58dc5b1b-43d2-4209-b1f3-52aff31643ed",
-        "disabled": true,
-        "settings": {}
-      },
-      "5918445685253060206": {
-        "type": "shopify://apps/bundler/blocks/bundler-script-append/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
-        "disabled": true,
-        "settings": {}
-      },
-      "4275615285897611771": {
-        "type": "shopify://apps/fera/blocks/embed/2fbfcfa7-8a04-479f-89a8-0621fa099c51",
-        "disabled": true,
-        "settings": {}
-      },
       "17368511000352060744": {
         "type": "shopify://apps/goaffpro-affiliate-marketing/blocks/goaffpro-embedded-pixel/2f4d802b-86c2-47e4-8096-ae1aa3efbab2",
         "disabled": false,
@@ -283,6 +268,11 @@
           "enable_floating_widget": false,
           "enable_popup": false
         }
+      },
+      "5918445685253060206": {
+        "type": "shopify://apps/bundler/blocks/bundler-script-append/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {

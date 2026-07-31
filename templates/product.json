@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "sections": {
     "1777535904a27e40a3": {
@@ -16,9 +15,9 @@
         "ai_gen_block_41b9c0b_xLHWc4": {
           "type": "ai_gen_block_41b9c0b",
           "settings": {
-            "announcement_1": "Get 10% off on your first order | Use Code: AnandRas10%",
+            "announcement_1": "Cash On Delivery",
             "announcement_2": "Free Shipping On All Orders",
-            "announcement_3": "Buy 3 Get 20% OFF",
+            "announcement_3": "20% Off On Prepaid Orders",
             "separator": "|",
             "item_spacing": 40,
             "scroll_speed": 30,
@@ -173,10 +172,24 @@
             "title": "Brand experience video"
           }
         },
+        "video_14": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/nHITB_m3-pE",
+            "title": "Brand experience video"
+          }
+        },
         "video_2": {
           "type": "video",
           "settings": {
             "youtube_url": "https://www.youtube.com/shorts/KOOQlXVrNmg",
+            "title": "Brand experience video"
+          }
+        },
+        "video_15": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/wcvA7qkix9k",
             "title": "Brand experience video"
           }
         },
@@ -187,10 +200,24 @@
             "title": "Brand experience video"
           }
         },
+        "video_16": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/WeagG7p5YY8",
+            "title": "Brand experience video"
+          }
+        },
         "video_4": {
           "type": "video",
           "settings": {
             "youtube_url": "https://www.youtube.com/shorts/zIpcDV7m3XI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_17": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/A9VpR_jOqFM",
             "title": "Brand experience video"
           }
         },
@@ -201,10 +228,24 @@
             "title": "Brand experience video"
           }
         },
+        "video_18": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/HD-hXHmkugM",
+            "title": "Brand experience video"
+          }
+        },
         "video_6": {
           "type": "video",
           "settings": {
             "youtube_url": "https://www.youtube.com/shorts/IWJIzKCKopM",
+            "title": "Brand experience video"
+          }
+        },
+        "video_19": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/V4QbhUivReE",
             "title": "Brand experience video"
           }
         },
@@ -215,6 +256,13 @@
             "title": "Brand experience video"
           }
         },
+        "video_20": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/23f25wFo5_k",
+            "title": "Brand experience video"
+          }
+        },
         "video_8": {
           "type": "video",
           "settings": {
@@ -222,10 +270,24 @@
             "title": "Brand experience video"
           }
         },
+        "video_21": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/trxJnlLaIPQ",
+            "title": "Brand experience video"
+          }
+        },
         "video_9": {
           "type": "video",
           "settings": {
             "youtube_url": "https://www.youtube.com/shorts/EmlLBSDAJAI",
+            "title": "Brand experience video"
+          }
+        },
+        "video_22": {
+          "type": "video",
+          "settings": {
+            "youtube_url": "https://www.youtube.com/shorts/YVzxRzmilMg",
             "title": "Brand experience video"
           }
         },
@@ -254,69 +316,6 @@
           "type": "video",
           "settings": {
             "youtube_url": "https://www.youtube.com/shorts/AXpD-qtgZiM",
-            "title": "Brand experience video"
-          }
-        },
-        "video_14": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/nHITB_m3-pE",
-            "title": "Brand experience video"
-          }
-        },
-        "video_15": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/wcvA7qkix9k",
-            "title": "Brand experience video"
-          }
-        },
-        "video_16": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/WeagG7p5YY8",
-            "title": "Brand experience video"
-          }
-        },
-        "video_17": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/A9VpR_jOqFM",
-            "title": "Brand experience video"
-          }
-        },
-        "video_18": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/HD-hXHmkugM",
-            "title": "Brand experience video"
-          }
-        },
-        "video_19": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/V4QbhUivReE",
-            "title": "Brand experience video"
-          }
-        },
-        "video_20": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/23f25wFo5_k",
-            "title": "Brand experience video"
-          }
-        },
-        "video_21": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/trxJnlLaIPQ",
-            "title": "Brand experience video"
-          }
-        },
-        "video_22": {
-          "type": "video",
-          "settings": {
-            "youtube_url": "https://www.youtube.com/shorts/YVzxRzmilMg",
             "title": "Brand experience video"
           }
         }
