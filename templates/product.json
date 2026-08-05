@@ -412,29 +412,34 @@
       "type": "_blocks",
       "settings": {}
     },
-    "1785917354203e429b": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_RGz7UX": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "other_products_reviews"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_RGz7UX"
-      ],
-      "settings": {
-        "include_margins": true
-      }
-    },
     "178591721400ffadb9": {
       "type": "apps",
       "blocks": {
+        "judge_me_reviews_review_snippet_widget_FUDLnA": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_snippet_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "reviews_selection": "auto",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "min_star_rating": "inherit",
+            "show_review_media": true,
+            "max_reviews": 5,
+            "review_length": "medium",
+            "text_size": "medium",
+            "max_width": 1100,
+            "max_image_size": "small",
+            "arrows_visibility": "always_shown",
+            "transition_speed": 5,
+            "corner_styling": "inherit",
+            "text_color": "",
+            "card_color": "",
+            "stars_color": "",
+            "arrows_color": "",
+            "arrows_background_color": ""
+          }
+        },
         "judge_me_reviews_review_widget_rYGexB": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
@@ -446,8 +451,15 @@
         }
       },
       "block_order": [
+        "judge_me_reviews_review_snippet_widget_FUDLnA",
         "judge_me_reviews_review_widget_rYGexB"
       ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1785917354203e429b": {
+      "type": "apps",
       "settings": {
         "include_margins": true
       }
