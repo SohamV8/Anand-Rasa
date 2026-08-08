@@ -4,51 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    {%- comment -%}
-      Google Tag Manager — deferred container load.
-
-      GTM previously executed above <meta charset>, which forced an encoding
-      re-parse and put a large third-party download ahead of the LCP image.
-      The dataLayer is still created synchronously here, so any push made by
-      theme code, apps or Shopify events queues normally and is replayed the
-      moment the container boots. The container itself is fetched on the first
-      user interaction, or during idle time, whichever happens first — this
-      keeps its parse/execute cost off the critical path without losing hits.
-    {%- endcomment -%}
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <script>
-      (function (w, d, i) {
-        w.dataLayer = w.dataLayer || [];
-        w.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-        var loaded = false;
-        var events = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
-
-        function load() {
-          if (loaded) return;
-          loaded = true;
-          events.forEach(function (e) {
-            w.removeEventListener(e, load, { passive: true });
-          });
-          var s = d.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
-          d.head.appendChild(s);
-        }
-
-        events.forEach(function (e) {
-          w.addEventListener(e, load, { passive: true, once: true });
-        });
-
-        w.addEventListener('load', function () {
-          if (w.requestIdleCallback) {
-            w.requestIdleCallback(load, { timeout: 3000 });
-          } else {
-            w.setTimeout(load, 2000);
-          }
-        });
-      })(window, document, 'GTM-KHX4KC75');
-    </script>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NFQL546M');</script>
+<!-- End Google Tag Manager -->
     <meta name="p:domain_verify" content="729e17ada181256478d0215a9f9a6020"/>
     <meta name="theme-color" content="">
     {%- comment -%}
@@ -707,7 +669,7 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHX4KC75"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NFQL546M"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
     {%- render 'cart-drawer' -%}
