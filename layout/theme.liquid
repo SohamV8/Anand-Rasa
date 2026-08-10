@@ -304,13 +304,25 @@
           assign ar_seo_description = product.title | append: ' ' | append: product.type | append: ' by Anandrasa. Shop handcrafted attar and perfume in India with pure ingredients and long-lasting fragrance delivery.'
         endif
       elsif request.page_type == 'collection' and collection != blank
+        assign ar_agm_seo = blank
+        if template.suffix == 'gourmand'
+          assign ar_agm_seo = sections['gourmand_landing']
+        endif
         if collection.metafields.custom.seo_title.value != blank
           assign ar_seo_title = collection.metafields.custom.seo_title.value | strip
+        elsif ar_agm_seo != blank and ar_agm_seo.settings.seo_title != blank
+          assign ar_seo_title = ar_agm_seo.settings.seo_title | strip
+        elsif template.suffix == 'gourmand'
+          assign ar_seo_title = 'Gourmand Attars & Perfume Oils Online India | Anandrasa'
         else
           assign ar_seo_title = 'Buy ' | append: collection.title | append: ' Online India | Anandrasa'
         endif
         if collection.metafields.custom.seo_description.value != blank
           assign ar_seo_description = collection.metafields.custom.seo_description.value | strip_html | strip
+        elsif ar_agm_seo != blank and ar_agm_seo.settings.seo_description != blank
+          assign ar_seo_description = ar_agm_seo.settings.seo_description | strip_html | strip
+        elsif template.suffix == 'gourmand'
+          assign ar_seo_description = 'Shop alcohol-free gourmand attars and perfume oils at Anandrasa. Warm vanilla, caramel, coffee, chocolate and honey scents — handcrafted edible fragrances from India.'
         else
           assign ar_seo_description = 'Shop ' | append: collection.title | append: ' online in India at Anandrasa. Explore handcrafted attars, perfumes, and ritual fragrances with authentic quality and fast shipping.'
         endif

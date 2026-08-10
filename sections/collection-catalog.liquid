@@ -177,8 +177,12 @@
     {%- if collection.products.size > 0 -%}
       {%- paginate collection.products by section.settings.products_per_page -%}
         {%- for product in collection.products -%}
-          {%- capture ar_showcard -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
-          {%- assign ar_showcard = ar_showcard | strip -%}
+          {%- comment -%} Perfume Series: use product media only — never attar bestseller bottles. {%- endcomment -%}
+          {%- assign ar_showcard = '' -%}
+          {%- unless template.suffix == 'perfume-series' -%}
+            {%- capture ar_showcard -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
+            {%- assign ar_showcard = ar_showcard | strip -%}
+          {%- endunless -%}
           {%- assign ar_showcard_framed = false -%}
           {%- if arc_apsara and ar_showcard != blank -%}
             {%- assign ar_showcard_framed = true -%}

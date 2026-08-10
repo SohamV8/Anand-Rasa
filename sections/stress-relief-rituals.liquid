@@ -61,26 +61,33 @@
     transform: translateY(0);
   }
 
-  /* ── Editorial rows (full width) ── */
+  /* ── Editorial rows (full width, responsive split) ── */
   #shopify-section-{{ srl_id }} .srl__rows {
     width: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   #shopify-section-{{ srl_id }} .srl__row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "copy media";
+    align-items: stretch;
     width: 100%;
-    min-height: clamp(280px, 28vw, 360px);
-    max-height: 400px;
-    margin-bottom: 0;
+    min-height: clamp(300px, 36vw, 460px);
+    margin: 0;
     border-radius: 0;
-    overflow: hidden;
+    overflow: visible;
     background: var(--srl-surface);
     box-shadow: none;
     border-top: 1px solid var(--srl-line);
     opacity: 0;
     transform: translateY(28px);
     transition: opacity var(--srl-dur) var(--srl-ease), transform var(--srl-dur) var(--srl-ease);
+  }
+
+  #shopify-section-{{ srl_id }} .srl__row--reverse {
+    grid-template-areas: "media copy";
   }
 
   #shopify-section-{{ srl_id }} .srl.is-inview .srl__row {
@@ -91,41 +98,47 @@
   #shopify-section-{{ srl_id }} .srl__row--delay-1 { transition-delay: 0.12s; }
   #shopify-section-{{ srl_id }} .srl__row--delay-2 { transition-delay: 0.22s; }
 
-  #shopify-section-{{ srl_id }} .srl__row--reverse .srl__media { order: -1; }
-
   #shopify-section-{{ srl_id }} .srl__copy {
+    grid-area: copy;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(28px, 4vw, 44px) clamp(32px, 5vw, 80px);
+    align-items: flex-start;
+    gap: 12px;
+    padding: clamp(28px, 4.5vw, 56px) clamp(24px, 5vw, 72px);
     background: var(--srl-surface);
+    min-width: 0;
   }
 
   #shopify-section-{{ srl_id }} .srl__heading {
     font-family: var(--srl-font-h);
-    font-size: clamp(22px, 2.6vw, 32px);
+    font-size: clamp(22px, 2.6vw, 34px);
     font-weight: 400;
     letter-spacing: -0.015em;
     line-height: 1.2;
-    margin: 0 0 12px;
+    margin: 0;
     color: var(--srl-ink);
+    max-width: 18ch;
   }
 
   #shopify-section-{{ srl_id }} .srl__text {
     margin: 0;
-    font-size: clamp(13px, 1.25vw, 15px);
+    font-size: clamp(14px, 1.35vw, 16px);
     line-height: 1.75;
     color: var(--srl-ink-2);
     font-weight: 300;
-    max-width: 40ch;
+    max-width: 42ch;
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
   }
 
   #shopify-section-{{ srl_id }} .srl__media {
+    grid-area: media;
     position: relative;
     overflow: hidden;
     background: #EDE8DF;
-    min-height: 0;
-    height: 100%;
+    min-width: 0;
+    min-height: clamp(260px, 32vw, 460px);
   }
 
   #shopify-section-{{ srl_id }} .srl__media-link {
@@ -135,23 +148,25 @@
   }
 
   #shopify-section-{{ srl_id }} .srl__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
     transition: transform 1.1s var(--srl-ease);
-    will-change: transform;
   }
 
-  #shopify-section-{{ srl_id }} .srl__row:hover .srl__img {
-    transform: scale(1.03);
+  @media (prefers-reduced-motion: no-preference) {
+    #shopify-section-{{ srl_id }} .srl__row:hover .srl__img {
+      transform: scale(1.03);
+    }
   }
 
   #shopify-section-{{ srl_id }} .srl__ph {
-    width: 100%;
-    height: 100%;
-    min-height: 200px;
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -376,47 +391,113 @@
     flex-grow: 1;
   }
 
-  @media (max-width: 900px) {
-    #shopify-section-{{ srl_id }} .srl__row,
-    #shopify-section-{{ srl_id }} .srl__row--reverse {
-      grid-template-columns: 1fr;
-      min-height: 0;
-      max-height: none;
+  /* Tablet / small laptop — still split, tighter padding */
+  @media (max-width: 1100px) {
+    #shopify-section-{{ srl_id }} .srl__copy {
+      padding: clamp(24px, 3.5vw, 40px) clamp(20px, 3.5vw, 40px);
     }
 
-    #shopify-section-{{ srl_id }} .srl__row--reverse .srl__media {
-      order: 0;
+    #shopify-section-{{ srl_id }} .srl__heading {
+      max-width: none;
+    }
+  }
+
+  /* Stack editorial rows — image first, then copy */
+  @media (max-width: 899px) {
+    #shopify-section-{{ srl_id }} .srl__row,
+    #shopify-section-{{ srl_id }} .srl__row--reverse {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "media"
+        "copy";
+      min-height: 0;
     }
 
     #shopify-section-{{ srl_id }} .srl__media {
-      aspect-ratio: 16 / 9;
       min-height: 0;
+      aspect-ratio: 16 / 10;
       height: auto;
     }
 
-    #shopify-section-{{ srl_id }} .srl__copy {
-      padding: 28px 24px 32px;
-      max-width: none;
-      margin: 0;
+    #shopify-section-{{ srl_id }} .srl__img {
+      position: absolute;
     }
 
+    #shopify-section-{{ srl_id }} .srl__copy {
+      padding: 28px 22px 36px;
+      align-items: stretch;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__heading,
     #shopify-section-{{ srl_id }} .srl__text {
       max-width: none;
     }
 
     #shopify-section-{{ srl_id }} .srl__ritual-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
   }
 
-  @media (max-width: 520px) {
+  @media (max-width: 640px) {
+    #shopify-section-{{ srl_id }} .srl__inner {
+      padding: 36px 18px 0;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__inner--tips {
+      padding: 36px 18px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__title {
+      margin-bottom: 24px;
+      text-align: left;
+      padding-inline: 2px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__media {
+      aspect-ratio: 4 / 3;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__copy {
+      padding: 22px 18px 28px;
+      gap: 10px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__heading {
+      font-size: clamp(22px, 6.2vw, 28px);
+    }
+
+    #shopify-section-{{ srl_id }} .srl__text {
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
     #shopify-section-{{ srl_id }} .srl__ritual-grid {
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 12px;
     }
 
     #shopify-section-{{ srl_id }} .srl__card {
-      padding: 22px 20px 24px;
+      padding: 20px 18px 22px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__ritual-hdr {
+      text-align: left;
+      margin-bottom: 28px;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    #shopify-section-{{ srl_id }} .srl__row {
+      min-height: 480px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__media {
+      min-height: 480px;
+    }
+
+    #shopify-section-{{ srl_id }} .srl__copy {
+      padding-inline: clamp(56px, 8vw, 100px);
     }
   }
 

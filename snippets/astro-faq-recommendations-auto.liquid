@@ -49,6 +49,10 @@
           assign afr_mode = 'love'
           assign afr_collection_ctx = c
           break
+        elsif ch contains 'gourmand'
+          assign afr_mode = 'gourmand'
+          assign afr_collection_ctx = c
+          break
         elsif ch contains 'perfume' or ch contains 'apsara'
           assign afr_mode = 'perfume'
           assign afr_collection_ctx = c
@@ -97,6 +101,11 @@
       assign afr_default_hindi = 'सुगंध संग्रह'
       assign afr_default_en = 'The Perfume Collection'
       assign afr_default_cta = 'Explore Perfumes'
+    when 'gourmand'
+      assign afr_default_handle = 'gourmand'
+      assign afr_default_hindi = 'The Gourmand Collection'
+      assign afr_default_en = 'Warm desserts · creamy woods · edible oils'
+      assign afr_default_cta = 'Explore Gourmand Collection'
     when 'bestseller'
       assign afr_default_handle = 'bestseller'
       assign afr_default_hindi = 'सर्वाधिक प्रिय'
@@ -118,6 +127,13 @@
   if product != blank
     assign afr_uid = afr_uid | append: '-' | append: product.id
   endif
+
+  assign afr_faq_heading_auto = 'Frequently Asked Questions'
+  assign afr_show_om_auto = true
+  if afr_mode == 'gourmand'
+    assign afr_faq_heading_auto = 'Gourmand FAQ'
+    assign afr_show_om_auto = false
+  endif
 -%}
 
 {%- if afr_show -%}
@@ -131,10 +147,10 @@
     afr_en: afr_default_en,
     afr_cta_label: afr_default_cta,
     afr_cta_url: blank,
-    afr_faq_heading: 'Frequently Asked Questions',
+    afr_faq_heading: afr_faq_heading_auto,
     afr_limit: 4,
     afr_bg: '#ffffff',
-    afr_show_om: true,
+    afr_show_om: afr_show_om_auto,
     afr_first_open: false,
     afr_use_blocks: false
   -%}

@@ -46,6 +46,9 @@
     elsif seo_key contains 'love' or seo_key contains 'romance'
       assign entity_label = 'Prem Rasa'
       assign entity_phrase = 'romantic luxury perfume oil'
+    elsif seo_key contains 'gourmand' or seo_key contains 'masakali' or seo_key contains 'choco' or seo_key contains 'caramel' or seo_type contains 'gourmand'
+      assign entity_label = 'Gourmand attar'
+      assign entity_phrase = 'alcohol-free edible dessert perfume oil'
     elsif seo_key contains 'gift' or seo_key contains 'discovery' or seo_key contains 'set'
       assign entity_label = 'Gift set'
       assign entity_phrase = 'curated luxury attar gift collection'
@@ -99,6 +102,8 @@
       assign alt_text = col_title | append: ' — Prem Rasa attar collection, luxury perfume oils' | append: brand_suffix
     elsif col_key contains 'gift'
       assign alt_text = col_title | append: ' — luxury attar gift sets and discovery collections' | append: brand_suffix
+    elsif col_key contains 'gourmand'
+      assign alt_text = col_title | append: ' — alcohol-free gourmand attars and perfume oils, vanilla caramel coffee chocolate scents' | append: brand_suffix
     elsif col_key contains 'perfume'
       assign alt_text = col_title | append: ' — modern eau de parfum collection, luxury Indian fragrances' | append: brand_suffix
     elsif col_key contains 'apsara'

@@ -34,6 +34,8 @@
         assign afr_try_handles = 'love-attar,love-attars,love' | split: ','
       when 'perfume'
         assign afr_try_handles = 'perfume-series,perfume,perfumes' | split: ','
+      when 'gourmand'
+        assign afr_try_handles = 'gourmand,gourmand-collection,gourmand-attars,gourmand-attar,gourmand-perfumes' | split: ','
       when 'bestseller'
         assign afr_try_handles = 'bestseller,best-seller,bestsellers,best-sellers' | split: ','
       else
@@ -70,8 +72,13 @@
       {%- endif -%}
     {%- endfor -%}
   {%- else -%}
-    {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
-    {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+    {%- if afr_mode == 'gourmand' -%}
+      {%- assign afr_default_qs = 'What is a gourmand fragrance?|Are gourmand fragrances too sweet?|Are Anand Rasa gourmand oils alcohol-free?|How long do gourmand attars last on skin?|Are gourmand fragrances suitable for summer?|How should I wear a gourmand fragrance?' | split: '|' -%}
+      {%- assign afr_default_as = '<p>Gourmand fragrances draw from warm dessert and kitchen notes — vanilla, caramel, coffee, chocolate, honey, and toasted nuts — composed with the restraint of fine perfume rather than confection.</p>|<p>Not when crafted well. Anand Rasa gourmands favour roasted, creamy, and woody depth over candy-bright sweetness, so they feel intimate and elegant rather than sugary.</p>|<p>Yes. Our gourmand collection is formulated as alcohol-free perfume oils and attars — soft projection, skin-close warmth, and a lasting golden trail.</p>|<p>On skin, expect several hours of presence with a soft dry-down of sandalwood, amber, and musk. Longevity varies with skin type, climate, and how much you apply.</p>|<p>They shine in cooler weather and evenings, but lighter applications on pulse points can wear beautifully in warmer months without feeling heavy.</p>|<p>Apply a small amount to pulse points — wrists, neck, and behind the ears — or layer two oils for a personal signature. A little goes a long way with oil-based fragrances.</p>' | split: '|' -%}
+    {%- else -%}
+      {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
+      {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+    {%- endif -%}
     {%- for q in afr_default_qs -%}
       {%- assign qi = forloop.index0 -%}
       {%- if afr_faq_count > 0 -%},{%- endif -%}
@@ -177,8 +184,13 @@
               {%- endif -%}
             {%- endfor -%}
           {%- else -%}
-            {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
-            {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+            {%- if afr_mode == 'gourmand' -%}
+              {%- assign afr_default_qs = 'What is a gourmand fragrance?|Are gourmand fragrances too sweet?|Are Anand Rasa gourmand oils alcohol-free?|How long do gourmand attars last on skin?|Are gourmand fragrances suitable for summer?|How should I wear a gourmand fragrance?' | split: '|' -%}
+              {%- assign afr_default_as = '<p>Gourmand fragrances draw from warm dessert and kitchen notes — vanilla, caramel, coffee, chocolate, honey, and toasted nuts — composed with the restraint of fine perfume rather than confection.</p>|<p>Not when crafted well. Anand Rasa gourmands favour roasted, creamy, and woody depth over candy-bright sweetness, so they feel intimate and elegant rather than sugary.</p>|<p>Yes. Our gourmand collection is formulated as alcohol-free perfume oils and attars — soft projection, skin-close warmth, and a lasting golden trail.</p>|<p>On skin, expect several hours of presence with a soft dry-down of sandalwood, amber, and musk. Longevity varies with skin type, climate, and how much you apply.</p>|<p>They shine in cooler weather and evenings, but lighter applications on pulse points can wear beautifully in warmer months without feeling heavy.</p>|<p>Apply a small amount to pulse points — wrists, neck, and behind the ears — or layer two oils for a personal signature. A little goes a long way with oil-based fragrances.</p>' | split: '|' -%}
+            {%- else -%}
+              {%- assign afr_default_qs = 'What is the difference between attar and perfume?|How do Planet, Zodiac, and Nakshatra attars differ?|How long does an astrology attar last?|Is an astrology attar suitable for gifting?|How do I know my Anand Rasa attar is authentic?|Where do you ship astrology attars?' | split: '|' -%}
+              {%- assign afr_default_as = '<p>Attars are alcohol-free perfume oils distilled from natural botanicals — concentrated, skin-close, and designed for ritual wear. Perfumes use alcohol as a carrier and project more loudly. Our astrology attars are crafted for intimate, sacred presence.</p>|<p>Planet attars align with Navagraha energies. Zodiac attars reflect your rashi. Nakshatra attars mirror lunar mansions. Each series is a distinct path into Vedic fragrance astrology.</p>|<p>Our attars are oil-based and highly concentrated. On skin, expect 6–12 hours of evolving warmth; on fabric, the aura can linger for days.</p>|<p>Yes — elegant glass with gold accents makes them ideal for festivals, weddings, and spiritual milestones.</p>|<p>Every bottle is handcrafted in India using traditional distillation and natural ingredients, with Vedic alignment on each product page.</p>|<p>We ship across India and to select international destinations. Delivery timelines appear at checkout.</p>' | split: '|' -%}
+            {%- endif -%}
             {%- for q in afr_default_qs -%}
               {%- assign qi = forloop.index0 -%}
               {%- assign afr_item_id = afr_uid | append: '-faq-' | append: forloop.index -%}
@@ -224,8 +236,12 @@
           {%- if afr_show_om -%}
             <span class="afr__rec-om" aria-hidden="true">ॐ</span>
           {%- endif -%}
-          <p class="afr__rec-hindi" id="{{ afr_uid }}-rec-heading" lang="hi">{{ afr_hindi }}</p>
-          <span class="afr__rec-en">— {{ afr_en }}</span>
+          {%- if afr_hindi != blank -%}
+            <p class="afr__rec-hindi" id="{{ afr_uid }}-rec-heading"{% if afr_mode == 'gourmand' %} lang="en"{% else %} lang="hi"{% endif %}>{{ afr_hindi }}</p>
+          {%- endif -%}
+          {%- if afr_en != blank -%}
+            <span class="afr__rec-en"{% if afr_hindi == blank %} id="{{ afr_uid }}-rec-heading"{% endif %}>— {{ afr_en }}</span>
+          {%- endif -%}
           <div class="afr__ornament" aria-hidden="true">
             <span class="afr__ornament-line"></span>
             <span class="afr__ornament-dot"></span>

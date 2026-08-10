@@ -1,8 +1,28 @@
 {%- if collection != blank -%}
   {%- liquid
+    assign col_name = collection.title
     assign col_desc = collection.description | strip_html | strip
+    assign ar_col_seo_sec = blank
+    if template.suffix == 'gourmand'
+      assign ar_col_seo_sec = sections['gourmand_landing']
+    endif
+
+    if ar_col_seo_sec != blank and ar_col_seo_sec.settings.seo_title != blank
+      assign col_name = ar_col_seo_sec.settings.seo_title | remove: ' | Anandrasa' | remove: '| Anandrasa' | strip
+    endif
+
+    if col_desc == blank and ar_col_seo_sec != blank and ar_col_seo_sec.settings.seo_description != blank
+      assign col_desc = ar_col_seo_sec.settings.seo_description | strip_html | strip
+    endif
+    if col_desc == blank and ar_col_seo_sec != blank and ar_col_seo_sec.settings.seo_intro != blank
+      assign col_desc = ar_col_seo_sec.settings.seo_intro | strip_html | strip
+    endif
     if col_desc == blank
-      assign col_desc = 'Shop ' | append: collection.title | append: ' at Anand Rasa — handcrafted attars, perfumes, and spiritual fragrances from India.'
+      if template.suffix == 'gourmand' or collection.handle contains 'gourmand'
+        assign col_desc = 'Shop alcohol-free gourmand attars and perfume oils at Anand Rasa — warm vanilla, caramel, coffee, chocolate and honey edible fragrances handcrafted in India.'
+      else
+        assign col_desc = 'Shop ' | append: collection.title | append: ' at Anand Rasa — handcrafted attars, perfumes, and spiritual fragrances from India.'
+      endif
     endif
 
     capture col_img_url
@@ -27,8 +47,8 @@
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "@id": {{ request.origin | append: collection.url | append: '#collection' | json }},
-      "name": {{ collection.title | json }},
-      "description": {{ col_desc | json }},
+      "name": {{ col_name | json }},
+      "description": {{ col_desc | truncate: 300 | json }},
       "url": {{ request.origin | append: collection.url | json }}
       {%- if col_img_url != blank -%}
       ,

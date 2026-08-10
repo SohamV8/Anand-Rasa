@@ -1,6 +1,6 @@
 {%- comment -%}
-  Luxury astrological attar recommendation card.
-  Accepts: card_product, card_index, section_id
+  Modern recommendation product card (AFR carousel).
+  Accepts: card_product, card_index, section_id, subtitle_override
 {%- endcomment -%}
 
 {%- liquid
@@ -17,8 +17,10 @@
     assign ar_subtitle = 'Gift Set'
   elsif ar_type_key contains 'perfume'
     assign ar_subtitle = 'Perfume'
+  elsif ar_type_key contains 'gourmand'
+    assign ar_subtitle = 'Gourmand'
   elsif ar_type_key contains 'stress'
-    assign ar_subtitle = 'Stress Relief Attar'
+    assign ar_subtitle = 'Stress Relief'
   elsif ar_type_key contains 'love'
     assign ar_subtitle = 'Prem Rasa'
   elsif ar_type_key contains 'astrology' or ar_type_key == ''
@@ -40,7 +42,7 @@
   endfor
 
   if ar_is_bestseller
-    unless ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'perfume' or ar_type_key contains 'gift'
+    unless ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'perfume' or ar_type_key contains 'gift' or ar_type_key contains 'gourmand'
       assign ar_subtitle = 'Attar'
     endunless
   endif
@@ -48,6 +50,7 @@
   assign ar_bg = ''
   assign ar_img = card_product.featured_image
   assign ar_showcase_asset = ''
+  assign ar_img_fallback = ''
 
   if ar_scope contains 'surya' or ar_scope contains 'sun'
     assign ar_subtitle = 'Sun Attar'
@@ -135,6 +138,11 @@
   if card_index <= 2
     assign ar_lazy = false
   endif
+  if ar_lazy
+    assign ar_loading = 'lazy'
+  else
+    assign ar_loading = 'eager'
+  endif
 
   if ar_showcase_asset == blank
     capture ar_ck_lookup
@@ -155,52 +163,170 @@
       assign ar_showcase_asset = ar_bs_lookup
     endif
   endif
+
+  assign ar_variant = card_product.selected_or_first_available_variant
+  assign ar_on_sale = false
+  if card_product.compare_at_price > card_product.price
+    assign ar_on_sale = true
+  endif
+
+  assign ar_badge = ''
+  if ar_variant.available == false
+    assign ar_badge = 'Sold out'
+  elsif ar_is_bestseller
+    assign ar_badge = 'Bestseller'
+  elsif card_product.tags contains 'new' or card_product.tags contains 'New'
+    assign ar_badge = 'New'
+  elsif ar_on_sale
+    assign ar_badge = 'Sale'
+  endif
+
+  assign ar_display_title = card_product.title | strip
+  if ar_display_title contains ' Attar'
+    assign ar_display_title = ar_display_title | replace: ' Attar', '' | strip
+  endif
+
+  assign ar_notes_raw = card_product.metafields.custom.main_notes.value | default: card_product.metafields.custom.top_notes.value | default: ''
+  assign ar_notes_show = ''
+  assign ar_notes_n = 0
+  if ar_notes_raw != blank
+    assign ar_notes_bits = ar_notes_raw | replace: ' · ', ',' | replace: ' & ', ',' | split: ','
+    for ar_note in ar_notes_bits
+      assign ar_note_clean = ar_note | strip
+      if ar_note_clean != blank and ar_notes_n < 2
+        if ar_notes_show != blank
+          assign ar_notes_show = ar_notes_show | append: ' · '
+        endif
+        assign ar_notes_show = ar_notes_show | append: ar_note_clean
+        assign ar_notes_n = ar_notes_n | plus: 1
+      endif
+    endfor
+  endif
+
+  assign ar_show_type = true
+  if ar_subtitle == 'Attar' or ar_subtitle == 'Gourmand'
+    assign ar_show_type = false
+  endif
+
+  assign ar_hover_media = blank
+  if ar_showcase_asset == blank and card_product.media.size > 1
+    for media in card_product.media offset: 1 limit: 4
+      if media.media_type == 'image'
+        assign ar_hover_media = media
+        break
+      endif
+    endfor
+  endif
+
+  capture ar_img_alt
+    render 'image-seo-alt', seo_product: card_product, img_context: 'card'
+  endcapture
+  assign ar_img_alt = ar_img_alt | strip | default: card_product.title
+
+  capture ar_img_alt_hover
+    render 'image-seo-alt', seo_product: card_product, img_context: 'hover'
+  endcapture
+  assign ar_img_alt_hover = ar_img_alt_hover | strip | default: ar_img_alt
 -%}
 
 <li class="afr__prod" style="--afr-i: {{ card_index | minus: 1 }};">
-  <a href="{{ card_product.url }}" class="afr__prod-link" aria-label="{{ card_product.title | escape }} — {{ ar_subtitle | escape }}">
-    <div class="afr__prod-visual">
-      <div class="afr__prod-img-frame">
+  <article class="afr__prod-card{% unless ar_variant.available %} afr__prod-card--sold{% endunless %}">
+    <div class="afr__prod-media">
+      <a
+        href="{{ card_product.url }}"
+        class="afr__prod-img-wrap"
+        aria-label="{{ card_product.title | escape }}"
+      >
         {%- if ar_showcase_asset != blank -%}
           <img
-            class="afr__prod-img"
+            class="afr__prod-img afr__prod-img--primary"
             src="{{ ar_showcase_asset | asset_url }}"
-            alt="{{ card_product.title | escape }}"
+            alt="{{ ar_img_alt | escape }}"
             width="480"
-            height="480"
-            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
+            height="600"
+            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager" decoding="async" fetchpriority="high"{% endif %}
           >
         {%- elsif ar_img -%}
-          <img
-            class="afr__prod-img"
-            src="{{ ar_img | image_url: width: 800 }}"
-            alt="{{ card_product.title | escape }}"
-            width="480"
-            height="480"
-            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
-          >
+          <picture>
+            <source
+              type="image/webp"
+              srcset="{{ ar_img | image_url: width: 320, format: 'webp' }} 320w, {{ ar_img | image_url: width: 480, format: 'webp' }} 480w, {{ ar_img | image_url: width: 720, format: 'webp' }} 720w"
+              sizes="(max-width: 767px) 72vw, 200px"
+            >
+            {{
+              ar_img
+              | image_url: width: 720
+              | image_tag:
+                class: 'afr__prod-img afr__prod-img--primary',
+                loading: ar_loading,
+                widths: '320, 480, 720',
+                sizes: '(max-width: 767px) 72vw, 200px',
+                alt: ar_img_alt,
+                width: 480,
+                height: 600,
+                decoding: 'async'
+            }}
+          </picture>
+          {%- if ar_hover_media != blank -%}
+            {{
+              ar_hover_media
+              | image_url: width: 720
+              | image_tag:
+                class: 'afr__prod-img afr__prod-img--hover',
+                loading: 'lazy',
+                widths: '320, 480, 720',
+                sizes: '(max-width: 767px) 72vw, 200px',
+                alt: ar_img_alt_hover,
+                width: 480,
+                height: 600,
+                decoding: 'async'
+            }}
+          {%- endif -%}
         {%- elsif ar_img_fallback != blank -%}
           <img
-            class="afr__prod-img"
+            class="afr__prod-img afr__prod-img--primary"
             src="{{ ar_img_fallback | asset_url }}"
-            alt="{{ card_product.title | escape }}"
+            alt="{{ ar_img_alt | escape }}"
             width="480"
-            height="480"
-            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager"{% endif %}
+            height="600"
+            {% if ar_lazy %}loading="lazy" decoding="async"{% else %}loading="eager" decoding="async"{% endif %}
           >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'afr__prod-img' }}
         {%- endif -%}
-      </div>
+      </a>
+      {%- if ar_badge != blank -%}
+        <span class="afr__prod-badge{% if ar_badge == 'Sale' %} afr__prod-badge--sale{% elsif ar_badge == 'Sold out' %} afr__prod-badge--sold{% endif %}">{{ ar_badge }}</span>
+      {%- endif -%}
     </div>
 
     <div class="afr__prod-body">
-      <h3 class="afr__prod-name">{{ card_product.title }}</h3>
-      <p class="afr__prod-type">{{ ar_subtitle }}</p>
-      <p class="afr__prod-price">
-        <span class="afr__prod-price-now">{{ card_product.price | money }}</span>
-        {%- if card_product.compare_at_price > card_product.price -%}
-          <span class="afr__prod-compare">{{ card_product.compare_at_price | money }}</span>
-        {%- endif -%}
-      </p>
+      <h3 class="afr__prod-name">
+        <a href="{{ card_product.url }}">{{ ar_display_title }}</a>
+      </h3>
+      {%- if ar_notes_show != blank -%}
+        <p class="afr__prod-notes">{{ ar_notes_show | escape }}</p>
+      {%- elsif ar_show_type -%}
+        <p class="afr__prod-type">{{ ar_subtitle }}</p>
+      {%- endif -%}
+      <div class="afr__prod-foot">
+        <div class="afr__prod-prices">
+          {%- if ar_on_sale -%}
+            <span class="afr__prod-compare">{{ card_product.compare_at_price | money }}</span>
+          {%- endif -%}
+          <span class="afr__prod-price-now">{{ card_product.price | money }}</span>
+        </div>
+        <a href="{{ card_product.url }}" class="afr__prod-view">View</a>
+      </div>
+      <button
+        type="button"
+        class="afr__prod-atc js-arc-atc"
+        data-id="{{ ar_variant.id }}"
+        aria-label="Add {{ card_product.title | escape }} to cart"
+        {% unless ar_variant.available %}disabled{% endunless %}
+      >
+        {%- if ar_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+      </button>
     </div>
-  </a>
+  </article>
 </li>
