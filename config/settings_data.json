@@ -149,84 +149,108 @@
             "type": "trust_item",
             "settings": {
               "icon": "organic",
-              "title": "Organic"
+              "title": "Organic",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-2": {
             "type": "trust_item",
             "settings": {
               "icon": "clean_beauty",
-              "title": "Clean Beauty"
+              "title": "Clean Beauty",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-3": {
             "type": "trust_item",
             "settings": {
               "icon": "ethically_sourced",
-              "title": "Ethically Sourced"
+              "title": "Ethically Sourced",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-5": {
             "type": "trust_item",
             "settings": {
               "icon": "non_toxic",
-              "title": "Non Toxic"
+              "title": "Non Toxic",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-6": {
             "type": "trust_item",
             "settings": {
               "icon": "paraben_free",
-              "title": "Paraben Free"
+              "title": "Paraben Free",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-7": {
             "type": "trust_item",
             "settings": {
               "icon": "sulphate_free",
-              "title": "Sulphate Free"
+              "title": "Sulphate Free",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-8": {
             "type": "trust_item",
             "settings": {
               "icon": "cruelty_free",
-              "title": "Cruelty Free"
+              "title": "Cruelty Free",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-9": {
             "type": "trust_item",
             "settings": {
               "icon": "made_in_india",
-              "title": "Made in India"
+              "title": "Made in India",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-10": {
             "type": "trust_item",
             "settings": {
               "icon": "handcrafted",
-              "title": "Handcrafted"
+              "title": "Handcrafted",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-11": {
             "type": "trust_item",
             "settings": {
               "icon": "long_lasting",
-              "title": "Long Lasting"
+              "title": "Long Lasting",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-12": {
             "type": "trust_item",
             "settings": {
               "icon": "vegan",
-              "title": "Vegan"
+              "title": "Vegan",
+              "subtitle": "",
+              "show_subtitle": false
             }
           },
           "tmq-13": {
             "type": "trust_item",
             "settings": {
               "icon": "ifra_compliant",
-              "title": "IFRA Compliant"
+              "title": "IFRA Compliant",
+              "subtitle": "",
+              "show_subtitle": false
             }
           }
         },
@@ -271,7 +295,7 @@
       },
       "5918445685253060206": {
         "type": "shopify://apps/bundler/blocks/bundler-script-append/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },
