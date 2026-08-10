@@ -20,6 +20,10 @@
   assign afr_empty_message = afr_empty_message | default: 'Explore our astrology attar collections to discover aligned fragrances.'
   assign afr_faq_count = 0
 
+  if afr_mode == 'perfume'
+    assign afr_show_om = false
+  endif
+
   if afr_collection == blank
     case afr_mode
       when 'zodiac'
@@ -270,13 +274,36 @@
               tabindex="0"
             >
               {%- assign afr_card_i = 0 -%}
-              {%- for product in afr_collection.products limit: afr_limit -%}
-                {%- assign afr_card_i = afr_card_i | plus: 1 -%}
-                {%- render 'astro-recommendation-card',
-                  card_product: product,
-                  card_index: afr_card_i,
-                  section_id: afr_uid
+              {%- assign afr_perfume_imgs = false -%}
+              {%- if afr_mode == 'perfume' -%}
+                {%- assign afr_perfume_imgs = true -%}
+              {%- endif -%}
+              {%- for product in afr_collection.products -%}
+                {%- if afr_card_i >= afr_limit -%}
+                  {%- break -%}
+                {%- endif -%}
+                {%- liquid
+                  assign afr_include_product = true
+                  if afr_mode == 'perfume'
+                    assign afr_pk = product.type | append: ' ' | append: product.title | append: ' ' | append: product.handle | downcase
+                    if afr_pk contains 'incense' or afr_pk contains 'agarbatti' or afr_pk contains 'dhoop'
+                      assign afr_include_product = false
+                    elsif afr_pk contains 'attar'
+                      unless afr_pk contains 'perfume'
+                        assign afr_include_product = false
+                      endunless
+                    endif
+                  endif
                 -%}
+                {%- if afr_include_product -%}
+                  {%- assign afr_card_i = afr_card_i | plus: 1 -%}
+                  {%- render 'astro-recommendation-card',
+                    card_product: product,
+                    card_index: afr_card_i,
+                    section_id: afr_uid,
+                    perfume_images_only: afr_perfume_imgs
+                  -%}
+                {%- endif -%}
               {%- endfor -%}
             </ul>
             <button

@@ -2241,3 +2241,45 @@ body.byb-qv-open {
     line-height: 1.76;
   }
 }
+
+/* ── Astrology Ritual Set only: pure white cards (no cream/yellow) ── */
+.byb--astrology-ritual {
+  --byb-ivory: #ffffff;
+  --byb-beige: #ffffff;
+  --byb-gold: #3d3d3d;
+  --byb-gold-glow: rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+}
+
+.byb--astrology-ritual .byb-hero--cinematic {
+  background: #ffffff;
+}
+
+.byb--astrology-ritual .byb-hero__orb--a,
+.byb--astrology-ritual .byb-hero__orb--b,
+.byb--astrology-ritual .byb-hero__wash {
+  opacity: 0;
+}
+
+.byb--astrology-ritual .byb-card {
+  background: #ffffff;
+  box-shadow: none;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.byb--astrology-ritual .byb-card__glow {
+  display: none;
+}
+
+.byb--astrology-ritual .byb-card__media {
+  background: #ffffff;
+}
+
+.byb--astrology-ritual .byb-card__category {
+  color: #3d3d3d;
+}
+
+.byb--astrology-ritual .byb-plans,
+.byb--astrology-ritual .byb-grid {
+  background: #ffffff;
+}

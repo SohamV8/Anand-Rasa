@@ -130,8 +130,10 @@
 
   assign afr_faq_heading_auto = 'Frequently Asked Questions'
   assign afr_show_om_auto = true
-  if afr_mode == 'gourmand'
-    assign afr_faq_heading_auto = 'Gourmand FAQ'
+  if afr_mode == 'gourmand' or afr_mode == 'perfume'
+    if afr_mode == 'gourmand'
+      assign afr_faq_heading_auto = 'Gourmand FAQ'
+    endif
     assign afr_show_om_auto = false
   endif
 -%}

@@ -136,7 +136,7 @@
 {% render 'build-box-attar-assets', part: 'styles', hub_mode: byb_hub_mode %}
 
 <div
-  class="byb{% if byb_hub_mode %} byb--hub{% elsif byb_plan_b_on == false %} byb--fixed-plan{% endif %}"
+  class="byb{% if byb_hub_mode %} byb--hub{% elsif byb_plan_b_on == false %} byb--fixed-plan{% endif %}{% if template.suffix == 'astrology-ritual-set' %} byb--astrology-ritual{% endif %}"
   {% unless byb_hub_mode %}data-byb-root data-section-id="{{ section.id }}"{% if byb_plan_b_on == false %} data-byb-default-plan="{{ byb_plan_a_size }}"{% endif %}{% endunless %}
 >
   {%- unless byb_hub_mode -%}

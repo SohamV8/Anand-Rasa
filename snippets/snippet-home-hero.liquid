@@ -7,6 +7,7 @@
     assign ar_hero_poster = 'home.webp' | asset_url
   endif
   assign ar_hero_title = section.settings.hero_headline | default: shop.name | strip_html | strip
+  assign ar_hero_shop_url = routes.all_products_collection_url | default: '/collections/all'
 -%}
 <section class="ar-hero" data-ar-hero aria-label="{{ ar_hero_title | escape }}">
   <h1 class="ar-hero__sr-only">{{ ar_hero_title | escape }}</h1>
@@ -31,6 +32,14 @@
     </video>
     <div class="ar-hero__poster" style="background-image: url('{{ ar_hero_poster | escape }}');"></div>
   </div>
+
+  <a
+    href="{{ ar_hero_shop_url }}"
+    class="ar-hero__hit"
+    aria-label="Shop all fragrances"
+  >
+    <span class="ar-hero__sr-only">Shop all</span>
+  </a>
 </section>
 
 <style>
@@ -101,6 +110,22 @@
   opacity: 0;
   pointer-events: none;
   transform: translateZ(0);
+}
+
+.ar-hero__hit {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ar-hero__hit:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -4px;
 }
 
 @media (prefers-reduced-motion: reduce) {

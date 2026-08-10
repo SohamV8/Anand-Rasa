@@ -17,6 +17,35 @@
   <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
+{%- liquid
+  assign ar_is_all_collection = false
+  if collection.handle == 'all'
+    assign ar_is_all_collection = true
+  endif
+  assign ar_products_per_page = section.settings.products_per_page | default: 24
+-%}
+
+{%- if ar_is_all_collection -%}
+  {{ 'collection-all-mobile.css' | asset_url | stylesheet_tag }}
+  {%- comment -%}
+    Prefer Shopify native best-selling order on /collections/all when the shopper
+    has not chosen another sort. Preserves pagination/filters; no client-side reordering.
+  {%- endcomment -%}
+  {%- if request.params.sort_by == blank -%}
+    <script>
+      (function () {
+        try {
+          var u = new URL(window.location.href);
+          if (!u.searchParams.get('sort_by')) {
+            u.searchParams.set('sort_by', 'best-selling');
+            window.location.replace(u.pathname + '?' + u.searchParams.toString() + u.hash);
+          }
+        } catch (e) {}
+      })();
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -32,7 +61,7 @@
 {%- endstyle -%}
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
-  {%- paginate collection.products by 24 -%}
+  {%- paginate collection.products by ar_products_per_page -%}
     <!-- SEO Fix: Pagination rel prev/next links for collection pages -->
     {%- if paginate.previous -%}
       <link rel="prev" href="{{ shop.url }}{{ paginate.previous.url }}">
@@ -51,9 +80,75 @@
     {{ 'section-collection-filters.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 
-    <div class="ar-col-page">
-      {%- comment -%} Sort lives in collection banner on desktop; mobile-only duplicate below (see facets.js offsetParent guard). {%- endcomment -%}
-
+    <div class="ar-col-page{% if ar_is_all_collection %} ar-col-page--all{% endif %}">
+      {%- if ar_is_all_collection -%}
+        <div class="ar-all-mobile-bar" role="toolbar" aria-label="Filter and sort products">
+          {%- if section.settings.enable_filtering -%}
+            <button
+              type="button"
+              class="ar-all-mobile-bar__filter"
+              id="ArAllMobileFilterBtn"
+              aria-haspopup="dialog"
+              aria-controls="FacetFiltersFormMobile"
+            >
+              <span class="ar-all-mobile-bar__filter-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                  <line x1="4" y1="7" x2="20" y2="7"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                  <line x1="10" y1="17" x2="14" y2="17"></line>
+                </svg>
+              </span>
+              <span class="ar-all-mobile-bar__filter-label">Filter</span>
+            </button>
+          {%- endif -%}
+          {%- if section.settings.enable_sorting and collection.sort_options.size > 1 -%}
+            <div class="ar-all-mobile-bar__sort">
+              <facet-filters-form class="facets facets-vertical-sort">
+                <form class="facets-vertical-form" id="FacetSortFormMobileAll">
+                  <div class="facet-filters sorting caption">
+                    <div class="facet-filters__field">
+                      <label class="visually-hidden" for="SortByMobileAll">{{ 'products.facets.sort_by_label' | t }}</label>
+                      <div class="select">
+                        {%- assign sort_by = collection.sort_by | default: 'best-selling' -%}
+                        <select
+                          name="sort_by"
+                          class="facet-filters__sort select__select caption-large"
+                          id="SortByMobileAll"
+                          aria-describedby="a11y-refresh-page-message"
+                        >
+                          {%- for option in collection.sort_options -%}
+                            <option
+                              value="{{ option.value | escape }}"
+                              {% if option.value == sort_by %}selected="selected"{% endif %}
+                            >
+                              {{ option.name | escape }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        <span class="svg-wrapper" aria-hidden="true">
+                          {{- 'icon-caret.svg' | inline_asset_content -}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </facet-filters-form>
+            </div>
+          {%- endif -%}
+        </div>
+        <script>
+          (function () {
+            var btn = document.getElementById('ArAllMobileFilterBtn');
+            if (!btn || btn.dataset.bound) return;
+            btn.dataset.bound = '1';
+            btn.addEventListener('click', function () {
+              var page = btn.closest('.ar-col-page--all');
+              var summary = page && page.querySelector('.mobile-facets__disclosure > summary');
+              if (summary) summary.click();
+            });
+          })();
+        </script>
+      {%- endif -%}
 
       {%- if section.settings.enable_filtering -%}
         {% render 'facets',
@@ -141,7 +236,7 @@
                   {% assign skip_card_product_styles = false %}
                   {%- for product in collection.products -%}
                     {% assign lazy_load = false %}
-                    {%- if forloop.index > 2 -%}
+                    {%- if forloop.index > 4 -%}
                       {%- assign lazy_load = true -%}
                     {%- endif -%}
                     <li
@@ -162,7 +257,8 @@
                         skip_styles: skip_card_product_styles,
                         quick_add: 'standard',
                         section_id: section.id,
-                        card_index: forloop.index0
+                        card_index: forloop.index0,
+                        ar_all_collection: ar_is_all_collection
                       %}
                     </li>
                     {%- assign skip_card_product_styles = true -%}

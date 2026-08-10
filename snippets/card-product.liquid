@@ -156,6 +156,43 @@
       assign _needs_quick_add = true
     endif
     assign product_form_id = 'quick-add-' | append: section_id | append: card_product.id
+
+    assign ar_badge = ''
+    assign ar_is_bestseller = false
+    assign ar_is_new = false
+    assign ar_on_sale = false
+    if card_product.tags contains 'bestseller' or card_product.tags contains 'Bestseller' or card_product.tags contains 'best-seller'
+      assign ar_is_bestseller = true
+    endif
+    for c in card_product.collections
+      assign ar_col_h = c.handle | downcase
+      if ar_col_h contains 'bestseller' or ar_col_h contains 'best-seller'
+        assign ar_is_bestseller = true
+        break
+      endif
+    endfor
+    if card_product.tags contains 'new' or card_product.tags contains 'New'
+      assign ar_is_new = true
+    endif
+    if card_product.compare_at_price > card_product.price
+      assign ar_on_sale = true
+    endif
+    if ar_is_bestseller
+      assign ar_badge = 'Bestseller'
+    elsif ar_is_new
+      assign ar_badge = 'New'
+    elsif ar_on_sale
+      assign ar_badge = 'Sale'
+    endif
+
+    assign ar_img_loading = 'lazy'
+    assign ar_img_fetch = false
+    if lazy_load == false or card_index < 4
+      assign ar_img_loading = 'eager'
+    endif
+    if card_index < 2
+      assign ar_img_fetch = true
+    endif
   -%}
 
   <div
@@ -185,8 +222,10 @@
               src="{{ ar_card_asset_img }}"
               alt="{{ ar_card_img_alt | escape }}"
               title="{{ card_product.title | escape }}"
-              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              width="600"
+              height="600"
+              loading="{{ ar_img_loading }}"
+              {% if ar_img_fetch %}fetchpriority="high"{% endif %}
               decoding="async"
             >
           {%- elsif ar_card_nakshatra_img != blank -%}
@@ -195,8 +234,10 @@
               src="{{ ar_card_nakshatra_img }}"
               alt="{{ ar_card_img_alt | escape }}"
               title="{{ card_product.title | escape }}"
-              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              width="600"
+              height="600"
+              loading="{{ ar_img_loading }}"
+              {% if ar_img_fetch %}fetchpriority="high"{% endif %}
               decoding="async"
             >
           {%- elsif ar_card_incense_img != blank -%}
@@ -205,8 +246,10 @@
               src="{{ ar_card_incense_img }}"
               alt="{{ ar_card_img_alt | escape }}"
               title="{{ card_product.title | escape }}"
-              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              width="600"
+              height="600"
+              loading="{{ ar_img_loading }}"
+              {% if ar_img_fetch %}fetchpriority="high"{% endif %}
               decoding="async"
             >
           {%- elsif ar_card_bestseller_img != blank -%}
@@ -215,29 +258,30 @@
               src="{{ ar_card_bestseller_img }}"
               alt="{{ ar_card_img_alt | escape }}"
               title="{{ card_product.title | escape }}"
-              loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-              {% if card_index == 0 %}fetchpriority="high"{% endif %}
+              width="600"
+              height="600"
+              loading="{{ ar_img_loading }}"
+              {% if ar_img_fetch %}fetchpriority="high"{% endif %}
               decoding="async"
             >
           {%- elsif first_image -%}
-            <!-- SEO Fix: Product card responsive image with WebP source and explicit dimensions -->
             <picture>
               <source
-                srcset="{{ first_image | image_url: width: 400, format: 'webp' }} 400w, {{ first_image | image_url: width: 800, format: 'webp' }} 800w"
-                sizes="(min-width: 990px) 25vw, 50vw"
+                srcset="{{ first_image | image_url: width: 280, format: 'webp' }} 280w, {{ first_image | image_url: width: 400, format: 'webp' }} 400w, {{ first_image | image_url: width: 600, format: 'webp' }} 600w"
+                sizes="(max-width: 749px) 46vw, (min-width: 990px) 22vw, 30vw"
                 type="image/webp"
               >
               <img
                 class="ar-card__img"
-                src="{{ first_image | image_url: width: 800 }}"
-                srcset="{{ first_image | image_url: width: 400 }} 400w, {{ first_image | image_url: width: 800 }} 800w"
-                sizes="(min-width: 990px) 25vw, 50vw"
+                src="{{ first_image | image_url: width: 600 }}"
+                srcset="{{ first_image | image_url: width: 280 }} 280w, {{ first_image | image_url: width: 400 }} 400w, {{ first_image | image_url: width: 600 }} 600w"
+                sizes="(max-width: 749px) 46vw, (min-width: 990px) 22vw, 30vw"
                 alt="{{ first_image.alt | default: ar_card_img_alt | escape }}"
                 title="{{ card_product.title | escape }}"
-                loading="{% if card_index == 0 %}eager{% else %}lazy{% endif %}"
-                {% if card_index == 0 %}fetchpriority="high"{% endif %}
-                width="800"
-                height="{{ 800 | divided_by: first_image.aspect_ratio | round }}"
+                loading="{{ ar_img_loading }}"
+                {% if ar_img_fetch %}fetchpriority="high"{% endif %}
+                width="600"
+                height="{{ 600 | divided_by: first_image.aspect_ratio | round }}"
                 decoding="async"
               >
             </picture>
@@ -246,6 +290,9 @@
           {%- endif -%}
         </a>
 
+        {%- if ar_all_collection and ar_badge != blank -%}
+          <span class="ar-card__badge{% if ar_badge == 'Sale' %} ar-card__badge--sale{% elsif ar_badge == 'New' %} ar-card__badge--new{% endif %}">{{ ar_badge }}</span>
+        {%- endif -%}
       </div>
 
       {%- comment -%} ── BODY BLOCK ── {%- endcomment -%}
@@ -262,6 +309,12 @@
             assign ar_display_category = 'Incense Stick'
           elsif ar_product_type_key contains 'perfume'
             assign ar_display_category = 'Perfume'
+          elsif ar_product_type_key contains 'gourmand'
+            assign ar_display_category = 'Gourmand'
+          elsif ar_product_type_key contains 'bestseller' or ar_product_type_key contains 'best seller'
+            assign ar_display_category = 'Attar'
+          elsif ar_product_type != blank
+            assign ar_display_category = ar_product_type
           endif
 
           assign ar_notes_source_1 = card_product.metafields.custom.main_notes.value | default: ''
@@ -310,14 +363,25 @@
         <p class="ar-card__category">{{ ar_display_category }}</p>
 
         <div class="ar-card__price">
-          {%- if card_product.compare_at_price > card_product.price -%}
-            <span class="ar-card__price-old">{{ card_product.compare_at_price | money }}</span>
+          {%- if ar_on_sale -%}
             <span class="ar-card__price-sale">{{ card_product.price | money }}</span>
+            <span class="ar-card__price-old">{{ card_product.compare_at_price | money }}</span>
           {%- else -%}
             <span class="ar-card__price-reg">{{ card_product.price | money }}</span>
           {%- endif -%}
         </div>
 
+        {%- if ar_all_collection -%}
+          <button
+            type="button"
+            class="ar-card__atc js-arc-atc"
+            data-id="{{ qv.id }}"
+            aria-label="Add {{ card_product.title | escape }} to cart"
+            {% unless qv.available %}disabled{% endunless %}
+          >
+            <span>{% if qv.available %}Add to cart{% else %}Sold out{% endif %}</span>
+          </button>
+        {%- endif -%}
       </div>
     </article>
   </div>
@@ -473,6 +537,14 @@
   font-size: 12px;
   color: #9ca3af;
   text-decoration: line-through;
+}
+
+.ar-card__atc {
+  display: none;
+}
+
+.ar-card__badge {
+  display: none;
 }
 
 .ar-card--ph .ar-card__media {

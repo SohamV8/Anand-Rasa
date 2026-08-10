@@ -6,8 +6,8 @@
 
 .afr {
   --afr-white: #ffffff;
-  --afr-gold: #b8943a;
-  --afr-gold-soft: rgba(184, 148, 58, 0.28);
+  --afr-gold: #2a2a2a;
+  --afr-gold-soft: rgba(0, 0, 0, 0.12);
   --afr-ink: #1f1c19;
   --afr-ink-2: #3f3a34;
   --afr-ink-3: #5c564f;
@@ -371,7 +371,7 @@
 
 .afr__faq-item:hover {
   border-color: rgba(184, 148, 58, 0.32);
-  background: #fffdf9;
+  background: #ffffff;
   box-shadow: 0 8px 24px rgba(184, 148, 58, 0.1);
 }
 
@@ -761,7 +761,7 @@
   border-radius: 18px;
   border: 1px solid rgba(31, 28, 25, 0.08);
   background:
-    linear-gradient(165deg, #ffffff 0%, #fffdf9 55%, #faf6f0 100%);
+    linear-gradient(165deg, #ffffff 0%, #ffffff 55%, #ffffff 100%);
   box-shadow: 0 6px 22px rgba(31, 28, 25, 0.06);
   transition:
     transform 0.45s var(--afr-ease),

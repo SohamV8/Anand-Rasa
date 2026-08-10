@@ -5,7 +5,7 @@
 {{ 'section-collection-banner.css' | asset_url | stylesheet_tag }}
 
 <div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="ar-banner">
+  <div class="ar-banner{% if collection.handle == 'all' %} ar-banner--all{% endif %}">
     {%- comment -%} ── HEADING BLOCK ── {%- endcomment -%}
     <div class="ar-banner__head">
       <h1 class="ar-banner__title">
@@ -169,6 +169,9 @@
                     </h2>
                     <div class="select">
                       {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                      {%- if collection.handle == 'all' and request.params.sort_by == blank -%}
+                        {%- assign sort_by = 'best-selling' -%}
+                      {%- endif -%}
                       <select
                         name="sort_by"
                         class="facet-filters__sort select__select caption-large"

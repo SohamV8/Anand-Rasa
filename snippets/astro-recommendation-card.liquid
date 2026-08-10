@@ -7,11 +7,14 @@
   assign ar_key = card_product.handle | append: ' ' | append: card_product.title | append: ' ' | append: card_product.type | downcase
   assign ar_tags = card_product.tags | join: ' ' | downcase
   assign ar_scope = ar_key | append: ' ' | append: ar_tags
+  assign perfume_images_only = perfume_images_only | default: false
 
   assign ar_type_key = card_product.type | downcase | strip
   assign ar_subtitle = 'Attar'
 
-  if ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'dhoop'
+  if perfume_images_only
+    assign ar_subtitle = 'Perfume'
+  elsif ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'dhoop'
     assign ar_subtitle = 'Incense Stick'
   elsif ar_type_key contains 'gift'
     assign ar_subtitle = 'Gift Set'
@@ -42,7 +45,7 @@
   endfor
 
   if ar_is_bestseller
-    unless ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'perfume' or ar_type_key contains 'gift' or ar_type_key contains 'gourmand'
+    unless perfume_images_only or ar_type_key contains 'incense' or ar_type_key contains 'agarbatti' or ar_type_key contains 'perfume' or ar_type_key contains 'gift' or ar_type_key contains 'gourmand'
       assign ar_subtitle = 'Attar'
     endunless
   endif
@@ -52,6 +55,7 @@
   assign ar_showcase_asset = ''
   assign ar_img_fallback = ''
 
+  unless perfume_images_only
   if ar_scope contains 'surya' or ar_scope contains 'sun'
     assign ar_subtitle = 'Sun Attar'
     assign ar_bg = 'Planet-sun.webp'
@@ -129,6 +133,7 @@
       assign ar_bg = 'zodiac-attar-pisces.webp'
     endif
   endif
+  endunless
 
   if subtitle_override != blank
     assign ar_subtitle = subtitle_override
@@ -144,6 +149,7 @@
     assign ar_loading = 'eager'
   endif
 
+  unless perfume_images_only
   if ar_showcase_asset == blank
     capture ar_ck_lookup
       render 'chakra-image-lookup', ck_product: card_product
@@ -163,6 +169,7 @@
       assign ar_showcase_asset = ar_bs_lookup
     endif
   endif
+  endunless
 
   assign ar_variant = card_product.selected_or_first_available_variant
   assign ar_on_sale = false

@@ -30,7 +30,7 @@
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "standard",
-        "enable_filtering": false,
+        "enable_filtering": true,
         "filter_type": "vertical",
         "enable_sorting": true,
         "padding_top": 36,

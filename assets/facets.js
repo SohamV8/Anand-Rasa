@@ -277,9 +277,17 @@ class FacetFiltersForm extends HTMLElement {
 
       sortFilterForms.forEach((form) => {
         if (!isMobile) {
-          if (form.id === 'FacetSortForm' || form.id === 'FacetSortFormMobile' || form.id === 'FacetFiltersForm' || form.id === 'FacetSortDrawerForm') {
+          if (
+            form.id === 'FacetSortForm' ||
+            form.id === 'FacetSortFormMobile' ||
+            form.id === 'FacetSortFormMobileAll' ||
+            form.id === 'FacetFiltersForm' ||
+            form.id === 'FacetSortDrawerForm'
+          ) {
             if (
-              (form.id === 'FacetSortForm' || form.id === 'FacetSortFormMobile') &&
+              (form.id === 'FacetSortForm' ||
+                form.id === 'FacetSortFormMobile' ||
+                form.id === 'FacetSortFormMobileAll') &&
               form.offsetParent === null
             ) {
               return;
