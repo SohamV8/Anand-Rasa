@@ -1174,11 +1174,12 @@
   }
 }
 
-/* Mobile (<768): single column, swipe carousel, no arrows, no overflow */
+/* Mobile (<768): single column, swipe carousel, no arrows */
 @media (max-width: 767px) {
   .afr {
-    --afr-card-w: min(82vw, 300px);
-    padding: clamp(48px, 8vw, 64px) clamp(16px, 4vw, 20px);
+    --afr-mobile-pad: clamp(14px, 3.8vw, 18px);
+    --afr-card-w: clamp(136px, 62vw, 228px);
+    padding: clamp(32px, 6vw, 44px) var(--afr-mobile-pad);
     height: auto;
     max-height: none;
     min-height: 0;
@@ -1187,14 +1188,14 @@
 
   .afr__grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(20px, 5vw, 28px);
+    gap: clamp(16px, 4vw, 22px);
     width: 100%;
     max-width: 100%;
   }
 
   .afr__card {
-    border-radius: 20px;
-    padding: clamp(28px, 5.5vw, 36px) clamp(16px, 4vw, 20px);
+    border-radius: 18px;
+    padding: clamp(20px, 4.5vw, 28px) var(--afr-mobile-pad);
     min-height: auto;
     height: auto;
     max-width: 100%;
@@ -1202,106 +1203,136 @@
     overflow: hidden;
   }
 
+  .afr__card--faq {
+    padding-bottom: clamp(18px, 4vw, 24px);
+  }
+
   .afr__card--rec {
-    overflow: hidden;
+    overflow: visible;
+    padding-inline: var(--afr-mobile-pad);
   }
 
   .afr__card--rec .afr__card-inner {
     align-items: stretch;
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .afr__faq-hdr {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: clamp(14px, 3.5vw, 20px);
   }
 
   .afr__faq-title {
-    font-size: clamp(24px, 5.5vw, 30px);
-    line-height: 1.12;
+    font-size: clamp(20px, 5vw, 26px);
+    line-height: 1.15;
   }
 
   .afr__faq-list {
-    gap: 12px;
+    gap: 10px;
     width: 100%;
   }
 
   .afr__faq-item {
     width: 100%;
+    border-radius: 14px;
+  }
+
+  .afr__faq-item.is-open {
+    border-radius: 14px;
   }
 
   .afr__faq-trigger {
-    min-height: 56px;
-    padding: 16px 18px;
-    gap: 14px;
+    min-height: 48px;
+    padding: 12px 14px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .afr__faq-trigger:focus-visible {
+    border-radius: 14px;
   }
 
   .afr__faq-q {
-    font-size: clamp(14px, 3.6vw, 16px);
+    font-size: clamp(13px, 3.4vw, 15px);
     font-weight: 600;
-    line-height: 1.45;
+    line-height: 1.4;
+    padding-right: 4px;
   }
 
   .afr__faq-icon {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
   }
 
   .afr__faq-icon::before {
-    width: 14px;
+    width: 12px;
   }
 
   .afr__faq-icon::after {
-    height: 14px;
+    height: 12px;
   }
 
   .afr__faq-a {
-    font-size: clamp(14px, 3.5vw, 15px);
-    line-height: 1.75;
-    padding: 4px 18px 18px;
+    font-size: clamp(13px, 3.2vw, 14px);
+    line-height: 1.65;
+    padding: 0 14px 14px;
     max-width: none;
   }
 
   .afr__rec-hdr {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: clamp(14px, 3.5vw, 20px);
     padding: 0;
   }
 
   .afr__rec-om {
-    font-size: clamp(1.75rem, 8vw, 2.25rem);
-    margin-bottom: 12px;
+    font-size: clamp(1.45rem, 6.5vw, 1.85rem);
+    margin-bottom: 8px;
   }
 
   .afr__rec-hindi {
-    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    font-size: clamp(1.45rem, 6.8vw, 2rem);
   }
 
   .afr__rec-en {
-    font-size: clamp(1.2rem, 5.5vw, 1.55rem);
-    margin-top: 12px;
+    font-size: clamp(1rem, 4.6vw, 1.3rem);
+    margin-top: 8px;
   }
 
   .afr__rec-hdr .afr__ornament {
-    margin-top: 16px;
+    margin-top: 12px;
   }
 
   .afr__rec-hdr .afr__ornament-line {
-    width: clamp(40px, 12vw, 56px);
+    width: clamp(32px, 10vw, 48px);
   }
 
   .afr__track-wrap {
     --afr-arrow-size: 0px;
     --afr-arrow-gap: 0px;
     --afr-arrow-inset: 0px;
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
+    position: relative;
+    max-width: none;
+    width: calc(100% + (var(--afr-mobile-pad) * 2));
+    margin-inline: calc(var(--afr-mobile-pad) * -1);
     padding-inline: 0;
-    overflow: hidden;
+    overflow: visible;
     flex: none;
+  }
+
+  .afr__track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 10px;
+    width: 24px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.92) 72%);
+    pointer-events: none;
+    z-index: 2;
   }
 
   .afr__track-btn {
@@ -1312,60 +1343,93 @@
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: var(--afr-card-w);
-    gap: 14px;
+    gap: 10px;
     max-width: none;
     width: 100%;
     margin: 0;
-    padding: 4px 16px 12px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 16px;
+    padding: 2px var(--afr-mobile-pad) 10px;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--afr-mobile-pad);
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
     scrollbar-width: none;
   }
 
+  .afr__track::-webkit-scrollbar {
+    display: none;
+  }
+
   .afr__prod {
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
   }
 
   .afr__prod-card {
     min-height: 0;
+    border-radius: 14px;
   }
 
   .afr__prod-media {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 5 / 6;
+  }
+
+  .afr__prod-body {
+    gap: 4px;
+    padding: 10px 10px 12px;
   }
 
   .afr__prod-name {
-    font-size: clamp(0.95rem, 3.8vw, 1.08rem);
+    font-size: clamp(0.84rem, 3.4vw, 0.95rem);
   }
 
   .afr__prod-type,
   .afr__prod-notes {
-    font-size: clamp(0.72rem, 3vw, 0.82rem);
+    font-size: clamp(0.64rem, 2.8vw, 0.74rem);
+  }
+
+  .afr__prod-foot {
+    padding-top: 6px;
+    margin-top: 0;
   }
 
   .afr__prod-price-now {
-    font-size: clamp(0.9rem, 3.4vw, 1.02rem);
+    font-size: clamp(0.82rem, 3.1vw, 0.92rem);
+  }
+
+  .afr__prod-view {
+    font-size: 0.68rem;
+    padding: 4px 0;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .afr__prod-atc {
-    min-height: 42px;
+    min-height: 38px;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .afr__prod-badge {
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    font-size: 8px;
   }
 
   .afr__cta-wrap {
-    margin-top: 32px;
+    margin-top: clamp(20px, 4.5vw, 28px);
     padding-top: 0;
   }
 
   .afr__cta {
-    width: min(100%, 320px);
-    max-width: 320px;
-    min-height: 52px;
+    width: min(100%, 300px);
+    max-width: 300px;
+    min-height: 46px;
     margin-inline: auto;
+    font-size: 0.82rem;
   }
 }

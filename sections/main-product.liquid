@@ -795,6 +795,13 @@
 
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              {%- when 'pack_selector' -%}
+                {% render 'product-pack-selector',
+                  block: block,
+                  section: section,
+                  product: product,
+                  product_form_id: product_form_id
+                %}
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
@@ -1187,6 +1194,132 @@
       "type": "quantity_selector",
       "name": "t:sections.main-product.blocks.quantity_selector.name",
       "limit": 1
+    },
+    {
+      "type": "pack_selector",
+      "name": "Choose your pack",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable",
+          "label": "Enable pack selector",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Choose your pack"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_quantity_selector",
+          "label": "Hide default quantity selector",
+          "default": true,
+          "info": "Quantity is controlled by pack selection. The quantity input remains in the form for cart submission."
+        },
+        {
+          "type": "header",
+          "content": "Pack labels"
+        },
+        {
+          "type": "text",
+          "id": "pack_1_label",
+          "label": "Single label",
+          "default": "Single"
+        },
+        {
+          "type": "text",
+          "id": "pack_2_label",
+          "label": "Pack of 2 label",
+          "default": "Pack of 2"
+        },
+        {
+          "type": "text",
+          "id": "pack_3_label",
+          "label": "Pack of 3 label",
+          "default": "Pack of 3"
+        },
+        {
+          "type": "header",
+          "content": "6ml display pricing"
+        },
+        {
+          "type": "paragraph",
+          "content": "Single uses the selected variant price. Pack totals are display values; cart quantity is set to 1, 2, or 3 at the variant unit price. Labels update for 6ml and 12ml."
+        },
+        {
+          "type": "number",
+          "id": "pack_2_total_6ml",
+          "label": "6ml · Pack of 2 total (₹)",
+          "default": 1099
+        },
+        {
+          "type": "number",
+          "id": "pack_3_total_6ml",
+          "label": "6ml · Pack of 3 total (₹)",
+          "default": 1499
+        },
+        {
+          "type": "header",
+          "content": "12ml display pricing"
+        },
+        {
+          "type": "number",
+          "id": "pack_2_total_12ml",
+          "label": "12ml · Pack of 2 total (₹)",
+          "default": 1999
+        },
+        {
+          "type": "number",
+          "id": "pack_3_total_12ml",
+          "label": "12ml · Pack of 3 total (₹)",
+          "default": 2999
+        },
+        {
+          "type": "number",
+          "id": "pack_2_total",
+          "label": "Legacy Pack of 2 total (₹)",
+          "default": 0,
+          "info": "Fallback if 6ml Pack of 2 is unset. Prefer the 6ml / 12ml settings above."
+        },
+        {
+          "type": "number",
+          "id": "pack_3_total",
+          "label": "Legacy Pack of 3 total (₹)",
+          "default": 0,
+          "info": "Fallback if 6ml Pack of 3 is unset. Prefer the 6ml / 12ml settings above."
+        },
+        {
+          "type": "header",
+          "content": "Badges"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_popular_badge",
+          "label": "Show MOST POPULAR on Pack of 2",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "popular_badge_text",
+          "label": "Popular badge text",
+          "default": "MOST POPULAR"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_value_badge",
+          "label": "Show BEST VALUE on Pack of 3",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "value_badge_text",
+          "label": "Value badge text",
+          "default": "BEST VALUE"
+        }
+      ]
     },
     {
       "type": "variant_picker",

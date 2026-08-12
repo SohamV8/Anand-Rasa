@@ -362,30 +362,265 @@ if (Shopify.designMode) {
 (function () {
   'use strict';
 
-  var section = document.querySelector('.js-ar-fn');
-  if (!section) return;
+  var MOBILE_MQ = window.matchMedia('(max-width: 749px)');
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    section.classList.add('ar-fn--vis');
-    return;
+  function isMobile() {
+    return MOBILE_MQ.matches;
   }
 
-  if (!('IntersectionObserver' in window)) {
-    section.classList.add('ar-fn--vis');
-    return;
+  function FragranceNotes(section) {
+    this.section = section;
+    this.tabs = Array.from(section.querySelectorAll('[data-ar-fn-tab]'));
+    this.panels = Array.from(section.querySelectorAll('[data-ar-fn-panel]'));
+    this.listeners = [];
+    this.observer = null;
+    this.onMqChange = this.onMqChange.bind(this);
   }
 
-  var observer = new IntersectionObserver(
-    function (entries) {
-      var entry = entries[0];
-      if (!entry.isIntersecting) return;
+  FragranceNotes.prototype.bind = function (el, type, fn) {
+    if (!el || !fn) return;
+    el.addEventListener(type, fn);
+    this.listeners.push([el, type, fn]);
+  };
+
+  FragranceNotes.prototype.destroy = function () {
+    this.listeners.forEach(function (entry) {
+      entry[0].removeEventListener(entry[1], entry[2]);
+    });
+    this.listeners.length = 0;
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    if (typeof this.closeModal === 'function') {
+      this.closeModal();
+    }
+    if (typeof MOBILE_MQ.removeEventListener === 'function') {
+      MOBILE_MQ.removeEventListener('change', this.onMqChange);
+    } else if (typeof MOBILE_MQ.removeListener === 'function') {
+      MOBILE_MQ.removeListener(this.onMqChange);
+    }
+    delete this.section.__arFnInstance;
+  };
+
+  FragranceNotes.prototype.activateTab = function (tabKey, focusTab) {
+    var self = this;
+    this.tabs.forEach(function (tab) {
+      var selected = tab.getAttribute('data-ar-fn-tab') === tabKey;
+      tab.classList.toggle('ar-fn__tab--active', selected);
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+      tab.tabIndex = selected ? 0 : -1;
+      if (selected && focusTab) tab.focus({ preventScroll: true });
+    });
+
+    this.panels.forEach(function (panel) {
+      var active = panel.getAttribute('data-ar-fn-panel') === tabKey;
+      panel.classList.toggle('ar-fn__cell--active', active);
+      if (isMobile()) {
+        panel.setAttribute('aria-hidden', active ? 'false' : 'true');
+      } else {
+        panel.removeAttribute('aria-hidden');
+      }
+    });
+
+  };
+
+  FragranceNotes.prototype.onTabKeydown = function (event) {
+    if (!isMobile() || !this.tabs.length) return;
+    var currentIndex = this.tabs.findIndex(function (tab) {
+      return tab.getAttribute('aria-selected') === 'true';
+    });
+    if (currentIndex < 0) return;
+
+    var nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % this.tabs.length;
+    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + this.tabs.length) % this.tabs.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = this.tabs.length - 1;
+    else return;
+
+    event.preventDefault();
+    var nextTab = this.tabs[nextIndex];
+    this.activateTab(nextTab.getAttribute('data-ar-fn-tab'), true);
+  };
+
+  FragranceNotes.prototype.onMqChange = function () {
+    var tablist = this.section.querySelector('[data-ar-fn-tabs]');
+    if (tablist) {
+      tablist.setAttribute('aria-hidden', isMobile() ? 'false' : 'true');
+    }
+
+    if (!isMobile()) {
+      if (typeof this.closeModal === 'function') {
+        this.closeModal();
+      }
+      this.panels.forEach(function (panel) {
+        panel.removeAttribute('aria-hidden');
+      });
+      return;
+    }
+    var active = this.tabs.find(function (tab) {
+      return tab.getAttribute('aria-selected') === 'true';
+    });
+    if (active) {
+      this.activateTab(active.getAttribute('data-ar-fn-tab'), false);
+    }
+  };
+
+  FragranceNotes.prototype.setupSeeAllModal = function () {
+    var self = this;
+    var trigger = this.section.querySelector('[data-ar-fn-see-all]');
+    this.modal = this.section.querySelector('[data-ar-fn-modal]');
+    if (!trigger || !this.modal) return;
+
+    var sheet = this.modal.querySelector('.ar-fn__modal-sheet');
+
+    this.openModal = function () {
+      if (!isMobile() || self.modal.classList.contains('ar-fn__modal--open')) return;
+      self.lastFocused = document.activeElement;
+      self.modal.hidden = false;
+      self.modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('ar-fn-modal-open');
+      requestAnimationFrame(function () {
+        self.modal.classList.add('ar-fn__modal--open');
+      });
+      if (typeof trapFocus === 'function' && sheet) {
+        trapFocus(self.modal, sheet);
+      } else if (sheet) {
+        sheet.focus();
+      }
+    };
+
+    this.closeModal = function () {
+      if (!self.modal || self.modal.hidden) return;
+      self.modal.classList.remove('ar-fn__modal--open');
+      self.modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('ar-fn-modal-open');
+      if (typeof removeTrapFocus === 'function') {
+        removeTrapFocus(self.lastFocused);
+      } else if (self.lastFocused && self.lastFocused.focus) {
+        self.lastFocused.focus();
+      }
+      var finish = function () {
+        if (!self.modal.classList.contains('ar-fn__modal--open')) {
+          self.modal.hidden = true;
+        }
+      };
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        finish();
+      } else {
+        window.setTimeout(finish, 340);
+      }
+    };
+
+    this.bind(trigger, 'click', function () {
+      if (!isMobile()) return;
+      self.openModal();
+    });
+
+    this.modal.querySelectorAll('[data-ar-fn-modal-close]').forEach(function (el) {
+      self.bind(el, 'click', function () {
+        self.closeModal();
+      });
+    });
+
+    this.bind(this.modal, 'keydown', function (event) {
+      if (event.key === 'Escape') self.closeModal();
+    });
+  };
+
+  FragranceNotes.prototype.setupReveal = function () {
+    var section = this.section;
+    if (section.classList.contains('ar-fn--vis')) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
       section.classList.add('ar-fn--vis');
-      observer.disconnect();
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
-  );
+      return;
+    }
 
-  observer.observe(section);
+    this.observer = new IntersectionObserver(
+      function (entries) {
+        if (!entries[0].isIntersecting) return;
+        section.classList.add('ar-fn--vis');
+        if (this.observer) this.observer.disconnect();
+      }.bind(this),
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+    this.observer.observe(section);
+  };
+
+  FragranceNotes.prototype.init = function () {
+    var self = this;
+
+    if (this.section.__arFnInstance) return;
+    this.section.__arFnInstance = this;
+
+    this.tabs.forEach(function (tab) {
+      self.bind(tab, 'click', function () {
+        if (!isMobile()) return;
+        self.activateTab(tab.getAttribute('data-ar-fn-tab'), false);
+      });
+      self.bind(tab, 'keydown', function (event) {
+        self.onTabKeydown(event);
+      });
+    });
+
+    var defaultTab = this.tabs.find(function (tab) {
+      return tab.getAttribute('aria-selected') === 'true';
+    });
+    if (defaultTab) {
+      this.activateTab(defaultTab.getAttribute('data-ar-fn-tab'), false);
+    }
+
+    var tablist = this.section.querySelector('[data-ar-fn-tabs]');
+    if (tablist) {
+      tablist.setAttribute('aria-hidden', isMobile() ? 'false' : 'true');
+    }
+
+    this.setupSeeAllModal();
+    this.setupReveal();
+
+    if (typeof MOBILE_MQ.addEventListener === 'function') {
+      MOBILE_MQ.addEventListener('change', this.onMqChange);
+    } else if (typeof MOBILE_MQ.addListener === 'function') {
+      MOBILE_MQ.addListener(this.onMqChange);
+    }
+  };
+
+  function initSection(section) {
+    if (!section || section.__arFnInstance) return;
+    new FragranceNotes(section).init();
+  }
+
+  function teardownSection(section) {
+    if (section && section.__arFnInstance) {
+      section.__arFnInstance.destroy();
+    }
+  }
+
+  function boot(scope) {
+    (scope || document).querySelectorAll('[data-ar-fn-section]').forEach(initSection);
+  }
+
+  function teardown(scope) {
+    (scope || document).querySelectorAll('[data-ar-fn-section]').forEach(teardownSection);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      boot(document);
+    });
+  } else {
+    boot(document);
+  }
+
+  document.addEventListener('shopify:section:load', function (event) {
+    boot(event.target);
+  });
+
+  document.addEventListener('shopify:section:unload', function (event) {
+    teardown(event.target);
+  });
 })();
 
 

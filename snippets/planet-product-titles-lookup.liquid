@@ -45,32 +45,36 @@
 
   case ppt_key
     when 'surya'
-      assign ppt_market = 'Surya Attar for Sun Remedies Pure Long Lasting Saffron Sandalwood Fragrance for Confidence, Success & Leadership Astrological Ravivar Puja Ittar for Fame, Authority & Radiant Energy 6ml'
+      assign ppt_market = 'Surya Attar for Sun Remedies Pure Long Lasting Saffron Sandalwood Fragrance for Confidence, Success & Leadership Astrological Ravivar Puja Ittar for Fame, Authority & Radiant Energy'
       assign ppt_shopify = 'Surya Attar – Sun Attar for Confidence & Leadership | Tejas'
     when 'chandra'
-      assign ppt_market = 'Chandra Attar for Moon Remedies Pure Long Lasting White Floral Jasmine Fragrance for Peace, Calm & Emotional Balance Astrological Somvar Puja Ittar for Sleep, Intuition & Mental Clarity 6ml'
+      assign ppt_market = 'Chandra Attar for Moon Remedies Pure Long Lasting White Floral Jasmine Fragrance for Peace, Calm & Emotional Balance Astrological Somvar Puja Ittar for Sleep, Intuition & Mental Clarity'
       assign ppt_shopify = 'Som Rasa – Moon Attar for Calm & Emotional Balance | Chandra'
     when 'mangal'
-      assign ppt_market = 'Mangal Attar for Mars Remedies Pure Long Lasting Oud Spice Fragrance for Courage, Strength & Confidence Astrological Mangalvar Puja Ittar for Energy, Victory & Mangal Dosha Balance 6ml'
+      assign ppt_market = 'Mangal Attar for Mars Remedies Pure Long Lasting Oud Spice Fragrance for Courage, Strength & Confidence Astrological Mangalvar Puja Ittar for Energy, Victory & Mangal Dosha Balance'
       assign ppt_shopify = 'Veer Rasa – Mars Attar for Courage & Strength | Mangal'
     when 'budh'
-      assign ppt_market = 'Budh Attar for Mercury Remedies Pure Long Lasting Tulsi Vetiver Herbal Fragrance for Intelligence, Focus & Communication Astrological Budhvar Puja Ittar for Studies, Business & Sharp Memory 6ml'
+      assign ppt_market = 'Budh Attar for Mercury Remedies Pure Long Lasting Tulsi Vetiver Herbal Fragrance for Intelligence, Focus & Communication Astrological Budhvar Puja Ittar for Studies, Business & Sharp Memory'
       assign ppt_shopify = 'Vitpati – Mercury Attar for Focus & Communication | Budha'
     when 'guru'
-      assign ppt_market = 'Guru Attar for Jupiter Remedies Pure Long Lasting Saffron Champa Fragrance for Wealth, Wisdom & Prosperity Astrological Guruvar Puja Ittar for Marriage, Good Fortune & Spiritual Growth 6ml'
+      assign ppt_market = 'Guru Attar for Jupiter Remedies Pure Long Lasting Saffron Champa Fragrance for Wealth, Wisdom & Prosperity Astrological Guruvar Puja Ittar for Marriage, Good Fortune & Spiritual Growth'
       assign ppt_shopify = 'DevGuru – Jupiter Attar for Wisdom & Prosperity | Guru'
     when 'shukra'
-      assign ppt_market = 'Shukra Attar for Venus Remedies Pure Long Lasting Rose Tuberose Floral Fragrance for Love, Beauty & Attraction Astrological Shukravar Puja Ittar for Marriage, Romance & Prosperity 6ml'
+      assign ppt_market = 'Shukra Attar for Venus Remedies Pure Long Lasting Rose Tuberose Floral Fragrance for Love, Beauty & Attraction Astrological Shukravar Puja Ittar for Marriage, Romance & Prosperity'
       assign ppt_shopify = 'Saundarya Rasa – Venus Attar for Love & Attraction | Shukra'
     when 'shani'
-      assign ppt_market = 'Shani Attar for Saturn Remedies Pure Long Lasting Cedarwood Camphor Woody Fragrance for Discipline, Patience & Obstacle Relief Astrological Shanivar Puja Ittar for Sade Sati, Karma & Grounding 6ml'
+      assign ppt_market = 'Shani Attar for Saturn Remedies Pure Long Lasting Cedarwood Camphor Woody Fragrance for Discipline, Patience & Obstacle Relief Astrological Shanivar Puja Ittar for Sade Sati, Karma & Grounding'
       assign ppt_shopify = 'Shaneshwar – Saturn Attar for Discipline & Grounding | Shani'
     when 'rahu'
-      assign ppt_market = 'Rahu Attar for Rahu Dosha Remedies Pure Long Lasting Blue Lotus Patchouli Fragrance for Magnetism, Ambition & Success Astrological Puja Ittar for Career Growth, Foreign Luck & Protection 6ml'
+      assign ppt_market = 'Rahu Attar for Rahu Dosha Remedies Pure Long Lasting Blue Lotus Patchouli Fragrance for Magnetism, Ambition & Success Astrological Puja Ittar for Career Growth, Foreign Luck & Protection'
       assign ppt_shopify = 'Maya – Rahu Attar for Magnetism & Ambition | Rahu'
     when 'ketu'
-      assign ppt_market = 'Ketu Attar for Ketu Dosha Remedies Pure Long Lasting Gugal Kewra Sacred Smoke Fragrance for Meditation, Detachment & Moksha Astrological Puja Ittar for Spiritual Growth & Inner Peace 6ml'
+      assign ppt_market = 'Ketu Attar for Ketu Dosha Remedies Pure Long Lasting Gugal Kewra Sacred Smoke Fragrance for Meditation, Detachment & Moksha Astrological Puja Ittar for Spiritual Growth & Inner Peace'
       assign ppt_shopify = 'Nirvana – Ketu Attar for Meditation & Detachment | Ketu'
   endcase
+
+  if ppt_market != blank
+    assign ppt_market = ppt_market | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip
+  endif
 -%}
 {%- if ppt_market != blank and ppt_shopify != blank -%}{{ ppt_market }}|||{{ ppt_shopify }}{%- endif -%}

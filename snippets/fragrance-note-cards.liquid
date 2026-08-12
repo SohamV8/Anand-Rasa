@@ -6,7 +6,25 @@
   {%- capture fnc_raw -%}{%- render 'fragrance-notes-normalize', notes: notes_text -%}{%- endcapture -%}
   {%- assign fnc_raw = fnc_raw | strip -%}
   {%- assign fnc_list = fnc_raw | split: ',' -%}
-  <div class="ar-fn__cards" role="list">
+  {%- liquid
+    assign fnc_count = 0
+    for note in fnc_list
+      assign fnc_probe = note | strip
+      assign fnc_probe_lead = fnc_probe | slice: 0, 1
+      if fnc_probe_lead == ':'
+        assign fnc_probe = fnc_probe | slice: 1, 10000 | strip
+      endif
+      if fnc_probe != blank
+        assign fnc_count = fnc_count | plus: 1
+      endif
+    endfor
+  -%}
+  <div
+    class="ar-fn__cards"
+    role="list"
+    data-ar-fn-cards
+    data-ar-fn-note-count="{{ fnc_count }}"
+  >
     {%- for note in fnc_list -%}
       {%- assign fnc_label = note | strip -%}
       {%- assign fnc_lead = fnc_label | slice: 0, 1 -%}
@@ -16,7 +34,12 @@
       {%- if fnc_label != blank -%}
         {%- capture fnc_img -%}{%- render 'fragrance-note-image-lookup', note_name: fnc_label -%}{%- endcapture -%}
         {%- assign fnc_img = fnc_img | strip -%}
-        <div class="ar-fn__card{% if fnc_img == blank %} ar-fn__card--text{% endif %}" role="listitem" tabindex="0" style="--ar-fn-card-i: {{ forloop.index0 }};">
+        <div
+          class="ar-fn__card{% if fnc_img == blank %} ar-fn__card--text{% endif %}"
+          role="listitem"
+          tabindex="0"
+          style="--ar-fn-card-i: {{ forloop.index0 }};"
+        >
           {%- if fnc_img != blank -%}
             <figure class="ar-fn__card-media">
               <span class="ar-fn__card-glow" aria-hidden="true"></span>
@@ -24,9 +47,9 @@
                 class="ar-fn__card-img"
                 src="{{ fnc_img | asset_url }}"
                 alt="{{ fnc_label | escape }}"
-                width="160"
-                height="160"
-                loading="lazy"
+                width="72"
+                height="72"
+                loading="{% if forloop.index <= 3 %}eager{% else %}lazy{% endif %}"
                 decoding="async"
               >
             </figure>

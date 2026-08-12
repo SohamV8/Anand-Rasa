@@ -345,14 +345,14 @@
   .aip-zoom-modal__close:hover { opacity: 1; }
 
   /* Sticky bar */
-  .aip-sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line-strong); padding: 16px 20px; z-index: 99; box-shadow: 0 -4px 40px rgba(0, 0, 0, 0.06); }
+  .aip-sticky-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line-strong); padding: 16px 20px calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 99; box-shadow: 0 -4px 40px rgba(0, 0, 0, 0.06); }
   @media (max-width: 768px) { .aip-sticky-bar { display: flex; align-items: center; gap: 16px; } }
   .aip-sticky-bar__info { flex: 1; min-width: 0; }
   .aip-sticky-bar__name { font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.02em; }
   .aip-sticky-bar__price { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
   .aip-sticky-bar__btn {
     padding: 14px 20px; font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
-    background: var(--ink); color: #ffffff; border: 1px solid var(--ink); border-radius: 0; white-space: nowrap; flex-shrink: 0;
+    background: var(--ink); color: #ffffff; border: 1px solid var(--ink); border-radius: 0; white-space: nowrap; flex-shrink: 0; min-height: 44px;
   }
   .aip-sticky-bar__btn:disabled { background: #d1d5db; border-color: #d1d5db; color: #ffffff; cursor: not-allowed; }
 </style>

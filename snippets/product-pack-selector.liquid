@@ -1,0 +1,226 @@
+{%- comment -%}
+  Choose Your Pack — quantity bundle selector for main-product section.
+  Syncs with existing #Quantity-{section.id} input (form="{{ product_form_id }}").
+  Size-aware display for 6ml / 12ml variants.
+
+  Accepts: block, section, product, product_form_id
+{%- endcomment -%}
+
+{%- unless block.settings.enable -%}
+  {%- if request.design_mode -%}
+    <p class="visually-hidden" {{ block.shopify_attributes }}>Pack selector disabled in block settings.</p>
+  {%- endif -%}
+{%- else -%}
+  {%- liquid
+    assign ar_variant = product.selected_or_first_available_variant
+    assign ar_unit = ar_variant.price
+
+    assign ar_size_scope = ar_variant.title | append: ' ' | append: ar_variant.option1 | append: ' ' | append: ar_variant.option2 | append: ' ' | append: ar_variant.option3 | append: ' ' | append: product.title | downcase
+    assign ar_size_label = ''
+    if ar_size_scope contains '12ml' or ar_size_scope contains '12 ml'
+      assign ar_size_label = '12ml'
+    elsif ar_size_scope contains '6ml' or ar_size_scope contains '6 ml'
+      assign ar_size_label = '6ml'
+    endif
+
+    assign ar_pack_2_6 = block.settings.pack_2_total_6ml | default: block.settings.pack_2_total | default: 1099
+    assign ar_pack_3_6 = block.settings.pack_3_total_6ml | default: block.settings.pack_3_total | default: 1499
+    assign ar_pack_2_12 = block.settings.pack_2_total_12ml | default: 1999
+    assign ar_pack_3_12 = block.settings.pack_3_total_12ml | default: 2999
+
+    if ar_size_label == '12ml'
+      assign ar_pack_2_rupees = ar_pack_2_12
+      assign ar_pack_3_rupees = ar_pack_3_12
+    else
+      assign ar_pack_2_rupees = ar_pack_2_6
+      assign ar_pack_3_rupees = ar_pack_3_6
+    endif
+
+    assign ar_pack_2_total = ar_pack_2_rupees | times: 100
+    assign ar_pack_3_total = ar_pack_3_rupees | times: 100
+
+    if ar_pack_2_total <= 0
+      assign ar_pack_2_total = ar_unit | times: 2
+    endif
+    if ar_pack_3_total <= 0
+      assign ar_pack_3_total = ar_unit | times: 3
+    endif
+
+    assign ar_retail_2 = ar_unit | times: 2
+    assign ar_retail_3 = ar_unit | times: 3
+
+    assign ar_save_2 = ar_retail_2 | minus: ar_pack_2_total
+    assign ar_save_3 = ar_retail_3 | minus: ar_pack_3_total
+    if ar_save_2 <= 0
+      assign ar_save_2 = 0
+    endif
+    if ar_save_3 <= 0
+      assign ar_save_3 = 0
+    endif
+
+    assign ar_each_1 = ar_unit
+    assign ar_each_2 = ar_pack_2_total | divided_by: 2
+    assign ar_each_3 = ar_pack_3_total | divided_by: 3
+
+    assign ar_group_id = 'ar-pack-group-' | append: section.id
+    assign ar_heading_id = 'ar-pack-heading-' | append: section.id
+
+    assign ar_label_1 = block.settings.pack_1_label | default: 'Single'
+    assign ar_label_2 = block.settings.pack_2_label | default: 'Pack of 2'
+    assign ar_label_3 = block.settings.pack_3_label | default: 'Pack of 3'
+    if ar_size_label != blank
+      assign ar_label_1_display = ar_label_1 | append: ' · ' | append: ar_size_label
+      assign ar_label_2_display = ar_label_2 | append: ' · ' | append: ar_size_label
+      assign ar_label_3_display = ar_label_3 | append: ' · ' | append: ar_size_label
+    else
+      assign ar_label_1_display = ar_label_1
+      assign ar_label_2_display = ar_label_2
+      assign ar_label_3_display = ar_label_3
+    endif
+  -%}
+
+  {{ 'product-pack-selector.css' | asset_url | stylesheet_tag }}
+
+  {%- if block.settings.hide_quantity_selector -%}
+    <style>
+      #Quantity-Form-{{ section.id }} {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+    </style>
+  {%- endif -%}
+
+  <script type="application/json" data-ar-pack-config>
+    {
+      "sectionId": {{ section.id | json }},
+      "moneyFormat": {{ shop.money_format | json }},
+      "sizes": {
+        "6ml": {
+          "pack2TotalCents": {{ ar_pack_2_6 | times: 100 | json }},
+          "pack3TotalCents": {{ ar_pack_3_6 | times: 100 | json }}
+        },
+        "12ml": {
+          "pack2TotalCents": {{ ar_pack_2_12 | times: 100 | json }},
+          "pack3TotalCents": {{ ar_pack_3_12 | times: 100 | json }}
+        }
+      },
+      "activeSize": {{ ar_size_label | json }},
+      "pack2TotalCents": {{ ar_pack_2_total | json }},
+      "pack3TotalCents": {{ ar_pack_3_total | json }}
+    }
+  </script>
+
+  <div
+    class="ar-pack{% if block.settings.hide_quantity_selector %} ar-pack--qty-hidden{% endif %}"
+    data-ar-pack-selector
+    {{ block.shopify_attributes }}
+  >
+    <div class="ar-pack__header">
+      <h2 class="ar-pack__heading" id="{{ ar_heading_id }}">
+        {{ block.settings.heading | default: 'Choose your pack' | escape }}
+      </h2>
+      <p class="ar-pack__size-note" data-ar-pack-size-note{% if ar_size_label == blank %} hidden{% endif %}>
+        {%- if ar_size_label != blank -%}For {{ ar_size_label }}{%- endif -%}
+      </p>
+    </div>
+
+    <ul class="ar-pack__list" role="radiogroup" aria-labelledby="{{ ar_heading_id }}">
+      {%- comment -%} Single {%- endcomment -%}
+      <li data-ar-pack-row="1">
+        <label class="ar-pack__option">
+          <input
+            class="ar-pack__input"
+            type="radio"
+            name="{{ ar_group_id }}"
+            value="1"
+            checked
+            aria-label="{{ ar_label_1_display | escape }}, {{ ar_each_1 | money }} each, total {{ ar_unit | money }}"
+          >
+          <span class="ar-pack__card">
+            <span class="ar-pack__radio" aria-hidden="true"></span>
+            <span class="ar-pack__main">
+              <span class="ar-pack__title-row">
+                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_1_display | escape }}</span>
+              </span>
+              <span class="ar-pack__meta">
+                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_1 | money }} each</span>
+              </span>
+            </span>
+            <span class="ar-pack__total" data-ar-pack-total>{{ ar_unit | money }}</span>
+          </span>
+        </label>
+      </li>
+
+      {%- comment -%} Pack of 2 {%- endcomment -%}
+      <li data-ar-pack-row="2">
+        <label class="ar-pack__option">
+          <input
+            class="ar-pack__input"
+            type="radio"
+            name="{{ ar_group_id }}"
+            value="2"
+            aria-label="{{ ar_label_2_display | escape }}, {{ ar_each_2 | money }} each, total {{ ar_pack_2_total | money }}{% if ar_save_2 > 0 %}, save {{ ar_save_2 | money }}{% endif %}"
+          >
+          <span class="ar-pack__card">
+            <span class="ar-pack__radio" aria-hidden="true"></span>
+            <span class="ar-pack__main">
+              <span class="ar-pack__title-row">
+                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_2_display | escape }}</span>
+                {%- if block.settings.show_popular_badge -%}
+                  <span class="ar-pack__badge ar-pack__badge--popular">{{ block.settings.popular_badge_text | default: 'MOST POPULAR' | escape }}</span>
+                {%- endif -%}
+              </span>
+              <span class="ar-pack__meta">
+                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_2 | money }} each</span>
+                <span class="ar-pack__save" data-ar-pack-save{% if ar_save_2 <= 0 %} hidden{% endif %}>
+                  {%- if ar_save_2 > 0 -%}Save {{ ar_save_2 | money }}{%- endif -%}
+                </span>
+              </span>
+            </span>
+            <span class="ar-pack__total" data-ar-pack-total>{{ ar_pack_2_total | money }}</span>
+          </span>
+        </label>
+      </li>
+
+      {%- comment -%} Pack of 3 {%- endcomment -%}
+      <li data-ar-pack-row="3">
+        <label class="ar-pack__option">
+          <input
+            class="ar-pack__input"
+            type="radio"
+            name="{{ ar_group_id }}"
+            value="3"
+            aria-label="{{ ar_label_3_display | escape }}, {{ ar_each_3 | money }} each, total {{ ar_pack_3_total | money }}{% if ar_save_3 > 0 %}, save {{ ar_save_3 | money }}{% endif %}"
+          >
+          <span class="ar-pack__card">
+            <span class="ar-pack__radio" aria-hidden="true"></span>
+            <span class="ar-pack__main">
+              <span class="ar-pack__title-row">
+                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_3_display | escape }}</span>
+                {%- if block.settings.show_value_badge -%}
+                  <span class="ar-pack__badge ar-pack__badge--value">{{ block.settings.value_badge_text | default: 'BEST VALUE' | escape }}</span>
+                {%- endif -%}
+              </span>
+              <span class="ar-pack__meta">
+                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_3 | money }} each</span>
+                <span class="ar-pack__save" data-ar-pack-save{% if ar_save_3 <= 0 %} hidden{% endif %}>
+                  {%- if ar_save_3 > 0 -%}Save {{ ar_save_3 | money }}{%- endif -%}
+                </span>
+              </span>
+            </span>
+            <span class="ar-pack__total" data-ar-pack-total>{{ ar_pack_3_total | money }}</span>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <script src="{{ 'product-pack-selector.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}

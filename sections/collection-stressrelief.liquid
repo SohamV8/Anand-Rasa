@@ -212,7 +212,7 @@
                 <p class="arc-card__type">{{ product.type | default: 'Attar' }}</p>
                 <a href="{{ product.url }}"><h3 class="arc-card__name">{{ product.title }}</h3></a>
                 {%- if product.description != blank -%}
-                  <p class="arc-card__desc">{{ product.description | strip_html | truncate: 80 }}</p>
+                  <p class="arc-card__desc">{{ product.description | strip_html | truncate: 80 | escape }}</p>
                 {%- endif -%}
                 <div class="arc-card__foot">
                   <div class="arc-card__price-wrap">

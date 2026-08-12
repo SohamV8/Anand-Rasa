@@ -22,8 +22,9 @@
 
   {%- if aps_planet_titles contains '|||' -%}
     {%- assign aps_planet_parts = aps_planet_titles | split: '|||' -%}
+    {%- assign aps_marketplace_text = aps_planet_parts[0] | strip | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip -%}
     <div class="ar-story-block ar-story-block--planet" data-attar-story data-planet-titles>
-      <p class="ar-story-marketplace">{{ aps_planet_parts[0] | escape }}</p>
+      <p class="ar-story-marketplace">{{ aps_marketplace_text | escape }}</p>
       <div class="ar-divider ar-divider--planet" aria-hidden="true">
         <span>✺</span>
       </div>
@@ -583,6 +584,14 @@
   -%}
 
   {%- if aps_intro != blank or aps_body != blank -%}
+    {%- liquid
+      if aps_intro != blank
+        assign aps_intro = aps_intro | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip
+      endif
+      if aps_body != blank
+        assign aps_body = aps_body | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip
+      endif
+    -%}
     <div class="ar-story-block" data-attar-story>
       {%- if aps_intro != blank -%}
         <p class="ar-story-intro">{{ aps_intro | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>

@@ -304,12 +304,12 @@
   .lux-final__btn:hover { background: transparent; color: var(--white); transform: translateY(-1px); }
 
   /* ── MOBILE STICKY ── */
-  .lux-sticky { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--g9); padding: 12px 20px; z-index: 100; box-shadow: 0 -4px 24px rgba(0,0,0,.08); align-items: center; gap: 16px; }
+  .lux-sticky { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 1px solid var(--g9); padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 100; box-shadow: 0 -4px 24px rgba(0,0,0,.08); align-items: center; gap: 16px; }
   @media(max-width:768px) { .lux-sticky { display: flex; } }
   .lux-sticky__info { flex: 1; min-width: 0; }
   .lux-sticky__name { font-family: var(--serif); font-size: 13px; color: var(--black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .lux-sticky__price { font-size: 12px; color: var(--g6); margin-top: 2px; }
-  .lux-sticky__btn { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; padding: 13px 24px; border: none; white-space: nowrap; flex-shrink: 0; }
+  .lux-sticky__btn { background: var(--black); color: var(--white); font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; padding: 13px 24px; border: none; white-space: nowrap; flex-shrink: 0; min-height: 44px; }
 </style>
 
 <div class="lux">
@@ -375,16 +375,46 @@
 
       <div class="lux-divider"></div>
 
-      {%- comment -%} Rating {%- endcomment -%}
-      {%- assign rating_val = section.settings.rating | default: 5 -%}
-      <div class="lux-rating">
-        <div class="lux-rating__stars">
-          {%- for i in (1..5) -%}
-            <span class="lux-rating__star{% if i > rating_val %}--off{% endif %}">&#9733;</span>
-          {%- endfor -%}
+      {%- comment -%} Rating — Shopify Product Reviews metafields only (matches JSON-LD) {%- endcomment -%}
+      {%- liquid
+        assign lux_rating_value = blank
+        assign lux_rating_count = blank
+        assign lux_rating_best = 5
+
+        if product.metafields.reviews.rating.value != blank
+          if product.metafields.reviews.rating.value.rating != blank
+            assign lux_rating_value = product.metafields.reviews.rating.value.rating
+          else
+            assign lux_rating_value = product.metafields.reviews.rating.value
+          endif
+          if product.metafields.reviews.rating.value.scale_max != blank
+            assign lux_rating_best = product.metafields.reviews.rating.value.scale_max
+          endif
+        endif
+
+        if product.metafields.reviews.rating_count.value != blank
+          assign lux_rating_count = product.metafields.reviews.rating_count.value
+        elsif product.metafields.reviews.rating_count != blank
+          assign lux_rating_count = product.metafields.reviews.rating_count
+        endif
+
+        assign lux_show_rating = false
+        if lux_rating_value != blank and lux_rating_count != blank and lux_rating_count > 0
+          assign lux_show_rating = true
+        endif
+
+        assign lux_stars_full = lux_rating_value | floor
+      -%}
+      {%- if lux_show_rating -%}
+        <div class="lux-rating" role="img" aria-label="{{ lux_rating_value }} out of {{ lux_rating_best }} stars, {{ lux_rating_count }} reviews">
+          <div class="lux-rating__stars" aria-hidden="true">
+            {%- for i in (1..5) -%}
+              <span class="lux-rating__star{% if i > lux_stars_full %}--off{% endif %}">&#9733;</span>
+            {%- endfor -%}
+          </div>
+          <span class="lux-rating__count">{{ lux_rating_value }}/{{ lux_rating_best }} · {{ lux_rating_count }} Reviews</span>
         </div>
-        <span class="lux-rating__count">{{ section.settings.review_count | default: '0' }} Reviews</span>
-      </div>
+      {%- endif -%}
 
       {%- comment -%} Price {%- endcomment -%}
       <div class="lux-price" id="lux-price-block">

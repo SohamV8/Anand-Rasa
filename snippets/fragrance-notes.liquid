@@ -146,38 +146,186 @@
   -%}
 
   {%- if fn_count > 0 -%}
+    {%- liquid
+      assign fn_default_tab = ''
+      if fn_top != blank
+        assign fn_default_tab = 'top'
+      elsif fn_mid != blank
+        assign fn_default_tab = 'mid'
+      elsif fn_base != blank
+        assign fn_default_tab = 'base'
+      endif
+
+      assign fn_uid = product.id
+    -%}
 
     <section
       class="ar-fn ar-fn--full js-ar-fn"
-      aria-labelledby="ar-fn-title-{{ product.id }}"
+      aria-labelledby="ar-fn-title-{{ fn_uid }}"
+      data-ar-fn-section
     >
       <div class="ar-fn__header">
-        <h2 id="ar-fn-title-{{ product.id }}" class="ar-fn__title">Fragrance Notes</h2>
+        <div class="ar-fn__header-row">
+          <h2 id="ar-fn-title-{{ fn_uid }}" class="ar-fn__title">Fragrance Notes</h2>
+          <button
+            type="button"
+            class="ar-fn__see-all"
+            data-ar-fn-see-all
+            aria-haspopup="dialog"
+            aria-controls="ar-fn-modal-{{ fn_uid }}"
+          >
+            See all
+          </button>
+        </div>
         <p class="ar-fn__subtitle">A harmonious blend crafted with the finest natural notes.</p>
+      </div>
+
+      <div
+        class="ar-fn__tabs"
+        role="tablist"
+        aria-label="Fragrance note categories"
+        data-ar-fn-tabs
+      >
+        {%- if fn_top != blank -%}
+          <button
+            type="button"
+            class="ar-fn__tab{% if fn_default_tab == 'top' %} ar-fn__tab--active{% endif %}"
+            role="tab"
+            id="ar-fn-tab-top-{{ fn_uid }}"
+            aria-controls="ar-fn-panel-top-{{ fn_uid }}"
+            aria-selected="{% if fn_default_tab == 'top' %}true{% else %}false{% endif %}"
+            tabindex="{% if fn_default_tab == 'top' %}0{% else %}-1{% endif %}"
+            data-ar-fn-tab="top"
+          >
+            Top
+          </button>
+        {%- endif -%}
+        {%- if fn_mid != blank -%}
+          <button
+            type="button"
+            class="ar-fn__tab{% if fn_default_tab == 'mid' %} ar-fn__tab--active{% endif %}"
+            role="tab"
+            id="ar-fn-tab-mid-{{ fn_uid }}"
+            aria-controls="ar-fn-panel-mid-{{ fn_uid }}"
+            aria-selected="{% if fn_default_tab == 'mid' %}true{% else %}false{% endif %}"
+            tabindex="{% if fn_default_tab == 'mid' %}0{% else %}-1{% endif %}"
+            data-ar-fn-tab="mid"
+          >
+            Heart
+          </button>
+        {%- endif -%}
+        {%- if fn_base != blank -%}
+          <button
+            type="button"
+            class="ar-fn__tab{% if fn_default_tab == 'base' %} ar-fn__tab--active{% endif %}"
+            role="tab"
+            id="ar-fn-tab-base-{{ fn_uid }}"
+            aria-controls="ar-fn-panel-base-{{ fn_uid }}"
+            aria-selected="{% if fn_default_tab == 'base' %}true{% else %}false{% endif %}"
+            tabindex="{% if fn_default_tab == 'base' %}0{% else %}-1{% endif %}"
+            data-ar-fn-tab="base"
+          >
+            Base
+          </button>
+        {%- endif -%}
       </div>
 
       <div class="ar-fn__frame" style="--ar-fn-cols: {{ fn_count }};">
         <div class="ar-fn__grid">
           {%- if fn_top != blank -%}
-            <article class="ar-fn__cell ar-fn__cell--top">
+            <article
+              class="ar-fn__cell ar-fn__cell--top{% if fn_default_tab == 'top' %} ar-fn__cell--active{% endif %}"
+              role="tabpanel"
+              id="ar-fn-panel-top-{{ fn_uid }}"
+              aria-labelledby="ar-fn-tab-top-{{ fn_uid }}"
+              data-ar-fn-panel="top"
+            >
               <h3 class="ar-fn__label">Top Notes</h3>
               {% render 'fragrance-note-cards', notes_text: fn_top, tier: 'top' %}
             </article>
           {%- endif -%}
 
           {%- if fn_mid != blank -%}
-            <article class="ar-fn__cell ar-fn__cell--mid">
+            <article
+              class="ar-fn__cell ar-fn__cell--mid{% if fn_default_tab == 'mid' %} ar-fn__cell--active{% endif %}"
+              role="tabpanel"
+              id="ar-fn-panel-mid-{{ fn_uid }}"
+              aria-labelledby="ar-fn-tab-mid-{{ fn_uid }}"
+              data-ar-fn-panel="mid"
+            >
               <h3 class="ar-fn__label">Heart Notes</h3>
               {% render 'fragrance-note-cards', notes_text: fn_mid, tier: 'mid' %}
             </article>
           {%- endif -%}
 
           {%- if fn_base != blank -%}
-            <article class="ar-fn__cell ar-fn__cell--base">
+            <article
+              class="ar-fn__cell ar-fn__cell--base{% if fn_default_tab == 'base' %} ar-fn__cell--active{% endif %}"
+              role="tabpanel"
+              id="ar-fn-panel-base-{{ fn_uid }}"
+              aria-labelledby="ar-fn-tab-base-{{ fn_uid }}"
+              data-ar-fn-panel="base"
+            >
               <h3 class="ar-fn__label">Base Notes</h3>
               {% render 'fragrance-note-cards', notes_text: fn_base, tier: 'base' %}
             </article>
           {%- endif -%}
+        </div>
+      </div>
+
+      <div
+        class="ar-fn__modal"
+        id="ar-fn-modal-{{ fn_uid }}"
+        data-ar-fn-modal
+        hidden
+        aria-hidden="true"
+      >
+        <button
+          type="button"
+          class="ar-fn__modal-backdrop"
+          data-ar-fn-modal-close
+          aria-label="Close fragrance notes"
+          tabindex="-1"
+        ></button>
+        <div
+          class="ar-fn__modal-sheet"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="ar-fn-modal-title-{{ fn_uid }}"
+          tabindex="-1"
+        >
+          <div class="ar-fn__modal-grabber" aria-hidden="true"></div>
+          <div class="ar-fn__modal-header">
+            <h2 class="ar-fn__modal-title" id="ar-fn-modal-title-{{ fn_uid }}">Fragrance Notes</h2>
+            <button
+              type="button"
+              class="ar-fn__modal-close"
+              data-ar-fn-modal-close
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="ar-fn__modal-body">
+            {%- if fn_top != blank -%}
+              <section class="ar-fn__modal-tier">
+                <h3 class="ar-fn__modal-tier-label">Top</h3>
+                {% render 'fragrance-note-cards', notes_text: fn_top, tier: 'top' %}
+              </section>
+            {%- endif -%}
+            {%- if fn_mid != blank -%}
+              <section class="ar-fn__modal-tier">
+                <h3 class="ar-fn__modal-tier-label">Heart</h3>
+                {% render 'fragrance-note-cards', notes_text: fn_mid, tier: 'mid' %}
+              </section>
+            {%- endif -%}
+            {%- if fn_base != blank -%}
+              <section class="ar-fn__modal-tier">
+                <h3 class="ar-fn__modal-tier-label">Base</h3>
+                {% render 'fragrance-note-cards', notes_text: fn_base, tier: 'base' %}
+              </section>
+            {%- endif -%}
+          </div>
         </div>
       </div>
     </section>

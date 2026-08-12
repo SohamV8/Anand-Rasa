@@ -1,0 +1,114 @@
+{%- comment -%}
+  Product review badge — Shopify Product Reviews metafields only.
+  Matches schema-product-core aggregateRating source.
+  Renders nothing when rating/count are unavailable (no hardcoded stats).
+{%- endcomment -%}
+{%- liquid
+  assign ar_rating_value = blank
+  assign ar_rating_count = blank
+  assign ar_rating_best = 5
+
+  if product.metafields.reviews.rating.value != blank
+    if product.metafields.reviews.rating.value.rating != blank
+      assign ar_rating_value = product.metafields.reviews.rating.value.rating
+    else
+      assign ar_rating_value = product.metafields.reviews.rating.value
+    endif
+    if product.metafields.reviews.rating.value.scale_max != blank
+      assign ar_rating_best = product.metafields.reviews.rating.value.scale_max
+    endif
+  endif
+
+  if product.metafields.reviews.rating_count.value != blank
+    assign ar_rating_count = product.metafields.reviews.rating_count.value
+  elsif product.metafields.reviews.rating_count != blank
+    assign ar_rating_count = product.metafields.reviews.rating_count
+  endif
+
+  assign ar_show_badge = false
+  if ar_rating_value != blank and ar_rating_count != blank and ar_rating_count > 0
+    assign ar_show_badge = true
+  endif
+
+  assign ar_stars_full = ar_rating_value | floor
+-%}
+
+{%- if ar_show_badge -%}
+  <div class="ar-product-header">
+    <div
+      class="ar-trust-badge"
+      role="img"
+      aria-label="{{ ar_rating_value }} out of {{ ar_rating_best }} stars, {{ ar_rating_count }} reviews"
+    >
+      <span class="ar-trust-badge__stars" aria-hidden="true">
+        {%- for i in (1..5) -%}
+          <span class="ar-trust-badge__star{% if i > ar_stars_full %} ar-trust-badge__star--off{% endif %}">&#9733;</span>
+        {%- endfor -%}
+      </span>
+      <span class="ar-trust-badge__text">
+        <strong>{{ ar_rating_value }}</strong>/{{ ar_rating_best }}
+      </span>
+      <span class="ar-trust-badge__dot" aria-hidden="true">&#8226;</span>
+      <span class="ar-trust-badge__text">
+        <strong>{{ ar_rating_count }}</strong> Reviews
+      </span>
+    </div>
+  </div>
+
+  <style>
+    .ar-trust-badge {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #4a4038;
+      line-height: 1;
+    }
+
+    .ar-trust-badge__stars {
+      display: inline-flex;
+      gap: 2px;
+      color: #c8a03a;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .ar-trust-badge__star--off {
+      opacity: 0.28;
+    }
+
+    .ar-trust-badge__dot {
+      color: #c8a03a;
+      font-size: 14px;
+    }
+
+    .ar-trust-badge strong {
+      color: #c8a03a;
+      font-weight: 500;
+    }
+
+    .product__title,
+    .product-title,
+    h1.product__title,
+    .product-single__title {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      line-height: 1.05;
+    }
+
+    @media (max-width: 768px) {
+      .ar-trust-badge {
+        gap: 8px;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .ar-trust-badge__stars {
+        font-size: 16px;
+      }
+    }
+  </style>
+{%- endif -%}

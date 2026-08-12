@@ -1,0 +1,492 @@
+{%- comment -%}
+  Anand Rasa — promotional popup (global overlay section)
+  Split layout · Shopify customer/contact capture · Theme Editor configurable
+{%- endcomment -%}
+
+{%- unless section.settings.enable_popup -%}
+  {%- if request.design_mode -%}
+    <div class="ar-promo-popup-editor-note" style="display:none;" data-ar-promo-disabled>
+      Promotional popup is disabled. Enable it in section settings.
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {%- liquid
+    assign ar_skip_popup = false
+    if request.page_type == 'cart' or request.page_type == 'password'
+      assign ar_skip_popup = true
+    endif
+
+    assign ar_privacy_url = shop.privacy_policy.url | default: '/policies/privacy-policy'
+    assign ar_terms_url = shop.terms_of_service.url | default: '/policies/terms-of-service'
+    assign ar_shop_url = section.settings.shop_url | default: routes.all_products_collection_url
+
+    assign ar_desktop_image = section.settings.desktop_image
+    assign ar_mobile_image = section.settings.mobile_image | default: ar_desktop_image
+
+    assign ar_show_phone = section.settings.show_phone_field
+    assign ar_show_email = section.settings.show_email_field
+    if ar_show_phone == false and ar_show_email == false
+      assign ar_show_email = true
+    endif
+  -%}
+
+  {{ 'ar-promo-popup.css' | asset_url | stylesheet_tag }}
+
+  {%- capture ar_promo_config -%}
+{
+  "enabled": true,
+  "designMode": {% if request.design_mode %}true{% else %}false{% endif %},
+  "skipPage": {% if ar_skip_popup %}true{% else %}false{% endif %},
+  "sectionId": {{ section.id | json }},
+  "delayMs": {{ section.settings.delay_seconds | times: 1000 | json }},
+  "frequency": {{ section.settings.frequency_mode | json }},
+  "frequencyDays": {{ section.settings.frequency_days | json }},
+  "showPhone": {{ ar_show_phone | json }},
+  "showEmail": {{ ar_show_email | json }},
+  "emailRequired": {{ section.settings.email_required | json }},
+  "showConsent": {{ section.settings.show_consent_checkbox | json }},
+  "discountCode": {{ section.settings.discount_code | strip | json }},
+  "heading": {{ section.settings.heading | strip | json }},
+  "customerTags": "newsletter, promo-popup",
+  "ctaText": {{ section.settings.cta_text | default: 'Claim offer' | json }},
+  "submittingText": {{ section.settings.submitting_text | default: 'Submitting…' | json }},
+  "copyText": {{ section.settings.copy_button_text | default: 'Copy code' | json }},
+  "copiedText": {{ section.settings.copied_button_text | default: 'Copied' | json }}
+}
+  {%- endcapture -%}
+
+  <script type="application/json" data-ar-promo-config>{{ ar_promo_config | strip }}</script>
+
+  <div
+    class="ar-promo-popup"
+    data-ar-promo-popup
+    hidden
+    aria-hidden="true"
+    style="
+      --ar-promo-bg-custom: {{ section.settings.background_color }};
+      --ar-promo-text-custom: {{ section.settings.text_color }};
+      --ar-promo-btn-custom: {{ section.settings.button_color }};
+      --ar-promo-btn-text-custom: {{ section.settings.button_text_color }};
+      --ar-promo-radius: {{ section.settings.border_radius }}px;
+    "
+  >
+    <div class="ar-promo-popup__backdrop" data-ar-promo-backdrop aria-hidden="true"></div>
+
+    <div
+      class="ar-promo-popup__panel"
+      data-ar-promo-panel
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ar-promo-heading-{{ section.id }}"
+      aria-describedby="ar-promo-desc-{{ section.id }}"
+    >
+      <button
+        type="button"
+        class="ar-promo-popup__close"
+        data-ar-promo-close
+        aria-label="Close promotional offer"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">
+          <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="ar-promo-popup__media">
+        <div class="ar-promo-popup__media-fallback" aria-hidden="true"></div>
+        {%- if ar_desktop_image != blank -%}
+          <picture>
+            {%- if ar_mobile_image != blank and ar_mobile_image != ar_desktop_image -%}
+              <source
+                media="(max-width: 768px)"
+                srcset="{{ ar_mobile_image | image_url: width: 600 }} 600w, {{ ar_mobile_image | image_url: width: 900 }} 900w"
+                sizes="100vw"
+              >
+            {%- endif -%}
+            <img
+              class="ar-promo-popup__image"
+              data-ar-promo-image
+              data-src="{{ ar_desktop_image | image_url: width: 900 }}"
+              alt="{{ ar_desktop_image.alt | default: section.settings.heading | escape }}"
+              width="{{ ar_desktop_image.width | default: 900 }}"
+              height="{{ ar_desktop_image.height | default: 1125 }}"
+              decoding="async"
+              loading="lazy"
+            >
+          </picture>
+        {%- endif -%}
+      </div>
+
+      <div class="ar-promo-popup__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="ar-promo-popup__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ar-promo-popup__heading" id="ar-promo-heading-{{ section.id }}">
+            {{ section.settings.heading | escape }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <p class="ar-promo-popup__message" id="ar-promo-desc-{{ section.id }}">
+            {{ section.settings.description | escape }}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.offer_text != blank -%}
+          <div class="ar-promo-popup__offer">
+            {{ section.settings.offer_text }}
+            {%- if section.settings.discount_code != blank -%}
+              <strong> {{ section.settings.discount_code | escape }}</strong>
+            {%- endif -%}
+            {%- if section.settings.expiry_text != blank -%}
+              <span> — {{ section.settings.expiry_text | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="ar-promo-popup__form-wrap">
+          <form class="ar-promo-popup__form" data-ar-promo-form novalidate>
+            {%- if ar_show_phone -%}
+              <div class="ar-promo-popup__field">
+                <label class="ar-promo-popup__label" for="ar-promo-phone-{{ section.id }}">
+                  Mobile number
+                </label>
+                <div class="ar-promo-popup__input-row">
+                  <span class="ar-promo-popup__prefix" aria-hidden="true">+91</span>
+                  <input
+                    class="ar-promo-popup__input"
+                    id="ar-promo-phone-{{ section.id }}"
+                    type="tel"
+                    name="phone"
+                    data-ar-promo-phone
+                    inputmode="numeric"
+                    autocomplete="tel-national"
+                    placeholder="Enter mobile number"
+                    {% if ar_show_phone and ar_show_email == false %}required{% endif %}
+                    aria-describedby="ar-promo-phone-error-{{ section.id }}"
+                  >
+                </div>
+                <p class="ar-promo-popup__error" id="ar-promo-phone-error-{{ section.id }}" data-ar-promo-phone-error role="alert"></p>
+              </div>
+            {%- endif -%}
+
+            {%- if ar_show_email -%}
+              <div class="ar-promo-popup__field">
+                <label class="ar-promo-popup__label" for="ar-promo-email-{{ section.id }}">
+                  Email address
+                </label>
+                <input
+                  class="ar-promo-popup__input"
+                  id="ar-promo-email-{{ section.id }}"
+                  type="email"
+                  name="email"
+                  data-ar-promo-email
+                  autocomplete="email"
+                  placeholder="Enter email address"
+                  {% if section.settings.email_required or ar_show_email and ar_show_phone == false %}required{% endif %}
+                  aria-describedby="ar-promo-email-error-{{ section.id }}"
+                >
+                <p class="ar-promo-popup__error" id="ar-promo-email-error-{{ section.id }}" data-ar-promo-email-error role="alert"></p>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.show_consent_checkbox -%}
+              <label class="ar-promo-popup__consent">
+                <input type="checkbox" data-ar-promo-consent {% if section.settings.consent_checked %}checked{% endif %}>
+                <span>{{ section.settings.consent_text | default: 'Notify me about offers and new arrivals.' | escape }}</span>
+              </label>
+            {%- endif -%}
+
+            <p class="ar-promo-popup__error" data-ar-promo-form-error role="alert"></p>
+
+            <button type="submit" class="ar-promo-popup__submit" data-ar-promo-submit>
+              {{ section.settings.cta_text | default: 'Claim offer' | escape }}
+            </button>
+
+            <p class="ar-promo-popup__legal">
+              {{ section.settings.legal_text | default: 'By continuing, you agree to our' | escape }}
+              <a href="{{ ar_privacy_url }}">Privacy Policy</a>
+              and
+              <a href="{{ ar_terms_url }}">Terms of Service</a>.
+            </p>
+          </form>
+        </div>
+
+        <div class="ar-promo-popup__success" data-ar-promo-success>
+          <span class="ar-promo-popup__success-icon" aria-hidden="true">✓</span>
+          <h3 class="ar-promo-popup__success-title">
+            {{ section.settings.success_heading | default: 'Your offer is ready.' | escape }}
+          </h3>
+          <p class="ar-promo-popup__success-text">
+            {{ section.settings.success_message | default: 'Use your code at checkout.' | escape }}
+          </p>
+
+          {%- if section.settings.discount_code != blank -%}
+            <div class="ar-promo-popup__code-wrap">
+              <span class="ar-promo-popup__code-label">Your discount code</span>
+              <div class="ar-promo-popup__code-row">
+                <span class="ar-promo-popup__code" data-ar-promo-code>{{ section.settings.discount_code | escape }}</span>
+                <button type="button" class="ar-promo-popup__copy" data-ar-promo-copy>
+                  {{ section.settings.copy_button_text | default: 'Copy code' | escape }}
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <a href="{{ ar_shop_url }}" class="ar-promo-popup__shop" data-ar-promo-shop>
+            {{ section.settings.success_cta_text | default: 'Start shopping' | escape }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ 'ar-promo-popup.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Promotional popup",
+  "tag": "section",
+  "class": "ar-promo-popup-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_popup",
+      "label": "Enable popup",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "delay_seconds",
+      "label": "Delay before showing",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "frequency_mode",
+      "label": "Show frequency",
+      "default": "days",
+      "options": [
+        { "value": "session", "label": "Once per session" },
+        { "value": "days", "label": "Once every X days" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "frequency_days",
+      "label": "Days between popups",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "default": 7,
+      "info": "Used when frequency is set to once every X days."
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "Optional. Uses desktop image if empty."
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Unlock your ritual offer"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Supporting message",
+      "default": "Join our fragrance family and receive an exclusive code for your next attar or incense order."
+    },
+    {
+      "type": "richtext",
+      "id": "offer_text",
+      "label": "Offer text",
+      "default": "<p>Enjoy a special welcome offer with code</p>"
+    },
+    {
+      "type": "text",
+      "id": "discount_code",
+      "label": "Discount code",
+      "info": "Use your actual Shopify discount code."
+    },
+    {
+      "type": "text",
+      "id": "expiry_text",
+      "label": "Expiry text",
+      "info": "Optional. Only add if the offer has a real expiry."
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone_field",
+      "label": "Show phone field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email_field",
+      "label": "Show email field",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "email_required",
+      "label": "Require email when both fields are shown",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_consent_checkbox",
+      "label": "Show marketing consent checkbox",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "consent_checked",
+      "label": "Consent checked by default",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "consent_text",
+      "label": "Consent text",
+      "default": "Notify me about offers and new arrivals."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Submit button text",
+      "default": "Claim offer"
+    },
+    {
+      "type": "text",
+      "id": "submitting_text",
+      "label": "Submitting button text",
+      "default": "Submitting…"
+    },
+    {
+      "type": "text",
+      "id": "legal_text",
+      "label": "Legal prefix text",
+      "default": "By continuing, you agree to our"
+    },
+    {
+      "type": "header",
+      "content": "Success state"
+    },
+    {
+      "type": "text",
+      "id": "success_heading",
+      "label": "Success heading",
+      "default": "Your offer is ready."
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Use your code at checkout."
+    },
+    {
+      "type": "text",
+      "id": "success_cta_text",
+      "label": "Shop button text",
+      "default": "Start shopping"
+    },
+    {
+      "type": "url",
+      "id": "shop_url",
+      "label": "Shop button link",
+      "info": "Defaults to all products collection."
+    },
+    {
+      "type": "text",
+      "id": "copy_button_text",
+      "label": "Copy code button text",
+      "default": "Copy code"
+    },
+    {
+      "type": "text",
+      "id": "copied_button_text",
+      "label": "Copied button text",
+      "default": "Copied"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#faf8f5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#1e2023"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#1e2023"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 20,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional popup"
+    }
+  ]
+}
+{% endschema %}
