@@ -777,7 +777,13 @@
               <div class="drawer__cart-items-wrapper">
                 <div class="cart-items" role="list">
                   {%- for item in cart.items -%}
-                    <div id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item" role="listitem">
+                    {%- liquid
+                      assign ar_is_b3g1_gift = false
+                      if item.properties['_ar_b3g1_gift'] != blank
+                        assign ar_is_b3g1_gift = true
+                      endif
+                    -%}
+                    <div id="CartDrawer-Item-{{ item.index | plus: 1 }}" class="cart-item{% if ar_is_b3g1_gift %} cart-item--b3g1-gift{% endif %}" role="listitem">
                       <div class="cart-item__media">
                         {% if item.image %}
                           <a href="{{ item.url }}" class="cart-item__link" tabindex="-1" aria-hidden="true"> </a>
@@ -796,7 +802,9 @@
                         <a href="{{ item.url }}" class="cart-item__name h4 break">
                           {{- item.product.title | escape -}}
                         </a>
-                        {%- if item.original_price != item.final_price -%}
+                        {%- if ar_is_b3g1_gift -%}
+                          <div class="product-option cart-item__gift-label">Free gift · Buy 3 Get 1</div>
+                        {%- elsif item.original_price != item.final_price -%}
                           <div class="cart-item__discounted-prices">
                             <s class="cart-item__old-price product-option">{{- item.original_price | money -}}</s>
                             <strong class="cart-item__final-price product-option">{{ item.final_price | money }}</strong>
@@ -808,8 +816,10 @@
 
                       <div class="cart-item__totals right">
                         {%- render 'loading-spinner' -%}
-                        <span class="price price--end">
-                          {%- if item.original_line_price != item.final_line_price -%}
+                        <span class="price price--end{% if ar_is_b3g1_gift %} cart-item__gift-price{% endif %}">
+                          {%- if ar_is_b3g1_gift -%}
+                            FREE
+                          {%- elsif item.original_line_price != item.final_line_price -%}
                             {{ item.final_line_price | money }}
                           {%- else -%}
                             {{ item.original_line_price | money }}
@@ -819,6 +829,9 @@
 
                       <div class="cart-item__quantity">
                         <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
+                          {%- if ar_is_b3g1_gift -%}
+                            <span class="cart-item__gift-qty" aria-label="Gift quantity {{ item.quantity }}">Qty&nbsp;{{ item.quantity }}</span>
+                          {%- else -%}
                           <quantity-input class="quantity cart-quantity">
                             <button
                               class="quantity__button"
@@ -896,6 +909,7 @@
                               </span>
                             </button>
                           </cart-remove-button>
+                          {%- endif -%}
                         </div>
                         <div id="CartDrawer-LineItemError-{{ item.index | plus: 1 }}" class="cart-item__error" role="alert">
                           <small class="cart-item__error-text"></small>

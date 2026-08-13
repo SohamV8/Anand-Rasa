@@ -5,11 +5,20 @@
 (function () {
   'use strict';
 
+  if (window.__arPromoPopupBooted) return;
+  window.__arPromoPopupBooted = true;
+
   var STORAGE_KEY = 'ar_promo_popup_v1';
   var SESSION_KEY = 'ar_promo_popup_session_v1';
 
   function parseConfig(root) {
-    var script = root.parentElement && root.parentElement.querySelector('[data-ar-promo-config]');
+    var script =
+      (root && root.querySelector && root.querySelector('[data-ar-promo-config]')) ||
+      (root && root.previousElementSibling && root.previousElementSibling.matches && root.previousElementSibling.matches('[data-ar-promo-config]')
+        ? root.previousElementSibling
+        : null) ||
+      (root && root.parentElement && root.parentElement.querySelector('[data-ar-promo-config]'));
+
     if (script && script.textContent) {
       try {
         return JSON.parse(script.textContent);
@@ -36,7 +45,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
-      /* private browsing */
+      /* private browsing / quota */
     }
   }
 
@@ -57,14 +66,20 @@
   }
 
   function track(eventName, payload) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(
-      Object.assign({ event: eventName }, payload || {})
-    );
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: eventName }, payload || {}));
+    } catch (e) {
+      /* ignore analytics failures */
+    }
   }
 
   function prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {
+      return false;
+    }
   }
 
   function normalizePhone(value) {
@@ -80,6 +95,33 @@
 
   function isValidEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error('copy failed'));
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   function focusableElements(container) {
@@ -110,6 +152,7 @@
     this.shopBtn = root.querySelector('[data-ar-promo-shop]');
     this.mediaImg = root.querySelector('[data-ar-promo-image]');
     this.timer = null;
+    this.hideTimer = null;
     this.opened = false;
     this.submitting = false;
     this.lastFocus = null;
@@ -124,7 +167,15 @@
   };
 
   PromoPopup.prototype.destroy = function () {
-    if (this.timer) window.clearTimeout(this.timer);
+    if (this.timer) {
+      window.clearTimeout(this.timer);
+      this.timer = null;
+    }
+    if (this.hideTimer) {
+      window.clearTimeout(this.hideTimer);
+      this.hideTimer = null;
+    }
+    this.opened = false;
     document.documentElement.classList.remove('ar-promo-popup-open');
     document.body.classList.remove('ar-promo-popup-open');
     document.removeEventListener('keydown', this._onKeydown);
@@ -152,7 +203,7 @@
     }
 
     if (frequency === 'days' && storage.dismissedAt) {
-      var elapsed = Date.now() - storage.dismissedAt;
+      var elapsed = Date.now() - Number(storage.dismissedAt);
       if (elapsed < days * 86400000) return false;
     }
 
@@ -163,22 +214,25 @@
     var self = this;
     if (!this.shouldShow()) return;
 
-    var delay = this.config.designMode ? 600 : Number(this.config.delayMs) || 4000;
+    var delay = this.config.designMode ? 600 : Number(this.config.delayMs);
+    if (!delay || delay < 0 || isNaN(delay)) delay = 4000;
 
     var start = function () {
+      if (self.timer) window.clearTimeout(self.timer);
       self.timer = window.setTimeout(function () {
+        self.timer = null;
         self.open();
       }, delay);
     };
 
     if (document.readyState === 'complete') {
-      if ('requestIdleCallback' in window && !this.config.designMode) {
-        window.requestIdleCallback(start, { timeout: delay + 500 });
-      } else {
-        start();
-      }
+      start();
     } else {
       window.addEventListener('load', start, { once: true });
+      /* Fallback if load is delayed by a stuck resource */
+      window.setTimeout(function () {
+        if (!self.opened && !self.timer && self.shouldShow()) start();
+      }, Math.max(delay + 1500, 5000));
     }
   };
 
@@ -240,9 +294,11 @@
     document.body.classList.remove('ar-promo-popup-open');
     document.removeEventListener('keydown', this._onKeydown);
 
-    window.setTimeout(
+    if (this.hideTimer) window.clearTimeout(this.hideTimer);
+    this.hideTimer = window.setTimeout(
       function () {
         this.root.hidden = true;
+        this.hideTimer = null;
       }.bind(this),
       prefersReducedMotion() ? 0 : 450
     );
@@ -261,7 +317,11 @@
     });
 
     if (this.lastFocus && typeof this.lastFocus.focus === 'function') {
-      this.lastFocus.focus();
+      try {
+        this.lastFocus.focus();
+      } catch (e) {
+        /* ignore */
+      }
     }
   };
 
@@ -439,8 +499,9 @@
 
     Promise.all(tasks)
       .then(function (responses) {
+        /* Only treat real HTTP success as success. Do not treat 422 as OK. */
         var ok = responses.every(function (res) {
-          return res && (res.ok || res.status === 422);
+          return res && res.ok;
         });
         if (!ok) throw new Error('submit failed');
         self.showSuccess();
@@ -453,7 +514,7 @@
       })
       .finally(function () {
         self.submitting = false;
-        if (self.submitBtn) {
+        if (self.submitBtn && !self.root.classList.contains('is-success')) {
           self.submitBtn.disabled = false;
           self.submitBtn.textContent = cfg.ctaText || 'Claim offer';
         }
@@ -470,6 +531,7 @@
         self.copyBtn.classList.add('is-copied');
         self.copyBtn.textContent = self.config.copiedText || 'Copied';
         window.setTimeout(function () {
+          if (!self.copyBtn) return;
           self.copyBtn.classList.remove('is-copied');
           self.copyBtn.textContent = self.config.copyText || 'Copy code';
         }, 2000);
@@ -480,11 +542,11 @@
       });
     };
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(code).then(done).catch(function () {
-        /* fallback silent */
-      });
-    }
+    copyText(code).then(done).catch(function () {
+      if (self.formError) {
+        self.formError.textContent = 'Could not copy code. Please copy it manually.';
+      }
+    });
   };
 
   PromoPopup.prototype.init = function () {

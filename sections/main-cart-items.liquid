@@ -104,13 +104,21 @@
                     </td>
 
                     <td class="cart-item__details">
+                      {%- liquid
+                        assign ar_is_b3g1_gift = false
+                        if item.properties['_ar_b3g1_gift'] != blank
+                          assign ar_is_b3g1_gift = true
+                        endif
+                      -%}
                       {%- if settings.show_vendor -%}
                         <p class="caption-with-letter-spacing">{{ item.product.vendor }}</p>
                       {%- endif -%}
 
                       <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
 
-                      {%- if item.original_price != item.final_price -%}
+                      {%- if ar_is_b3g1_gift -%}
+                        <div class="product-option cart-item__gift-label">Free gift · Buy 3 Get 1</div>
+                      {%- elsif item.original_price != item.final_price -%}
                         <div class="cart-item__discounted-prices">
                           <span class="visually-hidden">
                             {{ 'products.product.price.regular_price' | t }}
@@ -180,7 +188,9 @@
                     <td class="cart-item__totals right medium-hide large-up-hide">
                       {%- render 'loading-spinner' -%}
                       <div class="cart-item__price-wrapper">
-                        {%- if item.original_line_price != item.final_line_price -%}
+                        {%- if ar_is_b3g1_gift -%}
+                          <span class="price price--end"><strong>FREE</strong></span>
+                        {%- elsif item.original_line_price != item.final_line_price -%}
                           <dl class="cart-item__discounted-prices">
                             <dt class="visually-hidden">
                               {{ 'products.product.price.regular_price' | t }}
@@ -237,6 +247,9 @@
                             {%- endif -%}
                             <quantity-input class="quantity cart-quantity">
                               {% assign can_update_quantity = item.instructions.can_update_quantity | default: true %}
+                              {%- if ar_is_b3g1_gift -%}
+                                {% assign can_update_quantity = false %}
+                              {%- endif -%}
                               <button
                                 class="quantity__button"
                                 name="minus"
@@ -295,6 +308,9 @@
                             id="Remove-{{ item.index | plus: 1 }}"
                             data-index="{{ item.index | plus: 1 }}"
                             {% assign can_remove = item.instructions.can_remove | default: true %}
+                            {%- if ar_is_b3g1_gift -%}
+                              {% assign can_remove = false %}
+                            {%- endif -%}
                             {% if can_remove == false %}
                               class="hidden"
                             {% endif %}
@@ -407,7 +423,9 @@
                     <td class="cart-item__totals right small-hide">
                       {%- render 'loading-spinner' -%}
                       <div class="cart-item__price-wrapper">
-                        {%- if item.original_line_price != item.final_line_price -%}
+                        {%- if ar_is_b3g1_gift -%}
+                          <span class="price price--end"><strong>FREE</strong></span>
+                        {%- elsif item.original_line_price != item.final_line_price -%}
                           <dl class="cart-item__discounted-prices">
                             <dt class="visually-hidden">
                               {{ 'products.product.price.regular_price' | t }}

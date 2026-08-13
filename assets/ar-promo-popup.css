@@ -1,5 +1,16 @@
 /* Anand Rasa — promotional popup (scoped) */
 
+/* Section wrapper must not reserve layout space or clip the fixed overlay */
+.shopify-section.ar-promo-popup-section {
+  position: static !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
 .ar-promo-popup {
   --ar-promo-ivory: #faf8f5;
   --ar-promo-cream: #f5f0e8;
@@ -464,6 +475,7 @@ body.ar-promo-popup-open {
 @media (max-width: 768px) {
   .ar-promo-popup {
     padding: 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
     align-items: flex-end;
   }
 
@@ -471,6 +483,7 @@ body.ar-promo-popup-open {
     grid-template-columns: 1fr;
     max-height: min(90svh, 720px);
     width: 100%;
+    max-width: 100%;
   }
 
   .ar-promo-popup__media {
@@ -480,12 +493,18 @@ body.ar-promo-popup-open {
 
   .ar-promo-popup__content {
     padding: 20px 18px 24px;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .ar-promo-popup__close {
     top: 10px;
     right: 10px;
     background: rgba(255, 255, 255, 0.9);
+  }
+
+  .ar-promo-popup__code-row {
+    flex-wrap: wrap;
   }
 }
 

@@ -1,0 +1,44 @@
+{%- comment -%}
+  Buy 3 Get 1 Free — Mohini gift config (global, once).
+  Prefers a ₹0 Mohini variant when available so checkout price is free.
+{%- endcomment -%}
+{%- liquid
+  assign ar_b3g1_product = all_products['mohini']
+  assign ar_b3g1_variant_id = blank
+  assign ar_b3g1_variant_price = blank
+
+  if ar_b3g1_product != blank and ar_b3g1_product.available
+    for v in ar_b3g1_product.variants
+      if v.available and v.price == 0
+        assign ar_b3g1_variant_id = v.id
+        assign ar_b3g1_variant_price = v.price
+        break
+      endif
+    endfor
+
+    if ar_b3g1_variant_id == blank
+      assign ar_b3g1_variant = ar_b3g1_product.selected_or_first_available_variant
+      if ar_b3g1_variant != blank and ar_b3g1_variant.available
+        assign ar_b3g1_variant_id = ar_b3g1_variant.id
+        assign ar_b3g1_variant_price = ar_b3g1_variant.price
+      endif
+    endif
+  endif
+-%}
+{%- if ar_b3g1_variant_id != blank -%}
+  <script type="application/json" id="ar-b3g1-gift-config">
+    {
+      "enabled": true,
+      "giftVariantId": {{ ar_b3g1_variant_id | json }},
+      "giftProductHandle": "mohini",
+      "giftProductId": {{ ar_b3g1_product.id | json }},
+      "giftPrice": {{ ar_b3g1_variant_price | json }},
+      "threshold": 3,
+      "maxGifts": 1,
+      "propertyKey": "_ar_b3g1_gift",
+      "propertyValue": "1",
+      "sections": ["cart-drawer", "cart-icon-bubble", "main-cart-items", "main-cart-footer"]
+    }
+  </script>
+  <script src="{{ 'ar-b3g1-gift.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

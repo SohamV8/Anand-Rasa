@@ -628,6 +628,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {{ 'component-totals.css' | asset_url | stylesheet_tag }}
     {{ 'component-price.css' | asset_url | stylesheet_tag }}
     {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+    {{ 'ar-judgeme-reviews.css' | asset_url | stylesheet_tag }}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
@@ -814,6 +815,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       after cart.js but after the head globals as well (defer = document order).
     {%- endcomment -%}
     <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {% render 'ar-b3g1-gift-config' %}
     {%- liquid
       assign ar_load_interactions = false
       if settings.animations_reveal_on_scroll

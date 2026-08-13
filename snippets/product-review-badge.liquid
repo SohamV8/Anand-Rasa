@@ -42,7 +42,15 @@
     >
       <span class="ar-trust-badge__stars" aria-hidden="true">
         {%- for i in (1..5) -%}
-          <span class="ar-trust-badge__star{% if i > ar_stars_full %} ar-trust-badge__star--off{% endif %}">&#9733;</span>
+          <svg
+            class="ar-trust-badge__star{% if i > ar_stars_full %} ar-trust-badge__star--off{% endif %}"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            focusable="false"
+          >
+            <path fill="currentColor" d="M12 2.5l2.9 5.88 6.49.94-4.7 4.58 1.11 6.47L12 17.77l-5.8 3.05 1.11-6.47-4.7-4.58 6.49-.94L12 2.5z"/>
+          </svg>
         {%- endfor -%}
       </span>
       <span class="ar-trust-badge__text">
@@ -70,14 +78,18 @@
 
     .ar-trust-badge__stars {
       display: inline-flex;
+      align-items: center;
       gap: 2px;
       color: #c8a03a;
-      font-size: 18px;
-      letter-spacing: 2px;
+    }
+
+    .ar-trust-badge__star {
+      display: block;
+      flex-shrink: 0;
     }
 
     .ar-trust-badge__star--off {
-      opacity: 0.28;
+      color: #d6cfc6;
     }
 
     .ar-trust-badge__dot {
@@ -106,8 +118,9 @@
         margin-bottom: 6px;
       }
 
-      .ar-trust-badge__stars {
-        font-size: 16px;
+      .ar-trust-badge__star {
+        width: 14px;
+        height: 14px;
       }
     }
   </style>

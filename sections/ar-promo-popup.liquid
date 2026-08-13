@@ -55,8 +55,6 @@
 }
   {%- endcapture -%}
 
-  <script type="application/json" data-ar-promo-config>{{ ar_promo_config | strip }}</script>
-
   <div
     class="ar-promo-popup"
     data-ar-promo-popup
@@ -70,6 +68,7 @@
       --ar-promo-radius: {{ section.settings.border_radius }}px;
     "
   >
+    <script type="application/json" data-ar-promo-config>{{ ar_promo_config | strip }}</script>
     <div class="ar-promo-popup__backdrop" data-ar-promo-backdrop aria-hidden="true"></div>
 
     <div
@@ -78,7 +77,9 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="ar-promo-heading-{{ section.id }}"
-      aria-describedby="ar-promo-desc-{{ section.id }}"
+      {% if section.settings.description != blank %}
+        aria-describedby="ar-promo-desc-{{ section.id }}"
+      {% endif %}
     >
       <button
         type="button"
@@ -481,11 +482,6 @@
       "step": 1,
       "unit": "px",
       "default": 26
-    }
-  ],
-  "presets": [
-    {
-      "name": "Promotional popup"
     }
   ]
 }

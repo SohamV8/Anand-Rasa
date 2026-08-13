@@ -275,6 +275,41 @@
           "pause_on_hover": true,
           "show_subtitles": false
         }
+      },
+      "ar-promo-popup": {
+        "type": "ar-promo-popup",
+        "settings": {
+          "enable_popup": true,
+          "delay_seconds": 4,
+          "frequency_mode": "days",
+          "frequency_days": 7,
+          "eyebrow": "Anand Rasa",
+          "heading": "Unlock your ritual offer",
+          "description": "Join our fragrance family and receive an exclusive code for your next attar or incense order.",
+          "offer_text": "<p>Enjoy a special welcome offer with code</p>",
+          "discount_code": "",
+          "expiry_text": "",
+          "show_phone_field": true,
+          "show_email_field": true,
+          "email_required": false,
+          "show_consent_checkbox": true,
+          "consent_checked": false,
+          "consent_text": "Notify me about offers and new arrivals.",
+          "cta_text": "Claim offer",
+          "submitting_text": "Submitting…",
+          "legal_text": "By continuing, you agree to our",
+          "success_heading": "Your offer is ready.",
+          "success_message": "Use your code at checkout.",
+          "success_cta_text": "Start shopping",
+          "shop_url": "",
+          "copy_button_text": "Copy code",
+          "copied_button_text": "Copied",
+          "background_color": "#faf8f5",
+          "text_color": "#1e2023",
+          "button_color": "#1e2023",
+          "button_text_color": "#ffffff",
+          "border_radius": 26
+        }
       }
     },
     "content_for_index": [],
