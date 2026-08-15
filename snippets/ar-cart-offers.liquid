@@ -1,0 +1,255 @@
+{% doc %}
+  Cart offer marquee, unlock-savings milestones, and money breakdown.
+  Values come from the live Shopify cart. Reuse on drawer and cart page.
+
+  @param {string} placement - 'top' for marquee + milestones, 'footer' for savings summary
+{% enddoc %}
+
+{% comment %}
+  Milestone qualifying value (ar_q):
+  Sum of original_line_price for non-gift lines.
+  That is Shopify's current selling-price merchandise subtotal (variant.price × qty)
+  BEFORE cart-level discounts (coupons / automatic discounts).
+  It is NOT cart.total_price (final payable after discounts).
+  It is NOT MRP / compare-at.
+  Shipping threshold uses payable (cart.total_price).
+{% endcomment %}
+{%- liquid
+  assign ar_marquee_text = 'PREPAID SHIPPING FREE ABOVE ₹500|BUY 3 GET 1 FREE|USE CODE SAVE10'
+  assign ar_marquee_items = ar_marquee_text | split: '|'
+  assign ar_coupon_code = 'SAVE10'
+  assign ar_ship_free_at = 50000
+  assign ar_m1 = 100000
+  assign ar_m2 = 200000
+  assign ar_m3 = 300000
+  assign ar_m4 = 1000000
+
+  assign ar_gift_catalog = 0
+  assign ar_mohini = all_products['mohini']
+  if ar_mohini != blank
+    for v in ar_mohini.variants
+      if v.price > ar_gift_catalog
+        assign ar_gift_catalog = v.price
+      endif
+    endfor
+  endif
+
+  assign ar_mrp_total = 0
+  assign ar_product_discount = 0
+  assign ar_gift_value = 0
+  assign ar_has_gift = false
+  assign ar_coupon_applied = false
+  assign ar_q = 0
+
+  for item in cart.items
+    assign ar_is_gift = false
+    if item.properties['_ar_b3g1_gift'] != blank
+      assign ar_is_gift = true
+      assign ar_has_gift = true
+    endif
+
+    assign ar_unit_mrp = item.original_price
+    if item.variant.compare_at_price > item.original_price
+      assign ar_unit_mrp = item.variant.compare_at_price
+    endif
+    assign ar_line_mrp = ar_unit_mrp | times: item.quantity
+
+    if ar_is_gift
+      if ar_line_mrp > item.original_line_price
+        assign ar_gift_save = ar_line_mrp | minus: item.original_line_price
+        assign ar_gift_value = ar_gift_value | plus: ar_gift_save
+      endif
+    else
+      assign ar_mrp_total = ar_mrp_total | plus: ar_line_mrp
+      assign ar_q = ar_q | plus: item.original_line_price
+      assign ar_compare_save = ar_line_mrp | minus: item.original_line_price
+      if ar_compare_save > 0
+        assign ar_product_discount = ar_product_discount | plus: ar_compare_save
+      endif
+    endif
+  endfor
+
+  if cart.cart_level_discount_applications.size > 0
+    for discount in cart.cart_level_discount_applications
+      assign ar_disc_title = discount.title | upcase
+      if ar_disc_title contains ar_coupon_code
+        assign ar_coupon_applied = true
+      endif
+    endfor
+  endif
+
+  assign ar_offer_discount = cart.total_discount
+  assign ar_total_savings = ar_product_discount | plus: ar_offer_discount | plus: ar_gift_value
+  assign ar_payable = cart.total_price
+  assign ar_next = ar_m1
+  assign ar_unlocked = 0
+  assign ar_pct = 0
+  assign ar_reached_amount = 0
+
+  if ar_q >= ar_m4
+    assign ar_unlocked = 20
+    assign ar_reached_amount = ar_m4
+    assign ar_next = 0
+    assign ar_pct = 100
+  elsif ar_q >= ar_m3
+    assign ar_unlocked = 15
+    assign ar_reached_amount = ar_m3
+    assign ar_next = ar_m4
+    assign ar_span = ar_m4 | minus: ar_m3
+    assign ar_into = ar_q | minus: ar_m3
+    assign ar_pct = ar_into | times: 25.0 | divided_by: ar_span | plus: 75
+  elsif ar_q >= ar_m2
+    assign ar_unlocked = 10
+    assign ar_reached_amount = ar_m2
+    assign ar_next = ar_m3
+    assign ar_span = ar_m3 | minus: ar_m2
+    assign ar_into = ar_q | minus: ar_m2
+    assign ar_pct = ar_into | times: 25.0 | divided_by: ar_span | plus: 50
+  elsif ar_q >= ar_m1
+    assign ar_unlocked = 5
+    assign ar_reached_amount = ar_m1
+    assign ar_next = ar_m2
+    assign ar_span = ar_m2 | minus: ar_m1
+    assign ar_into = ar_q | minus: ar_m1
+    assign ar_pct = ar_into | times: 25.0 | divided_by: ar_span | plus: 25
+  else
+    assign ar_unlocked = 0
+    assign ar_reached_amount = 0
+    assign ar_next = ar_m1
+    if ar_m1 > 0
+      assign ar_pct = ar_q | times: 25.0 | divided_by: ar_m1
+    endif
+  endif
+
+  assign ar_away = 0
+  if ar_next > 0
+    assign ar_away = ar_next | minus: ar_q
+    if ar_away < 0
+      assign ar_away = 0
+    endif
+  endif
+
+  if ar_pct > 100
+    assign ar_pct = 100
+  endif
+-%}
+
+{%- if placement == 'top' -%}
+  <script type="application/json" class="ar-cart-offers-config">
+    {
+      "milestones": [
+        { "amount": {{ ar_m1 }}, "off": 5 },
+        { "amount": {{ ar_m2 }}, "off": 10 },
+        { "amount": {{ ar_m3 }}, "off": 15 },
+        { "amount": {{ ar_m4 }}, "off": 20 }
+      ],
+      "shippingFreeAt": {{ ar_ship_free_at }},
+      "couponCode": {{ ar_coupon_code | json }},
+      "moneyFormat": {{ shop.money_format | json }},
+      "giftPropertyKey": "_ar_b3g1_gift",
+      "giftCatalogPrice": {{ ar_gift_catalog | json }}
+    }
+  </script>
+
+  <div class="ar-cart-offers{% if request.page_type == 'cart' %} ar-cart-offers--page{% endif %}" data-ar-cart-offers>
+    <div class="ar-cart-marquee" data-ar-marquee role="region" aria-label="Cart offers">
+      <div class="ar-cart-marquee__viewport">
+        {%- for msg in ar_marquee_items -%}
+          <p
+            class="ar-cart-marquee__item{% if forloop.first %} is-active{% endif %}"
+            {% unless forloop.first %}
+              aria-hidden="true"
+            {% endunless %}
+          >
+            {{ msg | escape }}
+          </p>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <section
+      class="ar-unlock"
+      aria-label="Unlock savings"
+      data-ar-reached="{{ ar_reached_amount }}"
+    >
+      <h3 class="ar-unlock__title">Unlock savings</h3>
+      <p class="ar-unlock__msg" data-ar-unlock-msg>
+        {%- if ar_unlocked > 0 -%}
+          🎉 You've unlocked {{ ar_unlocked }}% OFF
+        {%- elsif ar_next > 0 -%}
+          You are ₹{{ ar_away | divided_by: 100 }} away from the next milestone
+        {%- endif -%}
+      </p>
+
+      <div class="ar-unlock__meter">
+        <span class="ar-unlock__flag" aria-hidden="true">
+          <svg viewBox="0 0 16 22" width="16" height="22" focusable="false">
+            <path d="M4.5 19.5V4.2" stroke="#1f2937" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M5 4.4h9.2l-2.2 2.7 2.2 2.7H5V4.4Z" fill="#dc2626"/>
+            <circle cx="4.5" cy="19.6" r="2.4" fill="#2f6b3c"/>
+          </svg>
+        </span>
+        <div class="ar-unlock__rail" data-ar-unlock-rail style="--ar-progress: {{ ar_pct }}%;">
+          <div class="ar-unlock__fill" data-ar-unlock-fill style="width: {{ ar_pct }}%;"></div>
+          {%- assign ar_marks = '100000|5,200000|10,300000|15,1000000|20' | split: ',' -%}
+          {%- for mark in ar_marks -%}
+            {%- assign ar_pair = mark | split: '|' -%}
+            {%- assign ar_mark_amt = ar_pair[0] | plus: 0 -%}
+            {%- assign ar_mark_off = ar_pair[1] -%}
+            {%- assign ar_mark_left = forloop.index | times: 25 -%}
+            <div
+              class="ar-unlock__mark{% if ar_q >= ar_mark_amt %} is-reached{% endif %}"
+              data-ar-unlock-mark
+              data-amount="{{ ar_mark_amt }}"
+              style="left: {{ ar_mark_left }}%;"
+            >
+              <span class="ar-unlock__amount">₹{{ ar_mark_amt | divided_by: 100 }}</span>
+              <span class="ar-unlock__dot" aria-hidden="true"></span>
+              <span class="ar-unlock__off">{{ ar_mark_off }}% Off</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  </div>
+{%- endif -%}
+
+{%- if placement == 'footer' -%}
+  <div class="ar-cart-savings" data-ar-cart-savings>
+    <p class="ar-cart-savings__banner"{% if ar_total_savings <= 0 %} hidden{% endif %} data-ar-savings-banner>
+      🎉 You're saving <strong data-ar-savings-amount>₹{{ ar_total_savings | divided_by: 100 }}</strong> 🎉
+    </p>
+    <dl class="ar-cart-break">
+      <div class="ar-cart-break__row">
+        <dt>MRP Total</dt>
+        <dd data-ar-break-mrp>{{ ar_mrp_total | money }}</dd>
+      </div>
+      <div class="ar-cart-break__row ar-cart-break__row--save"{% if ar_product_discount <= 0 %} hidden{% endif %}>
+        <dt>Product Discount</dt>
+        <dd data-ar-break-product>{% if ar_product_discount > 0 %}-{{ ar_product_discount | money }}{% endif %}</dd>
+      </div>
+      <div class="ar-cart-break__row ar-cart-break__row--save"{% if ar_offer_discount <= 0 %} hidden{% endif %}>
+        <dt data-ar-offer-label>{% if ar_coupon_applied %}Coupon Discount{% else %}Offer Discount{% endif %}</dt>
+        <dd data-ar-break-offer>{% if ar_offer_discount > 0 %}-{{ ar_offer_discount | money }}{% endif %}</dd>
+      </div>
+      <div class="ar-cart-break__row ar-cart-break__row--save"{% if ar_gift_value <= 0 %} hidden{% endif %}>
+        <dt>Free Gift Value</dt>
+        <dd data-ar-break-gift>{% if ar_gift_value > 0 %}-{{ ar_gift_value | money }}{% endif %}</dd>
+      </div>
+      <div class="ar-cart-break__row">
+        <dt>Shipping</dt>
+        <dd data-ar-break-ship>
+          {%- if ar_payable >= ar_ship_free_at -%}
+            FREE
+          {%- else -%}
+            At checkout
+          {%- endif -%}
+        </dd>
+      </div>
+      <div class="ar-cart-break__row ar-cart-break__row--payable">
+        <dt>Total</dt>
+        <dd data-ar-break-payable>{{ ar_payable | money }}</dd>
+      </div>
+    </dl>
+  </div>
+{%- endif -%}

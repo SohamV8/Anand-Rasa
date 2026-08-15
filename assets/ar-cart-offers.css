@@ -1,0 +1,356 @@
+/* Anand Rasa — cart offers. Compact, no horizontal overflow. */
+
+.ar-cart-offers {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  background: #f6f6f6;
+}
+
+cart-drawer.is-empty .ar-cart-offers,
+cart-drawer.is-empty .ar-cart-savings {
+  display: none !important;
+}
+
+.ar-cart-marquee {
+  background: #111;
+  color: #fff;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ar-cart-marquee__viewport {
+  position: relative;
+  height: 28px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ar-cart-marquee__item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.ar-cart-marquee__item.is-active {
+  opacity: 1;
+}
+
+.ar-unlock {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 12px 12px;
+  text-align: center;
+}
+
+.ar-unlock__title {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #111;
+}
+
+.ar-unlock__msg {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #374151;
+}
+
+.ar-unlock__meter {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 52px;
+}
+
+.ar-unlock__flag {
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-72%);
+  z-index: 3;
+  display: flex;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.ar-unlock__rail {
+  position: absolute;
+  left: 16px;
+  right: 26px;
+  top: 50%;
+  height: 8px;
+  margin-top: -4px;
+  border-radius: 99px;
+  background-color: #e4e4e4;
+  background-image: linear-gradient(
+    to right,
+    #22863a 0,
+    #22863a var(--ar-progress, 0%),
+    #e4e4e4 var(--ar-progress, 0%)
+  );
+}
+
+.ar-unlock__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 0;
+  height: 8px;
+  border-radius: 99px;
+  background: #22863a;
+  pointer-events: none;
+  transition: width 0.35s ease;
+}
+
+.ar-unlock__mark {
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ar-unlock__amount {
+  position: absolute;
+  left: 0;
+  bottom: 8px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #111;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.ar-unlock__dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #d4d4d4;
+  box-shadow: 0 0 0 2px #f6f6f6;
+}
+
+.ar-unlock__mark.is-reached .ar-unlock__dot {
+  background: #2f6b3c;
+}
+
+.ar-unlock__off {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 500;
+  color: #c4c4c4;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.ar-unlock__mark.is-reached .ar-unlock__off {
+  color: #6b7280;
+}
+
+.ar-unlock__confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ar-unlock__confetti span {
+  position: absolute;
+  top: 42%;
+  width: 5px;
+  height: 8px;
+  border-radius: 1px;
+  opacity: 0.9;
+  animation: ar-confetti-burst 0.95s ease-out forwards;
+}
+
+@keyframes ar-confetti-burst {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+.ar-cart-savings {
+  margin: 0 0 10px;
+}
+
+.ar-cart-savings__banner {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #111;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  max-width: 100%;
+}
+
+.ar-cart-savings__banner[hidden] {
+  display: none !important;
+}
+
+.ar-cart-savings__banner strong {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.ar-cart-savings__banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 36%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  animation: ar-savings-shine 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ar-savings-shine {
+  0% { transform: translateX(0); }
+  55%, 100% { transform: translateX(380%); }
+}
+
+.ar-cart-break__row[hidden] {
+  display: none !important;
+}
+
+.ar-cart-break {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.ar-cart-break__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.ar-cart-break__row dt,
+.ar-cart-break__row dd {
+  margin: 0;
+}
+
+.ar-cart-break__row--save {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.ar-cart-break__row--payable {
+  color: #111827;
+  font-weight: 700;
+  font-size: 13px;
+  padding-top: 2px;
+}
+
+.ar-cart-offers--page {
+  margin: 0 0 16px;
+  border-radius: 12px;
+}
+
+@media (max-width: 749px) {
+  #main-cart-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: #fff;
+    box-shadow: 0 -8px 20px rgba(17, 24, 39, 0.06);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  #main-cart-footer .cart__checkout-button {
+    min-height: 52px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+@media (max-width: 749px) {
+  .ar-unlock {
+    padding: 8px 8px 12px;
+  }
+
+  .ar-unlock__rail {
+    right: 24px;
+  }
+
+  .ar-unlock__amount {
+    font-size: 9px;
+  }
+
+  .ar-unlock__off {
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-cart-marquee__item {
+    transition: none;
+  }
+
+  .ar-cart-marquee__item:not(.is-active) {
+    display: none;
+  }
+
+  .ar-unlock__fill {
+    transition: none;
+  }
+
+  .ar-cart-savings__banner::after,
+  .ar-unlock__confetti span {
+    animation: none;
+  }
+
+  .ar-unlock__confetti {
+    display: none;
+  }
+}

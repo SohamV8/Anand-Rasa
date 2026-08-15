@@ -339,21 +339,21 @@
   .ar-col-page--all .ar-card__body {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     flex: 1;
-    padding: 10px 10px 12px;
+    padding: 14px 12px 14px;
   }
 
   .ar-col-page--all .ar-card__title {
     margin: 0;
     font-family: 'Caudex', Georgia, serif;
-    font-size: clamp(0.82rem, 3.6vw, 0.95rem);
+    font-size: clamp(1.12rem, 4.8vw, 1.32rem);
     font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
     color: var(--ar-all-ink);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -368,26 +368,27 @@
   }
 
   .ar-col-page--all .ar-card__category {
-    margin: 0;
-    font-size: clamp(0.62rem, 2.6vw, 0.7rem);
+    margin: 2px 0 0;
+    font-size: clamp(0.64rem, 2.5vw, 0.72rem);
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ar-all-accent);
-    line-height: 1.3;
+    color: var(--ar-all-ink-2);
+    line-height: 1.35;
   }
 
   .ar-col-page--all .ar-card__price {
-    margin-top: 2px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 5px 7px;
+    gap: 6px 8px;
   }
 
   .ar-col-page--all .ar-card__price-sale,
   .ar-col-page--all .ar-card__price-reg {
-    font-size: clamp(0.88rem, 3.8vw, 1rem);
+    font-size: clamp(0.92rem, 3.6vw, 1.02rem);
     font-weight: 700;
     color: var(--ar-all-ink);
     letter-spacing: -0.01em;
@@ -395,28 +396,31 @@
   }
 
   .ar-col-page--all .ar-card__price-old {
-    font-size: clamp(0.68rem, 2.8vw, 0.78rem);
+    font-size: clamp(0.7rem, 2.7vw, 0.8rem);
     color: var(--ar-all-ink-3);
     text-decoration: line-through;
     font-weight: 400;
   }
 
   .ar-col-page--all .ar-card__atc {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 44px;
-    margin-top: auto;
-    padding: 0 10px;
+    min-height: 36px;
+    height: 36px;
+    margin-top: 6px;
+    padding: 0 12px;
     border: none;
     border-radius: 999px;
     background: var(--ar-all-ink);
     color: #fff;
-    font-size: 11px;
+    font-family: 'Caudex', Georgia, serif;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+    line-height: 1;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
   }
@@ -478,12 +482,34 @@
   }
 }
 
-/* Desktop/tablet: hide all-collection mobile-only chrome */
+/* Desktop/tablet: hide all-collection mobile-only chrome; keep titles readable */
 @media screen and (min-width: 750px) {
   .ar-col-page--all .ar-all-mobile-bar,
   .ar-col-page--all .ar-card__badge,
   .ar-col-page--all .ar-card__atc {
     display: none !important;
+  }
+
+  .ar-col-page--all .ar-card__body {
+    gap: 10px;
+    padding: 18px 16px 20px;
+  }
+
+  .ar-col-page--all .ar-card__title {
+    font-family: 'Caudex', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .ar-col-page--all .ar-card__category {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
+
+  .ar-col-page--all .ar-card__price {
+    margin-top: 4px;
   }
 }
 

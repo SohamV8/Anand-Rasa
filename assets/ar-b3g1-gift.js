@@ -226,7 +226,7 @@
   }
 
   function sync(cart) {
-    if (!config || !config.enabled || !config.giftVariantId) return Promise.resolve();
+    if (!config || !config.giftVariantId) return Promise.resolve();
     if (syncing) {
       queued = true;
       return Promise.resolve();
@@ -238,7 +238,7 @@
     var run = function (state) {
       var items = state.items || [];
       var eligible = countEligible(items);
-      var want = desiredGiftQty(eligible);
+      var want = config.enabled ? desiredGiftQty(eligible) : 0;
       var gifts = getGiftLines(items);
       var have = gifts.reduce(function (sum, g) {
         return sum + (Number(g.quantity) || 0);
@@ -360,7 +360,7 @@
 
   function boot() {
     config = readConfig();
-    if (!config || !config.enabled || !config.giftVariantId) return;
+    if (!config || !config.giftVariantId) return;
 
     if (typeof subscribe === 'function' && window.PUB_SUB_EVENTS) {
       subscribe(window.PUB_SUB_EVENTS.cartUpdate, onCartEvent);

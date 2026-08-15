@@ -2,13 +2,59 @@
   Choose Your Pack — quantity bundle selector for main-product section.
   Syncs with existing #Quantity-{section.id} input (form="{{ product_form_id }}").
   Size-aware display for 6ml / 12ml variants.
+  Attars only — hidden for perfume and incense products.
 
   Accepts: block, section, product, product_form_id
 {%- endcomment -%}
 
-{%- unless block.settings.enable -%}
+{%- liquid
+  assign ar_pack_type = product.type | default: '' | downcase
+  assign ar_pack_handle = product.handle | default: '' | downcase
+  assign ar_pack_title = product.title | default: '' | downcase
+  assign ar_pack_tags = product.tags | join: '|' | downcase
+  assign ar_pack_cols = product.collections | map: 'handle' | join: '|' | downcase
+  assign ar_pack_scope = ar_pack_type | append: '|' | append: ar_pack_handle | append: '|' | append: ar_pack_title | append: '|' | append: ar_pack_tags | append: '|' | append: ar_pack_cols
+
+  assign ar_pack_is_incense = false
+  if ar_pack_scope contains 'incense' or ar_pack_scope contains 'agarbatti' or ar_pack_scope contains 'dhoop'
+    assign ar_pack_is_incense = true
+  endif
+
+  assign ar_pack_is_perfume = false
+  if ar_pack_type contains 'perfume'
+    unless ar_pack_type contains 'oil' or ar_pack_type contains 'attar'
+      assign ar_pack_is_perfume = true
+    endunless
+  endif
+  if ar_pack_cols contains 'perfume-series' or ar_pack_cols contains 'perfume-collection' or ar_pack_handle contains 'perfume'
+    unless ar_pack_scope contains 'attar' or ar_pack_type contains 'oil'
+      assign ar_pack_is_perfume = true
+    endunless
+  endif
+
+  assign ar_pack_is_attar = false
+  if ar_pack_scope contains 'attar' or ar_pack_type contains 'perfume oil' or ar_pack_type contains 'perfume-oil' or ar_pack_type contains 'fragrance oil'
+    assign ar_pack_is_attar = true
+  endif
+  if ar_pack_is_attar == false and ar_pack_is_perfume == false and ar_pack_is_incense == false
+    if ar_pack_type == blank or ar_pack_type contains 'attar' or ar_pack_type contains 'bestseller' or ar_pack_type contains 'gourmand'
+      assign ar_pack_is_attar = true
+    endif
+  endif
+  if ar_pack_is_incense or ar_pack_is_perfume
+    assign ar_pack_is_attar = false
+  endif
+-%}
+
+{%- unless block.settings.enable and ar_pack_is_attar -%}
   {%- if request.design_mode -%}
-    <p class="visually-hidden" {{ block.shopify_attributes }}>Pack selector disabled in block settings.</p>
+    <p class="visually-hidden" {{ block.shopify_attributes }}>
+      {%- if block.settings.enable == false -%}
+        Pack selector disabled in block settings.
+      {%- else -%}
+        Pack selector is attars only (hidden for perfume/incense).
+      {%- endif -%}
+    </p>
   {%- endif -%}
 {%- else -%}
   {%- liquid

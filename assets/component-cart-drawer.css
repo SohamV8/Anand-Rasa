@@ -270,14 +270,10 @@ cart-drawer-items {
 
 .cart-drawer .cart-item__details {
   width: auto;
-  grid-column: 2 / 4;
 }
 
 .cart-drawer .cart-item__totals {
   pointer-events: none;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
 }
 
 .cart-drawer.cart-drawer .cart-item__price-wrapper > *:only-child {
@@ -296,7 +292,6 @@ cart-drawer-items {
 
 .cart-drawer .cart-items .cart-item__quantity {
   padding-top: 0;
-  grid-column: 2 / 5;
 }
 
 @media screen and (max-width: 749px) {

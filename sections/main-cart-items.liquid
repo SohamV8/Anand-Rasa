@@ -4,6 +4,8 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+{{ 'ar-cart-offers.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'ar-cart-offers.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -52,6 +54,7 @@
       <div class="cart__items" id="main-cart-items" data-id="{{ section.id }}">
         <div class="js-contents">
           {%- if cart != empty -%}
+            {% render 'ar-cart-offers', placement: 'top' %}
             <table class="cart-items">
               <caption class="visually-hidden">
                 {{ 'sections.cart.title' | t }}
@@ -117,7 +120,7 @@
                       <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
 
                       {%- if ar_is_b3g1_gift -%}
-                        <div class="product-option cart-item__gift-label">Free gift · Buy 3 Get 1</div>
+                        <div class="product-option cart-item__gift-label">FREE GIFT · Buy 3 Get 1</div>
                       {%- elsif item.original_price != item.final_price -%}
                         <div class="cart-item__discounted-prices">
                           <span class="visually-hidden">
