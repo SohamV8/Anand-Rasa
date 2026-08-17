@@ -583,5 +583,10 @@
         }
       }
     }
+  },
+  "platform_customizations": {
+    "custom_css": [
+      ".jdgm-star {font-family: 'JudgemeStar' !important;}"
+    ]
   }
 }
