@@ -23,6 +23,7 @@
     assign ar_desktop_image = section.settings.desktop_image
     assign ar_mobile_image = section.settings.mobile_image | default: ar_desktop_image
     assign ar_asset_popup_image = 'Raksha-bandhan-AD.jpg.jpeg' | asset_url
+    assign ar_mobile_banner = 'Raksha-bandhan-Website-Banner.jpg' | asset_url
 
     assign ar_show_phone = section.settings.show_phone_field
     assign ar_show_email = section.settings.show_email_field
@@ -116,16 +117,23 @@
             >
           </picture>
         {%- else -%}
-          <img
-            class="ar-promo-popup__image"
-            data-ar-promo-image
-            data-src="{{ ar_asset_popup_image }}"
-            alt="{{ section.settings.heading | default: 'Promotional offer' | escape }}"
-            width="1080"
-            height="1350"
-            decoding="async"
-            loading="lazy"
-          >
+          <picture>
+            <source
+              media="(max-width: 768px)"
+              srcset="{{ ar_mobile_banner }}"
+              sizes="100vw"
+            >
+            <img
+              class="ar-promo-popup__image"
+              data-ar-promo-image
+              data-src="{{ ar_asset_popup_image }}"
+              alt="{{ section.settings.heading | default: 'Promotional offer' | escape }}"
+              width="1080"
+              height="1350"
+              decoding="async"
+              loading="lazy"
+            >
+          </picture>
         {%- endif -%}
       </div>
 

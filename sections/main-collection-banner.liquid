@@ -2,7 +2,9 @@
 {%- if collection.handle == 'festival-offer' -%}
   {%- render 'ar-festival-hero-inline' -%}
 {%- endif -%}
-{%- if template.suffix == 'stressrelief' or template.suffix == 'stress-relief' or template.suffix == 'bestseller' -%}
+{%- if collection.handle == 'festival-offer' -%}
+  {%- comment -%} Festival Offer uses its own hero — skip the default banner {%- endcomment -%}
+{%- elsif template.suffix == 'stressrelief' or template.suffix == 'stress-relief' or template.suffix == 'bestseller' -%}
   {%- comment -%} Premium hero on dedicated collection templates {%- endcomment -%}
 {%- else -%}
 {{ 'section-collection-banner.css' | asset_url | stylesheet_tag }}

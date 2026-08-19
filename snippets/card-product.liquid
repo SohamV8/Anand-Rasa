@@ -371,16 +371,27 @@
           {%- endif -%}
         </div>
 
-        {%- if ar_all_collection -%}
-          <button
-            type="button"
-            class="ar-card__atc js-arc-atc"
-            data-id="{{ qv.id }}"
-            aria-label="Add {{ card_product.title | escape }} to cart"
-            {% unless qv.available %}disabled{% endunless %}
-          >
-            <span>{% if qv.available %}Add to cart{% else %}Sold out{% endif %}</span>
-          </button>
+        {%- if ar_all_collection or collection.handle == 'festival-offer' -%}
+          <div class="ar-card__actions">
+            <button
+              type="button"
+              class="ar-card__atc js-arc-atc"
+              data-id="{{ qv.id }}"
+              aria-label="Add {{ card_product.title | escape }} to cart"
+              {% unless qv.available %}disabled{% endunless %}
+            >
+              <span>{% if qv.available %}Add to Cart{% else %}Sold Out{% endif %}</span>
+            </button>
+            {%- if qv.available -%}
+              <a
+                href="/cart/{{ qv.id }}:1"
+                class="ar-card__buy"
+                aria-label="Buy {{ card_product.title | escape }} now"
+              >
+                Buy Now
+              </a>
+            {%- endif -%}
+          </div>
         {%- endif -%}
       </div>
     </article>
@@ -539,8 +550,59 @@
   text-decoration: line-through;
 }
 
+.ar-card__actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.ar-card__atc,
+.ar-card__buy {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, opacity .2s ease;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
 .ar-card__atc {
-  display: none;
+  border: 1.5px solid #1a1a1a;
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.ar-card__atc:hover:not(:disabled) {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.ar-card__atc:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ar-card__buy {
+  border: none;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.ar-card__buy:hover {
+  opacity: 0.85;
+  color: #fff;
 }
 
 .ar-card__badge {
@@ -558,6 +620,9 @@
   .ar-card__category { font-size: 10px; }
   .ar-card__price-reg,
   .ar-card__price-sale { font-size: 15px; }
+  .ar-card__actions { gap: 5px; }
+  .ar-card__atc,
+  .ar-card__buy { font-size: 9px; min-height: 34px; padding: 7px 4px; letter-spacing: 0.05em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

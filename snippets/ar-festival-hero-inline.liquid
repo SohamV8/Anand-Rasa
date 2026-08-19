@@ -35,4 +35,57 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+/* ── Festival-offer: hide filters/sidebar, clean product grid ── */
+.ar-col-sidebar,
+.ar-col-pills,
+.ar-all-mobile-bar,
+.facets-wrapper,
+.active-facets,
+.mobile-facets__wrapper {
+  display: none !important;
+}
+
+.ar-col-body {
+  display: block !important;
+}
+
+.ar-col-body--full {
+  display: block !important;
+}
+
+.ar-col-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px !important;
+  padding: 0 16px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+#product-grid .grid__item {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+@media (min-width: 750px) {
+  #product-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+    padding: 0 24px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  #product-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 24px !important;
+    padding: 0 32px !important;
+  }
+}
 </style>
