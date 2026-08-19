@@ -1,124 +1,256 @@
 {%- comment -%}
-  Compact luxury collection cards — all collections in a responsive grid.
-  Images from theme editor category blocks; URLs via ar-collection-url.
+  Bento grid — 6 collection cards, 100vh.
+  Zodiac · Planet · Perfume · Incense · Gift · Apsara
 {%- endcomment -%}
 {%- liquid
-  assign ar_disc_heading = section.settings.disc_heading | default: 'Find Your Fragrance Ritual'
-  assign ar_disc_sub = section.settings.disc_subheading | default: 'Curated attars for ritual, balance, and discovery.'
-
-  assign ar_feat_handles = 'planet-attars|zodiac-attars|nakshatra-attars|chakra-attars|stress-relief|love-attar|incense-sticks|apsara-attars|giftsets|perfume-series' | split: '|'
-  assign ar_feat_titles = 'Planet Attars|Zodiac Attars|Nakshatra Attars|Chakra Attars|Stress Relief Attars|Prem Rasa|Incense Sticks|Apsara Attars|Gift Sets|Perfume Series' | split: '|'
-  assign ar_feat_matches = 'planet|zodiac|nakshatra|chakra|stress|love|incense|apsara|gift set|perfume' | split: '|'
-  assign ar_feat_ctas = 'Explore|Explore|Explore|Explore|Explore|Explore|Explore|Explore|Shop|Explore' | split: '|'
-  assign ar_feat_fallbacks = 'planets.webp|zodiac.webp|nakshatra.webp|chakra.webp|stress.webp|Love Attar.webp|incense_stick.webp|Apsara Attar.webp|Gift Set.webp|Perfume Series.webp' | split: '|'
-  assign ar_feat_tones = 'dark|dark|dark|light|dark|dark|dark|dark|dark|dark' | split: '|'
+  assign ar_bg_handles  = 'zodiac-attars|planet-attars|perfume-series|incense-sticks|giftsets|apsara-attars' | split: '|'
+  assign ar_bg_titles   = 'Zodiac Attars|Planet Attars|Perfume Series|Incense Sticks|Gift Sets|Apsara Attars' | split: '|'
+  assign ar_bg_images   = 'zodiac.webp|planets.webp|Perfume Series.webp|incense_stick.webp|Gift Set.webp|Apsara Attar.webp' | split: '|'
+  assign ar_bg_matches  = 'zodiac|planet|perfume|incense|gift set|apsara' | split: '|'
 -%}
 
-<section class="ar-disc js-ar-disc" aria-labelledby="ar-disc-heading">
-  <header class="ar-disc__hdr">
-    <h2 id="ar-disc-heading" class="ar-disc__h">{{ ar_disc_heading | escape }}</h2>
-    {%- if ar_disc_sub != blank -%}
-      <p class="ar-disc__sub">{{ ar_disc_sub | escape }}</p>
-    {%- endif -%}
-  </header>
-
-  <div class="ar-disc__list">
-    {%- for ar_feat_handle in ar_feat_handles -%}
+<section class="ar-bento" aria-label="Explore Collections">
+  <div class="ar-bento__grid">
+    {%- for handle in ar_bg_handles -%}
       {%- liquid
-        assign ar_i = forloop.index0
-        assign ar_match = ar_feat_matches[ar_i]
-        assign ar_title = ar_feat_titles[ar_i]
-        assign ar_cta = ar_feat_ctas[ar_i]
-        assign ar_fallback = ar_feat_fallbacks[ar_i]
-        assign ar_card_tone = ar_feat_tones[ar_i]
-        assign ar_delay = ar_i | times: 45
+        assign idx = forloop.index0
+        assign title = ar_bg_titles[idx]
+        assign fallback = ar_bg_images[idx]
+        assign match_key = ar_bg_matches[idx]
 
-        assign ar_card_image = blank
-        assign ar_block_link = blank
+        assign card_img = blank
         for block in section.blocks
           if block.type == 'category'
-            assign ar_bt = block.settings.title | downcase
-            assign ar_bl = block.settings.link | default: ''
-            assign ar_is_match = false
-            if ar_match == 'gift set'
-              if ar_bt contains 'gift set' or ar_bt == 'gift sets'
-                assign ar_is_match = true
-              endif
-            elsif ar_match == 'apsara'
-              if ar_bt contains 'apsara'
-                assign ar_is_match = true
-              endif
-            elsif ar_match == 'perfume'
-              if ar_bt contains 'perfume series' or ar_bt contains 'perfume'
-                assign ar_is_match = true
-              endif
-            elsif ar_bt contains ar_match or ar_bl contains ar_feat_handle
-              assign ar_is_match = true
-            endif
-            if ar_is_match
+            assign bt = block.settings.title | downcase
+            if bt contains match_key
               if block.settings.image != blank
-                assign ar_card_image = block.settings.image
+                assign card_img = block.settings.image
               endif
-              assign ar_block_link = block.settings.link | strip
               break
             endif
           endif
         endfor
 
-        capture ar_card_url
-          render 'ar-collection-url', handle: ar_feat_handle
+        capture card_url
+          render 'ar-collection-url', handle: handle
         endcapture
-        assign ar_card_url = ar_card_url | strip
-        if ar_block_link != blank
-          if ar_block_link contains 'shopify://collections' or ar_block_link contains '/collections/'
-            assign ar_card_url = ar_card_url | default: ar_block_link
-          endif
-        endif
-        if ar_card_url == blank
-          assign ar_card_url = routes.collections_url
+        assign card_url = card_url | strip
+        if card_url == blank
+          assign card_url = '/collections/' | append: handle
         endif
       -%}
 
-      <article class="ar-disc__card" style="--ar-disc-delay: {{ ar_delay }}ms;">
-        <a
-          href="{{ ar_card_url }}"
-          class="ar-disc__link ar-disc__link--{{ ar_card_tone }}"
-          aria-label="{{ ar_title | escape }} — {{ ar_cta | escape }}"
-        >
-          <div class="ar-disc__media">
-            {%- if ar_card_image != blank -%}
-              <img
-                class="ar-disc__img"
-                src="{{ ar_card_image | image_url: width: 800 }}"
-                srcset="{{ ar_card_image | image_url: width: 400 }} 400w, {{ ar_card_image | image_url: width: 600 }} 600w, {{ ar_card_image | image_url: width: 800 }} 800w"
-                sizes="(min-width: 1200px) 20vw, (min-width: 768px) 33vw, (min-width: 480px) 50vw, 100vw"
-                alt="{{ ar_title | escape }}"
-                width="800"
-                height="560"
-                loading="lazy"
-                decoding="async"
-              >
-            {%- elsif ar_fallback != blank -%}
-              <img
-                class="ar-disc__img"
-                src="{{ ar_fallback | asset_url }}"
-                alt=""
-                width="800"
-                height="560"
-                loading="lazy"
-                decoding="async"
-              >
-            {%- else -%}
-              <span class="ar-disc__ph" aria-hidden="true"></span>
-            {%- endif -%}
-            <span class="ar-disc__shade" aria-hidden="true"></span>
-          </div>
-          <div class="ar-disc__copy">
-            <h3 class="ar-disc__title">{{ ar_title | escape }}</h3>
-            <span class="ar-disc__btn">{{ ar_cta | escape }}</span>
-          </div>
-        </a>
-      </article>
+      <a href="{{ card_url }}"
+         class="ar-bento__card ar-bento__card--{{ forloop.index }}"
+         aria-label="{{ title | escape }}">
+        <div class="ar-bento__media">
+          {%- if card_img != blank -%}
+            <img
+              class="ar-bento__img"
+              src="{{ card_img | image_url: width: 900 }}"
+              srcset="{{ card_img | image_url: width: 480 }} 480w, {{ card_img | image_url: width: 720 }} 720w, {{ card_img | image_url: width: 900 }} 900w"
+              sizes="(min-width: 768px) 33vw, 50vw"
+              alt="{{ title | escape }}"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="600"
+            >
+          {%- else -%}
+            <img
+              class="ar-bento__img"
+              src="{{ fallback | asset_url }}"
+              alt="{{ title | escape }}"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- endif -%}
+          <span class="ar-bento__shade" aria-hidden="true"></span>
+        </div>
+        <span class="ar-bento__label">{{ title | escape }}</span>
+      </a>
     {%- endfor -%}
   </div>
 </section>
+
+<style>
+/* ── Bento wrapper ── */
+.ar-bento {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  contain: layout style;
+}
+
+/* ── Grid: 4 columns × 4 rows, centred, max-width ── */
+.ar-bento__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 3fr 2fr 2fr;
+  width: 1400px;
+  max-width: 100%;
+  height: 700px;
+  gap: 8px;
+  padding: 8px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+/* ── Card 1 — top-left, wide (2 of 4 cols, row 1) ── */
+.ar-bento__card--1 {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+
+/* ── Card 2 — top-right, tall (2 of 4 cols, spans rows 1-2) ── */
+.ar-bento__card--2 {
+  grid-column: 3 / 5;
+  grid-row: 1 / 3;
+}
+
+/* ── Card 3 — middle-left small ── */
+.ar-bento__card--3 {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+/* ── Card 4 — middle-center small ── */
+.ar-bento__card--4 {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+/* ── Card 5 — bottom-left small ── */
+.ar-bento__card--5 {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+}
+
+/* ── Card 6 — bottom-right, wide (3 of 4 cols, row 3) ── */
+.ar-bento__card--6 {
+  grid-column: 2 / 5;
+  grid-row: 3 / 4;
+}
+
+/* ── Card base ── */
+.ar-bento__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  transform: translateZ(0);
+  -webkit-tap-highlight-color: transparent;
+  outline-offset: 3px;
+}
+
+.ar-bento__card:focus-visible {
+  outline: 2px solid #fff;
+}
+
+/* ── Media container ── */
+.ar-bento__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.ar-bento__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .45s cubic-bezier(.25,.46,.45,.94);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.ar-bento__card:hover .ar-bento__img,
+.ar-bento__card:focus-visible .ar-bento__img {
+  transform: scale(1.06) translateZ(0);
+}
+
+/* ── Gradient overlay ── */
+.ar-bento__shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ── Label ── */
+.ar-bento__label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  font-size: clamp(16px, 1.4vw, 22px);
+  font-weight: 600;
+  letter-spacing: .02em;
+  line-height: 1.25;
+  text-shadow: 0 1px 4px rgba(0,0,0,.45);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Tablet (750–1023) ── */
+@media (max-width: 1023px) and (min-width: 750px) {
+  .ar-bento__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr;
+    max-height: none;
+    height: 100vh;
+    border-radius: 12px;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .ar-bento__card--1 { grid-column: 1 / 3; grid-row: 1 / 2; }
+  .ar-bento__card--2 { grid-column: 3 / 4; grid-row: 1 / 3; }
+  .ar-bento__card--3 { grid-column: 1 / 2; grid-row: 2 / 3; }
+  .ar-bento__card--4 { grid-column: 2 / 3; grid-row: 2 / 3; }
+  .ar-bento__card--5 { grid-column: 1 / 2; grid-row: 3 / 4; }
+  .ar-bento__card--6 { grid-column: 2 / 4; grid-row: 3 / 4; }
+}
+
+/* ── Mobile (<750) ── */
+@media (max-width: 749px) {
+  .ar-bento__grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr 1.5fr;
+    height: 100vh;
+    height: 100svh;
+    max-height: none;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 10px;
+  }
+
+  .ar-bento__card--1 { grid-column: 1 / 3; grid-row: 1 / 2; }
+  .ar-bento__card--2 { grid-column: 2 / 3; grid-row: 2 / 4; }
+  .ar-bento__card--3 { grid-column: 1 / 2; grid-row: 2 / 3; }
+  .ar-bento__card--4 { grid-column: 1 / 2; grid-row: 3 / 4; }
+  .ar-bento__card--5 { grid-column: 1 / 2; grid-row: 4 / 5; }
+  .ar-bento__card--6 { grid-column: 2 / 3; grid-row: 4 / 5; }
+
+  .ar-bento__card { border-radius: 8px; }
+
+  .ar-bento__label {
+    font-size: 14px;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ar-bento__card:hover .ar-bento__img,
+  .ar-bento__card:focus-visible .ar-bento__img {
+    transform: none;
+  }
+}
+</style>

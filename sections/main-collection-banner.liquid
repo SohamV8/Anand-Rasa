@@ -1,4 +1,7 @@
 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{%- if collection.handle == 'festival-offer' -%}
+  {%- render 'ar-festival-hero-inline' -%}
+{%- endif -%}
 {%- if template.suffix == 'stressrelief' or template.suffix == 'stress-relief' or template.suffix == 'bestseller' -%}
   {%- comment -%} Premium hero on dedicated collection templates {%- endcomment -%}
 {%- else -%}

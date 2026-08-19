@@ -66,20 +66,15 @@
 </section>
 
 <style>
-/* Full native 16:9 video — never crop, never stretch */
 .ar-hero {
   position: relative;
   isolation: isolate;
-  background: #0f0e0c;
+  background: #fff;
   overflow: hidden;
   margin: 0;
   padding: 0;
   width: 100%;
   max-width: 100%;
-  height: auto;
-  min-height: 0;
-  aspect-ratio: 16 / 9;
-  contain: layout paint style;
 }
 
 .ar-hero__sr-only {
@@ -95,40 +90,32 @@
 }
 
 .ar-hero__media {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #0f0e0c;
-  contain: strict;
+  background: #fff;
+  line-height: 0;
 }
 
 .ar-hero__video {
   display: block;
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
-  max-width: 100%;
-  object-fit: contain;
-  object-position: center center;
-  z-index: 0;
+  height: auto;
   pointer-events: none;
-  /* Promote one compositor layer without permanent will-change cost */
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  contain: paint;
 }
 
 .ar-hero__poster {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background-color: #0f0e0c;
+  z-index: 1;
+  background-color: #fff;
   background-position: center center;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   opacity: 0;
   pointer-events: none;
@@ -151,23 +138,16 @@
   outline-offset: -4px;
 }
 
-/* Desktop video only above 749px, mobile video only below */
 .ar-hero__video--mobile { display: none !important; }
 
 @media (max-width: 749px) {
-  .ar-hero { aspect-ratio: 9 / 16; }
   .ar-hero__video--desktop { display: none !important; }
   .ar-hero__video--mobile { display: block !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ar-hero__video {
-    display: none !important;
-  }
-
-  .ar-hero__poster {
-    opacity: 1;
-  }
+  .ar-hero__video { display: none !important; }
+  .ar-hero__poster { opacity: 1; }
 }
 </style>
 
