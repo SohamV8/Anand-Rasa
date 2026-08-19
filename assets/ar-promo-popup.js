@@ -148,7 +148,10 @@
     this.formError = root.querySelector('[data-ar-promo-form-error]');
     this.phoneError = root.querySelector('[data-ar-promo-phone-error]');
     this.emailError = root.querySelector('[data-ar-promo-email-error]');
-    this.copyBtn = root.querySelector('[data-ar-promo-copy]');
+    this.copyButtons = Array.prototype.slice.call(root.querySelectorAll('[data-ar-promo-copy]'));
+    this.codeFields = Array.prototype.slice.call(root.querySelectorAll('[data-ar-promo-code]'));
+    this.copyBtn = this.copyButtons[0] || null;
+    this.codeField = this.codeFields[0] || null;
     this.shopBtn = root.querySelector('[data-ar-promo-shop]');
     this.mediaImg = root.querySelector('[data-ar-promo-image]');
     this.timer = null;
@@ -527,15 +530,16 @@
 
     var self = this;
     var done = function () {
-      if (self.copyBtn) {
-        self.copyBtn.classList.add('is-copied');
-        self.copyBtn.textContent = self.config.copiedText || 'Copied';
-        window.setTimeout(function () {
-          if (!self.copyBtn) return;
-          self.copyBtn.classList.remove('is-copied');
-          self.copyBtn.textContent = self.config.copyText || 'Copy code';
-        }, 2000);
-      }
+      self.copyButtons.forEach(function (btn) {
+        btn.classList.add('is-copied');
+        btn.textContent = self.config.copiedText || 'Copied';
+      });
+      window.setTimeout(function () {
+        self.copyButtons.forEach(function (btn) {
+          btn.classList.remove('is-copied');
+          btn.textContent = self.config.copyText || 'Copy code';
+        });
+      }, 2000);
       track('coupon_copy', {
         popup_id: self.config.sectionId,
         coupon_code: code
@@ -549,6 +553,19 @@
     });
   };
 
+  PromoPopup.prototype.onCodeClick = function () {
+    var field = this;
+    if (field && field.target) field = field.target;
+    if (!field || typeof field.select !== 'function') return;
+    try {
+      field.focus();
+      field.select();
+      field.setSelectionRange(0, field.value.length);
+    } catch (e) {
+      /* ignore selection failures */
+    }
+  };
+
   PromoPopup.prototype.init = function () {
     var self = this;
     this.bind(this.root.querySelector('[data-ar-promo-close]'), 'click', function () {
@@ -558,7 +575,13 @@
       self.close('backdrop');
     });
     if (this.form) this.bind(this.form, 'submit', this.onSubmit.bind(this));
-    if (this.copyBtn) this.bind(this.copyBtn, 'click', this.onCopy.bind(this));
+    this.copyButtons.forEach(function (btn) {
+      self.bind(btn, 'click', self.onCopy.bind(self));
+    });
+    this.codeFields.forEach(function (field) {
+      self.bind(field, 'click', self.onCodeClick);
+      self.bind(field, 'focus', self.onCodeClick);
+    });
     if (this.shopBtn) {
       this.bind(this.shopBtn, 'click', function () {
         track('popup_cta_click', {

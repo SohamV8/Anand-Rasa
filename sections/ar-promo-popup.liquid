@@ -22,6 +22,7 @@
 
     assign ar_desktop_image = section.settings.desktop_image
     assign ar_mobile_image = section.settings.mobile_image | default: ar_desktop_image
+    assign ar_asset_popup_image = 'Raksha-bandhan-AD.jpg.jpeg' | asset_url
 
     assign ar_show_phone = section.settings.show_phone_field
     assign ar_show_email = section.settings.show_email_field
@@ -114,6 +115,17 @@
               loading="lazy"
             >
           </picture>
+        {%- else -%}
+          <img
+            class="ar-promo-popup__image"
+            data-ar-promo-image
+            data-src="{{ ar_asset_popup_image }}"
+            alt="{{ section.settings.heading | default: 'Promotional offer' | escape }}"
+            width="1080"
+            height="1350"
+            decoding="async"
+            loading="lazy"
+          >
         {%- endif -%}
       </div>
 
@@ -138,7 +150,19 @@
           <div class="ar-promo-popup__offer">
             {{ section.settings.offer_text }}
             {%- if section.settings.discount_code != blank -%}
-              <strong> {{ section.settings.discount_code | escape }}</strong>
+              <div class="ar-promo-popup__offer-code-row">
+                <input
+                  class="ar-promo-popup__code ar-promo-popup__code--inline"
+                  data-ar-promo-code
+                  type="text"
+                  value="{{ section.settings.discount_code | escape }}"
+                  readonly
+                  aria-label="Welcome offer discount code"
+                >
+                <button type="button" class="ar-promo-popup__copy" data-ar-promo-copy>
+                  {{ section.settings.copy_button_text | default: 'Copy code' | escape }}
+                </button>
+              </div>
             {%- endif -%}
             {%- if section.settings.expiry_text != blank -%}
               <span> — {{ section.settings.expiry_text | escape }}</span>
@@ -227,7 +251,14 @@
             <div class="ar-promo-popup__code-wrap">
               <span class="ar-promo-popup__code-label">Your discount code</span>
               <div class="ar-promo-popup__code-row">
-                <span class="ar-promo-popup__code" data-ar-promo-code>{{ section.settings.discount_code | escape }}</span>
+                <input
+                  class="ar-promo-popup__code"
+                  data-ar-promo-code
+                  type="text"
+                  value="{{ section.settings.discount_code | escape }}"
+                  readonly
+                  aria-label="Your discount code"
+                >
                 <button type="button" class="ar-promo-popup__copy" data-ar-promo-copy>
                   {{ section.settings.copy_button_text | default: 'Copy code' | escape }}
                 </button>

@@ -1,6 +1,7 @@
 {%- comment -%} 1. HERO — full-bleed asset video only (GPU-friendly) {%- endcomment -%}
 {%- liquid
   assign ar_hero_video_mp4 = 'Website Main Page1.mp4' | asset_url
+  assign ar_hero_video_mobile = 'Main Page Video Mobile.mp4' | asset_url
   if section.settings.hero_image != blank
     assign ar_hero_poster = section.settings.hero_image | image_url: width: 1920
   else
@@ -13,9 +14,11 @@
   <h1 class="ar-hero__sr-only">{{ ar_hero_title | escape }}</h1>
 
   <div class="ar-hero__media" aria-hidden="true">
+    {%- comment -%} Desktop video (hidden on mobile) {%- endcomment -%}
     <video
-      class="ar-hero__video"
+      class="ar-hero__video ar-hero__video--desktop"
       data-ar-hero-video
+      data-ar-device="desktop"
       muted
       loop
       playsinline
@@ -29,6 +32,26 @@
       tabindex="-1"
     >
       <source src="{{ ar_hero_video_mp4 }}" type="video/mp4">
+    </video>
+
+    {%- comment -%} Mobile video (hidden on desktop) {%- endcomment -%}
+    <video
+      class="ar-hero__video ar-hero__video--mobile"
+      data-ar-hero-video
+      data-ar-device="mobile"
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="metadata"
+      poster="{{ ar_hero_poster | escape }}"
+      width="720"
+      height="1280"
+      disablepictureinpicture
+      disableremoteplayback
+      tabindex="-1"
+    >
+      <source src="{{ ar_hero_video_mobile }}" type="video/mp4">
     </video>
     <div class="ar-hero__poster" style="background-image: url('{{ ar_hero_poster | escape }}');"></div>
   </div>
@@ -128,6 +151,15 @@
   outline-offset: -4px;
 }
 
+/* Desktop video only above 749px, mobile video only below */
+.ar-hero__video--mobile { display: none !important; }
+
+@media (max-width: 749px) {
+  .ar-hero { aspect-ratio: 9 / 16; }
+  .ar-hero__video--desktop { display: none !important; }
+  .ar-hero__video--mobile { display: block !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ar-hero__video {
     display: none !important;
@@ -145,12 +177,21 @@
     if (!root || root.dataset.arHeroBound === 'true') return;
     root.dataset.arHeroBound = 'true';
 
-    var video = root.querySelector('[data-ar-hero-video]');
-    if (!video) return;
+    var videos = root.querySelectorAll('[data-ar-hero-video]');
+    if (!videos.length) return;
 
+    var mobileQuery = window.matchMedia('(max-width: 749px)');
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     var inView = true;
     var pageVisible = !document.hidden;
+
+    function activeVideo() {
+      var device = mobileQuery.matches ? 'mobile' : 'desktop';
+      for (var i = 0; i < videos.length; i++) {
+        if (videos[i].getAttribute('data-ar-device') === device) return videos[i];
+      }
+      return videos[0];
+    }
 
     function canPlay() {
       return !reduce.matches && inView && pageVisible;
@@ -164,16 +205,29 @@
     }
 
     function syncPlayback() {
+      var current = activeVideo();
+      for (var i = 0; i < videos.length; i++) {
+        if (videos[i] !== current && !videos[i].paused) {
+          videos[i].pause();
+          videos[i].removeAttribute('autoplay');
+        }
+      }
       if (!canPlay()) {
-        if (!video.paused) video.pause();
-        video.removeAttribute('autoplay');
+        if (!current.paused) current.pause();
+        current.removeAttribute('autoplay');
         return;
       }
-      video.setAttribute('autoplay', '');
-      playSafe(video);
+      current.setAttribute('autoplay', '');
+      playSafe(current);
     }
 
     syncPlayback();
+
+    if (typeof mobileQuery.addEventListener === 'function') {
+      mobileQuery.addEventListener('change', syncPlayback);
+    } else if (typeof mobileQuery.addListener === 'function') {
+      mobileQuery.addListener(syncPlayback);
+    }
 
     if (typeof reduce.addEventListener === 'function') {
       reduce.addEventListener('change', syncPlayback);
@@ -201,9 +255,8 @@
 
     document.addEventListener('shopify:section:load', function (event) {
       if (!event.target || !event.target.querySelector || !event.target.querySelector('[data-ar-hero]')) return;
-      var next = event.target.querySelector('[data-ar-hero-video]');
-      if (!next || reduce.matches) return;
-      playSafe(next);
+      if (reduce.matches) return;
+      syncPlayback();
     });
   })();
 </script>

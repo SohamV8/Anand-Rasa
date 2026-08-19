@@ -21,6 +21,9 @@
   assign agm_heading = section.settings.heading | default: 'The Gourmand Collection'
   assign agm_sub = section.settings.subheading | default: 'Fragrances inspired by warm desserts, creamy woods, roasted coffee, vanilla, honey and timeless indulgence.'
   assign agm_per_page = section.settings.products_per_page | default: 12
+  if agm_col != blank and agm_col.products_count > agm_per_page
+    assign agm_per_page = agm_col.products_count
+  endif
   assign agm_products_heading = section.settings.products_heading | default: 'Shop the Gourmand Collection'
   assign agm_seo_intro = section.settings.seo_intro | strip
 -%}

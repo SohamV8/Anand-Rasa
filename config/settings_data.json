@@ -279,7 +279,7 @@
           "heading": "Unlock your ritual offer",
           "description": "Join our fragrance family and receive an exclusive code for your next attar or incense order.",
           "offer_text": "<p>Enjoy a special welcome offer with code</p>",
-          "discount_code": "",
+          "discount_code": "FIRSTORDER10%OFF",
           "expiry_text": "",
           "show_phone_field": true,
           "show_email_field": true,
