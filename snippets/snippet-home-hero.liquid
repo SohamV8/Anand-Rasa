@@ -1,59 +1,90 @@
-{%- comment -%} 1. HERO — full-bleed asset video only (GPU-friendly) {%- endcomment -%}
+{%- comment -%}
+  Homepage hero — poster-first LCP, deferred WebM (device-specific), GPU-friendly.
+{%- endcomment -%}
 {%- liquid
-  assign ar_hero_video_mp4 = 'Website Main Page1.mp4' | asset_url
-  assign ar_hero_video_mobile = 'Main Page Video Mobile.mp4' | asset_url
-  if section.settings.hero_image != blank
-    assign ar_hero_poster = section.settings.hero_image | image_url: width: 1920
-  else
-    assign ar_hero_poster = 'home.webp' | asset_url
-  endif
+  assign ar_hero_video_desktop = 'Website Main Page1.webm' | asset_url
+  assign ar_hero_video_mobile = 'Main Page Video Mobile.webm' | asset_url
   assign ar_hero_title = section.settings.hero_headline | default: shop.name | strip_html | strip
   assign ar_hero_shop_url = routes.all_products_collection_url | default: '/collections/all'
+
+  if section.settings.hero_image != blank
+    assign ar_hero_poster_mobile = section.settings.hero_image | image_url: width: 750, format: 'webp'
+    assign ar_hero_poster_tablet = section.settings.hero_image | image_url: width: 1100, format: 'webp'
+    assign ar_hero_poster_desktop = section.settings.hero_image | image_url: width: 1600, format: 'webp'
+    assign ar_hero_poster_fallback = section.settings.hero_image | image_url: width: 1200, format: 'webp'
+  else
+    assign ar_hero_poster_mobile = 'home.webp' | asset_url
+    assign ar_hero_poster_tablet = 'home.webp' | asset_url
+    assign ar_hero_poster_desktop = 'home.webp' | asset_url
+    assign ar_hero_poster_fallback = 'home.webp' | asset_url
+  endif
 -%}
-<section class="ar-hero" data-ar-hero aria-label="{{ ar_hero_title | escape }}">
+<section
+  class="ar-hero"
+  data-ar-hero
+  aria-label="{{ ar_hero_title | escape }}"
+>
   <h1 class="ar-hero__sr-only">{{ ar_hero_title | escape }}</h1>
 
   <div class="ar-hero__media" aria-hidden="true">
-    {%- comment -%} Desktop video (hidden on mobile) {%- endcomment -%}
+    {%- comment -%} Immediate LCP visual (poster). Video loads only after JS activates the active device. {%- endcomment -%}
+    <picture class="ar-hero__poster">
+      <source
+        media="(max-width: 749px)"
+        srcset="{{ ar_hero_poster_mobile | escape }}"
+      >
+      <source
+        media="(max-width: 1100px)"
+        srcset="{{ ar_hero_poster_tablet | escape }}"
+      >
+      <img
+        class="ar-hero__poster-img"
+        src="{{ ar_hero_poster_fallback | escape }}"
+        srcset="{{ ar_hero_poster_mobile | escape }} 750w, {{ ar_hero_poster_tablet | escape }} 1100w, {{ ar_hero_poster_desktop | escape }} 1600w"
+        sizes="100vw"
+        alt=""
+        width="1600"
+        height="900"
+        fetchpriority="high"
+        decoding="async"
+        loading="eager"
+      >
+    </picture>
+
+    {%- comment -%} Sources injected by JS for the active device only (preload none until then). {%- endcomment -%}
     <video
       class="ar-hero__video ar-hero__video--desktop"
       data-ar-hero-video
       data-ar-device="desktop"
+      data-src="{{ ar_hero_video_desktop | escape }}"
       muted
       loop
       playsinline
       webkit-playsinline
-      preload="metadata"
-      poster="{{ ar_hero_poster | escape }}"
+      preload="none"
       width="1920"
       height="1080"
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
-    >
-      <source src="{{ ar_hero_video_mp4 }}" type="video/mp4">
-    </video>
+    ></video>
 
-    {%- comment -%} Mobile video (hidden on desktop) {%- endcomment -%}
     <video
       class="ar-hero__video ar-hero__video--mobile"
       data-ar-hero-video
       data-ar-device="mobile"
+      data-src="{{ ar_hero_video_mobile | escape }}"
       muted
       loop
       playsinline
       webkit-playsinline
-      preload="metadata"
-      poster="{{ ar_hero_poster | escape }}"
+      preload="none"
       width="720"
       height="1280"
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
-    >
-      <source src="{{ ar_hero_video_mobile }}" type="video/mp4">
-    </video>
-    <div class="ar-hero__poster" style="background-image: url('{{ ar_hero_poster | escape }}');"></div>
+    ></video>
   </div>
 
   <a
@@ -69,7 +100,7 @@
 .ar-hero {
   position: relative;
   isolation: isolate;
-  background: #fff;
+  background: #f5f5f5;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -95,31 +126,54 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: #fff;
+  background: #f5f5f5;
   line-height: 0;
-}
-
-.ar-hero__video {
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  aspect-ratio: 16 / 9;
 }
 
 .ar-hero__poster {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background-color: #fff;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0;
+  margin: 0;
+  display: block;
+  opacity: 1;
   pointer-events: none;
   transform: translateZ(0);
+  transition: opacity 0.4s ease;
+}
+
+.ar-hero__poster-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.ar-hero__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.ar-hero.is-video-ready .ar-hero__video.is-active {
+  opacity: 1;
+}
+
+.ar-hero.is-video-ready .ar-hero__poster {
+  opacity: 0;
 }
 
 .ar-hero__hit {
@@ -141,13 +195,28 @@
 .ar-hero__video--mobile { display: none !important; }
 
 @media (max-width: 749px) {
+  .ar-hero__media {
+    aspect-ratio: 9 / 16;
+    max-height: 100svh;
+  }
+
   .ar-hero__video--desktop { display: none !important; }
   .ar-hero__video--mobile { display: block !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ar-hero__video { display: none !important; }
-  .ar-hero__poster { opacity: 1; }
+  .ar-hero__video {
+    display: none !important;
+  }
+
+  .ar-hero__poster {
+    opacity: 1 !important;
+    transition: none;
+  }
+
+  .ar-hero.is-video-ready .ar-hero__poster {
+    opacity: 1 !important;
+  }
 }
 </style>
 
@@ -164,6 +233,16 @@
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
     var inView = true;
     var pageVisible = !document.hidden;
+    var supportsWebm = true;
+
+    try {
+      var probe = document.createElement('video');
+      supportsWebm = !!(probe.canPlayType && probe.canPlayType('video/webm; codecs="vp8,vorbis"')) ||
+        !!(probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9"')) ||
+        !!(probe.canPlayType && probe.canPlayType('video/webm'));
+    } catch (e) {
+      supportsWebm = false;
+    }
 
     function activeVideo() {
       var device = mobileQuery.matches ? 'mobile' : 'desktop';
@@ -174,7 +253,7 @@
     }
 
     function canPlay() {
-      return !reduce.matches && inView && pageVisible;
+      return supportsWebm && !reduce.matches && inView && pageVisible;
     }
 
     function playSafe(el) {
@@ -184,24 +263,103 @@
       if (p && typeof p.catch === 'function') p.catch(function () {});
     }
 
-    function syncPlayback() {
-      var current = activeVideo();
+    function markReady(el) {
       for (var i = 0; i < videos.length; i++) {
-        if (videos[i] !== current && !videos[i].paused) {
-          videos[i].pause();
-          videos[i].removeAttribute('autoplay');
-        }
+        videos[i].classList.toggle('is-active', videos[i] === el);
       }
-      if (!canPlay()) {
-        if (!current.paused) current.pause();
-        current.removeAttribute('autoplay');
-        return;
-      }
-      current.setAttribute('autoplay', '');
-      playSafe(current);
+      root.classList.add('is-video-ready');
     }
 
-    syncPlayback();
+    function ensureSource(el) {
+      if (!el || el.dataset.arLoaded === 'true') return;
+      var src = el.getAttribute('data-src');
+      if (!src) return;
+
+      var source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/webm';
+      el.appendChild(source);
+      el.setAttribute('preload', 'metadata');
+      el.load();
+      el.dataset.arLoaded = 'true';
+
+      var onReady = function () {
+        markReady(el);
+        if (canPlay() && activeVideo() === el) playSafe(el);
+      };
+
+      if (el.readyState >= 2) {
+        onReady();
+      } else {
+        el.addEventListener('loadeddata', onReady, { once: true });
+      }
+    }
+
+    function unloadInactive(current) {
+      for (var i = 0; i < videos.length; i++) {
+        var v = videos[i];
+        if (v === current) continue;
+        if (!v.paused) v.pause();
+        v.classList.remove('is-active');
+        v.removeAttribute('autoplay');
+      }
+    }
+
+    function syncPlayback() {
+      if (reduce.matches || !supportsWebm) {
+        root.classList.remove('is-video-ready');
+        for (var i = 0; i < videos.length; i++) {
+          if (!videos[i].paused) videos[i].pause();
+          videos[i].classList.remove('is-active');
+        }
+        return;
+      }
+
+      var current = activeVideo();
+      unloadInactive(current);
+
+      if (!canPlay()) {
+        if (current && !current.paused) current.pause();
+        if (current) current.removeAttribute('autoplay');
+        return;
+      }
+
+      ensureSource(current);
+      if (current.dataset.arLoaded === 'true' && current.readyState >= 2) {
+        markReady(current);
+        current.setAttribute('autoplay', '');
+        playSafe(current);
+      }
+    }
+
+    function startWhenIdle() {
+      var run = function () { syncPlayback(); };
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(run, { timeout: 1200 });
+      } else {
+        window.setTimeout(run, 200);
+      }
+    }
+
+    if (reduce.matches || !supportsWebm) {
+      return;
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(
+        function (entries) {
+          var entry = entries[0];
+          if (!entry) return;
+          inView = entry.isIntersecting && entry.intersectionRatio > 0.08;
+          if (inView) startWhenIdle();
+          else syncPlayback();
+        },
+        { root: null, rootMargin: '80px 0px', threshold: [0, 0.08, 0.25] }
+      );
+      io.observe(root);
+    } else {
+      startWhenIdle();
+    }
 
     if (typeof mobileQuery.addEventListener === 'function') {
       mobileQuery.addEventListener('change', syncPlayback);
@@ -220,22 +378,8 @@
       syncPlayback();
     });
 
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(
-        function (entries) {
-          var entry = entries[0];
-          if (!entry) return;
-          inView = entry.isIntersecting && entry.intersectionRatio > 0.12;
-          syncPlayback();
-        },
-        { root: null, rootMargin: '0px', threshold: [0, 0.12, 0.35] }
-      );
-      io.observe(root);
-    }
-
     document.addEventListener('shopify:section:load', function (event) {
       if (!event.target || !event.target.querySelector || !event.target.querySelector('[data-ar-hero]')) return;
-      if (reduce.matches) return;
       syncPlayback();
     });
   })();
