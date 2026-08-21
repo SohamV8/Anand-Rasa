@@ -117,23 +117,21 @@
             >
           </picture>
         {%- else -%}
-          <picture>
-            <source
-              media="(max-width: 768px)"
-              srcset="{{ ar_mobile_banner }}"
-              sizes="100vw"
-            >
-            <img
-              class="ar-promo-popup__image"
-              data-ar-promo-image
-              data-src="{{ ar_asset_popup_image }}"
-              alt="{{ section.settings.heading | default: 'Promotional offer' | escape }}"
-              width="1080"
-              height="1350"
-              decoding="async"
-              loading="lazy"
-            >
-          </picture>
+          {%- comment -%}
+            Do not put asset URLs in <source srcset> — browsers may fetch them
+            even while the popup is closed. Image loads via data-src on open.
+          {%- endcomment -%}
+          <img
+            class="ar-promo-popup__image"
+            data-ar-promo-image
+            data-src="{{ ar_asset_popup_image }}"
+            data-src-mobile="{{ ar_mobile_banner }}"
+            alt="{{ section.settings.heading | default: 'Promotional offer' | escape }}"
+            width="1080"
+            height="1350"
+            decoding="async"
+            loading="lazy"
+          >
         {%- endif -%}
       </div>
 

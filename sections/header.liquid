@@ -1303,7 +1303,7 @@
   </div>
 </div>
 
-<div class="ar-nav__drawer js-ar-drawer" id="ar-mobile-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Menu">
+<div class="ar-nav__drawer js-ar-drawer" id="ar-mobile-drawer" aria-hidden="true" inert role="dialog" aria-modal="true" aria-label="Menu">
   <div class="ar-nav__drawer-head">
     <a href="{{ routes.root_url }}" class="ar-nav__logo" aria-label="{{ shop.name }}">
       {%- if section.settings.logo != blank -%}
@@ -1495,22 +1495,105 @@
       return drawerOpen || searchOpen;
     }
 
+    function getDrawerFocusable() {
+      if (!drawer) return [];
+      return Array.prototype.slice.call(
+        drawer.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(function (el) {
+        return el.getAttribute('aria-hidden') !== 'true' && !el.hasAttribute('disabled');
+      });
+    }
+
+    function setDrawerClosedState() {
+      if (!drawer) return;
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      drawer.setAttribute('inert', '');
+      drawer.inert = true;
+    }
+
+    function setDrawerOpenState() {
+      if (!drawer) return;
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      drawer.removeAttribute('inert');
+      drawer.inert = false;
+    }
+
+    function focusDrawerEntry() {
+      if (!drawer) return;
+      var closeBtn = drawer.querySelector('.js-ar-close');
+      var target = closeBtn || getDrawerFocusable()[0] || drawer;
+      window.setTimeout(function () {
+        try { target.focus({ preventScroll: true }); }
+        catch (err) { try { target.focus(); } catch (e2) {} }
+      }, 40);
+    }
+
+    function returnFocusToBurger() {
+      if (!burger) return;
+      window.setTimeout(function () {
+        try { burger.focus({ preventScroll: true }); }
+        catch (err) { try { burger.focus(); } catch (e2) {} }
+      }, 40);
+    }
+
     function openDrawer() {
       if (!drawer) return;
       closeSearch();
-      drawer.classList.add('is-open');
-      drawer.setAttribute('aria-hidden', 'false');
-      if (burger) { burger.classList.add('is-open'); burger.setAttribute('aria-expanded', 'true'); burger.setAttribute('aria-label', 'Close menu'); }
+      setDrawerOpenState();
+      if (burger) {
+        burger.classList.add('is-open');
+        burger.setAttribute('aria-expanded', 'true');
+        burger.setAttribute('aria-label', 'Close menu');
+      }
       showBackdrop(true);
       lockScroll(true);
+      focusDrawerEntry();
     }
+
     function closeDrawer() {
       if (!drawer) return;
+      var focusWasInside = drawer.contains(document.activeElement);
       closeDrawerDropdowns();
-      drawer.classList.remove('is-open');
-      drawer.setAttribute('aria-hidden', 'true');
-      if (burger) { burger.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); }
+      setDrawerClosedState();
+      if (burger) {
+        burger.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        burger.setAttribute('aria-label', 'Open menu');
+      }
       if (!isAnyPanelOpen()) { showBackdrop(false); lockScroll(false); }
+      if (focusWasInside) returnFocusToBurger();
+    }
+
+    function onDrawerKeydown(e) {
+      if (!drawer || !drawer.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDrawer();
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
+      var focusables = getDrawerFocusable();
+      if (!focusables.length) {
+        e.preventDefault();
+        return;
+      }
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first || !drawer.contains(document.activeElement)) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
 
     function openSearch() {
@@ -1542,6 +1625,11 @@
       });
     }
     if (close) close.addEventListener('click', closeDrawer);
+    if (drawer) {
+      /* Ensure closed a11y state is authoritative on every init (theme editor / section reload). */
+      if (!drawer.classList.contains('is-open')) setDrawerClosedState();
+      drawer.addEventListener('keydown', onDrawerKeydown);
+    }
     if (backdrop) backdrop.addEventListener('click', function () { closeDrawer(); closeSearch(); });
     if (searchToggle) searchToggle.addEventListener('click', toggleSearch);
     if (searchClose) searchClose.addEventListener('click', closeSearch);
@@ -1597,14 +1685,17 @@
       window.__arNavEscapeInit = true;
       window.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') return;
-        var openDrawer = document.querySelector('.js-ar-drawer.is-open');
-        if (openDrawer) {
-          var closeBtn = openDrawer.querySelector('.js-ar-close');
+        var openNavDrawer = document.querySelector('.js-ar-drawer.is-open');
+        if (openNavDrawer) {
+          /* Prefer the section controller close path via the close button click
+             only when focus is not already managed — always sync aria/inert via DOM event. */
+          var closeBtn = openNavDrawer.querySelector('.js-ar-close');
           if (closeBtn) closeBtn.click();
+          e.preventDefault();
         }
-        var openSearch = document.querySelector('.js-ar-search-panel.is-open');
-        if (openSearch) {
-          var searchCloseBtn = openSearch.querySelector('.js-ar-search-close');
+        var openSearchPanel = document.querySelector('.js-ar-search-panel.is-open');
+        if (openSearchPanel) {
+          var searchCloseBtn = openSearchPanel.querySelector('.js-ar-search-close');
           if (searchCloseBtn) searchCloseBtn.click();
         }
       });

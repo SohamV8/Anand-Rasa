@@ -1,11 +1,92 @@
 {%- comment -%}
   Hero Vanta loader — three.js + VANTA.CLOUDS + hero-vanta.js.
 
-  Scripts are deferred (non-blocking) so HTML/LCP stay free, but they must be
-  present as real <script src> tags. Dynamically injecting ~600KB of three.js
-  after IntersectionObserver proved unreliable (engine missing → cream fallback).
-  Init itself remains lazy via IntersectionObserver inside hero-vanta.js.
+  three.min.js is ~600KB. Loading it on every homepage parse competes with LCP
+  and inflates TBT. Scripts are injected only when a .hero-vanta section is
+  near the viewport (or immediately if IntersectionObserver is unavailable).
+  Cream CSS fallback in hero-vanta.css remains available until the engine boots.
 {%- endcomment -%}
-<script src="{{ 'three.min.js' | asset_url }}" defer></script>
-<script src="{{ 'vanta.clouds.min.js' | asset_url }}" defer></script>
-<script src="{{ 'hero-vanta.js' | asset_url }}" defer></script>
+<script>
+  (function () {
+    if (window.__arVantaLoaderBound) return;
+    window.__arVantaLoaderBound = true;
+
+    var loading = false;
+    var threeSrc = {{ 'three.min.js' | asset_url | json }};
+    var vantaSrc = {{ 'vanta.clouds.min.js' | asset_url | json }};
+    var heroSrc = {{ 'hero-vanta.js' | asset_url | json }};
+
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        var existing = document.querySelector('script[src="' + src + '"]');
+        if (existing) {
+          if (existing.dataset.arLoaded === 'true' || existing.getAttribute('data-ar-loaded') === 'true') {
+            resolve();
+            return;
+          }
+          existing.addEventListener('load', function () { resolve(); }, { once: true });
+          existing.addEventListener('error', function () { reject(new Error(src)); }, { once: true });
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = false;
+        s.dataset.arLoaded = 'pending';
+        s.onload = function () {
+          s.dataset.arLoaded = 'true';
+          resolve();
+        };
+        s.onerror = function () { reject(new Error(src)); };
+        document.body.appendChild(s);
+      });
+    }
+
+    function loadEngine() {
+      if (loading || window.__arVantaEngineLoading) return;
+      loading = true;
+      window.__arVantaEngineLoading = true;
+      loadScript(threeSrc)
+        .then(function () { return loadScript(vantaSrc); })
+        .then(function () { return loadScript(heroSrc); })
+        .catch(function () {
+          loading = false;
+          window.__arVantaEngineLoading = false;
+        });
+    }
+
+    function boot() {
+      var nodes = document.querySelectorAll('.hero-vanta');
+      if (!nodes.length) return;
+
+      if (!('IntersectionObserver' in window)) {
+        loadEngine();
+        return;
+      }
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+              io.disconnect();
+              loadEngine();
+              break;
+            }
+          }
+        },
+        { root: null, rootMargin: '240px 0px', threshold: 0.01 }
+      );
+
+      for (var n = 0; n < nodes.length; n++) io.observe(nodes[n]);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    } else {
+      boot();
+    }
+
+    document.addEventListener('shopify:section:load', function () {
+      window.setTimeout(boot, 0);
+    });
+  })();
+</script>

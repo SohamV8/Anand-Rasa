@@ -756,7 +756,7 @@ body.ar-vtm-modal-open { overflow: hidden; }
           {%- for block in text_testimonials -%}
             {%- assign rating   = block.settings.rating | default: 5 -%}
             {%- assign initials = block.settings.name | slice: 0, 1 | upcase -%}
-            <article class="ar-tst__card" role="listitem" {{ block.shopify_attributes }}>
+            <div class="ar-tst__card" role="listitem" {{ block.shopify_attributes }}>
               <div class="ar-tst__stars" aria-label="{{ rating }} out of 5 stars">
                 {%- for i in (1..5) -%}
                   <span class="ar-tst__star{% if i <= rating %} on{% endif %}" aria-hidden="true">★</span>
@@ -774,7 +774,7 @@ body.ar-vtm-modal-open { overflow: hidden; }
                   Verified
                 </span>
               </div>
-            </article>
+            </div>
           {%- endfor -%}
         </div>
       </div>
@@ -809,7 +809,7 @@ body.ar-vtm-modal-open { overflow: hidden; }
           {%- for yt_id in yt_shorts -%}
             {%- assign yid = yt_id | strip -%}
             {%- if yid != blank -%}
-            <article class="ar-vtm__card ar-vtm__card--yt" role="listitem" data-yt-id="{{ yid }}">
+            <div class="ar-vtm__card ar-vtm__card--yt" role="listitem" data-yt-id="{{ yid }}">
               <div class="ar-vtm__video-wrap">
                 <div class="ar-vtm__yt-frame js-yt-frame" data-yt-id="{{ yid }}">
                   <img class="ar-vtm__yt-thumb" src="https://i.ytimg.com/vi/{{ yid }}/hqdefault.jpg" alt="" loading="lazy" decoding="async" draggable="false">
@@ -827,14 +827,14 @@ body.ar-vtm-modal-open { overflow: hidden; }
                   </div>
                 </div>
               </div>
-            </article>
+            </div>
             {%- endif -%}
           {%- endfor -%}
           {%- for block in video_testimonials -%}
             {%- assign v     = block.settings.video -%}
             {%- assign v_url = block.settings.video_url | strip -%}
             {%- if v != blank or v_url != blank -%}
-            <article class="ar-vtm__card" role="listitem" {{ block.shopify_attributes }}>
+            <div class="ar-vtm__card" role="listitem" {{ block.shopify_attributes }}>
               <div class="ar-vtm__video-wrap">
                 {%- if v != blank -%}
                   {{ v | video_tag: class: 'ar-vtm__video', image_size: '540x960', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
@@ -860,7 +860,7 @@ body.ar-vtm-modal-open { overflow: hidden; }
                     </button>
                   </div>
               </div>
-            </article>
+            </div>
             {%- endif -%}
           {%- endfor -%}
         </div>

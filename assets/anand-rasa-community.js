@@ -7,6 +7,38 @@
   var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var LOOP_MIN = 5;
 
+  function hydrateLazyImages(scope) {
+    var imgs = (scope || document).querySelectorAll('img[data-arc-src]');
+    if (!imgs.length) return;
+
+    function apply(img) {
+      var src = img.getAttribute('data-arc-src');
+      if (!src || img.getAttribute('src')) return;
+      img.setAttribute('src', src);
+      img.removeAttribute('data-arc-src');
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      imgs.forEach(apply);
+      return;
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          apply(entry.target);
+          io.unobserve(entry.target);
+        });
+      },
+      { root: null, rootMargin: '200px 0px', threshold: 0.01 }
+    );
+
+    imgs.forEach(function (img) {
+      io.observe(img);
+    });
+  }
+
   function initCarousel(root) {
     var viewport = root.querySelector('[data-arc-viewport]');
     var track = root.querySelector('[data-arc-track]');
@@ -27,6 +59,8 @@
     } else {
       track.classList.add('is-finite');
     }
+
+    hydrateLazyImages(track);
 
     var cards = track.children;
     var gap = 0;

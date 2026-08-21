@@ -1,5 +1,6 @@
 {%- comment -%}
   Homepage hero — poster-first LCP, deferred WebM (device-specific), GPU-friendly.
+  Video must NOT compete with the poster on Slow 4G: wait for LCP to settle.
 {%- endcomment -%}
 {%- liquid
   assign ar_hero_video_desktop = 'Website Main Page1.webm' | asset_url
@@ -13,7 +14,7 @@
     assign ar_hero_poster_desktop = section.settings.hero_image | image_url: width: 1600, format: 'webp'
     assign ar_hero_poster_fallback = section.settings.hero_image | image_url: width: 1200, format: 'webp'
   else
-    assign ar_hero_poster_mobile = 'home.webp' | asset_url
+    assign ar_hero_poster_mobile = 'home-mobile.webp' | asset_url
     assign ar_hero_poster_tablet = 'home.webp' | asset_url
     assign ar_hero_poster_desktop = 'home.webp' | asset_url
     assign ar_hero_poster_fallback = 'home.webp' | asset_url
@@ -43,7 +44,7 @@
         srcset="{{ ar_hero_poster_mobile | escape }} 750w, {{ ar_hero_poster_tablet | escape }} 1100w, {{ ar_hero_poster_desktop | escape }} 1600w"
         sizes="100vw"
         alt=""
-        width="1600"
+        width="1920"
         height="900"
         fetchpriority="high"
         decoding="async"
@@ -52,6 +53,11 @@
     </picture>
 
     {%- comment -%} Sources injected by JS for the active device only (preload none until then). {%- endcomment -%}
+    {%- comment -%}
+      Intrinsic sizes MUST match the WebM files exactly:
+      desktop = 1920×900 (DAR 32:15), mobile = 1200×1080 coded / DAR 4:5.
+      Wrong width/height + object-fit:cover was cropping/stretching the hero.
+    {%- endcomment -%}
     <video
       class="ar-hero__video ar-hero__video--desktop"
       data-ar-hero-video
@@ -63,7 +69,7 @@
       webkit-playsinline
       preload="none"
       width="1920"
-      height="1080"
+      height="900"
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
@@ -79,8 +85,8 @@
       playsinline
       webkit-playsinline
       preload="none"
-      width="720"
-      height="1280"
+      width="1200"
+      height="1080"
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
@@ -97,7 +103,13 @@
 </section>
 
 <style>
+/*
+  Permanent fit rule: NEVER crop (cover) or stretch the hero video/poster.
+  Frame aspect-ratio matches each WebM's true display ratio; media uses contain.
+*/
 .ar-hero {
+  --ar-hero-desktop-ratio: 1920 / 900; /* Website Main Page1.webm */
+  --ar-hero-mobile-ratio: 4 / 5;       /* Main Page Video Mobile.webm DAR */
   position: relative;
   isolation: isolate;
   background: #f5f5f5;
@@ -122,13 +134,15 @@
 
 .ar-hero__media {
   position: relative;
-  width: 100%;
   z-index: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  aspect-ratio: var(--ar-hero-desktop-ratio);
   overflow: hidden;
   pointer-events: none;
   background: #f5f5f5;
   line-height: 0;
-  aspect-ratio: 16 / 9;
 }
 
 .ar-hero__poster {
@@ -137,29 +151,30 @@
   z-index: 1;
   margin: 0;
   display: block;
+  width: 100%;
+  height: 100%;
   opacity: 1;
   pointer-events: none;
   transform: translateZ(0);
   transition: opacity 0.4s ease;
 }
 
-.ar-hero__poster-img {
+.ar-hero__poster-img,
+.ar-hero__video {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   object-position: center center;
+  border: 0;
 }
 
 .ar-hero__video {
   position: absolute;
   inset: 0;
   z-index: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
   pointer-events: none;
   opacity: 0;
   transform: translateZ(0);
@@ -196,8 +211,10 @@
 
 @media (max-width: 749px) {
   .ar-hero__media {
-    aspect-ratio: 9 / 16;
+    /* Keep full 4:5 frame visible: shrink width if viewport is shorter than ratio. */
+    aspect-ratio: var(--ar-hero-mobile-ratio);
     max-height: 100svh;
+    width: min(100%, calc(100svh * 4 / 5));
   }
 
   .ar-hero__video--desktop { display: none !important; }
@@ -332,18 +349,69 @@
       }
     }
 
+    var lcpGateOpen = false;
+    var pendingStart = false;
+
     function startWhenIdle() {
+      if (!lcpGateOpen) {
+        pendingStart = true;
+        return;
+      }
       var run = function () { syncPlayback(); };
       if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(run, { timeout: 1200 });
+        window.requestIdleCallback(run, { timeout: 2500 });
       } else {
-        window.setTimeout(run, 200);
+        window.setTimeout(run, 400);
       }
+    }
+
+    function openLcpGate() {
+      if (lcpGateOpen) return;
+      lcpGateOpen = true;
+      if (pendingStart || inView) startWhenIdle();
+    }
+
+    /* Keep ~4MB hero WebM off the critical path until poster LCP can settle. */
+    function armLcpGate() {
+      var poster = root.querySelector('.ar-hero__poster-img');
+      var armed = false;
+      var fallbackMs = 4500;
+
+      function arm() {
+        if (armed) return;
+        armed = true;
+        /* Extra buffer so Slow-4G LCP can finish painting before ~4MB WebM starts. */
+        window.setTimeout(openLcpGate, 2800);
+      }
+
+      try {
+        var po = new PerformanceObserver(function (list) {
+          list.getEntries().forEach(function (entry) {
+            if (!entry) return;
+            if (entry.element === poster) arm();
+            else if (entry.url && /home(?:-mobile)?\.webp/i.test(entry.url)) arm();
+          });
+        });
+        po.observe({ type: 'largest-contentful-paint', buffered: true });
+      } catch (e) {}
+
+      if (poster) {
+        if (poster.complete) arm();
+        else poster.addEventListener('load', arm, { once: true });
+      }
+
+      window.setTimeout(arm, fallbackMs);
+
+      ['pointerdown', 'touchstart', 'keydown'].forEach(function (evt) {
+        window.addEventListener(evt, openLcpGate, { once: true, passive: true });
+      });
     }
 
     if (reduce.matches || !supportsWebm) {
       return;
     }
+
+    armLcpGate();
 
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(

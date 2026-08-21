@@ -511,7 +511,7 @@
             alt="{{ pl_labels[i] }}"
             width="{% if pl_home %}92{% else %}56{% endif %}"
             height="{% if pl_home %}92{% else %}56{% endif %}"
-            loading="{% if i < 3 %}eager{% else %}lazy{% endif %}"
+            loading="{% if pl_home %}lazy{% elsif i < 3 %}eager{% else %}lazy{% endif %}"
             decoding="async"
           >
         </div>
@@ -526,7 +526,7 @@
                 alt="{{ pl_img_alt | escape }}"
                 width="720"
                 height="900"
-                loading="{% if i < 3 %}eager{% else %}lazy{% endif %}"
+                loading="{% if pl_home %}lazy{% elsif i < 3 %}eager{% else %}lazy{% endif %}"
                 decoding="async"
               >
             </a>

@@ -221,16 +221,31 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       >
     {%- endif -%}
     <!-- SEO Fix: DNS prefetch for critical origins -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//cdn.shopify.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- SEO Fix: Preload primary font -->
+    {%- comment -%}
+      Non-blocking Google Fonts: keep display=swap, avoid render-blocking CSS.
+      Shopify font preload retained for theme settings font (often unused with Google stack).
+    {%- endcomment -%}
     <link rel="preload" href="{{ settings.type_body_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+    >
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+      media="print"
+      onload="this.media='all'"
     >
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+      >
+    </noscript>
 
     {%- assign ar_favicon_url = settings.favicon | image_url: width: 32, height: 32 -%}
     {%- if settings.favicon == blank -%}
@@ -416,12 +431,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           rel="preload"
           as="image"
           href="{{ ar_home_hero_image | image_url: width: 1800 }}"
-          imagesrcset="{{ ar_home_hero_image | image_url: width: 1200 }} 1200w, {{ ar_home_hero_image | image_url: width: 1800 }} 1800w, {{ ar_home_hero_image | image_url: width: 2400 }} 2400w"
-          imagesizes="(min-width:1024px) 55vw, 100vw"
+          imagesrcset="{{ ar_home_hero_image | image_url: width: 750 }} 750w, {{ ar_home_hero_image | image_url: width: 1100 }} 1100w, {{ ar_home_hero_image | image_url: width: 1600 }} 1600w"
+          imagesizes="100vw"
           fetchpriority="high"
         >
       {%- else -%}
-        <link rel="preload" as="image" href="{{ 'home.webp' | asset_url }}" fetchpriority="high">
+        <link
+          rel="preload"
+          as="image"
+          href="{{ 'home-mobile.webp' | asset_url }}"
+          media="(max-width: 749px)"
+          fetchpriority="high"
+        >
+        <link
+          rel="preload"
+          as="image"
+          href="{{ 'home.webp' | asset_url }}"
+          media="(min-width: 750px)"
+          fetchpriority="high"
+        >
       {%- endif -%}
     {%- endif -%}
     {% render 'schema-global' %}
@@ -623,12 +651,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-    {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-    {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-    {{ 'component-price.css' | asset_url | stylesheet_tag }}
-    {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
-    {{ 'ar-judgeme-reviews.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-cart.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-totals.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- if request.page_type == 'product' -%}
+      {{ 'ar-judgeme-reviews.css' | asset_url | stylesheet_tag }}
+    {%- else -%}
+      <link rel="stylesheet" href="{{ 'ar-judgeme-reviews.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- endif -%}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
@@ -666,7 +698,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
-    {% render 'sr-checkout' %}
     <script src="https://unpkg.com/spf-analytics@1.0.0/index.js" defer></script>
 </head>
 
@@ -819,13 +850,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% render 'ar-b3g1-gift-config' %}
     {%- liquid
       assign ar_load_interactions = false
-      if settings.animations_reveal_on_scroll
+      if request.page_type == 'collection' or request.page_type == 'product'
         assign ar_load_interactions = true
-      endif
-      if request.page_type == 'collection'
-        assign ar_load_interactions = true
-      endif
-      if request.page_type == 'product'
+      elsif settings.animations_reveal_on_scroll and request.page_type != 'index'
         assign ar_load_interactions = true
       endif
     -%}
@@ -837,6 +864,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {%- endif -%}
 
     {% section 'ar-promo-popup' %}
+
+    {%- comment -%}
+      Shiprocket / Fastrr checkout assets — required for checkout UX but not for
+      first paint. Load at end of body so they do not compete with LCP.
+    {%- endcomment -%}
+    {% render 'sr-checkout' %}
 
   </body>
 </html>

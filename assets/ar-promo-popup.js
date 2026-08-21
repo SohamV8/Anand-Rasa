@@ -242,6 +242,10 @@
   PromoPopup.prototype.loadImage = function () {
     if (!this.mediaImg || this.mediaImg.dataset.loaded === 'true') return;
     var src = this.mediaImg.getAttribute('data-src');
+    var mobileSrc = this.mediaImg.getAttribute('data-src-mobile');
+    if (mobileSrc && window.matchMedia && window.matchMedia('(max-width: 768px)').matches) {
+      src = mobileSrc;
+    }
     if (!src) return;
     this.mediaImg.onload = function () {
       this.classList.add('is-loaded');

@@ -400,7 +400,7 @@
               {%- assign arc_fb_asset = arc_key | append: '.webp' -%}
               <article class="arc-card" role="listitem" style="transition-delay: {{ forloop.index0 | times: 0.06 }}s">
                 <div class="arc-card__media">
-                  <img class="arc-card__img" src="{{ arc_fb_asset | asset_url }}" alt="{{ handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                  <img class="arc-card__img" data-arc-src="{{ arc_fb_asset | asset_url }}" alt="{{ handle | escape }}" width="560" height="700" decoding="async">
                 </div>
                 <div class="arc-card__body">
                   <span class="arc-card__handle">{{ handle }}</span>
@@ -420,7 +420,7 @@
               {%- if member_img != blank and arc_dup == false -%}
               <article class="arc-card" role="listitem" {{ block.shopify_attributes }}>
                 <div class="arc-card__media">
-                  <img class="arc-card__img" src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_handle | escape }}" width="560" height="700" loading="lazy" decoding="async">
+                  <img class="arc-card__img" data-arc-src="{{ member_img | image_url: width: 560 }}" alt="{{ arc_card_handle | escape }}" width="560" height="700" decoding="async">
                 </div>
                 <div class="arc-card__body">
                   {%- if block.settings.handle != blank -%}<span class="arc-card__handle">{{ block.settings.handle }}</span>

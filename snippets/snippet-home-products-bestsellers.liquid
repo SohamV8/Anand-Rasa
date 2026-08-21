@@ -54,8 +54,7 @@
                       alt="{{ p.featured_image.alt | default: p.title | append: ' - handcrafted attar - Anandrasa' | escape }}"
                       width="800"
                       height="{{ 800 | divided_by: p.featured_image.aspect_ratio | round }}"
-                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                      {% if forloop.first %}fetchpriority="high"{% endif %}
+                      loading="lazy"
                       decoding="async"
                       class="ar-best__img"
                     >

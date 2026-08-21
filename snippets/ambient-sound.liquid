@@ -1,6 +1,7 @@
 {%- comment -%}
   Luxury ambient sound — whitelisted product PDPs only.
   Metafield: custom.ambient_sound_track (optional track override).
+  Audio assets are Opus only: assets/Music-<track>.opus
 {%- endcomment -%}
 {%- liquid
   assign ar_ambient_track = blank
@@ -9,36 +10,36 @@
 
   case ar_handle
     when 'sham-mastani', 'shaam-mastani'
-      assign ar_ambient_track = 'sham-mastani.mp3'
+      assign ar_ambient_track = 'sham-mastani.opus'
     when 'urvashi'
-      assign ar_ambient_track = 'urvashi.mp3'
+      assign ar_ambient_track = 'urvashi.opus'
     when 'masakali', 'masa-kali'
-      assign ar_ambient_track = 'masakali.mp3'
+      assign ar_ambient_track = 'masakali.opus'
     when 'baazigar'
-      assign ar_ambient_track = 'baazigar.mp3'
+      assign ar_ambient_track = 'baazigar.opus'
     when 'taal-se-taal', 'taal-se-taal-mil'
-      assign ar_ambient_track = 'taal-se-taal.mp3'
+      assign ar_ambient_track = 'taal-se-taal.opus'
     when 'ramta-jogi', 'ramta_jogi'
-      assign ar_ambient_track = 'ramta-jogi.mp3'
+      assign ar_ambient_track = 'ramta-jogi.opus'
     when 'dard-e-disco', 'dard_e_disco'
-      assign ar_ambient_track = 'dard-e-disco.mp3'
+      assign ar_ambient_track = 'dard-e-disco.opus'
   endcase
 
   if ar_ambient_track == blank
     if ar_title_down contains 'sham mastani' or ar_title_down contains 'shaam mastani'
-      assign ar_ambient_track = 'sham-mastani.mp3'
+      assign ar_ambient_track = 'sham-mastani.opus'
     elsif ar_title_down contains 'urvashi'
-      assign ar_ambient_track = 'urvashi.mp3'
+      assign ar_ambient_track = 'urvashi.opus'
     elsif ar_title_down contains 'masakali' or ar_title_down contains 'masa kali'
-      assign ar_ambient_track = 'masakali.mp3'
+      assign ar_ambient_track = 'masakali.opus'
     elsif ar_title_down contains 'baazigar'
-      assign ar_ambient_track = 'baazigar.mp3'
+      assign ar_ambient_track = 'baazigar.opus'
     elsif ar_title_down contains 'taal se taal'
-      assign ar_ambient_track = 'taal-se-taal.mp3'
+      assign ar_ambient_track = 'taal-se-taal.opus'
     elsif ar_title_down contains 'ramta jogi'
-      assign ar_ambient_track = 'ramta-jogi.mp3'
+      assign ar_ambient_track = 'ramta-jogi.opus'
     elsif ar_title_down contains 'dard e disco' or ar_title_down contains 'dard-e-disco'
-      assign ar_ambient_track = 'dard-e-disco.mp3'
+      assign ar_ambient_track = 'dard-e-disco.opus'
     endif
   endif
 
@@ -47,11 +48,12 @@
     assign ar_ambient_track = ar_mf_track
   endif
 
-  unless ar_ambient_track contains '.mp3'
-    if ar_ambient_track != blank
-      assign ar_ambient_track = ar_ambient_track | append: '.mp3'
-    endif
-  endunless
+  if ar_ambient_track != blank
+    assign ar_ambient_track = ar_ambient_track | replace: '.mp3', '.opus' | replace: '.MP3', '.opus'
+    unless ar_ambient_track contains '.opus'
+      assign ar_ambient_track = ar_ambient_track | append: '.opus'
+    endunless
+  endif
 
   assign ar_ambient_url = blank
   if ar_ambient_track != blank
@@ -88,6 +90,6 @@
       </span>
     </button>
 
-    <audio class="ar-ambient__audio" preload="metadata" loop playsinline hidden></audio>
+    <audio class="ar-ambient__audio" preload="none" loop playsinline hidden></audio>
   </div>
 {%- endif -%}
