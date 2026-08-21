@@ -819,7 +819,7 @@
   width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: #f3eee6;
+  background: #fff;
 }
 
 .afr__prod-img-wrap:focus-visible {

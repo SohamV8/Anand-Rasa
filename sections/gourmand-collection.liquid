@@ -162,7 +162,11 @@
           <p class="agm-products__count">{{ agm_col.products_count }} {{ agm_col.products_count | pluralize: 'fragrance', 'fragrances' }}</p>
         </div>
         <div class="agm-products__track-wrap">
-          <ul class="agm-products__grid" role="list">
+          <ul
+            class="agm-products__grid"
+            role="list"
+            aria-label="{{ agm_products_heading | escape }}"
+          >
             {%- paginate agm_col.products by agm_per_page -%}
               {%- for product in agm_col.products -%}
                 {%- liquid
@@ -181,22 +185,6 @@
                   elsif agm_on_sale
                     assign agm_badge = 'Sale'
                   endif
-                  assign agm_notes_raw = product.metafields.custom.main_notes.value | default: product.metafields.custom.top_notes.value | default: ''
-                  assign agm_notes_show = ''
-                  assign agm_notes_n = 0
-                  if agm_notes_raw != blank
-                    assign agm_notes_bits = agm_notes_raw | replace: ' · ', ',' | replace: ' & ', ',' | split: ','
-                    for agm_note in agm_notes_bits
-                      assign agm_note_clean = agm_note | strip
-                      if agm_note_clean != blank and agm_notes_n < 2
-                        if agm_notes_show != blank
-                          assign agm_notes_show = agm_notes_show | append: ' · '
-                        endif
-                        assign agm_notes_show = agm_notes_show | append: agm_note_clean
-                        assign agm_notes_n = agm_notes_n | plus: 1
-                      endif
-                    endfor
-                  endif
                   assign agm_img_alt = product.title
                   capture agm_img_alt
                     render 'image-seo-alt', seo_product: product, img_context: 'card'
@@ -212,11 +200,6 @@
                   if agm_display_title contains ' Attar'
                     assign agm_display_title = agm_display_title | replace: ' Attar', '' | strip
                   endif
-
-                  assign agm_blurb = agm_notes_show
-                  if agm_blurb == blank
-                    assign agm_blurb = 'Alcohol-free ' | append: agm_display_title | append: ' perfume oil'
-                  endif
                 -%}
                 <li data-agm-reveal style="--agm-d: {{ forloop.index0 | times: 45 }}ms;">
                   <article class="agm-card{% unless agm_variant.available %} agm-card--sold{% endunless %}">
@@ -227,7 +210,7 @@
                             <source
                               type="image/webp"
                               srcset="{{ product.featured_media | image_url: width: 360, format: 'webp' }} 360w, {{ product.featured_media | image_url: width: 540, format: 'webp' }} 540w, {{ product.featured_media | image_url: width: 720, format: 'webp' }} 720w"
-                              sizes="(max-width: 767px) 72vw, (max-width: 1100px) 30vw, 22vw"
+                              sizes="(max-width: 767px) 92vw, (max-width: 1100px) 30vw, 22vw"
                             >
                             {{
                               product.featured_media
@@ -236,7 +219,7 @@
                                 class: 'agm-card__img agm-card__img--primary',
                                 loading: 'lazy',
                                 widths: '360, 540, 720',
-                                sizes: '(max-width: 767px) 72vw, (max-width: 1100px) 30vw, 22vw',
+                                sizes: '(max-width: 767px) 92vw, (max-width: 1100px) 30vw, 22vw',
                                 alt: agm_img_alt,
                                 width: 720,
                                 height: 900,
@@ -253,7 +236,7 @@
                                     class: 'agm-card__img agm-card__img--hover',
                                     loading: 'lazy',
                                     widths: '360, 540, 720',
-                                    sizes: '(max-width: 767px) 72vw, (max-width: 1100px) 30vw, 22vw',
+                                    sizes: '(max-width: 767px) 92vw, (max-width: 1100px) 30vw, 22vw',
                                     alt: agm_img_alt_hover,
                                     width: 720,
                                     height: 900,
@@ -277,7 +260,6 @@
                       <h3 class="agm-card__name">
                         <a href="{{ product.url }}">{{ agm_display_title }}</a>
                       </h3>
-                      <p class="agm-card__notes">{{ agm_blurb | escape }}</p>
                       <div class="agm-card__meta" aria-label="Product details">
                         <span class="agm-card__chip">
                           {%- if agm_on_sale -%}

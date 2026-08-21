@@ -3,6 +3,7 @@
 {%- endcomment -%}
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Caudex:wght@400;700&display=swap');
   .ar-nav *, .ar-nav *::before, .ar-nav *::after { box-sizing:border-box; }
 
   /* Fixed bar so it never scrolls away (sticky can fail inside section wrappers). */
@@ -485,12 +486,50 @@
   }
 
   .ar-mega__trigger { position:relative; display:flex; align-items:center; }
-  .ar-mega__label { display:flex; align-items:center; gap:4px; cursor:pointer; }
+  .ar-mega__label { display:flex; align-items:center; gap:6px; cursor:pointer; }
   .ar-mega__label::after { display:none; }
   .ar-mega__chevron { transition:transform .25s ease; flex-shrink:0; }
   .ar-mega__trigger.is-open .ar-mega__chevron { transform:rotate(180deg); }
-  .ar-mega__dropdown { visibility:hidden; opacity:0; position:absolute; top:calc(100% + 16px); right:-40px; background:#fff; border:1px solid rgba(30,32,35,.08); box-shadow:0 20px 60px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.05); border-radius:16px; min-width:640px; z-index:400; transform:translateY(-8px); transition:opacity .3s ease,transform .3s ease,visibility .3s; overflow:hidden; }
-  .ar-mega__trigger.is-open .ar-mega__dropdown { visibility:visible; opacity:1; transform:translateY(0); }
+  @media (min-width: 901px) {
+    .ar-mega__dropdown {
+      visibility:hidden;
+      opacity:0;
+      position:absolute;
+      top:calc(100% + 10px);
+      left:auto;
+      right:0;
+      width:min(820px, calc(100vw - 48px));
+      max-width:calc(100vw - 48px);
+      max-height:min(78vh, 560px);
+      background:#fffdf9;
+      border:1px solid rgba(30,32,35,.08);
+      box-shadow:0 12px 28px rgba(20,22,26,.07);
+      border-radius:20px;
+      z-index:400;
+      transform:translate3d(0, -6px, 0);
+      transform-origin:top right;
+      transition:opacity .22s cubic-bezier(.22,1,.36,1), transform .22s cubic-bezier(.22,1,.36,1), visibility .22s;
+      overflow:auto;
+      padding:18px clamp(14px, 1.8vw, 24px) 20px;
+    }
+    .ar-mega__dropdown::before {
+      content:"";
+      position:absolute;
+      top:-8px;
+      right:46px;
+      width:14px;
+      height:14px;
+      background:#fefdfb;
+      border-left:1px solid rgba(30,32,35,.1);
+      border-top:1px solid rgba(30,32,35,.1);
+      transform:rotate(45deg);
+    }
+    .ar-mega__trigger.is-open .ar-mega__dropdown {
+      visibility:visible;
+      opacity:1;
+      transform:translate3d(0, 0, 0);
+    }
+  }
 
   /* Build Your Attar Box — Pitara logo dropdown (replaces VIP link) */
   .ar-box {
@@ -617,25 +656,84 @@
     font-variant-numeric: tabular-nums;
     color: var(--ar-ink);
   }
-  .ar-mega__inner { display:grid; grid-template-columns:1fr 1fr; min-height:380px; }
-  .ar-mega__links { padding:32px 36px; display:flex; flex-direction:column; gap:2px; }
-  .ar-mega__col-title { font-size:10px; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:#9ca3af; margin-bottom:16px; display:block; }
-  .ar-mega__link { display:block; font-size:15px; color:#374151; padding:9px 0; transition:color .2s,padding-left .25s; font-weight:400; text-decoration:none; border-bottom:1px solid rgba(30,32,35,.04); }
+  .ar-mega__inner { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+  .ar-mega__panel-title {
+    display:block;
+    font-family: "Caudex", var(--font-heading-family), Georgia, serif;
+    font-size: clamp(16px, 1.2vw, 20px);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9f7f4f;
+    text-align: center;
+    margin: 0 0 12px;
+    line-height: 1;
+  }
+  .ar-mega__col { padding: 2px clamp(10px, 1.2vw, 18px) 0; min-width: 0; }
+  .ar-mega__col + .ar-mega__col { border-left:1px solid rgba(30,32,35,.08); }
+  .ar-mega__links { display:flex; flex-direction:column; gap:0; }
+  .ar-mega__col-title {
+    font-family: "Caudex", var(--font-heading-family), Georgia, serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:#9f7f4f;
+    margin:0 0 6px;
+    display:block;
+  }
+  .ar-mega__link {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    min-height:42px;
+    font-family: "Caudex", var(--font-heading-family), Georgia, serif;
+    font-size:clamp(14px, 1.02vw, 16px);
+    line-height:1.18;
+    color:#1f2328;
+    padding:5px 0;
+    transition:color .2s ease, transform .2s cubic-bezier(.22,1,.36,1), opacity .2s ease;
+    font-weight:400;
+    text-decoration:none;
+    border-bottom:1px solid rgba(30,32,35,.08);
+    white-space: nowrap;
+  }
   .ar-mega__link:last-child { border-bottom:none; }
-  .ar-mega__link:hover { color:#1e2023; padding-left:8px; }
-  .ar-mega__feature { background:linear-gradient(135deg,#faf9f7 0%,#f5f0eb 100%); display:flex; align-items:center; justify-content:center; padding:24px; border-left:1px solid rgba(30,32,35,.06); border-radius:0 16px 16px 0; }
-  .ar-mega__feature-media { position:relative; width:100%; min-height:300px; display:flex; align-items:center; justify-content:center; }
-  .ar-mega__feature-img { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:block; border-radius:8px; opacity:0; transition:opacity .3s ease; will-change:opacity; pointer-events:none; }
-  .ar-mega__feature-video { position:absolute; inset:0; width:100%; height:100%; max-width:100%; max-height:340px; margin:auto; object-fit:contain; display:none; border-radius:8px; }
-  .ar-mega__feature-img.is-active { opacity:1; }
-  #header-preview-image { transition: opacity .3s ease; }
-  .ar-mega__feature-ph { width:100%; height:100%; min-height:300px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px; font-family:var(--font-body-family); }
+  .ar-mega__link:hover { color:#8d6d3f; }
+  .ar-mega__link:focus-visible { outline:none; color:#8d6d3f; }
+  .ar-mega__link::after {
+    content:"→";
+    font-size:17px;
+    line-height:1;
+    color:#b28a50;
+    transform:translateX(0);
+    transition:transform .2s cubic-bezier(.22,1,.36,1), color .2s ease, opacity .2s ease;
+    flex-shrink:0;
+    opacity:.9;
+  }
+  .ar-mega__link:hover::after,
+  .ar-mega__link:focus-visible::after { transform:translateX(4px); color:#8d6d3f; opacity:1; }
+  .ar-mega__feature { display:none; }
+  .ar-mega__feature-media,
+  .ar-mega__feature-img,
+  .ar-mega__feature-video,
+  .ar-mega__feature-ph { display:none !important; }
 
   /* Tablet */
-  @media(max-width:1100px){
+  @media(max-width:1280px){
     .ar-nav__inner { padding:0 28px; gap:16px; }
     .ar-nav__left { gap:24px; }
     .ar-nav__right { gap:16px; }
+    .ar-mega__dropdown {
+      width:min(760px, calc(100vw - 36px));
+      max-width:calc(100vw - 36px);
+      padding:16px 12px 18px;
+    }
+    .ar-mega__dropdown::before { right:30px; }
+    .ar-mega__panel-title { margin-bottom:10px; font-size:16px; }
+    .ar-mega__col { padding:2px 10px 0; }
+    .ar-mega__link { min-height:40px; font-size:14px; }
     .ar-box__menu {
       min-width: min(304px, calc(100vw - 56px));
       max-width: min(320px, calc(100vw - 56px));
@@ -954,171 +1052,144 @@
           <svg class="ar-mega__chevron" width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
         <div class="ar-mega__dropdown" id="ar-mega-dropdown-{{ section.id }}">
+          <span class="ar-mega__panel-title">Collections</span>
           <div class="ar-mega__inner">
-            <div class="ar-mega__links">
-              <span class="ar-mega__col-title">Collections</span>
-              {%- if mega_blocks.size > 0 -%}
-                {%- for block in mega_blocks -%}
-                  {%- liquid
-                    assign ar_mega_hover_image = ''
-                    assign ar_mega_hover_video = ''
-                    assign ar_mega_title_key = block.settings.title | default: '' | downcase | strip
-                    assign ar_mega_link_key = block.settings.link | default: '' | downcase
-                    assign ar_mega_link_url = block.settings.link
-                    if ar_mega_link_url == blank
-                      if ar_mega_title_key contains 'best'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'bestseller'
-                        endcapture
-                      elsif ar_mega_title_key contains 'planet'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'planet-attars'
-                        endcapture
-                      elsif ar_mega_title_key contains 'zodiac'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'zodiac-attars'
-                        endcapture
-                      elsif ar_mega_title_key contains 'nakshatra' or ar_mega_title_key contains 'naksahtra'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'nakshatra-attars'
-                        endcapture
-                      elsif ar_mega_title_key contains 'chakra'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'chakra-attars'
-                        endcapture
-                      elsif ar_mega_title_key contains 'stress'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'stress-relief'
-                        endcapture
-                      elsif ar_mega_title_key contains 'love'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'love-attar'
-                        endcapture
-                      elsif ar_mega_title_key contains 'apsara'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'apsara-attar'
-                        endcapture
-                      elsif ar_mega_title_key contains 'perfume'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'perfume-series'
-                        endcapture
-                      elsif ar_mega_title_key contains 'gourmand'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'gourmand'
-                        endcapture
-                      elsif ar_mega_title_key contains 'incense'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'incense-sticks'
-                        endcapture
-                      elsif ar_mega_title_key contains 'vip'
-                        assign ar_mega_link_url = ar_header_vip_url
-                      elsif ar_mega_title_key contains 'gift' or ar_mega_title_key contains 'discovery'
-                        capture ar_mega_link_url
-                          render 'ar-collection-url', handle: 'giftsets'
-                        endcapture
+            <div class="ar-mega__col">
+              <span class="ar-mega__col-title">Attars</span>
+              <div class="ar-mega__links">
+                {%- if mega_blocks.size > 0 -%}
+                  {%- for block in mega_blocks -%}
+                    {%- liquid
+                      assign ar_mega_title_key = block.settings.title | default: '' | downcase | strip
+                      assign ar_mega_link_url = block.settings.link
+                      if ar_mega_link_url == blank
+                        if ar_mega_title_key contains 'best'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'bestseller'
+                          endcapture
+                        elsif ar_mega_title_key contains 'planet'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'planet-attars'
+                          endcapture
+                        elsif ar_mega_title_key contains 'zodiac'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'zodiac-attars'
+                          endcapture
+                        elsif ar_mega_title_key contains 'nakshatra' or ar_mega_title_key contains 'naksahtra'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'nakshatra-attars'
+                          endcapture
+                        elsif ar_mega_title_key contains 'chakra'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'chakra-attars'
+                          endcapture
+                        elsif ar_mega_title_key contains 'stress'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'stress-relief'
+                          endcapture
+                        elsif ar_mega_title_key contains 'love'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'love-attar'
+                          endcapture
+                        elsif ar_mega_title_key contains 'apsara'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'apsara-attar'
+                          endcapture
+                        elsif ar_mega_title_key contains 'vip'
+                          assign ar_mega_link_url = ar_header_vip_url
+                        endif
                       endif
-                    endif
-                    assign ar_mega_link_url = ar_mega_link_url | strip
-                    if ar_mega_link_url == blank
-                      assign ar_mega_link_url = routes.collections_url
-                    endif
-                    if block.settings.image != blank
-                      assign ar_mega_hover_image = block.settings.image | image_url: width: 900
-                    else
-                      if ar_mega_title_key contains 'planet' or ar_mega_link_key contains 'planet-attars'
-                        assign ar_mega_hover_image = 'planets.webp' | asset_url
-                      elsif ar_mega_title_key contains 'zodiac' or ar_mega_link_key contains 'zodiac-attars'
-                        assign ar_mega_hover_image = 'zodiac.webp' | asset_url
-                      elsif ar_mega_title_key contains 'nakshatra' or ar_mega_link_key contains 'nakshatra-attars'
-                        assign ar_mega_hover_video = 'NakshatraGif1.webm' | asset_url
-                        assign ar_mega_hover_image = 'nakshatra.webp' | asset_url
-                      elsif ar_mega_title_key contains 'chakra' or ar_mega_link_key contains 'chakra-attars'
-                        assign ar_mega_hover_image = 'chakra.webp' | asset_url
-                      elsif ar_mega_title_key contains 'stress' or ar_mega_link_key contains 'stress-relief'
-                        assign ar_mega_hover_image = 'stress.webp' | asset_url
-                      elsif ar_mega_title_key contains 'love' or ar_mega_link_key contains 'love-attar'
-                        assign ar_mega_hover_image = 'Love Attar.webp' | asset_url
-                      elsif ar_mega_title_key contains 'apsara' or ar_mega_link_key contains 'apsara-attar'
-                        assign ar_mega_hover_image = 'Apsara Attar.webp' | asset_url
-                      elsif ar_mega_title_key contains 'perfume' or ar_mega_link_key contains 'perfume-series'
-                        assign ar_mega_hover_image = 'Perfume Series.webp' | asset_url
-                      elsif ar_mega_title_key contains 'gourmand' or ar_mega_link_key contains 'gourmand'
-                        assign ar_mega_hover_image = 'Perfume Series.webp' | asset_url
-                      elsif ar_mega_title_key contains 'incense' or ar_mega_link_key contains 'incense-sticks'
-                        assign ar_mega_hover_image = 'incense_stick.webp' | asset_url
-                      elsif ar_mega_title_key contains 'gift' or ar_mega_link_key contains 'giftsets'
-                        assign ar_mega_hover_image = 'Gift Set.webp' | asset_url
-                      elsif ar_mega_title_key contains 'vip'
-                        assign ar_mega_hover_image = 'logo.webp' | asset_url
+                      assign ar_mega_link_url = ar_mega_link_url | strip
+                      if ar_mega_link_url == blank
+                        assign ar_mega_link_url = routes.collections_url
                       endif
-                    endif
-                    if ar_mega_hover_image == blank and mega_fallback_image != blank
-                      assign ar_mega_hover_image = mega_fallback_image | image_url: width: 900
-                    elsif ar_mega_hover_image == blank
-                      assign ar_mega_hover_image = 'PlanetHero.webp' | asset_url
-                    endif
-                  -%}
-                  <a
-                    href="{{ ar_mega_link_url }}"
-                    class="ar-mega__link"
-                    data-image="{{ ar_mega_hover_image }}"
-                    data-video="{{ ar_mega_hover_video }}"
-                    data-mega-alt="{{ block.settings.title | escape }}"
-                    {{ block.shopify_attributes }}
-                    {%- if ar_mega_hover_image != blank -%}
-                      data-mega-image="{{ ar_mega_hover_image }}"
+                      assign ar_is_attar_group = false
+                      if ar_mega_title_key contains 'best' or ar_mega_title_key contains 'planet' or ar_mega_title_key contains 'zodiac' or ar_mega_title_key contains 'nakshatra' or ar_mega_title_key contains 'chakra' or ar_mega_title_key contains 'stress'
+                        assign ar_is_attar_group = true
+                      endif
+                    -%}
+                    {%- if ar_is_attar_group -%}
+                      <a
+                        href="{{ ar_mega_link_url }}"
+                        class="ar-mega__link"
+                        {{ block.shopify_attributes }}
+                      >
+                        {{ block.settings.title | default: 'Collection' }}
+                      </a>
                     {%- endif -%}
-                  >
-                    {{ block.settings.title | default: 'Collection' }}
-                  </a>
-                {%- endfor -%}
-              {%- else -%}
-              <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-mega__link" {% if mega_fallback_image != blank %}data-image="{{ mega_fallback_image | image_url: width: 900 }}"{% endif %}>Bestseller</a>
-                <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link" data-image="{{ 'planets.webp' | asset_url }}">Planet Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link" data-image="{{ 'zodiac.webp' | asset_url }}">Zodiac Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link" data-image="{{ 'nakshatra.webp' | asset_url }}" data-video="{{ 'NakshatraGif1.webm' | asset_url }}">Nakshatra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link" data-image="{{ 'stress.webp' | asset_url }}">Stress Relief Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link" data-image="{{ 'chakra.webp' | asset_url }}">Chakra Attars</a>
-                <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link" data-image="{{ 'Love Attar.webp' | asset_url }}">Prem Rasa</a>
-                <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-mega__link" data-image="{{ 'Apsara Attar.webp' | asset_url }}">Apsara Attar</a>
-                <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-mega__link" data-image="{{ 'Perfume Series.webp' | asset_url }}">Perfume Series</a>
-                <a href="{% render 'ar-collection-url', handle: 'gourmand' %}" class="ar-mega__link" data-image="{{ 'Perfume Series.webp' | asset_url }}">Gourmand Collection</a>
-                <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link" data-image="{{ 'incense_stick.webp' | asset_url }}">Incense Sticks</a>
-                <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-mega__link" data-image="{{ 'Gift Set.webp' | asset_url }}">Gift Sets</a>
-              {%- endif -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-mega__link">Bestseller</a>
+                  <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-mega__link">Planet Attars</a>
+                  <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-mega__link">Zodiac Attars</a>
+                  <a href="{% render 'ar-collection-url', handle: 'nakshatra-attars' %}" class="ar-mega__link">Nakshatra Attars</a>
+                  <a href="{% render 'ar-collection-url', handle: 'stress-relief' %}" class="ar-mega__link">Stress Relief Attars</a>
+                  <a href="{% render 'ar-collection-url', handle: 'chakra-attars' %}" class="ar-mega__link">Chakra Attars</a>
+                {%- endif -%}
+              </div>
             </div>
-            <div class="ar-mega__feature">
-              {%- assign ar_mega_primary_src = '' -%}
-              {%- assign ar_mega_primary_width = 900 -%}
-              {%- assign ar_mega_primary_height = 1200 -%}
-              {%- if mega_fallback_image != blank -%}
-                {%- assign ar_mega_primary_src = mega_fallback_image | image_url: width: 900 -%}
-                {%- assign ar_mega_primary_width = mega_fallback_image.width | default: 900 -%}
-                {%- assign ar_mega_primary_height = mega_fallback_image.height | default: 1200 -%}
-              {%- else -%}
-                {%- assign ar_mega_primary_src = 'PlanetHero.webp' | asset_url -%}
-              {%- endif -%}
-              <div class="ar-mega__feature-media">
-                <img
-                  src="{{ ar_mega_primary_src }}"
-                  alt="Featured Collection"
-                  width="{{ ar_mega_primary_width }}"
-                  height="{{ ar_mega_primary_height }}"
-                  loading="lazy"
-                  class="ar-mega__feature-img is-active js-ar-mega-feature-primary"
-                  id="header-preview-image"
-                  data-ar-mega-feature-primary-id="ar-mega-feature-primary-{{ section.id }}"
-                >
-                <img
-                  src="{{ ar_mega_primary_src }}"
-                  alt="Featured Collection"
-                  width="{{ ar_mega_primary_width }}"
-                  height="{{ ar_mega_primary_height }}"
-                  loading="lazy"
-                  class="ar-mega__feature-img js-ar-mega-feature-secondary"
-                  id="ar-mega-feature-secondary-{{ section.id }}"
-                >
-                <video class="ar-mega__feature-video js-ar-mega-feature-video" muted loop playsinline preload="metadata" aria-label="Collection preview"></video>
+            <div class="ar-mega__col">
+              <span class="ar-mega__col-title">Collections</span>
+              <div class="ar-mega__links">
+                {%- if mega_blocks.size > 0 -%}
+                  {%- for block in mega_blocks -%}
+                    {%- liquid
+                      assign ar_mega_title_key = block.settings.title | default: '' | downcase | strip
+                      assign ar_mega_link_url = block.settings.link
+                      if ar_mega_link_url == blank
+                        if ar_mega_title_key contains 'perfume'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'perfume-series'
+                          endcapture
+                        elsif ar_mega_title_key contains 'gourmand'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'gourmand'
+                          endcapture
+                        elsif ar_mega_title_key contains 'incense'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'incense-sticks'
+                          endcapture
+                        elsif ar_mega_title_key contains 'gift' or ar_mega_title_key contains 'discovery'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'giftsets'
+                          endcapture
+                        elsif ar_mega_title_key contains 'love'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'love-attar'
+                          endcapture
+                        elsif ar_mega_title_key contains 'apsara'
+                          capture ar_mega_link_url
+                            render 'ar-collection-url', handle: 'apsara-attar'
+                          endcapture
+                        endif
+                      endif
+                      assign ar_mega_link_url = ar_mega_link_url | strip
+                      if ar_mega_link_url == blank
+                        assign ar_mega_link_url = routes.collections_url
+                      endif
+                      assign ar_is_collection_group = false
+                      if ar_mega_title_key contains 'love' or ar_mega_title_key contains 'apsara' or ar_mega_title_key contains 'perfume' or ar_mega_title_key contains 'gourmand' or ar_mega_title_key contains 'incense' or ar_mega_title_key contains 'gift' or ar_mega_title_key contains 'discovery'
+                        assign ar_is_collection_group = true
+                      endif
+                    -%}
+                    {%- if ar_is_collection_group -%}
+                      <a
+                        href="{{ ar_mega_link_url }}"
+                        class="ar-mega__link"
+                        {{ block.shopify_attributes }}
+                      >
+                        {{ block.settings.title | default: 'Collection' }}
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- else -%}
+                  <a href="{% render 'ar-collection-url', handle: 'love-attar' %}" class="ar-mega__link">Prem Rasa</a>
+                  <a href="{% render 'ar-collection-url', handle: 'apsara-attar' %}" class="ar-mega__link">Apsara Attar</a>
+                  <a href="{% render 'ar-collection-url', handle: 'perfume-series' %}" class="ar-mega__link">Perfume Series</a>
+                  <a href="{% render 'ar-collection-url', handle: 'gourmand' %}" class="ar-mega__link">Gourmand Collection</a>
+                  <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-mega__link">Incense Sticks</a>
+                  <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-mega__link">Gift Sets</a>
+                {%- endif -%}
               </div>
             </div>
           </div>
