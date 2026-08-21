@@ -667,7 +667,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
     {% render 'sr-checkout' %}
-  </head>
+    <script src="https://unpkg.com/spf-analytics@1.0.0/index.js" defer></script>
+</head>
 
   {%- liquid
     assign ar_body_find_fragrance = ar_is_find_fragrance_legacy_view
