@@ -1,0 +1,250 @@
+{%- comment -%}
+  Discovery Set gallery — product-handle gated.
+  Renders ONLY for discovery-set-for-her-8ml-x-5.
+{%- endcomment -%}
+
+{%- liquid
+  assign dsg_handle = 'discovery-set-for-her-8ml-x-5'
+  assign dsg_active = false
+  if request.page_type == 'product' and product != blank and product.handle == dsg_handle
+    assign dsg_active = true
+  endif
+-%}
+
+{%- if dsg_active -%}
+  {{ 'discovery-set-gallery.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign dsg_media_images = product.media | where: 'media_type', 'image'
+    assign dsg_banner_blocks = section.blocks | where: 'type', 'banner'
+    assign dsg_has_banner_blocks = false
+    for dsg_b in dsg_banner_blocks
+      if dsg_b.settings.image != blank
+        assign dsg_has_banner_blocks = true
+        break
+      endif
+    endfor
+  -%}
+
+  <section
+    id="DiscoverySetGallery-{{ section.id }}"
+    class="discovery-set-gallery"
+    aria-label="{{ section.settings.heading | default: 'Discovery Set gallery' | escape }}"
+  >
+    <div class="discovery-set-gallery__inner">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="visually-hidden">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+
+      <ul class="discovery-set-gallery__top" role="list">
+        {%- for i in (1..5) -%}
+          {%- liquid
+            assign dsg_setting_key = 'top_image_' | append: i
+            assign dsg_img = section.settings[dsg_setting_key]
+            if dsg_img == blank
+              assign dsg_idx = i | minus: 1
+              if dsg_media_images.size > dsg_idx
+                assign dsg_img = dsg_media_images[dsg_idx]
+              endif
+            endif
+          -%}
+          {%- if dsg_img != blank -%}
+            {%- liquid
+              assign dsg_alt = dsg_img.alt | default: blank
+              if dsg_alt == blank
+                assign dsg_alt = product.title | append: ' fragrance ' | append: i
+              endif
+              assign dsg_loading = 'lazy'
+              assign dsg_fetch = 'auto'
+              if i == 1
+                assign dsg_loading = 'eager'
+                assign dsg_fetch = 'high'
+              endif
+            -%}
+            <li class="discovery-set-gallery__item">
+              {{
+                dsg_img
+                | image_url: width: 600
+                | image_tag:
+                  widths: '160, 220, 300, 400, 600',
+                  sizes: '(min-width: 1200px) 220px, 18vw',
+                  class: 'discovery-set-gallery__item-img',
+                  loading: dsg_loading,
+                  fetchpriority: dsg_fetch,
+                  decoding: 'async',
+                  alt: dsg_alt
+              }}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      <div class="discovery-set-gallery__banners">
+        {%- if dsg_has_banner_blocks -%}
+          {%- for block in dsg_banner_blocks -%}
+            {%- if block.settings.image != blank -%}
+              {%- liquid
+                assign dsg_b_alt = block.settings.alt | default: block.settings.image.alt | default: blank
+                if dsg_b_alt == blank
+                  assign dsg_b_alt = product.title | append: ' — detail ' | append: forloop.index
+                endif
+                assign dsg_b_link = block.settings.link
+              -%}
+              <figure class="discovery-set-gallery__banner" {{ block.shopify_attributes }}>
+                {%- if dsg_b_link != blank -%}
+                  <a class="discovery-set-gallery__banner-link" href="{{ dsg_b_link }}">
+                    {{
+                      block.settings.image
+                      | image_url: width: 1600
+                      | image_tag:
+                        widths: '600, 900, 1200, 1600',
+                        sizes: '(min-width: 1200px) 1200px, calc(100vw - 24px)',
+                        class: 'discovery-set-gallery__banner-img',
+                        loading: 'lazy',
+                        decoding: 'async',
+                        alt: dsg_b_alt
+                    }}
+                  </a>
+                {%- else -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1600
+                    | image_tag:
+                      widths: '600, 900, 1200, 1600',
+                      sizes: '(min-width: 1200px) 1200px, calc(100vw - 24px)',
+                      class: 'discovery-set-gallery__banner-img',
+                      loading: 'lazy',
+                      decoding: 'async',
+                      alt: dsg_b_alt
+                  }}
+                {%- endif -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for dsg_media in dsg_media_images offset: 5 -%}
+            {%- liquid
+              assign dsg_b_alt = dsg_media.alt | default: blank
+              if dsg_b_alt == blank
+                assign dsg_b_alt = product.title | append: ' — lifestyle ' | append: forloop.index
+              endif
+            -%}
+            <figure class="discovery-set-gallery__banner">
+              {{
+                dsg_media
+                | image_url: width: 1600
+                | image_tag:
+                  widths: '600, 900, 1200, 1600',
+                  sizes: '(min-width: 1200px) 1200px, calc(100vw - 24px)',
+                  class: 'discovery-set-gallery__banner-img',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  alt: dsg_b_alt
+              }}
+            </figure>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Discovery Set gallery",
+  "tag": "section",
+  "class": "section-discovery-set-gallery",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows only on product handle discovery-set-for-her-8ml-x-5. Other products ignore this section."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Accessible heading",
+      "default": "Discovery Set for Her gallery"
+    },
+    {
+      "type": "header",
+      "content": "Top row — 5 fragrance cards"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional overrides. If blank, the first 5 product images are used."
+    },
+    {
+      "type": "image_picker",
+      "id": "top_image_1",
+      "label": "Fragrance image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "top_image_2",
+      "label": "Fragrance image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "top_image_3",
+      "label": "Fragrance image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "top_image_4",
+      "label": "Fragrance image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "top_image_5",
+      "label": "Fragrance image 5"
+    },
+    {
+      "type": "header",
+      "content": "Banner stack"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add Banner blocks below. If none are set, remaining product images (after the first 5) are used."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text (optional)",
+          "info": "Defaults to the image alt or product title."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discovery Set gallery",
+      "blocks": [
+        { "type": "banner" },
+        { "type": "banner" },
+        { "type": "banner" },
+        { "type": "banner" },
+        { "type": "banner" }
+      ]
+    }
+  ]
+}
+{% endschema %}

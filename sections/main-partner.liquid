@@ -1,0 +1,273 @@
+{%- comment -%}
+  Anand Rasa — Partner / collaboration landing (static).
+  Template: page.partner · /pages/partner
+  No portal auth, analytics, or app proxy dependency.
+{%- endcomment -%}
+
+{%- liquid
+  assign ar_pw_eyebrow = section.settings.eyebrow | default: 'Anand Rasa' | strip
+  assign ar_pw_heading = section.settings.heading | default: 'Partner with Anand Rasa' | strip
+  assign ar_pw_text = section.settings.description | default: 'We welcome thoughtful collaborations with stockists, creators, and fragrance partners who share our care for craft and ritual.' | strip
+  assign ar_pw_primary_label = section.settings.primary_label | default: 'Contact us' | strip
+  assign ar_pw_secondary_label = section.settings.secondary_label | default: 'Back to Home' | strip
+
+  assign ar_pw_primary_url = section.settings.primary_url
+  if ar_pw_primary_url == blank
+    if pages['contact'] != blank
+      assign ar_pw_primary_url = pages['contact'].url
+    elsif pages['contact-us'] != blank
+      assign ar_pw_primary_url = pages['contact-us'].url
+    else
+      assign ar_pw_primary_url = '/pages/contact'
+    endif
+  endif
+
+  assign ar_pw_secondary_url = section.settings.secondary_url
+  if ar_pw_secondary_url == blank
+    assign ar_pw_secondary_url = routes.root_url
+  endif
+
+  assign ar_pw_email = section.settings.email | default: 'anandrasafragnance@gmail.com' | strip
+-%}
+
+<section
+  id="ArPartnerPage-{{ section.id }}"
+  class="ar-pw"
+  aria-labelledby="ArPartnerPage-title-{{ section.id }}"
+>
+  <div class="ar-pw__inner">
+    {%- if ar_pw_eyebrow != blank -%}
+      <p class="ar-pw__eyebrow">{{ ar_pw_eyebrow | escape }}</p>
+    {%- endif -%}
+
+    <h1 id="ArPartnerPage-title-{{ section.id }}" class="ar-pw__title">
+      {{ ar_pw_heading | escape }}
+    </h1>
+
+    {%- if ar_pw_text != blank -%}
+      <p class="ar-pw__description">{{ ar_pw_text | escape }}</p>
+    {%- endif -%}
+
+    <nav class="ar-pw__actions" aria-label="Partner enquiries">
+      {%- if ar_pw_primary_label != blank -%}
+        <a class="ar-pw__btn ar-pw__btn--primary" href="{{ ar_pw_primary_url }}">
+          {{- ar_pw_primary_label | escape -}}
+        </a>
+      {%- endif -%}
+      {%- if ar_pw_email != blank -%}
+        <a class="ar-pw__btn ar-pw__btn--secondary" href="mailto:{{ ar_pw_email | escape }}">
+          Email us
+        </a>
+      {%- endif -%}
+      {%- if ar_pw_secondary_label != blank -%}
+        <a class="ar-pw__link" href="{{ ar_pw_secondary_url }}">
+          {{- ar_pw_secondary_label | escape -}}
+        </a>
+      {%- endif -%}
+    </nav>
+  </div>
+</section>
+
+<style>
+  #ArPartnerPage-{{ section.id }}.ar-pw {
+    --ar-pw-bg: #fdf9f7;
+    --ar-pw-ink: #211d1b;
+    --ar-pw-muted: #746a66;
+    --ar-pw-border: rgba(33, 29, 27, 0.18);
+    --ar-pw-font-h: var(--font-heading-family, var(--font-heading, 'Poppins', sans-serif));
+    --ar-pw-font-b: var(--font-body-family, var(--font-body, Georgia, serif));
+    --ar-pw-pad-x: clamp(20px, 5vw, 80px);
+
+    box-sizing: border-box;
+    width: 100%;
+    min-height: calc(100svh - var(--header-height, 5.5rem) - 8rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 8vh, 5.5rem) 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #f3dcd6 0%, transparent 55%),
+      linear-gradient(168deg, var(--ar-pw-bg) 0%, #f8efeb 50%, #fffdfc 100%);
+    color: var(--ar-pw-ink);
+  }
+
+  #ArPartnerPage-{{ section.id }}.ar-pw *,
+  #ArPartnerPage-{{ section.id }}.ar-pw *::before,
+  #ArPartnerPage-{{ section.id }}.ar-pw *::after {
+    box-sizing: border-box;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__inner {
+    width: min(100% - (var(--ar-pw-pad-x) * 2), 40rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__eyebrow {
+    margin: 0 0 1rem;
+    font-family: var(--ar-pw-font-h);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ar-pw-ink);
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__title {
+    margin: 0 0 1rem;
+    font-family: var(--ar-pw-font-h);
+    font-size: clamp(1.85rem, 4vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ar-pw-ink);
+    text-wrap: balance;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__description {
+    margin: 0 auto 2rem;
+    max-width: 36ch;
+    font-family: var(--ar-pw-font-b);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--ar-pw-muted);
+    text-wrap: pretty;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    min-width: min(100%, 16rem);
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-family: var(--ar-pw-font-h);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn--primary {
+    background: #211d1b;
+    color: #fff;
+    border: 1.5px solid #211d1b;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn--primary:hover {
+    transform: translate3d(0, -2px, 0);
+    background: #000;
+    border-color: #000;
+    color: #fff;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn--secondary {
+    background: transparent;
+    color: #211d1b;
+    border: 1.5px solid var(--ar-pw-border);
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn--secondary:hover {
+    transform: translate3d(0, -2px, 0);
+    border-color: #211d1b;
+    color: #211d1b;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__btn:focus-visible,
+  #ArPartnerPage-{{ section.id }} .ar-pw__link:focus-visible {
+    outline: 2px solid #211d1b;
+    outline-offset: 3px;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__link {
+    margin-top: 0.35rem;
+    font-family: var(--ar-pw-font-h);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ar-pw-ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  #ArPartnerPage-{{ section.id }} .ar-pw__link:hover {
+    border-bottom-color: rgba(33, 29, 27, 0.4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #ArPartnerPage-{{ section.id }} .ar-pw__btn:hover {
+      transform: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Partner page",
+  "tag": "div",
+  "class": "section-main-partner",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Static partner / collaboration landing. Uses the default theme layout (header + footer)."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Partner with Anand Rasa"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "We welcome thoughtful collaborations with stockists, creators, and fragrance partners who share our care for craft and ritual."
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "primary_url",
+      "label": "Primary button URL",
+      "info": "Defaults to Contact page"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Enquiry email",
+      "default": "anandrasafragnance@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary link label",
+      "default": "Back to Home"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary link URL",
+      "info": "Defaults to Home"
+    }
+  ]
+}
+{% endschema %}

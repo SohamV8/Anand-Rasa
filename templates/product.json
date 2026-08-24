@@ -446,6 +446,13 @@
         "include_margins": true
       }
     },
+    "discovery_set_editorial": {
+      "type": "discovery-set-editorial",
+      "settings": {
+        "inbox_eyebrow": "in the box",
+        "inbox_heading": "five signature fragrances"
+      }
+    },
     "1786451701b28a6d84": {
       "type": "apps",
       "blocks": {
@@ -494,6 +501,7 @@
   "order": [
     "1777535904a27e40a3",
     "main",
+    "discovery_set_editorial",
     "planet_luxury_story",
     "brand_experience_videos",
     "1777290678d5cd77e4",

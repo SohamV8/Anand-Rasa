@@ -1,0 +1,355 @@
+{%- comment -%}
+  Policy pages — editorial chrome around Shopify Admin policy HTML.
+  Source of truth: shop policy objects (policy.body). No hard-coded legal text.
+  Rendered from layout/theme.liquid when request.page_type == 'policy'
+  (JSON policy templates are not supported by Shopify).
+{%- endcomment -%}
+
+{%- liquid
+  assign ar_pol_id = section.id
+  assign ar_policy = blank
+  assign ar_path = request.path | default: ''
+
+  for pol in shop.policies
+    if pol.url == ar_path
+      assign ar_policy = pol
+      break
+    endif
+  endfor
+
+  if ar_policy == blank and policy != blank
+    assign ar_policy = policy
+  endif
+
+  if ar_policy == blank
+    if ar_path contains '/policies/shipping-policy'
+      assign ar_policy = shop.shipping_policy
+    elsif ar_path contains '/policies/refund-policy'
+      assign ar_policy = shop.refund_policy
+    elsif ar_path contains '/policies/privacy-policy'
+      assign ar_policy = shop.privacy_policy
+    elsif ar_path contains '/policies/terms-of-service'
+      assign ar_policy = shop.terms_of_service
+    elsif ar_path contains '/policies/contact-information'
+      assign ar_policy = shop.contact_information
+    elsif ar_path contains '/policies/legal-notice'
+      assign ar_policy = shop.legal_notice
+    endif
+  endif
+
+  assign ar_title = ''
+  if ar_policy != blank and ar_policy.title != blank
+    assign ar_title = ar_policy.title
+  endif
+
+  assign ar_body = ''
+  if ar_policy != blank and ar_policy.body != blank
+    assign ar_body = ar_policy.body
+  endif
+
+  assign ar_contact_url = pages['contact'].url | default: pages['contact-us'].url | default: '/pages/contact'
+  assign ar_refund_url = shop.refund_policy.url | default: '/policies/refund-policy'
+  assign ar_terms_url = shop.terms_of_service.url | default: '/policies/terms-of-service'
+  assign ar_privacy_url = shop.privacy_policy.url | default: '/policies/privacy-policy'
+  assign ar_shipping_url = shop.shipping_policy.url | default: '/policies/shipping-policy'
+-%}
+
+<section
+  id="ArPolicy-{{ ar_pol_id }}"
+  class="ar-pol"
+  aria-labelledby="ArPolicy-title-{{ ar_pol_id }}"
+>
+  <div class="ar-pol__shell">
+    <header class="ar-pol__header">
+      <p class="ar-pol__eyebrow">Anand Rasa</p>
+      <h1 id="ArPolicy-title-{{ ar_pol_id }}" class="ar-pol__title">
+        {%- if ar_title != blank -%}
+          {{ ar_title | escape }}
+        {%- else -%}
+          Policy
+        {%- endif -%}
+      </h1>
+    </header>
+
+    <div class="ar-pol__content policy-content rte">
+      {%- if ar_body != blank -%}
+        {{ ar_body }}
+      {%- else -%}
+        <p>This policy has not yet been published.</p>
+      {%- endif -%}
+    </div>
+
+    <nav class="ar-pol__related" aria-label="Related policies">
+      <h2 class="ar-pol__related-title">Related policies</h2>
+      <ul class="ar-pol__related-list" role="list">
+        <li><a href="{{ ar_shipping_url }}">Shipping Policy</a></li>
+        <li><a href="{{ ar_refund_url }}">Refund Policy</a></li>
+        <li><a href="{{ ar_privacy_url }}">Privacy Policy</a></li>
+        <li><a href="{{ ar_terms_url }}">Terms of Service</a></li>
+        <li><a href="{{ ar_contact_url }}">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<style>
+  #ArPolicy-{{ ar_pol_id }}.ar-pol {
+    --ar-pol-bg: #fffdfc;
+    --ar-pol-ink: #211d1b;
+    --ar-pol-muted: #5c534f;
+    --ar-pol-border: rgba(33, 29, 27, 0.12);
+    --ar-pol-font-h: var(--font-body-family, var(--font-body, 'Caudex', Georgia, serif));
+    --ar-pol-font-b: var(--font-heading-family, var(--font-heading, 'Poppins', sans-serif));
+    --ar-pol-pad-x: clamp(1rem, 4vw, 2.5rem);
+    --ar-pol-max: 56rem;
+    --ar-pol-read: 52rem;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    padding: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px 0 {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    background: var(--ar-pol-bg);
+    color: var(--ar-pol-ink);
+  }
+
+  @media screen and (min-width: 750px) {
+    #ArPolicy-{{ ar_pol_id }}.ar-pol {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #ArPolicy-{{ ar_pol_id }}.ar-pol *,
+  #ArPolicy-{{ ar_pol_id }}.ar-pol *::before,
+  #ArPolicy-{{ ar_pol_id }}.ar-pol *::after {
+    box-sizing: border-box;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__shell {
+    width: min(100% - (var(--ar-pol-pad-x) * 2), var(--ar-pol-max));
+    margin-inline: auto;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__header {
+    max-width: var(--ar-pol-read);
+    margin: 0 0 clamp(1.5rem, 3vh, 2.25rem);
+    padding: 0 0 1.35rem;
+    border-bottom: 1px solid var(--ar-pol-border);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__eyebrow {
+    margin: 0 0 0.65rem;
+    font-family: var(--ar-pol-font-b);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ar-pol-muted);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__title {
+    margin: 0;
+    font-family: var(--ar-pol-font-h);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ar-pol-ink);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__content,
+  #ArPolicy-{{ ar_pol_id }} .policy-content {
+    max-width: var(--ar-pol-read);
+    font-family: var(--ar-pol-font-b);
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--ar-pol-ink);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content > *:first-child {
+    margin-top: 0;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content > *:last-child {
+    margin-bottom: 0;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content p,
+  #ArPolicy-{{ ar_pol_id }} .policy-content li {
+    font-family: var(--ar-pol-font-b);
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--ar-pol-ink);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content p {
+    margin: 0 0 1rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content h1 {
+    /* Avoid duplicate H1 semantics if Admin HTML includes an h1 */
+    font-family: var(--ar-pol-font-h);
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.3;
+    margin: 1.75rem 0 0.85rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content h2,
+  #ArPolicy-{{ ar_pol_id }} .policy-content h3,
+  #ArPolicy-{{ ar_pol_id }} .policy-content h4 {
+    font-family: var(--ar-pol-font-h);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--ar-pol-ink);
+    margin: 1.75rem 0 0.75rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content h2 {
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content h3 {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content h4 {
+    font-size: 1.125rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content ul,
+  #ArPolicy-{{ ar_pol_id }} .policy-content ol {
+    margin: 0 0 1rem;
+    padding-left: 1.35rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content li {
+    margin: 0 0 0.45rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content a {
+    color: var(--ar-pol-ink);
+    text-underline-offset: 0.16em;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content a:focus-visible,
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__related a:focus-visible {
+    outline: 2px solid var(--ar-pol-ink);
+    outline-offset: 3px;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content strong {
+    font-weight: 600;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content em {
+    font-style: italic;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content blockquote {
+    margin: 0 0 1rem;
+    padding: 0.75rem 0 0.75rem 1rem;
+    border-left: 2px solid var(--ar-pol-border);
+    color: var(--ar-pol-muted);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .policy-content th,
+  #ArPolicy-{{ ar_pol_id }} .policy-content td {
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--ar-pol-border);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__related {
+    max-width: var(--ar-pol-read);
+    margin-top: clamp(2rem, 4vh, 2.75rem);
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--ar-pol-border);
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__related-title {
+    margin: 0 0 0.75rem;
+    font-family: var(--ar-pol-font-h);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 500;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__related-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #ArPolicy-{{ ar_pol_id }} .ar-pol__related-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--ar-pol-font-b);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ar-pol-ink);
+  }
+
+  @media (max-width: 749px) {
+    #ArPolicy-{{ ar_pol_id }} .policy-content,
+    #ArPolicy-{{ ar_pol_id }} .policy-content p,
+    #ArPolicy-{{ ar_pol_id }} .policy-content li {
+      font-size: 1.0625rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Policy pages",
+  "tag": "div",
+  "class": "section-main-policy",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders Shopify Admin policy HTML for /policies/* pages. Legal text is never hard-coded in the theme."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 64
+    }
+  ]
+}
+{% endschema %}

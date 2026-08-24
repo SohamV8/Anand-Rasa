@@ -1,8 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "anand-rasa/influencer-dashboard/deprecated",
-  "title": "Legacy Influencer Dashboard Contract",
-  "description": "Deprecated. Do not store or render partner analytics in this legacy page contract. Use the authenticated /pages/partner dashboard and the partner-portal app proxy for real Shopify data.",
-  "type": "object",
-  "additionalProperties": true
-}

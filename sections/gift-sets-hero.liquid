@@ -1,0 +1,838 @@
+{%- comment -%}
+  Anand Rasa — Gift Sets editorial hero
+  Template: collection.gift-sets (/collections/gift-set?view=gift-sets)
+  Grid-based responsive composition · CSS only · no JavaScript
+{%- endcomment -%}
+
+{%- liquid
+  assign ar_gsh_enabled = false
+  if request.page_type == 'collection'
+    assign ar_gsh_handle = collection.handle | default: '' | downcase | strip
+    assign ar_gsh_suffix = template.suffix | default: '' | downcase | strip
+    if ar_gsh_suffix == 'gift-sets' or ar_gsh_suffix == 'giftsets'
+      if ar_gsh_handle == 'gift-set' or ar_gsh_handle == 'gift-sets' or ar_gsh_handle == 'giftsets'
+        assign ar_gsh_enabled = true
+      endif
+    endif
+  endif
+-%}
+
+{%- if ar_gsh_enabled -%}
+  {%- liquid
+    assign ar_gsh_id = section.id
+    assign ar_gsh_eyebrow = section.settings.eyebrow | default: '' | strip
+    assign ar_gsh_heading = section.settings.heading | default: 'Beautiful fragrances, ready to gift.'
+    assign ar_gsh_description = section.settings.description | default: 'Curated scents. Beautifully gifted.'
+    assign ar_gsh_btn_text = section.settings.button_text | default: 'Explore Gift Sets'
+    assign ar_gsh_btn_url = section.settings.button_url
+    if ar_gsh_btn_url == blank
+      assign ar_gsh_btn_url = '#arc-products'
+    endif
+
+    assign ar_gsh_alt_1 = section.settings.product_1_alt | default: 'Ritual Set gift packaging'
+    assign ar_gsh_alt_2 = section.settings.product_2_alt | default: 'Phool Bangla gift packaging'
+    assign ar_gsh_alt_3 = section.settings.product_3_alt | default: 'Discovery Set gift packaging'
+
+    assign ar_gsh_img_1 = section.settings.product_1_image
+    assign ar_gsh_img_2 = section.settings.product_2_image
+    assign ar_gsh_img_3 = section.settings.product_3_image
+
+    assign ar_gsh_anim = section.settings.enable_subtle_animation
+    assign ar_gsh_bg_1 = section.settings.bg_color_1 | default: '#fff8f4'
+    assign ar_gsh_bg_2 = section.settings.bg_color_2 | default: '#fff3ef'
+    assign ar_gsh_bg_3 = section.settings.bg_color_3 | default: '#fffefc'
+  -%}
+
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    >
+  </noscript>
+
+  <section
+    id="ArGiftHero-{{ ar_gsh_id }}"
+    class="ar-gift-hero{% if ar_gsh_anim %} ar-gift-hero--animated{% endif %}"
+    aria-label="{{ ar_gsh_heading | escape }}"
+  >
+    <div class="ar-gift-hero__bg" aria-hidden="true">
+      <span class="ar-gift-hero__blob ar-gift-hero__blob--coral"></span>
+      <span class="ar-gift-hero__blob ar-gift-hero__blob--peach"></span>
+      <span class="ar-gift-hero__blob ar-gift-hero__blob--rose"></span>
+      <span class="ar-gift-hero__grain"></span>
+    </div>
+
+    <div class="ar-gift-hero__inner">
+      <div class="ar-gift-hero__content">
+        {%- if ar_gsh_eyebrow != blank -%}
+          <p class="ar-gift-hero__eyebrow">{{ ar_gsh_eyebrow | escape }}</p>
+        {%- endif -%}
+
+        <h1 class="ar-gift-hero__title">{{ ar_gsh_heading | escape }}</h1>
+
+        {%- if ar_gsh_description != blank -%}
+          <p class="ar-gift-hero__description">{{ ar_gsh_description | escape }}</p>
+        {%- endif -%}
+
+        {%- if ar_gsh_btn_text != blank -%}
+          <a class="ar-gift-hero__cta" href="{{ ar_gsh_btn_url }}">
+            {{- ar_gsh_btn_text | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="ar-gift-hero__stage">
+        <figure class="ar-gift-hero__product ar-gift-hero__product--one">
+          <span class="ar-gift-hero__product-motion">
+            {%- if ar_gsh_img_1 != blank -%}
+              {{
+                ar_gsh_img_1
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'ar-gift-hero__product-img',
+                  widths: '360, 480, 640, 800, 1000, 1200',
+                  sizes: '(min-width: 1200px) 33vw, (min-width: 768px) 32vw, 33vw',
+                  loading: 'eager',
+                  decoding: 'async',
+                  alt: ar_gsh_alt_1
+              }}
+            {%- else -%}
+              <img
+                class="ar-gift-hero__product-img"
+                src="{{ 'giftset1.webp' | asset_url }}"
+                width="900"
+                height="900"
+                alt="{{ ar_gsh_alt_1 | escape }}"
+                loading="eager"
+                decoding="async"
+              >
+            {%- endif -%}
+          </span>
+        </figure>
+
+        <figure class="ar-gift-hero__product ar-gift-hero__product--two">
+          <span class="ar-gift-hero__product-motion">
+            {%- if ar_gsh_img_2 != blank -%}
+              {{
+                ar_gsh_img_2
+                | image_url: width: 1400
+                | image_tag:
+                  class: 'ar-gift-hero__product-img',
+                  widths: '400, 600, 800, 1000, 1200, 1400',
+                  sizes: '(min-width: 1200px) 34vw, (min-width: 768px) 34vw, 34vw',
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  decoding: 'async',
+                  alt: ar_gsh_alt_2
+              }}
+            {%- else -%}
+              <img
+                class="ar-gift-hero__product-img"
+                src="{{ 'giftset2.webp' | asset_url }}"
+                width="1200"
+                height="1200"
+                alt="{{ ar_gsh_alt_2 | escape }}"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              >
+            {%- endif -%}
+          </span>
+        </figure>
+
+        <figure class="ar-gift-hero__product ar-gift-hero__product--three">
+          <span class="ar-gift-hero__product-motion">
+            {%- if ar_gsh_img_3 != blank -%}
+              {{
+                ar_gsh_img_3
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'ar-gift-hero__product-img',
+                  widths: '360, 480, 640, 800, 1000, 1200',
+                  sizes: '(min-width: 1200px) 33vw, (min-width: 768px) 32vw, 33vw',
+                  loading: 'eager',
+                  decoding: 'async',
+                  alt: ar_gsh_alt_3
+              }}
+            {%- else -%}
+              <img
+                class="ar-gift-hero__product-img"
+                src="{{ 'giftset3.webp' | asset_url }}"
+                width="900"
+                height="900"
+                alt="{{ ar_gsh_alt_3 | escape }}"
+                loading="eager"
+                decoding="async"
+              >
+            {%- endif -%}
+          </span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    #ArGiftHero-{{ ar_gsh_id }} {
+      --ar-gsh-bg-1: {{ ar_gsh_bg_1 }};
+      --ar-gsh-bg-2: {{ ar_gsh_bg_2 }};
+      --ar-gsh-bg-3: {{ ar_gsh_bg_3 }};
+      --ar-gsh-ink: #2c2422;
+      --ar-gsh-ink-soft: #6a5c58;
+      --ar-gsh-font-b: 'Poppins', var(--font-body-family, system-ui, sans-serif);
+      --ar-gsh-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ar-gsh-rot-l: -6deg;
+      --ar-gsh-rot-r: 6deg;
+      --ar-gsh-pad-x: clamp(1rem, 3.5vw, 2.75rem);
+      --ar-gsh-pad-y: clamp(1.25rem, 3vh, 2.25rem);
+      --ar-gsh-text-top: clamp(3.5rem, 11vh, 6.5rem);
+      --ar-gsh-text-min-h: clamp(16rem, 34vh, 24rem);
+      --ar-gsh-text-gap: clamp(0.75rem, 1.6vh, 1.15rem);
+      --ar-gsh-stage-gap: clamp(0.75rem, 2vw, 1.75rem);
+      --ar-gsh-stage-pad: clamp(0.5rem, 1.5vh, 1rem);
+
+      position: relative;
+      isolation: isolate;
+      width: 100%;
+      max-width: 100%;
+      min-height: 0;
+      height: auto;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(
+        148deg,
+        var(--ar-gsh-bg-1) 0%,
+        var(--ar-gsh-bg-2) 42%,
+        var(--ar-gsh-bg-3) 100%
+      );
+      color: var(--ar-gsh-ink);
+      font-family: var(--ar-gsh-font-b);
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} *,
+    #ArGiftHero-{{ ar_gsh_id }} *::before,
+    #ArGiftHero-{{ ar_gsh_id }} *::after {
+      box-sizing: border-box;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__blob {
+      position: absolute;
+      border-radius: 50%;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__blob--coral {
+      width: min(92vmax, 56rem);
+      height: min(76vmax, 46rem);
+      top: -24%;
+      left: -22%;
+      background: radial-gradient(
+        ellipse 55% 50% at 44% 46%,
+        rgba(245, 168, 154, 0.34) 0%,
+        rgba(252, 200, 188, 0.14) 46%,
+        transparent 68%
+      );
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__blob--peach {
+      width: min(78vmax, 48rem);
+      height: min(68vmax, 42rem);
+      top: 4%;
+      left: 20%;
+      background: radial-gradient(
+        ellipse 52% 48% at 50% 50%,
+        rgba(255, 217, 184, 0.4) 0%,
+        rgba(255, 228, 200, 0.15) 50%,
+        transparent 72%
+      );
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__blob--rose {
+      width: min(72vmax, 44rem);
+      height: min(62vmax, 38rem);
+      top: -10%;
+      right: -16%;
+      background: radial-gradient(
+        ellipse 48% 48% at 54% 44%,
+        rgba(252, 228, 222, 0.32) 0%,
+        rgba(255, 248, 246, 0.12) 48%,
+        transparent 70%
+      );
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.042;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* Compact stack: text then full-width products — no dead space */
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__inner {
+      position: relative;
+      z-index: 1;
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: clamp(0.75rem, 2vh, 1.5rem);
+      width: 100%;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      flex: 0 0 auto;
+      width: 72%;
+      max-width: 72%;
+      min-height: var(--ar-gsh-text-min-h);
+      margin: var(--ar-gsh-text-top) auto 0;
+      padding: var(--ar-gsh-pad-y) var(--ar-gsh-pad-x) clamp(1rem, 2.5vh, 1.75rem);
+      text-align: center;
+      gap: var(--ar-gsh-text-gap);
+      isolation: isolate;
+      justify-content: center;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content::before {
+      content: '';
+      position: absolute;
+      inset: -1rem -6%;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(
+        ellipse 92% 88% at 50% 45%,
+        rgba(255, 253, 252, 0.72) 0%,
+        rgba(255, 253, 252, 0) 70%
+      );
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__eyebrow {
+      margin: 0;
+      font-size: clamp(0.8125rem, 1.35vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--ar-gsh-ink);
+      line-height: 1.2;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+      font-family: 'Poppins', var(--ar-gsh-font-b), sans-serif !important;
+      font-size: clamp(3.75rem, 9vw, 6.75rem);
+      font-weight: 600;
+      font-style: normal;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ar-gsh-ink);
+      text-wrap: balance;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+      font-family: var(--ar-gsh-font-b);
+      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.01em;
+      color: var(--ar-gsh-ink-soft);
+      text-wrap: pretty;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3.5rem;
+      margin: clamp(0.65rem, 1.6vh, 1.15rem) 0 0;
+      padding: 1rem 2.4rem;
+      border: 1.5px solid #111;
+      border-radius: 999px;
+      background: transparent;
+      color: #111;
+      font-family: var(--ar-gsh-font-b);
+      font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta:hover {
+      background: #111;
+      color: #fffefc;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta:focus-visible {
+      outline: 2px solid var(--ar-gsh-ink);
+      outline-offset: 3px;
+    }
+
+    /* Full-width product row — equal columns, even gaps, no size cap */
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__stage {
+      position: relative;
+      z-index: 2;
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: end;
+      justify-items: stretch;
+      column-gap: var(--ar-gsh-stage-gap);
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: var(--ar-gsh-stage-pad) var(--ar-gsh-pad-x) clamp(1.25rem, 3vh, 2.25rem);
+      overflow: visible;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product {
+      position: relative;
+      margin: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      width: 100%;
+      max-width: 100%;
+      transform-origin: 50% 100%;
+      opacity: 1;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product-motion {
+      display: block;
+      width: 100%;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: center bottom;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+      filter: drop-shadow(0 0.85rem 1.4rem rgba(44, 36, 34, 0.12));
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--one {
+      grid-column: 1;
+      z-index: 1;
+      transform: rotate(var(--ar-gsh-rot-l));
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--two {
+      grid-column: 2;
+      z-index: 2;
+      transform: none;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--three {
+      grid-column: 3;
+      z-index: 1;
+      transform: rotate(var(--ar-gsh-rot-r));
+    }
+
+    /* Animations */
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__eyebrow,
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__title,
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__description,
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__cta {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+      animation: ar-gsh-enter 0.75s var(--ar-gsh-ease) forwards;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__eyebrow { animation-delay: 0.05s; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__title { animation-delay: 0.12s; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__description { animation-delay: 0.2s; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__cta { animation-delay: 0.28s; }
+
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--one { animation: ar-gsh-enter-l 0.85s var(--ar-gsh-ease) 0.32s both; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--two { animation: ar-gsh-enter-c 0.85s var(--ar-gsh-ease) 0.4s both; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--three { animation: ar-gsh-enter-r 0.85s var(--ar-gsh-ease) 0.48s both; }
+
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__blob--coral { animation: ar-gsh-drift-coral 24s ease-in-out infinite alternate; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__blob--peach { animation: ar-gsh-drift-peach 28s ease-in-out infinite alternate; }
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__blob--rose { animation: ar-gsh-drift-rose 21s ease-in-out infinite alternate; }
+
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--one .ar-gift-hero__product-motion,
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--three .ar-gift-hero__product-motion {
+      animation: ar-gsh-float 8.5s ease-in-out 1.2s infinite;
+    }
+
+    #ArGiftHero-{{ ar_gsh_id }}.ar-gift-hero--animated .ar-gift-hero__product--two .ar-gift-hero__product-motion {
+      animation: ar-gsh-float-c 7.5s ease-in-out 1.2s infinite;
+    }
+
+    @keyframes ar-gsh-enter {
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    @keyframes ar-gsh-enter-l {
+      from { opacity: 0; transform: rotate(var(--ar-gsh-rot-l)) translate3d(0, 14px, 0) scale(0.98); }
+      to { opacity: 1; transform: rotate(var(--ar-gsh-rot-l)) translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes ar-gsh-enter-c {
+      from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.98); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes ar-gsh-enter-r {
+      from { opacity: 0; transform: rotate(var(--ar-gsh-rot-r)) translate3d(0, 14px, 0) scale(0.98); }
+      to { opacity: 1; transform: rotate(var(--ar-gsh-rot-r)) translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes ar-gsh-float {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -3px, 0); }
+    }
+
+    @keyframes ar-gsh-float-c {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(0, -4px, 0); }
+    }
+
+    @keyframes ar-gsh-drift-coral {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(3.5vw, 2.8vh, 0) scale(1.06); }
+    }
+
+    @keyframes ar-gsh-drift-peach {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(2.5vw, 2.2vh, 0) scale(1.07); }
+    }
+
+    @keyframes ar-gsh-drift-rose {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(-2.8vw, 1.8vh, 0) scale(1.05); }
+    }
+
+    @media (min-width: 768px) {
+      #ArGiftHero-{{ ar_gsh_id }} {
+        --ar-gsh-rot-l: -7deg;
+        --ar-gsh-rot-r: 7deg;
+        --ar-gsh-text-gap: clamp(0.9rem, 1.8vh, 1.35rem);
+        --ar-gsh-pad-y: clamp(1.75rem, 4vh, 2.75rem);
+        --ar-gsh-text-top: clamp(4.5rem, 13vh, 7.5rem);
+        --ar-gsh-text-min-h: clamp(18rem, 36vh, 26rem);
+        --ar-gsh-stage-gap: clamp(1.15rem, 2.4vw, 2.25rem);
+        --ar-gsh-stage-pad: clamp(0.65rem, 1.8vh, 1.25rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content {
+        width: 72%;
+        max-width: 72%;
+        flex: 0 0 auto;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
+        font-size: clamp(5.5rem, 7.8vw, 9rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+        font-size: clamp(1.55rem, 2.2vw, 2.05rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+        min-height: 3.85rem;
+        padding: 1.1rem 2.75rem;
+        font-size: clamp(0.875rem, 1.1vw, 1rem);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      #ArGiftHero-{{ ar_gsh_id }} {
+        --ar-gsh-rot-l: -7deg;
+        --ar-gsh-rot-r: 7deg;
+        --ar-gsh-stage-gap: clamp(1.5rem, 2.5vw, 2.75rem);
+        --ar-gsh-text-top: clamp(5rem, 15vh, 8.5rem);
+        --ar-gsh-text-min-h: clamp(20rem, 38vh, 28rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content {
+        width: 70%;
+        max-width: 70%;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
+        font-size: clamp(6.5rem, 7.2vw, 10rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+        font-size: clamp(1.75rem, 1.95vw, 2.25rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+        min-height: 4.1rem;
+        padding: 1.2rem 3rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 767px) {
+      #ArGiftHero-{{ ar_gsh_id }} {
+        --ar-gsh-rot-l: -5deg;
+        --ar-gsh-rot-r: 5deg;
+        --ar-gsh-pad-y: 1.1rem;
+        --ar-gsh-text-gap: 0.65rem;
+        --ar-gsh-stage-gap: clamp(0.45rem, 2vw, 0.85rem);
+        --ar-gsh-stage-pad: 0.25rem;
+        --ar-gsh-pad-x: clamp(0.75rem, 3.5vw, 1.25rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__inner {
+        gap: 0.65rem;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content {
+        width: 92%;
+        max-width: 92%;
+        margin-top: clamp(2.75rem, 9vh, 4.5rem);
+        min-height: clamp(14rem, 30vh, 18rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
+        font-size: clamp(2.85rem, 11vw, 3.85rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+        font-size: clamp(1.15rem, 4.4vw, 1.4rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+        min-height: 3.25rem;
+        margin-top: 0.55rem;
+        padding: 0.9rem 1.9rem;
+        font-size: clamp(0.75rem, 3vw, 0.85rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__stage {
+        padding-bottom: clamp(1rem, 3vh, 1.5rem);
+      }
+    }
+
+    @media (max-height: 720px) {
+      #ArGiftHero-{{ ar_gsh_id }} {
+        --ar-gsh-text-gap: 0.5rem;
+        --ar-gsh-pad-y: 0.75rem;
+        --ar-gsh-stage-pad: 0.35rem;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__inner {
+        gap: 0.5rem;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
+        font-size: clamp(2.75rem, 6.5vw, 4.25rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+        font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+        min-height: 3.1rem;
+        padding: 0.85rem 1.85rem;
+        font-size: 0.8125rem;
+      }
+    }
+
+    @media (max-height: 640px) {
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__blob,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__eyebrow,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product-motion {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__eyebrow,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description,
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
+        transform: none !important;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--one {
+        transform: rotate(var(--ar-gsh-rot-l));
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--two {
+        transform: none;
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--three {
+        transform: rotate(var(--ar-gsh-rot-r));
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gift Sets Hero",
+  "tag": "section",
+  "class": "section-gift-sets-hero",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "limit": 1,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Uses giftset1.webp, giftset2.webp, giftset3.webp from theme assets by default. Optional Theme Editor images override those files. Renders only on gift-set + gift-sets template."
+    },
+    {
+      "type": "header",
+      "content": "Copy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "info": "Leave blank to hide"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Beautiful fragrances, ready to gift."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Curated scents. Beautifully gifted."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Explore Gift Sets"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Optional image overrides"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_1_image",
+      "label": "Left image override",
+      "info": "Default: giftset1.webp (Ritual Set)"
+    },
+    {
+      "type": "text",
+      "id": "product_1_alt",
+      "label": "Left image alt",
+      "default": "Ritual Set gift packaging"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_2_image",
+      "label": "Center image override",
+      "info": "Default: giftset2.webp (Phool Bangla)"
+    },
+    {
+      "type": "text",
+      "id": "product_2_alt",
+      "label": "Center image alt",
+      "default": "Phool Bangla gift packaging"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_3_image",
+      "label": "Right image override",
+      "info": "Default: giftset3.webp (Discovery Set)"
+    },
+    {
+      "type": "text",
+      "id": "product_3_alt",
+      "label": "Right image alt",
+      "default": "Discovery Set gift packaging"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_1",
+      "label": "Tone 1",
+      "default": "#fff8f4"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_2",
+      "label": "Tone 2",
+      "default": "#fff3ef"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_3",
+      "label": "Tone 3",
+      "default": "#fffefc"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_subtle_animation",
+      "label": "Enable subtle motion",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift Sets Hero"
+    }
+  ]
+}
+{% endschema %}

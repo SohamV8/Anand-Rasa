@@ -1,1 +1,22 @@
-{"sections":{"main":{"type":"main-404","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {
+        "eyebrow": "Anand Rasa",
+        "error_code": "404",
+        "heading": "Lost in the fragrance?",
+        "description": "The page you are looking for does not exist or may have moved.",
+        "primary_label": "Continue Shopping",
+        "secondary_label": "Back to Home",
+        "show_explore": true,
+        "explore_heading": "Explore Anand Rasa",
+        "link_1_label": "Perfumes",
+        "link_2_label": "Attars",
+        "link_3_label": "Gift Sets",
+        "link_4_label": "Discovery Sets"
+      }
+    }
+  },
+  "order": ["main"]
+}

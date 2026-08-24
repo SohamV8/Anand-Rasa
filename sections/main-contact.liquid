@@ -1,0 +1,697 @@
+{%- comment -%}
+  Anand Rasa - Contact page
+  Template: page.contact / pages/contact
+  Scoped styles, native Shopify contact form, no extra JS
+{%- endcomment -%}
+
+{%- liquid
+  assign ar_ct_id = section.id
+  assign ar_ct_eyebrow = section.settings.eyebrow | default: 'Anand Rasa' | strip
+  assign ar_ct_heading = section.settings.heading | default: 'Contact us' | strip
+  assign ar_ct_lead = section.settings.lead | default: 'Questions about orders, fragrances, or gifting? Send a message — we typically reply within one business day.' | strip
+
+  assign ar_ct_email = section.settings.email | default: 'anandrasafragnance@gmail.com' | strip
+  assign ar_ct_phone = section.settings.phone | default: '+91 7206264199' | strip
+  assign ar_ct_phone_href = section.settings.phone_href | default: '+917206264199' | strip
+  assign ar_ct_whatsapp = section.settings.whatsapp | default: '917206264199' | strip
+  assign ar_ct_address = section.settings.address | default: 'Gurugram, Haryana, India' | strip
+  assign ar_ct_hours = section.settings.hours | default: 'Mon–Sat, 10:00–18:00 IST' | strip
+
+  assign ar_ct_info_title = section.settings.info_title | default: 'Reach us directly' | strip
+  assign ar_ct_form_title = section.settings.form_title | default: 'Send a message' | strip
+  assign ar_ct_btn = section.settings.button_label | default: 'Send message' | strip
+
+  assign ar_ct_faq_url = section.settings.faq_url
+  if ar_ct_faq_url == blank
+    if pages['faq'] != blank
+      assign ar_ct_faq_url = pages['faq'].url
+    elsif pages['frequently-asked-questions'] != blank
+      assign ar_ct_faq_url = pages['frequently-asked-questions'].url
+    elsif pages['https-www-anandrasa-com-pages-frequently-asked-questions'] != blank
+      assign ar_ct_faq_url = pages['https-www-anandrasa-com-pages-frequently-asked-questions'].url
+    endif
+  endif
+
+  assign ar_ct_form_id = 'ArContactForm-' | append: ar_ct_id
+-%}
+
+<section
+  id="ArContact-{{ ar_ct_id }}"
+  class="ar-ct"
+  aria-labelledby="ArContact-title-{{ ar_ct_id }}"
+>
+  <div class="ar-ct__shell">
+    <header class="ar-ct__intro">
+      {%- if ar_ct_eyebrow != blank -%}
+        <p class="ar-ct__eyebrow">{{ ar_ct_eyebrow | escape }}</p>
+      {%- endif -%}
+
+      <h1 id="ArContact-title-{{ ar_ct_id }}" class="ar-ct__title">
+        {{ ar_ct_heading | escape }}
+      </h1>
+
+      {%- if ar_ct_lead != blank -%}
+        <p class="ar-ct__lead">{{ ar_ct_lead | escape }}</p>
+      {%- endif -%}
+
+      {%- if page.content != blank -%}
+        <div class="ar-ct__page-rte rte">{{ page.content }}</div>
+      {%- endif -%}
+    </header>
+
+    <div class="ar-ct__grid">
+      <aside class="ar-ct__info" aria-labelledby="ArContact-info-{{ ar_ct_id }}">
+        <h2 id="ArContact-info-{{ ar_ct_id }}" class="ar-ct__panel-title">
+          {{ ar_ct_info_title | escape }}
+        </h2>
+
+        <ul class="ar-ct__channels" role="list">
+          {%- if ar_ct_email != blank -%}
+            <li class="ar-ct__channel">
+              <span class="ar-ct__channel-label">Email</span>
+              <a class="ar-ct__channel-value" href="mailto:{{ ar_ct_email | escape }}">
+                {{- ar_ct_email | escape -}}
+              </a>
+            </li>
+          {%- endif -%}
+
+          {%- if ar_ct_phone != blank -%}
+            <li class="ar-ct__channel">
+              <span class="ar-ct__channel-label">Phone</span>
+              <a class="ar-ct__channel-value" href="tel:{{ ar_ct_phone_href | replace: ' ', '' | escape }}">
+                {{- ar_ct_phone | escape -}}
+              </a>
+            </li>
+          {%- endif -%}
+
+          {%- if ar_ct_whatsapp != blank -%}
+            <li class="ar-ct__channel">
+              <span class="ar-ct__channel-label">WhatsApp</span>
+              <a
+                class="ar-ct__channel-value"
+                href="https://api.whatsapp.com/send?phone={{ ar_ct_whatsapp | escape }}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Chat with us
+              </a>
+            </li>
+          {%- endif -%}
+
+          {%- if ar_ct_address != blank -%}
+            <li class="ar-ct__channel">
+              <span class="ar-ct__channel-label">Location</span>
+              <span class="ar-ct__channel-value ar-ct__channel-value--text">{{ ar_ct_address | escape }}</span>
+            </li>
+          {%- endif -%}
+
+          {%- if ar_ct_hours != blank -%}
+            <li class="ar-ct__channel">
+              <span class="ar-ct__channel-label">Hours</span>
+              <span class="ar-ct__channel-value ar-ct__channel-value--text">{{ ar_ct_hours | escape }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+
+        {%- if ar_ct_faq_url != blank -%}
+          <p class="ar-ct__faq">
+            Looking for quick answers?
+            <a class="ar-ct__faq-link" href="{{ ar_ct_faq_url }}">Visit FAQ</a>
+          </p>
+        {%- endif -%}
+      </aside>
+
+      <div class="ar-ct__form-wrap" aria-labelledby="ArContact-form-title-{{ ar_ct_id }}">
+        <h2 id="ArContact-form-title-{{ ar_ct_id }}" class="ar-ct__panel-title">
+          {{ ar_ct_form_title | escape }}
+        </h2>
+
+        {%- form 'contact', id: ar_ct_form_id, class: 'ar-ct__form' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="ar-ct__status ar-ct__status--success" role="status" tabindex="-1" autofocus>
+              {{ 'templates.contact.form.post_success' | t }}
+            </p>
+          {%- elsif form.errors -%}
+            <div class="ar-ct__status ar-ct__status--error" role="alert" tabindex="-1" autofocus>
+              <p class="ar-ct__status-heading">{{ 'templates.contact.form.error_heading' | t }}</p>
+              <ul class="ar-ct__status-list" role="list">
+                {%- for error in form.errors -%}
+                  <li>
+                    {%- if error == 'form' -%}
+                      {{ form.errors.messages[error] }}
+                    {%- else -%}
+                      <a href="#{{ ar_ct_form_id }}-{{ error }}">
+                        {{ form.errors.translated_fields[error] | default: error | capitalize }}
+                        {{ form.errors.messages[error] }}
+                      </a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="ar-ct__fields">
+            <div class="ar-ct__field">
+              <label class="ar-ct__label" for="{{ ar_ct_form_id }}-name">
+                {{ 'templates.contact.form.name' | t }}
+              </label>
+              <input
+                class="ar-ct__input"
+                type="text"
+                id="{{ ar_ct_form_id }}-name"
+                name="contact[{{ 'templates.contact.form.name' | t }}]"
+                autocomplete="name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              >
+            </div>
+
+            <div class="ar-ct__field">
+              <label class="ar-ct__label" for="{{ ar_ct_form_id }}-email">
+                {{ 'templates.contact.form.email' | t }}
+                <span class="ar-ct__req" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="ar-ct__input{% if form.errors contains 'email' %} ar-ct__input--error{% endif %}"
+                type="email"
+                id="{{ ar_ct_form_id }}-email"
+                name="contact[email]"
+                autocomplete="email"
+                spellcheck="false"
+                autocapitalize="off"
+                required
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="{{ ar_ct_form_id }}-email-error"
+                {% endif %}
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              >
+              {%- if form.errors contains 'email' -%}
+                <p class="ar-ct__field-error" id="{{ ar_ct_form_id }}-email-error">
+                  <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                  {{ form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email }}
+                </p>
+              {%- endif -%}
+            </div>
+
+            <div class="ar-ct__field">
+              <label class="ar-ct__label" for="{{ ar_ct_form_id }}-phone">
+                {{ 'templates.contact.form.phone' | t }}
+              </label>
+              <input
+                class="ar-ct__input"
+                type="tel"
+                id="{{ ar_ct_form_id }}-phone"
+                name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                autocomplete="tel"
+                inputmode="tel"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              >
+            </div>
+
+            <div class="ar-ct__field ar-ct__field--full">
+              <label class="ar-ct__label" for="{{ ar_ct_form_id }}-body">
+                {{ 'templates.contact.form.comment' | t }}
+                <span class="ar-ct__req" aria-hidden="true">*</span>
+              </label>
+              <textarea
+                class="ar-ct__input ar-ct__textarea"
+                id="{{ ar_ct_form_id }}-body"
+                name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                rows="6"
+                required
+                aria-required="true"
+              >{{- form.body -}}</textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="ar-ct__submit">
+            {{ ar_ct_btn | escape }}
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #ArContact-{{ ar_ct_id }}.ar-ct {
+    --ar-ct-bg: #fdf9f7;
+    --ar-ct-bg-soft: #f8efeb;
+    --ar-ct-blush: #f3dcd6;
+    --ar-ct-panel: #fffdfc;
+    --ar-ct-ink: #211d1b;
+    --ar-ct-muted: #746a66;
+    --ar-ct-border: rgba(33, 29, 27, 0.14);
+    --ar-ct-border-strong: rgba(33, 29, 27, 0.28);
+    --ar-ct-focus: #211d1b;
+    --ar-ct-success-bg: #f0f7f2;
+    --ar-ct-success-ink: #1f4d32;
+    --ar-ct-error-bg: #fbf2f1;
+    --ar-ct-error-ink: #8a2f2a;
+    --ar-ct-font-h: var(--font-heading-family, var(--font-heading, 'Poppins', sans-serif));
+    --ar-ct-font-b: var(--font-body-family, var(--font-body, Georgia, serif));
+    --ar-ct-pad-x: clamp(1.25rem, 4vw, 3.5rem);
+    --ar-ct-radius: 18px;
+    --ar-ct-max: 68rem;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: clamp(2.5rem, 7vh, 4.5rem) 0 clamp(3.5rem, 9vh, 5.5rem);
+    background:
+      radial-gradient(ellipse 85% 55% at 50% -10%, var(--ar-ct-blush) 0%, transparent 58%),
+      linear-gradient(168deg, var(--ar-ct-bg) 0%, var(--ar-ct-bg-soft) 48%, #fffdfc 100%);
+    color: var(--ar-ct-ink);
+  }
+
+  #ArContact-{{ ar_ct_id }}.ar-ct *,
+  #ArContact-{{ ar_ct_id }}.ar-ct *::before,
+  #ArContact-{{ ar_ct_id }}.ar-ct *::after {
+    box-sizing: border-box;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__shell {
+    width: min(100% - (var(--ar-ct-pad-x) * 2), var(--ar-ct-max));
+    margin-inline: auto;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__intro {
+    max-width: 40rem;
+    margin: 0 auto clamp(2rem, 5vh, 3rem);
+    text-align: center;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__eyebrow {
+    margin: 0 0 0.85rem;
+    font-family: var(--ar-ct-font-h);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ar-ct-ink);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__title {
+    margin: 0 0 0.85rem;
+    font-family: var(--ar-ct-font-h);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ar-ct-ink);
+    text-wrap: balance;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__lead {
+    margin: 0 auto;
+    max-width: 38ch;
+    font-family: var(--ar-ct-font-b);
+    font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
+    line-height: 1.65;
+    color: var(--ar-ct-muted);
+    text-wrap: pretty;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__page-rte {
+    margin-top: 1.25rem;
+    font-family: var(--ar-ct-font-b);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ar-ct-muted);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__page-rte > *:first-child { margin-top: 0; }
+  #ArContact-{{ ar_ct_id }} .ar-ct__page-rte > *:last-child { margin-bottom: 0; }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: start;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__info,
+  #ArContact-{{ ar_ct_id }} .ar-ct__form-wrap {
+    background: var(--ar-ct-panel);
+    border: 1px solid var(--ar-ct-border);
+    border-radius: var(--ar-ct-radius);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__panel-title {
+    margin: 0 0 1.35rem;
+    font-family: var(--ar-ct-font-h);
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ar-ct-ink);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__channels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__channel {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__channel-label {
+    font-family: var(--ar-ct-font-h);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ar-ct-muted);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__channel-value {
+    font-family: var(--ar-ct-font-h);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--ar-ct-ink);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  #ArContact-{{ ar_ct_id }} a.ar-ct__channel-value:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  #ArContact-{{ ar_ct_id }} a.ar-ct__channel-value:focus-visible {
+    outline: 2px solid var(--ar-ct-focus);
+    outline-offset: 3px;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__channel-value--text {
+    font-weight: 400;
+    font-family: var(--ar-ct-font-b);
+    color: var(--ar-ct-muted);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__faq {
+    margin: 1.75rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ar-ct-border);
+    font-family: var(--ar-ct-font-b);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--ar-ct-muted);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__faq-link {
+    font-family: var(--ar-ct-font-h);
+    font-weight: 600;
+    color: var(--ar-ct-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__faq-link:focus-visible {
+    outline: 2px solid var(--ar-ct-focus);
+    outline-offset: 3px;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__form {
+    margin: 0;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status {
+    margin: 0 0 1.25rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: 12px;
+    font-family: var(--ar-ct-font-b);
+    font-size: 0.975rem;
+    line-height: 1.5;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status--success {
+    background: var(--ar-ct-success-bg);
+    color: var(--ar-ct-success-ink);
+    border: 1px solid rgba(31, 77, 50, 0.18);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status--error {
+    background: var(--ar-ct-error-bg);
+    color: var(--ar-ct-error-ink);
+    border: 1px solid rgba(138, 47, 42, 0.18);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status-heading {
+    margin: 0 0 0.4rem;
+    font-family: var(--ar-ct-font-h);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status-list {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__status-list a {
+    color: inherit;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.15rem;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__field--full {
+    grid-column: 1 / -1;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__label {
+    display: block;
+    margin: 0 0 0.4rem;
+    font-family: var(--ar-ct-font-h);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ar-ct-ink);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__req {
+    color: #a34a42;
+    margin-left: 0.15rem;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__input {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.95rem;
+    border: 1.5px solid var(--ar-ct-border-strong);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ar-ct-ink);
+    font-family: var(--ar-ct-font-h);
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__textarea {
+    min-height: 9rem;
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__input::placeholder {
+    color: #9a908b;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__input:hover {
+    border-color: rgba(33, 29, 27, 0.4);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__input:focus {
+    outline: none;
+    border-color: var(--ar-ct-ink);
+    box-shadow: 0 0 0 3px rgba(33, 29, 27, 0.12);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__input--error {
+    border-color: #a34a42;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__field-error {
+    margin: 0.4rem 0 0;
+    font-family: var(--ar-ct-font-b);
+    font-size: 0.875rem;
+    color: var(--ar-ct-error-ink);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.1rem;
+    margin-top: 1.35rem;
+    padding: 0.85rem 1.75rem;
+    width: 100%;
+    max-width: 18rem;
+    border: 1.5px solid #211d1b;
+    border-radius: 999px;
+    background: #211d1b;
+    color: #fffefc;
+    font-family: var(--ar-ct-font-h);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.22s ease, background-color 0.22s ease;
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__submit:hover {
+    background: #000;
+    border-color: #000;
+    transform: translate3d(0, -1px, 0);
+  }
+
+  #ArContact-{{ ar_ct_id }} .ar-ct__submit:focus-visible {
+    outline: 2px solid var(--ar-ct-ink);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #ArContact-{{ ar_ct_id }} .ar-ct__submit:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 899px) {
+    #ArContact-{{ ar_ct_id }} .ar-ct__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 599px) {
+    #ArContact-{{ ar_ct_id }} .ar-ct__fields {
+      grid-template-columns: 1fr;
+    }
+
+    #ArContact-{{ ar_ct_id }} .ar-ct__submit {
+      max-width: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Contact page",
+  "tag": "div",
+  "class": "section-main-contact",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Premium contact layout for /pages/contact. Uses the native Shopify contact form."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact us"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead text",
+      "default": "Questions about orders, fragrances, or gifting? Send a message — we typically reply within one business day."
+    },
+    {
+      "type": "header",
+      "content": "Contact details"
+    },
+    {
+      "type": "text",
+      "id": "info_title",
+      "label": "Info panel title",
+      "default": "Reach us directly"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "anandrasafragnance@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone display",
+      "default": "+91 7206264199"
+    },
+    {
+      "type": "text",
+      "id": "phone_href",
+      "label": "Phone dial link",
+      "default": "+917206264199"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "WhatsApp number (digits only)",
+      "default": "917206264199"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Location",
+      "default": "Gurugram, Haryana, India"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Hours",
+      "default": "Mon–Sat, 10:00–18:00 IST"
+    },
+    {
+      "type": "url",
+      "id": "faq_url",
+      "label": "FAQ URL"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form title",
+      "default": "Send a message"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Submit button",
+      "default": "Send message"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact page"
+    }
+  ]
+}
+{% endschema %}

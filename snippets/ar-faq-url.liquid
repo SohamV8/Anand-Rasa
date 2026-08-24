@@ -1,12 +1,21 @@
 {%- comment -%}
   Canonical FAQ path or absolute URL.
-  Prefer published page; stable /pages/faq when the page is not created yet.
+  Prefer the published FAQ page (handles vary by store history).
   Usage: {% render 'ar-faq-url' %} or {% render 'ar-faq-url', absolute: true %}
 {%- endcomment -%}
 {%- liquid
   assign ar_faq_url = pages['faq'].url
   if ar_faq_url == blank
-    assign ar_faq_url = '/pages/faq'
+    assign ar_faq_url = pages['faqs'].url
+  endif
+  if ar_faq_url == blank
+    assign ar_faq_url = pages['frequently-asked-questions'].url
+  endif
+  if ar_faq_url == blank
+    assign ar_faq_url = pages['https-www-anandrasa-com-pages-frequently-asked-questions'].url
+  endif
+  if ar_faq_url == blank
+    assign ar_faq_url = '/pages/https-www-anandrasa-com-pages-frequently-asked-questions'
   endif
 -%}
 {%- if absolute -%}

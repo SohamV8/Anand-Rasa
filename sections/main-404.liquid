@@ -1,27 +1,526 @@
-<style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
+{%- comment -%}
+  Anand Rasa — Premium 404 / Page Not Found
+  Scoped styles only (.ar-404*). CSS animation. No external fonts/libs.
+  Preserves legacy path recovery redirects below.
+{%- endcomment -%}
+
+{%- liquid
+  assign ar404_eyebrow = section.settings.eyebrow | default: 'Anand Rasa' | strip
+  assign ar404_code = section.settings.error_code | default: '404' | strip
+  assign ar404_title = section.settings.heading | default: 'Lost in the fragrance?' | strip
+  assign ar404_text = section.settings.description | default: 'The page you are looking for does not exist or may have moved.' | strip
+  assign ar404_primary_label = section.settings.primary_label | default: 'Continue Shopping' | strip
+  assign ar404_secondary_label = section.settings.secondary_label | default: 'Back to Home' | strip
+
+  assign ar404_primary_url = section.settings.primary_url
+  if ar404_primary_url == blank
+    assign ar404_primary_url = routes.all_products_collection_url
+  endif
+
+  assign ar404_secondary_url = section.settings.secondary_url
+  if ar404_secondary_url == blank
+    assign ar404_secondary_url = routes.root_url
+  endif
+
+  assign ar404_show_explore = section.settings.show_explore
+  if ar404_show_explore == nil
+    assign ar404_show_explore = true
+  endif
+
+  assign ar404_explore_heading = section.settings.explore_heading | default: 'Explore Anand Rasa' | strip
+
+  assign ar404_link_1_label = section.settings.link_1_label | default: 'Perfumes' | strip
+  assign ar404_link_2_label = section.settings.link_2_label | default: 'Attars' | strip
+  assign ar404_link_3_label = section.settings.link_3_label | default: 'Gift Sets' | strip
+  assign ar404_link_4_label = section.settings.link_4_label | default: 'Discovery Sets' | strip
+
+  assign ar404_link_1_url = section.settings.link_1_url
+  if ar404_link_1_url == blank
+    if collections['perfume-series'] != blank
+      assign ar404_link_1_url = collections['perfume-series'].url
+    else
+      assign ar404_link_1_url = routes.all_products_collection_url
+    endif
+  endif
+
+  assign ar404_link_2_url = section.settings.link_2_url
+  if ar404_link_2_url == blank
+    if collections['planet-attar'] != blank
+      assign ar404_link_2_url = collections['planet-attar'].url
+    else
+      assign ar404_link_2_url = routes.collections_url
+    endif
+  endif
+
+  assign ar404_link_3_url = section.settings.link_3_url
+  if ar404_link_3_url == blank
+    assign ar404_link_3_url = '/collections/gift-set?view=gift-sets'
+  endif
+
+  assign ar404_link_4_url = section.settings.link_4_url
+  if ar404_link_4_url == blank
+    assign ar404_link_4_url = '/products/discovery-set-for-her-8ml-x-5'
+  endif
+-%}
+
+<section
+  id="Ar404-{{ section.id }}"
+  class="ar-404"
+  aria-labelledby="Ar404-title-{{ section.id }}"
+>
+  <div class="ar-404__atmos" aria-hidden="true">
+    <span class="ar-404__mist ar-404__mist--one"></span>
+    <span class="ar-404__mist ar-404__mist--two"></span>
+    <span class="ar-404__mist ar-404__mist--three"></span>
+  </div>
+
+  <div class="ar-404__inner">
+    <div class="ar-404__content">
+      {%- if ar404_eyebrow != blank -%}
+        <p class="ar-404__eyebrow">{{ ar404_eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if ar404_code != blank -%}
+        <p class="ar-404__code" aria-hidden="true">{{ ar404_code | escape }}</p>
+      {%- endif -%}
+
+      <h1 id="Ar404-title-{{ section.id }}" class="ar-404__title">
+        {{ ar404_title | escape }}
+      </h1>
+
+      <p class="visually-hidden">{{ 'templates.404.title' | t }}</p>
+
+      {%- if ar404_text != blank -%}
+        <p class="ar-404__description">{{ ar404_text | escape }}</p>
+      {%- endif -%}
+
+      <nav class="ar-404__actions" aria-label="Recovery">
+        {%- if ar404_primary_label != blank -%}
+          <a class="ar-404__btn ar-404__btn--primary" href="{{ ar404_primary_url }}">
+            {{- ar404_primary_label | escape -}}
+          </a>
+        {%- endif -%}
+        {%- if ar404_secondary_label != blank -%}
+          <a class="ar-404__btn ar-404__btn--secondary" href="{{ ar404_secondary_url }}">
+            {{- ar404_secondary_label | escape -}}
+          </a>
+        {%- endif -%}
+      </nav>
+
+      {%- if ar404_show_explore -%}
+        <div class="ar-404__explore">
+          {%- if ar404_explore_heading != blank -%}
+            <p class="ar-404__explore-label">{{ ar404_explore_heading | escape }}</p>
+          {%- endif -%}
+          <ul class="ar-404__explore-list" role="list">
+            {%- if ar404_link_1_label != blank -%}
+              <li><a class="ar-404__explore-link" href="{{ ar404_link_1_url }}">{{ ar404_link_1_label | escape }}</a></li>
+            {%- endif -%}
+            {%- if ar404_link_2_label != blank -%}
+              <li><a class="ar-404__explore-link" href="{{ ar404_link_2_url }}">{{ ar404_link_2_label | escape }}</a></li>
+            {%- endif -%}
+            {%- if ar404_link_3_label != blank -%}
+              <li><a class="ar-404__explore-link" href="{{ ar404_link_3_url }}">{{ ar404_link_3_label | escape }}</a></li>
+            {%- endif -%}
+            {%- if ar404_link_4_label != blank -%}
+              <li><a class="ar-404__explore-link" href="{{ ar404_link_4_url }}">{{ ar404_link_4_label | escape }}</a></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #Ar404-{{ section.id }}.ar-404 {
+    --ar404-bg: #fdf9f7;
+    --ar404-bg-soft: #f8efeb;
+    --ar404-blush: #f3dcd6;
+    --ar404-ivory: #fffdfc;
+    --ar404-ink: #211d1b;
+    --ar404-muted: #746a66;
+    --ar404-border: rgba(33, 29, 27, 0.18);
+    --ar404-cta: #211d1b;
+    --ar404-cta-text: #ffffff;
+    --ar404-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --ar404-font-h: var(--font-heading-family, var(--font-heading, 'Poppins', sans-serif));
+    --ar404-font-b: var(--font-body-family, var(--font-body, Georgia, serif));
+    --ar404-pad-x: clamp(20px, 5vw, 80px);
+    --ar404-max: 72rem;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: calc(100svh - var(--header-height, 5.5rem));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2.5rem, 8vh, 5.5rem) 0 clamp(3rem, 9vh, 6rem);
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 0%, var(--ar404-blush) 0%, transparent 58%),
+      linear-gradient(168deg, var(--ar404-bg) 0%, var(--ar404-bg-soft) 48%, var(--ar404-ivory) 100%);
+    color: var(--ar404-ink);
   }
 
-  @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
+  #Ar404-{{ section.id }}.ar-404 *,
+  #Ar404-{{ section.id }}.ar-404 *::before,
+  #Ar404-{{ section.id }}.ar-404 *::after {
+    box-sizing: border-box;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__atmos {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__mist {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__mist--one {
+    width: min(58vmax, 34rem);
+    height: min(58vmax, 34rem);
+    top: -18%;
+    left: 50%;
+    margin-left: -17rem;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(243, 220, 214, 0.55) 0%,
+      rgba(248, 239, 235, 0.2) 42%,
+      transparent 70%
+    );
+  }
+
+  #Ar404-{{ section.id }} .ar-404__mist--two {
+    width: min(42vmax, 26rem);
+    height: min(42vmax, 26rem);
+    bottom: 8%;
+    left: 6%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 253, 252, 0.7) 0%,
+      rgba(243, 220, 214, 0.22) 45%,
+      transparent 72%
+    );
+  }
+
+  #Ar404-{{ section.id }} .ar-404__mist--three {
+    width: min(36vmax, 22rem);
+    height: min(36vmax, 22rem);
+    top: 28%;
+    right: 4%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(248, 239, 235, 0.65) 0%,
+      rgba(243, 220, 214, 0.18) 48%,
+      transparent 74%
+    );
+  }
+
+  #Ar404-{{ section.id }} .ar-404__inner {
+    position: relative;
+    z-index: 1;
+    width: min(100% - (var(--ar404-pad-x) * 2), var(--ar404-max));
+    margin-inline: auto;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 42rem;
+    margin-inline: auto;
+    gap: 0;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__eyebrow {
+    margin: 0 0 clamp(0.75rem, 2vh, 1.25rem);
+    font-family: var(--ar404-font-h);
+    font-size: clamp(0.6875rem, 1.1vw, 0.8125rem);
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ar404-ink);
+    line-height: 1.3;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__code {
+    margin: 0 0 clamp(0.35rem, 1.2vh, 0.75rem);
+    font-family: var(--ar404-font-h);
+    font-size: clamp(96px, 15vw, 220px);
+    font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: var(--ar404-ink);
+    opacity: 0.92;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__title {
+    margin: 0 0 clamp(0.85rem, 2vh, 1.15rem);
+    font-family: var(--ar404-font-h);
+    font-size: clamp(1.65rem, 3.4vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ar404-ink);
+    text-wrap: balance;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__description {
+    margin: 0 0 clamp(1.75rem, 4vh, 2.5rem);
+    max-width: 28rem;
+    font-family: var(--ar404-font-b);
+    font-size: clamp(1rem, 1.6vw, 1.1875rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ar404-muted);
+    text-wrap: pretty;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.75rem, 2vw, 1.15rem) clamp(1rem, 2.5vw, 1.5rem);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-family: var(--ar404-font-h);
+    font-size: clamp(0.75rem, 1.1vw, 0.8125rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1.2;
+    transition:
+      transform 0.28s var(--ar404-ease),
+      background-color 0.28s ease,
+      color 0.28s ease,
+      border-color 0.28s ease;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn--primary {
+    background: var(--ar404-cta);
+    color: var(--ar404-cta-text);
+    border: 1.5px solid var(--ar404-cta);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn--primary:hover {
+    transform: translate3d(0, -2px, 0);
+    background: #000;
+    border-color: #000;
+    color: var(--ar404-cta-text);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn--secondary {
+    background: transparent;
+    color: var(--ar404-ink);
+    border: 1.5px solid var(--ar404-border);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn--secondary:hover {
+    transform: translate3d(0, -2px, 0);
+    border-color: var(--ar404-ink);
+    color: var(--ar404-ink);
+    background: rgba(255, 253, 252, 0.55);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__btn:focus-visible {
+    outline: 2px solid var(--ar404-ink);
+    outline-offset: 3px;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore {
+    margin-top: clamp(2.25rem, 5.5vh, 3.5rem);
+    padding-top: clamp(1.5rem, 3.5vh, 2rem);
+    width: 100%;
+    max-width: 36rem;
+    border-top: 1px solid var(--ar404-border);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore-label {
+    margin: 0 0 1rem;
+    font-family: var(--ar404-font-h);
+    font-size: clamp(0.6875rem, 1vw, 0.75rem);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ar404-muted);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem 1.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore-link {
+    font-family: var(--ar404-font-h);
+    font-size: clamp(0.875rem, 1.3vw, 0.9375rem);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ar404-ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.25s ease, opacity 0.25s ease;
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore-link:hover {
+    border-bottom-color: rgba(33, 29, 27, 0.45);
+  }
+
+  #Ar404-{{ section.id }} .ar-404__explore-link:focus-visible {
+    outline: 2px solid var(--ar404-ink);
+    outline-offset: 3px;
+  }
+
+  /* Entrance — transform/opacity only */
+  @media (prefers-reduced-motion: no-preference) {
+    #Ar404-{{ section.id }} .ar-404__eyebrow,
+    #Ar404-{{ section.id }} .ar-404__code,
+    #Ar404-{{ section.id }} .ar-404__title,
+    #Ar404-{{ section.id }} .ar-404__description,
+    #Ar404-{{ section.id }} .ar-404__actions,
+    #Ar404-{{ section.id }} .ar-404__explore {
+      animation: ar404-rise-{{ section.id }} 0.75s var(--ar404-ease) both;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__eyebrow { animation-delay: 0.04s; }
+    #Ar404-{{ section.id }} .ar-404__code { animation-delay: 0.1s; animation-duration: 0.85s; }
+    #Ar404-{{ section.id }} .ar-404__title { animation-delay: 0.18s; }
+    #Ar404-{{ section.id }} .ar-404__description { animation-delay: 0.26s; }
+    #Ar404-{{ section.id }} .ar-404__actions { animation-delay: 0.34s; }
+    #Ar404-{{ section.id }} .ar-404__explore { animation-delay: 0.42s; }
+
+    #Ar404-{{ section.id }} .ar-404__mist--one {
+      animation: ar404-float-a-{{ section.id }} 18s ease-in-out infinite alternate;
+    }
+    #Ar404-{{ section.id }} .ar-404__mist--two {
+      animation: ar404-float-b-{{ section.id }} 22s ease-in-out infinite alternate;
+    }
+    #Ar404-{{ section.id }} .ar-404__mist--three {
+      animation: ar404-float-c-{{ section.id }} 20s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes ar404-rise-{{ section.id }} {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 12px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes ar404-float-a-{{ section.id }} {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(1.5vw, 1.2vh, 0) scale(1.04); }
+  }
+
+  @keyframes ar404-float-b-{{ section.id }} {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-1.2vw, -1.5vh, 0); }
+  }
+
+  @keyframes ar404-float-c-{{ section.id }} {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-1vw, 1vh, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #Ar404-{{ section.id }} .ar-404__eyebrow,
+    #Ar404-{{ section.id }} .ar-404__code,
+    #Ar404-{{ section.id }} .ar-404__title,
+    #Ar404-{{ section.id }} .ar-404__description,
+    #Ar404-{{ section.id }} .ar-404__actions,
+    #Ar404-{{ section.id }} .ar-404__explore,
+    #Ar404-{{ section.id }} .ar-404__mist {
+      animation: none !important;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__btn:hover {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 749px) {
+    #Ar404-{{ section.id }}.ar-404 {
+      min-height: calc(100svh - var(--header-height, 4.5rem));
+      padding: clamp(2rem, 6vh, 3rem) 0 clamp(2.5rem, 7vh, 4rem);
+      align-items: center;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__code {
+      font-size: clamp(96px, 22vw, 140px);
+    }
+
+    #Ar404-{{ section.id }} .ar-404__actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 20rem;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__btn {
+      width: 100%;
+      min-height: 48px;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__explore-list {
+      gap: 0.75rem 1.1rem;
+    }
+  }
+
+  @media (max-width: 389px) {
+    #Ar404-{{ section.id }} .ar-404__title {
+      font-size: clamp(1.45rem, 7vw, 1.75rem);
+    }
+
+    #Ar404-{{ section.id }} .ar-404__description {
+      font-size: 0.9375rem;
+    }
+  }
+
+  @media (max-height: 640px) and (orientation: landscape) {
+    #Ar404-{{ section.id }}.ar-404 {
+      min-height: auto;
+      padding: 2rem 0 2.5rem;
+    }
+
+    #Ar404-{{ section.id }} .ar-404__code {
+      font-size: clamp(72px, 12vw, 120px);
+    }
+
+    #Ar404-{{ section.id }} .ar-404__explore {
+      margin-top: 1.5rem;
+      padding-top: 1.15rem;
     }
   }
 </style>
 
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
-</div>
-
+{%- comment -%} Legacy URL recovery — keep production redirects intact {%- endcomment -%}
 <script>
   (function () {
     var path = (window.location.pathname || '').replace(/\/+$/, '').toLowerCase();
@@ -54,6 +553,131 @@
       window.location.replace(buildBoxViews[path]);
       return;
     }
-
   })();
 </script>
+
+{% schema %}
+{
+  "name": "404 page",
+  "tag": "div",
+  "class": "section-main-404",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Premium Anand Rasa 404. Uses theme fonts. SEO title/noindex are handled in theme.liquid."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "error_code",
+      "label": "Error code",
+      "default": "404"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Lost in the fragrance?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "The page you are looking for does not exist or may have moved."
+    },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "url",
+      "id": "primary_url",
+      "label": "Primary button URL",
+      "info": "Defaults to All products"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Back to Home"
+    },
+    {
+      "type": "url",
+      "id": "secondary_url",
+      "label": "Secondary button URL",
+      "info": "Defaults to Home"
+    },
+    {
+      "type": "header",
+      "content": "Explore links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_explore",
+      "label": "Show explore shortcuts",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "explore_heading",
+      "label": "Explore heading",
+      "default": "Explore Anand Rasa"
+    },
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "Link 1 label",
+      "default": "Perfumes"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Link 2 label",
+      "default": "Attars"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_label",
+      "label": "Link 3 label",
+      "default": "Gift Sets"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_4_label",
+      "label": "Link 4 label",
+      "default": "Discovery Sets"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "Link 4 URL"
+    }
+  ]
+}
+{% endschema %}

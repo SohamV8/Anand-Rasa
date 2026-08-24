@@ -1,22 +1,35 @@
 {
   "sections": {
-    "collection_hero": {
-      "type": "collection-page-hero",
+    "gift_sets_hero": {
+      "type": "gift-sets-hero",
       "settings": {
-        "eyebrow": "Anand Rasa",
-        "heading": "Gift Sets",
-        "subheading": "Thoughtfully bundled attars and discovery sets — elegant to give, unforgettable to receive. Share the ritual of pure fragrance.",
-        "supporting_text": "Curated sets with gift-ready presentation — pure oils chosen to delight and be remembered.",
-        "bg_color": "#FFFFFF"
+        "eyebrow": "",
+        "heading": "Beautiful fragrances, ready to gift.",
+        "description": "Curated scents. Beautifully gifted.",
+        "button_text": "Explore Gift Sets",
+        "button_url": "#arc-products",
+        "product_1_alt": "Ritual Set gift packaging",
+        "product_2_alt": "Phool Bangla gift packaging",
+        "product_3_alt": "Discovery Set gift packaging",
+        "bg_color_1": "#fff8f4",
+        "bg_color_2": "#fff3ef",
+        "bg_color_3": "#fffefc",
+        "enable_subtle_animation": true
       }
     },
     "main": {
       "type": "collection-giftsets",
       "settings": {
         "layout_mode": "products_only",
+        "cta_label": "",
+        "cta_title": "",
+        "cta_subtitle": "",
+        "cta_btn": "",
+        "explore_heading": "Explore our products",
+        "sort_label": "Sort by",
         "products_per_page": 16
       }
     }
   },
-  "order": ["collection_hero", "main"]
+  "order": ["gift_sets_hero", "main"]
 }

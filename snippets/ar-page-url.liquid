@@ -12,9 +12,9 @@
       assign url = pages['contact'].url | default: pages['contact-us'].url
       assign template_suffix = 'contact'
     when 'faq', 'faqs'
-      assign url = pages['faq'].url | default: pages['faqs'].url
+      assign url = pages['faq'].url | default: pages['faqs'].url | default: pages['frequently-asked-questions'].url | default: pages['https-www-anandrasa-com-pages-frequently-asked-questions'].url
       if url == blank
-        assign url = '/pages/faq'
+        assign url = '/pages/https-www-anandrasa-com-pages-frequently-asked-questions'
       endif
     when 'bulk-enquiry', 'bulk-enquiry-form', 'bulk-inquiry'
       assign url = pages['bulk-enquiry-form'].url | default: pages['bulk-enquiry'].url | default: pages['bulk-inquiry'].url
@@ -64,13 +64,7 @@
     when 'partner', 'partner-portal'
       assign url = pages['partner'].url
       if url == blank
-        assign url = '/pages/partner?view=partner'
-      else
-        if url contains '?'
-          assign url = url | append: '&view=partner'
-        else
-          assign url = url | append: '?view=partner'
-        endif
+        assign url = '/pages/partner'
       endif
     else
       assign url = pages[key].url | default: '/pages/' | append: key

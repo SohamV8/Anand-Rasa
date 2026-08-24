@@ -28,11 +28,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       unlimited snippets — required for rich AI Overviews / SERP cards.
     {%- endcomment -%}
     {%- liquid
-      assign ar_faq_path = pages['faq'].url | default: '/pages/faq'
+      assign ar_faq_page = pages['faq']
+      if ar_faq_page == blank
+        assign ar_faq_page = pages['faqs']
+      endif
+      if ar_faq_page == blank
+        assign ar_faq_page = pages['frequently-asked-questions']
+      endif
+      if ar_faq_page == blank
+        assign ar_faq_page = pages['https-www-anandrasa-com-pages-frequently-asked-questions']
+      endif
+      if ar_faq_page != blank
+        assign ar_faq_path = ar_faq_page.url
+      else
+        assign ar_faq_path = '/pages/https-www-anandrasa-com-pages-frequently-asked-questions'
+      endif
       assign ar_faq_canonical_url = request.origin | append: ar_faq_path
       assign ar_is_faq_page = false
       assign ar_is_faq_legacy_view = false
-      if request.page_type == 'page' and page != blank and page.handle == 'faq' and template.suffix == 'faq'
+      if request.page_type == 'page' and template.suffix == 'faq'
         assign ar_is_faq_page = true
       endif
       if request.page_type == 'index' and template.suffix == 'faq'
@@ -110,9 +124,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     {%- endif -%}
 
-    {%- comment -%} FAQ: canonical /pages/faq — legacy ?view=faq and /pages/faqs redirect when page is published {%- endcomment -%}
-    {%- if ar_is_faq_legacy_view and pages['faq'] != blank -%}
-      <script>window.location.replace({{ pages['faq'].url | json }});</script>
+    {%- comment -%} FAQ: legacy ?view=faq redirects to the published FAQ page when available {%- endcomment -%}
+    {%- if ar_is_faq_legacy_view and ar_faq_page != blank -%}
+      <script>window.location.replace({{ ar_faq_page.url | json }});</script>
     {%- endif -%}
     {%- if ar_is_find_fragrance_legacy_view and ar_find_page != blank -%}
       <script>window.location.replace({{ ar_find_page.url | json }});</script>
@@ -326,8 +340,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           assign ar_seo_description = 'Read the Anandrasa Fragrance Journal for expert stories on attar, perfume layering, and scent rituals. Learn how to choose fragrances that match your mood and style.'
         endif
       elsif ar_is_faq_page
-        assign ar_seo_title = 'Frequently Asked Questions | Anandrasa'
-        assign ar_seo_description = 'Clear answers about Anand Rasa handcrafted attars, incense, chakra fragrances, orders, shipping, returns, and customer support in India.'
+        assign ar_seo_title = 'Frequently Asked Questions | Anand Rasa'
+        assign ar_seo_description = 'Find answers about Anand Rasa attars, perfumes, incense, astrology fragrances, orders, shipping, returns, payments, fragrance use and customer support.'
         if page.metafields.custom.seo_title.value != blank
           assign ar_seo_title = page.metafields.custom.seo_title.value | strip
         endif
@@ -346,8 +360,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           assign ar_seo_description = page.title | append: ' at Anandrasa. Explore trusted details about our handcrafted attars, perfumes, shipping, support, and fragrance guidance for customers in India.'
         endif
       elsif ar_is_faq_legacy_view
-        assign ar_seo_title = 'Frequently Asked Questions | Anandrasa'
-        assign ar_seo_description = 'Clear answers about Anand Rasa handcrafted attars, incense, chakra fragrances, orders, shipping, returns, and customer support in India.'
+        assign ar_seo_title = 'Frequently Asked Questions | Anand Rasa'
+        assign ar_seo_description = 'Find answers about Anand Rasa attars, perfumes, incense, astrology fragrances, orders, shipping, returns, payments, fragrance use and customer support.'
       elsif request.page_type == 'index'
         if shop.metafields.custom.seo_title.value != blank
           assign ar_seo_title = shop.metafields.custom.seo_title.value | strip
@@ -374,6 +388,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       elsif request.page_type == '404'
         assign ar_seo_title = 'Page Not Found | Anandrasa'
         assign ar_seo_description = 'The page you are looking for is unavailable. Explore handcrafted attar and perfume collections from Anandrasa and continue discovering authentic Indian fragrances.'
+      elsif request.page_type == 'policy' and policy != blank
+        if shop.shipping_policy != blank and policy.url == shop.shipping_policy.url
+          assign ar_seo_title = 'Shipping Policy | Anand Rasa'
+          assign ar_seo_description = 'Anand Rasa shipping policy: orders processed in 1–3 business days. Estimated delivery 3–7 business days to metro cities and 5–10 to non-metro locations. Prepaid orders only; tracking provided after dispatch.'
+        elsif policy.url contains '/policies/shipping-policy'
+          assign ar_seo_title = 'Shipping Policy | Anand Rasa'
+          assign ar_seo_description = 'Anand Rasa shipping policy: orders processed in 1–3 business days. Estimated delivery 3–7 business days to metro cities and 5–10 to non-metro locations. Prepaid orders only; tracking provided after dispatch.'
+        elsif shop.privacy_policy != blank and policy.url == shop.privacy_policy.url
+          assign ar_seo_title = 'Privacy Policy | Anand Rasa'
+          assign ar_seo_description = 'Learn how Anand Rasa collects, uses, protects and shares personal information, including order, account, analytics, marketing and website data.'
+        elsif policy.url contains '/policies/privacy-policy'
+          assign ar_seo_title = 'Privacy Policy | Anand Rasa'
+          assign ar_seo_description = 'Learn how Anand Rasa collects, uses, protects and shares personal information, including order, account, analytics, marketing and website data.'
+        elsif shop.refund_policy != blank and policy.url == shop.refund_policy.url
+          assign ar_seo_title = 'Refund & Return Policy | Anand Rasa'
+          assign ar_seo_description = 'Anand Rasa refund and return policy for fragrance orders in India: change-of-mind, damaged or wrong items, cancellations, replacements, and how to contact support.'
+        elsif policy.url contains '/policies/refund-policy'
+          assign ar_seo_title = 'Refund & Return Policy | Anand Rasa'
+          assign ar_seo_description = 'Anand Rasa refund and return policy for fragrance orders in India: change-of-mind, damaged or wrong items, cancellations, replacements, and how to contact support.'
+        elsif shop.terms_of_service != blank and policy.url == shop.terms_of_service.url
+          assign ar_seo_title = 'Terms & Conditions | Anand Rasa'
+          assign ar_seo_description = "Read Anand Rasa's Terms & Conditions covering orders, payments, shipping, cancellations, returns, promotions, website use and customer rights."
+        elsif policy.url contains '/policies/terms-of-service'
+          assign ar_seo_title = 'Terms & Conditions | Anand Rasa'
+          assign ar_seo_description = "Read Anand Rasa's Terms & Conditions covering orders, payments, shipping, cancellations, returns, promotions, website use and customer rights."
+        else
+          assign ar_seo_title = policy.title | append: ' | Anand Rasa'
+          assign ar_seo_description = policy.body | strip_html | strip | truncate: 155
+        endif
       else
         assign ar_seo_title = page_title
         if page_description != blank
@@ -722,7 +765,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% sections 'header-group' %}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {{ content_for_layout }}
+      {%- if request.page_type == 'policy' -%}
+        {% section 'main-policy' %}
+      {%- else -%}
+        {{ content_for_layout }}
+      {%- endif -%}
 
       {%- if request.page_type == 'product' and product != blank -%}
         {%- assign ar_product_type = product.type | downcase -%}

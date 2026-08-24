@@ -1,0 +1,442 @@
+{%- comment -%}
+  Discovery Set editorial storytelling — product-scoped only.
+  Handle: discovery-set-for-her-8ml-x-5
+  Not product.media / gallery. Lazy-loaded; no JS.
+{%- endcomment -%}
+
+{%- liquid
+  assign de_handle = product.handle | default: '' | downcase | strip
+  assign de_enabled = false
+  if request.page_type == 'product' and de_handle == 'discovery-set-for-her-8ml-x-5'
+    assign de_enabled = true
+  endif
+-%}
+
+{%- if de_enabled -%}
+  {%- liquid
+    assign de_banner_1 = 'Dastaan-Banner.jpg.jpeg'
+    assign de_banner_2 = 'Vintage-Vanilla_Banner.jpg'
+    assign de_banner_3 = 'her-love-banner.webp'
+    assign de_banner_4 = 'FORBIDDEN FRUIT BANNER.jpg'
+    assign de_banner_alt_1 = 'Dastaan — Discovery Set For Her banner'
+    assign de_banner_alt_2 = 'Vintage Vanilla — Discovery Set For Her banner'
+    assign de_banner_alt_3 = 'Her Love — Discovery Set For Her banner'
+    assign de_banner_alt_4 = 'Forbidden Fruit — Discovery Set For Her banner'
+    assign de_thumb_1 = 'Her_love_tester.webp'
+    assign de_thumb_2 = 'Love_Potion_tester.webp'
+    assign de_thumb_3 = 'dastaan_tester.webp'
+    assign de_thumb_4 = 'forbidden_fruit_tester.webp'
+    assign de_thumb_5 = 'vin_vanilla_tester.webp'
+    assign de_alt_1 = 'Her Love tester'
+    assign de_alt_2 = 'Love Potion tester'
+    assign de_alt_3 = 'Dastaan tester'
+    assign de_alt_4 = 'Forbidden Fruit tester'
+    assign de_alt_5 = 'Vin Vanilla tester'
+  -%}
+
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-price.css' | asset_url | stylesheet_tag }}
+  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+  <section
+    id="DiscoverySetEditorial-{{ section.id }}"
+    class="discovery-editorial"
+    aria-label="Discovery Set For Her — editorial story"
+  >
+    <div class="discovery-editorial__inbox">
+      <header class="discovery-editorial__inbox-header">
+        <p class="discovery-editorial__inbox-eyebrow">{{ section.settings.inbox_eyebrow | default: 'in the box' | escape }}</p>
+        <h2 class="discovery-editorial__inbox-title">{{ section.settings.inbox_heading | default: 'five signature fragrances' | escape }}</h2>
+      </header>
+      <ul class="discovery-editorial__inbox-grid product-grid grid grid--5-col-desktop grid--2-col-tablet-down" role="list">
+        {%- assign dib_skip_styles = false -%}
+        {%- for i in (1..5) -%}
+          {%- liquid
+            case i
+              when 1
+                assign dib_handle = 'love-potion'
+                assign dib_product = section.settings.product_1
+              when 2
+                assign dib_handle = 'dastaan'
+                assign dib_product = section.settings.product_2
+              when 3
+                assign dib_handle = 'her-love'
+                assign dib_product = section.settings.product_3
+              when 4
+                assign dib_handle = 'forbidden-fruit'
+                assign dib_product = section.settings.product_4
+              else
+                assign dib_handle = 'vintage-vanila-attar'
+                assign dib_product = section.settings.product_5
+            endcase
+
+            if dib_product == blank or dib_product == empty or dib_product.id == blank
+              assign dib_product = all_products[dib_handle]
+            endif
+          -%}
+          {%- if dib_product != blank and dib_product.id -%}
+            <li class="discovery-editorial__inbox-card grid__item">
+              {% render 'card-product',
+                card_product: dib_product,
+                media_aspect_ratio: 'square',
+                lazy_load: true,
+                show_secondary_image: true,
+                show_vendor: false,
+                show_rating: true,
+                skip_styles: dib_skip_styles,
+                section_id: section.id,
+                quick_add: 'standard',
+                card_index: forloop.index0,
+                ar_all_collection: true
+              %}
+            </li>
+            {%- assign dib_skip_styles = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="discovery-editorial__shell">
+      <div class="discovery-editorial__image-grid" role="list">
+        {%- for i in (1..5) -%}
+          {%- liquid
+            case i
+              when 1
+                assign de_thumb_asset = de_thumb_1
+                assign de_thumb_alt = de_alt_1
+              when 2
+                assign de_thumb_asset = de_thumb_2
+                assign de_thumb_alt = de_alt_2
+              when 3
+                assign de_thumb_asset = de_thumb_3
+                assign de_thumb_alt = de_alt_3
+              when 4
+                assign de_thumb_asset = de_thumb_4
+                assign de_thumb_alt = de_alt_4
+              else
+                assign de_thumb_asset = de_thumb_5
+                assign de_thumb_alt = de_alt_5
+            endcase
+          -%}
+          <div class="discovery-editorial__thumb" role="listitem">
+            <img
+              class="discovery-editorial__thumb-img"
+              src="{{ de_thumb_asset | asset_url }}"
+              alt="{{ de_thumb_alt | escape }}"
+              width="400"
+              height="500"
+              loading="lazy"
+              decoding="async"
+              sizes="(min-width: 990px) calc((min(100vw - 32px, 1320px) - 40px) / 5), (min-width: 768px) 18vw, 28vw"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="discovery-editorial__banners">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            case i
+              when 1
+                assign de_banner_asset = de_banner_1
+                assign de_banner_alt = de_banner_alt_1
+              when 2
+                assign de_banner_asset = de_banner_2
+                assign de_banner_alt = de_banner_alt_2
+              when 3
+                assign de_banner_asset = de_banner_3
+                assign de_banner_alt = de_banner_alt_3
+              else
+                assign de_banner_asset = de_banner_4
+                assign de_banner_alt = de_banner_alt_4
+            endcase
+          -%}
+          <div class="discovery-editorial__banner">
+            <img
+              class="discovery-editorial__banner-img"
+              src="{{ de_banner_asset | asset_url }}"
+              alt="{{ de_banner_alt | escape }}"
+              width="1800"
+              height="500"
+              loading="lazy"
+              decoding="async"
+              sizes="(min-width: 1400px) 1320px, (min-width: 768px) calc(100vw - 48px), calc(100vw - 32px)"
+            >
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    #DiscoverySetEditorial-{{ section.id }} {
+      --de-max: 1320px;
+      --de-gutter: 16px;
+      --de-gap-thumbs: 10px;
+      --de-gap-after-thumbs: 14px;
+      --de-gap-banners: 16px;
+      --de-pad-bottom: 32px;
+      --de-radius: 14px;
+      --de-bg: transparent;
+      box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      padding: 8px 0 var(--de-pad-bottom);
+      background: var(--de-bg);
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} *,
+    #DiscoverySetEditorial-{{ section.id }} *::before,
+    #DiscoverySetEditorial-{{ section.id }} *::after {
+      box-sizing: border-box;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox {
+      width: 100%;
+      margin: 0 0 clamp(2rem, 5vw, 3.5rem);
+      padding: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+      background: transparent;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-header {
+      width: min(100% - (var(--de-gutter) * 2), var(--de-max));
+      margin: 0 auto clamp(1.5rem, 3.5vw, 2.5rem);
+      text-align: center;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-eyebrow {
+      margin: 0 0 0.4rem;
+      font-family: var(--font-body-family, 'Caudex', Georgia, serif);
+      font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+      font-style: italic;
+      font-weight: 400;
+      color: #c45c4a;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-title {
+      margin: 0;
+      font-family: var(--font-body-family, 'Caudex', Georgia, serif);
+      font-size: clamp(1.85rem, 4vw, 2.85rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      text-transform: lowercase;
+      color: #1a1714;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: clamp(0.75rem, 1.6vw, 1.25rem);
+      width: min(100% - (var(--de-gutter) * 2), var(--de-max));
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-card {
+      margin: 0;
+      min-width: 0;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-card .ar-card,
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-card .card-wrapper {
+      height: 100%;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__shell {
+      width: min(100% - (var(--de-gutter) * 2), var(--de-max));
+      margin-inline: auto;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__image-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--de-gap-thumbs);
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__thumb {
+      margin: 0;
+      padding: 0;
+      min-width: 0;
+      border-radius: var(--de-radius);
+      overflow: hidden;
+      background: #f3f1ef;
+      aspect-ratio: 4 / 5;
+      isolation: isolate;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__thumb-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      border: 0;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__banners {
+      display: flex;
+      flex-direction: column;
+      gap: var(--de-gap-banners);
+      width: 100%;
+      margin: var(--de-gap-after-thumbs) 0 0;
+      padding: 0;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__banner {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      border-radius: var(--de-radius);
+      overflow: hidden;
+      background: #f8f4f2;
+      aspect-ratio: 18 / 5; /* 1800 × 500 */
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__banner-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: center center;
+      border: 0;
+    }
+
+    @media (max-width: 989px) {
+      #DiscoverySetEditorial-{{ section.id }} {
+        --de-gutter: 16px;
+        --de-gap-thumbs: 8px;
+        --de-gap-after-thumbs: 12px;
+        --de-gap-banners: 14px;
+        --de-pad-bottom: 28px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      #DiscoverySetEditorial-{{ section.id }} {
+        --de-gutter: 12px;
+        --de-gap-thumbs: 4px;
+        --de-gap-after-thumbs: 12px;
+        --de-gap-banners: 12px;
+        --de-pad-bottom: 24px;
+        --de-radius: 8px;
+      }
+
+      /* Mobile only: all 5 cards in one row — no horizontal slide */
+      #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__image-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: var(--de-gap-thumbs);
+        width: 94%;
+        max-width: 94%;
+        margin-inline: auto;
+        overflow: visible;
+      }
+
+      #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__thumb {
+        min-width: 0;
+        flex: none;
+      }
+
+      #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__banner {
+        aspect-ratio: 18 / 5;
+      }
+
+      #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-grid {
+        display: flex;
+        gap: 0.75rem;
+        overflow-x: auto;
+        width: 100%;
+        padding: 0 var(--de-gutter) 0.35rem;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #DiscoverySetEditorial-{{ section.id }} .discovery-editorial__inbox-card {
+        flex: 0 0 min(72vw, 16.5rem);
+        scroll-snap-align: start;
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Discovery Set Editorial",
+  "tag": "div",
+  "class": "section-discovery-set-editorial",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "limit": 1,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders only on discovery-set-for-her-8ml-x-5. Uses the theme product card (catalog image, price, Add to Cart, Buy Now). Defaults: love-potion, dastaan, her-love, forbidden-fruit, vintage-vanila-attar. Override with the pickers if a stub product has no media or price."
+    },
+    {
+      "type": "text",
+      "id": "inbox_eyebrow",
+      "label": "In the box eyebrow",
+      "default": "in the box"
+    },
+    {
+      "type": "text",
+      "id": "inbox_heading",
+      "label": "In the box heading",
+      "default": "five signature fragrances"
+    },
+    {
+      "type": "header",
+      "content": "Fragrance products"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional overrides. Use products that have featured images and inventory so cards show photos and Add to Cart."
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Love Potion"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Dastaan"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Her Love"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Forbidden Fruit"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Vintage Vanilla"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discovery Set Editorial"
+    }
+  ]
+}
+{% endschema %}

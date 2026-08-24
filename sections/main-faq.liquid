@@ -1,15 +1,14 @@
 {%- comment -%}
-  Anand Rasa — Enterprise FAQ Page
-  templates/page.faq.json → sections/main-faq.liquid
+  Anand Rasa — FAQ page
+  templates/page.faq.json + templates/index.faq.json → sections/main-faq.liquid
+  Preserves block Q&A wording; restructures headings, nav, a11y, and presentation only.
 {%- endcomment -%}
 
 {%- liquid
+  assign arf_id = section.id
   assign arf_heading = section.settings.heading | default: 'Frequently Asked Questions'
   assign arf_subtext = section.settings.subtext | default: 'Clear answers about our handcrafted attars, incense, orders, and spiritual fragrance collections.'
-  capture arf_schema_url
-    render 'ar-faq-url', absolute: true
-  endcapture
-  assign arf_schema_url = arf_schema_url | strip
+
   assign arf_contact_url = pages['contact'].url | default: pages['contact-us'].url
   if arf_contact_url == blank
     capture arf_contact_url
@@ -17,304 +16,566 @@
     endcapture
     assign arf_contact_url = arf_contact_url | strip
   endif
+
+  assign arf_shipping_url = shop.shipping_policy.url | default: '/policies/shipping-policy'
+  assign arf_refund_url = shop.refund_policy.url | default: '/policies/refund-policy'
+  assign arf_privacy_url = shop.privacy_policy.url | default: '/policies/privacy-policy'
+  assign arf_terms_url = shop.terms_of_service.url | default: '/policies/terms-of-service'
+  assign arf_collections_url = routes.collections_url
 -%}
 
 <style>
-  .arf {
-    --arf-ink: #0a0a0a;
-    --arf-ink-2: #3a3a3a;
-    --arf-ink-3: #6b6b6b;
-    --arf-border: #e5e5e5;
-    --arf-bg: #ffffff;
-    --arf-surface: #fafafa;
-    --arf-gold: #b8943a;
-    --arf-ease: cubic-bezier(0.25, 1, 0.5, 1);
-    --arf-fh: var(--font-heading-family, Georgia, serif);
-    --arf-fb: var(--font-body-family, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  #arf-{{ arf_id }}.arf {
+    --arf-ink: #211d1b;
+    --arf-ink-2: #3d3632;
+    --arf-muted: #5c534f;
+    --arf-border: rgba(33, 29, 27, 0.12);
+    --arf-bg: #fffdfc;
+    --arf-surface: #faf7f4;
+    --arf-fh: var(--font-body-family, var(--font-body, 'Caudex', Georgia, serif));
+    --arf-fb: var(--font-heading-family, var(--font-heading, 'Poppins', system-ui, sans-serif));
+    --arf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --arf-read: min(100%, 68rem);
     font-family: var(--arf-fb);
     background: var(--arf-bg);
     color: var(--arf-ink);
     -webkit-font-smoothing: antialiased;
   }
 
-  .arf *, .arf *::before, .arf *::after { box-sizing: border-box; }
-
-  .arf__wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 48px) clamp(64px, 10vw, 112px);
+  #arf-{{ arf_id }} .arf *,
+  #arf-{{ arf_id }} .arf *::before,
+  #arf-{{ arf_id }} .arf *::after {
+    box-sizing: border-box;
   }
 
-  .arf__header {
-    margin-bottom: clamp(40px, 6vw, 56px);
-    padding-bottom: 32px;
+  #arf-{{ arf_id }} .arf__wrap {
+    max-width: var(--arf-read);
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.15rem, 4vw, 2.5rem) clamp(3.5rem, 8vw, 5.5rem);
+  }
+
+  #arf-{{ arf_id }} .arf__header {
+    margin-bottom: clamp(1.75rem, 4vh, 2.5rem);
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--arf-border);
   }
 
-  .arf__eyebrow {
+  #arf-{{ arf_id }} .arf__eyebrow {
     display: block;
-    font-size: 11px;
+    margin: 0 0 0.75rem;
+    font-family: var(--arf-fb);
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--arf-ink-3);
-    margin-bottom: 14px;
+    color: var(--arf-muted);
   }
 
-  .arf__title {
+  #arf-{{ arf_id }} .arf__title {
+    margin: 0 0 0.85rem;
     font-family: var(--arf-fh);
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    color: var(--arf-ink);
-    margin: 0 0 16px;
-  }
-
-  .arf__sub {
-    font-size: clamp(15px, 1.8vw, 17px);
-    line-height: 1.65;
-    color: var(--arf-ink-3);
-    font-weight: 400;
-    max-width: 52ch;
-    margin: 0;
-  }
-
-  .arf__cat {
-    font-family: var(--arf-fh);
-    font-size: clamp(13px, 1.5vw, 15px);
+    font-size: clamp(2.5rem, 5vw, 3.25rem);
     font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     color: var(--arf-ink);
-    margin: 40px 0 16px;
-    padding-top: 8px;
   }
 
-  .arf__cat:first-of-type { margin-top: 0; }
+  #arf-{{ arf_id }} .arf__sub {
+    margin: 0;
+    max-width: 42rem;
+    font-size: clamp(1.05rem, 1.6vw, 1.125rem);
+    line-height: 1.65;
+    color: var(--arf-muted);
+    font-weight: 400;
+  }
 
-  .arf__group {
+  #arf-{{ arf_id }} .arf__toc {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    margin: 0 0 clamp(1.75rem, 4vh, 2.5rem);
+    padding: 0.35rem 0 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    border-bottom: 1px solid var(--arf-border);
+    scroll-snap-type: x proximity;
+  }
+
+  @media (min-width: 990px) {
+    #arf-{{ arf_id }} .arf__toc {
+      flex-wrap: wrap;
+      overflow: visible;
+      position: sticky;
+      top: 0.65rem;
+      z-index: 3;
+      padding: 0.75rem 0.85rem;
+      background: var(--arf-bg);
+      border: 1px solid var(--arf-border);
+      border-radius: 12px;
+      scroll-snap-type: none;
+    }
+  }
+
+  #arf-{{ arf_id }} .arf__toc-link {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--arf-border);
+    border-radius: 999px;
+    background: var(--arf-surface);
+    color: var(--arf-ink);
+    font-family: var(--arf-fb);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  #arf-{{ arf_id }} .arf__toc-link:hover {
+    border-color: rgba(33, 29, 27, 0.28);
+  }
+
+  #arf-{{ arf_id }} .arf__toc-link:focus-visible,
+  #arf-{{ arf_id }} .arf__summary:focus-visible,
+  #arf-{{ arf_id }} .arf__answer a:focus-visible,
+  #arf-{{ arf_id }} .arf__related a:focus-visible,
+  #arf-{{ arf_id }} .arf__foot a:focus-visible {
+    outline: 2px solid var(--arf-ink);
+    outline-offset: 3px;
+  }
+
+  #arf-{{ arf_id }} .arf__section {
+    margin: 0 0 clamp(1.75rem, 3.5vh, 2.5rem);
+    scroll-margin-top: 5.5rem;
+  }
+
+  #arf-{{ arf_id }} .arf__cat {
+    margin: 0 0 0.85rem;
+    padding-top: 0.35rem;
+    font-family: var(--arf-fh);
+    font-size: clamp(1.75rem, 2.8vw, 2.125rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--arf-ink);
+  }
+
+  #arf-{{ arf_id }} .arf__subcat {
+    margin: 1.35rem 0 0.65rem;
+    font-family: var(--arf-fh);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--arf-ink-2);
+  }
+
+  #arf-{{ arf_id }} .arf__group {
     margin: 0;
     padding: 0;
     border-top: 1px solid var(--arf-border);
   }
 
-  .arf__details {
+  #arf-{{ arf_id }} .arf__details {
     border-bottom: 1px solid var(--arf-border);
   }
 
-  .arf__summary {
+  #arf-{{ arf_id }} .arf__summary {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 20px;
-    padding: 20px 0;
+    gap: 1rem;
+    min-height: 44px;
     margin: 0;
-    cursor: pointer;
+    padding: 1.1rem 0;
     list-style: none;
-    font-family: inherit;
+    cursor: pointer;
     color: var(--arf-ink);
-    transition: color 0.2s var(--arf-ease);
+    font-family: inherit;
   }
 
-  .arf__summary::-webkit-details-marker,
-  .arf__summary::marker {
+  #arf-{{ arf_id }} .arf__summary::-webkit-details-marker,
+  #arf-{{ arf_id }} .arf__summary::marker {
     display: none;
     content: '';
   }
 
-  .arf__summary:hover,
-  .arf__summary:focus-visible {
-    color: var(--arf-ink-2);
-    outline: none;
-  }
-
-  .arf__details[open] > .arf__summary {
-    color: var(--arf-ink);
-  }
-
-  .arf__summary:focus-visible {
-    box-shadow: inset 0 0 0 2px var(--arf-ink);
-    border-radius: 2px;
-  }
-
-  .arf__q {
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: -0.01em;
+  #arf-{{ arf_id }} .arf__q {
     flex: 1;
-    padding-top: 2px;
+    font-family: var(--arf-fb);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    padding-top: 0.15rem;
   }
 
-  .arf__icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-    margin-top: 4px;
+  #arf-{{ arf_id }} .arf__icon {
     position: relative;
-    color: var(--arf-ink-3);
-    transition: transform 0.25s var(--arf-ease), color 0.2s var(--arf-ease);
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 0.35rem;
+    color: var(--arf-muted);
+    transition: transform 0.35s var(--arf-ease), color 0.25s var(--arf-ease);
   }
 
-  .arf__icon::before,
-  .arf__icon::after {
+  #arf-{{ arf_id }} .arf__icon::before,
+  #arf-{{ arf_id }} .arf__icon::after {
     content: '';
     position: absolute;
-    background: currentColor;
     top: 50%;
     left: 50%;
+    background: currentColor;
     transform: translate(-50%, -50%);
   }
 
-  .arf__icon::before { width: 12px; height: 1.5px; }
-  .arf__icon::after { width: 1.5px; height: 12px; transition: opacity 0.2s var(--arf-ease); }
+  #arf-{{ arf_id }} .arf__icon::before {
+    width: 0.75rem;
+    height: 1.5px;
+  }
 
-  .arf__details[open] .arf__icon::after { opacity: 0; }
-  .arf__details[open] .arf__icon { transform: rotate(45deg); color: var(--arf-ink); }
+  #arf-{{ arf_id }} .arf__icon::after {
+    width: 1.5px;
+    height: 0.75rem;
+    transition: opacity 0.2s var(--arf-ease);
+  }
 
-  .arf__answer {
+  #arf-{{ arf_id }} .arf__details[open] .arf__icon {
+    transform: rotate(45deg);
+    color: var(--arf-ink);
+  }
+
+  #arf-{{ arf_id }} .arf__details[open] .arf__icon::after {
+    opacity: 0;
+  }
+
+  #arf-{{ arf_id }} .arf__answer {
     margin: 0;
-    padding: 0 0 22px;
-    font-size: 15px;
-    line-height: 1.7;
+    padding: 0 0 1.25rem;
+    max-width: 42rem;
+    font-family: var(--arf-fb);
+    font-size: 1.0625rem;
+    line-height: 1.65;
     color: var(--arf-ink-2);
     font-weight: 400;
-    max-width: 62ch;
   }
 
-  .arf__details[open] .arf__answer {
-    animation: arf-reveal 0.3s var(--arf-ease);
+  #arf-{{ arf_id }} .arf__answer p {
+    margin: 0 0 0.75rem;
   }
 
-  @keyframes arf-reveal {
-    from { opacity: 0.6; }
-    to { opacity: 1; }
+  #arf-{{ arf_id }} .arf__answer p:last-child {
+    margin-bottom: 0;
   }
 
-  .arf__answer a {
+  #arf-{{ arf_id }} .arf__answer a {
     color: var(--arf-ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: opacity 0.2s ease;
+    text-underline-offset: 0.16em;
   }
 
-  .arf__answer a:hover { opacity: 0.65; }
-
-  .arf__foot {
-    margin-top: 48px;
-    padding-top: 28px;
-    border-top: 1px solid var(--arf-border);
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--arf-ink-3);
-    text-align: center;
+  #arf-{{ arf_id }} .arf__details[open] .arf__answer {
+    animation: arfRise-{{ arf_id }} 0.45s var(--arf-ease) both;
   }
 
-  .arf__foot a {
-    color: var(--arf-ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  #arf-{{ arf_id }} .arf-reveal {
+    animation: arfRise-{{ arf_id }} 0.5s var(--arf-ease) both;
+  }
+
+  @keyframes arfRise-{{ arf_id }} {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .arf__icon,
-    .arf__icon::after,
-    .arf__details[open] .arf__answer { animation: none; transition: none; }
+    #arf-{{ arf_id }} .arf__icon,
+    #arf-{{ arf_id }} .arf__icon::after,
+    #arf-{{ arf_id }} .arf__details[open] .arf__answer,
+    #arf-{{ arf_id }} .arf-reveal {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
   }
 
-  @media (max-width: 600px) {
-    .arf__summary { padding: 18px 0; gap: 16px; }
-    .arf__q { font-size: 14px; }
-    .arf__answer { font-size: 14px; padding-bottom: 18px; }
+  #arf-{{ arf_id }} .arf__related {
+    margin-top: clamp(2rem, 4vh, 2.75rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--arf-border);
+  }
+
+  #arf-{{ arf_id }} .arf__related-title {
+    margin: 0 0 0.75rem;
+    font-family: var(--arf-fh);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 500;
+  }
+
+  #arf-{{ arf_id }} .arf__related-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #arf-{{ arf_id }} .arf__related-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--arf-fb);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--arf-ink);
+  }
+
+  #arf-{{ arf_id }} .arf__foot {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--arf-border);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--arf-muted);
+  }
+
+  #arf-{{ arf_id }} .arf__foot a {
+    color: var(--arf-ink);
+    text-underline-offset: 0.16em;
+  }
+
+  @media (max-width: 749px) {
+    #arf-{{ arf_id }} .arf__q,
+    #arf-{{ arf_id }} .arf__answer {
+      font-size: 1rem;
+    }
   }
 </style>
 
-{%- comment -%} FAQPage JSON-LD — must match visible Q&A {%- endcomment -%}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "name": {{ arf_heading | json }},
-  "description": {{ arf_subtext | strip_html | json }},
-  "url": {{ arf_schema_url | json }},
-  "mainEntity": [
-    {%- assign arf_schema_count = 0 -%}
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'question' and block.settings.question != blank and block.settings.answer != blank -%}
-        {%- if arf_schema_count > 0 -%},{%- endif -%}
-        {
-          "@type": "Question",
-          "name": {{ block.settings.question | json }},
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": {{ block.settings.answer | strip_html | json }}
-          }
-        }
-        {%- assign arf_schema_count = arf_schema_count | plus: 1 -%}
+{%- comment -%} Build TOC entries from primary H2 sections only {%- endcomment -%}
+{%- capture arf_toc -%}
+  {%- assign arf_toc_stress = false -%}
+  {%- assign arf_toc_chakra = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'category' and block.settings.title != blank -%}
+      {%- assign arf_raw = block.settings.title | strip -%}
+      {%- assign arf_raw_down = arf_raw | downcase -%}
+      {%- if arf_raw_down == 'orders'
+        or arf_raw_down == 'shipping'
+        or arf_raw_down == 'attars'
+        or arf_raw_down == 'incense'
+        or arf_raw_down == 'returns'
+        or arf_raw_down == 'fragrance longevity'
+        or arf_raw_down == 'storage'
+        or arf_raw_down == 'astrology fragrances'
+        or arf_raw_down == 'payments'
+        or arf_raw_down == 'contact & support'
+      -%}
+        {%- case arf_raw_down -%}
+          {%- when 'fragrance longevity' -%}
+            {%- assign arf_toc_label = 'Fragrance Longevity' -%}
+            {%- assign arf_toc_id = 'faq-fragrance-longevity' -%}
+          {%- when 'astrology fragrances' -%}
+            {%- assign arf_toc_label = 'Astrology Fragrances' -%}
+            {%- assign arf_toc_id = 'faq-astrology-fragrances' -%}
+          {%- when 'contact & support' -%}
+            {%- assign arf_toc_label = 'Contact & Support' -%}
+            {%- assign arf_toc_id = 'faq-contact-support' -%}
+          {%- else -%}
+            {%- assign arf_toc_label = arf_raw -%}
+            {%- assign arf_toc_id = 'faq-' | append: arf_raw | handleize -%}
+          {%- endcase -%}
+        <a class="arf__toc-link" href="#{{ arf_toc_id }}">{{ arf_toc_label }}</a>
+      {%- elsif arf_raw_down contains 'chakra' -%}
+        {%- if arf_toc_chakra == false -%}
+          {%- assign arf_toc_chakra = true -%}
+          <a class="arf__toc-link" href="#faq-chakra-attars">Chakra Attars</a>
+        {%- endif -%}
+      {%- elsif arf_toc_stress == false -%}
+        {%- if arf_raw_down contains 'seo questions' or arf_raw_down == 'beginner & product questions' or arf_raw_down contains 'buying intent' -%}
+          {%- assign arf_toc_stress = true -%}
+          <a class="arf__toc-link" href="#faq-stress-relief-attars">Stress Relief Attars</a>
+        {%- endif -%}
       {%- endif -%}
-    {%- endfor -%}
-  ]
-}
-</script>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
 
 <section
   class="arf"
-  id="arf-{{ section.id }}"
-  aria-labelledby="arf-title-{{ section.id }}"
+  id="arf-{{ arf_id }}"
+  aria-labelledby="arf-title-{{ arf_id }}"
   {{ section.shopify_attributes }}
 >
   <div class="arf__wrap">
-    <header class="arf__header">
+    <header class="arf__header arf-reveal">
       {%- if section.settings.eyebrow != blank -%}
-        <span class="arf__eyebrow">{{ section.settings.eyebrow }}</span>
+        <span class="arf__eyebrow">{{ section.settings.eyebrow | escape }}</span>
       {%- endif -%}
-      <h1 class="arf__title" id="arf-title-{{ section.id }}">{{ arf_heading }}</h1>
+      <h1 class="arf__title" id="arf-title-{{ arf_id }}">{{ arf_heading | escape }}</h1>
       {%- if arf_subtext != blank -%}
-        <p class="arf__sub">{{ arf_subtext }}</p>
+        <p class="arf__sub">{{ arf_subtext | escape }}</p>
       {%- endif -%}
     </header>
 
+    {%- if arf_toc != blank -%}
+      <nav class="arf__toc arf-reveal" aria-label="FAQ categories">
+        {{ arf_toc }}
+      </nav>
+    {%- endif -%}
+
     <div class="arf__body">
+      {%- assign arf_outer_open = false -%}
       {%- assign arf_group_open = false -%}
+      {%- assign arf_stress_h2_emitted = false -%}
+      {%- assign arf_chakra_h2_emitted = false -%}
+
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'category' -%}
-            {%- if arf_group_open -%}
-              </section>
-              {%- assign arf_group_open = false -%}
-            {%- endif -%}
             {%- if block.settings.title != blank -%}
-              <h2 class="arf__cat" {{ block.shopify_attributes }}>{{ block.settings.title }}</h2>
+              {%- liquid
+                assign arf_raw = block.settings.title | strip
+                assign arf_raw_down = arf_raw | downcase
+                assign arf_level = 'h2'
+                assign arf_display = arf_raw
+                assign arf_section_id = blank
+                assign arf_emit_parent = blank
+                assign arf_is_primary = false
+
+                if arf_raw_down == 'orders' or arf_raw_down == 'shipping' or arf_raw_down == 'attars' or arf_raw_down == 'incense' or arf_raw_down == 'returns' or arf_raw_down == 'storage' or arf_raw_down == 'payments'
+                  assign arf_is_primary = true
+                  assign arf_section_id = 'faq-' | append: arf_raw | handleize
+                elsif arf_raw_down == 'fragrance longevity'
+                  assign arf_is_primary = true
+                  assign arf_display = 'Fragrance Longevity'
+                  assign arf_section_id = 'faq-fragrance-longevity'
+                elsif arf_raw_down == 'astrology fragrances'
+                  assign arf_is_primary = true
+                  assign arf_display = 'Astrology Fragrances'
+                  assign arf_section_id = 'faq-astrology-fragrances'
+                elsif arf_raw_down == 'contact & support'
+                  assign arf_is_primary = true
+                  assign arf_display = 'Contact & Support'
+                  assign arf_section_id = 'faq-contact-support'
+                endif
+
+                if arf_raw_down contains 'chakra'
+                  assign arf_level = 'h3'
+                  if arf_raw_down contains 'seo questions'
+                    assign arf_display = 'General Chakra Attar Questions'
+                  endif
+                  if arf_chakra_h2_emitted == false
+                    assign arf_emit_parent = 'chakra'
+                  endif
+                elsif arf_is_primary == false
+                  if arf_raw_down contains 'seo questions' or arf_raw_down == 'beginner & product questions' or arf_raw_down contains 'buying intent'
+                    assign arf_level = 'h3'
+                    if arf_raw_down contains 'ai search'
+                      assign arf_display = 'Search & Discovery Questions'
+                    elsif arf_raw_down contains 'buying intent'
+                      assign arf_display = 'Buying & Commercial Questions'
+                    elsif arf_raw_down contains 'seo questions'
+                      assign arf_display = arf_raw | replace: ' SEO Questions', '' | strip
+                    endif
+                    if arf_stress_h2_emitted == false
+                      assign arf_emit_parent = 'stress'
+                    endif
+                  endif
+                endif
+              -%}
+
+              {%- if arf_group_open -%}
+                </div>
+                {%- assign arf_group_open = false -%}
+              {%- endif -%}
+
+              {%- if arf_emit_parent == 'stress' -%}
+                {%- if arf_outer_open -%}
+                  </section>
+                {%- endif -%}
+                <section class="arf__section arf-reveal" id="faq-stress-relief-attars" aria-labelledby="arf-h-stress-{{ arf_id }}">
+                  <h2 class="arf__cat" id="arf-h-stress-{{ arf_id }}">Stress Relief Attars</h2>
+                {%- assign arf_outer_open = true -%}
+                {%- assign arf_stress_h2_emitted = true -%}
+              {%- elsif arf_emit_parent == 'chakra' -%}
+                {%- if arf_outer_open -%}
+                  </section>
+                {%- endif -%}
+                <section class="arf__section arf-reveal" id="faq-chakra-attars" aria-labelledby="arf-h-chakra-{{ arf_id }}">
+                  <h2 class="arf__cat" id="arf-h-chakra-{{ arf_id }}">Chakra Attars</h2>
+                {%- assign arf_outer_open = true -%}
+                {%- assign arf_chakra_h2_emitted = true -%}
+              {%- elsif arf_is_primary -%}
+                {%- if arf_outer_open -%}
+                  </section>
+                {%- endif -%}
+                <section class="arf__section arf-reveal" id="{{ arf_section_id }}" aria-labelledby="arf-h-{{ block.id }}">
+                  <h2 class="arf__cat" id="arf-h-{{ block.id }}" {{ block.shopify_attributes }}>{{ arf_display | escape }}</h2>
+                {%- assign arf_outer_open = true -%}
+              {%- endif -%}
+
+              {%- if arf_level == 'h3' -%}
+                <h3 class="arf__subcat" id="arf-sub-{{ block.id }}" {{ block.shopify_attributes }}>{{ arf_display | escape }}</h3>
+              {%- endif -%}
             {%- endif -%}
 
           {%- when 'question' -%}
             {%- if block.settings.question != blank and block.settings.answer != blank -%}
               {%- unless arf_group_open -%}
-                <section class="arf__group" aria-label="FAQ items">
+                <div class="arf__group">
                 {%- assign arf_group_open = true -%}
               {%- endunless -%}
-              {%- assign arf_item_id = 'arf-item-' | append: section.id | append: '-' | append: block.id -%}
+              {%- assign arf_item_id = 'arf-item-' | append: arf_id | append: '-' | append: block.id -%}
               <details class="arf__details" id="{{ arf_item_id }}" {{ block.shopify_attributes }}>
-                <summary class="arf__summary" id="{{ arf_item_id }}-summary">
-                  <span class="arf__q">{{ block.settings.question }}</span>
+                <summary class="arf__summary">
+                  <span class="arf__q">{{ block.settings.question | escape }}</span>
                   <span class="arf__icon" aria-hidden="true"></span>
                 </summary>
-                <div class="arf__answer" id="{{ arf_item_id }}-answer">{{ block.settings.answer }}</div>
+                <div class="arf__answer">{{ block.settings.answer }}</div>
               </details>
             {%- endif -%}
         {%- endcase -%}
       {%- endfor -%}
+
       {%- if arf_group_open -%}
+        </div>
+      {%- endif -%}
+      {%- if arf_outer_open -%}
         </section>
       {%- endif -%}
     </div>
 
+    <nav class="arf__related arf-reveal" aria-label="Related pages">
+      <h2 class="arf__related-title">Related pages</h2>
+      <ul class="arf__related-list" role="list">
+        <li><a href="{{ arf_shipping_url }}">Shipping Policy</a></li>
+        <li><a href="{{ arf_refund_url }}">Refund &amp; Return Policy</a></li>
+        <li><a href="{{ arf_privacy_url }}">Privacy Policy</a></li>
+        <li><a href="{{ arf_terms_url }}">Terms &amp; Conditions</a></li>
+        {%- if arf_contact_url != blank -%}
+          <li><a href="{{ arf_contact_url }}">Contact Us</a></li>
+        {%- endif -%}
+        <li><a href="{{ arf_collections_url }}">Shop collections</a></li>
+      </ul>
+    </nav>
+
     {%- if section.settings.show_contact_note -%}
       <p class="arf__foot">
-        {{ section.settings.contact_note | default: 'Still have a question?' }}
+        {{ section.settings.contact_note | default: 'Still have a question?' | escape }}
         {%- if arf_contact_url != blank -%}
-          <a href="{{ arf_contact_url }}">{{ section.settings.contact_link_label | default: 'Contact our team' }}</a>
+          <a href="{{ arf_contact_url }}">{{ section.settings.contact_link_label | default: 'Contact our team' | escape }}</a>
         {%- endif -%}
       </p>
     {%- endif -%}
