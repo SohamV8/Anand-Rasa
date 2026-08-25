@@ -311,13 +311,35 @@
                   </a>
                 </div>
               {%- when 'price' -%}
-                <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                {%- liquid
+                  assign ar_is_gift_series = false
+                  assign ar_gift_type = product.type | default: '' | downcase
+                  if ar_gift_type contains 'gift'
+                    assign ar_is_gift_series = true
+                  endif
+                  for c in product.collections
+                    assign ar_gift_col = c.handle | downcase
+                    if ar_gift_col == 'giftsets' or ar_gift_col == 'gift-sets' or ar_gift_col == 'gift-set' or ar_gift_col == 'discovery-kit' or ar_gift_col == 'discovery-kits'
+                      assign ar_is_gift_series = true
+                      break
+                    endif
+                  endfor
+                -%}
+                <div
+                  id="price-{{ section.id }}"
+                  role="status"
+                  class="{% if ar_is_gift_series %}ar-gift-price-host{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
                   {%- render 'price',
                     product: product,
                     use_variant: true,
                     show_badges: false,
                     price_class: 'price--large'
                   -%}
+                  {%- if ar_is_gift_series -%}
+                    {%- render 'gift-series-mobile-price', product: product -%}
+                  {%- endif -%}
                 </div>
                 {%- if product.quantity_price_breaks_configured? -%}
                   <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -325,7 +347,7 @@
                   </div>
                 {%- endif -%}
                 {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
-                  <div class="product__tax caption rte">
+                  <div class="product__tax caption rte{% if ar_is_gift_series %} ar-gift-price-tax{% endif %}">
                     {%- if cart.duties_included and cart.taxes_included -%}
                       {{ 'products.product.duties_and_taxes_included' | t }}
                     {%- elsif cart.taxes_included -%}
@@ -345,6 +367,75 @@
                     {{ form | payment_terms }}
                   {%- endform -%}
                 </div>
+                {%- if ar_is_gift_series -%}
+                  <style>
+                    .ar-gift-mprice {
+                      display: none;
+                    }
+
+                    @media screen and (max-width: 749px) {
+                      .ar-gift-price-host > .price {
+                        display: none !important;
+                      }
+
+                      .ar-gift-price-tax {
+                        display: none !important;
+                      }
+
+                      .ar-gift-mprice {
+                        display: block;
+                        margin: 0 0 0.35rem;
+                      }
+
+                      .ar-gift-mprice__row {
+                        display: flex;
+                        flex-wrap: wrap;
+                        align-items: center;
+                        gap: 0.45rem 0.65rem;
+                      }
+
+                      .ar-gift-mprice__was {
+                        font-size: 0.95rem;
+                        font-weight: 400;
+                        color: #9ca3af;
+                        text-decoration: line-through;
+                        letter-spacing: 0.01em;
+                      }
+
+                      .ar-gift-mprice__now {
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        color: #111827;
+                        letter-spacing: -0.01em;
+                        line-height: 1.2;
+                      }
+
+                      .ar-gift-mprice__off {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 0.2rem 0.55rem;
+                        border-radius: 999px;
+                        background: #c8f55a;
+                        color: #111827;
+                        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+                        font-size: 0.72rem;
+                        font-weight: 700;
+                        letter-spacing: 0.02em;
+                        line-height: 1.2;
+                        white-space: nowrap;
+                      }
+
+                      .ar-gift-mprice__tax {
+                        margin: 0.4rem 0 0;
+                        font-size: 0.78rem;
+                        font-weight: 400;
+                        color: #9ca3af;
+                        line-height: 1.35;
+                      }
+                    }
+                  </style>
+                {%- endif -%}
               {%- when 'inventory' -%}
                 <p
                   class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"

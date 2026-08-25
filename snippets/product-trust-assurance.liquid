@@ -1,6 +1,20 @@
 {%- comment -%}
   Product PDP — luxury trust + assurance strip
+  Hidden on Perfume Series products only (alcohol-based perfumes).
 {%- endcomment -%}
+{%- liquid
+  assign ar_trust_skip = false
+  if product != blank
+    for c in product.collections
+      assign ar_trust_col = c.handle | downcase
+      if ar_trust_col == 'perfume-series' or ar_trust_col == 'perfume' or ar_trust_col == 'perfumes' or ar_trust_col == 'perfume-collection'
+        assign ar_trust_skip = true
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- unless ar_trust_skip -%}
 <div class="ar-trust-section" aria-label="Product assurance">
   <ul class="ar-trust-benefits" role="list">
     <li class="ar-trust-benefits__item">Free Shipping</li>
@@ -258,3 +272,4 @@
     }
   }
 </style>
+{%- endunless -%}

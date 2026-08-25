@@ -1,0 +1,30 @@
+{%- comment -%}
+  Gift / Gifting Series — mobile-only sale price row.
+  Matches: strikethrough MRP · bold sale · lime % OFF · tax note.
+  Desktop keeps the default Dawn price block.
+{%- endcomment -%}
+{%- liquid
+  assign gs_variant = product.selected_or_first_available_variant
+  assign gs_price = gs_variant.price
+  assign gs_compare = gs_variant.compare_at_price
+  assign gs_on_sale = false
+  assign gs_pct = 0
+  if gs_compare > gs_price
+    assign gs_on_sale = true
+    assign gs_pct = gs_compare | minus: gs_price | times: 100.0 | divided_by: gs_compare | round
+  endif
+-%}
+<div class="ar-gift-mprice" aria-label="Price">
+  <div class="ar-gift-mprice__row">
+    {%- if gs_on_sale -%}
+      <span class="ar-gift-mprice__was">{{ gs_compare | money }}</span>
+      <span class="ar-gift-mprice__now">{{ gs_price | money }}</span>
+      {%- if gs_pct > 0 -%}
+        <span class="ar-gift-mprice__off">{{ gs_pct }}% OFF</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="ar-gift-mprice__now">{{ gs_price | money }}</span>
+    {%- endif -%}
+  </div>
+  <p class="ar-gift-mprice__tax">[MRP is Inclusive of All Taxes]</p>
+</div>

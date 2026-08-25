@@ -119,7 +119,21 @@
     {%- render 'bestseller-image-lookup', bs_product: card_product -%}
   {%- endcapture -%}
   {%- assign ar_bs_lookup = ar_bs_lookup | strip -%}
-  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_card_incense_img == blank and ar_bs_lookup != blank -%}
+  {%- liquid
+    comment
+      Perfume Series products keep their catalog photography — never swap in
+      attar bestseller bottle assets (e.g. Mirage / Baazigar on festival-offer).
+    endcomment
+    assign ar_is_perfume_series = false
+    for c in card_product.collections
+      assign ar_col_h = c.handle | downcase
+      if ar_col_h == 'perfume-series' or ar_col_h == 'perfume' or ar_col_h == 'perfumes' or ar_col_h == 'perfume-collection'
+        assign ar_is_perfume_series = true
+        break
+      endif
+    endfor
+  -%}
+  {%- if ar_card_asset_img == blank and ar_card_nakshatra_img == blank and ar_card_incense_img == blank and ar_bs_lookup != blank and ar_is_perfume_series == false -%}
     {%- assign ar_card_bestseller_img = ar_bs_lookup | asset_url -%}
   {%- endif -%}
 
@@ -308,6 +322,8 @@
           if ar_product_type_key contains 'incense' or ar_product_type_key contains 'agarbatti'
             assign ar_display_category = 'Incense Stick'
           elsif ar_product_type_key contains 'perfume'
+            assign ar_display_category = 'Perfume'
+          elsif ar_is_perfume_series
             assign ar_display_category = 'Perfume'
           elsif ar_product_type_key contains 'gourmand'
             assign ar_display_category = 'Gourmand'
