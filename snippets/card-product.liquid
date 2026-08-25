@@ -335,7 +335,7 @@
 
           assign ar_notes_source_1 = card_product.metafields.custom.main_notes.value | default: ''
           assign ar_notes_source_2 = card_product.metafields.custom.top_notes.value | default: ''
-          assign ar_notes_source_3 = card_product.metafields.custom.heart_notes.value | default: ''
+          assign ar_notes_source_3 = card_product.metafields.custom.heart_notes.value | default: card_product.metafields.custom.middle_notes.value | default: ''
           assign ar_notes_source_4 = card_product.metafields.custom.base_notes.value | default: ''
 
           if ar_notes_source_1 != blank

@@ -45,7 +45,7 @@
             assign cpq_product_count = cpq_product_count | plus: 1
 
             assign cpq_top = cpq_product.metafields.custom.top_notes.value | default: ''
-            assign cpq_heart = cpq_product.metafields.custom.heart_notes.value | default: ''
+            assign cpq_heart = cpq_product.metafields.custom.heart_notes.value | default: cpq_product.metafields.custom.middle_notes.value | default: ''
             assign cpq_base = cpq_product.metafields.custom.base_notes.value | default: ''
             assign cpq_occasions = cpq_product.metafields.custom.occasion_tags.value | join: ', '
             assign cpq_notes = cpq_top

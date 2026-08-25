@@ -73,7 +73,7 @@
     endif
 
     assign afq_top = afq_product.metafields.custom.top_notes.value | default: '' | strip
-    assign afq_heart = afq_product.metafields.custom.heart_notes.value | default: '' | strip
+    assign afq_heart = afq_product.metafields.custom.heart_notes.value | default: afq_product.metafields.custom.middle_notes.value | default: '' | strip
     assign afq_base = afq_product.metafields.custom.base_notes.value | default: '' | strip
     assign afq_longevity = afq_product.metafields.custom.longevity.value | default: '' | strip
     assign afq_origin = afq_product.metafields.custom.ingredient_origin.value | default: '' | strip

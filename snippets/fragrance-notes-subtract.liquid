@@ -1,0 +1,42 @@
+{%- comment -%}
+  Remove notes listed in remove_notes from source_notes (case-insensitive).
+  Used so Heart/Middle notes are not also shown under Top, etc.
+
+  @param source_notes {string}
+  @param remove_notes {string}
+{%- endcomment -%}
+{%- liquid
+  assign fns_out = ''
+  assign fns_src = source_notes | default: '' | strip
+  assign fns_rm = remove_notes | default: '' | strip
+
+  if fns_src != blank
+    if fns_rm == blank
+      assign fns_out = fns_src
+    else
+      assign fns_rm_keys = '|'
+      assign fns_rm_parts = fns_rm | split: ','
+      for fns_r in fns_rm_parts
+        assign fns_rk = fns_r | strip | downcase
+        if fns_rk != blank
+          assign fns_rm_keys = fns_rm_keys | append: fns_rk | append: '|'
+        endif
+      endfor
+
+      assign fns_parts = fns_src | split: ','
+      for fns_p in fns_parts
+        assign fns_piece = fns_p | strip
+        if fns_piece != blank
+          assign fns_pk = fns_piece | downcase
+          assign fns_token = '|' | append: fns_pk | append: '|'
+          unless fns_rm_keys contains fns_token
+            if fns_out != blank
+              assign fns_out = fns_out | append: ', '
+            endif
+            assign fns_out = fns_out | append: fns_piece
+          endunless
+        endif
+      endfor
+    endif
+  endif
+-%}{{- fns_out -}}

@@ -348,9 +348,20 @@
     assign aps_base = aps_base | strip
     assign aps_main = aps_main | strip
 
-    assign aps_desc_html_notes = aps_p.description | default: ''
+    assign aps_desc_html_raw = aps_p.description | default: ''
+  -%}
+  {%- capture aps_desc_html_notes -%}
+    {%- render 'fragrance-notes-normalize-headings', text: aps_desc_html_raw -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign aps_desc_html_notes = aps_desc_html_notes | strip
     assign aps_desc_notes = aps_desc_html_notes | strip_html | strip
-    assign aps_desc_notes = aps_desc_notes | replace: 'TOP NOTES', 'Top Notes' | replace: 'Top notes', 'Top Notes' | replace: 'Top Note:', 'Top Notes:' | replace: 'HEART NOTES', 'Heart Notes' | replace: 'Heart notes', 'Heart Notes' | replace: 'Heart Note:', 'Heart Notes:' | replace: 'MIDDLE NOTES', 'Middle Notes' | replace: 'Middle notes', 'Middle Notes' | replace: 'Middle Note:', 'Middle Notes:' | replace: 'BASE NOTES', 'Base Notes' | replace: 'Base notes', 'Base Notes' | replace: 'Base Note:', 'Base Notes:'
+  -%}
+  {%- capture aps_desc_notes -%}
+    {%- render 'fragrance-notes-normalize-headings', text: aps_desc_notes -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign aps_desc_notes = aps_desc_notes | strip
 
     if aps_top == blank and aps_desc_html_notes contains 'Top Notes'
       assign aps_top_section = aps_desc_html_notes | split: 'Top Notes' | last | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
@@ -399,7 +410,7 @@
     endif
 
     if aps_heart == blank and aps_desc_html_notes contains 'Heart Notes'
-      assign aps_heart_section = aps_desc_html_notes | split: 'Heart Notes' | last | split: 'Base Notes' | first
+      assign aps_heart_section = aps_desc_html_notes | split: 'Heart Notes' | last | split: 'Middle Notes' | first | split: 'Base Notes' | first
       capture aps_heart
         render 'fragrance-notes-normalize', notes: aps_heart_section
       endcapture
@@ -407,7 +418,7 @@
     elsif aps_heart == blank and aps_desc_notes contains 'Heart Notes'
       assign aps_heart_chunks = aps_desc_notes | split: 'Heart Notes'
       if aps_heart_chunks.size > 1
-        assign aps_heart_raw = aps_heart_chunks[1] | split: 'Base Notes' | first
+        assign aps_heart_raw = aps_heart_chunks[1] | split: 'Middle Notes' | first | split: 'Base Notes' | first
         assign aps_heart_parts = aps_heart_raw | split: ':'
         if aps_heart_parts.size > 1
           assign aps_heart_extract = aps_heart_parts[1] | strip
@@ -444,12 +455,31 @@
       endif
     endif
 
-    if aps_heart == blank and aps_middle != blank
-      assign aps_heart = aps_middle
-    elsif aps_heart != blank and aps_middle != blank
-      assign aps_heart = aps_heart | append: ', ' | append: aps_middle
-    endif
-
+    comment
+      Heart Notes and Middle Notes are the same tier — coalesce + dedupe (never double-list).
+    endcomment
+  -%}
+  {%- capture aps_heart -%}
+    {%- render 'fragrance-notes-merge', notes_a: aps_heart, notes_b: aps_middle -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign aps_heart = aps_heart | strip
+    assign aps_middle = aps_heart
+  -%}
+  {%- if aps_heart != blank and aps_top != blank -%}
+    {%- capture aps_top -%}{%- render 'fragrance-notes-subtract', source_notes: aps_top, remove_notes: aps_heart -%}{%- endcapture -%}
+    {%- assign aps_top = aps_top | strip -%}
+  {%- endif -%}
+  {%- if aps_base != blank and aps_heart != blank -%}
+    {%- capture aps_heart -%}{%- render 'fragrance-notes-subtract', source_notes: aps_heart, remove_notes: aps_base -%}{%- endcapture -%}
+    {%- assign aps_heart = aps_heart | strip -%}
+    {%- assign aps_middle = aps_heart -%}
+  {%- endif -%}
+  {%- if aps_base != blank and aps_top != blank -%}
+    {%- capture aps_top -%}{%- render 'fragrance-notes-subtract', source_notes: aps_top, remove_notes: aps_base -%}{%- endcapture -%}
+    {%- assign aps_top = aps_top | strip -%}
+  {%- endif -%}
+  {%- liquid
     assign aps_ingredients = aps_p.metafields.custom.ingredients | metafield_text | strip
     if aps_ingredients == blank and aps_p.metafields.custom.ingredients != blank
       assign aps_ingredients = aps_p.metafields.custom.ingredients.value | default: '' | strip_html | strip

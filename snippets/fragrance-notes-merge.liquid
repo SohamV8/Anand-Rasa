@@ -1,0 +1,49 @@
+{%- comment -%}
+  Merge two fragrance-note strings into one tier (Heart = Middle).
+  Dedupes case-insensitively so identical heart_notes + middle_notes
+  metafields do not double-list ingredients.
+
+  @param notes_a {string}
+  @param notes_b {string}
+{%- endcomment -%}
+{%- liquid
+  assign fnm_out = ''
+  assign fnm_seen = '|'
+
+  assign fnm_a = notes_a | default: '' | strip
+  assign fnm_b = notes_b | default: '' | strip
+
+  if fnm_a != blank and fnm_b != blank
+    assign fnm_a_key = fnm_a | downcase | replace: ' ', ''
+    assign fnm_b_key = fnm_b | downcase | replace: ' ', ''
+    if fnm_a_key == fnm_b_key
+      assign fnm_b = ''
+    endif
+  endif
+
+  assign fnm_blob = fnm_a
+  if fnm_b != blank
+    if fnm_blob != blank
+      assign fnm_blob = fnm_blob | append: ', '
+    endif
+    assign fnm_blob = fnm_blob | append: fnm_b
+  endif
+
+  if fnm_blob != blank
+    assign fnm_parts = fnm_blob | split: ','
+    for fnm_part in fnm_parts
+      assign fnm_piece = fnm_part | strip
+      if fnm_piece != blank
+        assign fnm_key = fnm_piece | downcase | strip
+        assign fnm_token = '|' | append: fnm_key | append: '|'
+        unless fnm_seen contains fnm_token
+          assign fnm_seen = fnm_seen | append: fnm_key | append: '|'
+          if fnm_out != blank
+            assign fnm_out = fnm_out | append: ', '
+          endif
+          assign fnm_out = fnm_out | append: fnm_piece
+        endunless
+      endif
+    endfor
+  endif
+-%}{{- fnm_out -}}

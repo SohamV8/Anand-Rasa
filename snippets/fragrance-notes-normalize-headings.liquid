@@ -1,0 +1,24 @@
+{%- comment -%}
+  Normalize fragrance-section headings so singular/plural match.
+  Heart Note = Heart Notes, Middle Note = Middle Notes, Base Note = Base Notes, etc.
+  Protect plurals first so "Heart Notes" does not become "Heart Notess".
+
+  @param text {string}
+{%- endcomment -%}
+{%- liquid
+  assign fnh_out = text | default: ''
+
+  if fnh_out != blank
+    assign fnh_out = fnh_out | replace: 'TOP NOTES', '§TN§' | replace: 'Top Notes', '§TN§' | replace: 'Top notes', '§TN§'
+    assign fnh_out = fnh_out | replace: 'HEART NOTES', '§HN§' | replace: 'Heart Notes', '§HN§' | replace: 'Heart notes', '§HN§'
+    assign fnh_out = fnh_out | replace: 'MIDDLE NOTES', '§MN§' | replace: 'Middle Notes', '§MN§' | replace: 'Middle notes', '§MN§'
+    assign fnh_out = fnh_out | replace: 'BASE NOTES', '§BN§' | replace: 'Base Notes', '§BN§' | replace: 'Base notes', '§BN§'
+
+    assign fnh_out = fnh_out | replace: 'TOP NOTE', '§TN§' | replace: 'Top Note', '§TN§' | replace: 'Top note', '§TN§'
+    assign fnh_out = fnh_out | replace: 'HEART NOTE', '§HN§' | replace: 'Heart Note', '§HN§' | replace: 'Heart note', '§HN§'
+    assign fnh_out = fnh_out | replace: 'MIDDLE NOTE', '§MN§' | replace: 'Middle Note', '§MN§' | replace: 'Middle note', '§MN§'
+    assign fnh_out = fnh_out | replace: 'BASE NOTE', '§BN§' | replace: 'Base Note', '§BN§' | replace: 'Base note', '§BN§'
+
+    assign fnh_out = fnh_out | replace: '§TN§', 'Top Notes' | replace: '§HN§', 'Heart Notes' | replace: '§MN§', 'Middle Notes' | replace: '§BN§', 'Base Notes'
+  endif
+-%}{{- fnh_out -}}

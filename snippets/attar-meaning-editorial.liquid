@@ -157,7 +157,7 @@
 
   assign ame_tagline = ame_p.metafields.custom.tagline.value | default: '' | strip
   assign ame_top = ame_p.metafields.custom.top_notes.value | default: '' | strip
-  assign ame_heart = ame_p.metafields.custom.heart_notes.value | default: '' | strip
+  assign ame_heart = ame_p.metafields.custom.heart_notes.value | default: ame_p.metafields.custom.middle_notes.value | default: '' | strip
   assign ame_base = ame_p.metafields.custom.base_notes.value | default: '' | strip
   assign ame_origin = ame_p.metafields.custom.ingredient_origin.value | default: '' | strip
 

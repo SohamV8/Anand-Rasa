@@ -17,19 +17,29 @@
     assign fn_heart_meta = fn_heart_meta | strip
     assign fn_middle_meta = fn_middle_meta | strip
     assign fn_base = fn_base | strip
+  -%}
+  {%- comment -%} Heart Notes and Middle Notes are the same tier — coalesce + dedupe. {%- endcomment -%}
+  {%- capture fn_mid -%}
+    {%- render 'fragrance-notes-merge', notes_a: fn_heart_meta, notes_b: fn_middle_meta -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign fn_mid = fn_mid | strip
 
-    assign fn_mid = ''
-    if fn_heart_meta != blank and fn_middle_meta != blank
-      assign fn_mid = fn_heart_meta | append: ', ' | append: fn_middle_meta
-    elsif fn_heart_meta != blank
-      assign fn_mid = fn_heart_meta
-    else
-      assign fn_mid = fn_middle_meta
-    endif
-
-    assign fn_desc_html = product.description | default: ''
+    assign fn_desc_html_raw = product.description | default: ''
+  -%}
+  {%- capture fn_desc_html -%}
+    {%- render 'fragrance-notes-normalize-headings', text: fn_desc_html_raw -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign fn_desc_html = fn_desc_html | strip
     assign fn_desc = fn_desc_html | strip_html | strip
-    assign fn_desc = fn_desc | replace: 'TOP NOTES', 'Top Notes' | replace: 'Top notes', 'Top Notes' | replace: 'Top Note:', 'Top Notes:' | replace: 'HEART NOTES', 'Heart Notes' | replace: 'Heart notes', 'Heart Notes' | replace: 'Heart Note:', 'Heart Notes:' | replace: 'MIDDLE NOTES', 'Middle Notes' | replace: 'Middle notes', 'Middle Notes' | replace: 'Middle Note:', 'Middle Notes:' | replace: 'BASE NOTES', 'Base Notes' | replace: 'Base notes', 'Base Notes' | replace: 'Base Note:', 'Base Notes:' | replace: 'AROMA PROFILE', 'Aroma Profile' | replace: 'BENEFITS OF', 'Benefits of' | replace: 'KEY TRADITIONAL INGREDIENTS', 'Key Traditional Ingredients'
+  -%}
+  {%- capture fn_desc -%}
+    {%- render 'fragrance-notes-normalize-headings', text: fn_desc -%}
+  {%- endcapture -%}
+  {%- liquid
+    assign fn_desc = fn_desc | strip
+    assign fn_desc = fn_desc | replace: 'AROMA PROFILE', 'Aroma Profile' | replace: 'BENEFITS OF', 'Benefits of' | replace: 'KEY TRADITIONAL INGREDIENTS', 'Key Traditional Ingredients'
 
     if fn_top == blank and fn_desc_html contains 'Top Notes'
       assign fn_top_section = fn_desc_html | split: 'Top Notes' | last | split: 'Middle Notes' | first | split: 'Heart Notes' | first | split: 'Base Notes' | first
@@ -54,52 +64,59 @@
       endif
     endif
 
-    if fn_mid == blank and fn_desc_html contains 'Middle Notes'
-      assign fn_mid_section = fn_desc_html | split: 'Middle Notes' | last | split: 'Heart Notes' | first | split: 'Base Notes' | first
-      capture fn_mid
-        render 'fragrance-notes-normalize', notes: fn_mid_section
-      endcapture
-      assign fn_mid = fn_mid | strip
-    elsif fn_mid == blank and fn_desc contains 'Middle Notes'
-      assign fn_mid_chunks = fn_desc | split: 'Middle Notes'
-      if fn_mid_chunks.size > 1
-        assign fn_mid_raw = fn_mid_chunks[1] | split: 'Heart Notes' | first | split: 'Base Notes' | first
-        assign fn_mid_parts = fn_mid_raw | split: ':'
-        if fn_mid_parts.size > 1
-          assign fn_mid_extract = fn_mid_parts[1] | strip
-        else
-          assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip
-        endif
-        capture fn_mid
-          render 'fragrance-notes-normalize', notes: fn_mid_extract
-        endcapture
-        assign fn_mid = fn_mid | strip
-      endif
-    endif
+    comment
+      Description fallback for Heart/Middle (same tier). Pull both labels and merge/dedupe.
+      Supports singular "Heart Note" / "Middle Note" via heading normalizer above.
+    endcomment
+    assign fn_mid_desc_a = ''
+    assign fn_mid_desc_b = ''
+  -%}
+  {%- if fn_mid == blank -%}
+    {%- if fn_desc_html contains 'Middle Notes' -%}
+      {%- assign fn_mid_section = fn_desc_html | split: 'Middle Notes' | last | split: 'Heart Notes' | first | split: 'Base Notes' | first -%}
+      {%- capture fn_mid_desc_a -%}{%- render 'fragrance-notes-normalize', notes: fn_mid_section -%}{%- endcapture -%}
+      {%- assign fn_mid_desc_a = fn_mid_desc_a | strip -%}
+    {%- elsif fn_desc contains 'Middle Notes' -%}
+      {%- assign fn_mid_chunks = fn_desc | split: 'Middle Notes' -%}
+      {%- if fn_mid_chunks.size > 1 -%}
+        {%- assign fn_mid_raw = fn_mid_chunks[1] | split: 'Heart Notes' | first | split: 'Base Notes' | first -%}
+        {%- assign fn_mid_parts = fn_mid_raw | split: ':' -%}
+        {%- if fn_mid_parts.size > 1 -%}
+          {%- assign fn_mid_extract = fn_mid_parts[1] | strip -%}
+        {%- else -%}
+          {%- assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip -%}
+        {%- endif -%}
+        {%- capture fn_mid_desc_a -%}{%- render 'fragrance-notes-normalize', notes: fn_mid_extract -%}{%- endcapture -%}
+        {%- assign fn_mid_desc_a = fn_mid_desc_a | strip -%}
+      {%- endif -%}
+    {%- endif -%}
 
-    if fn_mid == blank and fn_desc_html contains 'Heart Notes'
-      assign fn_mid_section = fn_desc_html | split: 'Heart Notes' | last | split: 'Middle Notes' | first | split: 'Base Notes' | first
-      capture fn_mid
-        render 'fragrance-notes-normalize', notes: fn_mid_section
-      endcapture
-      assign fn_mid = fn_mid | strip
-    elsif fn_mid == blank and fn_desc contains 'Heart Notes'
-      assign fn_mid_chunks = fn_desc | split: 'Heart Notes'
-      if fn_mid_chunks.size > 1
-        assign fn_mid_raw = fn_mid_chunks[1] | split: 'Middle Notes' | first | split: 'Base Notes' | first
-        assign fn_mid_parts = fn_mid_raw | split: ':'
-        if fn_mid_parts.size > 1
-          assign fn_mid_extract = fn_mid_parts[1] | strip
-        else
-          assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip
-        endif
-        capture fn_mid
-          render 'fragrance-notes-normalize', notes: fn_mid_extract
-        endcapture
-        assign fn_mid = fn_mid | strip
-      endif
-    endif
+    {%- if fn_desc_html contains 'Heart Notes' -%}
+      {%- assign fn_mid_section = fn_desc_html | split: 'Heart Notes' | last | split: 'Middle Notes' | first | split: 'Base Notes' | first -%}
+      {%- capture fn_mid_desc_b -%}{%- render 'fragrance-notes-normalize', notes: fn_mid_section -%}{%- endcapture -%}
+      {%- assign fn_mid_desc_b = fn_mid_desc_b | strip -%}
+    {%- elsif fn_desc contains 'Heart Notes' -%}
+      {%- assign fn_mid_chunks = fn_desc | split: 'Heart Notes' -%}
+      {%- if fn_mid_chunks.size > 1 -%}
+        {%- assign fn_mid_raw = fn_mid_chunks[1] | split: 'Middle Notes' | first | split: 'Base Notes' | first -%}
+        {%- assign fn_mid_parts = fn_mid_raw | split: ':' -%}
+        {%- if fn_mid_parts.size > 1 -%}
+          {%- assign fn_mid_extract = fn_mid_parts[1] | strip -%}
+        {%- else -%}
+          {%- assign fn_mid_extract = fn_mid_raw | replace: ':', '' | strip -%}
+        {%- endif -%}
+        {%- capture fn_mid_desc_b -%}{%- render 'fragrance-notes-normalize', notes: fn_mid_extract -%}{%- endcapture -%}
+        {%- assign fn_mid_desc_b = fn_mid_desc_b | strip -%}
+      {%- endif -%}
+    {%- endif -%}
 
+    {%- capture fn_mid -%}
+      {%- render 'fragrance-notes-merge', notes_a: fn_mid_desc_a, notes_b: fn_mid_desc_b -%}
+    {%- endcapture -%}
+    {%- assign fn_mid = fn_mid | strip -%}
+  {%- endif -%}
+
+  {%- liquid
     if fn_base == blank and fn_desc_html contains 'Base Notes'
       assign fn_base_section = fn_desc_html | split: 'Base Notes' | last | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first
       capture fn_base
@@ -132,7 +149,21 @@
     if fn_base != blank
       assign fn_base = fn_base | split: 'Key Traditional Ingredients' | first | split: 'Aroma Profile' | first | split: 'Benefits of' | first | split: 'Benefits' | first | split: 'Longevity' | first | split: 'Best for' | first | split: 'Why Choose' | first | split: 'Specifications' | first | strip
     endif
-
+  -%}
+  {%- comment -%} Keep tiers clean: Heart notes must not also appear under Top; Base not under Heart/Top. {%- endcomment -%}
+  {%- if fn_mid != blank and fn_top != blank -%}
+    {%- capture fn_top -%}{%- render 'fragrance-notes-subtract', source_notes: fn_top, remove_notes: fn_mid -%}{%- endcapture -%}
+    {%- assign fn_top = fn_top | strip -%}
+  {%- endif -%}
+  {%- if fn_base != blank and fn_mid != blank -%}
+    {%- capture fn_mid -%}{%- render 'fragrance-notes-subtract', source_notes: fn_mid, remove_notes: fn_base -%}{%- endcapture -%}
+    {%- assign fn_mid = fn_mid | strip -%}
+  {%- endif -%}
+  {%- if fn_base != blank and fn_top != blank -%}
+    {%- capture fn_top -%}{%- render 'fragrance-notes-subtract', source_notes: fn_top, remove_notes: fn_base -%}{%- endcapture -%}
+    {%- assign fn_top = fn_top | strip -%}
+  {%- endif -%}
+  {%- liquid
     assign fn_count = 0
     if fn_top != blank
       assign fn_count = fn_count | plus: 1

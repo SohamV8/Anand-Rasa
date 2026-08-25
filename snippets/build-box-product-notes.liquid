@@ -9,7 +9,7 @@
   assign byb_count = 0
   assign byb_src_1 = product.metafields.custom.main_notes.value | default: ''
   assign byb_src_2 = product.metafields.custom.top_notes.value | default: ''
-  assign byb_src_3 = product.metafields.custom.heart_notes.value | default: ''
+  assign byb_src_3 = product.metafields.custom.heart_notes.value | default: product.metafields.custom.middle_notes.value | default: ''
   assign byb_src_4 = product.metafields.custom.base_notes.value | default: ''
 
   assign byb_raw = ''

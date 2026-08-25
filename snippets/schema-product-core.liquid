@@ -13,7 +13,7 @@
       assign ar_description = product.title | append: ' by Anandrasa.'
     endif
     assign ar_top_notes = product.metafields.custom.top_notes.value
-    assign ar_heart_notes = product.metafields.custom.heart_notes.value
+    assign ar_heart_notes = product.metafields.custom.heart_notes.value | default: product.metafields.custom.middle_notes.value
     assign ar_base_notes = product.metafields.custom.base_notes.value
     assign ar_longevity = product.metafields.custom.longevity.value
     assign ar_strength = product.metafields.custom.strength.value
