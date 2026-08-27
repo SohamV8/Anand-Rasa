@@ -17,11 +17,13 @@
     assign de_banner_1 = 'Dastaan-Banner.jpg.jpeg'
     assign de_banner_2 = 'Vintage-Vanilla_Banner.jpg'
     assign de_banner_3 = 'her-love-banner.webp'
-    assign de_banner_4 = 'Love-Potion.jpg.jpeg'
+    assign de_banner_4 = 'FORBIDDEN FRUIT BANNER.jpg'
+    assign de_banner_5 = 'Love-Potion.jpg.jpeg'
     assign de_banner_alt_1 = 'Dastaan — Discovery Set For Her banner'
     assign de_banner_alt_2 = 'Vintage Vanilla — Discovery Set For Her banner'
     assign de_banner_alt_3 = 'Her Love — Discovery Set For Her banner'
-    assign de_banner_alt_4 = 'Love Potion — Discovery Set For Her banner'
+    assign de_banner_alt_4 = 'Forbidden Fruit — Discovery Set For Her banner'
+    assign de_banner_alt_5 = 'Love Potion — Discovery Set For Her banner'
     assign de_thumb_1 = 'Her_love_tester.webp'
     assign de_thumb_2 = 'Love_Potion_tester.webp'
     assign de_thumb_3 = 'dastaan_tester.webp'
@@ -137,7 +139,7 @@
       </div>
 
       <div class="discovery-editorial__banners">
-        {%- for i in (1..4) -%}
+        {%- for i in (1..5) -%}
           {%- liquid
             case i
               when 1
@@ -149,9 +151,12 @@
               when 3
                 assign de_banner_asset = de_banner_3
                 assign de_banner_alt = de_banner_alt_3
-              else
+              when 4
                 assign de_banner_asset = de_banner_4
                 assign de_banner_alt = de_banner_alt_4
+              else
+                assign de_banner_asset = de_banner_5
+                assign de_banner_alt = de_banner_alt_5
             endcase
           -%}
           <div class="discovery-editorial__banner">
