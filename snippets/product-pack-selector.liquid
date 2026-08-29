@@ -2,7 +2,7 @@
   Choose Your Pack — quantity bundle selector for main-product section.
   Syncs with existing #Quantity-{section.id} input (form="{{ product_form_id }}").
   Size-aware display for 6ml / 12ml variants.
-  Attars only — hidden for perfume and incense products.
+  Attars only — hidden for perfume, incense, and gift/discovery sets.
 
   Accepts: block, section, product, product_form_id
 {%- endcomment -%}
@@ -44,6 +44,14 @@
   if ar_pack_is_incense or ar_pack_is_perfume
     assign ar_pack_is_attar = false
   endif
+
+  assign ar_pack_is_gift_set = false
+  if ar_pack_handle contains 'discovery-set' or ar_pack_title contains 'discovery set' or ar_pack_title contains 'gift set' or ar_pack_title contains 'ritual set' or ar_pack_type contains 'gift set' or ar_pack_cols contains 'gift-sets' or ar_pack_cols contains 'gift-set' or ar_pack_cols contains 'giftsets'
+    assign ar_pack_is_gift_set = true
+  endif
+  if ar_pack_is_gift_set
+    assign ar_pack_is_attar = false
+  endif
 -%}
 
 {%- unless block.settings.enable and ar_pack_is_attar -%}
@@ -52,7 +60,7 @@
       {%- if block.settings.enable == false -%}
         Pack selector disabled in block settings.
       {%- else -%}
-        Pack selector is attars only (hidden for perfume/incense).
+        Pack selector is attars only (hidden for perfume/incense/gift sets).
       {%- endif -%}
     </p>
   {%- endif -%}

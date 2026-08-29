@@ -1,39 +1,76 @@
 {%- comment -%}
   Discovery Set editorial storytelling — product-scoped only.
-  Handle: discovery-set-for-her-8ml-x-5
+  Handles: discovery-set-for-her-8ml-x-5, discovery-set-for-him
   Not product.media / gallery. Lazy-loaded; no JS.
 {%- endcomment -%}
 
 {%- liquid
   assign de_handle = product.handle | default: '' | downcase | strip
   assign de_enabled = false
-  if request.page_type == 'product' and de_handle == 'discovery-set-for-her-8ml-x-5'
-    assign de_enabled = true
+  assign de_variant = ''
+  if request.page_type == 'product'
+    if de_handle == 'discovery-set-for-her-8ml-x-5'
+      assign de_enabled = true
+      assign de_variant = 'her'
+    elsif de_handle == 'discovery-set-for-him'
+      assign de_enabled = true
+      assign de_variant = 'him'
+    endif
   endif
 -%}
 
 {%- if de_enabled -%}
   {%- liquid
-    assign de_banner_1 = 'Dastaan-Banner.jpg.jpeg'
-    assign de_banner_2 = 'Vintage-Vanilla_Banner.jpg'
-    assign de_banner_3 = 'her-love-banner.webp'
-    assign de_banner_4 = 'FORBIDDEN FRUIT BANNER.jpg'
-    assign de_banner_5 = 'Love-Potion.jpg.jpeg'
-    assign de_banner_alt_1 = 'Dastaan — Discovery Set For Her banner'
-    assign de_banner_alt_2 = 'Vintage Vanilla — Discovery Set For Her banner'
-    assign de_banner_alt_3 = 'Her Love — Discovery Set For Her banner'
-    assign de_banner_alt_4 = 'Forbidden Fruit — Discovery Set For Her banner'
-    assign de_banner_alt_5 = 'Love Potion — Discovery Set For Her banner'
-    assign de_thumb_1 = 'Her_love_tester.webp'
-    assign de_thumb_2 = 'Love_Potion_tester.webp'
-    assign de_thumb_3 = 'dastaan_tester.webp'
-    assign de_thumb_4 = 'forbidden_fruit_tester.webp'
-    assign de_thumb_5 = 'vin_vanilla_tester.webp'
-    assign de_alt_1 = 'Her Love tester'
-    assign de_alt_2 = 'Love Potion tester'
-    assign de_alt_3 = 'Dastaan tester'
-    assign de_alt_4 = 'Forbidden Fruit tester'
-    assign de_alt_5 = 'Vin Vanilla tester'
+    if de_variant == 'him'
+      assign de_aria_label = 'Discovery Set For Him — editorial story'
+      assign de_banner_1 = 'Blue-Glacier1.jpg.jpeg'
+      assign de_banner_2 = 'Office-time.jpg.jpeg'
+      assign de_banner_3 = 'baazigar.jpg.jpeg'
+      assign de_banner_4 = 'Mirage.jpg.jpeg'
+      assign de_banner_5 = 'Party-Life.jpg.jpeg'
+      assign de_banner_alt_1 = 'Blue Glacier — Discovery Set For Him banner'
+      assign de_banner_alt_2 = 'Office Time — Discovery Set For Him banner'
+      assign de_banner_alt_3 = 'Baazigar — Discovery Set For Him banner'
+      assign de_banner_alt_4 = 'Mirage — Discovery Set For Him banner'
+      assign de_banner_alt_5 = 'Party Life — Discovery Set For Him banner'
+      assign de_thumb_1 = 'blue_glacier_tester.webp'
+      assign de_thumb_2 = 'office_time_tester.webp'
+      assign de_thumb_3 = 'Baazigar_tester.webp'
+      assign de_thumb_4 = 'mirage_tester.webp'
+      assign de_thumb_5 = 'party_life_tester.webp'
+      assign de_alt_1 = 'Blue Glacier tester'
+      assign de_alt_2 = 'Office Time tester'
+      assign de_alt_3 = 'Baazigar tester'
+      assign de_alt_4 = 'Mirage tester'
+      assign de_alt_5 = 'Party Life tester'
+    else
+      assign de_aria_label = 'Discovery Set For Her — editorial story'
+      assign de_banner_1 = 'Dastaan-Banner.jpg.jpeg'
+      assign de_banner_2 = 'Vintage-Vanilla_Banner.jpg'
+      assign de_banner_3 = 'her-love-banner.webp'
+      assign de_banner_4 = 'FORBIDDEN FRUIT BANNER.jpg'
+      assign de_banner_5 = 'Love-Potion.jpg.jpeg'
+      assign de_banner_alt_1 = 'Dastaan — Discovery Set For Her banner'
+      assign de_banner_alt_2 = 'Vintage Vanilla — Discovery Set For Her banner'
+      assign de_banner_alt_3 = 'Her Love — Discovery Set For Her banner'
+      assign de_banner_alt_4 = 'Forbidden Fruit — Discovery Set For Her banner'
+      assign de_banner_alt_5 = 'Love Potion — Discovery Set For Her banner'
+      assign de_thumb_1 = 'Her_love_tester.webp'
+      assign de_thumb_2 = 'Love_Potion_tester.webp'
+      assign de_thumb_3 = 'dastaan_tester.webp'
+      assign de_thumb_4 = 'forbidden_fruit_tester.webp'
+      assign de_thumb_5 = 'vin_vanilla_tester.webp'
+      assign de_alt_1 = 'Her Love tester'
+      assign de_alt_2 = 'Love Potion tester'
+      assign de_alt_3 = 'Dastaan tester'
+      assign de_alt_4 = 'Forbidden Fruit tester'
+      assign de_alt_5 = 'Vin Vanilla tester'
+    endif
+
+    assign de_has_banners = false
+    if de_banner_1 != blank or de_banner_2 != blank or de_banner_3 != blank or de_banner_4 != blank or de_banner_5 != blank
+      assign de_has_banners = true
+    endif
   -%}
 
   {{ 'component-card.css' | asset_url | stylesheet_tag }}
@@ -46,7 +83,7 @@
   <section
     id="DiscoverySetEditorial-{{ section.id }}"
     class="discovery-editorial"
-    aria-label="Discovery Set For Her — editorial story"
+    aria-label="{{ de_aria_label | escape }}"
   >
     <div class="discovery-editorial__inbox">
       <header class="discovery-editorial__inbox-header">
@@ -59,20 +96,45 @@
           {%- liquid
             case i
               when 1
-                assign dib_handle = 'love-potion'
-                assign dib_product = section.settings.product_1
+                if de_variant == 'him'
+                  assign dib_handle = 'blue-glacier'
+                  assign dib_product = section.settings.him_product_1
+                else
+                  assign dib_handle = 'love-potion'
+                  assign dib_product = section.settings.product_1
+                endif
               when 2
-                assign dib_handle = 'dastaan'
-                assign dib_product = section.settings.product_2
+                if de_variant == 'him'
+                  assign dib_handle = 'office-time'
+                  assign dib_product = section.settings.him_product_2
+                else
+                  assign dib_handle = 'dastaan'
+                  assign dib_product = section.settings.product_2
+                endif
               when 3
-                assign dib_handle = 'her-love'
-                assign dib_product = section.settings.product_3
+                if de_variant == 'him'
+                  assign dib_handle = 'baazigar-1'
+                  assign dib_product = section.settings.him_product_3
+                else
+                  assign dib_handle = 'her-love'
+                  assign dib_product = section.settings.product_3
+                endif
               when 4
-                assign dib_handle = 'forbidden-fruit'
-                assign dib_product = section.settings.product_4
+                if de_variant == 'him'
+                  assign dib_handle = 'mirage'
+                  assign dib_product = section.settings.him_product_4
+                else
+                  assign dib_handle = 'forbidden-fruit'
+                  assign dib_product = section.settings.product_4
+                endif
               else
-                assign dib_handle = 'vintage-vanilla'
-                assign dib_product = section.settings.product_5
+                if de_variant == 'him'
+                  assign dib_handle = 'party-life'
+                  assign dib_product = section.settings.him_product_5
+                else
+                  assign dib_handle = 'vintage-vanilla'
+                  assign dib_product = section.settings.product_5
+                endif
             endcase
 
             if dib_product == blank or dib_product == empty or dib_product.id == blank
@@ -109,35 +171,90 @@
               when 1
                 assign de_thumb_asset = de_thumb_1
                 assign de_thumb_alt = de_alt_1
+                if de_variant == 'him'
+                  assign de_thumb_handle = 'blue-glacier'
+                  assign de_thumb_product = section.settings.him_product_1
+                else
+                  assign de_thumb_handle = 'love-potion'
+                  assign de_thumb_product = section.settings.product_1
+                endif
               when 2
                 assign de_thumb_asset = de_thumb_2
                 assign de_thumb_alt = de_alt_2
+                if de_variant == 'him'
+                  assign de_thumb_handle = 'office-time'
+                  assign de_thumb_product = section.settings.him_product_2
+                else
+                  assign de_thumb_handle = 'dastaan'
+                  assign de_thumb_product = section.settings.product_2
+                endif
               when 3
                 assign de_thumb_asset = de_thumb_3
                 assign de_thumb_alt = de_alt_3
+                if de_variant == 'him'
+                  assign de_thumb_handle = 'baazigar-1'
+                  assign de_thumb_product = section.settings.him_product_3
+                else
+                  assign de_thumb_handle = 'her-love'
+                  assign de_thumb_product = section.settings.product_3
+                endif
               when 4
                 assign de_thumb_asset = de_thumb_4
                 assign de_thumb_alt = de_alt_4
+                if de_variant == 'him'
+                  assign de_thumb_handle = 'mirage'
+                  assign de_thumb_product = section.settings.him_product_4
+                else
+                  assign de_thumb_handle = 'forbidden-fruit'
+                  assign de_thumb_product = section.settings.product_4
+                endif
               else
                 assign de_thumb_asset = de_thumb_5
                 assign de_thumb_alt = de_alt_5
+                if de_variant == 'him'
+                  assign de_thumb_handle = 'party-life'
+                  assign de_thumb_product = section.settings.him_product_5
+                else
+                  assign de_thumb_handle = 'vintage-vanilla'
+                  assign de_thumb_product = section.settings.product_5
+                endif
             endcase
+
+            if de_thumb_product == blank or de_thumb_product == empty or de_thumb_product.id == blank
+              assign de_thumb_product = all_products[de_thumb_handle]
+            endif
           -%}
           <div class="discovery-editorial__thumb" role="listitem">
-            <img
-              class="discovery-editorial__thumb-img"
-              src="{{ de_thumb_asset | asset_url }}"
-              alt="{{ de_thumb_alt | escape }}"
-              width="400"
-              height="500"
-              loading="lazy"
-              decoding="async"
-              sizes="(min-width: 990px) calc((min(100vw - 32px, 1320px) - 40px) / 5), (min-width: 768px) 18vw, 28vw"
-            >
+            {%- if de_thumb_asset != blank -%}
+              <img
+                class="discovery-editorial__thumb-img"
+                src="{{ de_thumb_asset | asset_url }}"
+                alt="{{ de_thumb_alt | escape }}"
+                width="400"
+                height="500"
+                loading="lazy"
+                decoding="async"
+                sizes="(min-width: 990px) calc((min(100vw - 32px, 1320px) - 40px) / 5), (min-width: 768px) 18vw, 28vw"
+              >
+            {%- elsif de_thumb_product != blank and de_thumb_product.featured_image -%}
+              {{
+                de_thumb_product.featured_image
+                | image_url: width: 400
+                | image_tag:
+                  class: 'discovery-editorial__thumb-img',
+                  alt: de_thumb_alt,
+                  width: 400,
+                  height: 500,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  sizes: '(min-width: 990px) calc((min(100vw - 32px, 1320px) - 40px) / 5), (min-width: 768px) 18vw, 28vw'
+              }}
+            {%- endif -%}
           </div>
         {%- endfor -%}
       </div>
 
+      {%- if de_has_banners -%}
       <div class="discovery-editorial__banners">
         {%- for i in (1..5) -%}
           {%- liquid
@@ -159,6 +276,7 @@
                 assign de_banner_alt = de_banner_alt_5
             endcase
           -%}
+          {%- if de_banner_asset != blank -%}
           <div class="discovery-editorial__banner">
             <img
               class="discovery-editorial__banner-img"
@@ -171,8 +289,10 @@
               sizes="(min-width: 1400px) 1320px, (min-width: 768px) calc(100vw - 48px), calc(100vw - 32px)"
             >
           </div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
+      {%- endif -%}
     </div>
   </section>
 
@@ -518,7 +638,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Renders only on discovery-set-for-her-8ml-x-5. Uses the theme product card (catalog image, price, Add to Cart, Buy Now). Defaults: love-potion, dastaan, her-love, forbidden-fruit, vintage-vanilla (Perfume Series). Override with the pickers if a stub product has no media or price."
+      "content": "Renders on discovery-set-for-her-8ml-x-5 and discovery-set-for-him. Her defaults: love-potion, dastaan, her-love, forbidden-fruit, vintage-vanilla. Him defaults: blue-glacier, office-time, baazigar-1, mirage, party-life."
     },
     {
       "type": "text",
@@ -534,11 +654,11 @@
     },
     {
       "type": "header",
-      "content": "Fragrance products"
+      "content": "For Her — fragrance products"
     },
     {
       "type": "paragraph",
-      "content": "Optional overrides. Use products that have featured images and inventory so cards show photos and Add to Cart."
+      "content": "Optional overrides for discovery-set-for-her-8ml-x-5."
     },
     {
       "type": "product",
@@ -564,6 +684,39 @@
       "type": "product",
       "id": "product_5",
       "label": "Vintage Vanilla"
+    },
+    {
+      "type": "header",
+      "content": "For Him — fragrance products"
+    },
+    {
+      "type": "paragraph",
+      "content": "Optional overrides for discovery-set-for-him."
+    },
+    {
+      "type": "product",
+      "id": "him_product_1",
+      "label": "Blue Glacier"
+    },
+    {
+      "type": "product",
+      "id": "him_product_2",
+      "label": "Office Time"
+    },
+    {
+      "type": "product",
+      "id": "him_product_3",
+      "label": "Baazigar"
+    },
+    {
+      "type": "product",
+      "id": "him_product_4",
+      "label": "Mirage"
+    },
+    {
+      "type": "product",
+      "id": "him_product_5",
+      "label": "Party Life"
     }
   ],
   "presets": [

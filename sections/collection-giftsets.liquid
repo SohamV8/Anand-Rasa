@@ -294,14 +294,16 @@
             {%- liquid
               assign arc_title_key = product.title | downcase
               assign arc_handle_key = product.handle | downcase
-              assign arc_use_her_video = false
+              assign arc_card_video = ''
               if arc_title_key contains 'for her' or arc_handle_key contains 'for-her' or arc_title_key contains 'ritual set for her'
-                assign arc_use_her_video = true
+                assign arc_card_video = 'ritual set for her.webm'
+              elsif arc_title_key contains 'for him' or arc_handle_key contains 'for-him' or arc_title_key contains 'ritual set for him'
+                assign arc_card_video = 'ritual set for him.webm'
               endif
             -%}
             <div class="arc-card">
               <a href="{{ product.url }}" class="arc-card__img-wrap">
-                {%- if arc_use_her_video -%}
+                {%- if arc_card_video != blank -%}
                   <video
                     class="arc-card__video"
                     autoplay
@@ -311,7 +313,7 @@
                     preload="metadata"
                     aria-label="{{ product.title | escape }}"
                   >
-                    <source src="{{ 'ritual set for her.webm' | asset_url }}" type="video/webm">
+                    <source src="{{ arc_card_video | asset_url }}" type="video/webm">
                   </video>
                 {%- elsif product.images.size > 0 -%}
                   <img
