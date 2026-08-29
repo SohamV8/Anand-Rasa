@@ -3,8 +3,10 @@
   Video must NOT compete with the poster on Slow 4G: wait for LCP to settle.
 {%- endcomment -%}
 {%- liquid
-  assign ar_hero_video_desktop = 'Website Main Page1.webm' | asset_url
-  assign ar_hero_video_mobile = 'Main Page Video Mobile.webm' | asset_url
+  assign ar_hero_video_desktop_webm = 'hero-home-desktop.webm' | asset_url
+  assign ar_hero_video_desktop_mp4 = 'hero-home-desktop.mp4' | asset_url
+  assign ar_hero_video_mobile_webm = 'hero-home-mobile.webm' | asset_url
+  assign ar_hero_video_mobile_mp4 = 'hero-home-mobile.mp4' | asset_url
   assign ar_hero_title = section.settings.hero_headline | default: shop.name | strip_html | strip
   assign ar_hero_shop_url = routes.all_products_collection_url | default: '/collections/all'
 
@@ -55,14 +57,15 @@
     {%- comment -%} Sources injected by JS for the active device only (preload none until then). {%- endcomment -%}
     {%- comment -%}
       Intrinsic sizes MUST match the WebM files exactly:
-      desktop = 1920×900 (DAR 32:15), mobile = 1200×1080 coded / DAR 4:5.
+      desktop = 1920×900 (DAR 32:15), mobile = 960×864 / DAR ~4:5.
       Wrong width/height + object-fit:cover was cropping/stretching the hero.
     {%- endcomment -%}
     <video
       class="ar-hero__video ar-hero__video--desktop"
       data-ar-hero-video
       data-ar-device="desktop"
-      data-src="{{ ar_hero_video_desktop | escape }}"
+      data-src-webm="{{ ar_hero_video_desktop_webm | escape }}"
+      data-src-mp4="{{ ar_hero_video_desktop_mp4 | escape }}"
       muted
       loop
       playsinline
@@ -73,23 +76,26 @@
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
+      aria-hidden="true"
     ></video>
 
     <video
       class="ar-hero__video ar-hero__video--mobile"
       data-ar-hero-video
       data-ar-device="mobile"
-      data-src="{{ ar_hero_video_mobile | escape }}"
+      data-src-webm="{{ ar_hero_video_mobile_webm | escape }}"
+      data-src-mp4="{{ ar_hero_video_mobile_mp4 | escape }}"
       muted
       loop
       playsinline
       webkit-playsinline
       preload="none"
-      width="1200"
-      height="1080"
+      width="960"
+      height="864"
       disablepictureinpicture
       disableremoteplayback
       tabindex="-1"
+      aria-hidden="true"
     ></video>
   </div>
 
@@ -108,8 +114,8 @@
   Frame aspect-ratio matches each WebM's true display ratio; media uses contain.
 */
 .ar-hero {
-  --ar-hero-desktop-ratio: 1920 / 900; /* Website Main Page1.webm */
-  --ar-hero-mobile-ratio: 4 / 5;       /* Main Page Video Mobile.webm DAR */
+  --ar-hero-desktop-ratio: 1920 / 900; /* hero-home-desktop.webm */
+  --ar-hero-mobile-ratio: 4 / 5;       /* hero-home-mobile.webm DAR */
   position: relative;
   isolation: isolate;
   background: #f5f5f5;
@@ -251,14 +257,44 @@
     var inView = true;
     var pageVisible = !document.hidden;
     var supportsWebm = true;
+    var supportsMp4 = true;
 
     try {
       var probe = document.createElement('video');
       supportsWebm = !!(probe.canPlayType && probe.canPlayType('video/webm; codecs="vp8,vorbis"')) ||
         !!(probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9"')) ||
         !!(probe.canPlayType && probe.canPlayType('video/webm'));
+      supportsMp4 = !!(probe.canPlayType && probe.canPlayType('video/mp4; codecs="avc1.42E01E"')) ||
+        !!(probe.canPlayType && probe.canPlayType('video/mp4'));
     } catch (e) {
       supportsWebm = false;
+      supportsMp4 = false;
+    }
+
+    function getConnection() {
+      return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+    }
+
+    function isConstrainedNetwork() {
+      var conn = getConnection();
+      if (!conn) return false;
+      if (conn.saveData) return true;
+      var et = conn.effectiveType;
+      return et === 'slow-2g' || et === '2g';
+    }
+
+    function lcpBufferMs() {
+      if (isConstrainedNetwork()) return 4500;
+      var conn = getConnection();
+      if (conn && conn.effectiveType === '4g' && typeof conn.downlink === 'number' && conn.downlink >= 5) {
+        return 600;
+      }
+      if (conn && conn.effectiveType === '4g') return 1200;
+      return 2800;
+    }
+
+    function supportsAnyVideo() {
+      return supportsWebm || supportsMp4;
     }
 
     function activeVideo() {
@@ -270,7 +306,7 @@
     }
 
     function canPlay() {
-      return supportsWebm && !reduce.matches && inView && pageVisible;
+      return supportsAnyVideo() && !reduce.matches && !isConstrainedNetwork() && inView && pageVisible;
     }
 
     function playSafe(el) {
@@ -289,13 +325,26 @@
 
     function ensureSource(el) {
       if (!el || el.dataset.arLoaded === 'true') return;
-      var src = el.getAttribute('data-src');
-      if (!src) return;
+      var webm = el.getAttribute('data-src-webm');
+      var mp4 = el.getAttribute('data-src-mp4');
+      if (!webm && !mp4) return;
 
-      var source = document.createElement('source');
-      source.src = src;
-      source.type = 'video/webm';
-      el.appendChild(source);
+      if (webm && supportsWebm) {
+        var webmSource = document.createElement('source');
+        webmSource.src = webm;
+        webmSource.type = 'video/webm';
+        el.appendChild(webmSource);
+      }
+
+      if (mp4 && supportsMp4) {
+        var mp4Source = document.createElement('source');
+        mp4Source.src = mp4;
+        mp4Source.type = 'video/mp4';
+        el.appendChild(mp4Source);
+      }
+
+      if (!el.querySelector('source')) return;
+
       el.setAttribute('preload', 'metadata');
       el.load();
       el.dataset.arLoaded = 'true';
@@ -323,7 +372,7 @@
     }
 
     function syncPlayback() {
-      if (reduce.matches || !supportsWebm) {
+      if (reduce.matches || !supportsAnyVideo() || isConstrainedNetwork()) {
         root.classList.remove('is-video-ready');
         for (var i = 0; i < videos.length; i++) {
           if (!videos[i].paused) videos[i].pause();
@@ -371,17 +420,17 @@
       if (pendingStart || inView) startWhenIdle();
     }
 
-    /* Keep ~4MB hero WebM off the critical path until poster LCP can settle. */
+    /* Keep hero video off the critical path until poster LCP can settle. */
     function armLcpGate() {
       var poster = root.querySelector('.ar-hero__poster-img');
       var armed = false;
       var fallbackMs = 4500;
+      var bufferMs = lcpBufferMs();
 
       function arm() {
         if (armed) return;
         armed = true;
-        /* Extra buffer so Slow-4G LCP can finish painting before ~4MB WebM starts. */
-        window.setTimeout(openLcpGate, 2800);
+        window.setTimeout(openLcpGate, bufferMs);
       }
 
       try {
@@ -407,11 +456,18 @@
       });
     }
 
-    if (reduce.matches || !supportsWebm) {
+    if (reduce.matches || !supportsAnyVideo()) {
       return;
     }
 
     armLcpGate();
+
+    var conn = getConnection();
+    if (conn && typeof conn.addEventListener === 'function') {
+      conn.addEventListener('change', syncPlayback);
+    } else if (conn && typeof conn.addListener === 'function') {
+      conn.addListener(syncPlayback);
+    }
 
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(

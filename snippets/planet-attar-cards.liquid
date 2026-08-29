@@ -303,6 +303,7 @@
   flex: 0 0 var(--pl-slide-w);
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  align-items: stretch;
   gap: clamp(8px, 1.2vw, 12px);
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -363,6 +364,9 @@
 .ar-pl--home .ar-pl__card {
   width: 100%;
   max-width: none;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   border-radius: 18px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 28px rgba(0, 0, 0, 0.07);
 }
@@ -388,6 +392,7 @@
   font-size: 14px;
   padding: 12px 14px 0;
   -webkit-line-clamp: 2;
+  min-height: calc(2 * 1.35 * 1em);
 }
 .ar-pl--home .ar-pl__price {
   font-size: 15px;
@@ -397,6 +402,7 @@
 .ar-pl--home .ar-pl__atc {
   width: calc(100% - 28px);
   margin: 12px 14px 14px;
+  margin-top: auto;
   padding: 11px 14px;
   font-size: 11px;
 }

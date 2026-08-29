@@ -202,7 +202,8 @@
       max-width: 100%;
       min-height: 0;
       height: auto;
-      overflow: visible;
+      overflow-x: clip;
+      overflow-y: visible;
       display: flex;
       flex-direction: column;
       background: linear-gradient(
@@ -295,9 +296,11 @@
       justify-content: flex-start;
       gap: clamp(0.75rem, 2vh, 1.5rem);
       width: 100%;
+      max-width: 100%;
       min-height: 0;
       margin: 0;
       padding: 0;
+      overflow-x: clip;
     }
 
     #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content {
@@ -322,7 +325,7 @@
     #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__content::before {
       content: '';
       position: absolute;
-      inset: -1rem -6%;
+      inset: -1rem 0;
       z-index: -1;
       pointer-events: none;
       background: radial-gradient(
@@ -347,7 +350,7 @@
       width: 100%;
       max-width: 100%;
       font-family: 'Poppins', var(--ar-gsh-font-b), sans-serif !important;
-      font-size: clamp(3.75rem, 9vw, 6.75rem);
+      font-size: clamp(3rem, 7.5vw, 5.5rem);
       font-weight: 600;
       font-style: normal;
       line-height: 1.05;
@@ -361,7 +364,7 @@
       width: 100%;
       max-width: 100%;
       font-family: var(--ar-gsh-font-b);
-      font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+      font-size: clamp(1.125rem, 2.3vw, 1.55rem);
       font-weight: 400;
       line-height: 1.4;
       letter-spacing: 0.01em;
@@ -373,15 +376,15 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 3.5rem;
+      min-height: 3.85rem;
       margin: clamp(0.65rem, 1.6vh, 1.15rem) 0 0;
-      padding: 1rem 2.4rem;
+      padding: 1.1rem 2.75rem;
       border: 1.5px solid #111;
       border-radius: 999px;
       background: transparent;
       color: #111;
       font-family: var(--ar-gsh-font-b);
-      font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+      font-size: clamp(0.875rem, 1.25vw, 1rem);
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -413,7 +416,8 @@
       max-width: 100%;
       margin: 0;
       padding: var(--ar-gsh-stage-pad) var(--ar-gsh-pad-x) clamp(1.25rem, 3vh, 2.25rem);
-      overflow: visible;
+      overflow-x: clip;
+      overflow-y: visible;
     }
 
     #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product {
@@ -424,6 +428,7 @@
       justify-content: center;
       width: 100%;
       max-width: 100%;
+      min-width: 0;
       transform-origin: 50% 100%;
       opacity: 1;
     }
@@ -431,6 +436,7 @@
     #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product-motion {
       display: block;
       width: 100%;
+      max-width: 100%;
     }
 
     #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product-img {
@@ -559,17 +565,17 @@
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
-        font-size: clamp(5.5rem, 7.8vw, 9rem);
+        font-size: clamp(4.5rem, 6.5vw, 7.5rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
-        font-size: clamp(1.55rem, 2.2vw, 2.05rem);
+        font-size: clamp(1.3rem, 1.85vw, 1.75rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
-        min-height: 3.85rem;
-        padding: 1.1rem 2.75rem;
-        font-size: clamp(0.875rem, 1.1vw, 1rem);
+        min-height: 4.25rem;
+        padding: 1.15rem 3rem;
+        font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
       }
     }
 
@@ -588,27 +594,27 @@
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
-        font-size: clamp(6.5rem, 7.2vw, 10rem);
+        font-size: clamp(5.25rem, 6vw, 8rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
-        font-size: clamp(1.75rem, 1.95vw, 2.25rem);
+        font-size: clamp(1.45rem, 1.65vw, 1.9rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
-        min-height: 4.1rem;
-        padding: 1.2rem 3rem;
-        font-size: 1rem;
+        min-height: 4.5rem;
+        padding: 1.25rem 3.25rem;
+        font-size: 1.0625rem;
       }
     }
 
     @media (max-width: 767px) {
       #ArGiftHero-{{ ar_gsh_id }} {
-        --ar-gsh-rot-l: -5deg;
-        --ar-gsh-rot-r: 5deg;
+        --ar-gsh-rot-l: -3deg;
+        --ar-gsh-rot-r: 3deg;
         --ar-gsh-pad-y: 1.1rem;
         --ar-gsh-text-gap: 0.65rem;
-        --ar-gsh-stage-gap: clamp(0.45rem, 2vw, 0.85rem);
+        --ar-gsh-stage-gap: clamp(0.35rem, 1.5vw, 0.65rem);
         --ar-gsh-stage-pad: 0.25rem;
         --ar-gsh-pad-x: clamp(0.75rem, 3.5vw, 1.25rem);
       }
@@ -625,22 +631,30 @@
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
-        font-size: clamp(2.85rem, 11vw, 3.85rem);
+        font-size: clamp(2.35rem, 9vw, 3.2rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
-        font-size: clamp(1.15rem, 4.4vw, 1.4rem);
+        font-size: clamp(1rem, 3.8vw, 1.2rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
-        min-height: 3.25rem;
+        min-height: 3.65rem;
         margin-top: 0.55rem;
-        padding: 0.9rem 1.9rem;
-        font-size: clamp(0.75rem, 3vw, 0.85rem);
+        padding: 1rem 2.25rem;
+        font-size: clamp(0.8125rem, 3.2vw, 0.9375rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__stage {
         padding-bottom: clamp(1rem, 3vh, 1.5rem);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--one {
+        transform: rotate(var(--ar-gsh-rot-l)) scale(0.94);
+      }
+
+      #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__product--three {
+        transform: rotate(var(--ar-gsh-rot-r)) scale(0.94);
       }
     }
 
@@ -656,17 +670,17 @@
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__title {
-        font-size: clamp(2.75rem, 6.5vw, 4.25rem);
+        font-size: clamp(2.25rem, 5.5vw, 3.65rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__description {
-        font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+        font-size: clamp(1rem, 2vw, 1.25rem);
       }
 
       #ArGiftHero-{{ ar_gsh_id }} .ar-gift-hero__cta {
-        min-height: 3.1rem;
-        padding: 0.85rem 1.85rem;
-        font-size: 0.8125rem;
+        min-height: 3.5rem;
+        padding: 0.95rem 2.1rem;
+        font-size: 0.875rem;
       }
     }
 

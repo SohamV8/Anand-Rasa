@@ -9,33 +9,6 @@
  */
 {
   "sections": {
-    "1777535904a27e40a3": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_41b9c0b_xLHWc4": {
-          "type": "ai_gen_block_41b9c0b",
-          "settings": {
-            "announcement_1": "Cash On Delivery",
-            "announcement_2": "Free Shipping On All Orders",
-            "announcement_3": "20% Off On Prepaid Orders",
-            "separator": "|",
-            "item_spacing": 40,
-            "scroll_speed": 30,
-            "background_color": "#121212",
-            "text_color": "#ffffff",
-            "bar_height": 12,
-            "font_size": 14,
-            "font_weight": "500",
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_41b9c0b_xLHWc4"
-      ],
-      "settings": {}
-    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -485,7 +458,6 @@
     }
   },
   "order": [
-    "1777535904a27e40a3",
     "main",
     "discovery_set_editorial",
     "planet_luxury_story",

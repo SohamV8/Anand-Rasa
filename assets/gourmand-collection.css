@@ -854,7 +854,7 @@
   }
 }
 
-/* Mobile: vertical full-width product list (no carousel) */
+/* Mobile: 2-column product grid */
 @media (max-width: 767px) {
   .agm-products {
     padding: 20px 0 40px;
@@ -880,34 +880,19 @@
   }
 
   .agm-products__grid {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(10px, 2.8vw, 14px);
     align-items: stretch;
-    gap: 14px;
     overflow: visible;
-    overscroll-behavior-x: auto;
-    scroll-snap-type: none;
-    scroll-padding-inline: 0;
     padding: 0;
     margin: 0;
     width: 100%;
     max-width: 100%;
-    -webkit-overflow-scrolling: auto;
-    touch-action: auto;
   }
 
   .agm-products__grid > li {
-    flex: none;
-    width: 100%;
-    max-width: 100%;
-    scroll-snap-align: none;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 767px) {
-  .agm-products__grid > li {
-    flex-basis: auto;
+    min-width: 0;
     width: 100%;
     max-width: 100%;
   }
@@ -1214,99 +1199,72 @@
   cursor: not-allowed;
 }
 
-/* Mobile — full-width glass cards, readable, compact */
+/* Mobile — compact 2-column cards */
 @media (max-width: 767px) {
   .agm-products__grid {
-    gap: 14px;
+    gap: clamp(10px, 2.8vw, 14px);
   }
 
   .agm-card {
-    --agm-card-radius: 16px;
-    border: 1px solid rgba(26, 22, 18, 0.08);
-    border-radius: 16px;
-    box-shadow: 0 8px 22px rgba(26, 22, 18, 0.06);
-    background: #f7f3ec;
-    overflow: hidden;
+    --agm-card-radius: 14px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(26, 22, 18, 0.06);
+    height: 100%;
+  }
+
+  .agm-card:hover {
+    transform: none;
   }
 
   .agm-card__media-wrap {
     aspect-ratio: 4 / 5;
-    background: #efe8de;
-  }
-
-  .agm-card__img {
-    object-fit: cover;
-    object-position: center center;
-    padding: 0;
-  }
-
-  .agm-card__fade {
-    display: block;
   }
 
   .agm-card__glass {
-    margin-top: -20px;
-    gap: 10px;
-    padding: 16px 16px 16px;
-    background: rgba(255, 255, 255, 0.55);
-    border-top: 1px solid rgba(255, 255, 255, 0.55);
-    -webkit-backdrop-filter: blur(16px) saturate(1.2);
-    backdrop-filter: blur(16px) saturate(1.2);
+    margin-top: -16px;
+    gap: 4px;
+    padding: 8px 10px 10px;
+    flex: 1 1 auto;
   }
 
   .agm-card__name {
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
-    font-size: 22px;
-    font-weight: 700;
+    font-size: clamp(13px, 3.4vw, 16px);
+    font-weight: 600;
     line-height: 1.2;
-    letter-spacing: -0.02em;
-    -webkit-line-clamp: 2;
+    color: var(--agm-ink);
   }
 
   .agm-card__meta {
+    flex-wrap: wrap;
+    gap: 2px 6px;
     margin-top: 0;
-    align-items: center;
-  }
-
-  .agm-card__chip {
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
   }
 
   .agm-card__chip--link {
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    color: var(--agm-ink-2);
+    display: none;
   }
 
   .agm-card__price {
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 1.2;
+    font-size: clamp(13px, 3.2vw, 15px);
+    font-weight: 600;
   }
 
   .agm-card__compare {
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
-    font-size: 14px;
+    font-size: 11px;
   }
 
   .agm-card__atc {
-    margin-top: 4px;
-    min-height: 52px;
-    padding: 0 18px;
-    font-family: 'Poppins', var(--agm-fb), system-ui, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    line-height: 1.2;
-    border-radius: 999px;
+    margin-top: 6px;
+    min-height: 40px;
+    padding: 0 10px;
+    font-size: clamp(11px, 2.8vw, 13px);
   }
 
   .agm-card__badge {
-    top: 12px;
-    left: 12px;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    font-size: 9px;
   }
 }
 
