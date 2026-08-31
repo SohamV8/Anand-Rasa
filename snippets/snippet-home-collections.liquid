@@ -7,7 +7,6 @@
   assign ar_bg_titles   = 'Zodiac Attars|Planet Attars|Perfume Series|Incense Sticks|Gift Sets|Apsara Attars|Bestsellers' | split: '|'
   assign ar_bg_descs    = 'Written in the stars. Worn on your skin.|Ancient planets. Modern rituals.|Where tradition meets the everyday.|Sacred smoke for stillness and clarity.|The art of giving, perfected.|Divinely crafted. Unapologetically bold.|The ones everyone reaches for.' | split: '|'
   assign ar_bg_images   = 'zodiac_home.webp|planet_home.webp|perfume_home.webp|Aggarbatti_home.webp|gift_home.webp|apsara_home.webp|bestseller_home.webp' | split: '|'
-  assign ar_bg_matches  = 'zodiac|planet|perfume|incense|gift set|apsara|bestseller' | split: '|'
 -%}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,20 +21,6 @@
         assign title = ar_bg_titles[idx]
         assign desc = ar_bg_descs[idx]
         assign fallback = ar_bg_images[idx]
-        assign match_key = ar_bg_matches[idx]
-
-        assign card_img = blank
-        for block in section.blocks
-          if block.type == 'category'
-            assign bt = block.settings.title | downcase
-            if bt contains match_key
-              if block.settings.image != blank
-                assign card_img = block.settings.image
-              endif
-              break
-            endif
-          endif
-        endfor
 
         capture card_url
           render 'ar-collection-url', handle: handle
@@ -50,27 +35,15 @@
          class="ar-bento__card ar-bento__card--{{ forloop.index }}"
          aria-label="{{ title | escape }}">
         <div class="ar-bento__media">
-          {%- if card_img != blank -%}
-            <img
-              class="ar-bento__img"
-              src="{{ card_img | image_url: width: 800 }}"
-              srcset="{{ card_img | image_url: width: 400 }} 400w, {{ card_img | image_url: width: 600 }} 600w, {{ card_img | image_url: width: 800 }} 800w"
-              sizes="(min-width: 768px) 33vw, 80vw"
-              alt="{{ title | escape }}"
-              loading="lazy"
-              decoding="async"
-              width="800"
-              height="600"
-            >
-          {%- else -%}
-            <img
-              class="ar-bento__img"
-              src="{{ fallback | asset_url }}"
-              alt="{{ title | escape }}"
-              loading="lazy"
-              decoding="async"
-            >
-          {%- endif -%}
+          <img
+            class="ar-bento__img"
+            src="{{ fallback | asset_url }}"
+            alt="{{ title | escape }}"
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="450"
+          >
         </div>
         <div class="ar-bento__text">
           <span class="ar-bento__eyebrow">{{ title | escape }}</span>
@@ -193,7 +166,6 @@
   object-fit: contain;
   object-position: center;
   transition: transform .5s cubic-bezier(.16,1,.3,1);
-  will-change: transform;
 }
 
 .ar-bento__card:hover .ar-bento__img {

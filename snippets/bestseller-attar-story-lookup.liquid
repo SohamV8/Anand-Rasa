@@ -1,0 +1,99 @@
+{%- comment -%}
+  Bestseller attars — editorial story copy (intro + sub-description).
+  Outputs: intro~|~body  (empty when no match)
+{%- endcomment -%}
+{%- liquid
+  assign bs_intro = ''
+  assign bs_body = ''
+  assign bs_key = product.handle | default: '' | downcase
+  assign bs_title = product.title | default: '' | downcase
+
+  if bs_key contains 'mohini' or bs_title contains 'mohini'
+    assign bs_intro = 'Enchanting fragrance inspired by the Apsara Mohini — confidence dressed in softness. Made for Romantic Dinners, Sangeet Nights, Anniversary Celebrations, Bridal Gifting, and evenings where charm does the talking.'
+    assign bs_body = 'Spicy floral fragrance — feels like warm toffee, lavender fields, and velvety suede on your skin.'
+  elsif bs_key contains 'ramta-jogi' or bs_key contains 'ramta_jogi' or bs_title contains 'ramta jogi'
+    assign bs_intro = 'Deep fragrance for the souls who are wanderers. Warm, rich and magnetic — ideal for Late Night Drives, Bonfire Evenings, Winter Layering, Solo Travel, and moments that feel like a movie scene.'
+    assign bs_body = 'Delicious Smoky fragrance — reminds of rolling tobacco, dark chocolate, and dried fruit in wood smoke.'
+  elsif bs_key contains 'malang' or bs_title contains 'malang'
+    assign bs_intro = 'Bold Whiff for the ones who live out loud — suits House Parties, College Farewell, Road Trip Vibes, Concert Evenings, Weekend Rituals.'
+    assign bs_body = 'Café-woody fragrance — hits like fresh espresso, juicy pear, and warm cashmere wood.'
+  elsif bs_key contains 'white-oudh' or bs_key contains 'white_oudh' or bs_key contains 'whiteoudh' or bs_title contains 'white oudh'
+    assign bs_intro = 'Smooth, refined oud — clean luxury you can wear every single day. Perfect for Corporate Meetings, Client Dinners, Formal Wear, Daily Office Routine, and occasions that call for quiet sophistication.'
+    assign bs_body = 'Soft-woody fragrance — wraps you in smooth oud, gentle amber, and clean musky warmth.'
+  elsif bs_key contains 'kamalini' or bs_title contains 'kamalini' or bs_key contains 'products-kesariya'
+    assign bs_intro = 'Gentle, sacred fragrance that brings stillness wherever you go — made for Morning Meditation, Temple Visits, Yoga Practice, Pooja Rituals, and peaceful everyday wear.'
+    assign bs_body = 'Aquatic-floral fragrance — like walking through a lotus pond at sunrise, soft and dewy.'
+  elsif bs_key contains 'kesariya' or bs_title contains 'kesariya'
+    assign bs_intro = 'Warm, royal fragrance built around pure Kesar — the kind of scent that makes people stop and notice. Ideal for Festive Gatherings, Wedding Season, Engagement Ceremonies, Traditional Events, and moments worth dressing up for.'
+    assign bs_body = 'Saffron-rich fragrance — fills the air with warm Kesar, earthy sweetness, and golden spice.'
+  elsif bs_key contains 'gulbadan' or bs_title contains 'gulbadan'
+    assign bs_intro = 'Soft, romantic attar that feels like walking through a fresh garden in the morning dew — great for Daily Wear, Family Functions, Pooja, Gifting, and anyone who loves the timeless charm of roses.'
+    assign bs_body = 'Pure rose fragrance — blooms with fresh gulab petals, soft sweetness, and delicate musk.'
+  elsif bs_key == 'baazigar' or bs_title contains 'baazigar attar'
+    assign bs_intro = 'Magnetic, filmy fragrance — effortless charisma without trying too hard. Made for Evening Outings, First Impression, Brunch Dates, Festive Celebrations, and winter evenings that deserve some drama.'
+    assign bs_body = 'Aromatic-sweet fragrance — opens with lavender cologne, creamy vanilla, plus hint of smoky tobacco.'
+  elsif bs_key contains 'kala-pathar' or bs_key contains 'kala_pathar' or bs_title contains 'kala pathar'
+    assign bs_intro = 'Mysterious fragrance with a smoky edge that stays in the room after you leave — perfect for Night Outs, Club Evenings, Concert Evenings, Cool Weather Wear, and when you want all eyes on you.'
+    assign bs_body = 'Smoky-dark fragrance — carries the intensity of charred wood, earthy spice, and deep mysterious warmth.'
+  elsif bs_key contains 'monarch' or bs_title contains 'monarch'
+    assign bs_intro = 'Regal, sophisticated fragrance that balances fruity brightness with woody depth — ideal for Boardroom Meetings, Art Gallery Visits, Fine Dining, Anniversary Evenings, and power moves.'
+    assign bs_body = 'Fruity-woody fragrance — blends crisp fruits, polished wood, and a touch of refined elegance.'
+  elsif bs_key contains 'products-mirage' or bs_title contains 'mirage attar'
+    assign bs_intro = 'Arab-inspired attar dripping with warm spices, sweet praline, and roasted coffee. Made for Wedding Ceremonies, Eid Celebrations, Festive Dinners, Cool Date Nights, and Reunions/Gatherings.'
+    assign bs_body = 'Spiced-gourmand fragrance — wraps around you like cinnamon chai, creamy praline, and dark roasted coffee.'
+  elsif bs_key contains 'dard-e-disco' or bs_key contains 'dard_e_disco' or bs_title contains 'dard-e-disco' or bs_title contains 'dard e disco'
+    assign bs_intro = 'High-energy, party-ready fragrance that hits different — suits DJ Nights, Birthday Bashes, College Socials, New Year Parties, and anywhere the music is loud, College trip, International Travels, Lavish Lunch.'
+    assign bs_body = 'Fruity-bold fragrance — bursts with juicy fruits, zesty freshness, and smooth woody warmth.'
+  elsif bs_key contains 'masakali' or bs_title contains 'masakali'
+    assign bs_intro = 'Playful, sweet fragrance inspired by the carefree spirit of rooftop pigeons — light-hearted and irresistibly charming. Perfect for Brunch with Friends, Shopping Day, Casual Campus Wear, Evening Strolls, and days that need a little extra sweetness.'
+    assign bs_body = 'Choco-musky fragrance — floats between chocolate sweetness, soft musk, and airy floral whispers.'
+  elsif bs_key contains 'jannatul' or bs_key contains 'firdaus' or bs_title contains 'jannatul' or bs_title contains 'firdaus'
+    assign bs_intro = 'Fresh, herbal fragrance that feels like stepping into a green paradise after Monsoon — ideal for Friday Prayers, Daily Namaz, Peaceful Rituals, Hospital Checkups, and anyone who loves earthy-green scents.'
+    assign bs_body = 'Herbal-green fragrance — opens with fresh herbs, cool green leaves, and a calm spiritual warmth.'
+  elsif bs_key contains 'shamama' or bs_title contains 'shamama'
+    assign bs_intro = 'Grand, spicy attar with the richness of Mughal perfumery — layers that keep unfolding for hours. Made for Royal Occasions, Nikah Ceremonies, Winter Evenings, Traditional Gatherings, and when you want to smell like history dressed in gold.'
+    assign bs_body = 'Spice fragrance — carries the warmth of aged spices, deep resins, and old-world amber.'
+  elsif bs_key contains 'heena-rasam' or bs_key contains 'heena_rasam' or bs_title contains 'heena rasam'
+    assign bs_intro = 'Earthy, grounding fragrance with the warmth of mehndi leaves and herbal depth — perfect for Indian Festivities, Mehndi Ceremonies, Pooja at Home, Spritual Gathering, and traditional rituals.'
+    assign bs_body = 'Earthy fragrance — like the aroma of fresh henna paste, warm green herbs, and soft woody warmth.'
+  elsif bs_key contains 'divya-loban' or bs_key contains 'divya_loban' or bs_title contains 'divya loban'
+    assign bs_intro = 'Sacred fragrance that recreates the smoky calm of a temple sanctum — ideal for Room Freshners, Home Aroma, Aarti Time, Morning Pooja, Meditation Space, Sandhya Prayers, and creating an atmosphere of peace.'
+    assign bs_body = 'Sacred-smoky fragrance — fills the room with warm loban resin, gentle smoke, and temple-like stillness.'
+  elsif bs_key contains 'ruh-e-champa' or bs_key contains 'ruh_e_champa' or bs_title contains 'ruh-e-champa' or bs_title contains 'ruh e champa'
+    assign bs_intro = 'Rich, exotic floral attar that captures the soul of the Champa flower — a fragrance that has been loved across centuries. Best for Daily wear, Ethinic outfit day, Temple Visits, Evening Prayers, Festive Dressing, Spiritual Gifting, and adding grace to any moment.'
+    assign bs_body = 'Exotic-floral fragrance — blooms with golden champa flowers, creamy sweetness, and warm sacred depth.'
+  elsif bs_key contains 'pushprasa' or bs_key contains 'pushp-rasa' or bs_title contains 'pushprasa'
+    assign bs_intro = 'Soft, feminine fragrance where florals meet fresh fruity scent — delicate but unforgettable. Perfect for Office Daywear, Lunch with Friends, Book Club Evenings, Weekend Outings, and those who love subtle sophistication.'
+    assign bs_body = 'Floral-fruity fragrance — drifts between soft petals, juicy freshness, and a whisper of warm musk.'
+  elsif bs_key contains 'mallika' or bs_title contains 'mallika-e-jasmine' or bs_title contains 'mallika e jasmine'
+    assign bs_intro = 'Luxurious attar with the deep richness of Gajra — Made for Romantic Evenings, Gifiting Ladies, Festive Saree Days, Ladies Sangeet, and anyone who believes jasmine is forever.'
+    assign bs_body = 'Touching fragrance — the intense sweetness of mogra garlands, creamy white petals, and warm skin.'
+  elsif bs_key contains 'sakoon-e-khus' or bs_key contains 'sakoon_e_khus' or bs_title contains 'sakoon-e-khus' or bs_title contains 'sakoon e khus'
+    assign bs_intro = 'Cool, earthy fragrance that brings instant calm — like standing beach — ideal for Summer Wear, Hectic Days, Meditation, Evening Wind-down, and hot Indian afternoons.'
+    assign bs_body = 'Cool fragrance — the freshness of wet vetiver roots, rain-soaked soil, and green calm.'
+  elsif bs_key contains 'dev-priya' or bs_key contains 'dev_priya' or bs_title contains 'dev priya'
+    assign bs_intro = 'Sacred attar with the pure, white-floral aroma of fresh temple garlands — devotion in fragrance form. Perfect for Morning Aarti, Daily Pooja, Festive Mornings, Spiritual Gatherings, Gifiting to Elderly and filling your space with divine presence.'
+    assign bs_body = 'Temple-floral fragrance — the softness of fresh mogra flowers, sacred incense, and pure white-petal devotion.'
+  elsif bs_key contains 'oud-e-azam' or bs_key contains 'oud_e_azam' or bs_title contains 'oud-e-azam' or bs_title contains 'oud e azam'
+    assign bs_intro = 'Depthful attar for those who want their fragrance to leave their mark — made for Grand Weddings, Royal Gatherings, Eid Dinners, Christmas Gatherings, Winter Formal Events, and signature statement wear.'
+    assign bs_body = 'Regal-oud fragrance — opens with dark precious oud, smoky richness, and a deep amber trail that refuses to fade.'
+  endif
+
+  comment
+    Bestseller attars only — never override Perfume Series PDPs.
+  endcomment
+  if bs_intro != blank
+    assign bs_block = false
+    if bs_key == 'baazigar-1' or bs_key == 'mirage' or bs_key == 'choco-mocho' or bs_key == 'dastaan' or bs_key == 'royal-passion' or bs_key == 'blue-glacier' or bs_key == 'love-potion' or bs_key == 'vintage-vanilla' or bs_key == 'her-love' or bs_key == 'forbidden-fruit' or bs_key == 'office-time' or bs_key == 'candy-blast'
+      assign bs_block = true
+    endif
+    if bs_title contains 'perfume series' or bs_title contains '12 ml' or bs_title contains '12ml'
+      assign bs_block = true
+    endif
+    if bs_block
+      assign bs_intro = ''
+      assign bs_body = ''
+    endif
+  endif
+-%}
+{%- if bs_intro != blank -%}{{ bs_intro }}~|~{{ bs_body }}{%- endif -%}

@@ -91,6 +91,15 @@
     z-index:2;
   }
 
+  /* Perfume Series — 2-column product grid on mobile */
+  @media (max-width: 749px) {
+    .arc.arc--perfume-series .arc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(10px, 2.8vw, 14px);
+      padding: 20px 16px 48px;
+    }
+  }
+
   .arc-empty { max-width:1400px; margin:0 auto; padding:80px 48px; text-align:center; grid-column:1/-1; }
   .arc-empty__h { font-family:var(--fh); font-size:32px; color:var(--ink); margin-bottom:12px; }
   .arc-empty__p { font-size:14px; color:#6b7280; max-width:42ch; margin:0 auto; }
@@ -113,9 +122,13 @@
   if template.suffix == 'apsara-attar'
     assign arc_apsara = true
   endif
+  assign arc_perfume_series = false
+  if template.suffix == 'perfume-series'
+    assign arc_perfume_series = true
+  endif
 -%}
 
-<div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}{% if arc_apsara %} arc--apsara{% endif %}">
+<div class="arc{% if arc_layout == 'products_only' %} arc--products-only{% endif %}{% if arc_apsara %} arc--apsara{% endif %}{% if arc_perfume_series %} arc--perfume-series{% endif %}">
   {%- unless arc_layout == 'products_only' -%}
   <div class="arc-hero">
     {%- if section.settings.hero_image != blank -%}

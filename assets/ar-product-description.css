@@ -27,7 +27,7 @@
 
 .anand-rasa-product-description__main {
   font-family: var(--arpd-serif);
-  font-size: clamp(0.9375rem, 0.35vw + 0.88rem, 1.375rem);
+  font-size: 21px;
   line-height: 1.62;
   font-weight: 400;
   font-style: italic;
@@ -79,14 +79,15 @@
 
 .anand-rasa-product-description__sub {
   font-family: var(--arpd-serif);
-  font-size: clamp(0.875rem, 0.15vw + 0.84rem, 1.0625rem);
-  line-height: 1.6;
+  font-size: 20px;
+  line-height: 1.45;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 0.005em;
   color: var(--arpd-ink-muted);
   margin: clamp(1.5rem, 2.5vw, 2rem) 0 0;
   text-wrap: pretty;
+  text-align: left;
 }
 
 .anand-rasa-product-description__sub p {
@@ -97,16 +98,21 @@
 
 @media screen and (max-width: 767px) {
   .anand-rasa-product-description {
-    padding-inline: clamp(16px, 4vw, 20px);
-    margin-inline: auto;
+    padding-inline: 0;
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
   }
 
   .anand-rasa-product-description__main {
+    font-size: 21px;
     line-height: 1.62;
   }
 
   .anand-rasa-product-description__sub {
-    line-height: 1.58;
+    font-size: 20px;
+    line-height: 1.45;
+    text-align: left;
   }
 }
 

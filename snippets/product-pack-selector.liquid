@@ -172,104 +172,134 @@
   </script>
 
   <div
-    class="ar-pack{% if block.settings.hide_quantity_selector %} ar-pack--qty-hidden{% endif %}"
+    class="anand-rasa-pack-selector{% if block.settings.hide_quantity_selector %} anand-rasa-pack-selector--qty-hidden{% endif %}"
     data-ar-pack-selector
     {{ block.shopify_attributes }}
   >
-    <div class="ar-pack__header">
-      <h2 class="ar-pack__heading" id="{{ ar_heading_id }}">
+    <div class="anand-rasa-pack-selector__header">
+      <h2 class="anand-rasa-pack-selector__heading" id="{{ ar_heading_id }}">
         {{ block.settings.heading | default: 'Choose your pack' | escape }}
       </h2>
-      <p class="ar-pack__size-note" data-ar-pack-size-note{% if ar_size_label == blank %} hidden{% endif %}>
-        {%- if ar_size_label != blank -%}For {{ ar_size_label }}{%- endif -%}
+      <p class="anand-rasa-pack-selector__size" data-ar-pack-size-note{% if ar_size_label == blank %} hidden{% endif %}>
+        {%- if ar_size_label != blank -%}For {{ ar_size_label | upcase }}{%- endif -%}
       </p>
     </div>
 
-    <ul class="ar-pack__list" role="radiogroup" aria-labelledby="{{ ar_heading_id }}">
+    <ul class="anand-rasa-pack-selector__options" role="radiogroup" aria-labelledby="{{ ar_heading_id }}">
       {%- comment -%} Single {%- endcomment -%}
       <li data-ar-pack-row="1">
-        <label class="ar-pack__option">
+        <label class="anand-rasa-pack-selector__option">
           <input
-            class="ar-pack__input"
+            class="anand-rasa-pack-selector__input"
             type="radio"
             name="{{ ar_group_id }}"
             value="1"
             checked
             aria-label="{{ ar_label_1_display | escape }}, {{ ar_each_1 | money }} each, total {{ ar_unit | money }}"
           >
-          <span class="ar-pack__card">
-            <span class="ar-pack__radio" aria-hidden="true"></span>
-            <span class="ar-pack__main">
-              <span class="ar-pack__title-row">
-                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_1_display | escape }}</span>
-              </span>
-              <span class="ar-pack__meta">
-                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_1 | money }} each</span>
-              </span>
+          <span class="anand-rasa-pack-selector__card">
+            <span class="anand-rasa-pack-selector__radio" aria-hidden="true"></span>
+            <span class="anand-rasa-pack-selector__top-badge" aria-hidden="true"></span>
+            <span class="anand-rasa-pack-selector__image" aria-hidden="true">
+              <img
+                src="{{ 'single_attar.webp' | asset_url }}"
+                alt=""
+                width="64"
+                height="64"
+                loading="lazy"
+                decoding="async"
+              >
             </span>
-            <span class="ar-pack__total" data-ar-pack-total>{{ ar_unit | money }}</span>
+            <span class="anand-rasa-pack-selector__name" data-ar-pack-name>{{ ar_label_1_display | escape }}</span>
+            <span class="anand-rasa-pack-selector__each" data-ar-pack-each>{{ ar_each_1 | money }} each</span>
+            <span class="anand-rasa-pack-selector__save-slot">
+              <span class="anand-rasa-pack-selector__save" data-ar-pack-save hidden aria-hidden="true"></span>
+            </span>
+            <span class="anand-rasa-pack-selector__footer">
+              <span class="anand-rasa-pack-selector__total" data-ar-pack-total>{{ ar_unit | money }}</span>
+            </span>
           </span>
         </label>
       </li>
 
       {%- comment -%} Pack of 2 {%- endcomment -%}
       <li data-ar-pack-row="2">
-        <label class="ar-pack__option">
+        <label class="anand-rasa-pack-selector__option">
           <input
-            class="ar-pack__input"
+            class="anand-rasa-pack-selector__input"
             type="radio"
             name="{{ ar_group_id }}"
             value="2"
             aria-label="{{ ar_label_2_display | escape }}, {{ ar_each_2 | money }} each, total {{ ar_pack_2_total | money }}{% if ar_save_2 > 0 %}, save {{ ar_save_2 | money }}{% endif %}"
           >
-          <span class="ar-pack__card">
-            <span class="ar-pack__radio" aria-hidden="true"></span>
-            <span class="ar-pack__main">
-              <span class="ar-pack__title-row">
-                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_2_display | escape }}</span>
-                {%- if block.settings.show_popular_badge -%}
-                  <span class="ar-pack__badge ar-pack__badge--popular">{{ block.settings.popular_badge_text | default: 'MOST POPULAR' | escape }}</span>
-                {%- endif -%}
-              </span>
-              <span class="ar-pack__meta">
-                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_2 | money }} each</span>
-                <span class="ar-pack__save" data-ar-pack-save{% if ar_save_2 <= 0 %} hidden{% endif %}>
-                  {%- if ar_save_2 > 0 -%}Save {{ ar_save_2 | money }}{%- endif -%}
-                </span>
+          <span class="anand-rasa-pack-selector__card">
+            <span class="anand-rasa-pack-selector__radio" aria-hidden="true"></span>
+            <span class="anand-rasa-pack-selector__top-badge">
+              {%- if block.settings.show_popular_badge -%}
+                <span class="anand-rasa-pack-selector__badge anand-rasa-pack-selector__badge--popular">{{ block.settings.popular_badge_text | default: 'MOST POPULAR' | escape }}</span>
+              {%- endif -%}
+            </span>
+            <span class="anand-rasa-pack-selector__image" aria-hidden="true">
+              <img
+                src="{{ 'double_attar.webp' | asset_url }}"
+                alt=""
+                width="64"
+                height="64"
+                loading="lazy"
+                decoding="async"
+              >
+            </span>
+            <span class="anand-rasa-pack-selector__name" data-ar-pack-name>{{ ar_label_2_display | escape }}</span>
+            <span class="anand-rasa-pack-selector__each" data-ar-pack-each>{{ ar_each_2 | money }} each</span>
+            <span class="anand-rasa-pack-selector__save-slot">
+              <span class="anand-rasa-pack-selector__save" data-ar-pack-save{% if ar_save_2 <= 0 %} hidden{% endif %}>
+                {%- if ar_save_2 > 0 -%}You save {{ ar_save_2 | money }}{%- endif -%}
               </span>
             </span>
-            <span class="ar-pack__total" data-ar-pack-total>{{ ar_pack_2_total | money }}</span>
+            <span class="anand-rasa-pack-selector__footer">
+              <span class="anand-rasa-pack-selector__total" data-ar-pack-total>{{ ar_pack_2_total | money }}</span>
+            </span>
           </span>
         </label>
       </li>
 
       {%- comment -%} Pack of 3 {%- endcomment -%}
       <li data-ar-pack-row="3">
-        <label class="ar-pack__option">
+        <label class="anand-rasa-pack-selector__option">
           <input
-            class="ar-pack__input"
+            class="anand-rasa-pack-selector__input"
             type="radio"
             name="{{ ar_group_id }}"
             value="3"
             aria-label="{{ ar_label_3_display | escape }}, {{ ar_each_3 | money }} each, total {{ ar_pack_3_total | money }}{% if ar_save_3 > 0 %}, save {{ ar_save_3 | money }}{% endif %}"
           >
-          <span class="ar-pack__card">
-            <span class="ar-pack__radio" aria-hidden="true"></span>
-            <span class="ar-pack__main">
-              <span class="ar-pack__title-row">
-                <span class="ar-pack__name" data-ar-pack-name>{{ ar_label_3_display | escape }}</span>
-                {%- if block.settings.show_value_badge -%}
-                  <span class="ar-pack__badge ar-pack__badge--value">{{ block.settings.value_badge_text | default: 'BEST VALUE' | escape }}</span>
-                {%- endif -%}
-              </span>
-              <span class="ar-pack__meta">
-                <span class="ar-pack__each" data-ar-pack-each>{{ ar_each_3 | money }} each</span>
-                <span class="ar-pack__save" data-ar-pack-save{% if ar_save_3 <= 0 %} hidden{% endif %}>
-                  {%- if ar_save_3 > 0 -%}Save {{ ar_save_3 | money }}{%- endif -%}
-                </span>
+          <span class="anand-rasa-pack-selector__card">
+            <span class="anand-rasa-pack-selector__radio" aria-hidden="true"></span>
+            <span class="anand-rasa-pack-selector__top-badge">
+              {%- if block.settings.show_value_badge -%}
+                <span class="anand-rasa-pack-selector__badge anand-rasa-pack-selector__badge--value">{{ block.settings.value_badge_text | default: 'BEST VALUE' | escape }}</span>
+              {%- endif -%}
+            </span>
+            <span class="anand-rasa-pack-selector__image" aria-hidden="true">
+              <img
+                src="{{ 'triple_attar.webp' | asset_url }}"
+                alt=""
+                width="64"
+                height="64"
+                loading="lazy"
+                decoding="async"
+              >
+            </span>
+            <span class="anand-rasa-pack-selector__name" data-ar-pack-name>{{ ar_label_3_display | escape }}</span>
+            <span class="anand-rasa-pack-selector__each" data-ar-pack-each>{{ ar_each_3 | money }} each</span>
+            <span class="anand-rasa-pack-selector__save-slot">
+              <span class="anand-rasa-pack-selector__save" data-ar-pack-save{% if ar_save_3 <= 0 %} hidden{% endif %}>
+                {%- if ar_save_3 > 0 -%}You save {{ ar_save_3 | money }}{%- endif -%}
               </span>
             </span>
-            <span class="ar-pack__total" data-ar-pack-total>{{ ar_pack_3_total | money }}</span>
+            <span class="anand-rasa-pack-selector__footer">
+              <span class="anand-rasa-pack-selector__total" data-ar-pack-total>{{ ar_pack_3_total | money }}</span>
+            </span>
           </span>
         </label>
       </li>

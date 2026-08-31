@@ -650,6 +650,7 @@
   background: #fff;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   min-height: 0;
+  box-sizing: border-box;
 }
 
 .ar-fn__card--text {
@@ -669,10 +670,84 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: clamp(108px, 16vw, 148px);
   margin: 0 0 clamp(14px, 2vw, 18px);
   padding: clamp(6px, 1vw, 10px);
   box-sizing: border-box;
+}
+
+/* Desktop/tablet only — uniform 4:5 cards (mobile ≤749px untouched) */
+@media (min-width: 750px) {
+  .ar-fn {
+    --ar-fn-card-gap: clamp(8px, 1vw, 12px);
+    --ar-fn-card-w: min(132px, calc((100% - 2 * var(--ar-fn-card-gap)) / 3));
+  }
+
+  .ar-fn__cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: var(--ar-fn-card-gap);
+    width: 100%;
+  }
+
+  .ar-fn__card {
+    flex: 0 0 var(--ar-fn-card-w);
+    width: var(--ar-fn-card-w);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    container-type: inline-size;
+    justify-content: space-between;
+    padding: clamp(10px, 3.5cqi, 16px) clamp(8px, 2.5cqi, 10px) clamp(10px, 3cqi, 12px);
+  }
+
+  .ar-fn__card--text {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    justify-content: center;
+  }
+
+  .ar-fn__card-media {
+    flex: 1 1 0;
+    min-height: 0;
+    max-height: 56cqi;
+    height: auto;
+    width: 100%;
+    margin-bottom: clamp(4px, 1.5cqi, 8px);
+    padding: clamp(2px, 1cqi, 6px);
+  }
+
+  .ar-fn__card-img {
+    max-width: 86%;
+    max-height: 100%;
+  }
+
+  .ar-fn__card-name {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: calc(1.22em * 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0;
+    font-size: clamp(0.625rem, 10.5cqi, 1.05rem);
+    line-height: 1.22;
+    letter-spacing: 0;
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  @media (min-width: 900px) and (max-width: 1099px) {
+    .ar-fn {
+      --ar-fn-card-w: min(120px, calc((100% - 2 * var(--ar-fn-card-gap)) / 3));
+    }
+
+    .ar-fn__cell {
+      padding-inline: clamp(10px, 1.4vw, 16px);
+    }
+  }
 }
 
 .ar-fn__card-glow {

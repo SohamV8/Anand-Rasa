@@ -9,7 +9,7 @@
   assign ps_title = product.title | default: '' | downcase
 
   if ps_key contains 'royal-passion' or ps_title contains 'royal passion'
-    assign ps_intro = 'A bold, statement fragrance built for those who want to be remembered the moment they walk in. Rich, intense and long-lasting, it''s made for important evenings, weddings, and celebrations where you want to leave your mark.'
+    assign ps_intro = "A bold, statement fragrance built for those who want to be remembered the moment they walk in. Rich, intense and long-lasting, it's made for important evenings, weddings, and celebrations where you want to leave your mark."
     assign ps_body = 'Fruity-floral fragrance — smells like tropical passion fruit, fresh roses, and warm leather depth.'
   elsif ps_key contains 'choco-mocho' or ps_title contains 'choco mocho'
     assign ps_intro = 'A dark, indulgent gourmand for chocolate-and-coffee lovers. Warm, rich and impossible to ignore — perfect for fall lover girlies, coffee lovers, Cool Weather, Gatherings/Ceremonies'

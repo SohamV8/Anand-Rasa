@@ -86,7 +86,7 @@
   };
 
   PackSelector.prototype.getSelectedQty = function () {
-    var checked = this.root.querySelector('.ar-pack__input:checked');
+    var checked = this.root.querySelector('.anand-rasa-pack-selector__input:checked');
     return checked ? parseInt(checked.value, 10) : 1;
   };
 
@@ -122,7 +122,7 @@
     if (note) {
       if (sizeLabel) {
         note.hidden = false;
-        note.textContent = 'For ' + sizeLabel;
+        note.textContent = 'For ' + String(sizeLabel).toUpperCase();
       } else {
         note.hidden = true;
         note.textContent = '';
@@ -134,7 +134,7 @@
         var row = this.root.querySelector('[data-ar-pack-row="' + qty + '"]');
         if (!row) return;
         var nameEl = row.querySelector('[data-ar-pack-name]');
-        var input = row.querySelector('.ar-pack__input');
+        var input = row.querySelector('.anand-rasa-pack-selector__input');
         var label = BASE_LABELS[qty];
         if (sizeLabel) label += ' · ' + sizeLabel;
         if (nameEl) nameEl.textContent = label;
@@ -182,7 +182,7 @@
           var save = retail - pack.total;
           if (save > 0) {
             saveEl.hidden = false;
-            saveEl.textContent = 'Save ' + formatMoney(save, fmt);
+            saveEl.textContent = 'You save ' + formatMoney(save, fmt);
           } else {
             saveEl.hidden = true;
             saveEl.textContent = '';
@@ -208,7 +208,7 @@
     var self = this;
 
     this.bind(this.root, 'change', function (event) {
-      if (!event.target.classList.contains('ar-pack__input')) return;
+      if (!event.target.classList.contains('anand-rasa-pack-selector__input')) return;
       self.syncQuantity();
     });
 
@@ -226,7 +226,7 @@
         var qtyInput = self.getQuantityInput();
         if (!qtyInput) return;
         var val = parseInt(qtyInput.value, 10);
-        var radio = self.root.querySelector('.ar-pack__input[value="' + val + '"]');
+        var radio = self.root.querySelector('.anand-rasa-pack-selector__input[value="' + val + '"]');
         if (radio) radio.checked = true;
       });
       this.unsubscribers.push(unsubQty);

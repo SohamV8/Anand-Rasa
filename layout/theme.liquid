@@ -699,11 +699,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="stylesheet" href="{{ 'component-totals.css' | asset_url }}" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
-    {%- if request.page_type == 'product' -%}
-      {{ 'ar-judgeme-reviews.css' | asset_url | stylesheet_tag }}
-    {%- else -%}
-      <link rel="stylesheet" href="{{ 'ar-judgeme-reviews.css' | asset_url }}" media="print" onload="this.media='all'">
-    {%- endif -%}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}

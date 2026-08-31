@@ -43,6 +43,57 @@
 
 .anand-rasa-reviews__widget {
   width: 100%;
+  min-height: 320px;
+}
+
+.anand-rasa-reviews__widget #looxReviews,
+.anand-rasa-reviews__widget #looxReviewsFrame {
+  min-height: 320px;
+}
+
+.anand-rasa-reviews__fallback {
+  display: grid;
+  gap: clamp(20px, 3vw, 28px);
+  margin-top: clamp(8px, 2vw, 16px);
+}
+
+.anand-rasa-reviews__fallback-item {
+  margin: 0;
+  padding: clamp(20px, 3vw, 28px) 0;
+  border-top: 1px solid var(--ar-lox-border);
+}
+
+.anand-rasa-reviews__fallback-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.anand-rasa-reviews__fallback-stars {
+  margin: 0 0 8px;
+  color: #c8a03a;
+  letter-spacing: 0.12em;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.anand-rasa-reviews__fallback-author {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews__fallback-text {
+  margin: 0;
+  max-width: var(--ar-lox-read);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews__noscript .review {
+  padding: 16px 0;
+  border-top: 1px solid var(--ar-lox-border);
 }
 
 .anand-rasa-reviews__widget .shopify-app-block {
@@ -201,16 +252,17 @@
   border-bottom: 1px solid var(--ar-lox-border);
 }
 
-.anand-rasa-reviews #looxReviews select,
-.anand-rasa-reviews #looxReviews .sort select {
-  appearance: none;
-  border: none;
-  background: transparent;
-  color: var(--ar-lox-ink);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 28px 8px 0;
+  .anand-rasa-reviews #looxReviews select,
+  .anand-rasa-reviews #looxReviews .sort select {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--ar-lox-ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 100%;
+    padding: 8px 28px 8px 0;
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -439,6 +491,18 @@
   .anand-rasa-reviews #looxReviews .write-review {
     width: 100%;
     max-width: none;
+  }
+
+  .anand-rasa-reviews #looxReviews #sort,
+  .anand-rasa-reviews #looxReviews .sort-row,
+  .anand-rasa-reviews #looxReviews [class*="sort"] {
+    flex-wrap: wrap;
+  }
+
+  .anand-rasa-reviews #looxReviews select,
+  .anand-rasa-reviews #looxReviews .sort select {
+    width: 100%;
+    min-width: 0;
   }
 
   .anand-rasa-reviews #looxReviews #reviews .review .text,

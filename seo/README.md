@@ -1,6 +1,6 @@
 # Anand Rasa — AI & SEO infrastructure
 
-Everything in this document was built against the live storefront on 2026-07-29. No placeholder content, no invented URLs.
+Everything in this document was built against the live storefront on 2026-08-31. No placeholder content, no invented URLs.
 
 ## Files and where they belong
 
@@ -49,7 +49,7 @@ Do not add `{% render %}` calls to existing theme snippets here. Those snippets 
 
 ### Maintenance
 
-The collection links are evergreen. The product index in `llms-full.txt.liquid` is a point-in-time snapshot of 82 products and needs refreshing when the catalogue changes materially. Both files tell agents to re-fetch `/products/{handle}.json` for anything price- or stock-sensitive, so a slightly stale index degrades gracefully rather than producing wrong answers.
+The collection links are evergreen. The product index in `llms-full.txt.liquid` is a point-in-time snapshot of 122 products and needs refreshing when the catalogue changes materially. Both files tell agents to re-fetch `/products/{handle}.json` for anything price- or stock-sensitive, so a slightly stale index degrades gracefully rather than producing wrong answers.
 
 ---
 
@@ -63,10 +63,10 @@ The live native sitemap is a sitemap index pointing at five children:
 
 | Child sitemap | Contents |
 | --- | --- |
-| `sitemap_products_1.xml` | 82 products + homepage, with `<image:image>` entries carrying `<image:loc>` and `<image:title>` |
-| `sitemap_collections_1.xml` | 12 collections |
-| `sitemap_pages_1.xml` | 21 pages |
-| `sitemap_blogs_1.xml` | Blog index + 41 articles |
+| `sitemap_products_1.xml` | 122 products + homepage, with `<image:image>` entries carrying `<image:loc>` and `<image:title>` |
+| `sitemap_collections_1.xml` | 14 collections |
+| `sitemap_pages_1.xml` | 22 pages |
+| `sitemap_blogs_1.xml` | Blog index + 53 articles |
 | `sitemap_agentic_discovery.xml` | `/agents.md` |
 
 Every entry already carries `lastmod` and `changefreq`. **Image sitemap support is already live** — it is built into the product sitemap, so no separate image sitemap is needed or possible.

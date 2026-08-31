@@ -76,6 +76,18 @@
       else
         assign pcl_out = 'Apsara attars inspired by divine feminine grace — rare luxury perfume oils celebrating beauty, devotion, and Indian fragrance artistry.'
       endif
+    when 'gourmand', 'gourmand-attar', 'gourmand-attars', 'gourmand-collection'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Gourmand attars and perfume oils — alcohol-free edible scents of vanilla, caramel, chocolate, coffee, honey and creamy woods. Handcrafted Indian fragrances for warmth, comfort and everyday luxury.'
+      else
+        assign pcl_out = 'Gourmand attars and perfume oils — alcohol-free vanilla, caramel, chocolate and coffee scents handcrafted in India.'
+      endif
+    when 'festival-offer', 'festival'
+      if pcl_mode == 'long'
+        assign pcl_out = 'Festival offer attars and perfumes — limited seasonal promotions on Anand Rasa luxury Indian fragrances for gifting and celebration.'
+      else
+        assign pcl_out = 'Seasonal festival offers on luxury attars and perfumes — limited promotions for gifting and celebration.'
+      endif
     else
       if pcl_mode == 'long'
         assign pcl_out = 'Explore ' | append: title | append: ' at Anand Rasa — handcrafted luxury attars, natural perfumes, and Vedic fragrances from India.'

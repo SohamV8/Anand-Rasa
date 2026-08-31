@@ -1,5 +1,5 @@
 {%- comment -%}
-  Product reviews — Loox widget (app block or embed).
+  Product reviews — Loox widget with inline metafield data.
   Static section: rendered from layout/theme.liquid after trust-marquee.
 {%- endcomment -%}
 
@@ -18,20 +18,149 @@
       <div class="anand-rasa-reviews__widget">
         {%- if section.blocks.size > 0 -%}
           {%- for block in section.blocks -%}
-            {% render block %}
+            <div {{ block.shopify_attributes }}>
+              {% render block %}
+            </div>
           {%- endfor -%}
         {%- else -%}
+          {%- if product.metafields.loox.reviews != blank -%}
+            <div id="anand-rasa-loox-inline-reviews" hidden>
+              {{ product.metafields.loox.reviews }}
+            </div>
+          {%- endif -%}
+
           <div
             id="looxReviews"
             data-product-id="{{ product.id }}"
             class="loox-reviews-default"
-          >
-            {{ product.metafields.loox.reviews }}
-          </div>
+          ></div>
+
+          <noscript>
+            {%- if product.metafields.loox.reviews != blank -%}
+              <div class="anand-rasa-reviews__noscript">
+                {{ product.metafields.loox.reviews }}
+              </div>
+            {%- endif -%}
+          </noscript>
         {%- endif -%}
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      var frameId = 'looxReviewsFrame';
+      var rootId = 'looxReviews';
+      var minHeight = 320;
+      var fallbackClass = 'anand-rasa-reviews__fallback';
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function parseInlineReviews() {
+        var inline = document.getElementById('anand-rasa-loox-inline-reviews');
+        if (!inline) return [];
+
+        return Array.prototype.slice.call(inline.querySelectorAll('.review')).map(function (node) {
+          var nameNode = node.querySelector('.name');
+          var textNode = node.querySelector('.review_text, .text, .content');
+          return {
+            name: nameNode ? nameNode.textContent.trim() : 'Customer',
+            text: textNode ? textNode.textContent.trim() : ''
+          };
+        }).filter(function (review) {
+          return review.text.length > 0;
+        });
+      }
+
+      function renderFallback(reviews) {
+        if (!reviews.length) return;
+
+        var root = document.getElementById(rootId);
+        if (!root || root.querySelector('.' + fallbackClass)) return;
+
+        var summary = document.createElement('div');
+        summary.className = fallbackClass;
+        summary.setAttribute('role', 'list');
+        summary.innerHTML = reviews.map(function (review) {
+          return (
+            '<article class="anand-rasa-reviews__fallback-item" role="listitem">' +
+              '<p class="anand-rasa-reviews__fallback-stars" aria-hidden="true">★★★★★</p>' +
+              '<p class="anand-rasa-reviews__fallback-author">' + escapeHtml(review.name) + '</p>' +
+              '<p class="anand-rasa-reviews__fallback-text">' + escapeHtml(review.text) + '</p>' +
+            '</article>'
+          );
+        }).join('');
+
+        root.appendChild(summary);
+
+        var frame = document.getElementById(frameId);
+        if (frame) {
+          frame.style.display = 'none';
+          if (frame.parentNode) frame.parentNode.style.minHeight = '0';
+        }
+      }
+
+      window.addEventListener('message', function (event) {
+        if (!event || !event.data) return;
+
+        var data = event.data;
+        if (typeof data === 'string' && data.charAt(0) === '{') {
+          try {
+            data = JSON.parse(data);
+          } catch (error) {
+            return;
+          }
+        }
+
+        if (!data || data.type !== 'resize' || data.frame !== frameId) return;
+
+        var frame = document.getElementById(frameId);
+        if (!frame) return;
+
+        var nextHeight = parseInt(data.height, 10);
+        if (!nextHeight || nextHeight < minHeight) nextHeight = minHeight;
+
+        frame.height = String(nextHeight);
+        frame.style.height = nextHeight + 'px';
+        if (frame.parentNode) frame.parentNode.style.height = nextHeight + 'px';
+      });
+
+      function ensureLooxFrameHeight() {
+        var frame = document.getElementById(frameId);
+        if (!frame) return false;
+
+        if ((frame.offsetHeight || 0) >= minHeight) return true;
+
+        frame.height = String(minHeight);
+        frame.style.height = minHeight + 'px';
+        if (frame.parentNode) frame.parentNode.style.height = minHeight + 'px';
+        return true;
+      }
+
+      var attempts = 0;
+      var timer = window.setInterval(function () {
+        attempts += 1;
+        ensureLooxFrameHeight();
+
+        if (attempts >= 24) {
+          window.clearInterval(timer);
+
+          var frame = document.getElementById(frameId);
+          var widgetReady = frame && frame.offsetHeight > minHeight + 40;
+          if (!widgetReady) {
+            renderFallback(parseInlineReviews());
+          }
+        }
+      }, 500);
+    })();
+  </script>
 {%- endif -%}
 
 {% schema %}

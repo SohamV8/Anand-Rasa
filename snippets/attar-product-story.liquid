@@ -131,10 +131,26 @@
   {%- liquid
     assign aps_intro = ''
     assign aps_body = ''
-
-    comment
-      --- Metafield text helpers (plain) ---
-    endcomment
+  -%}
+  {%- capture aps_bs_lookup -%}
+    {%- render 'bestseller-attar-story-lookup', product: aps_p -%}
+  {%- endcapture -%}
+  {%- assign aps_bs_lookup = aps_bs_lookup | strip -%}
+  {%- if aps_bs_lookup contains '~|~' -%}
+    {%- assign aps_bs_parts = aps_bs_lookup | split: '~|~' -%}
+    {%- assign aps_intro = aps_bs_parts[0] | strip -%}
+    {%- assign aps_body = aps_bs_parts[1] | strip -%}
+  {%- else -%}
+  {%- capture aps_ps_lookup -%}
+    {%- render 'perfume-series-story-lookup', product: aps_p -%}
+  {%- endcapture -%}
+  {%- assign aps_ps_lookup = aps_ps_lookup | strip -%}
+  {%- if aps_ps_lookup contains '~|~' -%}
+    {%- assign aps_ps_parts = aps_ps_lookup | split: '~|~' -%}
+    {%- assign aps_intro = aps_ps_parts[0] | strip -%}
+    {%- assign aps_body = aps_ps_parts[1] | strip -%}
+  {%- else -%}
+  {%- liquid
     assign aps_mf_story = aps_p.metafields.custom.story | metafield_text | strip
     if aps_mf_story == blank and aps_p.metafields.custom.story != blank
       assign aps_mf_story = aps_p.metafields.custom.story.value | default: aps_p.metafields.custom.story | strip_html | strip
@@ -612,6 +628,8 @@
       assign aps_body = aps_ingredients
     endif
   -%}
+  {%- endif -%}
+  {%- endif -%}
 
   {%- if aps_intro != blank or aps_body != blank -%}
     {%- liquid

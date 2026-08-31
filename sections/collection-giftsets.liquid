@@ -49,6 +49,8 @@
     }
     @media (max-width: 768px) {
       .arc-toolbar {
+        flex-direction: column;
+        align-items: stretch;
         padding: 28px 20px 8px;
         gap: 16px;
       }
@@ -58,7 +60,14 @@
         word-break: break-word;
       }
       .arc-toolbar__sort {
-        display: none;
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .arc-toolbar__select {
+        flex: 1 1 12rem;
+        min-width: 0;
+        max-width: 100%;
       }
       .arc.arc--products-only .arc-toolbar {
         padding-top: 24px;

@@ -25,6 +25,7 @@
   Prices and the product index are point-in-time. Refresh this template when
   the catalogue changes materially. The authoritative live sources are
   /products.json and /sitemap.xml, both linked below so agents can verify.
+  Last verified against live storefront: 2026-08-31 (122 products, 53 articles).
   ============================================================================
 {%- endcomment -%}
 {%- liquid
@@ -47,9 +48,9 @@
 | Primary language | English (en) |
 | Secondary language | Hindi |
 | Category | Attar, natural perfume oil, alcohol-free perfume, Vedic and Ayurvedic fragrance, incense |
-| Catalogue size | 82 published products across 8 product families |
-| Price range | {{ currency }} 299 - {{ currency }} 1,199 |
-| Sizes | 6 ml and 12 ml attar bottles; incense sold per pack |
+| Catalogue size | 122 published products across 10 product families |
+| Price range | {{ currency }} 299 - {{ currency }} 2,599 |
+| Sizes | 6 ml and 12 ml attar bottles; perfume series also in larger sizes; incense sold per pack |
 | Sitemap | {{ agents.sitemap_url }} |
 | Machine commerce contract | {{ base }}/agents.md |
 
@@ -92,7 +93,10 @@ Consequences of this method, all of which shape how the products behave:
 | --- | --- | --- |
 | Attar / perfume oil | 6 ml | 599 |
 | Attar / perfume oil | 12 ml | 1,199 |
-| Signature single-size attar | 12 ml | 999 - 1,199 |
+| Perfume Series | 6 ml | 899 |
+| Perfume Series | 12 ml | 1,499 - 2,599 |
+| Signature single-size attar | 12 ml | 999 - 1,799 |
+| Discovery set | 8 ml x 5 | 899 |
 | Incense sticks | Pack | 299 |
 
 Prices change. The authoritative live source is the product page or `{{ base }}/products/{handle}.json`.
@@ -110,7 +114,9 @@ Prices change. The authoritative live source is the product page or `{{ base }}/
 | Aquatic / fresh | Light, clean compositions | Monarch, Mridula |
 | Incense | Natural agarbatti | Nag Champa, Kesar Chandan, Lavender, Jasmine, Musk Rose |
 
-**Gourmand collection.** Alcohol-free edible-inspired attars and perfume oils — vanilla, caramel, roasted coffee, chocolate, honey and creamy woods. Collection page: [{{ base }}/collections/gourmand]({{ base }}/collections/gourmand).
+**Gourmand collection.** Alcohol-free edible-inspired attars and perfume oils — vanilla, caramel, roasted coffee, chocolate, honey and creamy woods. Collection page: [{{ base }}/collections/gourmand-attar]({{ base }}/collections/gourmand-attar).
+
+**Perfume Series.** Thirteen contemporary alcohol-free perfume oils — from Royal Passion and Choco Mocho to Office Time and Candy Blast. Collection page: [{{ base }}/collections/perfume-series]({{ base }}/collections/perfume-series).
 
 ## 6. The Vedic astrology fragrance system
 
@@ -235,113 +241,159 @@ Anand Rasa is positioned strongly for gifting because the astrology mapping make
 
 ## 11. Complete product index
 
-All 82 published products, grouped by family. Canonical URLs. Prices in {{ currency }} and accurate at the time of writing; verify against the live product page.
+All 122 published products, grouped by family. Canonical URLs. Prices in {{ currency }} and accurate at the time of writing; verify against the live product page.
 
 ### Planet Attars (9 products)
 
-- [Surya Attar - Sun Attar]({{ base }}/products/sun-attar) — 6ml 599, 12ml 1199
-- [Chandra Attar - Moon Attar]({{ base }}/products/moon-attar) — 6ml 599, 12ml 1199
-- [Mangal Attar - Mars Attar]({{ base }}/products/mars-attar) — 6ml 599, 12ml 1199
-- [Budh Attar - Mercury Attar]({{ base }}/products/mercury-attar) — 6ml 599, 12ml 1199
-- [Guru Attar - Jupiter Attar]({{ base }}/products/jupiter-attar) — 6ml 599, 12ml 1199
-- [Shukra Attar - Venus Attar]({{ base }}/products/venus-attar) — 6ml 599, 12ml 1199
-- [Shani Attar - Saturn Attar]({{ base }}/products/saturn-attar) — 6ml 599, 12ml 1199
-- [Rahu Attar - North Lunar Attar]({{ base }}/products/rahu-attar) — 6ml 599, 12ml 1199
-- [Ketu Attar - South Lunar Attar]({{ base }}/products/ketu-attar) — 6ml 599, 12ml 1199
+- [Budh Attar - Mercury Attar]({{ base }}/products/mercury-attar) — {{ currency }} 599–1199
+- [Chandra Attar – Moon Attar]({{ base }}/products/moon-attar) — {{ currency }} 599–1199
+- [Guru Attar – Jupiter Attar]({{ base }}/products/jupiter-attar) — {{ currency }} 599–1199
+- [Ketu Attar - South Lunar Attar]({{ base }}/products/ketu-attar) — {{ currency }} 599–1199
+- [Mangal Attar - Mars Attar]({{ base }}/products/mars-attar) — {{ currency }} 599–1199
+- [Rahu Attar - North Lunar Attar]({{ base }}/products/rahu-attar) — {{ currency }} 599–1199
+- [Shani Attar - Saturn Attar]({{ base }}/products/saturn-attar) — {{ currency }} 599–1199
+- [Shukra Attar – Venus Attar]({{ base }}/products/venus-attar) — {{ currency }} 599–1199
+- [Surya Attar – Sun Attar]({{ base }}/products/sun-attar) — {{ currency }} 599–1199
 
 ### Zodiac Attars (12 products)
 
-- [Aries Zodiac Attar]({{ base }}/products/products-aries-zodiac-attar) — 6ml 599, 12ml 1199
-- [Taurus Zodiac Attar]({{ base }}/products/taurus-zodiac-attar) — 6ml 599, 12ml 1199
-- [Gemini Zodiac Attar]({{ base }}/products/products-gemini-zodiac-attar) — 6ml 599, 12ml 1199
-- [Cancer Zodiac Attar]({{ base }}/products/products-cancer-zodiac-attar) — 6ml 599, 12ml 1199
-- [Leo Zodiac Attar]({{ base }}/products/products-leo-zodiac-attar) — 6ml 599, 12ml 1199
-- [Virgo Zodiac Attar]({{ base }}/products/products-virgo-zodiac-attar) — 6ml 599, 12ml 1199
-- [Libra Zodiac Attar]({{ base }}/products/products-libra-zodiac-attar) — 6ml 599, 12ml 1199
-- [Scorpio Zodiac Attar]({{ base }}/products/scorpio-zodiac-attar) — 6ml 599, 12ml 1199
-- [Sagittarius Zodiac Attar]({{ base }}/products/products-sagittarius-zodiac-attar) — 6ml 599, 12ml 1199
-- [Capricorn Zodiac Attar]({{ base }}/products/products-capricorn-zodiac-attar) — 1199
-- [Aquarius Zodiac Attar]({{ base }}/products/products-aquarius-zodiac-attar) — 1199
-- [Pisces Zodiac Attar]({{ base }}/products/products-pisces-zodiac-attar) — 6ml 599, 12ml 1199
+- [Aquarius Zodiac Attar]({{ base }}/products/products-aquarius-zodiac-attar) — {{ currency }} 599–1199
+- [Aries Zodiac Attar]({{ base }}/products/products-aries-zodiac-attar) — {{ currency }} 599–1199
+- [Cancer Zodiac Attar]({{ base }}/products/products-cancer-zodiac-attar) — {{ currency }} 599–1199
+- [Capricorn Zodiac Attar]({{ base }}/products/products-capricorn-zodiac-attar) — {{ currency }} 599–1199
+- [Gemini Zodiac Attar]({{ base }}/products/products-gemini-zodiac-attar) — {{ currency }} 599–1199
+- [Leo Zodiac Attar]({{ base }}/products/products-leo-zodiac-attar) — {{ currency }} 599–1199
+- [Libra Zodiac Attar]({{ base }}/products/products-libra-zodiac-attar) — {{ currency }} 599–1199
+- [Pisces Zodiac Attar]({{ base }}/products/products-pisces-zodiac-attar) — {{ currency }} 599–1199
+- [Sagittarius Zodiac Attar]({{ base }}/products/products-sagittarius-zodiac-attar) — {{ currency }} 599–1199
+- [Scorpio Zodiac Attar]({{ base }}/products/scorpio-zodiac-attar) — {{ currency }} 599–1199
+- [Taurus Zodiac Attar]({{ base }}/products/taurus-zodiac-attar) — {{ currency }} 599–1199
+- [Virgo Zodiac Attar]({{ base }}/products/products-virgo-zodiac-attar) — {{ currency }} 599–1199
 
 ### Nakshatra Attars (27 products)
 
-- [Ashwini Attars]({{ base }}/products/ashwini-attars) — 6ml 599, 12ml 1199
-- [Bharani Attar]({{ base }}/products/bharani-attar) — 6ml 599, 12ml 1199
-- [Kritika Attars]({{ base }}/products/kritika-attars) — 1199
-- [Rohini Attars]({{ base }}/products/rohini-attars) — 1199
-- [Mrigashira Attars]({{ base }}/products/mrigashira-attars) — 1199
-- [Ardra Attars]({{ base }}/products/ardra-attars) — 6ml 599, 12ml 1199
-- [Punarvasu Attars]({{ base }}/products/punarvasu-attars) — 1199
-- [Pushya Attars]({{ base }}/products/pushya-attars) — 1199
-- [Ashlesha Attars]({{ base }}/products/ashlesha-attars) — 6ml 599, 12ml 1200
-- [Magha Attars]({{ base }}/products/magha-attars) — 1199
-- [Purva Phalguni Attar]({{ base }}/products/purva-phalguni-attar) — 1199
-- [Uttara Phalguni Attar]({{ base }}/products/uttara-phalguni-attar) — 1199
-- [Hasta Attar]({{ base }}/products/hasta-attar) — 1199
-- [Chitra Attar]({{ base }}/products/chitra-attar) — 1199
-- [Swati Attar]({{ base }}/products/swati-attar) — 1199
-- [Vishakha Attar]({{ base }}/products/swati-attar-copy) — 1200
-- [Anuradha Attar]({{ base }}/products/anuradha-attar) — 6ml 599, 12ml 1199
-- [Jyeshtha Attar]({{ base }}/products/jyeshtha-attar) — 1199
-- [Moola Attar]({{ base }}/products/mula-attar) — 1199
-- [Purva Ashadha Attar]({{ base }}/products/purva-ashadha-attar) — 1199
-- [Uttara Ashadha Attar]({{ base }}/products/uttara-ashadha-attar) — 1199
-- [Shravana Attar]({{ base }}/products/shravana-attar) — 1200
-- [Dhanishtha Attar]({{ base }}/products/dhanishtha-attar) — 1199
-- [Shatabhisha Attar]({{ base }}/products/shatabhisha-attar) — 1199
-- [Purva Bhadrapada Attar]({{ base }}/products/purva-bhadrapada-attar) — 1199
-- [Uttara Bhadrapada Attar]({{ base }}/products/uttara-bhadrapada-attar) — 1199
-- [Revati Attar]({{ base }}/products/revati-attar) — 1199
+- [Anuradha Attar]({{ base }}/products/anuradha-attar) — {{ currency }} 599–1199
+- [Ardra Attars]({{ base }}/products/ardra-attars) — {{ currency }} 599–1199
+- [Ashlesha Attars]({{ base }}/products/ashlesha-attars) — {{ currency }} 599–1200
+- [Ashwini Attars]({{ base }}/products/ashwini-attars) — {{ currency }} 599–1199
+- [Bharani Attar]({{ base }}/products/bharani-attar) — {{ currency }} 599–1199
+- [Chitra Attar]({{ base }}/products/chitra-attar) — {{ currency }} 599–1199
+- [Dhanishtha Attar]({{ base }}/products/dhanishtha-attar) — {{ currency }} 599–1199
+- [Hasta Attar]({{ base }}/products/hasta-attar) — {{ currency }} 599–1199
+- [Jyeshtha Attar]({{ base }}/products/jyeshtha-attar) — {{ currency }} 599–1199
+- [Kritika Attars]({{ base }}/products/kritika-attars) — {{ currency }} 599–1199
+- [Magha Attars]({{ base }}/products/magha-attars) — {{ currency }} 599–1199
+- [Moola Attar]({{ base }}/products/mula-attar) — {{ currency }} 599–1199
+- [Mrigashira Attars]({{ base }}/products/mrigashira-attars) — {{ currency }} 599–1199
+- [Punarvasu Attars]({{ base }}/products/punarvasu-attars) — {{ currency }} 599–1199
+- [Purva Ashadha Attar]({{ base }}/products/purva-ashadha-attar) — {{ currency }} 599–1199
+- [Purva Bhadrapada Attar]({{ base }}/products/purva-bhadrapada-attar) — {{ currency }} 599–1199
+- [Purva Phalguni Attar]({{ base }}/products/purva-phalguni-attar) — {{ currency }} 599–1199
+- [Pushya Attars]({{ base }}/products/pushya-attars) — {{ currency }} 599–1199
+- [Revati Attar]({{ base }}/products/revati-attar) — {{ currency }} 599–1199
+- [Rohini Attars]({{ base }}/products/rohini-attars) — {{ currency }} 599–1199
+- [Shatabhisha Attar]({{ base }}/products/shatabhisha-attar) — {{ currency }} 599–1199
+- [Shravana Attar]({{ base }}/products/shravana-attar) — {{ currency }} 599–1199
+- [Swati Attar]({{ base }}/products/swati-attar) — {{ currency }} 599–1199
+- [Uttara Ashadha Attar]({{ base }}/products/uttara-ashadha-attar) — {{ currency }} 1199
+- [Uttara Bhadrapada Attar]({{ base }}/products/uttara-bhadrapada-attar) — {{ currency }} 599–1199
+- [Uttara Phalguni Attar]({{ base }}/products/uttara-phalguni-attar) — {{ currency }} 599–1199
+- [Vishakha Attar]({{ base }}/products/swati-attar-copy) — {{ currency }} 599–1199
 
 ### Chakra Attars (7 products)
 
-- [Muladhara - Root Chakra Oil]({{ base }}/products/root-chakra-attar) — 1199
-- [Svadhisthana - Sacral Chakra Oil]({{ base }}/products/sacral-chakra-attar) — 1199
-- [Manipura - Solar Plexus Chakra Oil]({{ base }}/products/solar-plexus-chakra-attar) — 1199
-- [Anahata - Heart Chakra Oil]({{ base }}/products/heart-chakra-attar) — 1199
-- [Vishuddha - Throat Chakra Oil]({{ base }}/products/throat-chakra-attar) — 1199
-- [Ajna - Third Eye Chakra Oil]({{ base }}/products/third-eye-chakra-attar) — 1199
-- [Sahasrara - Crown Chakra Oil]({{ base }}/products/crown-chakra-attar) — 1199
+- [Ajna – Third Eye Chakra Oil]({{ base }}/products/third-eye-chakra-attar) — {{ currency }} 1199
+- [Anahata – Heart Chakra Oil]({{ base }}/products/heart-chakra-attar) — {{ currency }} 1199
+- [Manipura – Solar Plexus Chakra Oil]({{ base }}/products/solar-plexus-chakra-attar) — {{ currency }} 1199
+- [Muladhara – Root Chakra Oil]({{ base }}/products/root-chakra-attar) — {{ currency }} 1199
+- [Sahasrara – Crown Chakra Oil]({{ base }}/products/crown-chakra-attar) — {{ currency }} 1199
+- [Svadhisthana – Sacral Chakra Oil]({{ base }}/products/sacral-chakra-attar) — {{ currency }} 1199
+- [Vishuddha – Throat Chakra Oil]({{ base }}/products/throat-chakra-attar) — {{ currency }} 1199
 
-### Signature and bestselling attars (17 products)
+### Perfume Series (13 products)
 
-- [Baazigar Attar]({{ base }}/products/baazigar) — 1199
-- [Dard-e-Disco]({{ base }}/products/products-dard-e-disco) — 1199
-- [Dev Priya]({{ base }}/products/dev-priya) — 6ml 599, 12ml 1199
-- [Devalya]({{ base }}/products/devalya) — 999
-- [Divya Loban]({{ base }}/products/products-divya-loban) — 6ml 599, 12ml 1199
-- [Gulbadan]({{ base }}/products/gulbadan) — 6ml 599, 12ml 1199
-- [Kala Pathar]({{ base }}/products/kala-pathar) — 1199
-- [Kamalini Attar]({{ base }}/products/products-kesariya) — 1199
-- [Kesariya Ishq]({{ base }}/products/kesariya) — 6ml 599, 12ml 1199
-- [Malang]({{ base }}/products/malang) — 1199
-- [Mallika-e-Jasmine]({{ base }}/products/mallika-e-jasmine) — 1199
-- [Masakali]({{ base }}/products/products-masakali-choco-musk-attar) — 1199
-- [Mirage Attar]({{ base }}/products/products-mirage) — 1199
-- [Mohini Attar]({{ base }}/products/mohini) — 599
-- [Monarch]({{ base }}/products/products-monarch) — 1199
-- [Pushprasa Attar]({{ base }}/products/products-pushprasa) — 1199
-- [Ramta Jogi]({{ base }}/products/products-ramta-jogi-tobacco-vanilla-woody-attar) — 599
+- [Baazigar]({{ base }}/products/baazigar-1) — {{ currency }} 899–2499
+- [Blue Glacier]({{ base }}/products/blue-glacier) — {{ currency }} 899–2499
+- [Candy Blast]({{ base }}/products/candy-blast) — {{ currency }} 899–2499
+- [Choco Mocho]({{ base }}/products/choco-mocho) — {{ currency }} 899–2499
+- [Dastaan]({{ base }}/products/dastaan) — {{ currency }} 899–2599
+- [Forbidden Fruit]({{ base }}/products/forbidden-fruit) — {{ currency }} 899–2499
+- [Her Love]({{ base }}/products/her-love) — {{ currency }} 899–2499
+- [Love Potion]({{ base }}/products/love-potion) — {{ currency }} 899–2499
+- [Mirage]({{ base }}/products/mirage) — {{ currency }} 899–2499
+- [Office Time]({{ base }}/products/office-time) — {{ currency }} 899–2499
+- [Party Life]({{ base }}/products/party-life) — {{ currency }} 899–2499
+- [Royal Passion]({{ base }}/products/royal-passion) — {{ currency }} 899–2499
+- [Vintage Vanilla]({{ base }}/products/vintage-vanilla) — {{ currency }} 899–2499
+
+### Signature and bestselling attars (23 products)
+
+- [Baazigar Attar]({{ base }}/products/baazigar) — {{ currency }} 599–1199
+- [Dard-e-Disco]({{ base }}/products/products-dard-e-disco) — {{ currency }} 599–1199
+- [Dev Priya]({{ base }}/products/dev-priya) — {{ currency }} 599–1199
+- [Devalya]({{ base }}/products/devalya) — {{ currency }} 999
+- [Divya Loban]({{ base }}/products/products-divya-loban) — {{ currency }} 599–1199
+- [Gulbadan]({{ base }}/products/gulbadan) — {{ currency }} 599–1199
+- [Heena Rasam]({{ base }}/products/heena-rasam) — {{ currency }} 599–1199
+- [Jannatul Firdaus]({{ base }}/products/jannatul-firdaus) — {{ currency }} 999–1799
+- [Kala Pathar]({{ base }}/products/kala-pathar) — {{ currency }} 599–1199
+- [Kamalini Attar]({{ base }}/products/products-kesariya) — {{ currency }} 599–1199
+- [Kesariya Ishq]({{ base }}/products/kesariya) — {{ currency }} 599–1199
+- [Malang]({{ base }}/products/malang) — {{ currency }} 599–1199
+- [Mallika-e-Jasmine]({{ base }}/products/mallika-e-jasmine) — {{ currency }} 1199
+- [Masakali]({{ base }}/products/products-masakali-choco-musk-attar) — {{ currency }} 599–1199
+- [Mirage Attar]({{ base }}/products/products-mirage) — {{ currency }} 599–1199
+- [Mohini Attar]({{ base }}/products/mohini) — {{ currency }} 599–1199
+- [Monarch]({{ base }}/products/products-monarch) — {{ currency }} 599–1199
+- [Oud-e-Azam]({{ base }}/products/oud-e-azam) — {{ currency }} 799–1199
+- [Pushprasa Attar]({{ base }}/products/products-pushprasa) — {{ currency }} 1199
+- [Ramta Jogi]({{ base }}/products/products-ramta-jogi-tobacco-vanilla-woody-attar) — {{ currency }} 599
+- [Ruh-e-Champa]({{ base }}/products/ruh-e-champa) — {{ currency }} 599–1199
+- [Sakoon-e-Khus]({{ base }}/products/sakoon-e-khus) — {{ currency }} 599–1199
+- [Shamama Sultan Attar]({{ base }}/products/shamama-sultan-attar) — {{ currency }} 599–1199
+
+### Gourmand and fruit attars (22 products)
+
+- [Apple Attar]({{ base }}/products/apple-attar) — {{ currency }} 599–1199
+- [Blue Glacier Attar]({{ base }}/products/blue-glacier-attar) — {{ currency }} 599–1199
+- [Blueberry Attar]({{ base }}/products/blue-berry) — {{ currency }} 599–1199
+- [chocolate Attar]({{ base }}/products/chocolate) — {{ currency }} 599–1199
+- [Coffee Attar]({{ base }}/products/coffee-attar) — {{ currency }} 599–1199
+- [Honey & Milk Attar]({{ base }}/products/honey-milk) — {{ currency }} 599–1199
+- [Honey Attar]({{ base }}/products/honey-attar) — {{ currency }} 599–1199
+- [Kevda Attar]({{ base }}/products/kevda-attar) — {{ currency }} 599–1199
+- [Litchi Attar]({{ base }}/products/litchi-attar) — {{ currency }} 599–1199
+- [Madhavi]({{ base }}/products/madhavi) — {{ currency }} 1199
+- [Madhur Sena]({{ base }}/products/madhur-sena) — {{ currency }} 599–1199
+- [Mango Attar]({{ base }}/products/mango-attar) — {{ currency }} 599–1199
+- [Mridula]({{ base }}/products/mridula) — {{ currency }} 599–1199
+- [Orange Attar]({{ base }}/products/orange-attar) — {{ currency }} 599–1199
+- [Passion Fruit Attar]({{ base }}/products/passion-fruit) — {{ currency }} 599–1199
+- [Pineapple Attar]({{ base }}/products/pineapple-attar) — {{ currency }} 599–1199
+- [Raspberry Attar]({{ base }}/products/raspberry-attar) — {{ currency }} 599–1199
+- [Royal passion Attar]({{ base }}/products/royal-passion-attar) — {{ currency }} 599–1199
+- [Strawberry Attar]({{ base }}/products/strawberry-attar) — {{ currency }} 599–1199
+- [Vintage Vanila Attar]({{ base }}/products/vintage-vanila-attar) — {{ currency }} 599–1199
+- [Watermelon Attar]({{ base }}/products/watermelon-attar) — {{ currency }} 599–1199
+- [White Oudh Attar]({{ base }}/products/products-white-oudh-attar) — {{ currency }} 599–1199
 
 ### Love attars (2 products)
 
-- [Deewani Mastani]({{ base }}/products/deewani-mastani) — 1199
-- [Dilruba]({{ base }}/products/dilruba) — 1199
+- [Deewani Mastani]({{ base }}/products/deewani-mastani) — {{ currency }} 1199
+- [Dilruba]({{ base }}/products/dilruba) — {{ currency }} 1199
 
-### Additional attars (3 products)
+### Gift sets and discovery sets (2 products)
 
-- [Madhavi]({{ base }}/products/madhavi) — 1199
-- [Mridula]({{ base }}/products/mridula) — 1199
-- [White Oudh Attar]({{ base }}/products/products-white-oudh-attar) — 6ml 599, 12ml 1199
+- [Discovery Set for Her (8ml x 5)]({{ base }}/products/discovery-set-for-her-8ml-x-5) — {{ currency }} 899
+- [Discovery Set for Him (8ml x 5)]({{ base }}/products/discovery-set-for-him) — {{ currency }} 899
 
 ### Incense sticks (5 products)
 
-- [Nag Champa Incense Stick]({{ base }}/products/nag-champa-incense-stick) — 299
-- [Kesar Chandan Incense Stick]({{ base }}/products/kesar-chandan-incense-sticks) — 299
-- [Jasmine Incense Stick]({{ base }}/products/jasmine-incense-stick) — 299
-- [Lavender Incense Stick]({{ base }}/products/lavender-incense-stick) — 299
-- [Musk Rose Incense Stick]({{ base }}/products/musk-rose-incense-stick) — 299
+- [Jasmine Incense Stick]({{ base }}/products/jasmine-incense-stick) — {{ currency }} 299
+- [Kesar Chandan Incense Stick]({{ base }}/products/kesar-chandan-incense-sticks) — {{ currency }} 299
+- [Lavender Incense Stick]({{ base }}/products/lavender-incense-stick) — {{ currency }} 299
+- [Musk Rose Incense Stick]({{ base }}/products/musk-rose-incense-stick) — {{ currency }} 299
+- [Nag Champa Incense Stick]({{ base }}/products/nag-champa-incense-stick) — {{ currency }} 299
 
 ## 12. Collections index
 
@@ -354,7 +406,8 @@ All 82 published products, grouped by family. Canonical URLs. Prices in {{ curre
 | Bestsellers | {{ base }}/collections/bestseller |
 | Apsara Attars | {{ base }}/collections/apsara-attars |
 | Perfume Series | {{ base }}/collections/perfume-series |
-| Gourmand Collection | {{ base }}/collections/gourmand |
+| Gourmand Collection | {{ base }}/collections/gourmand-attar |
+| Festival Offer | {{ base }}/collections/festival-offer |
 | Love Attars | {{ base }}/collections/love-attar |
 | Stress Relief Attars | {{ base }}/collections/stress-relief-attar |
 | Incense Sticks | {{ base }}/collections/incense-stick |
@@ -487,8 +540,10 @@ For order-specific queries, contact support through the contact page with the or
 
 ## 19. Editorial library
 
-The full published archive at [{{ base }}/blogs/news]({{ base }}/blogs/news). Forty-one articles covering attar education, ingredient science, Vedic astrology and ritual practice.
+The full published archive at [{{ base }}/blogs/news]({{ base }}/blogs/news). Fifty-three articles covering attar education, ingredient science, Vedic astrology and ritual practice.
 
+- [Aries Attar for Mesha Rashi]({{ base }}/blogs/news/aries-attar-for-mesha-rashi-the-sacred-mars-remedy-from-lord-mangal)
+- [Best Daily Wear Attars]({{ base }}/blogs/news/best-daily-wear-attars-find-your-perfect-everyday-signature-fragrance)
 - [Building Your Agarbatti Ritual Calendar]({{ base }}/blogs/news/blogs-news-agarbatti-ritual-calendar)
 - [How to Use Agarbatti Mindfully]({{ base }}/blogs/news/blogs-incense-how-to-use-agarbatti-mindfully)
 - [Natural vs Synthetic Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-natural-vs-chemical-difference)
@@ -502,33 +557,43 @@ The full published archive at [{{ base }}/blogs/news]({{ base }}/blogs/news). Fo
 - [The Complete Guide to Choosing the Right Agarbatti]({{ base }}/blogs/news/blogs-incense-agarbatti-buying-guide-mood-ritual)
 - [How to Choose the Right Attar for Your Personality]({{ base }}/blogs/news/blogs-attar-best-attar-for-your-personality-guide)
 - [Rose in Perfume]({{ base }}/blogs/news/rose-in-perfume-the-timeless-floral-note-that-defines-luxury-fragrance)
+- [Saffron in Perfume: Why It Smells So Luxurious]({{ base }}/blogs/news/saffron-in-perfume-why-it-smells-so-luxurious)
 - [Jasmine in Perfumery]({{ base }}/blogs/news/jasmine-in-perfumery-the-luxurious-floral-note-behind-timeless-fragrances)
 - [Long-Lasting Perfumes]({{ base }}/blogs/news/long-lasting-perfumes-the-secret-behind-fragrances-that-stay-all-day)
 - [Lily in Perfumery]({{ base }}/blogs/news/lily-in-perfumery-the-elegant-floral-note-behind-fresh-and-luxurious-fragrances)
 - [Devalya - The Alchemy of Velvet]({{ base }}/blogs/news/devalya-the-alchemy-of-velvet-indias-most-luxurious-floral-attar-perfume)
+- [DevGuru Jupiter Attar]({{ base }}/blogs/news/devguru-jupiter-attar-a-luxury-fragrance-inspired-by-wisdom-prosperity-amp-divine-grace)
 - [Alcohol-Free Perfumes in India]({{ base }}/blogs/news/blogs-news-alcohol-free-perfumes-in-india-why-attar-is-better)
 - [Kesar Attar - Astrological and Emotional Benefits]({{ base }}/blogs/news/kesar-attar-astrological-and-emotional-benefits-of-saffron-attar)
 - [How Fragrance Affects Mood]({{ base }}/blogs/news/how-fragrance-affects-mood-science-and-spirituality)
 - [Attar vs Perfume - What's the Difference]({{ base }}/blogs/news/blogs-fragrance-guide-attar-vs-perfume-difference)
+- [Kannauj: Perfume Capital of India]({{ base }}/blogs/news/blogs-fragrance-kannauj-perfume-capital-of-india)
 - [Best Gift Ideas for Astrology Lovers in India]({{ base }}/blogs/news/blogs-spiritual-gifts-gift-ideas-for-astrology-lovers-india)
 - [What Fragrance Should a Leo Wear]({{ base }}/blogs/news/blogs-zodiac-perfumes-what-fragrance-should-a-leo-wear)
 - [Mogra Attar - The Indian Jasmine You Need to Know]({{ base }}/blogs/news/mogra-attar-the-indian-jasmine-you-need-to-know)
+- [Moon Attar: Serenity and Lunar Grace]({{ base }}/blogs/news/moon-attar-discover-the-serenity-grace-amp-timeless-beauty-of-lunar-inspired-fragrance)
 - [How to Create a Morning Ritual with Attar and Affirmations]({{ base }}/blogs/news/morning-ritual-attar-affirmations)
 - [Havan Samagri vs Incense Sticks]({{ base }}/blogs/news/havan-samagri-vs-incense-sticks-difference)
 - [Which Planet Controls Your Fragrance]({{ base }}/blogs/news/which-planet-controls-your-fragrance-discover-the-perfect-attar-according-to-vedic-astrology)
 - [Best Long Lasting Attars in India]({{ base }}/blogs/news/https-www-anandrasa-com-blog-best-long-lasting-attars-india)
 - [Alcohol-Free Perfume for Sensitive Skin]({{ base }}/blogs/news/alcohol-free-perfume-for-sensitive-skin)
 - [Choose an Attar Based on Your Birth Chart]({{ base }}/blogs/news/choose-an-attar-based-on-your-birth-chart-birth-chart-fragrance-guide)
-- [Top 10 Luxury Attars in India]({{ base }}/blogs/news/top-10-luxury-attars-in-india)
+- [Sun Attar: Confidence and Vitality]({{ base }}/blogs/news/sun-attar-the-fragrance-of-confidence-vitality-amp-timeless-luxury)
+- [Taurus Zodiac Attar for Vrishabha Rashi]({{ base }}/blogs/news/taurus-zodiac-attar-for-vrishabha-rashi-the-sacred-venus-fragrance)
 - [Fragrance and Personality]({{ base }}/blogs/news/fragrance-personality-what-your-favorite-scent-says-about-you)
 - [Meditation Fragrances]({{ base }}/blogs/news/meditation-fragrances-the-secret-to-a-deeper-meditation-experience)
 - [Morning Spiritual Routine with Attar]({{ base }}/blogs/news/morning-spiritual-routine-with-attar-a-sacred-start-to-every-day)
+- [Planetary Attars vs Zodiac Attars]({{ base }}/blogs/news/planetary-attars-vs-zodiac-attars-which-astrological-fragrance-is-right-for-you)
 - [Best Attars for Office Wear]({{ base }}/blogs/news/blogs-attar-guide-best-attars-for-office-wear)
 - [Attar Layering Guide]({{ base }}/blogs/news/attar-layering-guide-create-your-own-signature-fragrance-naturally)
 - [Astrology Perfume for Men and Women]({{ base }}/blogs/news/astrology-perfume-for-men-amp-women-find-the-fragrance-that-aligns-with-your-zodiac)
 - [Why Pure Attar Lasts Longer Than Perfume]({{ base }}/blogs/news/why-pure-attar-lasts-longer-than-perfume)
 - [How to Apply Attar Correctly]({{ base }}/blogs/news/how-to-apply-attar-correctly)
+- [How Pure Attar Is Made (Deg-Bhapka Method)]({{ base }}/blogs/news/how-pure-attar-is-made-using-the-traditional-deg-bhapka-method)
 - [What is White Musk]({{ base }}/blogs/news/what-is-white-musk-benefits-uses-fragrance-profile)
+- [Top 10 Luxury Attars in India]({{ base }}/blogs/news/top-10-luxury-attars-in-india)
+- [Why Gen Z Loves Attars]({{ base }}/blogs/news/why-gen-z-loves-attars-the-rise-of-natural-luxury-fragrances)
+- [Why Luxury Perfumes Cost More]({{ base }}/blogs/news/why-luxury-perfumes-cost-more-understanding-the-true-value-behind-premium-fragrances)
 - [What is Amber in Perfumery]({{ base }}/blogs/news/what-is-amber-in-perfumery)
 
 ## 20. Machine access for agents
