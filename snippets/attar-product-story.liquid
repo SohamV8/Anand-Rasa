@@ -622,65 +622,26 @@
         assign aps_body = aps_body | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip
       endif
     -%}
-    <div class="ar-story-block" data-attar-story>
+    {{ 'ar-product-description.css' | asset_url | stylesheet_tag }}
+    <div class="anand-rasa-product-description" data-attar-story>
       {%- if aps_intro != blank -%}
-        <p class="ar-story-intro">{{ aps_intro | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
+        <div class="anand-rasa-product-description__main">
+          <p>{{ aps_intro | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
+        </div>
       {%- endif -%}
 
       {%- if aps_intro != blank and aps_body != blank -%}
-        <div class="ar-divider" aria-hidden="true">
-          <span>✺</span>
+        <div class="anand-rasa-product-description__divider" aria-hidden="true">
+          <span class="anand-rasa-product-description__divider-icon">✦</span>
         </div>
       {%- endif -%}
 
       {%- if aps_body != blank -%}
-        <p class="ar-story-text">{{ aps_body | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
+        <div class="anand-rasa-product-description__sub">
+          <p>{{ aps_body | replace: '&amp;', '&' | replace: '&#38;', '&' | escape }}</p>
+        </div>
       {%- endif -%}
     </div>
-
-    <style>
-      .ar-story-block { margin: 12px 0 18px; }
-      .ar-story-intro {
-        font-family: Georgia, serif;
-        font-style: italic;
-        font-size: 16px;
-        line-height: 1.5;
-        color: #7A654C;
-        margin: 0 0 10px;
-      }
-      .ar-divider {
-        position: relative;
-        text-align: center;
-        margin: 8px 0 10px;
-      }
-      .ar-divider:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        border-top: 1px solid #D8C08A;
-      }
-      .ar-divider span {
-        position: relative;
-        background: #F7F5F0;
-        padding: 0 8px;
-        color: #C8A03A;
-        font-size: 12px;
-      }
-      .ar-story-text {
-        font-family: Georgia, serif;
-        font-size: 13px;
-        line-height: 1.6;
-        color: #6B5A46;
-        margin: 0;
-      }
-      @media screen and (max-width: 749px) {
-        .ar-story-intro { font-size: 15px; margin-bottom: 8px; }
-        .ar-story-text { font-size: 12px; line-height: 1.55; }
-        .ar-divider { margin: 6px 0 8px; }
-      }
-    </style>
   {%- endif -%}
 {%- endif -%}
 {%- endif -%}

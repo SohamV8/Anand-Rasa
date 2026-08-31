@@ -1,0 +1,61 @@
+{%- comment -%}
+  Product reviews — Loox widget (app block or embed).
+  Static section: rendered from layout/theme.liquid after trust-marquee.
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' and product != blank -%}
+  {{ 'ar-loox-reviews.css' | asset_url | stylesheet_tag }}
+
+  <section
+    class="anand-rasa-reviews section section-product-reviews"
+    aria-labelledby="anand-rasa-reviews-heading-{{ section.id }}"
+  >
+    <div class="anand-rasa-reviews__inner{% if section.settings.include_margins %} page-width{% endif %}">
+      <h2 id="anand-rasa-reviews-heading-{{ section.id }}" class="anand-rasa-reviews__heading">
+        Customer Reviews
+      </h2>
+
+      <div class="anand-rasa-reviews__widget">
+        {%- if section.blocks.size > 0 -%}
+          {%- for block in section.blocks -%}
+            {% render block %}
+          {%- endfor -%}
+        {%- else -%}
+          <div
+            id="looxReviews"
+            data-product-id="{{ product.id }}"
+            class="loox-reviews-default"
+          >
+            {{ product.metafields.loox.reviews }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product reviews",
+  "tag": "section",
+  "class": "section section-product-reviews",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "include_margins",
+      "default": true,
+      "label": "t:sections.apps.settings.include_margins.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product reviews"
+    }
+  ]
+}
+{% endschema %}

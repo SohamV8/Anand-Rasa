@@ -1,0 +1,462 @@
+/* Anand Rasa — Loox reviews premium styling (scoped)
+   UI/UX only. All review data and behaviour remain Loox-controlled. */
+
+.anand-rasa-reviews {
+  --ar-lox-ink: #1a1a1a;
+  --ar-lox-muted: #6f6860;
+  --ar-lox-border: rgba(26, 26, 26, 0.1);
+  --ar-lox-bg: #ffffff;
+  --ar-lox-cta: #1a1a1a;
+  --ar-lox-max: min(100%, 1480px);
+  --ar-lox-read: min(100%, 1050px);
+  --ar-lox-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--ar-lox-bg);
+  color: var(--ar-lox-ink);
+  font-family: var(--font-body-family, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  overflow-x: clip;
+}
+
+.anand-rasa-reviews *,
+.anand-rasa-reviews *::before,
+.anand-rasa-reviews *::after {
+  box-sizing: border-box;
+}
+
+.anand-rasa-reviews__inner {
+  width: 100%;
+  max-width: var(--ar-lox-max);
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 96px) clamp(16px, 4vw, 40px);
+}
+
+.anand-rasa-reviews__heading {
+  margin: 0 0 clamp(35px, 5vw, 48px);
+  text-align: center;
+  font-family: var(--font-body-family, system-ui, sans-serif);
+  font-size: clamp(26px, 3.2vw, 38px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews__widget {
+  width: 100%;
+}
+
+.anand-rasa-reviews__widget .shopify-app-block {
+  width: 100%;
+}
+
+/* ── Loox widget root ── */
+.anand-rasa-reviews #looxReviews,
+.anand-rasa-reviews .loox-reviews-default,
+.anand-rasa-reviews .loox-widget,
+.anand-rasa-reviews [id^="looxReviews"] {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  font-family: inherit;
+  color: var(--ar-lox-ink);
+  line-height: 1.5;
+}
+
+/* Hide duplicate Loox section titles — theme provides the h2 */
+.anand-rasa-reviews #looxReviews > .title,
+.anand-rasa-reviews #looxReviews > h2:first-child,
+.anand-rasa-reviews .loox-reviews-default > .title,
+.anand-rasa-reviews .loox-reviews-default > h2:first-child,
+.anand-rasa-reviews .loox-widget > .loox-reviews-title,
+.anand-rasa-reviews .loox-widget > h2:first-child {
+  display: none !important;
+}
+
+/* ── Summary header (3-part desktop layout) ── */
+.anand-rasa-reviews #looxReviews #header {
+  width: 100%;
+  margin: 0 0 clamp(20px, 3vw, 32px);
+  padding: 0 0 clamp(28px, 4vw, 40px);
+  border-bottom: 1px solid var(--ar-lox-border);
+}
+
+.anand-rasa-reviews #looxReviews #header .summary {
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews #looxReviews #header .summary .stars,
+.anand-rasa-reviews #looxReviews #header .summary .rating,
+.anand-rasa-reviews #looxReviews #header .summary span {
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews #looxReviews #header .summary .stars {
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.anand-rasa-reviews #looxReviews #header .summary .rating,
+.anand-rasa-reviews #looxReviews #header .summary .avg-rating {
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.anand-rasa-reviews #looxReviews #header .summary .count,
+.anand-rasa-reviews #looxReviews #header .summary .reviews-count {
+  font-size: clamp(13px, 1.2vw, 15px);
+  color: var(--ar-lox-muted);
+  margin-top: 6px;
+}
+
+/* Histogram / distribution bars */
+.anand-rasa-reviews #looxReviews #header .histogram,
+.anand-rasa-reviews #looxReviews #header .distribution,
+.anand-rasa-reviews #looxReviews #header .bars,
+.anand-rasa-reviews #looxReviews #header [class*="histogram"],
+.anand-rasa-reviews #looxReviews #header [class*="distribution"] {
+  width: 100%;
+}
+
+.anand-rasa-reviews #looxReviews #header .histogram .bar,
+.anand-rasa-reviews #looxReviews #header .distribution .bar,
+.anand-rasa-reviews #looxReviews #header [class*="bar-row"],
+.anand-rasa-reviews #looxReviews #header .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 22px;
+  margin: 4px 0;
+}
+
+.anand-rasa-reviews #looxReviews #header .histogram .bar .progress,
+.anand-rasa-reviews #looxReviews #header .distribution .bar .progress,
+.anand-rasa-reviews #looxReviews #header [class*="progress"] {
+  flex: 1;
+  height: 6px;
+  min-width: 0;
+  border-radius: 999px;
+  background: rgba(26, 26, 26, 0.08);
+  overflow: hidden;
+}
+
+.anand-rasa-reviews #looxReviews #header .histogram .bar .fill,
+.anand-rasa-reviews #looxReviews #header .distribution .bar .fill,
+.anand-rasa-reviews #looxReviews #header [class*="fill"] {
+  height: 100%;
+  background: var(--ar-lox-ink);
+  border-radius: inherit;
+}
+
+/* Write review CTA — real Loox button */
+.anand-rasa-reviews #looxReviews button#write,
+.anand-rasa-reviews #looxReviews .write-review,
+.anand-rasa-reviews #looxReviews [class*="write-review"],
+.anand-rasa-reviews .loox-widget button[class*="write"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 300px);
+  min-height: 50px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 0;
+  background: var(--ar-lox-cta);
+  color: #ffffff !important;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: opacity 0.2s var(--ar-lox-ease), transform 0.2s var(--ar-lox-ease);
+}
+
+.anand-rasa-reviews #looxReviews button#write:hover,
+.anand-rasa-reviews #looxReviews .write-review:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.anand-rasa-reviews #looxReviews button#write:focus-visible,
+.anand-rasa-reviews #looxReviews select:focus-visible,
+.anand-rasa-reviews #looxReviews a:focus-visible {
+  outline: 2px solid var(--ar-lox-ink);
+  outline-offset: 3px;
+}
+
+/* Sorting row */
+.anand-rasa-reviews #looxReviews #sort,
+.anand-rasa-reviews #looxReviews .sort-row,
+.anand-rasa-reviews #looxReviews [class*="sort"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 clamp(20px, 3vw, 28px);
+  padding: 0 0 16px;
+  border-bottom: 1px solid var(--ar-lox-border);
+}
+
+.anand-rasa-reviews #looxReviews select,
+.anand-rasa-reviews #looxReviews .sort select {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--ar-lox-ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 28px 8px 0;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+/* Review list */
+.anand-rasa-reviews #looxReviews #reviews,
+.anand-rasa-reviews #looxReviews .reviews-list,
+.anand-rasa-reviews .loox-widget [class*="reviews-list"] {
+  width: 100%;
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review,
+.anand-rasa-reviews #looxReviews #reviews > .item,
+.anand-rasa-reviews #looxReviews #reviews > div[class*="review"],
+.anand-rasa-reviews .loox-widget [class*="review-item"],
+.anand-rasa-reviews .loox-widget [class*="review-card"] {
+  padding: clamp(24px, 3vw, 40px) 0;
+  border-bottom: 1px solid var(--ar-lox-border);
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review:last-child,
+.anand-rasa-reviews #looxReviews #reviews > .item:last-child {
+  border-bottom: none;
+}
+
+/* Review top row: stars + date */
+.anand-rasa-reviews #looxReviews #reviews .review .stars,
+.anand-rasa-reviews #looxReviews #reviews .review .rating,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="stars"] {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review .date,
+.anand-rasa-reviews #looxReviews #reviews .review .time,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="date"] {
+  font-size: clamp(13px, 1.1vw, 15px);
+  color: var(--ar-lox-muted);
+  white-space: nowrap;
+}
+
+/* Reviewer row */
+.anand-rasa-reviews #looxReviews #reviews .review .author,
+.anand-rasa-reviews #looxReviews #reviews .review .name,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="author"],
+.anand-rasa-reviews #looxReviews #reviews .review [class*="reviewer"] {
+  font-size: clamp(14px, 1.2vw, 16px);
+  font-weight: 600;
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review .verified,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="verified"] {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(26, 26, 26, 0.06);
+  color: var(--ar-lox-ink);
+}
+
+/* Review title + body */
+.anand-rasa-reviews #looxReviews #reviews .review .title,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="title"] {
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ar-lox-ink);
+  margin: 10px 0 8px;
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review .text,
+.anand-rasa-reviews #looxReviews #reviews .review .content,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="body"],
+.anand-rasa-reviews #looxReviews #reviews .review p {
+  max-width: var(--ar-lox-read);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.65;
+  color: var(--ar-lox-ink);
+  text-wrap: pretty;
+}
+
+/* Review media */
+.anand-rasa-reviews #looxReviews #reviews .review img,
+.anand-rasa-reviews #looxReviews #reviews .review video,
+.anand-rasa-reviews .loox-widget [class*="review"] img,
+.anand-rasa-reviews .loox-widget [class*="review"] video {
+  max-width: min(148px, 42vw);
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.anand-rasa-reviews #looxReviews #reviews .review .media,
+.anand-rasa-reviews #looxReviews #reviews .review [class*="media"],
+.anand-rasa-reviews #looxReviews #reviews .review [class*="photos"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* Pagination / load more */
+.anand-rasa-reviews #looxReviews .load-more,
+.anand-rasa-reviews #looxReviews [class*="load-more"],
+.anand-rasa-reviews #looxReviews [class*="pagination"] button {
+  margin-top: 24px;
+  border: 1px solid var(--ar-lox-border);
+  background: transparent;
+  color: var(--ar-lox-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background 0.2s var(--ar-lox-ease);
+}
+
+.anand-rasa-reviews #looxReviews .load-more:hover,
+.anand-rasa-reviews #looxReviews [class*="load-more"]:hover {
+  background: rgba(26, 26, 26, 0.04);
+}
+
+/* ── Desktop: 3-column summary ── */
+@media (min-width: 1024px) {
+  .anand-rasa-reviews #looxReviews #header {
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr) minmax(0, 0.9fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  .anand-rasa-reviews #looxReviews #header > .summary {
+    padding-right: clamp(20px, 3vw, 40px);
+    border-right: 1px solid var(--ar-lox-border);
+  }
+
+  .anand-rasa-reviews #looxReviews #header .histogram,
+  .anand-rasa-reviews #looxReviews #header .distribution,
+  .anand-rasa-reviews #looxReviews #header [class*="histogram"],
+  .anand-rasa-reviews #looxReviews #header [class*="distribution"] {
+    padding-right: clamp(20px, 3vw, 40px);
+    border-right: 1px solid var(--ar-lox-border);
+  }
+
+  .anand-rasa-reviews #looxReviews #header button#write,
+  .anand-rasa-reviews #looxReviews #header .write-review {
+    justify-self: center;
+    width: min(100%, 300px);
+  }
+
+  .anand-rasa-reviews #looxReviews #reviews .review,
+  .anand-rasa-reviews #looxReviews #reviews > .item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'stars date'
+      'meta meta'
+      'title title'
+      'body body'
+      'media media';
+    column-gap: 16px;
+  }
+
+  .anand-rasa-reviews #looxReviews #reviews .review .stars,
+  .anand-rasa-reviews #looxReviews #reviews .review .rating {
+    grid-area: stars;
+  }
+
+  .anand-rasa-reviews #looxReviews #reviews .review .date,
+  .anand-rasa-reviews #looxReviews #reviews .review .time {
+    grid-area: date;
+    justify-self: end;
+    align-self: start;
+  }
+}
+
+/* ── Tablet ── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .anand-rasa-reviews #looxReviews #header {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+    align-items: start;
+  }
+
+  .anand-rasa-reviews #looxReviews #header button#write,
+  .anand-rasa-reviews #looxReviews #header .write-review {
+    grid-column: 1 / -1;
+    width: min(100%, 320px);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .anand-rasa-reviews__inner {
+    padding: clamp(40px, 10vw, 55px) clamp(16px, 5vw, 20px);
+  }
+
+  .anand-rasa-reviews #looxReviews #header {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .anand-rasa-reviews #looxReviews #header > .summary,
+  .anand-rasa-reviews #looxReviews #header .histogram,
+  .anand-rasa-reviews #looxReviews #header .distribution {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .anand-rasa-reviews #looxReviews button#write,
+  .anand-rasa-reviews #looxReviews .write-review {
+    width: 100%;
+    max-width: none;
+  }
+
+  .anand-rasa-reviews #looxReviews #reviews .review .text,
+  .anand-rasa-reviews #looxReviews #reviews .review .content,
+  .anand-rasa-reviews #looxReviews #reviews .review p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anand-rasa-reviews #looxReviews button#write,
+  .anand-rasa-reviews #looxReviews .load-more,
+  .anand-rasa-reviews #looxReviews [class*="load-more"] {
+    transition: none;
+  }
+
+  .anand-rasa-reviews #looxReviews button#write:hover {
+    transform: none;
+  }
+}

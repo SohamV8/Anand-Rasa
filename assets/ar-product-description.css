@@ -1,0 +1,125 @@
+/* Anand Rasa — premium product description (scoped) */
+
+.anand-rasa-product-description {
+  --arpd-ink: #6b5a46;
+  --arpd-ink-muted: #7a6b5c;
+  --arpd-line: rgba(200, 168, 110, 0.55);
+  --arpd-accent: #b8965a;
+  --arpd-max: 780px;
+  --arpd-serif: var(--font-heading-family, Georgia, 'Times New Roman', serif);
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--arpd-max);
+  margin: 12px 0 18px;
+  padding: 0;
+  color: var(--arpd-ink);
+  text-align: left;
+}
+
+.anand-rasa-product-description *,
+.anand-rasa-product-description *::before,
+.anand-rasa-product-description *::after {
+  box-sizing: border-box;
+}
+
+/* ── Main description ── */
+
+.anand-rasa-product-description__main {
+  font-family: var(--arpd-serif);
+  font-size: clamp(0.9375rem, 0.35vw + 0.88rem, 1.375rem);
+  line-height: 1.62;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: var(--arpd-ink);
+  margin: 0 0 clamp(1.75rem, 3vw, 2.25rem);
+  text-wrap: pretty;
+}
+
+.anand-rasa-product-description__main p {
+  margin: 0;
+}
+
+/* ── Divider ── */
+
+.anand-rasa-product-description__divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+  min-height: 28px;
+}
+
+.anand-rasa-product-description__divider::before,
+.anand-rasa-product-description__divider::after {
+  content: "";
+  flex: 1 1 0;
+  height: 1px;
+  background: var(--arpd-line);
+}
+
+.anand-rasa-product-description__divider-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(24px, 4vw, 32px);
+  padding: 0 0.65rem;
+  font-size: clamp(0.65rem, 0.2vw + 0.58rem, 0.75rem);
+  line-height: 1;
+  color: var(--arpd-accent);
+  background: rgb(var(--color-background, 255 255 255));
+}
+
+/* ── Sub-description ── */
+
+.anand-rasa-product-description__sub {
+  font-family: var(--arpd-serif);
+  font-size: clamp(0.875rem, 0.15vw + 0.84rem, 1.0625rem);
+  line-height: 1.6;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.005em;
+  color: var(--arpd-ink-muted);
+  margin: clamp(1.5rem, 2.5vw, 2rem) 0 0;
+  text-wrap: pretty;
+}
+
+.anand-rasa-product-description__sub p {
+  margin: 0;
+}
+
+/* ── Mobile padding ── */
+
+@media screen and (max-width: 767px) {
+  .anand-rasa-product-description {
+    padding-inline: clamp(16px, 4vw, 20px);
+    margin-inline: auto;
+  }
+
+  .anand-rasa-product-description__main {
+    line-height: 1.62;
+  }
+
+  .anand-rasa-product-description__sub {
+    line-height: 1.58;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .anand-rasa-product-description {
+    padding-inline: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anand-rasa-product-description,
+  .anand-rasa-product-description * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

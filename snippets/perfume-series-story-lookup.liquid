@@ -1,0 +1,52 @@
+{%- comment -%}
+  Perfume Series — editorial story copy (intro + sub-description).
+  Outputs: intro~|~body  (empty when no match)
+{%- endcomment -%}
+{%- liquid
+  assign ps_intro = ''
+  assign ps_body = ''
+  assign ps_key = product.handle | default: '' | downcase
+  assign ps_title = product.title | default: '' | downcase
+
+  if ps_key contains 'royal-passion' or ps_title contains 'royal passion'
+    assign ps_intro = 'A bold, statement fragrance built for those who want to be remembered the moment they walk in. Rich, intense and long-lasting, it''s made for important evenings, weddings, and celebrations where you want to leave your mark.'
+    assign ps_body = 'Fruity-floral fragrance — smells like tropical passion fruit, fresh roses, and warm leather depth.'
+  elsif ps_key contains 'choco-mocho' or ps_title contains 'choco mocho'
+    assign ps_intro = 'A dark, indulgent gourmand for chocolate-and-coffee lovers. Warm, rich and impossible to ignore — perfect for fall lover girlies, coffee lovers, Cool Weather, Gatherings/Ceremonies'
+    assign ps_body = 'Dessert-like fragrance — feels like melted chocolate, roasted coffee, and creamy praline'
+  elsif ps_key contains 'blue-glacier' or ps_title contains 'blue glacier'
+    assign ps_intro = 'A crisp, fresh fragrance that feels like clean mountain air and glacial water. Refreshing enough for summer daytime wear, yet deep enough for office, travel, and everyday use year-round.'
+    assign ps_body = 'Beachy, fresh fragrance — brings to mind citrus cologne, cool sea breeze, and crisp green apple.'
+  elsif ps_key contains 'dastaan' or ps_title contains 'dastaan'
+    assign ps_intro = 'A classic, romantic fragrance with old-world grandeur and a very long-lasting trail. Ideal for Club outings, Reunion, Birthdays, Anniversary, Monthly special moments meant to be remembered.'
+    assign ps_body = 'Classic fragrance — reminding of fresh roses, warm oud, and soft vanilla.'
+  elsif ps_key contains 'love-potion' or ps_title contains 'love potion'
+    assign ps_intro = 'Playful, feminine and addictive — a fragrance made to draw people in. Perfect for Evening Soiree, Theatre Nights, Picnics, Weekend Trip, where you want to feel flirtatious and unforgettable.'
+    assign ps_body = 'Berry-sweet fragrance — like ripe strawberries, fruity bubblegum, and creamy vanilla in the air.'
+  elsif ps_key contains 'vintage-vanilla' or ps_title contains 'vintage vanilla'
+    assign ps_intro = 'A comforting, elegant fragrance that feels like a beautiful memory — warm without being heavy. Versatile enough for College Adults, Lunch Date, Weekend Hangout, Conference impression and everyday elegance.'
+    assign ps_body = 'Bakery fragrance — takes you to vanilla ice cream, caramelized sugar, and warm amber.'
+  elsif ps_key contains 'her-love' or ps_title contains 'her love'
+    assign ps_intro = 'A sophisticated, sensual fragrance for the woman who carries sweetness with confidence. Made for couple date evenings, Festival celebrations, On Campus daywear, Gifting for Her, Colleague Hangout.'
+    assign ps_body = 'Café-sweet fragrance — opens with almond milk, fresh coffee, and blooming rose.'
+  elsif ps_key contains 'forbidden-fruit' or ps_title contains 'forbidden fruit'
+    assign ps_intro = 'A juicy, playful fragrance that feels like temptation itself. Great for First Date, Wedding Day, Birthday Party, Office Parties, Dinner Hangout, where you want to feel centre of attraction.'
+    assign ps_body = 'Juicy fruit-basket fragrance — bursts with fresh apple, mixed berries, and sweet vanilla.'
+  elsif ps_key contains 'office-time' or ps_title contains 'office time'
+    assign ps_intro = 'A clean, confident fragrance designed for the modern professional. Ideal for meetings, workdays, business travel, interviews, and formal occasions — sharp without being overpowering.'
+    assign ps_body = 'Clean fragrance — has the crispness of citrus cologne, cool mint, and soft sandalwood.'
+  elsif ps_key contains 'mirage' or ps_title contains 'mirage'
+    assign ps_intro = 'An enigmatic, sensual gourmand oriental built for bold impressions. Best suited for romantic evenings, festive occasions, and cool/winter nights when you want your fragrance to feel warm and mysterious.'
+    assign ps_body = 'Warm & spicy fragrance — carries the warmth of cinnamon-chai spice, coffee, and creamy vanilla.'
+  elsif ps_key contains 'candy-blast' or ps_title contains 'candy blast'
+    assign ps_intro = 'A bright, fun, candy-inspired fragrance made for everyday energy. Perfect for Friends Hangout, Wedding Proposal, Family Gatherings, Conferences and Interviews, casual daily wear when you want compliment-friendly.'
+    assign ps_body = 'Fizzy fragrance — pops with fruity candy, tangy lemon, and sweet vanilla.'
+  elsif ps_key contains 'baazigar' or ps_title contains 'baazigar'
+    assign ps_intro = 'A bold, charismatic fragrance inspired by classic Bollywood charm. Made for evening wear, Long Drive, Brunch Date, Office Trips, and festive celebrations — especially in cooler weather.'
+    assign ps_body = 'Intimidating fragrance — gives off lavender cologne, sweet honey, and smoky tobacco.'
+  elsif ps_key contains 'devalya' or ps_title contains 'devalya'
+    assign ps_intro = 'A sacred, temple-inspired attar with a calming, spiritual aura. Perfect for meditation, temple visits, Everyday sacred Rituals and festive occasions where you want a divine, unforgettable presence.'
+    assign ps_body = 'Temple-like fragrance — fills the air with incense sticks, night-blooming jasmine, and warm sandal-amber.'
+  endif
+-%}
+{%- if ps_intro != blank -%}{{ ps_intro }}~|~{{ ps_body }}{%- endif -%}

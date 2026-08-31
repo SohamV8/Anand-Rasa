@@ -276,6 +276,12 @@
           "show_subtitles": false
         }
       },
+      "product-reviews": {
+        "type": "product-reviews",
+        "settings": {
+          "include_margins": true
+        }
+      },
       "ar-promo-popup": {
         "type": "ar-promo-popup",
         "settings": {

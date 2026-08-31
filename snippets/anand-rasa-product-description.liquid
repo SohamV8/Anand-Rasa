@@ -1,0 +1,50 @@
+{%- comment -%}
+  Premium product description — main text, decorative divider, fragrance sub-description.
+  Mapped perfumes: curated copy via perfume-series-story-lookup (product.handle).
+  All other products: existing Shopify product.description unchanged.
+
+  Usage: {% render 'anand-rasa-product-description', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign arpd_main = ''
+  assign arpd_sub = ''
+  assign arpd_mapped = false
+-%}
+
+{%- capture arpd_lookup -%}
+  {%- render 'perfume-series-story-lookup', product: product -%}
+{%- endcapture -%}
+{%- assign arpd_lookup = arpd_lookup | strip -%}
+
+{%- if arpd_lookup contains '~|~' -%}
+  {%- assign arpd_parts = arpd_lookup | split: '~|~' -%}
+  {%- assign arpd_main = arpd_parts[0] | strip -%}
+  {%- assign arpd_sub = arpd_parts[1] | strip -%}
+  {%- assign arpd_mapped = true -%}
+{%- endif -%}
+
+{%- if arpd_mapped -%}
+  {{ 'ar-product-description.css' | asset_url | stylesheet_tag }}
+  <div class="anand-rasa-product-description">
+    {%- if arpd_main != blank -%}
+      <div class="anand-rasa-product-description__main">
+        <p>{{ arpd_main | escape }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if arpd_main != blank and arpd_sub != blank -%}
+      <div class="anand-rasa-product-description__divider" aria-hidden="true">
+        <span class="anand-rasa-product-description__divider-icon">✦</span>
+      </div>
+    {%- endif -%}
+
+    {%- if arpd_sub != blank -%}
+      <div class="anand-rasa-product-description__sub">
+        <p>{{ arpd_sub | escape }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+{%- elsif product.description != blank -%}
+  {{ product.description }}
+{%- endif -%}
