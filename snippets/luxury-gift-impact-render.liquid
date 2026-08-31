@@ -1,8 +1,37 @@
 {%- comment -%}
-  Luxury Gift Ritual + Social Impact — premium 3-column editorial markup.
+  Anand Rasa — Luxury Gift Ritual + Social Impact
+  Premium responsive editorial section.
 
-  Params: lgi_uid, lgi_axis, lgi_gift_product, lgi_gift_url, copy fields, lgi_image,
-  mini_* fields, lgi_shopify_attributes
+  Desktop:
+  - Two balanced editorial panels
+  - Strong gift-set visual hierarchy
+  - Refined vertical divider
+  - Controlled typography width
+  - GPU-friendly CSS animations only
+
+  Mobile:
+  - Single-column layout
+  - No horizontal overflow
+  - Clean visual hierarchy
+  - Comfortable reading width
+
+  Params:
+  lgi_uid
+  lgi_axis
+  lgi_gift_product
+  lgi_gift_url
+  lgi_eyebrow
+  lgi_title
+  lgi_subtitle
+  lgi_desc
+  lgi_cta_label
+  lgi_image
+  lgi_impact_title
+  lgi_impact_p1
+  lgi_impact_p2
+  lgi_signature_label
+  lgi_signature_name
+  lgi_shopify_attributes
 {%- endcomment -%}
 
 {%- liquid
@@ -11,9 +40,11 @@
   assign lgi_url = lgi_gift_url
 
   assign lgi_fallback_col = collections['giftsets']
+
   if lgi_fallback_col == blank
     assign lgi_fallback_col = collections['gift-sets']
   endif
+
   if lgi_fallback_col == blank
     assign lgi_fallback_col = collections['gift-set']
   endif
@@ -21,6 +52,7 @@
   if lgi_gift != blank and lgi_url == blank
     assign lgi_url = lgi_gift.url
   endif
+
   if lgi_url == blank and lgi_fallback_col != blank
     assign lgi_url = lgi_fallback_col.url
   endif
@@ -28,20 +60,24 @@
   assign lgi_price = 0
   assign lgi_compare = 0
   assign lgi_show_price = false
+
   if lgi_gift != blank
     assign lgi_price = lgi_gift.price
     assign lgi_compare = lgi_gift.compare_at_price
+
     if lgi_price > 0
       assign lgi_show_price = true
     endif
   endif
 
   assign lgi_save_amount = 0
+
   if lgi_compare > lgi_price
     assign lgi_save_amount = lgi_compare | minus: lgi_price
   endif
 
   assign lgi_media = blank
+
   if lgi_image != blank
     assign lgi_media = lgi_image
   elsif lgi_gift != blank and lgi_gift.featured_image != blank
@@ -51,6 +87,7 @@
   endif
 
   assign lgi_img_alt = 'Luxury gift set'
+
   if lgi_gift != blank
     assign lgi_img_alt = lgi_gift.title
   elsif lgi_fallback_col != blank
@@ -58,53 +95,70 @@
   endif
 
   assign lgi_uid = lgi_uid | default: 'lgi-block'
+
   assign lgi_eyebrow = lgi_eyebrow | default: 'Handcrafted Gift Ritual'
   assign lgi_cta_label = lgi_cta_label | default: 'Explore Gift Set'
 
   if lgi_axis == 'zodiac'
+
     if lgi_title == blank
       assign lgi_title = 'The Zodiac Gift Collection'
     endif
+
     if lgi_subtitle == blank
       assign lgi_subtitle = 'Twelve rashi essences, curated for meaningful gifting.'
     endif
+
     if lgi_desc == blank
       assign lgi_desc = 'A refined discovery set celebrating Vedic rashi energy — presented for festivals, milestones, and soulful gestures of care.'
     endif
+
     if lgi_cta_label == 'Explore Gift Set'
       assign lgi_cta_label = 'Discover the Ritual'
     endif
+
     if lgi_impact_title == blank
       assign lgi_impact_title = 'Fragrance with intention.'
     endif
+
     if lgi_impact_p1 == blank
       assign lgi_impact_p1 = 'Every Anand Rasa creation honours the hands that craft it. A portion of our proceeds supports artisan communities and initiatives that preserve traditional Indian perfumery.'
     endif
+
     if lgi_impact_p2 == blank
       assign lgi_impact_p2 = 'When you gift a zodiac attar, you share more than scent — you carry forward heritage, dignity, and quiet spiritual wellness.'
     endif
+
   else
+
     if lgi_title == blank
       assign lgi_title = 'The Navgraha Gift Ritual'
     endif
+
     if lgi_subtitle == blank
       assign lgi_subtitle = 'Nine planetary attars, composed for cosmic gifting.'
     endif
+
     if lgi_desc == blank
       assign lgi_desc = 'An elegant gift set rooted in Navgraha tradition — crafted for those who gift with devotion, presence, and refined intention.'
     endif
+
     if lgi_cta_label == 'Explore Gift Set'
       assign lgi_cta_label = 'Gift the Cosmos'
     endif
+
     if lgi_impact_title == blank
       assign lgi_impact_title = 'Craft that gives back.'
     endif
+
     if lgi_impact_p1 == blank
       assign lgi_impact_p1 = 'Every fragrance helps preserve traditional Indian craftsmanship and supports meaningful community initiatives across our artisan network.'
     endif
+
     if lgi_impact_p2 == blank
       assign lgi_impact_p2 = 'We believe luxury should feel ethical — calm, authentic, and deeply connected to the land and people behind each bottle.'
     endif
+
   endif
 
   assign lgi_signature_label = lgi_signature_label | default: 'With gratitude'
@@ -119,12 +173,20 @@
   {{ lgi_shopify_attributes }}
 >
   <div class="lgi__shell">
+
     <div class="lgi__grid">
 
-      {%- comment -%} CARD 1 — Gift set feature {%- endcomment -%}
-      <article class="lgi__card lgi__card--gift" data-lgi-reveal>
-        <div class="lgi__card-inner">
-          <div class="lgi__gift-visual{% if lgi_media == blank %} lgi__gift-visual--empty{% endif %}">
+      <!-- =========================================================
+           GIFT PANEL
+      ========================================================== -->
+      <article class="lgi__panel lgi__panel--gift">
+
+        <div class="lgi__gift-layout">
+
+          <!-- PRODUCT VISUAL -->
+          <div
+            class="lgi__gift-visual{% if lgi_media == blank %} lgi__gift-visual--empty{% endif %}"
+          >
             {%- if lgi_media != blank -%}
               {{
                 lgi_media
@@ -134,43 +196,119 @@
                   loading: 'lazy',
                   decoding: 'async',
                   widths: '400, 600, 800, 1000, 1200, 1400',
-                  sizes: '(min-width: 1100px) 34vw, (min-width: 750px) 48vw, 92vw',
+                  sizes: '(min-width: 1400px) 42vw, (min-width: 990px) 45vw, 92vw',
                   alt: lgi_img_alt
               }}
             {%- endif -%}
+
+            <span class="lgi__visual-shine" aria-hidden="true"></span>
           </div>
 
+          <!-- CONTENT -->
           <div class="lgi__gift-copy">
-            <p class="lgi__eyebrow">{{ lgi_eyebrow | upcase }}</p>
-            <h2 class="lgi__title" id="{{ lgi_uid }}-gift-title">{{ lgi_title }}</h2>
-            <p class="lgi__subtitle">{{ lgi_subtitle }}</p>
-            <p class="lgi__desc">{{ lgi_desc }}</p>
+
+            <p class="lgi__eyebrow">
+              {{ lgi_eyebrow | upcase }}
+            </p>
+
+            <h2
+              class="lgi__title"
+              id="{{ lgi_uid }}-gift-title"
+            >
+              {{ lgi_title }}
+            </h2>
+
+            <p class="lgi__subtitle">
+              {{ lgi_subtitle }}
+            </p>
+
+            <div class="lgi__divider" aria-hidden="true">
+              <span></span>
+              <i></i>
+              <span></span>
+            </div>
+
+            <p class="lgi__desc">
+              {{ lgi_desc }}
+            </p>
 
             {%- if lgi_show_price -%}
-              <div class="lgi__pricing" aria-label="Pricing">
-                <span class="lgi__price-now">{{ lgi_price | money }}</span>
+
+              <div
+                class="lgi__pricing"
+                aria-label="Pricing"
+              >
+                <span class="lgi__price-now">
+                  {{ lgi_price | money }}
+                </span>
+
                 {%- if lgi_compare > lgi_price -%}
-                  <span class="lgi__price-compare">{{ lgi_compare | money }}</span>
-                  <span class="lgi__save">Save {{ lgi_save_amount | money }}</span>
+                  <span class="lgi__price-compare">
+                    {{ lgi_compare | money }}
+                  </span>
+
+                  <span class="lgi__save">
+                    Save {{ lgi_save_amount | money }}
+                  </span>
                 {%- endif -%}
               </div>
+
             {%- endif -%}
 
             {%- if lgi_url != blank -%}
-              <a href="{{ lgi_url }}" class="lgi__cta">
-                <span>{{ lgi_cta_label }}</span>
-                <span class="lgi__cta-arrow" aria-hidden="true">→</span>
+
+              <a
+                href="{{ lgi_url }}"
+                class="lgi__cta"
+                aria-label="{{ lgi_cta_label }}"
+              >
+                <span class="lgi__cta-label">
+                  {{ lgi_cta_label }}
+                </span>
+
+                <span
+                  class="lgi__cta-arrow"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
               </a>
+
             {%- endif -%}
+
           </div>
         </div>
+
       </article>
 
-      {%- comment -%} CARD 2 — Social impact editorial {%- endcomment -%}
-      <aside class="lgi__card lgi__card--impact" data-lgi-reveal aria-labelledby="{{ lgi_uid }}-impact-title">
-        <div class="lgi__card-inner lgi__impact-inner">
-          <div class="lgi__impact-body">
+
+      <!-- =========================================================
+           EDITORIAL DIVIDER
+      ========================================================== -->
+
+      <div
+        class="lgi__divider-column"
+        aria-hidden="true"
+      >
+        <span class="lgi__vertical-line"></span>
+      </div>
+
+
+      <!-- =========================================================
+           SOCIAL IMPACT PANEL
+      ========================================================== -->
+
+      <aside
+        class="lgi__panel lgi__panel--impact"
+        aria-labelledby="{{ lgi_uid }}-impact-title"
+      >
+
+        <div class="lgi__impact-layout">
+
+          <div class="lgi__impact-top">
+
             <div class="lgi__logo-wrap">
+
               <img
                 class="lgi__logo"
                 src="{{ 'Paravidya_logo.png' | asset_url }}"
@@ -180,29 +318,966 @@
                 loading="lazy"
                 decoding="async"
               >
+
             </div>
 
-            <h2 class="lgi__impact-title" id="{{ lgi_uid }}-impact-title">{{ lgi_impact_title }}</h2>
+            <p class="lgi__impact-kicker">
+              SOCIAL IMPACT
+            </p>
 
-            <div class="lgi__ornament" aria-hidden="true">
-              <span class="lgi__ornament-line"></span>
-              <span class="lgi__ornament-dot"></span>
-              <span class="lgi__ornament-line"></span>
+            <h2
+              class="lgi__impact-title"
+              id="{{ lgi_uid }}-impact-title"
+            >
+              {{ lgi_impact_title }}
+            </h2>
+
+            <div class="lgi__impact-rule" aria-hidden="true">
+              <span></span>
+              <i></i>
             </div>
 
             <div class="lgi__impact-copy">
-              <p class="lgi__impact-text">{{ lgi_impact_p1 }}</p>
-              <p class="lgi__impact-text">{{ lgi_impact_p2 }}</p>
+
+              <p class="lgi__impact-text">
+                {{ lgi_impact_p1 }}
+              </p>
+
+              <p class="lgi__impact-text">
+                {{ lgi_impact_p2 }}
+              </p>
+
             </div>
+
           </div>
 
+
           <footer class="lgi__signature">
-            <p class="lgi__signature-label">{{ lgi_signature_label | upcase }}</p>
-            <p class="lgi__signature-name">{{ lgi_signature_name }}</p>
+
+            <span class="lgi__signature-line"></span>
+
+            <p class="lgi__signature-label">
+              {{ lgi_signature_label | upcase }}
+            </p>
+
+            <p class="lgi__signature-name">
+              {{ lgi_signature_name }}
+            </p>
+
           </footer>
+
         </div>
+
       </aside>
 
     </div>
+
   </div>
 </section>
+
+
+<style>
+
+  /* ============================================================
+     ROOT
+  ============================================================ */
+
+  #{{ lgi_uid }} {
+    --lgi-bg: #faf8f4;
+    --lgi-surface: #ffffff;
+    --lgi-border: rgba(42, 34, 27, 0.12);
+    --lgi-text: #27221e;
+    --lgi-muted: #756b63;
+    --lgi-gold: #b6914c;
+    --lgi-green: #376d57;
+
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--lgi-text);
+    background: transparent;
+
+    contain: layout paint;
+  }
+
+  #{{ lgi_uid }} *,
+  #{{ lgi_uid }} *::before,
+  #{{ lgi_uid }} *::after {
+    box-sizing: border-box;
+  }
+
+
+  /* ============================================================
+     SHELL
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__shell {
+    width: min(1360px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+
+
+  /* ============================================================
+     MAIN GRID
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__grid {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      1px
+      minmax(320px, 0.92fr);
+
+    gap: clamp(28px, 4vw, 72px);
+
+    align-items: stretch;
+
+    min-height: 620px;
+
+    padding: clamp(46px, 6vw, 84px) 0;
+  }
+
+
+  /* ============================================================
+     PANELS
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__panel {
+    min-width: 0;
+    position: relative;
+  }
+
+  #{{ lgi_uid }} .lgi__panel--gift {
+    display: flex;
+    align-items: stretch;
+  }
+
+  #{{ lgi_uid }} .lgi__panel--impact {
+    display: flex;
+    align-items: stretch;
+  }
+
+
+  /* ============================================================
+     GIFT LAYOUT
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__gift-layout {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(260px, 0.92fr)
+      minmax(280px, 1.08fr);
+
+    gap: clamp(32px, 4vw, 64px);
+
+    align-items: center;
+  }
+
+
+  /* ============================================================
+     GIFT VISUAL
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__gift-visual {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    isolation: isolate;
+
+    transform: translateZ(0);
+  }
+
+  #{{ lgi_uid }} .lgi__gift-visual--empty {
+    min-height: 320px;
+  }
+
+  #{{ lgi_uid }} .lgi__gift-img {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center center;
+
+    padding: 0;
+
+    transform: none;
+
+    transition:
+      transform 700ms cubic-bezier(.2,.7,.2,1),
+      opacity 500ms ease;
+
+    opacity: 1;
+
+    will-change: transform;
+  }
+
+  #{{ lgi_uid }} .lgi__panel--gift:hover .lgi__gift-img {
+    transform: scale(1.03);
+  }
+
+
+  /* subtle lighting sweep */
+  #{{ lgi_uid }} .lgi__visual-shine {
+    position: absolute;
+    z-index: 2;
+
+    top: -20%;
+    left: -35%;
+
+    width: 22%;
+    height: 140%;
+
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.48),
+      transparent
+    );
+
+    transform: translate3d(-120%, 0, 0) rotate(12deg);
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transition:
+      transform 900ms cubic-bezier(.2,.7,.2,1),
+      opacity 300ms ease;
+
+    will-change: transform;
+  }
+
+  #{{ lgi_uid }} .lgi__panel--gift:hover .lgi__visual-shine {
+    transform: translate3d(720%, 0, 0) rotate(12deg);
+    opacity: .7;
+  }
+
+
+  /* ============================================================
+     GIFT COPY
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__gift-copy {
+    max-width: 500px;
+  }
+
+  #{{ lgi_uid }} .lgi__eyebrow {
+    margin: 0 0 14px;
+
+    color: var(--lgi-gold);
+
+    font-size: 10px;
+    line-height: 1.4;
+
+    font-weight: 600;
+
+    letter-spacing: .20em;
+
+    text-transform: uppercase;
+  }
+
+  #{{ lgi_uid }} .lgi__title {
+    margin: 0;
+
+    max-width: 480px;
+
+    font-size: clamp(34px, 3.6vw, 58px);
+
+    line-height: .98;
+
+    font-weight: 500;
+
+    letter-spacing: -.045em;
+
+    text-wrap: balance;
+  }
+
+  #{{ lgi_uid }} .lgi__subtitle {
+    margin: 18px 0 0;
+
+    max-width: 440px;
+
+    color: var(--lgi-muted);
+
+    font-size: clamp(17px, 1.3vw, 21px);
+
+    line-height: 1.45;
+
+    letter-spacing: -.01em;
+  }
+
+  #{{ lgi_uid }} .lgi__desc {
+    margin: 18px 0 0;
+
+    max-width: 510px;
+
+    color: var(--lgi-muted);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    text-wrap: pretty;
+  }
+
+
+  /* ============================================================
+     SMALL GOLD DIVIDER
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    max-width: 250px;
+
+    margin: 23px 0;
+  }
+
+  #{{ lgi_uid }} .lgi__divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        rgba(182,145,76,.72)
+      );
+  }
+
+  #{{ lgi_uid }} .lgi__divider span:last-child {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(182,145,76,.72),
+        transparent
+      );
+  }
+
+  #{{ lgi_uid }} .lgi__divider i {
+    display: block;
+
+    width: 5px;
+    height: 5px;
+
+    flex: 0 0 5px;
+
+    border: 1px solid var(--lgi-gold);
+
+    transform: rotate(45deg);
+  }
+
+
+  /* ============================================================
+     PRICE
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__pricing {
+    display: flex;
+
+    align-items: baseline;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 24px;
+  }
+
+  #{{ lgi_uid }} .lgi__price-now {
+    font-size: 23px;
+
+    font-weight: 600;
+
+    letter-spacing: -.02em;
+  }
+
+  #{{ lgi_uid }} .lgi__price-compare {
+    color: #988e86;
+
+    font-size: 14px;
+
+    text-decoration: line-through;
+  }
+
+  #{{ lgi_uid }} .lgi__save {
+    color: var(--lgi-green);
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: .02em;
+  }
+
+
+  /* ============================================================
+     CTA
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__cta {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    min-width: 210px;
+
+    margin-top: 28px;
+    padding: 13px 18px;
+
+    color: #ffffff;
+
+    background: #24211e;
+
+    border: 1px solid #24211e;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+
+    transition:
+      background-color 260ms ease,
+      border-color 260ms ease,
+      transform 260ms ease,
+      box-shadow 260ms ease;
+  }
+
+  #{{ lgi_uid }} .lgi__cta:hover {
+    background: #11100f;
+
+    border-color: #11100f;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0 10px 24px rgba(0,0,0,.12);
+  }
+
+  #{{ lgi_uid }} .lgi__cta-arrow {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    border: 1px solid rgba(255,255,255,.35);
+
+    border-radius: 50%;
+
+    font-size: 13px;
+
+    line-height: 1;
+
+    transition:
+      transform 260ms ease,
+      background-color 260ms ease;
+  }
+
+  #{{ lgi_uid }} .lgi__cta:hover .lgi__cta-arrow {
+    transform: translateX(3px);
+
+    background: rgba(255,255,255,.10);
+  }
+
+
+  /* ============================================================
+     CENTER DIVIDER
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__divider-column {
+    position: relative;
+
+    display: flex;
+
+    justify-content: center;
+  }
+
+  #{{ lgi_uid }} .lgi__vertical-line {
+    display: block;
+
+    width: 1px;
+
+    height: 100%;
+
+    min-height: 420px;
+
+    background:
+      linear-gradient(
+        to bottom,
+        transparent,
+        rgba(182,145,76,.30) 18%,
+        rgba(182,145,76,.58) 50%,
+        rgba(182,145,76,.30) 82%,
+        transparent
+      );
+
+    transform: scaleY(.88);
+
+    transform-origin: center;
+
+    opacity: .9;
+  }
+
+
+  /* ============================================================
+     IMPACT PANEL
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__impact-layout {
+    width: 100%;
+
+    min-height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding:
+      clamp(18px, 2.5vw, 38px)
+      clamp(6px, 1vw, 18px);
+  }
+
+  #{{ lgi_uid }} .lgi__impact-top {
+    max-width: 470px;
+  }
+
+
+  /* ============================================================
+     LOGO
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__logo-wrap {
+    display: flex;
+
+    align-items: center;
+
+    min-height: 36px;
+
+    margin-bottom: 30px;
+  }
+
+  #{{ lgi_uid }} .lgi__logo {
+    display: block;
+
+    width: 120px;
+    height: auto;
+
+    object-fit: contain;
+
+    opacity: .78;
+  }
+
+
+  /* ============================================================
+     IMPACT COPY
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__impact-kicker {
+    margin: 0 0 12px;
+
+    color: #a89e96;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: .21em;
+
+    line-height: 1.4;
+
+    text-transform: uppercase;
+  }
+
+  #{{ lgi_uid }} .lgi__impact-title {
+    margin: 0;
+
+    max-width: 430px;
+
+    font-size: clamp(30px, 3vw, 48px);
+
+    line-height: 1.04;
+
+    font-weight: 500;
+
+    letter-spacing: -.04em;
+
+    text-wrap: balance;
+  }
+
+
+  /* ============================================================
+     IMPACT RULE
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__impact-rule {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    max-width: 150px;
+
+    margin: 25px 0;
+  }
+
+  #{{ lgi_uid }} .lgi__impact-rule span {
+    width: 56px;
+
+    height: 1px;
+
+    background: var(--lgi-gold);
+  }
+
+  #{{ lgi_uid }} .lgi__impact-rule i {
+    display: block;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: var(--lgi-gold);
+  }
+
+
+  #{{ lgi_uid }} .lgi__impact-copy {
+    max-width: 465px;
+  }
+
+  #{{ lgi_uid }} .lgi__impact-text {
+    margin: 0;
+
+    color: var(--lgi-muted);
+
+    font-size: 14px;
+
+    line-height: 1.85;
+
+    text-wrap: pretty;
+  }
+
+  #{{ lgi_uid }} .lgi__impact-text + .lgi__impact-text {
+    margin-top: 19px;
+  }
+
+
+  /* ============================================================
+     SIGNATURE
+  ============================================================ */
+
+  #{{ lgi_uid }} .lgi__signature {
+    padding-top: 46px;
+  }
+
+  #{{ lgi_uid }} .lgi__signature-line {
+    display: block;
+
+    width: 60px;
+
+    height: 1px;
+
+    margin-bottom: 15px;
+
+    background: var(--lgi-gold);
+
+    opacity: .75;
+  }
+
+  #{{ lgi_uid }} .lgi__signature-label {
+    margin: 0 0 4px;
+
+    color: #aaa098;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: .19em;
+
+    text-transform: uppercase;
+  }
+
+  #{{ lgi_uid }} .lgi__signature-name {
+    margin: 0;
+
+    color: var(--lgi-text);
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 18px;
+
+    font-style: italic;
+  }
+
+
+  /* ============================================================
+     LAPTOP OPTIMIZATION
+  ============================================================ */
+
+  @media screen and (max-width: 1199px) and (min-width: 990px) {
+
+    #{{ lgi_uid }} .lgi__shell {
+      width: min(100% - 40px, 1120px);
+    }
+
+    #{{ lgi_uid }} .lgi__grid {
+      gap: 34px;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        1px
+        minmax(300px, .82fr);
+
+      min-height: 560px;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-layout {
+      grid-template-columns: minmax(220px, .9fr) minmax(250px, 1.1fr);
+
+      gap: 30px;
+    }
+
+    #{{ lgi_uid }} .lgi__title {
+      font-size: clamp(34px, 3.2vw, 46px);
+    }
+
+    #{{ lgi_uid }} .lgi__impact-title {
+      font-size: clamp(30px, 2.8vw, 42px);
+    }
+
+    #{{ lgi_uid }} .lgi__gift-visual {
+      border-radius: 16px;
+    }
+  }
+
+
+  /* ============================================================
+     TABLET
+  ============================================================ */
+
+  @media screen and (max-width: 989px) {
+
+    #{{ lgi_uid }} .lgi__shell {
+      width: min(100% - 32px, 760px);
+    }
+
+    #{{ lgi_uid }} .lgi__grid {
+      grid-template-columns: 1fr;
+
+      gap: 42px;
+
+      min-height: auto;
+
+      padding:
+        40px 0
+        56px;
+    }
+
+    #{{ lgi_uid }} .lgi__divider-column {
+      display: none;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-layout {
+      grid-template-columns: minmax(240px, .95fr) minmax(260px, 1.05fr);
+
+      align-items: center;
+    }
+
+    #{{ lgi_uid }} .lgi__impact-layout {
+      padding: 36px 0 0;
+    }
+
+    #{{ lgi_uid }} .lgi__vertical-line {
+      display: none;
+    }
+
+    #{{ lgi_uid }} .lgi__panel--impact {
+      border-top: 1px solid rgba(182,145,76,.22);
+
+      padding-top: 42px;
+    }
+  }
+
+
+  /* ============================================================
+     MOBILE
+  ============================================================ */
+
+  @media screen and (max-width: 749px) {
+
+    #{{ lgi_uid }} .lgi__shell {
+      width: calc(100% - 28px);
+    }
+
+    #{{ lgi_uid }} .lgi__grid {
+      gap: 34px;
+
+      padding:
+        30px 0
+        42px;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-layout {
+      grid-template-columns: 1fr;
+
+      gap: 25px;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-visual {
+      aspect-ratio: 1 / .92;
+
+      border-radius: 14px;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-copy {
+      max-width: none;
+    }
+
+    #{{ lgi_uid }} .lgi__title {
+      max-width: 100%;
+
+      font-size: clamp(32px, 11vw, 46px);
+
+      line-height: 1;
+    }
+
+    #{{ lgi_uid }} .lgi__subtitle {
+      font-size: 17px;
+    }
+
+    #{{ lgi_uid }} .lgi__desc {
+      font-size: 14px;
+
+      line-height: 1.75;
+    }
+
+    #{{ lgi_uid }} .lgi__cta {
+      width: 100%;
+
+      justify-content: space-between;
+    }
+
+    #{{ lgi_uid }} .lgi__impact-layout {
+      padding: 0;
+    }
+
+    #{{ lgi_uid }} .lgi__impact-title {
+      font-size: clamp(30px, 10vw, 42px);
+    }
+
+    #{{ lgi_uid }} .lgi__impact-text {
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+    #{{ lgi_uid }} .lgi__signature {
+      padding-top: 36px;
+    }
+
+  }
+
+
+  /* ============================================================
+     SMALL MOBILE
+  ============================================================ */
+
+  @media screen and (max-width: 480px) {
+
+    #{{ lgi_uid }} .lgi__shell {
+      width: calc(100% - 24px);
+    }
+
+    #{{ lgi_uid }} .lgi__grid {
+      padding-top: 24px;
+    }
+
+    #{{ lgi_uid }} .lgi__gift-visual {
+      aspect-ratio: 1 / .88;
+    }
+
+    #{{ lgi_uid }} .lgi__eyebrow,
+    #{{ lgi_uid }} .lgi__impact-kicker {
+      font-size: 9px;
+
+      letter-spacing: .17em;
+    }
+
+    #{{ lgi_uid }} .lgi__subtitle {
+      font-size: 16px;
+    }
+
+    #{{ lgi_uid }} .lgi__desc,
+    #{{ lgi_uid }} .lgi__impact-text {
+      font-size: 13.5px;
+    }
+
+  }
+
+
+  /* ============================================================
+     REDUCED MOTION / ACCESSIBILITY
+  ============================================================ */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    #{{ lgi_uid }} .lgi__gift-img,
+    #{{ lgi_uid }} .lgi__visual-shine,
+    #{{ lgi_uid }} .lgi__cta,
+    #{{ lgi_uid }} .lgi__cta-arrow {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+    }
+
+    #{{ lgi_uid }} .lgi__visual-shine {
+      display: none;
+    }
+
+  }
+
+</style>

@@ -733,6 +733,22 @@ if (Shopify.designMode) {
 
     root.classList.add('lgi--ready');
 
+    var giftVisual = root.querySelector('.lgi__gift-visual');
+    if (giftVisual && 'IntersectionObserver' in window) {
+      var visualObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-inview');
+              visualObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      visualObserver.observe(giftVisual);
+    }
+
     if ('IntersectionObserver' in window) {
       var observer = new IntersectionObserver(
         function (entries) {

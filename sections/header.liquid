@@ -287,6 +287,9 @@
     max-height: 520px;
     overflow: visible;
   }
+  .ar-nav__drawer-sub-menu--collections.is-open > .ar-nav__drawer-sub-inner {
+    max-height: 720px;
+  }
   .ar-nav__drawer-link.ar-nav__drawer-sub { font-size:15px; font-weight:400; color:var(--ar-ink-soft); padding:14px 0; border-bottom:1px solid var(--ar-line); opacity:1; transform:none; }
   .ar-nav__drawer-link.ar-nav__drawer-sub:last-child { border-bottom:none; }
   .ar-nav__drawer-group-title {
@@ -1357,74 +1360,8 @@
     <span>{{ section.settings.nav_r1 | default: 'Collections' }}</span>
     <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
-  <div class="ar-nav__drawer-sub-menu js-ar-drawer-sub" id="ar-drawer-collections-{{ section.id }}">
+  <div class="ar-nav__drawer-sub-menu ar-nav__drawer-sub-menu--collections js-ar-drawer-sub" id="ar-drawer-collections-{{ section.id }}">
     <div class="ar-nav__drawer-sub-inner">
-    {%- if mega_blocks.size > 0 -%}
-      {%- for block in mega_blocks -%}
-        {%- liquid
-          assign ar_drawer_title_key = block.settings.title | default: '' | downcase | strip
-          assign ar_drawer_link_url = block.settings.link | strip
-          if ar_drawer_link_url == blank
-            if ar_drawer_title_key contains 'best'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'bestseller'
-              endcapture
-            elsif ar_drawer_title_key contains 'planet'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'planet-attars'
-              endcapture
-            elsif ar_drawer_title_key contains 'zodiac'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'zodiac-attars'
-              endcapture
-            elsif ar_drawer_title_key contains 'nakshatra' or ar_drawer_title_key contains 'naksahtra'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'nakshatra-attars'
-              endcapture
-            elsif ar_drawer_title_key contains 'chakra'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'chakra-attars'
-              endcapture
-            elsif ar_drawer_title_key contains 'stress'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'stress-relief'
-              endcapture
-            elsif ar_drawer_title_key contains 'love'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'love-attar'
-              endcapture
-            elsif ar_drawer_title_key contains 'apsara'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'apsara-attar'
-              endcapture
-            elsif ar_drawer_title_key contains 'perfume'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'perfume-series'
-              endcapture
-            elsif ar_drawer_title_key contains 'gourmand'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'gourmand'
-              endcapture
-            elsif ar_drawer_title_key contains 'incense'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'incense-sticks'
-              endcapture
-            elsif ar_drawer_title_key contains 'vip'
-              assign ar_drawer_link_url = ar_header_vip_url
-            elsif ar_drawer_title_key contains 'gift' or ar_drawer_title_key contains 'discovery'
-              capture ar_drawer_link_url
-                render 'ar-collection-url', handle: 'giftsets'
-              endcapture
-            endif
-          endif
-          assign ar_drawer_link_url = ar_drawer_link_url | strip
-          if ar_drawer_link_url == blank
-            assign ar_drawer_link_url = routes.collections_url
-          endif
-        -%}
-        <a href="{{ ar_drawer_link_url }}" class="ar-nav__drawer-link ar-nav__drawer-sub">{{ block.settings.title | default: 'Collection' }}</a>
-      {%- endfor -%}
-    {%- else -%}
       <a href="{% render 'ar-collection-url', handle: 'bestseller' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Bestseller</a>
       <a href="{% render 'ar-collection-url', handle: 'planet-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Planets Attars</a>
       <a href="{% render 'ar-collection-url', handle: 'zodiac-attars' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Zodiac Attars</a>
@@ -1437,7 +1374,6 @@
       <a href="{% render 'ar-collection-url', handle: 'gourmand' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gourmand Collection</a>
       <a href="{% render 'ar-collection-url', handle: 'incense-sticks' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Incense Sticks</a>
       <a href="{% render 'ar-collection-url', handle: 'giftsets' %}" class="ar-nav__drawer-link ar-nav__drawer-sub">Gift Sets</a>
-    {%- endif -%}
     </div>
   </div>
   <a href="{{ section.settings.nav_r2_url | default: ar_header_about_url }}" class="ar-nav__drawer-link">{{ section.settings.nav_r2 | default: 'About' }}</a>

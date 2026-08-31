@@ -34,9 +34,7 @@
     {%- endif -%}
 
     {%- if arpd_main != blank and arpd_sub != blank -%}
-      <div class="anand-rasa-product-description__divider" aria-hidden="true">
-        <span class="anand-rasa-product-description__divider-icon">✦</span>
-      </div>
+      {% render 'anand-rasa-description-divider', product: product %}
     {%- endif -%}
 
     {%- if arpd_sub != blank -%}

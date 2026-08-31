@@ -1,15 +1,38 @@
 {%- comment -%}
   Product PDP — luxury trust + assurance strip
-  Hidden on Perfume Series products only (alcohol-based perfumes).
+  Hidden on Perfume Series and discovery / gift sets.
 {%- endcomment -%}
 {%- liquid
   assign ar_trust_skip = false
   if product != blank
+    assign ar_trust_type = product.type | default: '' | downcase
+    assign ar_trust_handle = product.handle | default: '' | downcase
+    assign ar_trust_title = product.title | default: '' | downcase
+    assign ar_trust_tags = product.tags | join: '|' | downcase
+    assign ar_trust_cols = product.collections | map: 'handle' | join: '|' | downcase
+    assign ar_trust_scope = ar_trust_type | append: '|' | append: ar_trust_handle | append: '|' | append: ar_trust_title | append: '|' | append: ar_trust_tags | append: '|' | append: ar_trust_cols
+
+    if ar_trust_handle contains 'discovery-set' or ar_trust_title contains 'discovery set' or ar_trust_title contains 'gift set' or ar_trust_title contains 'ritual set' or ar_trust_type contains 'gift set' or ar_trust_cols contains 'gift-sets' or ar_trust_cols contains 'gift-set' or ar_trust_cols contains 'giftsets'
+      assign ar_trust_skip = true
+    endif
+
+    if ar_trust_type contains 'perfume'
+      unless ar_trust_type contains 'oil' or ar_trust_type contains 'attar'
+        assign ar_trust_skip = true
+      endunless
+    endif
+    if ar_trust_cols contains 'perfume-series' or ar_trust_cols contains 'perfume-collection' or ar_trust_handle contains 'perfume'
+      unless ar_trust_scope contains 'attar' or ar_trust_type contains 'oil'
+        assign ar_trust_skip = true
+      endunless
+    endif
     for c in product.collections
       assign ar_trust_col = c.handle | downcase
-      if ar_trust_col == 'perfume-series' or ar_trust_col == 'perfume' or ar_trust_col == 'perfumes' or ar_trust_col == 'perfume-collection'
-        assign ar_trust_skip = true
-        break
+      if ar_trust_col == 'perfume' or ar_trust_col == 'perfumes'
+        unless ar_trust_scope contains 'attar' or ar_trust_type contains 'oil'
+          assign ar_trust_skip = true
+          break
+        endunless
       endif
     endfor
   endif

@@ -123,29 +123,32 @@
       }
     }
     @media screen and (max-width: 749px) {
+      .pdp-meta-accordion {
+        margin-top: 3.2rem;
+      }
       .pdp-meta-accordion__item summary {
-        padding: 1.25rem 0;
-        min-height: 3.5rem;
+        padding: 1.85rem 0;
+        min-height: 4.75rem;
       }
       .pdp-meta-accordion .pdp-meta-accordion__title {
         font-family: var(--font-body-family), "Poppins", sans-serif;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 600;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        line-height: 1.35;
+        line-height: 1.4;
         color: #111827;
       }
       .pdp-meta-accordion__item summary::after {
-        width: 0.55rem;
-        height: 0.55rem;
-        border-right-width: 1.5px;
-        border-bottom-width: 1.5px;
+        width: 0.65rem;
+        height: 0.65rem;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
       }
       .pdp-meta-accordion__content {
-        font-size: 1.125rem;
-        line-height: 1.75;
-        padding-bottom: 1.35rem;
+        font-size: 1.25rem;
+        line-height: 1.8;
+        padding: 0.5rem 0 2rem;
       }
     }
     .product__info-container > * {
@@ -163,10 +166,6 @@
     }
     .price--large {
       margin: 0.9rem 0 0.75rem;
-    }
-    .product__tax {
-      margin: 0.9rem 0 2rem;
-      line-height: 1.7;
     }
     .product-form__input.product-form__quantity {
       margin: 1.2rem 0 2rem;
@@ -186,6 +185,28 @@
     .product-form__input .quantity__input {
       min-height: 5rem;
       font-size: 2.2rem;
+    }
+    @media screen and (max-width: 749px) {
+      .product__info-container .price--large {
+        font-size: 2rem;
+        line-height: 1.25;
+        letter-spacing: 0.02em;
+      }
+      .product__info-container .price--large .price-item {
+        font-weight: 400;
+      }
+      .product-form__input .quantity__label {
+        font-size: 1.45rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+      .ar-gift-mprice__now {
+        font-size: 2rem !important;
+        font-weight: 400 !important;
+      }
+      .ar-gift-mprice__was {
+        font-size: 1.15rem !important;
+      }
     }
     .icon-list-custom {
       margin-top: 0.9rem !important;
@@ -377,20 +398,6 @@
                     <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                   </div>
                 {%- endif -%}
-                {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
-                  <div class="product__tax caption rte{% if ar_is_gift_series %} ar-gift-price-tax{% endif %}">
-                    {%- if cart.duties_included and cart.taxes_included -%}
-                      {{ 'products.product.duties_and_taxes_included' | t }}
-                    {%- elsif cart.taxes_included -%}
-                      {{ 'products.product.taxes_included' | t }}
-                    {%- elsif cart.duties_included -%}
-                      {{ 'products.product.duties_included' | t }}
-                    {%- endif -%}
-                    {%- if shop.shipping_policy.body != blank -%}
-                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
                 <div {{ block.shopify_attributes }}>
                   {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
                   {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
@@ -406,10 +413,6 @@
 
                     @media screen and (max-width: 749px) {
                       .ar-gift-price-host > .price {
-                        display: none !important;
-                      }
-
-                      .ar-gift-price-tax {
                         display: none !important;
                       }
 
@@ -455,14 +458,6 @@
                         letter-spacing: 0.02em;
                         line-height: 1.2;
                         white-space: nowrap;
-                      }
-
-                      .ar-gift-mprice__tax {
-                        margin: 0.4rem 0 0;
-                        font-size: 0.78rem;
-                        font-weight: 400;
-                        color: #9ca3af;
-                        line-height: 1.35;
                       }
                     }
                   </style>

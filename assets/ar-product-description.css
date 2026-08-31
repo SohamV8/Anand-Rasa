@@ -27,7 +27,7 @@
 
 .anand-rasa-product-description__main {
   font-family: var(--arpd-serif);
-  font-size: 21px;
+  font-size: 19px;
   line-height: 1.62;
   font-weight: 400;
   font-style: italic;
@@ -41,45 +41,74 @@
   margin: 0;
 }
 
-/* ── Divider ── */
+/* ── Divider — faded lines + scrollwork ornament ── */
 
 .anand-rasa-product-description__divider {
-  position: relative;
+  --arpd-divider: #c5a069;
+  --arpd-divider-soft: rgba(197, 160, 105, 0.55);
+  --arpd-divider-faint: rgba(197, 160, 105, 0.12);
+
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0;
   width: 100%;
   max-width: 100%;
-  margin: clamp(1rem, 2vw, 1.5rem) 0;
-  min-height: 28px;
+  margin: clamp(1.35rem, 2.6vw, 1.85rem) 0;
+  min-height: 34px;
+  color: var(--arpd-divider);
 }
 
-.anand-rasa-product-description__divider::before,
-.anand-rasa-product-description__divider::after {
-  content: "";
-  flex: 1 1 0;
+.anand-rasa-product-description__divider-line {
+  flex: 1 1 auto;
   height: 1px;
-  background: var(--arpd-line);
+  min-width: 28px;
+  border: 0;
+}
+
+.anand-rasa-product-description__divider-line--start {
+  background: linear-gradient(
+    90deg,
+    var(--arpd-divider-faint) 0%,
+    rgba(197, 160, 105, 0.22) 18%,
+    rgba(197, 160, 105, 0.58) 42%,
+    var(--arpd-divider-soft) 68%,
+    var(--arpd-divider) 100%
+  );
+}
+
+.anand-rasa-product-description__divider-line--end {
+  background: linear-gradient(
+    270deg,
+    var(--arpd-divider-faint) 0%,
+    rgba(197, 160, 105, 0.22) 18%,
+    rgba(197, 160, 105, 0.58) 42%,
+    var(--arpd-divider-soft) 68%,
+    var(--arpd-divider) 100%
+  );
 }
 
 .anand-rasa-product-description__divider-icon {
   flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: clamp(24px, 4vw, 32px);
-  padding: 0 0.65rem;
-  font-size: clamp(0.65rem, 0.2vw + 0.58rem, 0.75rem);
-  line-height: 1;
-  color: var(--arpd-accent);
-  background: rgb(var(--color-background, 255 255 255));
+  display: block;
+  width: clamp(76px, 15vw, 100px);
+  margin: 0 clamp(8px, 1.8vw, 14px);
+  line-height: 0;
+  aspect-ratio: 92 / 34;
+}
+
+.anand-rasa-product-description__divider-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  shape-rendering: geometricPrecision;
 }
 
 /* ── Sub-description ── */
 
 .anand-rasa-product-description__sub {
   font-family: var(--arpd-serif);
-  font-size: 20px;
+  font-size: 18.5px;
   line-height: 1.45;
   font-weight: 400;
   font-style: normal;
@@ -105,12 +134,12 @@
   }
 
   .anand-rasa-product-description__main {
-    font-size: 21px;
+    font-size: 19px;
     line-height: 1.62;
   }
 
   .anand-rasa-product-description__sub {
-    font-size: 20px;
+    font-size: 18.5px;
     line-height: 1.45;
     text-align: left;
   }

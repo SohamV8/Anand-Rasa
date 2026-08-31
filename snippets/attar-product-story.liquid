@@ -23,11 +23,10 @@
   {%- if aps_planet_titles contains '|||' -%}
     {%- assign aps_planet_parts = aps_planet_titles | split: '|||' -%}
     {%- assign aps_marketplace_text = aps_planet_parts[0] | strip | replace: ' 6ml', '' | replace: ' 6 ml', '' | strip -%}
+    {{ 'ar-product-description.css' | asset_url | stylesheet_tag }}
     <div class="ar-story-block ar-story-block--planet" data-attar-story data-planet-titles>
       <p class="ar-story-marketplace">{{ aps_marketplace_text | escape }}</p>
-      <div class="ar-divider ar-divider--planet" aria-hidden="true">
-        <span>✺</span>
-      </div>
+      {% render 'anand-rasa-description-divider', product: aps_p %}
       <p class="ar-story-shopify">{{ aps_planet_parts[1] | escape }}</p>
     </div>
 
@@ -48,17 +47,6 @@
         }
       }
 
-      @keyframes ar-story-line {
-        from {
-          opacity: 0;
-          transform: scaleX(0.35);
-        }
-        to {
-          opacity: 1;
-          transform: scaleX(1);
-        }
-      }
-
       .ar-story-block--planet .ar-story-marketplace {
         font-family: 'Jost', system-ui, sans-serif;
         font-size: clamp(13px, 1.05vw + 11px, 15px);
@@ -71,32 +59,8 @@
         text-wrap: pretty;
       }
 
-      .ar-story-block--planet .ar-divider--planet {
-        position: relative;
-        text-align: center;
-        margin: clamp(10px, 2vw, 14px) 0;
+      .ar-story-block--planet .anand-rasa-product-description__divider {
         animation: ar-story-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
-      }
-
-      .ar-story-block--planet .ar-divider--planet::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 50%;
-        border-top: 1px solid #d8c08a;
-        transform-origin: center;
-        animation: ar-story-line 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-      }
-
-      .ar-story-block--planet .ar-divider--planet span {
-        position: relative;
-        display: inline-block;
-        background: #ffffff;
-        padding: 0 10px;
-        color: #c8a03a;
-        font-size: clamp(11px, 0.8vw + 9px, 13px);
-        line-height: 1;
       }
 
       .ar-story-block--planet .ar-story-shopify {
@@ -120,9 +84,8 @@
 
       @media (prefers-reduced-motion: reduce) {
         .ar-story-block--planet .ar-story-marketplace,
-        .ar-story-block--planet .ar-divider--planet,
-        .ar-story-block--planet .ar-story-shopify,
-        .ar-story-block--planet .ar-divider--planet::before {
+        .ar-story-block--planet .anand-rasa-product-description__divider,
+        .ar-story-block--planet .ar-story-shopify {
           animation: none;
         }
       }
@@ -649,9 +612,7 @@
       {%- endif -%}
 
       {%- if aps_intro != blank and aps_body != blank -%}
-        <div class="anand-rasa-product-description__divider" aria-hidden="true">
-          <span class="anand-rasa-product-description__divider-icon">✦</span>
-        </div>
+        {% render 'anand-rasa-description-divider', product: aps_p %}
       {%- endif -%}
 
       {%- if aps_body != blank -%}
