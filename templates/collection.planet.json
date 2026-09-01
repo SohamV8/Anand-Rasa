@@ -1,22 +1,8 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "navagraha_explorer": {
-      "type": "navagraha-mantra",
-      "settings": {
-        "context": "collection",
-        "eyebrow": "Navagraha Collection",
-        "title": "The Nine Planetary Attars",
-        "subtitle": "Ancient Vedic wisdom distilled into rare botanical essences. Each attar is formulated under the planetary hour of its ruling graha."
-      }
+    "planet_banner": {
+      "type": "planet-attar-banner",
+      "settings": {}
     },
     "main": {
       "type": "collection-planet",
@@ -29,11 +15,21 @@
       "settings": {
         "collection_mode": "planet"
       }
+    },
+    "navagraha_explorer": {
+      "type": "navagraha-mantra",
+      "settings": {
+        "context": "collection",
+        "eyebrow": "Navagraha Collection",
+        "title": "The Nine Planetary Attars",
+        "subtitle": "Ancient Vedic wisdom distilled into rare botanical essences. Each attar is formulated under the planetary hour of its ruling graha."
+      }
     }
   },
   "order": [
-    "navagraha_explorer",
+    "planet_banner",
     "main",
-    "luxury_gift_impact"
+    "luxury_gift_impact",
+    "navagraha_explorer"
   ]
 }

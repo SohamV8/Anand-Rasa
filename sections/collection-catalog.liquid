@@ -91,6 +91,20 @@
     z-index:2;
   }
 
+  /* Perfume Series — 4:5 showcards, edge-to-edge fill */
+  .arc.arc--perfume-series .arc-card__img-wrap {
+    aspect-ratio: 4 / 5;
+    background: #f8f8f8;
+  }
+  .arc.arc--perfume-series .arc-card__img,
+  .arc.arc--perfume-series .arc-card__img-hover {
+    object-fit: cover;
+    object-position: center;
+  }
+  .arc.arc--perfume-series .arc-card:hover .arc-card__img {
+    transform: none;
+  }
+
   /* Perfume Series — 2-column product grid on mobile */
   @media (max-width: 749px) {
     .arc.arc--perfume-series .arc-grid {
@@ -190,12 +204,14 @@
     {%- if collection.products.size > 0 -%}
       {%- paginate collection.products by section.settings.products_per_page -%}
         {%- for product in collection.products -%}
-          {%- comment -%} Perfume Series: use product media only — never attar bestseller bottles. {%- endcomment -%}
           {%- assign ar_showcard = '' -%}
-          {%- unless template.suffix == 'perfume-series' -%}
+          {%- if template.suffix == 'perfume-series' -%}
+            {%- capture ar_showcard -%}{%- render 'perfume-series-image-lookup', ps_product: product -%}{%- endcapture -%}
+            {%- assign ar_showcard = ar_showcard | strip -%}
+          {%- else -%}
             {%- capture ar_showcard -%}{%- render 'bestseller-image-lookup', bs_product: product -%}{%- endcapture -%}
             {%- assign ar_showcard = ar_showcard | strip -%}
-          {%- endunless -%}
+          {%- endif -%}
           {%- assign ar_showcard_framed = false -%}
           {%- if arc_apsara and ar_showcard != blank -%}
             {%- assign ar_showcard_framed = true -%}
@@ -203,14 +219,26 @@
           <div class="arc-card">
             <a href="{{ product.url }}" class="arc-card__img-wrap{% if ar_showcard_framed %} arc-card__img-wrap--framed{% endif %}">
               {%- if ar_showcard != blank -%}
-                <img src="{{ ar_showcard | asset_url }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- if arc_perfume_series -%}
+                  <img src="{{ ar_showcard | asset_url }}" alt="{{ product.title | escape }}" width="800" height="1000" loading="lazy" class="arc-card__img">
+                {%- else -%}
+                  <img src="{{ ar_showcard | asset_url }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- endif -%}
                 {%- if ar_showcard_framed -%}
                   <img class="arc-card__border" src="{{ 'Border.webp' | asset_url }}" alt="" width="800" height="1067" loading="lazy" decoding="async" aria-hidden="true">
                 {%- endif -%}
               {%- elsif product.featured_image -%}
-                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- if arc_perfume_series -%}
+                  <img src="{{ product.featured_image | image_url: width: 800, height: 1000, crop: 'center' }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="800" height="1000" loading="lazy" class="arc-card__img">
+                {%- else -%}
+                  <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img">
+                {%- endif -%}
                 {%- if product.images.size > 1 -%}
-                  <img src="{{ product.images[1] | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img-hover">
+                  {%- if arc_perfume_series -%}
+                    <img src="{{ product.images[1] | image_url: width: 800, height: 1000, crop: 'center' }}" alt="{{ product.title | escape }}" width="800" height="1000" loading="lazy" class="arc-card__img-hover">
+                  {%- else -%}
+                    <img src="{{ product.images[1] | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="1067" loading="lazy" class="arc-card__img-hover">
+                  {%- endif -%}
                 {%- endif -%}
               {%- endif -%}
               {%- if product.tags contains 'bestseller' or product.tags contains 'Bestseller' -%}

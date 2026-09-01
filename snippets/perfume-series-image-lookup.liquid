@@ -1,0 +1,26 @@
+{%- comment -%}
+  Perfume Series — collection card thumbnail lookup.
+  Maps perfume products to theme assets on /collections/perfume-series only.
+  Echoes asset filename or empty string (fallback to product featured image).
+{%- endcomment -%}
+{%- liquid
+  assign ps_key = ps_product.handle | default: '' | downcase
+  assign ps_title = ps_product.title | default: '' | downcase
+  assign ps_img = ''
+
+  if ps_key contains 'blue-glacier' or ps_title contains 'blue glacier'
+    assign ps_img = 'blue glacier-01.jpg.webp'
+  elsif ps_key contains 'candy-blast' or ps_title contains 'candy blast'
+    assign ps_img = 'candy blast-01.jpg.webp'
+  elsif ps_key contains 'choco-mocho' or ps_title contains 'choco mocho'
+    assign ps_img = 'choco mocho-01.jpg.webp'
+  elsif ps_key contains 'dastaan' or ps_title contains 'dastaan'
+    assign ps_img = 'dastaan-01.jpg.webp'
+  elsif ps_key == 'mirage' or ps_title == 'mirage'
+    assign ps_img = 'MIRAGE.jpg.webp'
+  elsif ps_key contains 'office-time' or ps_title contains 'office time'
+    assign ps_img = 'OFFICE TIME-01.jpg.webp'
+  endif
+
+  echo ps_img
+-%}

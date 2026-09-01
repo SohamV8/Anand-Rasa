@@ -1,0 +1,46 @@
+{%- liquid
+  assign ar_pab_img = 'Nav-Grah.jpg.webp' | asset_url
+-%}
+<section class="ar-pab-hero" aria-label="Planet Attars — Anand Rasa">
+  <img
+    class="ar-pab-hero__img"
+    src="{{ ar_pab_img }}"
+    alt="Planet Attars — Anand Rasa"
+    loading="eager"
+    decoding="async"
+    fetchpriority="high"
+  >
+</section>
+
+<style>
+.ar-pab-hero {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  contain: layout paint style;
+}
+
+.ar-pab-hero__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Planet Attar Banner",
+  "class": "section",
+  "settings": []
+}
+{% endschema %}
