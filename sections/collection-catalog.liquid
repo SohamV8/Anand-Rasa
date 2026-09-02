@@ -91,6 +91,20 @@
     z-index:2;
   }
 
+  /* Perfume Series — collection title */
+  .arc.arc--perfume-series .arc-ps-title {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 44px) clamp(20px, 5vw, 48px) 0;
+    font-family: 'Poppins', var(--fb), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: clamp(26px, 4.8vw, 40px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-align: center;
+  }
+
   /* Perfume Series — 4:5 showcards, edge-to-edge fill */
   .arc.arc--perfume-series .arc-card__img-wrap {
     aspect-ratio: 4 / 5;
@@ -182,6 +196,10 @@
     </div>
   {%- endif -%}
   {%- endunless -%}
+
+  {%- if arc_perfume_series -%}
+    <h1 class="arc-ps-title">Perfume</h1>
+  {%- endif -%}
 
   <div class="arc-toolbar">
     <p class="arc-toolbar__count">{{ collection.products_count }} Products</p>
