@@ -43,12 +43,56 @@
 
 .anand-rasa-reviews__widget {
   width: 100%;
+}
+
+.anand-rasa-reviews__widget #looxReviews:not(.loox-reviews-default--ready),
+.anand-rasa-reviews__widget #looxReviewsFrame {
   min-height: 320px;
 }
 
-.anand-rasa-reviews__widget #looxReviews,
-.anand-rasa-reviews__widget #looxReviewsFrame {
-  min-height: 320px;
+/* Loox metafield HTML is display:none until the iframe hydrates — show it now */
+.anand-rasa-reviews__ssr #loox-inline-reviews {
+  display: grid !important;
+  gap: clamp(20px, 3vw, 28px);
+  margin-top: clamp(8px, 2vw, 16px);
+}
+
+.anand-rasa-reviews__ssr .review {
+  margin: 0;
+  padding: clamp(20px, 3vw, 28px) 0;
+  border-top: 1px solid var(--ar-lox-border);
+}
+
+.anand-rasa-reviews__ssr .review:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.anand-rasa-reviews__ssr .review::before {
+  content: '★★★★★';
+  display: block;
+  margin: 0 0 8px;
+  color: #c8a03a;
+  letter-spacing: 0.12em;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.anand-rasa-reviews__ssr .review .name {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ar-lox-ink);
+}
+
+.anand-rasa-reviews__ssr .review .review_text,
+.anand-rasa-reviews__ssr .review .text,
+.anand-rasa-reviews__ssr .review .content {
+  margin: 0;
+  max-width: var(--ar-lox-read);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ar-lox-ink);
 }
 
 .anand-rasa-reviews__fallback {
