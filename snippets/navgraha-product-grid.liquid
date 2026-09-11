@@ -1,0 +1,51 @@
+{%- comment -%}
+  Navgraha set page — render up to 9 planet attars in Vedic order.
+  Skips gift/discovery sets. Used only by afr--stack collection grid.
+{%- endcomment -%}
+{%- liquid
+  assign ng_collection = afr_collection
+  assign ng_uid = afr_uid
+  assign ng_shown = '|'
+  assign ng_count = 0
+  assign ng_keys = 'surya|sun,chandra|moon,mangal|mars,budh|budha|mercury,guru|jupiter,shukra|venus,shani|saturn,rahu,ketu' | split: ','
+-%}
+{%- for ng_key in ng_keys -%}
+  {%- assign ng_bits = ng_key | split: '|' -%}
+  {%- for product in ng_collection.products -%}
+    {%- liquid
+      assign ng_h = product.handle | downcase
+      assign ng_t = product.title | downcase
+      assign ng_ty = product.type | downcase
+      assign ng_scope = ng_h | append: ' ' | append: ng_t | append: ' ' | append: ng_ty
+      assign ng_skip = false
+      if ng_h contains 'set' or ng_ty contains 'gift' or ng_t contains 'gift set' or ng_t contains 'discovery'
+        assign ng_skip = true
+      endif
+      assign ng_id_token = product.id | append: '|'
+      if ng_shown contains ng_id_token
+        assign ng_skip = true
+      endif
+      assign ng_match = false
+      unless ng_skip
+        for ng_bit in ng_bits
+          if ng_scope contains ng_bit
+            assign ng_match = true
+            break
+          endif
+        endfor
+      endunless
+    -%}
+    {%- if ng_match -%}
+      {%- assign ng_count = ng_count | plus: 1 -%}
+      {%- assign ng_shown = ng_shown | append: product.id | append: '|' -%}
+      {%- render 'astro-recommendation-card',
+        card_product: product,
+        card_index: ng_count,
+        section_id: ng_uid,
+        perfume_images_only: false,
+        afr_grid: true
+      -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}

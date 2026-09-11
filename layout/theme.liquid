@@ -825,6 +825,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         {% render 'related-products-product', product: product %}
 
+        {%- if ar_is_attar_product -%}
+          {% render 'astro-faq-recommendations-auto', afr_page_end: true %}
+        {%- endif -%}
+
         {% render 'ambient-sound', product: product %}
       {%- endif -%}
     </main>

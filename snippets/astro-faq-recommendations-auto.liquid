@@ -26,6 +26,21 @@
       endif
     endunless
 
+    assign afr_is_navgraha_set = false
+    if p_handle_h == 'navgraha-attar-set' or p_handle_h == 'navagraha-attar-set' or p_handle_h contains 'navgraha-attar-set' or p_handle_h contains 'navagraha-attar-set'
+      assign afr_is_navgraha_set = true
+    endif
+
+    if afr_page_end
+      if afr_is_navgraha_set
+        assign afr_show = true
+      else
+        assign afr_show = false
+      endif
+    elsif afr_is_navgraha_set
+      assign afr_show = false
+    endif
+
     if afr_show and product.collections != blank
       for c in product.collections
         assign ch = c.handle | downcase
@@ -118,6 +133,13 @@
       assign afr_default_cta = 'Explore Navgraha Attars'
   endcase
 
+  assign afr_layout = 'split'
+  assign afr_grid_limit = 4
+  if afr_page_end
+    assign afr_layout = 'stack'
+    assign afr_grid_limit = 9
+  endif
+
   capture afr_col_url
     render 'ar-collection-url', handle: afr_default_handle
   endcapture
@@ -150,10 +172,11 @@
     afr_cta_label: afr_default_cta,
     afr_cta_url: blank,
     afr_faq_heading: afr_faq_heading_auto,
-    afr_limit: 4,
+    afr_limit: afr_grid_limit,
     afr_bg: '#ffffff',
     afr_show_om: afr_show_om_auto,
     afr_first_open: false,
-    afr_use_blocks: false
+    afr_use_blocks: false,
+    afr_layout: afr_layout
   -%}
 {%- endif -%}

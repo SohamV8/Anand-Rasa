@@ -7,11 +7,13 @@
     afr_faq_heading, afr_limit, afr_bg, afr_show_om, afr_first_open
     afr_empty_message, afr_shopify_attributes
     afr_use_blocks — when true, read FAQ from section.blocks
+    afr_layout — 'split' (default two-column) or 'stack' (FAQ then collection, full width)
 {%- endcomment -%}
 
 {%- liquid
   assign afr_uid = afr_uid | default: 'afr-inline'
   assign afr_mode = afr_mode | default: 'planet'
+  assign afr_layout = afr_layout | default: 'split'
   assign afr_limit = afr_limit | default: 4
   assign afr_faq_heading = afr_faq_heading | default: 'Frequently Asked Questions'
   assign afr_bg = afr_bg | default: '#ffffff'
@@ -110,7 +112,11 @@
   "@type": "ItemList",
   "name": {{ afr_en | default: 'Astrology attar recommendations' | json }},
   "itemListElement": [
-    {%- for product in afr_collection.products limit: afr_limit -%}
+    {%- assign afr_ld_limit = afr_limit -%}
+    {%- if afr_layout == 'stack' -%}
+      {%- assign afr_ld_limit = 9 -%}
+    {%- endif -%}
+    {%- for product in afr_collection.products limit: afr_ld_limit -%}
       {%- unless forloop.first -%},{%- endunless -%}
       {
         "@type": "ListItem",
@@ -124,8 +130,12 @@
 </script>
 {%- endif -%}
 
+{%- if afr_layout == 'stack' -%}
+  {{ 'afr-navgraha-grid.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
 <section
-  class="afr"
+  class="afr{% if afr_layout == 'stack' %} afr--stack{% endif %}"
   id="{{ afr_uid }}"
   data-afr-section
   itemscope
@@ -253,6 +263,15 @@
           </div>
         </header>
 
+        {%- if afr_layout == 'stack' -%}
+          {%- if afr_collection != blank and afr_collection.products.size > 0 -%}
+            <ul class="afr__nav-grid" aria-label="{{ afr_en | default: 'Navgraha attars' | escape }}">
+              {%- render 'navgraha-product-grid', afr_collection: afr_collection, afr_uid: afr_uid -%}
+            </ul>
+          {%- else -%}
+            <p class="afr__empty">{{ afr_empty_message }}</p>
+          {%- endif -%}
+        {%- else -%}
         <div class="afr__track-wrap">
           {%- if afr_collection != blank and afr_collection.products.size > 0 -%}
             <button
@@ -322,6 +341,7 @@
             <p class="afr__empty">{{ afr_empty_message }}</p>
           {%- endif -%}
         </div>
+        {%- endif -%}
 
         {%- if afr_cta_url != blank -%}
           <div class="afr__cta-wrap">

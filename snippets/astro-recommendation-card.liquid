@@ -8,6 +8,11 @@
   assign ar_tags = card_product.tags | join: ' ' | downcase
   assign ar_scope = ar_key | append: ' ' | append: ar_tags
   assign perfume_images_only = perfume_images_only | default: false
+  assign afr_grid = afr_grid | default: false
+  assign afr_img_sizes = '(max-width: 767px) 72vw, 200px'
+  if afr_grid
+    assign afr_img_sizes = '(max-width: 749px) 46vw, (max-width: 1199px) 30vw, 18vw'
+  endif
 
   assign ar_type_key = card_product.type | downcase | strip
   assign ar_subtitle = 'Attar'
@@ -140,7 +145,11 @@
   endif
 
   assign ar_lazy = true
-  if card_index <= 2
+  if afr_grid
+    if card_index <= 5
+      assign ar_lazy = false
+    endif
+  elsif card_index <= 2
     assign ar_lazy = false
   endif
   if ar_lazy
@@ -258,7 +267,7 @@
             <source
               type="image/webp"
               srcset="{{ ar_img | image_url: width: 320, format: 'webp' }} 320w, {{ ar_img | image_url: width: 480, format: 'webp' }} 480w, {{ ar_img | image_url: width: 720, format: 'webp' }} 720w"
-              sizes="(max-width: 767px) 72vw, 200px"
+              sizes="{{ afr_img_sizes }}"
             >
             {{
               ar_img
