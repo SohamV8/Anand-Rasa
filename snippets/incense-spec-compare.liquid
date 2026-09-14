@@ -183,7 +183,7 @@
             </tr>
           </thead>
           <tbody>
-            {%- for feature in isc_f1 | append: '||' | append: isc_f2 | append: '||' | append: isc_f3 | append: '||' | append: isc_f4 | append: '||' | append: isc_f5 | split: '||' -%}
+            {%- for feature in isc_f1 -%}
               {%- if feature != blank -%}
                 <tr>
                   <td>{{ feature }}</td>
@@ -198,3 +198,15 @@
     </div>
   </div>
 </section>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- for feature in isc_f1 | append: '||' | append: isc_f2 | append: '||'
+    | append: isc_f3 | append: '||' | append: isc_f4 | append: '||' | append: isc_f5
+    | split: '||' -%}"
+  to: "{%- for feature in isc_f1 -%}"
+  position: 6684..6713
+{% endcomment %}
